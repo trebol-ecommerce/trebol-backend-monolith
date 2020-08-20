@@ -17,8 +17,8 @@ public class PersonDto2Entity
   public Person convert(PersonDto source) {
     Person target = new Person();
     target.setId(source.getPersonId());
-    target.setFullName(source.getPersonFullName());
-    target.setIdNumber(source.getPersonIdNumber());
+    target.setName(source.getPersonFullName());
+    target.setIdCard(source.getPersonIdCard());
     
     String address = source.getPersonAddress();
     if (address != null && !address.isEmpty()) {
