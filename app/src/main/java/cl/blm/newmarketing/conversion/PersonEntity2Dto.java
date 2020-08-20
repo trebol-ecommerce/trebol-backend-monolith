@@ -1,10 +1,9 @@
 package cl.blm.newmarketing.conversion;
 
+import cl.blm.newmarketing.model.entities.Person;
+import cl.blm.newmarketing.rest.dtos.PersonDto;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-
-import cl.blm.newmarketing.rest.dtos.PersonDto;
-import cl.blm.newmarketing.model.entities.Person;
 
 /**
  *
