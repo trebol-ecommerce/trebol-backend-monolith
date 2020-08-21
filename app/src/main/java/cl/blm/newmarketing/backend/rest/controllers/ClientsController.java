@@ -1,11 +1,14 @@
 package cl.blm.newmarketing.backend.rest.controllers;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.BackendAppGlobals;
+import cl.blm.newmarketing.backend.pojos.ClientPojo;
 import cl.blm.newmarketing.backend.rest.dtos.ClientDto;
 import cl.blm.newmarketing.backend.rest.services.CrudService;
 
@@ -29,17 +33,19 @@ public class ClientsController {
   private final static Logger LOG = LoggerFactory.getLogger(ClientsController.class);
 
   @Autowired
+  private ConversionService conversion;
+  @Autowired
   private CrudService<ClientDto, Integer> clientSvc;
   @Autowired
   private BackendAppGlobals globals;
 
   @GetMapping("/clients")
-  public Collection<ClientDto> read(@RequestParam Map<String, String> allRequestParams) {
+  public Collection<ClientPojo> read(@RequestParam Map<String, String> allRequestParams) {
     return this.read(null, null, allRequestParams);
   }
 
   @GetMapping("/clients/{requestPageSize}")
-  public Collection<ClientDto> read(@PathVariable Integer requestPageSize,
+  public Collection<ClientPojo> read(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return this.read(requestPageSize, null, allRequestParams);
   }
@@ -56,7 +62,7 @@ public class ClientsController {
    * @return
    */
   @GetMapping("/clients/{requestPageSize}/{requestPageIndex}")
-  public Collection<ClientDto> read(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  public Collection<ClientPojo> read(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
     Integer pageSize = globals.ITEMS_PER_PAGE;
@@ -74,6 +80,9 @@ public class ClientsController {
     }
 
     Collection<ClientDto> clients = clientSvc.read(pageSize, pageIndex, filters);
-    return clients;
+    Collection<ClientPojo> clientPojos = (List<ClientPojo>) conversion.convert(clients,
+        TypeDescriptor.collection(Collection.class, TypeDescriptor.valueOf(ClientDto.class)),
+        TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(ClientPojo.class)));
+    return clientPojos;
   }
 }

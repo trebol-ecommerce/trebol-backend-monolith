@@ -6,7 +6,7 @@
   <parent>
     <groupId>cl.blm.newmarketing.backend</groupId>
     <artifactId>nm-store-rest</artifactId>
-    <version>0.7.6</version>
+    <version>0.7.7</version>
   </parent>
   <artifactId>nm-store-rest-package</artifactId>
   <packaging>ear</packaging>
