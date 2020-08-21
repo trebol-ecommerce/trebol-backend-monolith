@@ -6,7 +6,7 @@
 	
   <groupId>cl.blm.examples</groupId>
   <artifactId>nm-store-rest</artifactId>
-  <version>0.7.3</version>
+  <version>0.7.4</version>
   <packaging>pom</packaging>
 	
   <name>New Marketing Store REST</name>
