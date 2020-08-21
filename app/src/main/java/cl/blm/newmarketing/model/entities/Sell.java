@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author got12
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
 @Table(name = "sales")

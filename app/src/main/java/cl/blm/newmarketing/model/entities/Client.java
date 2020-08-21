@@ -22,7 +22,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author got12
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
 @Table(name = "clients")
