@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>cl.blm.examples</groupId>
-    <artifactId>spring-rest-ws</artifactId>
-    <version>0.7.1</version>
+    <groupId>cl.blm.newmarketing</groupId>
+    <artifactId>nm-store-rest</artifactId>
+    <version>0.7.4</version>
   </parent>
-  <artifactId>spring-rest-ws-package</artifactId>
+  <artifactId>nm-store-rest-package</artifactId>
   <packaging>ear</packaging>
 
   <name>New Marketing Store REST Package</name>
