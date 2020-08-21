@@ -22,10 +22,8 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.rest.dtos.PersonDto;
 import cl.blm.newmarketing.model.entities.Person;
-import cl.blm.newmarketing.model.entities.Phone;
-import cl.blm.examples.spring.rest.model.entities.QPerson;
-import cl.blm.newmarketing.model.repositories.PersonRepository;
-import cl.blm.newmarketing.model.repositories.PhoneRepository;
+import cl.blm.newmarketing.model.entities.QPerson;
+import cl.blm.newmarketing.model.repositories.PeopleRepository;
 import cl.blm.newmarketing.rest.services.CrudService;
 
 /**
@@ -35,11 +33,10 @@ import cl.blm.newmarketing.rest.services.CrudService;
 @Transactional
 @Service
 public class PersonCrudServiceImpl
-    implements CrudService<PersonDto, Long> {
+    implements CrudService<PersonDto, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(PersonCrudServiceImpl.class);
 
-  @Autowired PersonRepository people;
-  @Autowired PhoneRepository phones;
+  @Autowired PeopleRepository people;
   @Autowired ConversionService conversion;
 
   @Override
@@ -48,27 +45,27 @@ public class PersonCrudServiceImpl
     QPerson qPerson = QPerson.person;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
-      String paramValue = queryParamsMap.get(paramName);
+      String stringValue = queryParamsMap.get(paramName);
       try {
-        Long parsedValueL;
+        Integer intValue;
         switch (paramName) {
         case "id":
-          parsedValueL = Long.valueOf(paramValue);
-          return predicate.and(qPerson.id.eq(parsedValueL)); // match por id es único
+          intValue = Integer.valueOf(stringValue);
+          return predicate.and(qPerson.id.eq(intValue)); // match por id es único
         case "name":
-          predicate.and(qPerson.fullName.likeIgnoreCase("%" + paramValue + "%"));
+          predicate.and(qPerson.name.likeIgnoreCase("%" + stringValue + "%"));
           break;
         case "idnumber":
-          predicate.and(qPerson.idNumber.likeIgnoreCase("%" + paramValue + "%"));
+          predicate.and(qPerson.idCard.likeIgnoreCase("%" + stringValue + "%"));
           break;
         case "email":
-          predicate.and(qPerson.email.likeIgnoreCase("%" + paramValue + "%"));
+          predicate.and(qPerson.email.likeIgnoreCase("%" + stringValue + "%"));
           break;
         default:
           break;
         }
       } catch (NumberFormatException exc) {
-        LOG.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, paramValue, exc);
+        LOG.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
       }
     }
 
@@ -84,18 +81,7 @@ public class PersonCrudServiceImpl
       return null;
     } else {
       newEntity = people.saveAndFlush(newEntity);
-  
-      Collection<Long> phoneNumbers = dto.getPersonPhones();
-      if (phoneNumbers != null) {
-        for (Long number : phoneNumbers) {
-          Phone phone = new Phone(number);
-          phone.setPerson(newEntity);
-          phones.saveAndFlush(phone);
-        }
-      }
-  
       PersonDto newDto = conversion.convert(newEntity, PersonDto.class);
-      newDto.setPersonPhones(phoneNumbers);
       return newDto;
     }
   }
@@ -147,7 +133,7 @@ public class PersonCrudServiceImpl
   }
 
   @Override
-  public boolean delete(Long id) {
+  public boolean delete(Integer id) {
     LOG.debug("delete({})", id);
     try {
       people.deleteById(id);
@@ -161,7 +147,7 @@ public class PersonCrudServiceImpl
 
   @Nullable
   @Override
-  public PersonDto find(Long id) {
+  public PersonDto find(Integer id) {
     LOG.debug("find({})", id);
     Optional<Person> personById = people.findById(id);
     if (personById.isPresent()) {
