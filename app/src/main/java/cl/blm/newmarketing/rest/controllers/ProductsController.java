@@ -29,7 +29,7 @@ public class ProductsController {
   private final static Logger LOG = LoggerFactory.getLogger(ProductsController.class);
 
   @Autowired
-  private CrudService<ProductDto, Long> productService;
+  private CrudService<ProductDto, Integer> productService;
   @Autowired
   private AppGlobals globals;
 

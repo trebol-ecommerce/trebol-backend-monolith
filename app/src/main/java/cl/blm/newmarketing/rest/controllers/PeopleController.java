@@ -29,7 +29,7 @@ public class PeopleController {
   private final static Logger LOG = LoggerFactory.getLogger(PeopleController.class);
 
   @Autowired
-  private CrudService<PersonDto, Long> personSvc;
+  private CrudService<PersonDto, Integer> personSvc;
   @Autowired
   private AppGlobals globals;
 

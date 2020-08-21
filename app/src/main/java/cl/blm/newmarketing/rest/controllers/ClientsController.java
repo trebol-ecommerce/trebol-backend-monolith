@@ -29,7 +29,7 @@ public class ClientsController {
   private final static Logger LOG = LoggerFactory.getLogger(ClientsController.class);
 
   @Autowired
-  private CrudService<ClientDto, Long> clientSvc;
+  private CrudService<ClientDto, Integer> clientSvc;
   @Autowired
   private AppGlobals globals;
 
