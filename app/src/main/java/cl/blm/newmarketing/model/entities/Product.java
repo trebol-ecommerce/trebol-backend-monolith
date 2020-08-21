@@ -1,6 +1,7 @@
 package cl.blm.newmarketing.model.entities;
 
 import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,134 +23,135 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "products")
-@NamedQueries({
-    @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")})
-public class Product implements Serializable {
+@NamedQueries({ @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p") })
+public class Product
+    implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "product_id")
-    private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
-    @Column(name = "product_name")
-    private String name;
-    @Size(max = 50)
-    @Column(name = "product_code")
-    private String code;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "product_price")
-    private int price;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "product_stock_current")
-    private int stockCurrent;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "product_stock_critical")
-    private int stockCritical;
-    @JoinColumn(name = "product_type_id", referencedColumnName = "product_type_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private ProductType productType;
+  private static final long serialVersionUID = 1L;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Basic(optional = false)
+  @Column(name = "product_id")
+  private Integer id;
+  @Basic(optional = false)
+  @NotNull
+  @Size(min = 1, max = 200)
+  @Column(name = "product_name")
+  private String name;
+  @Size(max = 50)
+  @Column(name = "product_code")
+  private String code;
+  @Basic(optional = false)
+  @NotNull
+  @Column(name = "product_price")
+  private int price;
+  @Basic(optional = false)
+  @NotNull
+  @Column(name = "product_stock_current")
+  private int stockCurrent;
+  @Basic(optional = false)
+  @NotNull
+  @Column(name = "product_stock_critical")
+  private int stockCritical;
+  @JoinColumn(name = "product_type_id", referencedColumnName = "product_type_id")
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  private ProductType productType;
 
-    public Product() {
+  public Product() {
+  }
+
+  public Product(Integer productId) {
+    this.id = productId;
+  }
+
+  public Product(Integer productId, String productName, int productPrice, int productStockCurrent,
+      int productStockCritical) {
+    this.id = productId;
+    this.name = productName;
+    this.price = productPrice;
+    this.stockCurrent = productStockCurrent;
+    this.stockCritical = productStockCritical;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public int getPrice() {
+    return price;
+  }
+
+  public void setPrice(int price) {
+    this.price = price;
+  }
+
+  public int getStockCurrent() {
+    return stockCurrent;
+  }
+
+  public void setStockCurrent(int stockCurrent) {
+    this.stockCurrent = stockCurrent;
+  }
+
+  public int getStockCritical() {
+    return stockCritical;
+  }
+
+  public void setStockCritical(int stockCritical) {
+    this.stockCritical = stockCritical;
+  }
+
+  public ProductType getProductType() {
+    return productType;
+  }
+
+  public void setProductType(ProductType productType) {
+    this.productType = productType;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 0;
+    hash += (id != null ? id.hashCode() : 0);
+    return hash;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    // TODO: Warning - this method won't work in the case the id fields are not set
+    if (!(object instanceof Product)) {
+      return false;
     }
-
-    public Product(Integer productId) {
-        this.id = productId;
+    Product other = (Product) object;
+    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+      return false;
     }
+    return true;
+  }
 
-    public Product(Integer productId, String productName, int productPrice, int productStockCurrent, int productStockCritical) {
-        this.id = productId;
-        this.name = productName;
-        this.price = productPrice;
-        this.stockCurrent = productStockCurrent;
-        this.stockCritical = productStockCritical;
-    }
+  @Override
+  public String toString() {
+    return "cl.blm.newmarketing.model.entities.Product[ productId=" + id + " ]";
+  }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getStockCurrent() {
-        return stockCurrent;
-    }
-
-    public void setStockCurrent(int stockCurrent) {
-        this.stockCurrent = stockCurrent;
-    }
-
-    public int getStockCritical() {
-        return stockCritical;
-    }
-
-    public void setStockCritical(int stockCritical) {
-        this.stockCritical = stockCritical;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Product)) {
-            return false;
-        }
-        Product other = (Product) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "cl.blm.newmarketing.model.entities.Product[ productId=" + id + " ]";
-    }
-    
 }
