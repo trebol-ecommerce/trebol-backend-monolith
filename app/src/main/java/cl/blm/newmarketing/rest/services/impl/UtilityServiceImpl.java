@@ -20,11 +20,13 @@ import cl.blm.newmarketing.rest.services.UtilityService;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Service
-public class UtilityServiceImpl implements UtilityService {
+public class UtilityServiceImpl
+    implements UtilityService {
   private static final Logger LOG = LoggerFactory.getLogger(UtilityServiceImpl.class);
-  
-  @Autowired AppGlobals globals;
-  
+
+  @Autowired
+  AppGlobals globals;
+
   @Nullable
   @Override
   public final Date formatString(String dateString) {

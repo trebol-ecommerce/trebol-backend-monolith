@@ -36,8 +36,10 @@ public class ClientCrudServiceImpl
     implements CrudService<ClientDto, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ClientCrudServiceImpl.class);
 
-  @Autowired ClientsRepository clients;
-  @Autowired ConversionService conversion;
+  @Autowired
+  ClientsRepository clients;
+  @Autowired
+  ConversionService conversion;
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {

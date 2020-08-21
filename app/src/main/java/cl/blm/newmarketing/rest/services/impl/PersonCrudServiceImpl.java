@@ -20,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.rest.dtos.PersonDto;
 import cl.blm.newmarketing.model.entities.Person;
 import cl.blm.newmarketing.model.entities.QPerson;
 import cl.blm.newmarketing.model.repositories.PeopleRepository;
+import cl.blm.newmarketing.rest.dtos.PersonDto;
 import cl.blm.newmarketing.rest.services.CrudService;
 
 /**
@@ -36,8 +36,10 @@ public class PersonCrudServiceImpl
     implements CrudService<PersonDto, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(PersonCrudServiceImpl.class);
 
-  @Autowired PeopleRepository people;
-  @Autowired ConversionService conversion;
+  @Autowired
+  PeopleRepository people;
+  @Autowired
+  ConversionService conversion;
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
