@@ -11,7 +11,7 @@ import org.springframework.context.annotation.PropertySources;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @SpringBootApplication
-@ComponentScan()
+@ComponentScan
 @PropertySources({ @PropertySource("classpath:logging.properties") })
 public class BackendApp {
   /**
