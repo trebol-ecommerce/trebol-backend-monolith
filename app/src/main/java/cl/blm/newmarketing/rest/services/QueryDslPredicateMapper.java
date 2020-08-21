@@ -1,7 +1,8 @@
 package cl.blm.newmarketing.rest.services;
 
-import com.querydsl.core.types.Predicate;
 import java.util.Map;
+
+import com.querydsl.core.types.Predicate;
 
 /**
  * An interface for implementing translations from Maps to Predicates.

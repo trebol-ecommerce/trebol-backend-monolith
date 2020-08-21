@@ -5,8 +5,9 @@ import cl.blm.newmarketing.pojos.LoginPojo;
 //TODO document this class
 
 /**
- * Interface for a service that handles creating, validating and invalidating session tokens.
- * Should be used along with a service that stores actual Session instances.
+ * Interface for a service that handles creating, validating and invalidating
+ * session tokens. Should be used along with a service that stores actual
+ * Session instances.
  * 
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */

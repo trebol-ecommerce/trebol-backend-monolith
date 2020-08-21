@@ -1,14 +1,15 @@
 package cl.blm.newmarketing.rest.services;
 
-import com.querydsl.core.types.Predicate;
 import java.util.Collection;
 
 import org.springframework.lang.Nullable;
 
+import com.querydsl.core.types.Predicate;
+
 /**
- * An interface for implementing the basic CRUD service operations. Because it extends
- * QueryDslPredicateMapper, it's expected to comply to QueryDSL and accept Predicate objects as
- * filtering conditions.
+ * An interface for implementing the basic CRUD service operations. Because it
+ * extends QueryDslPredicateMapper, it's expected to comply to QueryDSL and
+ * accept Predicate objects as filtering conditions.
  * 
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * 
@@ -23,8 +24,8 @@ public interface CrudService<T, I>
    *
    * @param dto The item to be created.
    *
-   * @return The created item, with updated properties (most importantly its ID), or null if the item
-   *         could not be created.
+   * @return The created item, with updated properties (most importantly its ID),
+   *         or null if the item could not be created.
    */
   @Nullable
   public T create(T dto);
@@ -45,7 +46,8 @@ public interface CrudService<T, I>
    *
    * @param dto The item to be updated.
    *
-   * @return The saved item, with updated properties, or null if the item was not found.
+   * @return The saved item, with updated properties, or null if the item was not
+   *         found.
    */
   @Nullable
   public T update(T dto);

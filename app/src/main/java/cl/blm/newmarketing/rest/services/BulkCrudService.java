@@ -5,7 +5,8 @@ import java.util.Collection;
 import com.querydsl.core.types.Predicate;
 
 /**
- * A specialized extension of CrudService that supports bulk (massive) CRUD operations.
+ * A specialized extension of CrudService that supports bulk (massive) CRUD
+ * operations.
  * 
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * 
@@ -19,7 +20,8 @@ public interface BulkCrudService<T, I>
    *
    * @param dto The collection of items to save.
    *
-   * @return A collection of resulting items. Some may be null if they weren't successfully created.
+   * @return A collection of resulting items. Some may be null if they weren't
+   *         successfully created.
    */
   public Collection<T> bulkCreate(Collection<T> dto);
 

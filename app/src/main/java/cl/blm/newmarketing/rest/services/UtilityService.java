@@ -8,7 +8,8 @@ public interface UtilityService {
   /**
    * Parses the string as an instance of Date. Exception-safe.
    *
-   * @param dateString The date string. Should be formatted like the AppGlobals.DATE_FORMAT constant.
+   * @param dateString The date string. Should be formatted like the
+   *                   AppGlobals.DATE_FORMAT constant.
    * 
    * @return A Date instance, or null if the string couldn't be parsed.
    */
