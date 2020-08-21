@@ -28,21 +28,19 @@ import cl.blm.newmarketing.rest.services.CrudService;
 public class ClientsController {
   private final static Logger LOG = LoggerFactory.getLogger(ClientsController.class);
 
-  @Autowired private CrudService<ClientDto, Long> clientSvc;
-  @Autowired private AppGlobals globals;
+  @Autowired
+  private CrudService<ClientDto, Long> clientSvc;
+  @Autowired
+  private AppGlobals globals;
 
   @GetMapping("/clients")
-  public Collection<ClientDto> read(
-          @RequestParam Map<String, String> allRequestParams
-  ) {
+  public Collection<ClientDto> read(@RequestParam Map<String, String> allRequestParams) {
     return this.read(null, null, allRequestParams);
   }
 
   @GetMapping("/clients/{requestPageSize}")
-  public Collection<ClientDto> read(
-          @PathVariable Integer requestPageSize,
-          @RequestParam Map<String, String> allRequestParams
-  ) {
+  public Collection<ClientDto> read(@PathVariable Integer requestPageSize,
+      @RequestParam Map<String, String> allRequestParams) {
     return this.read(requestPageSize, null, allRequestParams);
   }
 
@@ -58,11 +56,8 @@ public class ClientsController {
    * @return
    */
   @GetMapping("/clients/{requestPageSize}/{requestPageIndex}")
-  public Collection<ClientDto> read(
-          @PathVariable Integer requestPageSize,
-          @PathVariable Integer requestPageIndex,
-          @RequestParam Map<String, String> allRequestParams
-  ) {
+  public Collection<ClientDto> read(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+      @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
     Integer pageSize = globals.ITEMS_PER_PAGE;
     Integer pageIndex = 0;

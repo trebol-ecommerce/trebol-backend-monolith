@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.blm.newmarketing.pojos.LoginPojo;
 import cl.blm.newmarketing.rest.dtos.PersonDto;
 import cl.blm.newmarketing.rest.dtos.SessionDto;
 import cl.blm.newmarketing.rest.dtos.UserDto;
-import cl.blm.newmarketing.pojos.LoginPojo;
 import cl.blm.newmarketing.rest.services.AuthService;
 import cl.blm.newmarketing.rest.services.CrudService;
 
@@ -32,9 +32,12 @@ public class SessionsController {
 
   final String MSG_EXPIRED = "Invalid/expired session token";
 
-  @Autowired private AuthService authSvc;
-  @Autowired private CrudService<SessionDto, String> sessionSvc;
-  @Autowired private CrudService<UserDto, Long> userSvc;
+  @Autowired
+  private AuthService authSvc;
+  @Autowired
+  private CrudService<SessionDto, String> sessionSvc;
+  @Autowired
+  private CrudService<UserDto, Long> userSvc;
 
   /**
    * Opens a new user session.
@@ -102,16 +105,15 @@ public class SessionsController {
   }
 
   /**
-   * Retrieves profile data for the user account associated to the provided session token.
+   * Retrieves profile data for the user account associated to the provided
+   * session token.
    *
    * @param token
    *
    * @return A PersonDto object with the profile data.
    */
   @GetMapping("/session/profile")
-  public PersonDto getProfile(
-          @RequestParam("hash") String token
-  ) {
+  public PersonDto getProfile(@RequestParam("hash") String token) {
     LOG.debug("getProfile");
     if (token != null && !token.isEmpty()) {
       SessionDto session = sessionSvc.find(token);
