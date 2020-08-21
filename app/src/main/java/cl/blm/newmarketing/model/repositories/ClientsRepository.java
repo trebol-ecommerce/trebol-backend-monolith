@@ -11,6 +11,7 @@ import cl.blm.newmarketing.model.entities.Client;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Repository
-public interface ClientsRepository extends JpaRepository<Client, Integer>, QuerydslPredicateExecutor<Client> {
+public interface ClientsRepository
+    extends JpaRepository<Client, Integer>, QuerydslPredicateExecutor<Client> {
 
 }
