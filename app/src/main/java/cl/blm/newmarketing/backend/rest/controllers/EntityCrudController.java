@@ -10,7 +10,7 @@ import cl.blm.newmarketing.backend.rest.services.CrudService;
 
 public abstract class EntityCrudController<E, K> {
 
-  private BackendAppGlobals globals;
+  protected BackendAppGlobals globals;
   protected CrudService<E, K> crudService;
 
   public EntityCrudController(BackendAppGlobals globals, CrudService<E, K> crudService) {
