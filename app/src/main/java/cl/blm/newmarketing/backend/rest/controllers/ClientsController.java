@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,9 +79,8 @@ public class ClientsController {
     }
 
     Collection<ClientDto> clients = clientSvc.read(pageSize, pageIndex, filters);
-    Collection<ClientPojo> clientPojos = (List<ClientPojo>) conversion.convert(clients,
-        TypeDescriptor.collection(Collection.class, TypeDescriptor.valueOf(ClientDto.class)),
-        TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(ClientPojo.class)));
+
+    List<ClientPojo> clientPojos = conversion.convert(clients, List.class);
     return clientPojos;
   }
 }
