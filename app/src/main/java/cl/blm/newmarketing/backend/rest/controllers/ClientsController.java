@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,13 @@ public class ClientsController
   @Autowired
   private ConversionService conversion;
 
+  @SuppressWarnings("unchecked")
+  private List<ClientPojo> convertCollection(Collection<ClientDto> source) {
+    return (List<ClientPojo>) conversion.convert(source,
+        TypeDescriptor.collection(Collection.class, TypeDescriptor.valueOf(ClientDto.class)),
+        TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(ClientPojo.class)));
+  }
+
   @Autowired
   public ClientsController(BackendAppGlobals globals, CrudService<ClientDto, Integer> crudService) {
     super(globals, crudService);
@@ -54,9 +62,7 @@ public class ClientsController
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
     Collection<ClientDto> clients = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
-
-    @SuppressWarnings("unchecked")
-    List<ClientPojo> clientPojos = conversion.convert(clients, List.class);
+    List<ClientPojo> clientPojos = this.convertCollection(clients);
     return clientPojos;
   }
 }
