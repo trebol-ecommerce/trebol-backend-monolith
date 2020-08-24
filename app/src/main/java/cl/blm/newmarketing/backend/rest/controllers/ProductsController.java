@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,13 @@ public class ProductsController
   @Autowired
   private ConversionService conversion;
 
+  @SuppressWarnings("unchecked")
+  private List<ProductPojo> convertCollection(Collection<ProductDto> source) {
+    return (List<ProductPojo>) conversion.convert(source,
+        TypeDescriptor.collection(Collection.class, TypeDescriptor.valueOf(ProductDto.class)),
+        TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(ProductPojo.class)));
+  }
+
   @Autowired
   public ProductsController(BackendAppGlobals globals, CrudService<ProductDto, Integer> crudService) {
     super(globals, crudService);
@@ -54,9 +62,7 @@ public class ProductsController
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
     Collection<ProductDto> products = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
-
-    @SuppressWarnings("unchecked")
-    Collection<ProductPojo> productPojos = conversion.convert(products, List.class);
+    Collection<ProductPojo> productPojos = this.convertCollection(products);
     return productPojos;
   }
 }
