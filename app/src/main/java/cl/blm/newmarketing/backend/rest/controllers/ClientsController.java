@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.querydsl.core.types.Predicate;
-
 import cl.blm.newmarketing.backend.BackendAppGlobals;
 import cl.blm.newmarketing.backend.pojos.ClientPojo;
 import cl.blm.newmarketing.backend.rest.dtos.ClientDto;
@@ -28,15 +26,17 @@ import cl.blm.newmarketing.backend.rest.services.CrudService;
  */
 @RestController
 @RequestMapping("/api")
-public class ClientsController {
+public class ClientsController
+    extends EntityCrudController<ClientDto, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(ClientsController.class);
 
   @Autowired
   private ConversionService conversion;
+
   @Autowired
-  private CrudService<ClientDto, Integer> clientSvc;
-  @Autowired
-  private BackendAppGlobals globals;
+  public ClientsController(BackendAppGlobals globals, CrudService<ClientDto, Integer> crudService) {
+    super(globals, crudService);
+  }
 
   @GetMapping("/clients")
   public Collection<ClientPojo> read(@RequestParam Map<String, String> allRequestParams) {
@@ -49,37 +49,13 @@ public class ClientsController {
     return this.read(requestPageSize, null, allRequestParams);
   }
 
-  /**
-   * Retrieve a page of clients.
-   *
-   * @param requestPageSize
-   * @param requestPageIndex
-   * @param allRequestParams
-   *
-   * @see RequestParam
-   * @see Predicate
-   * @return
-   */
   @GetMapping("/clients/{requestPageSize}/{requestPageIndex}")
   public Collection<ClientPojo> read(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
-    Integer pageSize = globals.ITEMS_PER_PAGE;
-    Integer pageIndex = 0;
-    Predicate filters = null;
+    Collection<ClientDto> clients = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
 
-    if (requestPageSize != null && requestPageSize > 0) {
-      pageSize = requestPageSize;
-    }
-    if (requestPageIndex != null && requestPageIndex > 0) {
-      pageIndex = requestPageIndex - 1;
-    }
-    if (allRequestParams != null && !allRequestParams.isEmpty()) {
-      filters = clientSvc.queryParamsMapToPredicate(allRequestParams);
-    }
-
-    Collection<ClientDto> clients = clientSvc.read(pageSize, pageIndex, filters);
-
+    @SuppressWarnings("unchecked")
     List<ClientPojo> clientPojos = conversion.convert(clients, List.class);
     return clientPojos;
   }

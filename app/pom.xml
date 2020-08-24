@@ -7,7 +7,7 @@
   <parent>
     <groupId>cl.blm.newmarketing.backend</groupId>
     <artifactId>nm-store-rest</artifactId>
-    <version>0.7.7</version>
+    <version>0.7.8</version>
   </parent>
   <artifactId>nm-store-rest-app</artifactId>
   <packaging>war</packaging>
