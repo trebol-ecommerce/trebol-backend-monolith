@@ -11,6 +11,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +46,15 @@ public class ClientsController
   @Autowired
   public ClientsController(BackendAppGlobals globals, CrudService<ClientDto, Integer> crudService) {
     super(globals, crudService);
+  }
+
+  @PostMapping("/client")
+  public ClientPojo create(@RequestBody ClientPojo input) {
+    LOG.info("create");
+    ClientDto dto = conversion.convert(input, ClientDto.class);
+    ClientDto processed = crudService.create(dto);
+    ClientPojo result = conversion.convert(processed, ClientPojo.class);
+    return result;
   }
 
   @GetMapping("/clients")
