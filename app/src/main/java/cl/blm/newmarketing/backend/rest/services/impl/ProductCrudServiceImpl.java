@@ -170,7 +170,7 @@ public class ProductCrudServiceImpl
   public ProductDto find(Integer id) {
     LOG.debug("find({})", id);
     Optional<Product> productById = products.findById(id);
-    if (productById.isPresent()) {
+    if (!productById.isPresent()) {
       return null;
     } else {
       return conversion.convert(productById.get(), ProductDto.class);
