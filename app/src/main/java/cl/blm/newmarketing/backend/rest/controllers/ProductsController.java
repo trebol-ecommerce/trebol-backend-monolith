@@ -11,6 +11,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +46,15 @@ public class ProductsController
   @Autowired
   public ProductsController(BackendAppGlobals globals, CrudService<ProductDto, Integer> crudService) {
     super(globals, crudService);
+  }
+
+  @PostMapping("/product")
+  public ProductPojo create(@RequestBody ProductPojo input) {
+    LOG.info("create");
+    ProductDto dto = conversion.convert(input, ProductDto.class);
+    ProductDto processed = crudService.create(dto);
+    ProductPojo result = conversion.convert(processed, ProductPojo.class);
+    return result;
   }
 
   @GetMapping("/product/{id}")
