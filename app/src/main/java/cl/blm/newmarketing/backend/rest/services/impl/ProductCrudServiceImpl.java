@@ -85,41 +85,41 @@ public class ProductCrudServiceImpl
   @Override
   public Collection<ProductDto> read(int pageSize, int pageIndex, Predicate filters) {
     LOG.debug("read({}, {}, {})", pageSize, pageIndex, filters);
-    Sort orden = Sort.by("id").ascending();
-    Pageable paged = PageRequest.of(pageIndex, pageSize, orden);
+    Sort order = Sort.by("id").ascending();
+    Pageable paged = PageRequest.of(pageIndex, pageSize, order);
 
-    Iterable<Product> clIterable;
+    Iterable<Product> iterable;
     if (filters == null) {
-      clIterable = products.findAll(paged);
+      iterable = products.findAll(paged);
     } else {
-      clIterable = products.findAll(filters, paged);
+      iterable = products.findAll(filters, paged);
     }
 
-    List<ProductDto> pagina = new ArrayList<>();
-    for (Product Product : clIterable) {
+    List<ProductDto> list = new ArrayList<>();
+    for (Product Product : iterable) {
       ProductDto dto = conversion.convert(Product, ProductDto.class);
-      pagina.add(dto);
+      list.add(dto);
     }
 
-    return pagina;
+    return list;
   }
 
   @Nullable
   @Override
   public ProductDto update(ProductDto dto) {
     LOG.debug("update({})", dto);
-    Optional<Product> existing = products.findById(dto.getProductId());
-    if (!existing.isPresent()) {
+    Optional<Product> queriedProduct = products.findById(dto.getProductId());
+    if (!queriedProduct.isPresent()) {
       return null;
     } else {
-      Product existingPerson = existing.get();
-      Product newPerson = conversion.convert(dto, Product.class);
-      if (newPerson.equals(existingPerson)) {
+      Product existingProduct = queriedProduct.get();
+      Product newProduct = conversion.convert(dto, Product.class);
+      if (newProduct.equals(existingProduct)) {
         return dto;
       } else {
         try {
-          newPerson = products.saveAndFlush(newPerson);
-          return conversion.convert(newPerson, ProductDto.class);
+          newProduct = products.saveAndFlush(newProduct);
+          return conversion.convert(newProduct, ProductDto.class);
         } catch (Exception exc) {
           LOG.error("Product could not be saved");
           return null;
@@ -132,18 +132,18 @@ public class ProductCrudServiceImpl
   @Override
   public ProductDto update(ProductDto dto, Integer id) {
     LOG.debug("update({})", dto);
-    Optional<Product> existing = products.findById(id);
-    if (!existing.isPresent()) {
+    Optional<Product> queriedProduct = products.findById(id);
+    if (!queriedProduct.isPresent()) {
       return null;
     } else {
-      Product existingPerson = existing.get();
-      Product newPerson = conversion.convert(dto, Product.class);
-      if (newPerson.equals(existingPerson)) {
+      Product existingProduct = queriedProduct.get();
+      Product newProduct = conversion.convert(dto, Product.class);
+      if (newProduct.equals(existingProduct)) {
         return dto;
       } else {
         try {
-          newPerson = products.saveAndFlush(newPerson);
-          return conversion.convert(newPerson, ProductDto.class);
+          newProduct = products.saveAndFlush(newProduct);
+          return conversion.convert(newProduct, ProductDto.class);
         } catch (Exception exc) {
           LOG.error("Product could not be saved");
           return null;
@@ -169,11 +169,11 @@ public class ProductCrudServiceImpl
   @Override
   public ProductDto find(Integer id) {
     LOG.debug("find({})", id);
-    Optional<Product> personById = products.findById(id);
-    if (personById.isPresent()) {
+    Optional<Product> productById = products.findById(id);
+    if (productById.isPresent()) {
       return null;
     } else {
-      return conversion.convert(personById.get(), ProductDto.class);
+      return conversion.convert(productById.get(), ProductDto.class);
     }
   }
 }
