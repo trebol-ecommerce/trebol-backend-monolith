@@ -12,6 +12,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -87,5 +88,23 @@ public class ClientsController
     Collection<ClientDto> clients = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
     List<ClientPojo> clientPojos = this.convertCollection(clients);
     return clientPojos;
+  }
+
+  @PutMapping("/client")
+  public ClientPojo update(@RequestBody ClientPojo input) {
+    LOG.info("update");
+    ClientDto dto = conversion.convert(input, ClientDto.class);
+    ClientDto processed = crudService.update(dto);
+    ClientPojo result = conversion.convert(processed, ClientPojo.class);
+    return result;
+  }
+
+  @PutMapping("/client/{id}")
+  public ClientPojo update(@RequestBody ClientPojo input, @PathVariable Integer id) {
+    LOG.info("update");
+    ClientDto dto = conversion.convert(input, ClientDto.class);
+    ClientDto processed = crudService.update(dto, id);
+    ClientPojo result = conversion.convert(processed, ClientPojo.class);
+    return result;
   }
 }
