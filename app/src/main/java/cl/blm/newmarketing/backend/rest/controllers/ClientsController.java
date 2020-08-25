@@ -57,19 +57,31 @@ public class ClientsController
     return result;
   }
 
+  @GetMapping("/client/{id}")
+  public ClientPojo readOne(@PathVariable Integer id) {
+    LOG.info("read");
+    ClientDto foundClient = crudService.find(id);
+    if (foundClient == null) {
+      return null;
+    } else {
+      ClientPojo result = conversion.convert(foundClient, ClientPojo.class);
+      return result;
+    }
+  }
+
   @GetMapping("/clients")
-  public Collection<ClientPojo> read(@RequestParam Map<String, String> allRequestParams) {
-    return this.read(null, null, allRequestParams);
+  public Collection<ClientPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    return this.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/clients/{requestPageSize}")
-  public Collection<ClientPojo> read(@PathVariable Integer requestPageSize,
+  public Collection<ClientPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
-    return this.read(requestPageSize, null, allRequestParams);
+    return this.readMany(requestPageSize, null, allRequestParams);
   }
 
   @GetMapping("/clients/{requestPageSize}/{requestPageIndex}")
-  public Collection<ClientPojo> read(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  public Collection<ClientPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
     Collection<ClientDto> clients = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
