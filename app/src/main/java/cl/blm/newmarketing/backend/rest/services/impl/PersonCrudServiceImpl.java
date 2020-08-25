@@ -53,7 +53,7 @@ public class PersonCrudServiceImpl
         switch (paramName) {
         case "id":
           intValue = Integer.valueOf(stringValue);
-          return predicate.and(qPerson.id.eq(intValue)); // match por id es único
+          return predicate.and(qPerson.id.eq(intValue)); // id matching is final
         case "name":
           predicate.and(qPerson.name.likeIgnoreCase("%" + stringValue + "%"));
           break;
@@ -94,20 +94,20 @@ public class PersonCrudServiceImpl
     Sort orden = Sort.by("id").ascending();
     Pageable paged = PageRequest.of(pageIndex, pageSize, orden);
 
-    Iterable<Person> iteratePeople;
+    Iterable<Person> iterable;
     if (filters == null) {
-      iteratePeople = people.findAll(paged);
+      iterable = people.findAll(paged);
     } else {
-      iteratePeople = people.findAll(filters, paged);
+      iterable = people.findAll(filters, paged);
     }
 
-    List<PersonDto> pagina = new ArrayList<>();
-    for (Person person : iteratePeople) {
+    List<PersonDto> list = new ArrayList<>();
+    for (Person person : iterable) {
       PersonDto dto = conversion.convert(person, PersonDto.class);
-      pagina.add(dto);
+      list.add(dto);
     }
 
-    return pagina;
+    return list;
   }
 
   @Nullable
@@ -115,6 +115,30 @@ public class PersonCrudServiceImpl
   public PersonDto update(PersonDto dto) {
     LOG.debug("update({})", dto);
     Optional<Person> existing = people.findById(dto.getPersonId());
+    if (!existing.isPresent()) {
+      return null;
+    } else {
+      Person existingPerson = existing.get();
+      Person newPerson = conversion.convert(dto, Person.class);
+      if (newPerson.equals(existingPerson)) {
+        return dto;
+      } else {
+        try {
+          newPerson = people.saveAndFlush(newPerson);
+          return conversion.convert(newPerson, PersonDto.class);
+        } catch (Exception exc) {
+          LOG.error("Person could not be saved");
+          return null;
+        }
+      }
+    }
+  }
+
+  @Nullable
+  @Override
+  public PersonDto update(PersonDto dto, Integer id) {
+    LOG.debug("update({})", dto);
+    Optional<Person> existing = people.findById(id);
     if (!existing.isPresent()) {
       return null;
     } else {
@@ -152,10 +176,11 @@ public class PersonCrudServiceImpl
   public PersonDto find(Integer id) {
     LOG.debug("find({})", id);
     Optional<Person> personById = people.findById(id);
-    if (personById.isPresent()) {
+    if (!personById.isPresent()) {
       return null;
     } else {
-      return conversion.convert(personById.get(), PersonDto.class);
+      Person entity = personById.get();
+      return conversion.convert(entity, PersonDto.class);
     }
   }
 }

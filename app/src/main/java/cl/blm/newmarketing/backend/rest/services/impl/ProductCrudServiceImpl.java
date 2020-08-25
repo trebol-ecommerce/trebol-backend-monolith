@@ -128,6 +128,30 @@ public class ProductCrudServiceImpl
     }
   }
 
+  @Nullable
+  @Override
+  public ProductDto update(ProductDto dto, Integer id) {
+    LOG.debug("update({})", dto);
+    Optional<Product> existing = products.findById(id);
+    if (!existing.isPresent()) {
+      return null;
+    } else {
+      Product existingPerson = existing.get();
+      Product newPerson = conversion.convert(dto, Product.class);
+      if (newPerson.equals(existingPerson)) {
+        return dto;
+      } else {
+        try {
+          newPerson = products.saveAndFlush(newPerson);
+          return conversion.convert(newPerson, ProductDto.class);
+        } catch (Exception exc) {
+          LOG.error("Product could not be saved");
+          return null;
+        }
+      }
+    }
+  }
+
   @Override
   public boolean delete(Integer id) {
     LOG.debug("delete({})", id);

@@ -53,7 +53,7 @@ public class ClientCrudServiceImpl
         switch (paramName) {
         case "id":
           intValue = Integer.valueOf(stringValue);
-          return predicate.and(qClient.id.eq(intValue)); // match por id es único
+          return predicate.and(qClient.id.eq(intValue)); // id matching is final
         case "name":
           predicate.and(qClient.person.name.likeIgnoreCase("%" + stringValue + "%"));
           break;
@@ -94,38 +94,62 @@ public class ClientCrudServiceImpl
     Sort orden = Sort.by("id").ascending();
     Pageable paged = PageRequest.of(pageIndex, pageSize, orden);
 
-    Iterable<Client> clIterable;
+    Iterable<Client> iterable;
     if (filters == null) {
-      clIterable = clients.findAll(paged);
+      iterable = clients.findAll(paged);
     } else {
-      clIterable = clients.findAll(filters, paged);
+      iterable = clients.findAll(filters, paged);
     }
 
-    List<ClientDto> pagina = new ArrayList<>();
-    for (Client client : clIterable) {
+    List<ClientDto> list = new ArrayList<>();
+    for (Client client : iterable) {
       ClientDto dto = conversion.convert(client, ClientDto.class);
-      pagina.add(dto);
+      list.add(dto);
     }
 
-    return pagina;
+    return list;
   }
 
   @Nullable
   @Override
   public ClientDto update(ClientDto dto) {
     LOG.debug("update({})", dto);
-    Optional<Client> existing = clients.findById(dto.getClientId());
-    if (!existing.isPresent()) {
+    Optional<Client> queriedClient = clients.findById(dto.getClientId());
+    if (!queriedClient.isPresent()) {
       return null;
     } else {
-      Client existingPerson = existing.get();
+      Client existingClient = queriedClient.get();
       Client newPerson = conversion.convert(dto, Client.class);
-      if (newPerson.equals(existingPerson)) {
+      if (newPerson.equals(existingClient)) {
         return dto;
       } else {
         try {
           newPerson = clients.saveAndFlush(newPerson);
           return conversion.convert(newPerson, ClientDto.class);
+        } catch (Exception exc) {
+          LOG.error("Client could not be saved");
+          return null;
+        }
+      }
+    }
+  }
+
+  @Nullable
+  @Override
+  public ClientDto update(ClientDto dto, Integer id) {
+    LOG.debug("update({}, {})", dto, id);
+    Optional<Client> queriedClient = clients.findById(id);
+    if (!queriedClient.isPresent()) {
+      return null;
+    } else {
+      Client existingClient = queriedClient.get();
+      Client newClient = conversion.convert(dto, Client.class);
+      if (newClient.equals(existingClient)) {
+        return dto;
+      } else {
+        try {
+          newClient = clients.saveAndFlush(newClient);
+          return conversion.convert(newClient, ClientDto.class);
         } catch (Exception exc) {
           LOG.error("Client could not be saved");
           return null;
@@ -151,11 +175,12 @@ public class ClientCrudServiceImpl
   @Override
   public ClientDto find(Integer id) {
     LOG.debug("find({})", id);
-    Optional<Client> personById = clients.findById(id);
-    if (personById.isPresent()) {
+    Optional<Client> clientById = clients.findById(id);
+    if (!clientById.isPresent()) {
       return null;
     } else {
-      return conversion.convert(personById.get(), ClientDto.class);
+      Client entity = clientById.get();
+      return conversion.convert(entity, ClientDto.class);
     }
   }
 }

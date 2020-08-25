@@ -44,13 +44,26 @@ public interface CrudService<T, I>
   /**
    * Updates an existing item.
    *
-   * @param dto The item to be updated.
+   * @param dto The item to be updated. Its identifying field must be present.
    *
    * @return The saved item, with updated properties, or null if the item was not
    *         found.
    */
   @Nullable
   public T update(T dto);
+
+  /**
+   * Updates an existing item.
+   *
+   * @param dto The item to be updated. Its identifying field may or may not be
+   *            present, and can be different from the second method param.
+   * @param id  The unique identifier of the item.
+   *
+   * @return The saved item, with updated properties, or null if the item was not
+   *         found.
+   */
+  @Nullable
+  public T update(T dto, I id);
 
   /**
    * Finds an item by its ID and deletes it.
