@@ -46,19 +46,31 @@ public class ProductsController
     super(globals, crudService);
   }
 
+  @GetMapping("/product/{id}")
+  public ProductPojo readOne(@PathVariable Integer id) {
+    LOG.info("read");
+    ProductDto foundClient = crudService.find(id);
+    if (foundClient == null) {
+      return null;
+    } else {
+      ProductPojo result = conversion.convert(foundClient, ProductPojo.class);
+      return result;
+    }
+  }
+
   @GetMapping("/products")
-  public Collection<ProductPojo> read(@RequestParam Map<String, String> allRequestParams) {
-    return this.read(null, null, allRequestParams);
+  public Collection<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    return this.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}")
-  public Collection<ProductPojo> read(@PathVariable Integer requestPageSize,
+  public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
-    return this.read(requestPageSize, null, allRequestParams);
+    return this.readMany(requestPageSize, null, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}/{requestPageIndex}")
-  public Collection<ProductPojo> read(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
     Collection<ProductDto> products = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
