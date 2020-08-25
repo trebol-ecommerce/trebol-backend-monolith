@@ -3,6 +3,7 @@ package cl.blm.newmarketing.backend.model.entities;
 import java.io.Serializable;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,7 +33,7 @@ public class Client
   @Column(name = "client_id")
   private Integer id;
   @JoinColumn(name = "person_id", referencedColumnName = "person_id")
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
   private Person person;
 
   public Client() {
