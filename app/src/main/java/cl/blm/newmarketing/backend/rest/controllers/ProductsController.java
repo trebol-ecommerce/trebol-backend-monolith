@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,6 +106,13 @@ public class ProductsController
     ProductDto dto = conversion.convert(input, ProductDto.class);
     ProductDto processed = crudService.update(dto, id);
     ProductPojo result = conversion.convert(processed, ProductPojo.class);
+    return result;
+  }
+
+  @DeleteMapping("/product/{id}")
+  public boolean delete(@PathVariable Integer id) {
+    LOG.info("delete");
+    boolean result = crudService.delete(id);
     return result;
   }
 }
