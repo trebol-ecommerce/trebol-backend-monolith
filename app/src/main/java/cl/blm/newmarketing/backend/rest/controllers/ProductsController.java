@@ -12,6 +12,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -87,5 +88,23 @@ public class ProductsController
     Collection<ProductDto> products = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
     Collection<ProductPojo> productPojos = this.convertCollection(products);
     return productPojos;
+  }
+
+  @PutMapping("/product")
+  public ProductPojo update(@RequestBody ProductPojo input) {
+    LOG.info("update");
+    ProductDto dto = conversion.convert(input, ProductDto.class);
+    ProductDto processed = crudService.update(dto);
+    ProductPojo result = conversion.convert(processed, ProductPojo.class);
+    return result;
+  }
+
+  @PutMapping("/product/{id}")
+  public ProductPojo update(@RequestBody ProductPojo input, @PathVariable Integer id) {
+    LOG.info("update");
+    ProductDto dto = conversion.convert(input, ProductDto.class);
+    ProductDto processed = crudService.update(dto, id);
+    ProductPojo result = conversion.convert(processed, ProductPojo.class);
+    return result;
   }
 }
