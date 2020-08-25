@@ -25,7 +25,7 @@ import cl.blm.newmarketing.backend.rest.dtos.ProductDto;
 import cl.blm.newmarketing.backend.rest.services.CrudService;
 
 /**
- * API point of entry for Client entities
+ * API point of entry for Product entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
