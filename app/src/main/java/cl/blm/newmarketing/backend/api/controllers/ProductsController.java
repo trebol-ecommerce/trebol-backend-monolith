@@ -32,7 +32,7 @@ import cl.blm.newmarketing.backend.services.CrudService;
 @RestController
 @RequestMapping("/api")
 public class ProductsController
-    extends EntityCrudController<ProductDto, Integer>
+    extends CrudServiceClient<ProductDto, Integer>
     implements CrudController<ProductPojo, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(ProductsController.class);
 

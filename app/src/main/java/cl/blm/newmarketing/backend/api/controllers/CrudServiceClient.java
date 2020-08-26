@@ -8,12 +8,12 @@ import com.querydsl.core.types.Predicate;
 import cl.blm.newmarketing.backend.BackendAppGlobals;
 import cl.blm.newmarketing.backend.services.CrudService;
 
-public abstract class EntityCrudController<E, K> {
+public abstract class CrudServiceClient<E, K> {
 
   protected BackendAppGlobals globals;
   protected CrudService<E, K> crudService;
 
-  public EntityCrudController(BackendAppGlobals globals, CrudService<E, K> crudService) {
+  public CrudServiceClient(BackendAppGlobals globals, CrudService<E, K> crudService) {
     this.globals = globals;
     this.crudService = crudService;
   }
