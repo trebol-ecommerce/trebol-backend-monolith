@@ -28,6 +28,8 @@ public class QSell extends EntityPathBase<Sell> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
+    public final CollectionPath<SellDetail, QSellDetail> sellDetails = this.<SellDetail, QSellDetail>createCollection("sellDetails", SellDetail.class, QSellDetail.class, PathInits.DIRECT2);
+
     public final QSeller seller;
 
     public final QSellType sellType;

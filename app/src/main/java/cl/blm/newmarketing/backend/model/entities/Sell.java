@@ -1,9 +1,11 @@
 package cl.blm.newmarketing.backend.model.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -53,6 +56,8 @@ public class Sell
   @JoinColumn(name = "seller_id", referencedColumnName = "seller_id")
   @ManyToOne(fetch = FetchType.LAZY)
   private Seller seller;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "sell", fetch = FetchType.LAZY)
+  private Collection<SellDetail> sellDetails;
 
   public Sell() {
   }
@@ -113,6 +118,14 @@ public class Sell
 
   public void setSeller(Seller seller) {
     this.seller = seller;
+  }
+
+  public Collection<SellDetail> getSellDetails() {
+      return sellDetails;
+  }
+
+  public void setSellDetails(Collection<SellDetail> sellDetails) {
+      this.sellDetails = sellDetails;
   }
 
   @Override
