@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.querydsl.core.types.Predicate;
-
 import cl.blm.newmarketing.backend.BackendAppGlobals;
 import cl.blm.newmarketing.backend.api.pojos.PersonPojo;
 import cl.blm.newmarketing.backend.dtos.PersonDto;
@@ -29,15 +27,24 @@ import cl.blm.newmarketing.backend.services.CrudService;
  */
 @RestController
 @RequestMapping("/api")
-public class PeopleController {
+public class PeopleController
+    extends CrudServiceClient<PersonDto, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(PeopleController.class);
 
   @Autowired
   private ConversionService conversion;
+
+  @SuppressWarnings("unchecked")
+  private List<PersonPojo> convertCollection(Collection<PersonDto> source) {
+    return (List<PersonPojo>) conversion.convert(source,
+        TypeDescriptor.collection(Collection.class, TypeDescriptor.valueOf(PersonDto.class)),
+        TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(PersonPojo.class)));
+  }
+
   @Autowired
-  private CrudService<PersonDto, Integer> personSvc;
-  @Autowired
-  private BackendAppGlobals globals;
+  public PeopleController(BackendAppGlobals globals, CrudService<PersonDto, Integer> crudService) {
+    super(globals, crudService);
+  }
 
   @GetMapping("/people")
   public Collection<PersonPojo> read(@RequestParam Map<String, String> allRequestParams) {
@@ -50,39 +57,12 @@ public class PeopleController {
     return this.read(requestPageSize, null, allRequestParams);
   }
 
-  /**
-   * Retrieve a page of people.
-   *
-   * @param requestPageSize
-   * @param requestPageIndex
-   * @param allRequestParams
-   *
-   * @see RequestParam
-   * @see Predicate
-   * @return
-   */
   @GetMapping("/people/{requestPageSize}/{requestPageIndex}")
   public Collection<PersonPojo> read(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
-    Integer pageSize = globals.ITEMS_PER_PAGE;
-    Integer pageIndex = 0;
-    Predicate filters = null;
-
-    if (requestPageSize != null && requestPageSize > 0) {
-      pageSize = requestPageSize;
-    }
-    if (requestPageIndex != null && requestPageIndex > 0) {
-      pageIndex = requestPageIndex - 1;
-    }
-    if (allRequestParams != null && !allRequestParams.isEmpty()) {
-      filters = personSvc.queryParamsMapToPredicate(allRequestParams);
-    }
-
-    Collection<PersonDto> people = personSvc.read(pageSize, pageIndex, filters);
-    Collection<PersonPojo> peoplePojos = (List<PersonPojo>) conversion.convert(people,
-        TypeDescriptor.collection(Collection.class, TypeDescriptor.valueOf(PersonDto.class)),
-        TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(PersonPojo.class)));
+    Collection<PersonDto> people = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
+    Collection<PersonPojo> peoplePojos = this.convertCollection(people);
     return peoplePojos;
   }
 }
