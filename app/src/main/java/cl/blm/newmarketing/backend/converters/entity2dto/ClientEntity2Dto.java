@@ -14,13 +14,14 @@ import cl.blm.newmarketing.backend.model.entities.Client;
 @Component
 public class ClientEntity2Dto
     implements Converter<Client, ClientDto> {
-
   @Override
   public ClientDto convert(Client source) {
     ClientDto target = new ClientDto();
     target.setClientId(source.getId());
-    PersonDto person = new PersonEntity2Dto().convert(source.getPerson());
+
+    PersonDto person = (new PersonEntity2Dto()).convert(source.getPerson());
     target.setPerson(person);
+
     return target;
   }
 }

@@ -29,6 +29,7 @@ public class PersonDto2Pojo
     if (email != null && !email.isEmpty()) {
       target.email = email;
     }
+
     return target;
   }
 }

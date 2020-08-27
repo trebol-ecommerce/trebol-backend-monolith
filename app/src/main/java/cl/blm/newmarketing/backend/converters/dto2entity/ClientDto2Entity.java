@@ -19,10 +19,12 @@ public class ClientDto2Entity
   public Client convert(ClientDto source) {
     Client target = new Client();
     target.setId(source.getClientId());
+
     if (source.getPerson() != null) {
-      Person person = new PersonDto2Entity().convert(source.getPerson());
+      Person person = (new PersonDto2Entity()).convert(source.getPerson());
       target.setPerson(person);
     }
+
     return target;
   }
 }

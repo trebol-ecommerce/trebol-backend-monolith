@@ -19,8 +19,11 @@ public class SellerDto2Pojo
     SellerPojo target = new SellerPojo();
     target.id = source.getSellerId();
 
-    PersonPojo person = new PersonDto2Pojo().convert(source.getPerson());
-    target.person = person;
+    if (source.getPerson() != null) {
+      PersonPojo person = (new PersonDto2Pojo()).convert(source.getPerson());
+      target.person = person;
+    }
+
     return target;
   }
 }

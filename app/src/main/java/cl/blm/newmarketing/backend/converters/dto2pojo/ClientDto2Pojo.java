@@ -14,15 +14,16 @@ import cl.blm.newmarketing.backend.dtos.ClientDto;
 @Component
 public class ClientDto2Pojo
     implements Converter<ClientDto, ClientPojo> {
-
   @Override
   public ClientPojo convert(ClientDto source) {
     ClientPojo target = new ClientPojo();
     target.id = source.getClientId();
+
     if (source.getPerson() != null) {
-      PersonPojo person = new PersonDto2Pojo().convert(source.getPerson());
+      PersonPojo person = (new PersonDto2Pojo()).convert(source.getPerson());
       target.person = person;
     }
+
     return target;
   }
 }

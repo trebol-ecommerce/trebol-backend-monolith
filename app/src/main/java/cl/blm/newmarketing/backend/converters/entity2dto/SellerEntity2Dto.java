@@ -18,8 +18,10 @@ public class SellerEntity2Dto
   public SellerDto convert(Seller source) {
     SellerDto target = new SellerDto();
     target.setSellerId(source.getId());
+
     PersonDto person = (new PersonEntity2Dto()).convert(source.getPerson());
     target.setPerson(person);
+
     return target;
   }
 }
