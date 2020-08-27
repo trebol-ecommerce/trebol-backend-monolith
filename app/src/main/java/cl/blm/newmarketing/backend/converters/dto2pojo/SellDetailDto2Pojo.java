@@ -32,8 +32,8 @@ public class SellDetailDto2Pojo
   public Collection<SellDetailPojo> convertCollection(Collection<SellDetailDto> source) {
     Collection<SellDetailPojo> sellDetails = new ArrayList<>();
     for (SellDetailDto sd : source) {
-      SellDetailPojo dto = convert(sd);
-      sellDetails.add(dto);
+      SellDetailPojo pojo = convert(sd);
+      sellDetails.add(pojo);
     }
     return sellDetails;
   }
