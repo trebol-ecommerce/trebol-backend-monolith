@@ -22,18 +22,33 @@ public class SellPojo2Dto
   @Override
   public SellDto convert(SellPojo source) {
     SellDto target = new SellDto();
-    target.setSellId(source.id);
-    target.setSellDate(source.date);
-    target.setSellSubtotal(source.subtotal);
 
-    SellTypeDto sellType = (new SellTypePojo2Dto()).convert(source.sellType);
-    target.setSellType(sellType);
+    if (source.id != null) {
+      target.setSellId(source.id);
+    }
 
-    ClientDto client = (new ClientPojo2Dto()).convert(source.client);
-    target.setClient(client);
+    if (source.date != null) {
+      target.setSellDate(source.date);
+    }
 
-    Collection<SellDetailDto> sellDetails = (new SellDetailPojo2Dto()).convertCollection(source.sellDetails);
-    target.setSellDetails(sellDetails);
+    if (source.subtotal > 0) {
+      target.setSellSubtotal(source.subtotal);
+    }
+
+    if (source.sellType != null) {
+      SellTypeDto sellType = (new SellTypePojo2Dto()).convert(source.sellType);
+      target.setSellType(sellType);
+    }
+
+    if (source.client != null) {
+      ClientDto client = (new ClientPojo2Dto()).convert(source.client);
+      target.setClient(client);
+    }
+
+    if (source.sellDetails != null) {
+      Collection<SellDetailDto> sellDetails = (new SellDetailPojo2Dto()).convertCollection(source.sellDetails);
+      target.setSellDetails(sellDetails);
+    }
 
     if (source.seller != null) {
       SellerDto seller = (new SellerPojo2Dto()).convert(source.seller);

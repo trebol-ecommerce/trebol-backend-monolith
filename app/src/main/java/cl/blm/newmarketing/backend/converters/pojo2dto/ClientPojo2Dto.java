@@ -18,9 +18,16 @@ public class ClientPojo2Dto
   @Override
   public ClientDto convert(ClientPojo source) {
     ClientDto target = new ClientDto();
-    target.setClientId(source.id);
-    PersonDto person = new PersonPojo2Dto().convert(source.person);
-    target.setPerson(person);
+
+    if (source.id != null) {
+      target.setClientId(source.id);
+    }
+
+    if (source.person != null) {
+      PersonDto person = (new PersonPojo2Dto()).convert(source.person);
+      target.setPerson(person);
+    }
+
     return target;
   }
 }

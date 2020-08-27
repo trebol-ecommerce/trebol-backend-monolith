@@ -16,12 +16,31 @@ public class ProductPojo2Dto
   @Override
   public ProductDto convert(ProductPojo source) {
     ProductDto target = new ProductDto();
-    target.setProductId(source.id);
-    target.setProductName(source.name);
-    target.setProductCode(source.barcode);
-    target.setProductPrice(source.price);
-    target.setProductStockCritical(source.criticalStock);
-    target.setProductStockCurrent(source.currentStock);
+
+    if (source.id != null) {
+      target.setProductId(source.id);
+    }
+
+    if (source.name != null) {
+      target.setProductName(source.name);
+    }
+
+    if (source.barcode != null) {
+      target.setProductCode(source.barcode);
+    }
+
+    if (source.price != null) {
+      target.setProductPrice(source.price);
+    }
+
+    if (source.criticalStock != null) {
+      target.setProductStockCritical(source.criticalStock);
+    }
+
+    if (source.currentStock != null) {
+      target.setProductStockCurrent(source.currentStock);
+    }
+
     return target;
   }
 }

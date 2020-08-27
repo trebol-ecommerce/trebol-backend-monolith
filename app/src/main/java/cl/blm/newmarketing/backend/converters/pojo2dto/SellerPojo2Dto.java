@@ -17,10 +17,16 @@ public class SellerPojo2Dto
   @Override
   public SellerDto convert(SellerPojo source) {
     SellerDto target = new SellerDto();
-    target.setSellerId(source.id);
 
-    PersonDto person = (new PersonPojo2Dto()).convert(source.person);
-    target.setPerson(person);
+    if (source.id != null) {
+      target.setSellerId(source.id);
+    }
+
+    if (source.person != null) {
+      PersonDto person = (new PersonPojo2Dto()).convert(source.person);
+      target.setPerson(person);
+    }
+
     return target;
   }
 }

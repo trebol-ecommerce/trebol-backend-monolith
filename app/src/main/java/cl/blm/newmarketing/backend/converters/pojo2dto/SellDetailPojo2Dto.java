@@ -20,11 +20,19 @@ public class SellDetailPojo2Dto
   @Override
   public SellDetailDto convert(SellDetailPojo source) {
     SellDetailDto target = new SellDetailDto();
-    target.setSellDetailId(source.id);
-    target.setSellDetailUnits(source.units);
 
-    ProductDto product = (new ProductPojo2Dto()).convert(source.product);
-    target.setProduct(product);
+    if (source.id != null) {
+      target.setSellDetailId(source.id);
+    }
+
+    if (source.units > 0) {
+      target.setSellDetailUnits(source.units);
+    }
+
+    if (source.product != null) {
+      ProductDto product = (new ProductPojo2Dto()).convert(source.product);
+      target.setProduct(product);
+    }
 
     return target;
   }

@@ -17,13 +17,35 @@ public class PersonPojo2Dto
   @Override
   public PersonDto convert(PersonPojo source) {
     PersonDto target = new PersonDto();
-    target.setPersonId(source.id);
-    target.setPersonFullName(source.name);
-    target.setPersonAddress(source.address);
-    target.setPersonEmail(source.email);
-    target.setPersonIdCard(source.idCard);
-    target.setPersonPhone1(source.phone1);
-    target.setPersonPhone2(source.phone2);
+
+    if (source.id != null) {
+      target.setPersonId(source.id);
+    }
+
+    if (source.name != null) {
+      target.setPersonFullName(source.name);
+    }
+
+    if (source.address != null) {
+      target.setPersonAddress(source.address);
+    }
+
+    if (source.email != null) {
+      target.setPersonEmail(source.email);
+    }
+
+    if (source.idCard != null) {
+      target.setPersonIdCard(source.idCard);
+    }
+
+    if (source.phone1 != null) {
+      target.setPersonPhone1(source.phone1);
+    }
+
+    if (source.phone2 != null) {
+      target.setPersonPhone2(source.phone2);
+    }
+
     return target;
   }
 }

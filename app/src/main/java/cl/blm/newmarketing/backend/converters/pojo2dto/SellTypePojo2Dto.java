@@ -16,8 +16,15 @@ public class SellTypePojo2Dto
   @Override
   public SellTypeDto convert(SellTypePojo source) {
     SellTypeDto target = new SellTypeDto();
-    target.setSellTypeId(source.id);
-    target.setSellTypeName(source.name);
+
+    if (source.id != null) {
+      target.setSellTypeId(source.id);
+    }
+
+    if (source.name != null) {
+      target.setSellTypeName(source.name);
+    }
+
     return target;
   }
 }
