@@ -36,14 +36,14 @@ public class SellDetail
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "sell_detail_id")
-  private Integer sellDetailId;
-  @JoinColumn(name = "sell_id", referencedColumnName = "sell_id")
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private Sell sell;
+  private Integer id;
   @Basic(optional = false)
   @NotNull
   @Column(name = "sell_detail_units")
-  private int sellDetailUnits;
+  private int units;
+  @JoinColumn(name = "sell_id", referencedColumnName = "sell_id")
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  private Sell sell;
   @JoinColumn(name = "product_id", referencedColumnName = "product_id")
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Product product;
@@ -52,36 +52,36 @@ public class SellDetail
   }
 
   public SellDetail(Integer sellDetailId) {
-    this.sellDetailId = sellDetailId;
+    this.id = sellDetailId;
   }
 
   public SellDetail(Integer sellDetailId, int sellDetailUnits) {
-    this.sellDetailId = sellDetailId;
-    this.sellDetailUnits = sellDetailUnits;
+    this.id = sellDetailId;
+    this.units = sellDetailUnits;
   }
 
-  public Integer getSellDetailId() {
-    return sellDetailId;
+  public Integer getId() {
+    return id;
   }
 
-  public void setSellDetailId(Integer sellDetailId) {
-    this.sellDetailId = sellDetailId;
+  public void setId(Integer id) {
+    this.id = id;
   }
 
-  public int getSellDetailUnits() {
-    return sellDetailUnits;
+  public int getUnits() {
+    return units;
   }
 
-  public void setSellDetailUnits(int sellDetailUnits) {
-    this.sellDetailUnits = sellDetailUnits;
+  public void setUnits(int units) {
+    this.units = units;
   }
 
   public Sell getSell() {
-      return sell;
+    return sell;
   }
 
   public void setSell(Sell sell) {
-      this.sell = sell;
+    this.sell = sell;
   }
 
   public Product getProduct() {
@@ -95,7 +95,7 @@ public class SellDetail
   @Override
   public int hashCode() {
     int hash = 0;
-    hash += (sellDetailId != null ? sellDetailId.hashCode() : 0);
+    hash += (id != null ? id.hashCode() : 0);
     return hash;
   }
 
@@ -106,8 +106,7 @@ public class SellDetail
       return false;
     }
     SellDetail other = (SellDetail) object;
-    if ((this.sellDetailId == null && other.sellDetailId != null)
-        || (this.sellDetailId != null && !this.sellDetailId.equals(other.sellDetailId))) {
+    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
       return false;
     }
     return true;
@@ -115,6 +114,6 @@ public class SellDetail
 
   @Override
   public String toString() {
-    return "cl.blm.newmarketing.backend.model.entities.SellDetail[ sellDetailId=" + sellDetailId + " ]";
+    return "cl.blm.newmarketing.backend.model.entities.SellDetail[ sellDetailId=" + id + " ]";
   }
 }

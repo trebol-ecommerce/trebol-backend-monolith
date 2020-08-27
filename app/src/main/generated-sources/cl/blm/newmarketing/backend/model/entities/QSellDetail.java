@@ -22,13 +22,13 @@ public class QSellDetail extends EntityPathBase<SellDetail> {
 
     public static final QSellDetail sellDetail = new QSellDetail("sellDetail");
 
+    public final NumberPath<Integer> id = createNumber("id", Integer.class);
+
     public final QProduct product;
 
     public final QSell sell;
 
-    public final NumberPath<Integer> sellDetailId = createNumber("sellDetailId", Integer.class);
-
-    public final NumberPath<Integer> sellDetailUnits = createNumber("sellDetailUnits", Integer.class);
+    public final NumberPath<Integer> units = createNumber("units", Integer.class);
 
     public QSellDetail(String variable) {
         this(SellDetail.class, forVariable(variable), INITS);

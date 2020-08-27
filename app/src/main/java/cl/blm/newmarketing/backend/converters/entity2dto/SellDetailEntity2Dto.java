@@ -20,8 +20,8 @@ public class SellDetailEntity2Dto
   @Override
   public SellDetailDto convert(SellDetail source) {
     SellDetailDto target = new SellDetailDto();
-    target.setSellDetailId(source.getSellDetailId());
-    target.setSellDetailUnits(source.getSellDetailUnits());
+    target.setSellDetailId(source.getId());
+    target.setSellDetailUnits(source.getUnits());
 
     ProductDto product = (new ProductEntity2Dto()).convert(source.getProduct());
     target.setProduct(product);
