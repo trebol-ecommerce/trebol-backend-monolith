@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.converters;
+package cl.blm.newmarketing.backend.converters.dto2pojo;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

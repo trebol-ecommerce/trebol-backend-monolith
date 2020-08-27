@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.converters;
+package cl.blm.newmarketing.backend.converters.entity2dto;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,32 +6,32 @@ import java.util.Collection;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import cl.blm.newmarketing.backend.api.pojos.SellDetailPojo;
 import cl.blm.newmarketing.backend.dtos.ProductDto;
 import cl.blm.newmarketing.backend.dtos.SellDetailDto;
+import cl.blm.newmarketing.backend.model.entities.SellDetail;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Component
-public class SellDetailPojo2Dto
-    implements Converter<SellDetailPojo, SellDetailDto> {
+public class SellDetailEntity2Dto
+    implements Converter<SellDetail, SellDetailDto> {
   @Override
-  public SellDetailDto convert(SellDetailPojo source) {
+  public SellDetailDto convert(SellDetail source) {
     SellDetailDto target = new SellDetailDto();
-    target.setSellDetailId(source.id);
-    target.setSellDetailUnits(source.units);
+    target.setSellDetailId(source.getSellDetailId());
+    target.setSellDetailUnits(source.getSellDetailUnits());
 
-    ProductDto product = (new ProductPojo2Dto()).convert(source.product);
+    ProductDto product = (new ProductEntity2Dto()).convert(source.getProduct());
     target.setProduct(product);
 
     return target;
   }
 
-  public Collection<SellDetailDto> convertCollection(Collection<SellDetailPojo> source) {
+  public Collection<SellDetailDto> convertCollection(Collection<SellDetail> source) {
     Collection<SellDetailDto> sellDetails = new ArrayList<>();
-    for (SellDetailPojo sd : source) {
+    for (SellDetail sd : source) {
       SellDetailDto dto = convert(sd);
       sellDetails.add(dto);
     }

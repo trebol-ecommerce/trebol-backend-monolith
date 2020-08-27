@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.converters;
+package cl.blm.newmarketing.backend.converters.pojo2dto;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.converters;
+package cl.blm.newmarketing.backend.converters.entity2dto;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
