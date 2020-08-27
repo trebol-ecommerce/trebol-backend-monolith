@@ -8,6 +8,12 @@ import com.querydsl.core.types.Predicate;
 import cl.blm.newmarketing.backend.BackendAppGlobals;
 import cl.blm.newmarketing.backend.services.CrudService;
 
+/**
+ * A basic setup for a class that communicates with a CrudService interface
+ * implementation (should be a @RestController).
+ *
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 public abstract class CrudServiceClient<E, K> {
 
   protected BackendAppGlobals globals;

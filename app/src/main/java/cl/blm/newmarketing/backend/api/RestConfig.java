@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
+ * Configuration class for API-related settings and beans.
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
@@ -20,6 +21,7 @@ public abstract class RestConfig
     implements WebMvcConfigurer {
   private Logger LOG = LoggerFactory.getLogger(RestConfig.class);
 
+  // JSON parser / serializer
   @Bean
   public ObjectMapper objectMapper() {
     ObjectMapper mapper = new ObjectMapper();
@@ -28,6 +30,7 @@ public abstract class RestConfig
     return mapper;
   }
 
+  // CORS configuration
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     LOG.debug("addCorsMappings");

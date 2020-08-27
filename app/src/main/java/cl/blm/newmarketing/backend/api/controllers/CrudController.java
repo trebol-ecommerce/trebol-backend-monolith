@@ -3,6 +3,11 @@ package cl.blm.newmarketing.backend.api.controllers;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * Interface for controllers that handle CRUD API requests .
+ * 
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 public interface CrudController<P, I> {
 
   P create(P input);
