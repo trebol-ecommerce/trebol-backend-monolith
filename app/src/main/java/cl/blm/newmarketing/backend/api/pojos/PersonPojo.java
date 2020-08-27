@@ -1,7 +1,8 @@
 package cl.blm.newmarketing.backend.api.pojos;
 
-public class PersonPojo
-    extends BasePojo {
+public class PersonPojo {
+  public Integer id;
+  public String name;
   public String idCard;
   public String email;
   public String address;

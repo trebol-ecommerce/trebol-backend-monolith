@@ -2,11 +2,12 @@ package cl.blm.newmarketing.backend.api.pojos;
 
 import java.util.Collection;
 
-public class ProductPojo
-    extends BasePojo {
+public class ProductPojo {
+  public Integer id;
+  public String name;
   public String barcode;
   public Integer price;
-  public FamilyTypePojo productType;
+  public ProductTypePojo productType;
   public String description;
   public Integer currentStock;
   public Integer criticalStock;
