@@ -17,9 +17,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Configuration
-public abstract class RestConfig
+public abstract class ApiConfig
     implements WebMvcConfigurer {
-  private Logger LOG = LoggerFactory.getLogger(RestConfig.class);
+  private Logger LOG = LoggerFactory.getLogger(ApiConfig.class);
 
   // JSON parser / serializer
   @Bean
