@@ -6,7 +6,7 @@ import java.util.Map;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.services.CrudService;
+import cl.blm.newmarketing.backend.services.DtoCrudService;
 
 /**
  * A basic setup for a class that communicates with a CrudService interface
@@ -17,9 +17,9 @@ import cl.blm.newmarketing.backend.services.CrudService;
 public abstract class CrudServiceClient<E, K> {
 
   protected CustomProperties globals;
-  protected CrudService<E, K> crudService;
+  protected DtoCrudService<E, K> crudService;
 
-  public CrudServiceClient(CustomProperties globals, CrudService<E, K> crudService) {
+  public CrudServiceClient(CustomProperties globals, DtoCrudService<E, K> crudService) {
     this.globals = globals;
     this.crudService = crudService;
   }

@@ -24,7 +24,7 @@ import cl.blm.newmarketing.backend.api.EntitiesController;
 import cl.blm.newmarketing.backend.api.CrudServiceClient;
 import cl.blm.newmarketing.backend.api.pojos.ProductPojo;
 import cl.blm.newmarketing.backend.dtos.ProductDto;
-import cl.blm.newmarketing.backend.services.CrudService;
+import cl.blm.newmarketing.backend.services.DtoCrudService;
 
 /**
  * API point of entry for Product entities
@@ -49,7 +49,7 @@ public class ProductsController
   }
 
   @Autowired
-  public ProductsController(CustomProperties globals, CrudService<ProductDto, Integer> crudService) {
+  public ProductsController(CustomProperties globals, DtoCrudService<ProductDto, Integer> crudService) {
     super(globals, crudService);
   }
 

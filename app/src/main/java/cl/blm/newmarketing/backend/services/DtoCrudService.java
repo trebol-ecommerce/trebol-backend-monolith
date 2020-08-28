@@ -16,7 +16,7 @@ import com.querydsl.core.types.Predicate;
  * @param <T> The type class of the item.
  * @param <I> The identifier type class of the item.
  */
-public interface CrudService<T, I>
+public interface DtoCrudService<T, I>
     extends QueryDslPredicateMapper {
 
   /**

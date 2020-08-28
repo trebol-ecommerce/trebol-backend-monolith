@@ -24,7 +24,7 @@ import cl.blm.newmarketing.backend.dtos.SellerDto;
 import cl.blm.newmarketing.backend.model.entities.QSeller;
 import cl.blm.newmarketing.backend.model.entities.Seller;
 import cl.blm.newmarketing.backend.model.repositories.SellersRepository;
-import cl.blm.newmarketing.backend.services.CrudService;
+import cl.blm.newmarketing.backend.services.DtoCrudService;
 
 /**
  *
@@ -33,7 +33,7 @@ import cl.blm.newmarketing.backend.services.CrudService;
 @Transactional
 @Service
 public class SellerCrudServiceImpl
-    implements CrudService<SellerDto, Integer> {
+    implements DtoCrudService<SellerDto, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellerCrudServiceImpl.class);
 
   @Autowired

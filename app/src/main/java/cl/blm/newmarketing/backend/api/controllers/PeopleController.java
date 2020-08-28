@@ -19,7 +19,7 @@ import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.CrudServiceClient;
 import cl.blm.newmarketing.backend.api.pojos.PersonPojo;
 import cl.blm.newmarketing.backend.dtos.PersonDto;
-import cl.blm.newmarketing.backend.services.CrudService;
+import cl.blm.newmarketing.backend.services.DtoCrudService;
 
 /**
  * API point of entry for Person entities
@@ -43,7 +43,7 @@ public class PeopleController
   }
 
   @Autowired
-  public PeopleController(CustomProperties globals, CrudService<PersonDto, Integer> crudService) {
+  public PeopleController(CustomProperties globals, DtoCrudService<PersonDto, Integer> crudService) {
     super(globals, crudService);
   }
 
