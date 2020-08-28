@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.PojosApiController;
+import cl.blm.newmarketing.backend.api.ApiCrudController;
 import cl.blm.newmarketing.backend.api.DtoCrudServiceClient;
 import cl.blm.newmarketing.backend.api.pojos.ProductPojo;
 import cl.blm.newmarketing.backend.dtos.ProductDto;
@@ -35,7 +35,7 @@ import cl.blm.newmarketing.backend.services.DtoCrudService;
 @RequestMapping("/api")
 public class ProductsApiController
     extends DtoCrudServiceClient<ProductDto, Integer>
-    implements PojosApiController<ProductPojo, Integer> {
+    implements ApiCrudController<ProductPojo, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(ProductsApiController.class);
 
   @Autowired
