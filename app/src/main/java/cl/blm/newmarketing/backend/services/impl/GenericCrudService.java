@@ -13,10 +13,10 @@ import org.springframework.lang.Nullable;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.model.GenericRepository;
-import cl.blm.newmarketing.backend.services.DtoCrudService;
+import cl.blm.newmarketing.backend.services.DataService;
 
 public abstract class GenericCrudService<E, I>
-    implements DtoCrudService<E, I> {
+    implements DataService<E, I> {
   protected static Logger LOG;
 
   private GenericRepository<E, I> repository;
