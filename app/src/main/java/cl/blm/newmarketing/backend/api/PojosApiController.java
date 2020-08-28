@@ -8,7 +8,7 @@ import java.util.Map;
  * 
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public interface EntitiesController<P, I> {
+public interface PojosApiController<P, I> {
 
   P create(P input);
 
