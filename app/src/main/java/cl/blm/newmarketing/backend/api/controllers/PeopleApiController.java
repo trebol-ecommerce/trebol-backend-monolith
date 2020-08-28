@@ -28,9 +28,9 @@ import cl.blm.newmarketing.backend.services.DtoCrudService;
  */
 @RestController
 @RequestMapping("/api")
-public class PeopleController
+public class PeopleApiController
     extends DtoCrudServiceClient<PersonDto, Integer> {
-  private final static Logger LOG = LoggerFactory.getLogger(PeopleController.class);
+  private final static Logger LOG = LoggerFactory.getLogger(PeopleApiController.class);
 
   @Autowired
   private ConversionService conversion;
@@ -43,7 +43,7 @@ public class PeopleController
   }
 
   @Autowired
-  public PeopleController(CustomProperties globals, DtoCrudService<PersonDto, Integer> crudService) {
+  public PeopleApiController(CustomProperties globals, DtoCrudService<PersonDto, Integer> crudService) {
     super(globals, crudService);
   }
 

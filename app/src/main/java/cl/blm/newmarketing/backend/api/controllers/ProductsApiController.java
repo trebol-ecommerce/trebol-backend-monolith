@@ -33,10 +33,10 @@ import cl.blm.newmarketing.backend.services.DtoCrudService;
  */
 @RestController
 @RequestMapping("/api")
-public class ProductsController
+public class ProductsApiController
     extends DtoCrudServiceClient<ProductDto, Integer>
     implements PojosApiController<ProductPojo, Integer> {
-  private final static Logger LOG = LoggerFactory.getLogger(ProductsController.class);
+  private final static Logger LOG = LoggerFactory.getLogger(ProductsApiController.class);
 
   @Autowired
   private ConversionService conversion;
@@ -49,7 +49,7 @@ public class ProductsController
   }
 
   @Autowired
-  public ProductsController(CustomProperties globals, DtoCrudService<ProductDto, Integer> crudService) {
+  public ProductsApiController(CustomProperties globals, DtoCrudService<ProductDto, Integer> crudService) {
     super(globals, crudService);
   }
 
