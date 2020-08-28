@@ -5,21 +5,28 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
+ * Read-only wrapper class for settings read from 'custom.properties' file
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Configuration
 @PropertySource("classpath:custom.properties")
 public class BackendAppGlobals {
-  @Value("${items.per_page}") public int ITEMS_PER_PAGE;
+  public final int ITEMS_PER_PAGE;
+  public final String DATE_FORMAT;
+  public final String CRYPTOGRAPHIC_ALGORITHM;
+  public final String CRYPTOGRAPHIC_SALT;
+  public final String CRYPTOGRAPHIC_CHARSET;
+  public final long SESSION_LIFETIME;
 
-  @Value("${date.format}") public String DATE_FORMAT;
-
-  @Value("${crypto.algorithm}") public String CRYPTOGRAPHIC_ALGORITHM;
-
-  @Value("${crypto.salt}") public String CRYPTOGRAPHIC_SALT;
-
-  @Value("${crypto.charset}") public String CRYPTOGRAPHIC_CHARSET;
-
-  @Value("${session.lifetime}") public long SESSION_LIFETIME;
+  public BackendAppGlobals(@Value("${items.per_page}") int itemsPerPage, @Value("${date.format}") String dateFormat,
+      @Value("${crypto.algorithm}") String cryptoAlgorithm, @Value("${crypto.salt}") String cryptoSalt,
+      @Value("${crypto.charset}") String cryptoCharset, @Value("${session.lifetime}") long sessionLifetime) {
+    this.ITEMS_PER_PAGE = itemsPerPage;
+    this.DATE_FORMAT = dateFormat;
+    this.CRYPTOGRAPHIC_ALGORITHM = cryptoAlgorithm;
+    this.CRYPTOGRAPHIC_SALT = cryptoSalt;
+    this.CRYPTOGRAPHIC_CHARSET = cryptoCharset;
+    this.SESSION_LIFETIME = sessionLifetime;
+  }
 }
