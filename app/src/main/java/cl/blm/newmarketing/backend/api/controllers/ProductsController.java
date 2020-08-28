@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.BackendAppGlobals;
+import cl.blm.newmarketing.backend.api.CrudController;
+import cl.blm.newmarketing.backend.api.CrudServiceClient;
 import cl.blm.newmarketing.backend.api.pojos.ProductPojo;
 import cl.blm.newmarketing.backend.dtos.ProductDto;
 import cl.blm.newmarketing.backend.services.CrudService;

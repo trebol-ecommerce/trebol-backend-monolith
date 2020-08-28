@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.api.controllers;
+package cl.blm.newmarketing.backend.api;
 
 import java.util.Collection;
 import java.util.Map;

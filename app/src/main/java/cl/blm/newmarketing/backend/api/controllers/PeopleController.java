@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.BackendAppGlobals;
+import cl.blm.newmarketing.backend.api.CrudServiceClient;
 import cl.blm.newmarketing.backend.api.pojos.PersonPojo;
 import cl.blm.newmarketing.backend.dtos.PersonDto;
 import cl.blm.newmarketing.backend.services.CrudService;
