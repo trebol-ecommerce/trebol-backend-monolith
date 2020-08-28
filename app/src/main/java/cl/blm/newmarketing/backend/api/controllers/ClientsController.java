@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.EntitiesController;
-import cl.blm.newmarketing.backend.api.CrudServiceClient;
+import cl.blm.newmarketing.backend.api.DtoCrudServiceClient;
 import cl.blm.newmarketing.backend.api.pojos.ClientPojo;
 import cl.blm.newmarketing.backend.dtos.ClientDto;
 import cl.blm.newmarketing.backend.services.DtoCrudService;
@@ -34,7 +34,7 @@ import cl.blm.newmarketing.backend.services.DtoCrudService;
 @RestController
 @RequestMapping("/api")
 public class ClientsController
-    extends CrudServiceClient<ClientDto, Integer>
+    extends DtoCrudServiceClient<ClientDto, Integer>
     implements EntitiesController<ClientPojo, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(ClientsController.class);
 

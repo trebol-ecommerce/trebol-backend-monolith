@@ -14,12 +14,12 @@ import cl.blm.newmarketing.backend.services.DtoCrudService;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public abstract class CrudServiceClient<E, K> {
+public abstract class DtoCrudServiceClient<E, K> {
 
   protected CustomProperties globals;
   protected DtoCrudService<E, K> crudService;
 
-  public CrudServiceClient(CustomProperties globals, DtoCrudService<E, K> crudService) {
+  public DtoCrudServiceClient(CustomProperties globals, DtoCrudService<E, K> crudService) {
     this.globals = globals;
     this.crudService = crudService;
   }

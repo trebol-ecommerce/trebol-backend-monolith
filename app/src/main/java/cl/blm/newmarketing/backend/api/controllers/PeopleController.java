@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.CrudServiceClient;
+import cl.blm.newmarketing.backend.api.DtoCrudServiceClient;
 import cl.blm.newmarketing.backend.api.pojos.PersonPojo;
 import cl.blm.newmarketing.backend.dtos.PersonDto;
 import cl.blm.newmarketing.backend.services.DtoCrudService;
@@ -29,7 +29,7 @@ import cl.blm.newmarketing.backend.services.DtoCrudService;
 @RestController
 @RequestMapping("/api")
 public class PeopleController
-    extends CrudServiceClient<PersonDto, Integer> {
+    extends DtoCrudServiceClient<PersonDto, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(PeopleController.class);
 
   @Autowired
