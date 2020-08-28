@@ -13,7 +13,7 @@ import com.querydsl.core.types.Predicate;
  * @param <T> The type class of the item.
  * @param <I> The identifier type class of the item.
  */
-public interface BulkDtoCrudService<T, I>
+public interface BulkDataService<T, I>
     extends DataService<T, I> {
   /**
    * Inserts many items.
