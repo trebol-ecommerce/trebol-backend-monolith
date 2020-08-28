@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.services.impl;
+package cl.blm.newmarketing.backend.services.data.impl;
 
 import java.util.Map;
 
@@ -11,9 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.backend.model.entities.QSellType;
-import cl.blm.newmarketing.backend.model.entities.SellType;
-import cl.blm.newmarketing.backend.model.repositories.SellTypesRepository;
+import cl.blm.newmarketing.backend.model.entities.QSeller;
+import cl.blm.newmarketing.backend.model.entities.Seller;
+import cl.blm.newmarketing.backend.model.repositories.SellersRepository;
+import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**
  *
@@ -21,19 +22,19 @@ import cl.blm.newmarketing.backend.model.repositories.SellTypesRepository;
  */
 @Transactional
 @Service
-public class SellTypeCrudServiceImpl
-    extends GenericCrudService<SellType, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(SellTypeCrudServiceImpl.class);
+public class SellerDataServiceImpl
+    extends GenericDataService<Seller, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(SellerDataServiceImpl.class);
 
   @Autowired
-  public SellTypeCrudServiceImpl(SellTypesRepository sellTypes) {
-    super(LOG, sellTypes);
+  public SellerDataServiceImpl(SellersRepository clients) {
+    super(LOG, clients);
   }
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
     LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
-    QSellType qSellType = QSellType.sellType;
+    QSeller qSeller = QSeller.seller;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
@@ -42,9 +43,15 @@ public class SellTypeCrudServiceImpl
         switch (paramName) {
         case "id":
           intValue = Integer.valueOf(stringValue);
-          return predicate.and(qSellType.id.eq(intValue)); // match por id es único
+          return predicate.and(qSeller.id.eq(intValue)); // id matching is final
         case "name":
-          predicate.and(qSellType.name.likeIgnoreCase("%" + stringValue + "%"));
+          predicate.and(qSeller.person.name.likeIgnoreCase("%" + stringValue + "%"));
+          break;
+        case "idnumber":
+          predicate.and(qSeller.person.idCard.likeIgnoreCase("%" + stringValue + "%"));
+          break;
+        case "email":
+          predicate.and(qSeller.person.email.likeIgnoreCase("%" + stringValue + "%"));
           break;
         default:
           break;

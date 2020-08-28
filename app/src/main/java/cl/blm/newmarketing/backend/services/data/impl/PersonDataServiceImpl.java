@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.services.impl;
+package cl.blm.newmarketing.backend.services.data.impl;
 
 import java.util.Map;
 
@@ -11,9 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.backend.model.entities.Product;
-import cl.blm.newmarketing.backend.model.entities.QProduct;
-import cl.blm.newmarketing.backend.model.repositories.ProductsRepository;
+import cl.blm.newmarketing.backend.model.entities.Person;
+import cl.blm.newmarketing.backend.model.entities.QPerson;
+import cl.blm.newmarketing.backend.model.repositories.PeopleRepository;
+import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**
  *
@@ -21,19 +22,19 @@ import cl.blm.newmarketing.backend.model.repositories.ProductsRepository;
  */
 @Transactional
 @Service
-public class ProductCrudServiceImpl
-    extends GenericCrudService<Product, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(ProductCrudServiceImpl.class);
+public class PersonDataServiceImpl
+    extends GenericDataService<Person, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(PersonDataServiceImpl.class);
 
   @Autowired
-  public ProductCrudServiceImpl(ProductsRepository repository) {
-    super(LOG, repository);
+  public PersonDataServiceImpl(PeopleRepository people) {
+    super(LOG, people);
   }
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
     LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
-    QProduct qProduct = QProduct.product;
+    QPerson qPerson = QPerson.person;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
@@ -42,9 +43,15 @@ public class ProductCrudServiceImpl
         switch (paramName) {
         case "id":
           intValue = Integer.valueOf(stringValue);
-          return predicate.and(qProduct.id.eq(intValue)); // match por id es único
+          return predicate.and(qPerson.id.eq(intValue)); // id matching is final
         case "name":
-          predicate.and(qProduct.name.likeIgnoreCase("%" + stringValue + "%"));
+          predicate.and(qPerson.name.likeIgnoreCase("%" + stringValue + "%"));
+          break;
+        case "idnumber":
+          predicate.and(qPerson.idCard.likeIgnoreCase("%" + stringValue + "%"));
+          break;
+        case "email":
+          predicate.and(qPerson.email.likeIgnoreCase("%" + stringValue + "%"));
           break;
         default:
           break;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.DtoCrudServiceClient;
 import cl.blm.newmarketing.backend.model.entities.Person;
-import cl.blm.newmarketing.backend.services.impl.GenericCrudService;
+import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**
  * API point of entry for Person entities
@@ -29,7 +29,7 @@ public class PeopleApiController
   private final static Logger LOG = LoggerFactory.getLogger(PeopleApiController.class);
 
   @Autowired
-  public PeopleApiController(CustomProperties globals, GenericCrudService<Person, Integer> crudService) {
+  public PeopleApiController(CustomProperties globals, GenericDataService<Person, Integer> crudService) {
     super(globals, crudService);
   }
 

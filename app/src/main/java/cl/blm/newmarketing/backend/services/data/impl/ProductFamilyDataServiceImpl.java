@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.services.impl;
+package cl.blm.newmarketing.backend.services.data.impl;
 
 import java.util.Map;
 
@@ -14,6 +14,7 @@ import com.querydsl.core.types.Predicate;
 import cl.blm.newmarketing.backend.model.entities.ProductFamily;
 import cl.blm.newmarketing.backend.model.entities.QProductFamily;
 import cl.blm.newmarketing.backend.model.repositories.ProductFamiliesRepository;
+import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**
  *
@@ -21,12 +22,12 @@ import cl.blm.newmarketing.backend.model.repositories.ProductFamiliesRepository;
  */
 @Transactional
 @Service
-public class ProductFamilyCrudServiceImpl
-    extends GenericCrudService<ProductFamily, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(ProductFamilyCrudServiceImpl.class);
+public class ProductFamilyDataServiceImpl
+    extends GenericDataService<ProductFamily, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(ProductFamilyDataServiceImpl.class);
 
   @Autowired
-  public ProductFamilyCrudServiceImpl(ProductFamiliesRepository repository) {
+  public ProductFamilyDataServiceImpl(ProductFamiliesRepository repository) {
     super(LOG, repository);
   }
 

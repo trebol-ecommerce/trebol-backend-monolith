@@ -22,7 +22,7 @@ import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.ApiCrudController;
 import cl.blm.newmarketing.backend.api.DtoCrudServiceClient;
 import cl.blm.newmarketing.backend.model.entities.Product;
-import cl.blm.newmarketing.backend.services.impl.GenericCrudService;
+import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**
  * API point of entry for Product entities
@@ -37,7 +37,7 @@ public class ProductsApiController
   private final static Logger LOG = LoggerFactory.getLogger(ProductsApiController.class);
 
   @Autowired
-  public ProductsApiController(CustomProperties globals, GenericCrudService<Product, Integer> crudService) {
+  public ProductsApiController(CustomProperties globals, GenericDataService<Product, Integer> crudService) {
     super(globals, crudService);
   }
 

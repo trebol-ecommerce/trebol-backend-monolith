@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.services.impl;
+package cl.blm.newmarketing.backend.services.data;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -15,13 +15,13 @@ import com.querydsl.core.types.Predicate;
 import cl.blm.newmarketing.backend.model.GenericRepository;
 import cl.blm.newmarketing.backend.services.DataService;
 
-public abstract class GenericCrudService<E, I>
+public abstract class GenericDataService<E, I>
     implements DataService<E, I> {
   protected static Logger LOG;
 
   private GenericRepository<E, I> repository;
 
-  public GenericCrudService(Logger logger, GenericRepository<E, I> repository) {
+  public GenericDataService(Logger logger, GenericRepository<E, I> repository) {
     LOG = logger;
     this.repository = repository;
   }
