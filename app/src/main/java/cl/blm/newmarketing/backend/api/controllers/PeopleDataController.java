@@ -24,12 +24,12 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
  */
 @RestController
 @RequestMapping("/api")
-public class PeopleApiController
+public class PeopleDataController
     extends DtoCrudServiceClient<Person, Integer> {
-  private final static Logger LOG = LoggerFactory.getLogger(PeopleApiController.class);
+  private final static Logger LOG = LoggerFactory.getLogger(PeopleDataController.class);
 
   @Autowired
-  public PeopleApiController(CustomProperties globals, GenericDataService<Person, Integer> crudService) {
+  public PeopleDataController(CustomProperties globals, GenericDataService<Person, Integer> crudService) {
     super(globals, crudService);
   }
 

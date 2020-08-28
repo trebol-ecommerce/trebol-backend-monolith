@@ -8,7 +8,7 @@ import java.util.Map;
  * 
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public interface ApiCrudController<E, I> {
+public interface GenericDataController<E, I> {
 
   E create(E input);
 

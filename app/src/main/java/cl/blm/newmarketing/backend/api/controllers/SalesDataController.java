@@ -19,76 +19,76 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.ApiCrudController;
+import cl.blm.newmarketing.backend.api.GenericDataController;
 import cl.blm.newmarketing.backend.api.DtoCrudServiceClient;
-import cl.blm.newmarketing.backend.model.entities.Product;
+import cl.blm.newmarketing.backend.model.entities.Sell;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**
- * API point of entry for Product entities
+ * API point of entry for Sell entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/api")
-public class ProductsApiController
-    extends DtoCrudServiceClient<Product, Integer>
-    implements ApiCrudController<Product, Integer> {
-  private final static Logger LOG = LoggerFactory.getLogger(ProductsApiController.class);
+public class SalesDataController
+    extends DtoCrudServiceClient<Sell, Integer>
+    implements GenericDataController<Sell, Integer> {
+  private final static Logger LOG = LoggerFactory.getLogger(SalesDataController.class);
 
   @Autowired
-  public ProductsApiController(CustomProperties globals, GenericDataService<Product, Integer> crudService) {
+  public SalesDataController(CustomProperties globals, GenericDataService<Sell, Integer> crudService) {
     super(globals, crudService);
   }
 
-  @PostMapping("/product")
-  public Product create(@RequestBody @Valid Product input) {
+  @PostMapping("/sell")
+  public Sell create(@RequestBody @Valid Sell input) {
     LOG.info("create");
-    Product result = crudService.create(input);
+    Sell result = crudService.create(input);
     return result;
   }
 
-  @GetMapping("/product/{id}")
-  public Product readOne(@PathVariable Integer id) {
+  @GetMapping("/sell/{id}")
+  public Sell readOne(@PathVariable Integer id) {
     LOG.info("read");
-    Product found = crudService.find(id);
+    Sell found = crudService.find(id);
     return found;
   }
 
-  @GetMapping("/products")
-  public Collection<Product> readMany(@RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/sales")
+  public Collection<Sell> readMany(@RequestParam Map<String, String> allRequestParams) {
     return this.readMany(null, null, allRequestParams);
   }
 
-  @GetMapping("/products/{requestPageSize}")
-  public Collection<Product> readMany(@PathVariable Integer requestPageSize,
+  @GetMapping("/sales/{requestPageSize}")
+  public Collection<Sell> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return this.readMany(requestPageSize, null, allRequestParams);
   }
 
-  @GetMapping("/products/{requestPageSize}/{requestPageIndex}")
-  public Collection<Product> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  @GetMapping("/sales/{requestPageSize}/{requestPageIndex}")
+  public Collection<Sell> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
-    Collection<Product> products = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
-    return products;
+    Collection<Sell> sales = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
+    return sales;
   }
 
-  @PutMapping("/product")
-  public Product update(@RequestBody @Valid Product input) {
+  @PutMapping("/sell")
+  public Sell update(@RequestBody @Valid Sell input) {
     LOG.info("update");
-    Product result = crudService.update(input, input.getId());
+    Sell result = crudService.update(input, input.getId());
     return result;
   }
 
-  @PutMapping("/product/{id}")
-  public Product update(@RequestBody @Valid Product input, @PathVariable Integer id) {
+  @PutMapping("/sell/{id}")
+  public Sell update(@RequestBody @Valid Sell input, @PathVariable Integer id) {
     LOG.info("update");
-    Product result = crudService.update(input, id);
+    Sell result = crudService.update(input, id);
     return result;
   }
 
-  @DeleteMapping("/product/{id}")
+  @DeleteMapping("/sell/{id}")
   public boolean delete(@PathVariable Integer id) {
     LOG.info("delete");
     boolean result = crudService.delete(id);

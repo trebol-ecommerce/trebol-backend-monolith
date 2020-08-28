@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.ApiCrudController;
+import cl.blm.newmarketing.backend.api.GenericDataController;
 import cl.blm.newmarketing.backend.api.DtoCrudServiceClient;
 import cl.blm.newmarketing.backend.model.entities.Client;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
@@ -37,13 +37,13 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
  */
 @RestController
 @RequestMapping("/api")
-public class ClientsApiController
+public class ClientsDataController
     extends DtoCrudServiceClient<Client, Integer>
-    implements ApiCrudController<Client, Integer> {
-  private final static Logger LOG = LoggerFactory.getLogger(ClientsApiController.class);
+    implements GenericDataController<Client, Integer> {
+  private final static Logger LOG = LoggerFactory.getLogger(ClientsDataController.class);
 
   @Autowired
-  public ClientsApiController(CustomProperties globals, GenericDataService<Client, Integer> crudService) {
+  public ClientsDataController(CustomProperties globals, GenericDataService<Client, Integer> crudService) {
     super(globals, crudService);
   }
 
