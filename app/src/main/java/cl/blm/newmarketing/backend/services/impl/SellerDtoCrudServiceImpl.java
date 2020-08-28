@@ -20,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.backend.dtos.ClientDto;
-import cl.blm.newmarketing.backend.model.entities.Client;
-import cl.blm.newmarketing.backend.model.entities.QClient;
-import cl.blm.newmarketing.backend.model.repositories.ClientsRepository;
+import cl.blm.newmarketing.backend.dtos.SellerDto;
+import cl.blm.newmarketing.backend.model.entities.QSeller;
+import cl.blm.newmarketing.backend.model.entities.Seller;
+import cl.blm.newmarketing.backend.model.repositories.SellersRepository;
 import cl.blm.newmarketing.backend.services.DtoCrudService;
 
 /**
@@ -32,19 +32,19 @@ import cl.blm.newmarketing.backend.services.DtoCrudService;
  */
 @Transactional
 @Service
-public class ClientCrudServiceImpl
-    implements DtoCrudService<ClientDto, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(ClientCrudServiceImpl.class);
+public class SellerDtoCrudServiceImpl
+    implements DtoCrudService<SellerDto, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(SellerDtoCrudServiceImpl.class);
 
   @Autowired
-  ClientsRepository clients;
+  SellersRepository clients;
   @Autowired
   ConversionService conversion;
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
     LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
-    QClient qClient = QClient.client;
+    QSeller qSeller = QSeller.seller;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
@@ -53,15 +53,15 @@ public class ClientCrudServiceImpl
         switch (paramName) {
         case "id":
           intValue = Integer.valueOf(stringValue);
-          return predicate.and(qClient.id.eq(intValue)); // id matching is final
+          return predicate.and(qSeller.id.eq(intValue)); // id matching is final
         case "name":
-          predicate.and(qClient.person.name.likeIgnoreCase("%" + stringValue + "%"));
+          predicate.and(qSeller.person.name.likeIgnoreCase("%" + stringValue + "%"));
           break;
         case "idnumber":
-          predicate.and(qClient.person.idCard.likeIgnoreCase("%" + stringValue + "%"));
+          predicate.and(qSeller.person.idCard.likeIgnoreCase("%" + stringValue + "%"));
           break;
         case "email":
-          predicate.and(qClient.person.email.likeIgnoreCase("%" + stringValue + "%"));
+          predicate.and(qSeller.person.email.likeIgnoreCase("%" + stringValue + "%"));
           break;
         default:
           break;
@@ -76,34 +76,34 @@ public class ClientCrudServiceImpl
 
   @Nullable
   @Override
-  public ClientDto create(ClientDto dto) {
+  public SellerDto create(SellerDto dto) {
     LOG.debug("create({})", dto);
-    Client newEntity = conversion.convert(dto, Client.class);
-    if (dto.getClientId() != null && clients.findById(dto.getClientId()).isPresent()) {
+    Seller newEntity = conversion.convert(dto, Seller.class);
+    if (dto.getSellerId() != null && clients.findById(dto.getSellerId()).isPresent()) {
       return null;
     } else {
       newEntity = clients.saveAndFlush(newEntity);
-      ClientDto newDto = conversion.convert(newEntity, ClientDto.class);
+      SellerDto newDto = conversion.convert(newEntity, SellerDto.class);
       return newDto;
     }
   }
 
   @Override
-  public Collection<ClientDto> read(int pageSize, int pageIndex, Predicate filters) {
+  public Collection<SellerDto> read(int pageSize, int pageIndex, Predicate filters) {
     LOG.debug("read({}, {}, {})", pageSize, pageIndex, filters);
     Sort orden = Sort.by("id").ascending();
     Pageable paged = PageRequest.of(pageIndex, pageSize, orden);
 
-    Iterable<Client> iterable;
+    Iterable<Seller> iterable;
     if (filters == null) {
       iterable = clients.findAll(paged);
     } else {
       iterable = clients.findAll(filters, paged);
     }
 
-    List<ClientDto> list = new ArrayList<>();
-    for (Client client : iterable) {
-      ClientDto dto = conversion.convert(client, ClientDto.class);
+    List<SellerDto> list = new ArrayList<>();
+    for (Seller client : iterable) {
+      SellerDto dto = conversion.convert(client, SellerDto.class);
       list.add(dto);
     }
 
@@ -112,22 +112,22 @@ public class ClientCrudServiceImpl
 
   @Nullable
   @Override
-  public ClientDto update(ClientDto dto) {
+  public SellerDto update(SellerDto dto) {
     LOG.debug("update({})", dto);
-    Optional<Client> queriedClient = clients.findById(dto.getClientId());
-    if (!queriedClient.isPresent()) {
+    Optional<Seller> queriedSeller = clients.findById(dto.getSellerId());
+    if (!queriedSeller.isPresent()) {
       return null;
     } else {
-      Client existingClient = queriedClient.get();
-      Client newPerson = conversion.convert(dto, Client.class);
-      if (newPerson.equals(existingClient)) {
+      Seller existingSeller = queriedSeller.get();
+      Seller newPerson = conversion.convert(dto, Seller.class);
+      if (newPerson.equals(existingSeller)) {
         return dto;
       } else {
         try {
           newPerson = clients.saveAndFlush(newPerson);
-          return conversion.convert(newPerson, ClientDto.class);
+          return conversion.convert(newPerson, SellerDto.class);
         } catch (Exception exc) {
-          LOG.error("Client could not be saved");
+          LOG.error("Seller could not be saved");
           return null;
         }
       }
@@ -136,22 +136,22 @@ public class ClientCrudServiceImpl
 
   @Nullable
   @Override
-  public ClientDto update(ClientDto dto, Integer id) {
+  public SellerDto update(SellerDto dto, Integer id) {
     LOG.debug("update({}, {})", dto, id);
-    Optional<Client> queriedClient = clients.findById(id);
-    if (!queriedClient.isPresent()) {
+    Optional<Seller> queriedSeller = clients.findById(id);
+    if (!queriedSeller.isPresent()) {
       return null;
     } else {
-      Client existingClient = queriedClient.get();
-      Client newClient = conversion.convert(dto, Client.class);
-      if (newClient.equals(existingClient)) {
+      Seller existingSeller = queriedSeller.get();
+      Seller newSeller = conversion.convert(dto, Seller.class);
+      if (newSeller.equals(existingSeller)) {
         return dto;
       } else {
         try {
-          newClient = clients.saveAndFlush(newClient);
-          return conversion.convert(newClient, ClientDto.class);
+          newSeller = clients.saveAndFlush(newSeller);
+          return conversion.convert(newSeller, SellerDto.class);
         } catch (Exception exc) {
-          LOG.error("Client could not be saved");
+          LOG.error("Seller could not be saved");
           return null;
         }
       }
@@ -166,21 +166,21 @@ public class ClientCrudServiceImpl
       clients.flush();
       return !clients.existsById(id);
     } catch (Exception exc) {
-      LOG.error("Could not delete Client with id {}", id, exc);
+      LOG.error("Could not delete Seller with id {}", id, exc);
       return false;
     }
   }
 
   @Nullable
   @Override
-  public ClientDto find(Integer id) {
+  public SellerDto find(Integer id) {
     LOG.debug("find({})", id);
-    Optional<Client> clientById = clients.findById(id);
+    Optional<Seller> clientById = clients.findById(id);
     if (!clientById.isPresent()) {
       return null;
     } else {
-      Client entity = clientById.get();
-      return conversion.convert(entity, ClientDto.class);
+      Seller entity = clientById.get();
+      return conversion.convert(entity, SellerDto.class);
     }
   }
 }

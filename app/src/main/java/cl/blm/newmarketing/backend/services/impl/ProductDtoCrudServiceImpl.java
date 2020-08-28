@@ -32,9 +32,9 @@ import cl.blm.newmarketing.backend.services.DtoCrudService;
  */
 @Transactional
 @Service
-public class ProductCrudServiceImpl
+public class ProductDtoCrudServiceImpl
     implements DtoCrudService<ProductDto, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(ProductCrudServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ProductDtoCrudServiceImpl.class);
 
   @Autowired
   ProductsRepository products;

@@ -20,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.backend.dtos.ProductFamilyDto;
-import cl.blm.newmarketing.backend.model.entities.ProductFamily;
-import cl.blm.newmarketing.backend.model.entities.QProductFamily;
-import cl.blm.newmarketing.backend.model.repositories.ProductFamiliesRepository;
+import cl.blm.newmarketing.backend.dtos.ProductTypeDto;
+import cl.blm.newmarketing.backend.model.entities.ProductType;
+import cl.blm.newmarketing.backend.model.entities.QProductType;
+import cl.blm.newmarketing.backend.model.repositories.ProductTypesRepository;
 import cl.blm.newmarketing.backend.services.DtoCrudService;
 
 /**
@@ -32,19 +32,19 @@ import cl.blm.newmarketing.backend.services.DtoCrudService;
  */
 @Transactional
 @Service
-public class ProductFamilyCrudServiceImpl
-    implements DtoCrudService<ProductFamilyDto, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(ProductFamilyCrudServiceImpl.class);
+public class ProductTypeDtoCrudServiceImpl
+    implements DtoCrudService<ProductTypeDto, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(ProductTypeDtoCrudServiceImpl.class);
 
   @Autowired
-  ProductFamiliesRepository productTypes;
+  ProductTypesRepository productTypes;
   @Autowired
   ConversionService conversion;
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
     LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
-    QProductFamily qProductFamily = QProductFamily.productFamily;
+    QProductType qProductType = QProductType.productType;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
@@ -53,9 +53,9 @@ public class ProductFamilyCrudServiceImpl
         switch (paramName) {
         case "id":
           intValue = Integer.valueOf(stringValue);
-          return predicate.and(qProductFamily.id.eq(intValue)); // match por id es único
+          return predicate.and(qProductType.id.eq(intValue)); // match por id es único
         case "name":
-          predicate.and(qProductFamily.name.likeIgnoreCase("%" + stringValue + "%"));
+          predicate.and(qProductType.name.likeIgnoreCase("%" + stringValue + "%"));
           break;
         default:
           break;
@@ -70,34 +70,34 @@ public class ProductFamilyCrudServiceImpl
 
   @Nullable
   @Override
-  public ProductFamilyDto create(ProductFamilyDto dto) {
+  public ProductTypeDto create(ProductTypeDto dto) {
     LOG.debug("create({})", dto);
-    ProductFamily newEntity = conversion.convert(dto, ProductFamily.class);
-    if (dto.getProductFamilyId() != null && productTypes.findById(dto.getProductFamilyId()).isPresent()) {
+    ProductType newEntity = conversion.convert(dto, ProductType.class);
+    if (dto.getProductTypeId() != null && productTypes.findById(dto.getProductTypeId()).isPresent()) {
       return null;
     } else {
       newEntity = productTypes.saveAndFlush(newEntity);
-      ProductFamilyDto newDto = conversion.convert(newEntity, ProductFamilyDto.class);
+      ProductTypeDto newDto = conversion.convert(newEntity, ProductTypeDto.class);
       return newDto;
     }
   }
 
   @Override
-  public Collection<ProductFamilyDto> read(int pageSize, int pageIndex, Predicate filters) {
+  public Collection<ProductTypeDto> read(int pageSize, int pageIndex, Predicate filters) {
     LOG.debug("read({}, {}, {})", pageSize, pageIndex, filters);
     Sort order = Sort.by("id").ascending();
     Pageable paged = PageRequest.of(pageIndex, pageSize, order);
 
-    Iterable<ProductFamily> iterable;
+    Iterable<ProductType> iterable;
     if (filters == null) {
       iterable = productTypes.findAll(paged);
     } else {
       iterable = productTypes.findAll(filters, paged);
     }
 
-    List<ProductFamilyDto> list = new ArrayList<>();
-    for (ProductFamily ProductFamily : iterable) {
-      ProductFamilyDto dto = conversion.convert(ProductFamily, ProductFamilyDto.class);
+    List<ProductTypeDto> list = new ArrayList<>();
+    for (ProductType productType : iterable) {
+      ProductTypeDto dto = conversion.convert(productType, ProductTypeDto.class);
       list.add(dto);
     }
 
@@ -106,20 +106,20 @@ public class ProductFamilyCrudServiceImpl
 
   @Nullable
   @Override
-  public ProductFamilyDto update(ProductFamilyDto dto) {
+  public ProductTypeDto update(ProductTypeDto dto) {
     LOG.debug("update({})", dto);
-    Optional<ProductFamily> queriedProduct = productTypes.findById(dto.getProductFamilyId());
+    Optional<ProductType> queriedProduct = productTypes.findById(dto.getProductTypeId());
     if (!queriedProduct.isPresent()) {
       return null;
     } else {
-      ProductFamily existingProduct = queriedProduct.get();
-      ProductFamily newProduct = conversion.convert(dto, ProductFamily.class);
+      ProductType existingProduct = queriedProduct.get();
+      ProductType newProduct = conversion.convert(dto, ProductType.class);
       if (newProduct.equals(existingProduct)) {
         return dto;
       } else {
         try {
           newProduct = productTypes.saveAndFlush(newProduct);
-          return conversion.convert(newProduct, ProductFamilyDto.class);
+          return conversion.convert(newProduct, ProductTypeDto.class);
         } catch (Exception exc) {
           LOG.error("Product could not be saved");
           return null;
@@ -130,20 +130,20 @@ public class ProductFamilyCrudServiceImpl
 
   @Nullable
   @Override
-  public ProductFamilyDto update(ProductFamilyDto dto, Integer id) {
+  public ProductTypeDto update(ProductTypeDto dto, Integer id) {
     LOG.debug("update({})", dto);
-    Optional<ProductFamily> queriedProduct = productTypes.findById(id);
+    Optional<ProductType> queriedProduct = productTypes.findById(id);
     if (!queriedProduct.isPresent()) {
       return null;
     } else {
-      ProductFamily existingProduct = queriedProduct.get();
-      ProductFamily newProduct = conversion.convert(dto, ProductFamily.class);
+      ProductType existingProduct = queriedProduct.get();
+      ProductType newProduct = conversion.convert(dto, ProductType.class);
       if (newProduct.equals(existingProduct)) {
         return dto;
       } else {
         try {
           newProduct = productTypes.saveAndFlush(newProduct);
-          return conversion.convert(newProduct, ProductFamilyDto.class);
+          return conversion.convert(newProduct, ProductTypeDto.class);
         } catch (Exception exc) {
           LOG.error("Product could not be saved");
           return null;
@@ -167,13 +167,13 @@ public class ProductFamilyCrudServiceImpl
 
   @Nullable
   @Override
-  public ProductFamilyDto find(Integer id) {
+  public ProductTypeDto find(Integer id) {
     LOG.debug("find({})", id);
-    Optional<ProductFamily> productById = productTypes.findById(id);
+    Optional<ProductType> productById = productTypes.findById(id);
     if (!productById.isPresent()) {
       return null;
     } else {
-      return conversion.convert(productById.get(), ProductFamilyDto.class);
+      return conversion.convert(productById.get(), ProductTypeDto.class);
     }
   }
 }
