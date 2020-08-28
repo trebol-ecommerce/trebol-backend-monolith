@@ -47,13 +47,13 @@ public class Sell
   @NotNull
   @Column(name = "sell_subtotal")
   private int subtotal;
-  @JoinColumn(name = "sell_type_id", referencedColumnName = "sell_type_id")
+  @JoinColumn(name = "sell_type_id", referencedColumnName = "sell_type_id", insertable = false, updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private SellType sellType;
-  @JoinColumn(name = "client_id", referencedColumnName = "client_id")
+  @JoinColumn(name = "client_id", referencedColumnName = "client_id", insertable = true, updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Client client;
-  @JoinColumn(name = "seller_id", referencedColumnName = "seller_id")
+  @JoinColumn(name = "seller_id", referencedColumnName = "seller_id", insertable = false, updatable = false)
   @ManyToOne(fetch = FetchType.LAZY)
   private Seller seller;
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "sell", fetch = FetchType.LAZY)
@@ -121,11 +121,11 @@ public class Sell
   }
 
   public Collection<SellDetail> getSellDetails() {
-      return sellDetails;
+    return sellDetails;
   }
 
   public void setSellDetails(Collection<SellDetail> sellDetails) {
-      this.sellDetails = sellDetails;
+    this.sellDetails = sellDetails;
   }
 
   @Override

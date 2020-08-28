@@ -41,10 +41,10 @@ public class SellDetail
   @NotNull
   @Column(name = "sell_detail_units")
   private int units;
-  @JoinColumn(name = "sell_id", referencedColumnName = "sell_id")
+  @JoinColumn(name = "sell_id", referencedColumnName = "sell_id", insertable = false, updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Sell sell;
-  @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+  @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = false, updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Product product;
 

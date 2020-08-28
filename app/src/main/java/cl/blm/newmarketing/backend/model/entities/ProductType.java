@@ -38,7 +38,7 @@ public class ProductType
   @Size(min = 1, max = 100)
   @Column(name = "product_type_name")
   private String name;
-  @JoinColumn(name = "product_family_id", referencedColumnName = "product_family_id")
+  @JoinColumn(name = "product_family_id", referencedColumnName = "product_family_id", insertable = false, updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private ProductFamily productFamily;
 

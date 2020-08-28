@@ -32,7 +32,7 @@ public class Client
   @Basic(optional = false)
   @Column(name = "client_id")
   private Integer id;
-  @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+  @JoinColumn(name = "person_id", referencedColumnName = "person_id", insertable = true, updatable = true)
   @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
   private Person person;
 

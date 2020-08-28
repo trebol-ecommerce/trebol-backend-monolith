@@ -53,7 +53,7 @@ public class Product
   @NotNull
   @Column(name = "product_stock_critical")
   private int stockCritical;
-  @JoinColumn(name = "product_type_id", referencedColumnName = "product_type_id")
+  @JoinColumn(name = "product_type_id", referencedColumnName = "product_type_id", insertable = false, updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private ProductType productType;
 
