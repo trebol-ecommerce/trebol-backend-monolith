@@ -11,7 +11,7 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Configuration
 @PropertySource("classpath:custom.properties")
-public class BackendAppGlobals {
+public class CustomProperties {
   public final int ITEMS_PER_PAGE;
   public final String DATE_FORMAT;
   public final String CRYPTOGRAPHIC_ALGORITHM;
@@ -19,7 +19,7 @@ public class BackendAppGlobals {
   public final String CRYPTOGRAPHIC_CHARSET;
   public final long SESSION_LIFETIME;
 
-  public BackendAppGlobals(@Value("${items.per_page}") int itemsPerPage, @Value("${date.format}") String dateFormat,
+  public CustomProperties(@Value("${items.per_page}") int itemsPerPage, @Value("${date.format}") String dateFormat,
       @Value("${crypto.algorithm}") String cryptoAlgorithm, @Value("${crypto.salt}") String cryptoSalt,
       @Value("${crypto.charset}") String cryptoCharset, @Value("${session.lifetime}") long sessionLifetime) {
     this.ITEMS_PER_PAGE = itemsPerPage;

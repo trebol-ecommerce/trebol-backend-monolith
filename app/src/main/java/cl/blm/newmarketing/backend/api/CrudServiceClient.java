@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.backend.BackendAppGlobals;
+import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.services.CrudService;
 
 /**
@@ -16,10 +16,10 @@ import cl.blm.newmarketing.backend.services.CrudService;
  */
 public abstract class CrudServiceClient<E, K> {
 
-  protected BackendAppGlobals globals;
+  protected CustomProperties globals;
   protected CrudService<E, K> crudService;
 
-  public CrudServiceClient(BackendAppGlobals globals, CrudService<E, K> crudService) {
+  public CrudServiceClient(CustomProperties globals, CrudService<E, K> crudService) {
     this.globals = globals;
     this.crudService = crudService;
   }

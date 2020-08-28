@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.blm.newmarketing.backend.BackendAppGlobals;
+import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.CrudServiceClient;
 import cl.blm.newmarketing.backend.api.pojos.PersonPojo;
 import cl.blm.newmarketing.backend.dtos.PersonDto;
@@ -43,7 +43,7 @@ public class PeopleController
   }
 
   @Autowired
-  public PeopleController(BackendAppGlobals globals, CrudService<PersonDto, Integer> crudService) {
+  public PeopleController(CustomProperties globals, CrudService<PersonDto, Integer> crudService) {
     super(globals, crudService);
   }
 

@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
-import cl.blm.newmarketing.backend.BackendAppGlobals;
+import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.services.UtilityService;
 
 /**
@@ -25,7 +25,7 @@ public class UtilityServiceImpl
   private static final Logger LOG = LoggerFactory.getLogger(UtilityServiceImpl.class);
 
   @Autowired
-  BackendAppGlobals globals;
+  CustomProperties globals;
 
   @Nullable
   @Override

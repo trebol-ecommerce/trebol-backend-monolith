@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.blm.newmarketing.backend.BackendAppGlobals;
+import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.EntitiesController;
 import cl.blm.newmarketing.backend.api.CrudServiceClient;
 import cl.blm.newmarketing.backend.api.pojos.ClientPojo;
@@ -49,7 +49,7 @@ public class ClientsController
   }
 
   @Autowired
-  public ClientsController(BackendAppGlobals globals, CrudService<ClientDto, Integer> crudService) {
+  public ClientsController(CustomProperties globals, CrudService<ClientDto, Integer> crudService) {
     super(globals, crudService);
   }
 
