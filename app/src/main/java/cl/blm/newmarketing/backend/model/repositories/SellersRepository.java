@@ -1,9 +1,8 @@
 package cl.blm.newmarketing.backend.model.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
+import cl.blm.newmarketing.backend.model.GenericRepository;
 import cl.blm.newmarketing.backend.model.entities.Seller;
 
 /**
@@ -12,6 +11,6 @@ import cl.blm.newmarketing.backend.model.entities.Seller;
  */
 @Repository
 public interface SellersRepository
-    extends JpaRepository<Seller, Integer>, QuerydslPredicateExecutor<Seller> {
+    extends GenericRepository<Seller, Integer> {
 
 }

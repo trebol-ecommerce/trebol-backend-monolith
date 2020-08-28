@@ -1,14 +1,13 @@
 package cl.blm.newmarketing.backend.api.controllers;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,9 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.ApiCrudController;
 import cl.blm.newmarketing.backend.api.DtoCrudServiceClient;
-import cl.blm.newmarketing.backend.api.pojos.ProductPojo;
-import cl.blm.newmarketing.backend.dtos.ProductDto;
-import cl.blm.newmarketing.backend.services.DtoCrudService;
+import cl.blm.newmarketing.backend.model.entities.Product;
+import cl.blm.newmarketing.backend.services.impl.GenericCrudService;
 
 /**
  * API point of entry for Product entities
@@ -34,81 +32,59 @@ import cl.blm.newmarketing.backend.services.DtoCrudService;
 @RestController
 @RequestMapping("/api")
 public class ProductsApiController
-    extends DtoCrudServiceClient<ProductDto, Integer>
-    implements ApiCrudController<ProductPojo, Integer> {
+    extends DtoCrudServiceClient<Product, Integer>
+    implements ApiCrudController<Product, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(ProductsApiController.class);
 
   @Autowired
-  private ConversionService conversion;
-
-  @SuppressWarnings("unchecked")
-  private List<ProductPojo> convertCollection(Collection<ProductDto> source) {
-    return (List<ProductPojo>) conversion.convert(source,
-        TypeDescriptor.collection(Collection.class, TypeDescriptor.valueOf(ProductDto.class)),
-        TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(ProductPojo.class)));
-  }
-
-  @Autowired
-  public ProductsApiController(CustomProperties globals, DtoCrudService<ProductDto, Integer> crudService) {
+  public ProductsApiController(CustomProperties globals, GenericCrudService<Product, Integer> crudService) {
     super(globals, crudService);
   }
 
   @PostMapping("/product")
-  public ProductPojo create(@RequestBody ProductPojo input) {
+  public Product create(@RequestBody @Valid Product input) {
     LOG.info("create");
-    ProductDto dto = conversion.convert(input, ProductDto.class);
-    ProductDto processed = crudService.create(dto);
-    ProductPojo result = conversion.convert(processed, ProductPojo.class);
+    Product result = crudService.create(input);
     return result;
   }
 
   @GetMapping("/product/{id}")
-  public ProductPojo readOne(@PathVariable Integer id) {
+  public Product readOne(@PathVariable Integer id) {
     LOG.info("read");
-    ProductDto foundClient = crudService.find(id);
-    if (foundClient == null) {
-      return null;
-    } else {
-      ProductPojo result = conversion.convert(foundClient, ProductPojo.class);
-      return result;
-    }
+    Product found = crudService.find(id);
+    return found;
   }
 
   @GetMapping("/products")
-  public Collection<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public Collection<Product> readMany(@RequestParam Map<String, String> allRequestParams) {
     return this.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}")
-  public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize,
+  public Collection<Product> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return this.readMany(requestPageSize, null, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}/{requestPageIndex}")
-  public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  public Collection<Product> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
-    Collection<ProductDto> products = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
-    Collection<ProductPojo> productPojos = this.convertCollection(products);
-    return productPojos;
+    Collection<Product> products = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
+    return products;
   }
 
   @PutMapping("/product")
-  public ProductPojo update(@RequestBody ProductPojo input) {
+  public Product update(@RequestBody @Valid Product input) {
     LOG.info("update");
-    ProductDto dto = conversion.convert(input, ProductDto.class);
-    ProductDto processed = crudService.update(dto);
-    ProductPojo result = conversion.convert(processed, ProductPojo.class);
+    Product result = crudService.update(input, input.getId());
     return result;
   }
 
   @PutMapping("/product/{id}")
-  public ProductPojo update(@RequestBody ProductPojo input, @PathVariable Integer id) {
+  public Product update(@RequestBody @Valid Product input, @PathVariable Integer id) {
     LOG.info("update");
-    ProductDto dto = conversion.convert(input, ProductDto.class);
-    ProductDto processed = crudService.update(dto, id);
-    ProductPojo result = conversion.convert(processed, ProductPojo.class);
+    Product result = crudService.update(input, id);
     return result;
   }
 
