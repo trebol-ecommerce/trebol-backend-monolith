@@ -8,7 +8,7 @@ import java.util.Map;
  * 
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public interface CrudController<P, I> {
+public interface EntitiesController<P, I> {
 
   P create(P input);
 
