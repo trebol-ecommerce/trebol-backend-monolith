@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.GenericDataController;
-import cl.blm.newmarketing.backend.api.DtoCrudServiceClient;
+import cl.blm.newmarketing.backend.api.DataServiceClient;
 import cl.blm.newmarketing.backend.model.entities.Product;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
@@ -32,7 +32,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class ProductsDataController
-    extends DtoCrudServiceClient<Product, Integer>
+    extends DataServiceClient<Product, Integer>
     implements GenericDataController<Product, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(ProductsDataController.class);
 
