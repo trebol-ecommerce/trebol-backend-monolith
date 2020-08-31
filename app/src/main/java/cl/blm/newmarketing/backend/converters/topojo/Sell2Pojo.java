@@ -6,6 +6,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import cl.blm.newmarketing.backend.api.pojo.ClientPojo;
+import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
 import cl.blm.newmarketing.backend.api.pojo.ProductPojo;
 import cl.blm.newmarketing.backend.api.pojo.SellDetailPojo;
 import cl.blm.newmarketing.backend.api.pojo.SellPojo;
@@ -26,8 +27,12 @@ public class Sell2Pojo
     target.subtotal = source.getSubtotal();
     target.client = new ClientPojo();
     target.client.id = source.getClient().getId();
+    target.client.person = new PersonPojo();
+    target.client.person.id = source.getClient().getPerson().getId();
+    target.client.person.name = source.getClient().getPerson().getName();
     target.sellType = new SellTypePojo();
     target.sellType.id = source.getSellType().getId();
+    target.sellType.name = source.getSellType().getName();
 
     target.sellDetails = new ArrayList<>();
     for (SellDetail sd : source.getSellDetails()) {

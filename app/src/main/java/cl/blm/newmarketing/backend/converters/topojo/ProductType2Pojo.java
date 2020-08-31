@@ -18,6 +18,7 @@ public class ProductType2Pojo
     target.name = source.getName();
     target.productFamily = new ProductFamilyPojo();
     target.productFamily.id = source.getProductFamily().getId();
+    target.productFamily.name = source.getProductFamily().getName();
     return target;
   }
 }

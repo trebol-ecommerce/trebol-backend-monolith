@@ -22,6 +22,7 @@ public class Product2Pojo
     target.criticalStock = source.getStockCritical();
     target.productType = new ProductTypePojo();
     target.productType.id = source.getProductType().getId();
+    target.productType.name = source.getProductType().getName();
     return target;
   }
 }

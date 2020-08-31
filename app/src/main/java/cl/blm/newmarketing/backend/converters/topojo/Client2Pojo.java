@@ -17,6 +17,7 @@ public class Client2Pojo
     target.id = source.getId();
     target.person = new PersonPojo();
     target.person.id = source.getPerson().getId();
+    target.person.name = source.getPerson().getName();
     return target;
   }
 }

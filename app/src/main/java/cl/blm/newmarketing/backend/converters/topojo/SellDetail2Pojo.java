@@ -18,6 +18,7 @@ public class SellDetail2Pojo
     target.units = source.getUnits();
     target.product = new ProductPojo();
     target.product.id = source.getProduct().getId();
+    target.product.name = source.getProduct().getName();
     return target;
   }
 }
