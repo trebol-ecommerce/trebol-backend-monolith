@@ -1,10 +1,15 @@
 package cl.blm.newmarketing.backend.services.data.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +31,12 @@ public class ProductDataServiceImpl
     extends GenericDataService<Product, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductDataServiceImpl.class);
 
+  ProductsRepository repository;
+
   @Autowired
   public ProductDataServiceImpl(ProductsRepository repository) {
     super(LOG, repository);
+    this.repository = repository;
   }
 
   @Override
@@ -56,5 +64,21 @@ public class ProductDataServiceImpl
     }
 
     return predicate;
+  }
+
+  @Override
+  public List<Product> read(int pageSize, int pageIndex, Predicate filters) {
+    LOG.debug("read({}, {}, {})", pageSize, pageIndex, filters);
+    Sort orden = Sort.by("id").ascending();
+    Pageable paged = PageRequest.of(pageIndex, pageSize, orden);
+
+    Page<Product> iterable;
+    if (filters == null) {
+      iterable = repository.deepReadAll(paged);
+    } else {
+      iterable = repository.deepReadAll(filters, paged);
+    }
+
+    return iterable.getContent();
   }
 }
