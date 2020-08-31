@@ -40,7 +40,7 @@ public class Product
   private String name;
   @Size(max = 50)
   @Column(name = "product_code")
-  private String code;
+  private String barcode;
   @Basic(optional = false)
   @NotNull
   @Column(name = "product_price")
@@ -89,12 +89,12 @@ public class Product
     this.name = name;
   }
 
-  public String getCode() {
-    return code;
+  public String getBarcode() {
+    return barcode;
   }
 
-  public void setCode(String code) {
-    this.code = code;
+  public void setBarcode(String barcode) {
+    this.barcode = barcode;
   }
 
   public int getPrice() {
