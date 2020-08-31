@@ -1,6 +1,11 @@
 package cl.blm.newmarketing.backend.model.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.model.GenericRepository;
 import cl.blm.newmarketing.backend.model.entities.ProductType;
@@ -13,4 +18,9 @@ import cl.blm.newmarketing.backend.model.entities.ProductType;
 public interface ProductTypesRepository
     extends GenericRepository<ProductType, Integer> {
 
+  @Query(value = "SELECT t FROM ProductType t JOIN FETCH t.productFamily", countQuery = "SELECT t FROM ProductType t")
+  Page<ProductType> deepReadAll(Pageable pageable);
+
+  @Query(value = "SELECT t FROM ProductType t JOIN FETCH t.productFamily", countQuery = "SELECT t FROM ProductType t")
+  Page<ProductType> deepReadAll(Predicate predicate, Pageable pageable);
 }

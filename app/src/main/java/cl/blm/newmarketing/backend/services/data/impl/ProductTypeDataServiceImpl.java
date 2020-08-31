@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +30,13 @@ public class ProductTypeDataServiceImpl
     extends GenericDataService<ProductTypePojo, ProductType, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductTypeDataServiceImpl.class);
 
+  private ProductTypesRepository repository;
   private ConversionService conversion;
 
   @Autowired
-  public ProductTypeDataServiceImpl(ProductTypesRepository productTypes, ConversionService conversion) {
-    super(LOG, productTypes);
+  public ProductTypeDataServiceImpl(ProductTypesRepository repository, ConversionService conversion) {
+    super(LOG, repository);
+    this.repository = repository;
     this.conversion = conversion;
   }
 
@@ -44,6 +48,15 @@ public class ProductTypeDataServiceImpl
   @Override
   public ProductType pojo2Entity(ProductTypePojo source) {
     return conversion.convert(source, ProductType.class);
+  }
+
+  @Override
+  public Page<ProductType> getAllEntities(Pageable paged, Predicate filters) {
+    if (filters == null) {
+      return repository.deepReadAll(paged);
+    } else {
+      return repository.deepReadAll(filters, paged);
+    }
   }
 
   @Override
