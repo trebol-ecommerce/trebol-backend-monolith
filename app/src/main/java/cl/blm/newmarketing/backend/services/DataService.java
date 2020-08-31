@@ -7,7 +7,7 @@ import org.springframework.lang.Nullable;
 import com.querydsl.core.types.Predicate;
 
 /**
- * An interface for implementing the basic CRUD service operations. Because it
+ * Interface for implementing the basic CRUD service operations. Because it
  * extends QueryDslPredicateMapper, it's expected to comply to QueryDSL and
  * accept Predicate objects as filtering conditions.
  * 

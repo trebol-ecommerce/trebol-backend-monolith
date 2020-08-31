@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.DataServiceClient;
+import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
 import cl.blm.newmarketing.backend.model.entities.Person;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
@@ -25,30 +26,30 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class PeopleDataController
-    extends DataServiceClient<Person, Integer> {
+    extends DataServiceClient<PersonPojo, Person, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(PeopleDataController.class);
 
   @Autowired
-  public PeopleDataController(CustomProperties globals, GenericDataService<Person, Integer> crudService) {
+  public PeopleDataController(CustomProperties globals, GenericDataService<PersonPojo, Person, Integer> crudService) {
     super(globals, crudService);
   }
 
   @GetMapping("/people")
-  public Collection<Person> read(@RequestParam Map<String, String> allRequestParams) {
+  public Collection<PersonPojo> read(@RequestParam Map<String, String> allRequestParams) {
     return this.read(null, null, allRequestParams);
   }
 
   @GetMapping("/people/{requestPageSize}")
-  public Collection<Person> read(@PathVariable Integer requestPageSize,
+  public Collection<PersonPojo> read(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return this.read(requestPageSize, null, allRequestParams);
   }
 
   @GetMapping("/people/{requestPageSize}/{requestPageIndex}")
-  public Collection<Person> read(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  public Collection<PersonPojo> read(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
-    Collection<Person> people = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
+    Collection<PersonPojo> people = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
     return people;
   }
 }

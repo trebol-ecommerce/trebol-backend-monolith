@@ -1,21 +1,20 @@
 package cl.blm.newmarketing.backend.services.data.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.backend.api.pojo.ProductPojo;
 import cl.blm.newmarketing.backend.model.entities.Product;
 import cl.blm.newmarketing.backend.model.entities.QProduct;
 import cl.blm.newmarketing.backend.model.repositories.ProductsRepository;
@@ -28,15 +27,36 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class ProductDataServiceImpl
-    extends GenericDataService<Product, Integer> {
+    extends GenericDataService<ProductPojo, Product, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductDataServiceImpl.class);
 
-  ProductsRepository repository;
+  private ProductsRepository repository;
+  private ConversionService conversion;
 
   @Autowired
-  public ProductDataServiceImpl(ProductsRepository repository) {
+  public ProductDataServiceImpl(ProductsRepository repository, ConversionService conversion) {
     super(LOG, repository);
     this.repository = repository;
+    this.conversion = conversion;
+  }
+
+  @Override
+  public ProductPojo entity2Pojo(Product source) {
+    return conversion.convert(source, ProductPojo.class);
+  }
+
+  @Override
+  public Product pojo2Entity(ProductPojo source) {
+    return conversion.convert(source, Product.class);
+  }
+
+  @Override
+  public Page<Product> getAllEntities(Pageable paged, Predicate filters) {
+    if (filters == null) {
+      return repository.deepReadAll(paged);
+    } else {
+      return repository.deepReadAll(filters, paged);
+    }
   }
 
   @Override
@@ -64,21 +84,5 @@ public class ProductDataServiceImpl
     }
 
     return predicate;
-  }
-
-  @Override
-  public List<Product> read(int pageSize, int pageIndex, Predicate filters) {
-    LOG.debug("read({}, {}, {})", pageSize, pageIndex, filters);
-    Sort orden = Sort.by("id").ascending();
-    Pageable paged = PageRequest.of(pageIndex, pageSize, orden);
-
-    Page<Product> iterable;
-    if (filters == null) {
-      iterable = repository.deepReadAll(paged);
-    } else {
-      iterable = repository.deepReadAll(filters, paged);
-    }
-
-    return iterable.getContent();
   }
 }

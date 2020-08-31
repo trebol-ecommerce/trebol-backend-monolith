@@ -25,8 +25,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.GenericDataController;
 import cl.blm.newmarketing.backend.api.DataServiceClient;
+import cl.blm.newmarketing.backend.api.GenericDataController;
+import cl.blm.newmarketing.backend.api.pojo.ClientPojo;
 import cl.blm.newmarketing.backend.model.entities.Client;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
@@ -38,60 +39,60 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class ClientsDataController
-    extends DataServiceClient<Client, Integer>
-    implements GenericDataController<Client, Integer> {
+    extends DataServiceClient<ClientPojo, Client, Integer>
+    implements GenericDataController<ClientPojo, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(ClientsDataController.class);
 
   @Autowired
-  public ClientsDataController(CustomProperties globals, GenericDataService<Client, Integer> crudService) {
+  public ClientsDataController(CustomProperties globals, GenericDataService<ClientPojo, Client, Integer> crudService) {
     super(globals, crudService);
   }
 
   @PostMapping("/client")
-  public Client create(@RequestBody @Valid Client input) {
+  public ClientPojo create(@RequestBody @Valid ClientPojo input) {
     LOG.info("create");
-    Client result = crudService.create(input);
+    ClientPojo result = crudService.create(input);
     return result;
   }
 
   @GetMapping("/client/{id}")
-  public Client readOne(@PathVariable Integer id) {
+  public ClientPojo readOne(@PathVariable Integer id) {
     LOG.info("read");
-    Client found = crudService.find(id);
+    ClientPojo found = crudService.find(id);
     return found;
   }
 
   @GetMapping("/clients")
-  public Collection<Client> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public Collection<ClientPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return this.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/clients/{requestPageSize}")
-  public Collection<Client> readMany(@PathVariable Integer requestPageSize,
+  public Collection<ClientPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return this.readMany(requestPageSize, null, allRequestParams);
   }
 
   @GetMapping("/clients/{requestPageSize}/{requestPageIndex}")
-  public Collection<Client> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  public Collection<ClientPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
-    Collection<Client> clients = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
+    Collection<ClientPojo> clients = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
     LOG.info("{}", clients);
     return clients;
   }
 
   @PutMapping("/client")
-  public Client update(@RequestBody @Valid Client input) {
+  public ClientPojo update(@RequestBody @Valid ClientPojo input) {
     LOG.info("update");
-    Client processed = crudService.update(input, input.getId());
+    ClientPojo processed = crudService.update(input, input.id);
     return processed;
   }
 
   @PutMapping("/client/{id}")
-  public Client update(@RequestBody @Valid Client input, @PathVariable Integer id) {
+  public ClientPojo update(@RequestBody @Valid ClientPojo input, @PathVariable Integer id) {
     LOG.info("update");
-    Client processed = crudService.update(input, id);
+    ClientPojo processed = crudService.update(input, id);
     return processed;
   }
 

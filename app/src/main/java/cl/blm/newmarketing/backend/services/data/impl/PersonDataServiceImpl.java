@@ -5,12 +5,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
 import cl.blm.newmarketing.backend.model.entities.Person;
 import cl.blm.newmarketing.backend.model.entities.QPerson;
 import cl.blm.newmarketing.backend.model.repositories.PeopleRepository;
@@ -23,12 +25,25 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class PersonDataServiceImpl
-    extends GenericDataService<Person, Integer> {
+    extends GenericDataService<PersonPojo, Person, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(PersonDataServiceImpl.class);
 
+  private ConversionService conversion;
+
   @Autowired
-  public PersonDataServiceImpl(PeopleRepository people) {
+  public PersonDataServiceImpl(PeopleRepository people, ConversionService conversion) {
     super(LOG, people);
+    this.conversion = conversion;
+  }
+
+  @Override
+  public PersonPojo entity2Pojo(Person source) {
+    return conversion.convert(source, PersonPojo.class);
+  }
+
+  @Override
+  public Person pojo2Entity(PersonPojo source) {
+    return conversion.convert(source, Person.class);
   }
 
   @Override

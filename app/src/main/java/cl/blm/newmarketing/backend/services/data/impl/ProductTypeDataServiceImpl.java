@@ -5,12 +5,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.backend.api.pojo.ProductTypePojo;
 import cl.blm.newmarketing.backend.model.entities.ProductType;
 import cl.blm.newmarketing.backend.model.entities.QProductType;
 import cl.blm.newmarketing.backend.model.repositories.ProductTypesRepository;
@@ -23,12 +25,24 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class ProductTypeDataServiceImpl
-    extends GenericDataService<ProductType, Integer> {
+    extends GenericDataService<ProductTypePojo, ProductType, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductTypeDataServiceImpl.class);
 
+  private ConversionService conversion;
+
   @Autowired
-  public ProductTypeDataServiceImpl(ProductTypesRepository productTypes) {
+  public ProductTypeDataServiceImpl(ProductTypesRepository productTypes, ConversionService conversion) {
     super(LOG, productTypes);
+  }
+
+  @Override
+  public ProductTypePojo entity2Pojo(ProductType source) {
+    return conversion.convert(source, ProductTypePojo.class);
+  }
+
+  @Override
+  public ProductType pojo2Entity(ProductTypePojo source) {
+    return conversion.convert(source, ProductType.class);
   }
 
   @Override

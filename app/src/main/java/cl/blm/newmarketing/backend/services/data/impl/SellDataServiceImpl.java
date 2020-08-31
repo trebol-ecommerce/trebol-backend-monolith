@@ -8,12 +8,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.backend.api.pojo.SellPojo;
 import cl.blm.newmarketing.backend.model.entities.QSell;
 import cl.blm.newmarketing.backend.model.entities.Sell;
 import cl.blm.newmarketing.backend.model.repositories.SalesRepository;
@@ -26,12 +28,25 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class SellDataServiceImpl
-    extends GenericDataService<Sell, Integer> {
+    extends GenericDataService<SellPojo, Sell, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellDataServiceImpl.class);
 
+  private ConversionService conversion;
+
   @Autowired
-  public SellDataServiceImpl(SalesRepository sales) {
+  public SellDataServiceImpl(SalesRepository sales, ConversionService conversion) {
     super(LOG, sales);
+    this.conversion = conversion;
+  }
+
+  @Override
+  public SellPojo entity2Pojo(Sell source) {
+    return conversion.convert(source, SellPojo.class);
+  }
+
+  @Override
+  public Sell pojo2Entity(SellPojo source) {
+    return conversion.convert(source, Sell.class);
   }
 
   @Override

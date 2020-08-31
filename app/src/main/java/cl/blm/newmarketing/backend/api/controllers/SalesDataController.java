@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.GenericDataController;
 import cl.blm.newmarketing.backend.api.DataServiceClient;
+import cl.blm.newmarketing.backend.api.GenericDataController;
+import cl.blm.newmarketing.backend.api.pojo.SellPojo;
 import cl.blm.newmarketing.backend.model.entities.Sell;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
@@ -32,59 +33,59 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class SalesDataController
-    extends DataServiceClient<Sell, Integer>
-    implements GenericDataController<Sell, Integer> {
+    extends DataServiceClient<SellPojo, Sell, Integer>
+    implements GenericDataController<SellPojo, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(SalesDataController.class);
 
   @Autowired
-  public SalesDataController(CustomProperties globals, GenericDataService<Sell, Integer> crudService) {
+  public SalesDataController(CustomProperties globals, GenericDataService<SellPojo, Sell, Integer> crudService) {
     super(globals, crudService);
   }
 
   @PostMapping("/sell")
-  public Sell create(@RequestBody @Valid Sell input) {
+  public SellPojo create(@RequestBody @Valid SellPojo input) {
     LOG.info("create");
-    Sell result = crudService.create(input);
+    SellPojo result = crudService.create(input);
     return result;
   }
 
   @GetMapping("/sell/{id}")
-  public Sell readOne(@PathVariable Integer id) {
+  public SellPojo readOne(@PathVariable Integer id) {
     LOG.info("read");
-    Sell found = crudService.find(id);
+    SellPojo found = crudService.find(id);
     return found;
   }
 
   @GetMapping("/sales")
-  public Collection<Sell> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public Collection<SellPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return this.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/sales/{requestPageSize}")
-  public Collection<Sell> readMany(@PathVariable Integer requestPageSize,
+  public Collection<SellPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return this.readMany(requestPageSize, null, allRequestParams);
   }
 
   @GetMapping("/sales/{requestPageSize}/{requestPageIndex}")
-  public Collection<Sell> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  public Collection<SellPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
-    Collection<Sell> sales = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
+    Collection<SellPojo> sales = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
     return sales;
   }
 
   @PutMapping("/sell")
-  public Sell update(@RequestBody @Valid Sell input) {
+  public SellPojo update(@RequestBody @Valid SellPojo input) {
     LOG.info("update");
-    Sell result = crudService.update(input, input.getId());
+    SellPojo result = crudService.update(input, input.id);
     return result;
   }
 
   @PutMapping("/sell/{id}")
-  public Sell update(@RequestBody @Valid Sell input, @PathVariable Integer id) {
+  public SellPojo update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
     LOG.info("update");
-    Sell result = crudService.update(input, id);
+    SellPojo result = crudService.update(input, id);
     return result;
   }
 

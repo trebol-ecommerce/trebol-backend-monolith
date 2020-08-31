@@ -14,12 +14,12 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public abstract class DataServiceClient<E, K> {
+public abstract class DataServiceClient<P, E, K> {
 
   protected CustomProperties globals;
-  protected GenericDataService<E, K> crudService;
+  protected GenericDataService<P, E, K> crudService;
 
-  public DataServiceClient(CustomProperties globals, GenericDataService<E, K> crudService) {
+  public DataServiceClient(CustomProperties globals, GenericDataService<P, E, K> crudService) {
     this.globals = globals;
     this.crudService = crudService;
   }
@@ -35,7 +35,7 @@ public abstract class DataServiceClient<E, K> {
    * @see Predicate
    * @return
    */
-  public Collection<E> readFromService(Integer requestPageSize, Integer requestPageIndex,
+  public Collection<P> readFromService(Integer requestPageSize, Integer requestPageIndex,
       Map<String, String> allRequestParams) {
     if (this.crudService == null) {
       throw new Error("CrudService is not implemented properly in calling controller");

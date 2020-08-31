@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.GenericDataController;
 import cl.blm.newmarketing.backend.api.DataServiceClient;
+import cl.blm.newmarketing.backend.api.GenericDataController;
+import cl.blm.newmarketing.backend.api.pojo.ProductPojo;
 import cl.blm.newmarketing.backend.model.entities.Product;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
@@ -32,59 +33,60 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class ProductsDataController
-    extends DataServiceClient<Product, Integer>
-    implements GenericDataController<Product, Integer> {
+    extends DataServiceClient<ProductPojo, Product, Integer>
+    implements GenericDataController<ProductPojo, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(ProductsDataController.class);
 
   @Autowired
-  public ProductsDataController(CustomProperties globals, GenericDataService<Product, Integer> crudService) {
+  public ProductsDataController(CustomProperties globals,
+      GenericDataService<ProductPojo, Product, Integer> crudService) {
     super(globals, crudService);
   }
 
   @PostMapping("/product")
-  public Product create(@RequestBody @Valid Product input) {
+  public ProductPojo create(@RequestBody @Valid ProductPojo input) {
     LOG.info("create");
-    Product result = crudService.create(input);
+    ProductPojo result = crudService.create(input);
     return result;
   }
 
   @GetMapping("/product/{id}")
-  public Product readOne(@PathVariable Integer id) {
+  public ProductPojo readOne(@PathVariable Integer id) {
     LOG.info("read");
-    Product found = crudService.find(id);
+    ProductPojo found = crudService.find(id);
     return found;
   }
 
   @GetMapping("/products")
-  public Collection<Product> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public Collection<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return this.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}")
-  public Collection<Product> readMany(@PathVariable Integer requestPageSize,
+  public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return this.readMany(requestPageSize, null, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}/{requestPageIndex}")
-  public Collection<Product> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
-    Collection<Product> products = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
+    Collection<ProductPojo> products = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
     return products;
   }
 
   @PutMapping("/product")
-  public Product update(@RequestBody @Valid Product input) {
+  public ProductPojo update(@RequestBody @Valid ProductPojo input) {
     LOG.info("update");
-    Product result = crudService.update(input, input.getId());
+    ProductPojo result = crudService.update(input, input.id);
     return result;
   }
 
   @PutMapping("/product/{id}")
-  public Product update(@RequestBody @Valid Product input, @PathVariable Integer id) {
+  public ProductPojo update(@RequestBody @Valid ProductPojo input, @PathVariable Integer id) {
     LOG.info("update");
-    Product result = crudService.update(input, id);
+    ProductPojo result = crudService.update(input, id);
     return result;
   }
 

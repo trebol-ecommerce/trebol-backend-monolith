@@ -5,12 +5,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.backend.api.pojo.ProductFamilyPojo;
 import cl.blm.newmarketing.backend.model.entities.ProductFamily;
 import cl.blm.newmarketing.backend.model.entities.QProductFamily;
 import cl.blm.newmarketing.backend.model.repositories.ProductFamiliesRepository;
@@ -23,12 +25,25 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class ProductFamilyDataServiceImpl
-    extends GenericDataService<ProductFamily, Integer> {
+    extends GenericDataService<ProductFamilyPojo, ProductFamily, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductFamilyDataServiceImpl.class);
 
+  private ConversionService conversion;
+
   @Autowired
-  public ProductFamilyDataServiceImpl(ProductFamiliesRepository repository) {
+  public ProductFamilyDataServiceImpl(ProductFamiliesRepository repository, ConversionService conversion) {
     super(LOG, repository);
+    this.conversion = conversion;
+  }
+
+  @Override
+  public ProductFamilyPojo entity2Pojo(ProductFamily source) {
+    return conversion.convert(source, ProductFamilyPojo.class);
+  }
+
+  @Override
+  public ProductFamily pojo2Entity(ProductFamilyPojo source) {
+    return conversion.convert(source, ProductFamily.class);
   }
 
   @Override
