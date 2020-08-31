@@ -33,6 +33,7 @@ public class ProductTypeDataServiceImpl
   @Autowired
   public ProductTypeDataServiceImpl(ProductTypesRepository productTypes, ConversionService conversion) {
     super(LOG, productTypes);
+    this.conversion = conversion;
   }
 
   @Override
