@@ -33,7 +33,7 @@ public class Client
   @Column(name = "client_id")
   private Integer id;
   @JoinColumn(name = "person_id", referencedColumnName = "person_id", insertable = true, updatable = true)
-  @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+  @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
   private Person person;
 
   public Client() {
