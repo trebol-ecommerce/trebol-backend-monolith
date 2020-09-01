@@ -16,6 +16,7 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.api.pojo.ClientPojo;
 import cl.blm.newmarketing.backend.model.entities.Client;
+import cl.blm.newmarketing.backend.model.entities.Person;
 import cl.blm.newmarketing.backend.model.entities.QClient;
 import cl.blm.newmarketing.backend.model.repositories.ClientsRepository;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
@@ -47,7 +48,10 @@ public class ClientDataServiceImpl
 
   @Override
   public Client pojo2Entity(ClientPojo source) {
-    return conversion.convert(source, Client.class);
+    Client target = conversion.convert(source, Client.class);
+    Person personTarget = conversion.convert(source.person, Person.class);
+    target.setPerson(personTarget);
+    return target;
   }
 
   @Override
