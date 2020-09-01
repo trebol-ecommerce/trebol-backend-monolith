@@ -22,31 +22,31 @@ public class Sell2Pojo
   @Override
   public SellPojo convert(Sell source) {
     SellPojo target = new SellPojo();
-    target.id = source.getId();
-    target.date = source.getDate();
-    target.subtotal = source.getSubtotal();
-    target.client = new ClientPojo();
-    target.client.id = source.getClient().getId();
-    target.client.person = new PersonPojo();
-    target.client.person.id = source.getClient().getPerson().getId();
-    target.client.person.name = source.getClient().getPerson().getName();
-    target.sellType = new SellTypePojo();
-    target.sellType.id = source.getSellType().getId();
-    target.sellType.name = source.getSellType().getName();
+    target.setId(source.getId());
+    target.setDate(source.getDate());
+    target.setSubtotal(source.getSubtotal());
+    target.setClient(new ClientPojo());
+    target.getClient().setId(source.getClient().getId());
+    target.getClient().setPerson(new PersonPojo());
+    target.getClient().getPerson().setId(source.getClient().getPerson().getId());
+    target.getClient().getPerson().setName(source.getClient().getPerson().getName());
+    target.setSellType(new SellTypePojo());
+    target.getSellType().setId(source.getSellType().getId());
+    target.getSellType().setName(source.getSellType().getName());
 
-    target.sellDetails = new ArrayList<>();
+    target.setSellDetails(new ArrayList<>());
     for (SellDetail sd : source.getSellDetails()) {
       SellDetailPojo td = new SellDetailPojo();
-      td.id = sd.getId();
-      td.units = sd.getUnits();
-      td.product = new ProductPojo();
-      td.product.id = sd.getProduct().getId();
-      target.sellDetails.add(td);
+      td.setId(sd.getId());
+      td.setUnits(sd.getUnits());
+      td.setProduct(new ProductPojo());
+      td.getProduct().setId(sd.getProduct().getId());
+      target.getSellDetails().add(td);
     }
 
     if (source.getSeller() != null) {
-      target.seller = new SellerPojo();
-      target.seller.id = source.getSeller().getId();
+      target.setSeller(new SellerPojo());
+      target.getSeller().setId(source.getSeller().getId());
     }
     return target;
   }

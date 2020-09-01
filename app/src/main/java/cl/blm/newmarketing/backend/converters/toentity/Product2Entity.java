@@ -13,13 +13,13 @@ public class Product2Entity
 
   @Override
   public Product convert(ProductPojo source) {
-    Product target = new Product(source.id);
-    target.setName(source.name);
-    target.setBarcode(source.barcode);
-    target.setPrice(source.price);
-    target.setStockCurrent(source.currentStock);
-    target.setStockCritical(source.criticalStock);
-    target.setProductType(new ProductType(source.productType.id));
+    Product target = new Product(source.getId());
+    target.setName(source.getName());
+    target.setBarcode(source.getBarcode());
+    target.setPrice(source.getPrice());
+    target.setStockCurrent(source.getCurrentStock());
+    target.setStockCritical(source.getCriticalStock());
+    target.setProductType(new ProductType(source.getProductType().getId()));
     return target;
   }
 }

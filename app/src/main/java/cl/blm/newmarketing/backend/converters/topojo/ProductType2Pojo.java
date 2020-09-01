@@ -14,11 +14,11 @@ public class ProductType2Pojo
   @Override
   public ProductTypePojo convert(ProductType source) {
     ProductTypePojo target = new ProductTypePojo();
-    target.id = source.getId();
-    target.name = source.getName();
-    target.productFamily = new ProductFamilyPojo();
-    target.productFamily.id = source.getProductFamily().getId();
-    target.productFamily.name = source.getProductFamily().getName();
+    target.setId(source.getId());
+    target.setName(source.getName());
+    target.setProductFamily(new ProductFamilyPojo());
+    target.getProductFamily().setId(source.getProductFamily().getId());
+    target.getProductFamily().setName(source.getProductFamily().getName());
     return target;
   }
 }

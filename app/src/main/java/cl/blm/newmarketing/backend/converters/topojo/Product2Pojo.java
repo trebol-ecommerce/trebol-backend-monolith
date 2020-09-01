@@ -14,15 +14,15 @@ public class Product2Pojo
   @Override
   public ProductPojo convert(Product source) {
     ProductPojo target = new ProductPojo();
-    target.id = source.getId();
-    target.name = source.getName();
-    target.barcode = source.getBarcode();
-    target.price = source.getPrice();
-    target.currentStock = source.getStockCurrent();
-    target.criticalStock = source.getStockCritical();
-    target.productType = new ProductTypePojo();
-    target.productType.id = source.getProductType().getId();
-    target.productType.name = source.getProductType().getName();
+    target.setId(source.getId());
+    target.setName(source.getName());
+    target.setBarcode(source.getBarcode());
+    target.setPrice(source.getPrice());
+    target.setCurrentStock(source.getStockCurrent());
+    target.setCriticalStock(source.getStockCritical());
+    target.setProductType(new ProductTypePojo());
+    target.getProductType().setId(source.getProductType().getId());
+    target.getProductType().setName(source.getProductType().getName());
     return target;
   }
 }

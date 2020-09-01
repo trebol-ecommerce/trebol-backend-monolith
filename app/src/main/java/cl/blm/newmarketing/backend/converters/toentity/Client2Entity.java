@@ -13,8 +13,8 @@ public class Client2Entity
 
   @Override
   public Client convert(ClientPojo source) {
-    Client target = new Client(source.id);
-    target.setPerson(new Person(source.person.id));
+    Client target = new Client(source.getId());
+    target.setPerson(new Person(source.getPerson().getId()));
     return target;
   }
 }

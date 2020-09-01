@@ -13,27 +13,84 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class SellPojo {
   @JsonInclude
-  public Integer id;
+  private Integer id;
   @JsonInclude
   @NotNull
-  public Date date;
+  private Date date;
   @JsonInclude
   @NotNull
-  public int subtotal;
-  @JsonInclude
-  @NotNull
-  @Valid
-  public SellTypePojo sellType;
+  private int subtotal;
   @JsonInclude
   @NotNull
   @Valid
-  public ClientPojo client;
+  private SellTypePojo sellType;
+  @JsonInclude
+  @NotNull
+  @Valid
+  private ClientPojo client;
   @JsonInclude
   @Nullable
   @Valid
-  public SellerPojo seller;
+  private SellerPojo seller;
   @JsonInclude(value = Include.NON_EMPTY)
   @NotEmpty
   @Valid
-  public Collection<SellDetailPojo> sellDetails;
+  private Collection<SellDetailPojo> sellDetails;
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  public int getSubtotal() {
+    return subtotal;
+  }
+
+  public void setSubtotal(int subtotal) {
+    this.subtotal = subtotal;
+  }
+
+  public SellTypePojo getSellType() {
+    return sellType;
+  }
+
+  public void setSellType(SellTypePojo sellType) {
+    this.sellType = sellType;
+  }
+
+  public ClientPojo getClient() {
+    return client;
+  }
+
+  public void setClient(ClientPojo client) {
+    this.client = client;
+  }
+
+  public SellerPojo getSeller() {
+    return seller;
+  }
+
+  public void setSeller(SellerPojo seller) {
+    this.seller = seller;
+  }
+
+  public Collection<SellDetailPojo> getSellDetails() {
+    return sellDetails;
+  }
+
+  public void setSellDetails(Collection<SellDetailPojo> sellDetails) {
+    this.sellDetails = sellDetails;
+  }
+
 }

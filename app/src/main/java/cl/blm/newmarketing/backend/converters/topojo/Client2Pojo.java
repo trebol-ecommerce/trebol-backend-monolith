@@ -14,10 +14,10 @@ public class Client2Pojo
   @Override
   public ClientPojo convert(Client source) {
     ClientPojo target = new ClientPojo();
-    target.id = source.getId();
-    target.person = new PersonPojo();
-    target.person.id = source.getPerson().getId();
-    target.person.name = source.getPerson().getName();
+    target.setId(source.getId());
+    target.setPerson(new PersonPojo());
+    target.getPerson().setId(source.getPerson().getId());
+    target.getPerson().setName(source.getPerson().getName());
     return target;
   }
 }

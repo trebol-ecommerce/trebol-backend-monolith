@@ -20,22 +20,22 @@ public class Sell2Entity
 
   @Override
   public Sell convert(SellPojo source) {
-    Sell target = new Sell(source.id);
-    target.setDate(source.date);
-    target.setSubtotal(source.subtotal);
-    target.setClient(new Client(source.client.id));
-    target.setSellType(new SellType(source.sellType.id));
+    Sell target = new Sell(source.getId());
+    target.setDate(source.getDate());
+    target.setSubtotal(source.getSubtotal());
+    target.setClient(new Client(source.getClient().getId()));
+    target.setSellType(new SellType(source.getSellType().getId()));
 
     target.setSellDetails(new ArrayList<>());
-    for (SellDetailPojo sd : source.sellDetails) {
-      SellDetail td = new SellDetail(sd.id);
-      td.setUnits(sd.units);
-      td.setProduct(new Product(sd.product.id));
+    for (SellDetailPojo sd : source.getSellDetails()) {
+      SellDetail td = new SellDetail(sd.getId());
+      td.setUnits(sd.getUnits());
+      td.setProduct(new Product(sd.getProduct().getId()));
       target.getSellDetails().add(td);
     }
 
-    if (source.seller != null) {
-      target.setSeller(new Seller(source.seller.id));
+    if (source.getSeller() != null) {
+      target.setSeller(new Seller(source.getSeller().getId()));
     }
     return target;
   }

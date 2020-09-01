@@ -9,25 +9,98 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class ProductPojo {
   @JsonInclude
-  public Integer id;
+  private Integer id;
   @JsonInclude
   @NotNull
-  public String name;
+  private String name;
   @JsonInclude
   @NotNull
-  public String barcode;
+  private String barcode;
   @JsonInclude
   @NotNull
-  public Integer price;
+  private Integer price;
   @JsonInclude
   @NotNull
-  public ProductTypePojo productType;
+  private ProductTypePojo productType;
   @JsonInclude(value = Include.NON_EMPTY)
-  public String description;
+  private String description;
   @JsonInclude(value = Include.NON_EMPTY)
-  public Integer currentStock;
+  private Integer currentStock;
   @JsonInclude(value = Include.NON_EMPTY)
-  public Integer criticalStock;
+  private Integer criticalStock;
   @JsonInclude(value = Include.NON_EMPTY)
-  public Collection<String> imagesURL;
+  private Collection<String> imagesURL;
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getBarcode() {
+    return barcode;
+  }
+
+  public void setBarcode(String barcode) {
+    this.barcode = barcode;
+  }
+
+  public Integer getPrice() {
+    return price;
+  }
+
+  public void setPrice(Integer price) {
+    this.price = price;
+  }
+
+  public ProductTypePojo getProductType() {
+    return productType;
+  }
+
+  public void setProductType(ProductTypePojo productType) {
+    this.productType = productType;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Integer getCurrentStock() {
+    return currentStock;
+  }
+
+  public void setCurrentStock(Integer currentStock) {
+    this.currentStock = currentStock;
+  }
+
+  public Integer getCriticalStock() {
+    return criticalStock;
+  }
+
+  public void setCriticalStock(Integer criticalStock) {
+    this.criticalStock = criticalStock;
+  }
+
+  public Collection<String> getImagesURL() {
+    return imagesURL;
+  }
+
+  public void setImagesURL(Collection<String> imagesURL) {
+    this.imagesURL = imagesURL;
+  }
+
 }

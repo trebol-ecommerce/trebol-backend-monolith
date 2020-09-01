@@ -14,10 +14,10 @@ public class Seller2Pojo
   @Override
   public SellerPojo convert(Seller source) {
     SellerPojo target = new SellerPojo();
-    target.id = source.getId();
-    target.person = new PersonPojo();
-    target.person.id = source.getPerson().getId();
-    target.person.name = source.getPerson().getName();
+    target.setId(source.getId());
+    target.setPerson(new PersonPojo());
+    target.getPerson().setId(source.getPerson().getId());
+    target.getPerson().setName(source.getPerson().getName());
     return target;
   }
 }

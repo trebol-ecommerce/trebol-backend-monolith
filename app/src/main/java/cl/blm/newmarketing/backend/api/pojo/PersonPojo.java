@@ -8,21 +8,78 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class PersonPojo {
   @JsonInclude
-  public Integer id;
+  private Integer id;
   @JsonInclude
   @NotNull
-  public String name;
+  private String name;
   @JsonInclude
   @NotNull
-  public String idCard;
+  private String idCard;
   @JsonInclude
   @NotNull
-  public String email;
+  private String email;
   @JsonInclude(value = Include.NON_EMPTY)
   @NotEmpty
-  public String address;
+  private String address;
   @JsonInclude(value = Include.NON_EMPTY)
-  public Integer phone1;
+  private Integer phone1;
   @JsonInclude(value = Include.NON_EMPTY)
-  public Integer phone2;
+  private Integer phone2;
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getIdCard() {
+    return idCard;
+  }
+
+  public void setIdCard(String idCard) {
+    this.idCard = idCard;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public Integer getPhone1() {
+    return phone1;
+  }
+
+  public void setPhone1(Integer phone1) {
+    this.phone1 = phone1;
+  }
+
+  public Integer getPhone2() {
+    return phone2;
+  }
+
+  public void setPhone2(Integer phone2) {
+    this.phone2 = phone2;
+  }
+
 }

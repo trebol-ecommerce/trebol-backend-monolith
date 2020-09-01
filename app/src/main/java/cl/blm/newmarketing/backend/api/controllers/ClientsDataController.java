@@ -85,7 +85,7 @@ public class ClientsDataController
   @PutMapping("/client")
   public ClientPojo update(@RequestBody @Valid ClientPojo input) {
     LOG.info("update");
-    ClientPojo processed = crudService.update(input, input.id);
+    ClientPojo processed = crudService.update(input, input.getId());
     return processed;
   }
 

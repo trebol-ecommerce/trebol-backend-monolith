@@ -13,8 +13,8 @@ public class ProductFamily2Pojo
   @Override
   public ProductFamilyPojo convert(ProductFamily source) {
     ProductFamilyPojo target = new ProductFamilyPojo();
-    target.id = source.getId();
-    target.name = source.getName();
+    target.setId(source.getId());
+    target.setName(source.getName());
     return target;
   }
 }

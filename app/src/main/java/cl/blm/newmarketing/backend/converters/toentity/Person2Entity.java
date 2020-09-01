@@ -12,16 +12,16 @@ public class Person2Entity
 
   @Override
   public Person convert(PersonPojo source) {
-    Person target = new Person(source.id);
-    target.setName(source.name);
-    target.setIdCard(source.idCard);
-    target.setEmail(source.email);
-    target.setAddress(source.address);
-    if (source.phone1 != null) {
-      target.setPhone1(source.phone1);
+    Person target = new Person(source.getId());
+    target.setName(source.getName());
+    target.setIdCard(source.getIdCard());
+    target.setEmail(source.getEmail());
+    target.setAddress(source.getAddress());
+    if (source.getPhone1() != null) {
+      target.setPhone1(source.getPhone1());
     }
-    if (source.phone2 != null) {
-      target.setPhone2(source.phone2);
+    if (source.getPhone2() != null) {
+      target.setPhone2(source.getPhone2());
     }
     return target;
   }

@@ -85,7 +85,7 @@ public class SellersDataController
   @PutMapping("/seller")
   public SellerPojo update(@RequestBody @Valid SellerPojo input) {
     LOG.info("update");
-    SellerPojo processed = crudService.update(input, input.id);
+    SellerPojo processed = crudService.update(input, input.getId());
     return processed;
   }
 

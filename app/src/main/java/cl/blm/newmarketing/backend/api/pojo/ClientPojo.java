@@ -7,9 +7,26 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class ClientPojo {
   @JsonInclude
-  public Integer id;
+  private Integer id;
   @JsonInclude
   @NotNull
   @Valid
-  public PersonPojo person;
+  private PersonPojo person;
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public PersonPojo getPerson() {
+    return person;
+  }
+
+  public void setPerson(PersonPojo person) {
+    this.person = person;
+  }
+
 }

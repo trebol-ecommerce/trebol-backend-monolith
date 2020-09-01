@@ -79,7 +79,7 @@ public class ProductsDataController
   @PutMapping("/product")
   public ProductPojo update(@RequestBody @Valid ProductPojo input) {
     LOG.info("update");
-    ProductPojo result = crudService.update(input, input.id);
+    ProductPojo result = crudService.update(input, input.getId());
     return result;
   }
 

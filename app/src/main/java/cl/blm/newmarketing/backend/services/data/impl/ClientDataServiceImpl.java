@@ -49,7 +49,7 @@ public class ClientDataServiceImpl
   @Override
   public Client pojo2Entity(ClientPojo source) {
     Client target = conversion.convert(source, Client.class);
-    Person personTarget = conversion.convert(source.person, Person.class);
+    Person personTarget = conversion.convert(source.getPerson(), Person.class);
     target.setPerson(personTarget);
     return target;
   }

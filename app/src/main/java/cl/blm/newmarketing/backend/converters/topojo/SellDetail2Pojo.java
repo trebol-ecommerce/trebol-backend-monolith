@@ -14,11 +14,11 @@ public class SellDetail2Pojo
   @Override
   public SellDetailPojo convert(SellDetail source) {
     SellDetailPojo target = new SellDetailPojo();
-    target.id = source.getId();
-    target.units = source.getUnits();
-    target.product = new ProductPojo();
-    target.product.id = source.getProduct().getId();
-    target.product.name = source.getProduct().getName();
+    target.setId(source.getId());
+    target.setUnits(source.getUnits());
+    target.setProduct(new ProductPojo());
+    target.getProduct().setId(source.getProduct().getId());
+    target.getProduct().setName(source.getProduct().getName());
     return target;
   }
 }

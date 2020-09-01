@@ -13,9 +13,9 @@ public class ProductType2Entity
 
   @Override
   public ProductType convert(ProductTypePojo source) {
-    ProductType target = new ProductType(source.id);
-    target.setName(source.name);
-    target.setProductFamily(new ProductFamily(source.productFamily.id));
+    ProductType target = new ProductType(source.getId());
+    target.setName(source.getName());
+    target.setProductFamily(new ProductFamily(source.getProductFamily().getId()));
     return target;
   }
 }

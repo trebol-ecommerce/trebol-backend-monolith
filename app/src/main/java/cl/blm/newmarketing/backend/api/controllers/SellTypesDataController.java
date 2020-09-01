@@ -79,7 +79,7 @@ public class SellTypesDataController
   @PutMapping("/sell_type")
   public SellTypePojo update(@RequestBody @Valid SellTypePojo input) {
     LOG.info("update");
-    SellTypePojo result = crudService.update(input, input.id);
+    SellTypePojo result = crudService.update(input, input.getId());
     return result;
   }
 

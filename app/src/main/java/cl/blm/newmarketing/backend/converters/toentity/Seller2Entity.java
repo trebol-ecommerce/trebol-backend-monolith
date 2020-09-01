@@ -13,8 +13,8 @@ public class Seller2Entity
 
   @Override
   public Seller convert(SellerPojo source) {
-    Seller target = new Seller(source.id);
-    target.setPerson(new Person(source.person.id));
+    Seller target = new Seller(source.getId());
+    target.setPerson(new Person(source.getPerson().getId()));
     return target;
   }
 }

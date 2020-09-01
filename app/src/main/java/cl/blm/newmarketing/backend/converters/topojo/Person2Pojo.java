@@ -13,13 +13,13 @@ public class Person2Pojo
   @Override
   public PersonPojo convert(Person source) {
     PersonPojo target = new PersonPojo();
-    target.id = source.getId();
-    target.idCard = source.getIdCard();
-    target.name = source.getName();
-    target.email = source.getEmail();
-    target.address = source.getAddress();
-    target.phone1 = source.getPhone1();
-    target.phone2 = source.getPhone2();
+    target.setId(source.getId());
+    target.setIdCard(source.getIdCard());
+    target.setName(source.getName());
+    target.setEmail(source.getEmail());
+    target.setAddress(source.getAddress());
+    target.setPhone1(source.getPhone1());
+    target.setPhone2(source.getPhone2());
     return target;
   }
 }

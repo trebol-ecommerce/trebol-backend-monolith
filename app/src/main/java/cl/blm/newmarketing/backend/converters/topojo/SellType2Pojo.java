@@ -13,8 +13,8 @@ public class SellType2Pojo
   @Override
   public SellTypePojo convert(SellType source) {
     SellTypePojo target = new SellTypePojo();
-    target.id = source.getId();
-    target.name = source.getName();
+    target.setId(source.getId());
+    target.setName(source.getName());
     return target;
   }
 }

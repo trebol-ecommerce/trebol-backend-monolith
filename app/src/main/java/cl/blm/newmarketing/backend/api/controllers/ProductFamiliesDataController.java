@@ -85,7 +85,7 @@ public class ProductFamiliesDataController
   @PutMapping("/product_family")
   public ProductFamilyPojo update(@RequestBody @Valid ProductFamilyPojo input) {
     LOG.info("update");
-    ProductFamilyPojo result = crudService.update(input, input.id);
+    ProductFamilyPojo result = crudService.update(input, input.getId());
     return result;
   }
 

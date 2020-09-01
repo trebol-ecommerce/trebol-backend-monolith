@@ -8,11 +8,36 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class ProductTypePojo {
   @JsonInclude
-  public Integer id;
+  private Integer id;
   @JsonInclude
   @NotNull
-  public String name;
+  private String name;
   @JsonInclude(value = Include.NON_EMPTY)
   @Nullable
-  public ProductFamilyPojo productFamily;
+  private ProductFamilyPojo productFamily;
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public ProductFamilyPojo getProductFamily() {
+    return productFamily;
+  }
+
+  public void setProductFamily(ProductFamilyPojo productFamily) {
+    this.productFamily = productFamily;
+  }
+
 }

@@ -12,8 +12,8 @@ public class ProductFamily2Entity
 
   @Override
   public ProductFamily convert(ProductFamilyPojo source) {
-    ProductFamily target = new ProductFamily(source.id);
-    target.setName(source.name);
+    ProductFamily target = new ProductFamily(source.getId());
+    target.setName(source.getName());
     return target;
   }
 }
