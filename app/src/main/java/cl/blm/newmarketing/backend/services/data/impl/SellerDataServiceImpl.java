@@ -15,6 +15,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.api.pojo.SellerPojo;
+import cl.blm.newmarketing.backend.model.entities.Person;
 import cl.blm.newmarketing.backend.model.entities.QSeller;
 import cl.blm.newmarketing.backend.model.entities.Seller;
 import cl.blm.newmarketing.backend.model.repositories.SellersRepository;
@@ -47,7 +48,10 @@ public class SellerDataServiceImpl
 
   @Override
   public Seller pojo2Entity(SellerPojo source) {
-    return conversion.convert(source, Seller.class);
+    Seller target = conversion.convert(source, Seller.class);
+    Person personTarget = conversion.convert(source.getPerson(), Person.class);
+    target.setPerson(personTarget);
+    return target;
   }
 
   @Override
