@@ -17,8 +17,12 @@ public class Person2Entity
     target.setIdCard(source.idCard);
     target.setEmail(source.email);
     target.setAddress(source.address);
-    target.setPhone1(source.phone1);
-    target.setPhone2(source.phone2);
+    if (source.phone1 != null) {
+      target.setPhone1(source.phone1);
+    }
+    if (source.phone2 != null) {
+      target.setPhone2(source.phone2);
+    }
     return target;
   }
 }
