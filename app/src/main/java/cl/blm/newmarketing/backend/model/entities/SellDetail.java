@@ -41,10 +41,7 @@ public class SellDetail
   @NotNull
   @Column(name = "sell_detail_units")
   private int units;
-  @JoinColumn(name = "sell_id", referencedColumnName = "sell_id", insertable = false, updatable = false)
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private Sell sell;
-  @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = false, updatable = false)
+  @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = true, updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Product product;
 
@@ -74,14 +71,6 @@ public class SellDetail
 
   public void setUnits(int units) {
     this.units = units;
-  }
-
-  public Sell getSell() {
-    return sell;
-  }
-
-  public void setSell(Sell sell) {
-    this.sell = sell;
   }
 
   public Product getProduct() {

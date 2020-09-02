@@ -26,8 +26,6 @@ public class QSellDetail extends EntityPathBase<SellDetail> {
 
     public final QProduct product;
 
-    public final QSell sell;
-
     public final NumberPath<Integer> units = createNumber("units", Integer.class);
 
     public QSellDetail(String variable) {
@@ -49,7 +47,6 @@ public class QSellDetail extends EntityPathBase<SellDetail> {
     public QSellDetail(Class<? extends SellDetail> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
-        this.sell = inits.isInitialized("sell") ? new QSell(forProperty("sell"), inits.get("sell")) : null;
     }
 
 }
