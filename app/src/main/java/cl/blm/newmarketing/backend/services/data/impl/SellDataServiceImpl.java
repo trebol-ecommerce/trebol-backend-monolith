@@ -3,15 +3,16 @@ package cl.blm.newmarketing.backend.services.data.impl;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,8 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.api.pojo.ClientPojo;
+import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
+import cl.blm.newmarketing.backend.api.pojo.ProductPojo;
 import cl.blm.newmarketing.backend.api.pojo.SellDetailPojo;
 import cl.blm.newmarketing.backend.api.pojo.SellPojo;
 import cl.blm.newmarketing.backend.api.pojo.SellTypePojo;
@@ -39,21 +42,40 @@ public class SellDataServiceImpl
     extends GenericDataService<SellPojo, Sell, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellDataServiceImpl.class);
 
+  private SalesRepository repository;
   private ConversionService conversion;
 
   @Autowired
-  public SellDataServiceImpl(SalesRepository sales, ConversionService conversion) {
-    super(LOG, sales);
+  public SellDataServiceImpl(SalesRepository repository, ConversionService conversion) {
+    super(LOG, repository);
+    this.repository = repository;
     this.conversion = conversion;
   }
 
-  private Collection<SellDetailPojo> convertCollection2Pojo(Collection<SellDetail> sourceCollection) {
-    List<SellDetailPojo> targetList = new ArrayList<>();
-    for (SellDetail sourceItem : sourceCollection) {
-      SellDetailPojo targetItem = conversion.convert(sourceItem, SellDetailPojo.class);
-      targetList.add(targetItem);
+  private ClientPojo convertClient(Sell source) {
+    ClientPojo client = conversion.convert(source.getClient(), ClientPojo.class);
+    PersonPojo person = conversion.convert(source.getClient().getPerson(), PersonPojo.class);
+    client.setPerson(person);
+    return client;
+  }
+
+  private List<SellDetailPojo> convertDetails(Sell source) {
+    List<SellDetailPojo> sellDetails = new ArrayList<>();
+    for (SellDetail sourceSellDetail : source.getSellDetails()) {
+      SellDetailPojo targetSellDetail = conversion.convert(sourceSellDetail, SellDetailPojo.class);
+      // TODO is there a problem fetching PRODUCT data ?
+      ProductPojo product = conversion.convert(sourceSellDetail.getProduct(), ProductPojo.class);
+      targetSellDetail.setProduct(product);
+      sellDetails.add(targetSellDetail);
     }
-    return targetList;
+    return sellDetails;
+  }
+
+  private SellerPojo convertSeller(Sell source) {
+    SellerPojo seller = conversion.convert(source.getSeller(), SellerPojo.class);
+    PersonPojo person = conversion.convert(source.getSeller().getPerson(), PersonPojo.class);
+    seller.setPerson(person);
+    return seller;
   }
 
   @Override
@@ -61,14 +83,18 @@ public class SellDataServiceImpl
     SellPojo target = conversion.convert(source, SellPojo.class);
     SellTypePojo sellType = conversion.convert(source.getSellType(), SellTypePojo.class);
     target.setSellType(sellType);
-    ClientPojo client = conversion.convert(source.getClient(), ClientPojo.class);
+
+    ClientPojo client = convertClient(source);
     target.setClient(client);
-    Collection<SellDetailPojo> sellDetails = convertCollection2Pojo(source.getSellDetails());
+
+    List<SellDetailPojo> sellDetails = convertDetails(source);
     target.setSellDetails(sellDetails);
+
     if (source.getSeller() != null) {
-      SellerPojo seller = conversion.convert(source.getSeller(), SellerPojo.class);
+      SellerPojo seller = convertSeller(source);
       target.setSeller(seller);
     }
+
     return target;
   }
 
@@ -107,5 +133,33 @@ public class SellDataServiceImpl
     }
 
     return predicate;
+  }
+
+  /**
+   * Convert a pojo to an entity, save it, fetch it back with all recursive data,
+   * convert it all back to pojo and return it.
+   */
+  @Nullable
+  @Override
+  public SellPojo create(SellPojo inputPojo) {
+    LOG.debug("create({})", inputPojo);
+    Sell input = pojo2Entity(inputPojo);
+    Sell output = repository.saveAndFlush(input);
+    SellPojo outputPojo = find(output.getId());
+    return outputPojo;
+  }
+
+  @Nullable
+  @Override
+  public SellPojo find(Integer id) {
+    LOG.debug("find({})", id);
+    Optional<Sell> personById = repository.deepFindById(id);
+    if (!personById.isPresent()) {
+      return null;
+    } else {
+      Sell found = personById.get();
+      SellPojo foundPojo = entity2Pojo(found);
+      return foundPojo;
+    }
   }
 }
