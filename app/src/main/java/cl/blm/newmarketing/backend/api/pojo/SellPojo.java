@@ -22,15 +22,12 @@ public class SellPojo {
   private int subtotal;
   @JsonInclude
   @NotNull
-  @Valid
   private SellTypePojo sellType;
   @JsonInclude
   @NotNull
-  @Valid
   private ClientPojo client;
   @JsonInclude
   @Nullable
-  @Valid
   private SellerPojo seller;
   @JsonInclude(value = Include.NON_EMPTY)
   @NotEmpty
