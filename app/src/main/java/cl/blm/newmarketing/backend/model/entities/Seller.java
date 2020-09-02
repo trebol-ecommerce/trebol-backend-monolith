@@ -33,7 +33,7 @@ public class Seller
   @Column(name = "seller_id")
   private Integer id;
   @JoinColumn(name = "person_id", referencedColumnName = "person_id", insertable = true, updatable = true)
-  @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+  @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Person person;
 
   public Seller() {
