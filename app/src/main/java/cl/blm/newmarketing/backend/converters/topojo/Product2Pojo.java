@@ -4,7 +4,6 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import cl.blm.newmarketing.backend.api.pojo.ProductPojo;
-import cl.blm.newmarketing.backend.api.pojo.ProductTypePojo;
 import cl.blm.newmarketing.backend.model.entities.Product;
 
 @Component
@@ -20,9 +19,6 @@ public class Product2Pojo
     target.setPrice(source.getPrice());
     target.setCurrentStock(source.getStockCurrent());
     target.setCriticalStock(source.getStockCritical());
-    target.setProductType(new ProductTypePojo());
-    target.getProductType().setId(source.getProductType().getId());
-    target.getProductType().setName(source.getProductType().getName());
     return target;
   }
 }
