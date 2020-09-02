@@ -2,7 +2,10 @@ package cl.blm.newmarketing.backend.services.data.impl;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -15,9 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.backend.api.pojo.ClientPojo;
+import cl.blm.newmarketing.backend.api.pojo.SellDetailPojo;
 import cl.blm.newmarketing.backend.api.pojo.SellPojo;
+import cl.blm.newmarketing.backend.api.pojo.SellTypePojo;
+import cl.blm.newmarketing.backend.api.pojo.SellerPojo;
 import cl.blm.newmarketing.backend.model.entities.QSell;
 import cl.blm.newmarketing.backend.model.entities.Sell;
+import cl.blm.newmarketing.backend.model.entities.SellDetail;
 import cl.blm.newmarketing.backend.model.repositories.SalesRepository;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
@@ -39,9 +47,29 @@ public class SellDataServiceImpl
     this.conversion = conversion;
   }
 
+  private Collection<SellDetailPojo> convertCollection2Pojo(Collection<SellDetail> sourceCollection) {
+    List<SellDetailPojo> targetList = new ArrayList<>();
+    for (SellDetail sourceItem : sourceCollection) {
+      SellDetailPojo targetItem = conversion.convert(sourceItem, SellDetailPojo.class);
+      targetList.add(targetItem);
+    }
+    return targetList;
+  }
+
   @Override
   public SellPojo entity2Pojo(Sell source) {
-    return conversion.convert(source, SellPojo.class);
+    SellPojo target = conversion.convert(source, SellPojo.class);
+    SellTypePojo sellType = conversion.convert(source.getSellType(), SellTypePojo.class);
+    target.setSellType(sellType);
+    ClientPojo client = conversion.convert(source.getClient(), ClientPojo.class);
+    target.setClient(client);
+    Collection<SellDetailPojo> sellDetails = convertCollection2Pojo(source.getSellDetails());
+    target.setSellDetails(sellDetails);
+    if (source.getSeller() != null) {
+      SellerPojo seller = conversion.convert(source.getSeller(), SellerPojo.class);
+      target.setSeller(seller);
+    }
+    return target;
   }
 
   @Override
