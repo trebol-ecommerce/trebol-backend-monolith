@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.DataServiceClient;
 import cl.blm.newmarketing.backend.api.GenericDataController;
+import cl.blm.newmarketing.backend.api.GenericEntityQueryController;
 import cl.blm.newmarketing.backend.api.pojo.SellerPojo;
 import cl.blm.newmarketing.backend.model.entities.Seller;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
@@ -39,7 +39,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class SellersDataController
-    extends DataServiceClient<SellerPojo, Seller, Integer>
+    extends GenericEntityQueryController<SellerPojo, Seller, Integer>
     implements GenericDataController<SellerPojo, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(SellersDataController.class);
 
@@ -73,11 +73,12 @@ public class SellersDataController
     return this.readMany(requestPageSize, null, allRequestParams);
   }
 
+  @Override
   @GetMapping("/sellers/{requestPageSize}/{requestPageIndex}")
   public Collection<SellerPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
-    Collection<SellerPojo> clients = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
+    Collection<SellerPojo> clients = super.readMany(requestPageSize, requestPageIndex, allRequestParams);
     LOG.info("{}", clients);
     return clients;
   }

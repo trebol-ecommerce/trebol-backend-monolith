@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.DataServiceClient;
+import cl.blm.newmarketing.backend.api.GenericEntityQueryController;
 import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
 import cl.blm.newmarketing.backend.model.entities.Person;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
@@ -26,7 +26,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class PeopleDataController
-    extends DataServiceClient<PersonPojo, Person, Integer> {
+    extends GenericEntityQueryController<PersonPojo, Person, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(PeopleDataController.class);
 
   @Autowired
@@ -35,21 +35,22 @@ public class PeopleDataController
   }
 
   @GetMapping("/people")
-  public Collection<PersonPojo> read(@RequestParam Map<String, String> allRequestParams) {
-    return this.read(null, null, allRequestParams);
+  public Collection<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    return this.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/people/{requestPageSize}")
-  public Collection<PersonPojo> read(@PathVariable Integer requestPageSize,
+  public Collection<PersonPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
-    return this.read(requestPageSize, null, allRequestParams);
+    return this.readMany(requestPageSize, null, allRequestParams);
   }
 
+  @Override
   @GetMapping("/people/{requestPageSize}/{requestPageIndex}")
-  public Collection<PersonPojo> read(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  public Collection<PersonPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     LOG.info("read");
-    Collection<PersonPojo> people = this.readFromService(requestPageSize, requestPageIndex, allRequestParams);
+    Collection<PersonPojo> people = super.readMany(requestPageSize, requestPageIndex, allRequestParams);
     return people;
   }
 }
