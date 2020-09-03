@@ -6,6 +6,7 @@ import java.util.Map;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.CustomProperties;
+import cl.blm.newmarketing.backend.model.GenericEntity;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**
@@ -14,7 +15,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public abstract class DataServiceClient<P, E, K> {
+public abstract class DataServiceClient<P, E extends GenericEntity<K>, K> {
 
   protected CustomProperties globals;
   protected GenericDataService<P, E, K> crudService;
