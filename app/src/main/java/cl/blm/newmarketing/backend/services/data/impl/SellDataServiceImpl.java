@@ -135,20 +135,6 @@ public class SellDataServiceImpl
     return predicate;
   }
 
-  /**
-   * Convert a pojo to an entity, save it, fetch it back with all recursive data,
-   * convert it all back to pojo and return it.
-   */
-  @Nullable
-  @Override
-  public SellPojo create(SellPojo inputPojo) {
-    LOG.debug("create({})", inputPojo);
-    Sell input = pojo2Entity(inputPojo);
-    Sell output = repository.saveAndFlush(input);
-    SellPojo outputPojo = find(output.getId());
-    return outputPojo;
-  }
-
   @Nullable
   @Override
   public SellPojo find(Integer id) {
