@@ -32,7 +32,7 @@ import cl.blm.newmarketing.backend.model.entities.ProductFamily;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**
- * API point of entry for Sell entities
+ * API point of entry for ProductFamily entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
