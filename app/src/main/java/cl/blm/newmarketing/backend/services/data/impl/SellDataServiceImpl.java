@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,6 +99,15 @@ public class SellDataServiceImpl
   @Override
   public Sell pojo2Entity(SellPojo source) {
     return conversion.convert(source, Sell.class);
+  }
+
+  @Override
+  public Page<Sell> getAllEntities(Pageable paged, Predicate filters) {
+    if (filters == null) {
+      return repository.deepFindAll(paged);
+    } else {
+      return repository.deepFindAll(filters, paged);
+    }
   }
 
   @Override
