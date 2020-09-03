@@ -1,6 +1,5 @@
 package cl.blm.newmarketing.backend.model.entities;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
@@ -22,6 +21,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import cl.blm.newmarketing.backend.model.GenericEntity;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -30,7 +31,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "sales")
 @NamedQueries({ @NamedQuery(name = "Sell.findAll", query = "SELECT s FROM Sell s") })
 public class Sell
-    implements Serializable {
+    implements GenericEntity<Integer> {
 
   private static final long serialVersionUID = 1L;
   @Id

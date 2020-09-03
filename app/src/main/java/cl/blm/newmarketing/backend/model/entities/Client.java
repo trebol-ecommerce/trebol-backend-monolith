@@ -1,7 +1,5 @@
 package cl.blm.newmarketing.backend.model.entities;
 
-import java.io.Serializable;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +14,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import cl.blm.newmarketing.backend.model.GenericEntity;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -24,7 +24,7 @@ import javax.persistence.Table;
 @Table(name = "clients")
 @NamedQueries({ @NamedQuery(name = "Client.findAll", query = "SELECT c FROM Client c") })
 public class Client
-    implements Serializable {
+    implements GenericEntity<Integer> {
 
   private static final long serialVersionUID = 1L;
   @Id
