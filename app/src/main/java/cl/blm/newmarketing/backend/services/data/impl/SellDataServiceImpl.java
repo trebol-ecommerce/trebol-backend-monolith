@@ -63,7 +63,6 @@ public class SellDataServiceImpl
     List<SellDetailPojo> sellDetails = new ArrayList<>();
     for (SellDetail sourceSellDetail : source.getSellDetails()) {
       SellDetailPojo targetSellDetail = conversion.convert(sourceSellDetail, SellDetailPojo.class);
-      // TODO is there a problem fetching PRODUCT data ?
       ProductPojo product = conversion.convert(sourceSellDetail.getProduct(), ProductPojo.class);
       targetSellDetail.setProduct(product);
       sellDetails.add(targetSellDetail);
@@ -86,9 +85,6 @@ public class SellDataServiceImpl
 
     ClientPojo client = convertClient(source);
     target.setClient(client);
-
-    List<SellDetailPojo> sellDetails = convertDetails(source);
-    target.setSellDetails(sellDetails);
 
     if (source.getSeller() != null) {
       SellerPojo seller = convertSeller(source);
@@ -145,6 +141,8 @@ public class SellDataServiceImpl
     } else {
       Sell found = personById.get();
       SellPojo foundPojo = entity2Pojo(found);
+      List<SellDetailPojo> sellDetails = convertDetails(found);
+      foundPojo.setSellDetails(sellDetails);
       return foundPojo;
     }
   }
