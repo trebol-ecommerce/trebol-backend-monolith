@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
 import cl.blm.newmarketing.backend.api.pojo.SellerPojo;
 import cl.blm.newmarketing.backend.model.entities.Person;
 import cl.blm.newmarketing.backend.model.entities.QSeller;
@@ -43,7 +44,10 @@ public class SellerDataServiceImpl
 
   @Override
   public SellerPojo entity2Pojo(Seller source) {
-    return conversion.convert(source, SellerPojo.class);
+    SellerPojo target = conversion.convert(source, SellerPojo.class);
+    PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
+    target.setPerson(person);
+    return target;
   }
 
   @Override
