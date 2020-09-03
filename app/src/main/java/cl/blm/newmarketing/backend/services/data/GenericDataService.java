@@ -14,6 +14,7 @@ import org.springframework.lang.Nullable;
 
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.backend.model.GenericEntity;
 import cl.blm.newmarketing.backend.model.GenericRepository;
 import cl.blm.newmarketing.backend.services.ConverterDataService;
 import cl.blm.newmarketing.backend.services.DataService;
@@ -28,7 +29,7 @@ import cl.blm.newmarketing.backend.services.DataService;
  * @param <E> The entity class
  * @param <I> The identifier class
  */
-public abstract class GenericDataService<P, E, I>
+public abstract class GenericDataService<P, E extends GenericEntity<I>, I>
     implements DataService<P, I>, ConverterDataService<E, P> {
   protected static Logger LOG;
 
@@ -61,12 +62,11 @@ public abstract class GenericDataService<P, E, I>
    */
   @Nullable
   @Override
-  public P create(P inputPojo) {
+  public I create(P inputPojo) {
     LOG.debug("create({})", inputPojo);
     E input = pojo2Entity(inputPojo);
     E output = repository.saveAndFlush(input);
-    P outputPojo = entity2Pojo(output);
-    return outputPojo;
+    return output.getId();
   }
 
   /**
@@ -94,7 +94,7 @@ public abstract class GenericDataService<P, E, I>
    */
   @Nullable
   @Override
-  public P update(P input, I id) {
+  public I update(P input, I id) {
     LOG.debug("update({})", input);
     Optional<E> existing = repository.findById(id);
     if (!existing.isPresent()) {
@@ -103,12 +103,11 @@ public abstract class GenericDataService<P, E, I>
       E existingEntity = existing.get();
       E newEntity = pojo2Entity(input);
       if (newEntity.equals(existingEntity)) {
-        return input;
+        return id;
       } else {
         try {
           E result = repository.saveAndFlush(newEntity);
-          P resultPojo = entity2Pojo(result);
-          return resultPojo;
+          return result.getId();
         } catch (Exception exc) {
           LOG.error("Person could not be saved");
           return null;
