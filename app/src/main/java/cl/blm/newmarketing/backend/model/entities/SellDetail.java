@@ -42,7 +42,7 @@ public class SellDetail
   @Column(name = "sell_detail_units")
   private int units;
   @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = true, updatable = false)
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @ManyToOne(optional = false, fetch = FetchType.EAGER)
   private Product product;
 
   public SellDetail() {
