@@ -43,10 +43,10 @@ public class SalesDataController
   }
 
   @PostMapping("/sell")
-  public SellPojo create(@RequestBody @Valid SellPojo input) {
+  public Integer create(@RequestBody @Valid SellPojo input) {
     LOG.info("create");
-    SellPojo result = crudService.create(input);
-    return result;
+    Integer resultId = crudService.create(input);
+    return resultId;
   }
 
   @GetMapping("/sell/{id}")
@@ -76,17 +76,17 @@ public class SalesDataController
   }
 
   @PutMapping("/sell")
-  public SellPojo update(@RequestBody @Valid SellPojo input) {
+  public Integer update(@RequestBody @Valid SellPojo input) {
     LOG.info("update");
-    SellPojo result = crudService.update(input, input.getId());
-    return result;
+    Integer resultId = crudService.update(input, input.getId());
+    return resultId;
   }
 
   @PutMapping("/sell/{id}")
-  public SellPojo update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
+  public Integer update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
     LOG.info("update");
-    SellPojo result = crudService.update(input, id);
-    return result;
+    Integer resultId = crudService.update(input, id);
+    return resultId;
   }
 
   @DeleteMapping("/sell/{id}")

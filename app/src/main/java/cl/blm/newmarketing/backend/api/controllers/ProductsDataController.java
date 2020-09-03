@@ -44,10 +44,10 @@ public class ProductsDataController
   }
 
   @PostMapping("/product")
-  public ProductPojo create(@RequestBody @Valid ProductPojo input) {
+  public Integer create(@RequestBody @Valid ProductPojo input) {
     LOG.info("create");
-    ProductPojo result = crudService.create(input);
-    return result;
+    Integer resultId = crudService.create(input);
+    return resultId;
   }
 
   @GetMapping("/product/{id}")
@@ -77,17 +77,17 @@ public class ProductsDataController
   }
 
   @PutMapping("/product")
-  public ProductPojo update(@RequestBody @Valid ProductPojo input) {
+  public Integer update(@RequestBody @Valid ProductPojo input) {
     LOG.info("update");
-    ProductPojo result = crudService.update(input, input.getId());
-    return result;
+    Integer resultId = crudService.update(input, input.getId());
+    return resultId;
   }
 
   @PutMapping("/product/{id}")
-  public ProductPojo update(@RequestBody @Valid ProductPojo input, @PathVariable Integer id) {
+  public Integer update(@RequestBody @Valid ProductPojo input, @PathVariable Integer id) {
     LOG.info("update");
-    ProductPojo result = crudService.update(input, id);
-    return result;
+    Integer resultId = crudService.update(input, id);
+    return resultId;
   }
 
   @DeleteMapping("/product/{id}")

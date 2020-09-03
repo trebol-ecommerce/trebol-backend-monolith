@@ -49,10 +49,10 @@ public class ClientsDataController
   }
 
   @PostMapping("/client")
-  public ClientPojo create(@RequestBody @Valid ClientPojo input) {
+  public Integer create(@RequestBody @Valid ClientPojo input) {
     LOG.info("create");
-    ClientPojo result = crudService.create(input);
-    return result;
+    Integer resultId = crudService.create(input);
+    return resultId;
   }
 
   @GetMapping("/client/{id}")
@@ -83,17 +83,17 @@ public class ClientsDataController
   }
 
   @PutMapping("/client")
-  public ClientPojo update(@RequestBody @Valid ClientPojo input) {
+  public Integer update(@RequestBody @Valid ClientPojo input) {
     LOG.info("update");
-    ClientPojo processed = crudService.update(input, input.getId());
-    return processed;
+    Integer resultId = crudService.update(input, input.getId());
+    return resultId;
   }
 
   @PutMapping("/client/{id}")
-  public ClientPojo update(@RequestBody @Valid ClientPojo input, @PathVariable Integer id) {
+  public Integer update(@RequestBody @Valid ClientPojo input, @PathVariable Integer id) {
     LOG.info("update");
-    ClientPojo processed = crudService.update(input, id);
-    return processed;
+    Integer resultId = crudService.update(input, id);
+    return resultId;
   }
 
   @DeleteMapping("/client/{id}")

@@ -50,10 +50,10 @@ public class ProductFamiliesDataController
   }
 
   @PostMapping("/product_family")
-  public ProductFamilyPojo create(@RequestBody @Valid ProductFamilyPojo input) {
+  public Integer create(@RequestBody @Valid ProductFamilyPojo input) {
     LOG.info("create");
-    ProductFamilyPojo result = crudService.create(input);
-    return result;
+    Integer resultId = crudService.create(input);
+    return resultId;
   }
 
   @GetMapping("/product_family/{id}")
@@ -83,17 +83,17 @@ public class ProductFamiliesDataController
   }
 
   @PutMapping("/product_family")
-  public ProductFamilyPojo update(@RequestBody @Valid ProductFamilyPojo input) {
+  public Integer update(@RequestBody @Valid ProductFamilyPojo input) {
     LOG.info("update");
-    ProductFamilyPojo result = crudService.update(input, input.getId());
-    return result;
+    Integer resultId = crudService.update(input, input.getId());
+    return resultId;
   }
 
   @PutMapping("/product_family/{id}")
-  public ProductFamilyPojo update(@RequestBody @Valid ProductFamilyPojo input, @PathVariable Integer id) {
+  public Integer update(@RequestBody @Valid ProductFamilyPojo input, @PathVariable Integer id) {
     LOG.info("update");
-    ProductFamilyPojo result = crudService.update(input, id);
-    return result;
+    Integer resultId = crudService.update(input, id);
+    return resultId;
   }
 
   @DeleteMapping("/product_family/{id}")

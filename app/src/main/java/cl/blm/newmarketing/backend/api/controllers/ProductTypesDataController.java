@@ -44,9 +44,9 @@ public class ProductTypesDataController
   }
 
   @PostMapping("/product_type")
-  public ProductTypePojo create(@RequestBody @Valid ProductTypePojo input) {
+  public Integer create(@RequestBody @Valid ProductTypePojo input) {
     LOG.info("create");
-    ProductTypePojo result = crudService.create(input);
+    Integer result = crudService.create(input);
     return result;
   }
 
@@ -77,17 +77,17 @@ public class ProductTypesDataController
   }
 
   @PutMapping("/product_type")
-  public ProductTypePojo update(@RequestBody @Valid ProductTypePojo input) {
+  public Integer update(@RequestBody @Valid ProductTypePojo input) {
     LOG.info("update");
-    ProductTypePojo result = crudService.update(input, input.getId());
-    return result;
+    Integer resultId = crudService.update(input, input.getId());
+    return resultId;
   }
 
   @PutMapping("/product_type/{id}")
-  public ProductTypePojo update(@RequestBody @Valid ProductTypePojo input, @PathVariable Integer id) {
+  public Integer update(@RequestBody @Valid ProductTypePojo input, @PathVariable Integer id) {
     LOG.info("update");
-    ProductTypePojo result = crudService.update(input, id);
-    return result;
+    Integer resultId = crudService.update(input, id);
+    return resultId;
   }
 
   @DeleteMapping("/product_type/{id}")
