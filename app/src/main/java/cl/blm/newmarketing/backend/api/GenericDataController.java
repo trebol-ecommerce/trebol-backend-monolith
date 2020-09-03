@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface GenericDataController<E, I> {
 
-  E create(E input);
+  I create(E input);
 
   E readOne(I id);
 
@@ -23,9 +23,9 @@ public interface GenericDataController<E, I> {
 
   Collection<E> readMany(Integer pageSize, Integer pageIndex, Map<String, String> requestParams);
 
-  E update(E input);
+  I update(E input);
 
-  E update(E input, Integer id);
+  I update(E input, Integer id);
 
   boolean delete(Integer id);
 }
