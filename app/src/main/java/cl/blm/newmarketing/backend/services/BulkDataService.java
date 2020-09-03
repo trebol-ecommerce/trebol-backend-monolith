@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.backend.model.GenericEntity;
+
 /**
  * A specialized extension of CrudService that supports bulk (massive) CRUD
  * operations.
@@ -13,8 +15,9 @@ import com.querydsl.core.types.Predicate;
  * @param <T> The type class of the item.
  * @param <I> The identifier type class of the item.
  */
-public interface BulkDataService<T, I>
+public interface BulkDataService<T extends GenericEntity<I>, I>
     extends DataService<T, I> {
+
   /**
    * Inserts many items.
    *

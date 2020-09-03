@@ -28,7 +28,7 @@ public interface DataService<T, I>
    *         or null if the item could not be created.
    */
   @Nullable
-  public T create(T dto);
+  public I create(T dto);
 
   /**
    * Queries a paged collection of items.
@@ -52,7 +52,7 @@ public interface DataService<T, I>
    *         found.
    */
   @Nullable
-  public T update(T dto, I id);
+  public I update(T dto, I id);
 
   /**
    * Finds an item by its ID and deletes it.
