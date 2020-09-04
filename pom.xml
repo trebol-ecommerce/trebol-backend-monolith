@@ -6,12 +6,13 @@
 	
   <groupId>cl.blm.newmarketing.backend</groupId>
   <artifactId>nm-store-rest</artifactId>
-  <version>0.7.9</version>
+  <version>${revision}</version>
   <packaging>pom</packaging>
 	
   <name>New Marketing Store REST</name>
 
   <properties>
+    <revision>0.8.0</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <java.ee.version>7.0</java.ee.version>
