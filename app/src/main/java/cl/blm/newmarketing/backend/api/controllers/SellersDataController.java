@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.GenericEntityQueryController;
+import cl.blm.newmarketing.backend.api.GenericEntityDataController;
 import cl.blm.newmarketing.backend.api.pojo.SellerPojo;
 import cl.blm.newmarketing.backend.model.entities.Seller;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
@@ -36,7 +36,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class SellersDataController
-    extends GenericEntityQueryController<SellerPojo, Seller, Integer> {
+    extends GenericEntityDataController<SellerPojo, Seller, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(SellersDataController.class);
 
   @Autowired

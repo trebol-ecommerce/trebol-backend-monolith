@@ -19,13 +19,13 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public abstract class GenericEntityQueryController<P, E extends GenericEntity<I>, I>
+public abstract class GenericEntityDataController<P, E extends GenericEntity<I>, I>
     implements CrudController<P, I> {
   protected static Logger LOG;
   protected CustomProperties globals;
   protected GenericDataService<P, E, I> dataService;
 
-  public GenericEntityQueryController(Logger logger, CustomProperties globals,
+  public GenericEntityDataController(Logger logger, CustomProperties globals,
       GenericDataService<P, E, I> dataService) {
     LOG = logger;
     this.globals = globals;

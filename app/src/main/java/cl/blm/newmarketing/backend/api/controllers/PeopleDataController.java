@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.GenericEntityQueryController;
+import cl.blm.newmarketing.backend.api.GenericEntityDataController;
 import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
 import cl.blm.newmarketing.backend.model.entities.Person;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
@@ -26,7 +26,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class PeopleDataController
-    extends GenericEntityQueryController<PersonPojo, Person, Integer> {
+    extends GenericEntityDataController<PersonPojo, Person, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(PeopleDataController.class);
 
   @Autowired
