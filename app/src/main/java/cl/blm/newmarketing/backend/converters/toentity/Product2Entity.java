@@ -17,9 +17,15 @@ public class Product2Entity
     target.setName(source.getName());
     target.setBarcode(source.getBarcode());
     target.setPrice(source.getPrice());
-    target.setStockCurrent(source.getCurrentStock());
-    target.setStockCritical(source.getCriticalStock());
     target.setProductType(new ProductType(source.getProductType().getId()));
+
+    if (source.getCurrentStock() != null) {
+      target.setStockCurrent(source.getCurrentStock());
+    }
+
+    if (source.getCriticalStock() != null) {
+      target.setStockCritical(source.getCriticalStock());
+    }
     return target;
   }
 }
