@@ -1,9 +1,12 @@
 package cl.blm.newmarketing.backend.api;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.querydsl.core.types.Predicate;
 
@@ -107,5 +110,16 @@ public abstract class GenericEntityQueryController<P, E extends GenericEntity<I>
     LOG.info("delete");
     boolean result = dataService.delete(id);
     return result;
+  }
+
+  public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    LOG.warn("MethodArgumentNotValidException handled: {}", ex.getMessage());
+    Map<String, String> errors = new HashMap<>();
+    ex.getBindingResult().getAllErrors().forEach((error) -> {
+      String fieldName = ((FieldError) error).getField();
+      String errorMessage = error.getDefaultMessage();
+      errors.put(fieldName, errorMessage);
+    });
+    return errors;
   }
 }
