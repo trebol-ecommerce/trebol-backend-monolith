@@ -11,7 +11,7 @@ import java.util.Map;
  * @param <P> The Pojo class
  * @param <P> The Identifier class
  */
-public interface GenericDataController<P, I> {
+public interface CrudController<P, I> {
 
   I create(P input);
 

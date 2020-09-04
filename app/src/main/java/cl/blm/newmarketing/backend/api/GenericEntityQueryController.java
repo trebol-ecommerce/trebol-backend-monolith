@@ -20,7 +20,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 public abstract class GenericEntityQueryController<P, E extends GenericEntity<I>, I>
-    implements GenericDataController<P, I> {
+    implements CrudController<P, I> {
   protected static Logger LOG;
   protected CustomProperties globals;
   protected GenericDataService<P, E, I> dataService;
