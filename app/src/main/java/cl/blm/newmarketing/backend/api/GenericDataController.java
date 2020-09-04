@@ -17,13 +17,7 @@ public interface GenericDataController<P, I> {
 
   P readOne(I id);
 
-  Collection<P> readMany(Map<String, String> requestParams);
-
-  Collection<P> readMany(Integer pageSize, Map<String, String> requestParams);
-
   Collection<P> readMany(Integer pageSize, Integer pageIndex, Map<String, String> requestParams);
-
-  I update(P input);
 
   I update(P input, Integer id);
 
