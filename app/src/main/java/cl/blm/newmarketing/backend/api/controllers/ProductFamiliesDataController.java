@@ -1,7 +1,6 @@
 package cl.blm.newmarketing.backend.api.controllers;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -10,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.GenericDataController;
 import cl.blm.newmarketing.backend.api.GenericEntityQueryController;
 import cl.blm.newmarketing.backend.api.pojo.ProductFamilyPojo;
 import cl.blm.newmarketing.backend.model.entities.ProductFamily;
@@ -39,39 +36,36 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class ProductFamiliesDataController
-    extends GenericEntityQueryController<ProductFamilyPojo, ProductFamily, Integer>
-    implements GenericDataController<ProductFamilyPojo, Integer> {
+    extends GenericEntityQueryController<ProductFamilyPojo, ProductFamily, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(ProductFamiliesDataController.class);
 
   @Autowired
   public ProductFamiliesDataController(CustomProperties globals,
       GenericDataService<ProductFamilyPojo, ProductFamily, Integer> crudService) {
-    super(globals, crudService);
+    super(LOG, globals, crudService);
   }
 
+  @Override
   @PostMapping("/product_family")
   public Integer create(@RequestBody @Valid ProductFamilyPojo input) {
-    LOG.info("create");
-    Integer resultId = dataService.create(input);
-    return resultId;
+    return super.create(input);
   }
 
+  @Override
   @GetMapping("/product_family/{id}")
   public ProductFamilyPojo readOne(@PathVariable Integer id) {
-    LOG.info("read");
-    ProductFamilyPojo found = dataService.find(id);
-    return found;
+    return super.readOne(id);
   }
 
   @GetMapping("/product_families")
   public Collection<ProductFamilyPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return this.readMany(null, null, allRequestParams);
+    return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/product_families/{requestPageSize}")
   public Collection<ProductFamilyPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
-    return this.readMany(requestPageSize, null, allRequestParams);
+    return super.readMany(requestPageSize, null, allRequestParams);
   }
 
   @Override
@@ -85,35 +79,25 @@ public class ProductFamiliesDataController
 
   @PutMapping("/product_family")
   public Integer update(@RequestBody @Valid ProductFamilyPojo input) {
-    LOG.info("update");
-    Integer resultId = dataService.update(input, input.getId());
-    return resultId;
+    return super.update(input, input.getId());
   }
 
+  @Override
   @PutMapping("/product_family/{id}")
   public Integer update(@RequestBody @Valid ProductFamilyPojo input, @PathVariable Integer id) {
-    LOG.info("update");
-    Integer resultId = dataService.update(input, id);
-    return resultId;
+    return super.update(input, id);
   }
 
+  @Override
   @DeleteMapping("/product_family/{id}")
   public boolean delete(@PathVariable Integer id) {
-    LOG.info("delete");
-    boolean result = dataService.delete(id);
-    return result;
+    return super.delete(id);
   }
 
+  @Override
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-    LOG.info("exception handled");
-    Map<String, String> errors = new HashMap<>();
-    ex.getBindingResult().getAllErrors().forEach((error) -> {
-      String fieldName = ((FieldError) error).getField();
-      String errorMessage = error.getDefaultMessage();
-      errors.put(fieldName, errorMessage);
-    });
-    return errors;
+    return super.handleValidationExceptions(ex);
   }
 }

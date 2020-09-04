@@ -31,7 +31,7 @@ public class PeopleDataController
 
   @Autowired
   public PeopleDataController(CustomProperties globals, GenericDataService<PersonPojo, Person, Integer> crudService) {
-    super(globals, crudService);
+    super(LOG, globals, crudService);
   }
 
   @GetMapping("/people")
@@ -49,8 +49,6 @@ public class PeopleDataController
   @GetMapping("/people/{requestPageSize}/{requestPageIndex}")
   public Collection<PersonPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
-    LOG.info("read");
-    Collection<PersonPojo> people = super.readMany(requestPageSize, requestPageIndex, allRequestParams);
-    return people;
+    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 }

@@ -8,7 +8,10 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +19,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.api.GenericDataController;
 import cl.blm.newmarketing.backend.api.GenericEntityQueryController;
 import cl.blm.newmarketing.backend.api.pojo.ProductPojo;
 import cl.blm.newmarketing.backend.model.entities.Product;
@@ -33,68 +36,66 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @RestController
 @RequestMapping("/api")
 public class ProductsDataController
-    extends GenericEntityQueryController<ProductPojo, Product, Integer>
-    implements GenericDataController<ProductPojo, Integer> {
+    extends GenericEntityQueryController<ProductPojo, Product, Integer> {
   private final static Logger LOG = LoggerFactory.getLogger(ProductsDataController.class);
 
   @Autowired
   public ProductsDataController(CustomProperties globals,
       GenericDataService<ProductPojo, Product, Integer> crudService) {
-    super(globals, crudService);
+    super(LOG, globals, crudService);
   }
 
+  @Override
   @PostMapping("/product")
   public Integer create(@RequestBody @Valid ProductPojo input) {
-    LOG.info("create");
-    Integer resultId = dataService.create(input);
-    return resultId;
+    return super.create(input);
   }
 
+  @Override
   @GetMapping("/product/{id}")
   public ProductPojo readOne(@PathVariable Integer id) {
-    LOG.info("read");
-    ProductPojo found = dataService.find(id);
-    return found;
+    return super.readOne(id);
   }
 
   @GetMapping("/products")
   public Collection<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return this.readMany(null, null, allRequestParams);
+    return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}")
   public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
-    return this.readMany(requestPageSize, null, allRequestParams);
+    return super.readMany(requestPageSize, null, allRequestParams);
   }
 
   @Override
   @GetMapping("/products/{requestPageSize}/{requestPageIndex}")
   public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
-    LOG.info("read");
-    Collection<ProductPojo> products = super.readMany(requestPageSize, requestPageIndex, allRequestParams);
-    return products;
+    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
   @PutMapping("/product")
   public Integer update(@RequestBody @Valid ProductPojo input) {
-    LOG.info("update");
-    Integer resultId = dataService.update(input, input.getId());
-    return resultId;
+    return super.update(input, input.getId());
   }
 
+  @Override
   @PutMapping("/product/{id}")
   public Integer update(@RequestBody @Valid ProductPojo input, @PathVariable Integer id) {
-    LOG.info("update");
-    Integer resultId = dataService.update(input, id);
-    return resultId;
+    return super.update(input, id);
   }
 
+  @Override
   @DeleteMapping("/product/{id}")
   public boolean delete(@PathVariable Integer id) {
-    LOG.info("delete");
-    boolean result = dataService.delete(id);
-    return result;
+    return super.delete(id);
+  }
+
+  @Override
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    return super.handleValidationExceptions(ex);
   }
 }
