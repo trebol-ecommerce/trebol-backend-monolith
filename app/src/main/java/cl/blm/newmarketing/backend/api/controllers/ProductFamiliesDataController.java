@@ -52,14 +52,14 @@ public class ProductFamiliesDataController
   @PostMapping("/product_family")
   public Integer create(@RequestBody @Valid ProductFamilyPojo input) {
     LOG.info("create");
-    Integer resultId = crudService.create(input);
+    Integer resultId = dataService.create(input);
     return resultId;
   }
 
   @GetMapping("/product_family/{id}")
   public ProductFamilyPojo readOne(@PathVariable Integer id) {
     LOG.info("read");
-    ProductFamilyPojo found = crudService.find(id);
+    ProductFamilyPojo found = dataService.find(id);
     return found;
   }
 
@@ -86,21 +86,21 @@ public class ProductFamiliesDataController
   @PutMapping("/product_family")
   public Integer update(@RequestBody @Valid ProductFamilyPojo input) {
     LOG.info("update");
-    Integer resultId = crudService.update(input, input.getId());
+    Integer resultId = dataService.update(input, input.getId());
     return resultId;
   }
 
   @PutMapping("/product_family/{id}")
   public Integer update(@RequestBody @Valid ProductFamilyPojo input, @PathVariable Integer id) {
     LOG.info("update");
-    Integer resultId = crudService.update(input, id);
+    Integer resultId = dataService.update(input, id);
     return resultId;
   }
 
   @DeleteMapping("/product_family/{id}")
   public boolean delete(@PathVariable Integer id) {
     LOG.info("delete");
-    boolean result = crudService.delete(id);
+    boolean result = dataService.delete(id);
     return result;
   }
 

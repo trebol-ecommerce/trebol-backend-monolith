@@ -46,14 +46,14 @@ public class ProductTypesDataController
   @PostMapping("/product_type")
   public Integer create(@RequestBody @Valid ProductTypePojo input) {
     LOG.info("create");
-    Integer result = crudService.create(input);
+    Integer result = dataService.create(input);
     return result;
   }
 
   @GetMapping("/product_type/{id}")
   public ProductTypePojo readOne(@PathVariable Integer id) {
     LOG.info("read");
-    ProductTypePojo found = crudService.find(id);
+    ProductTypePojo found = dataService.find(id);
     return found;
   }
 
@@ -80,21 +80,21 @@ public class ProductTypesDataController
   @PutMapping("/product_type")
   public Integer update(@RequestBody @Valid ProductTypePojo input) {
     LOG.info("update");
-    Integer resultId = crudService.update(input, input.getId());
+    Integer resultId = dataService.update(input, input.getId());
     return resultId;
   }
 
   @PutMapping("/product_type/{id}")
   public Integer update(@RequestBody @Valid ProductTypePojo input, @PathVariable Integer id) {
     LOG.info("update");
-    Integer resultId = crudService.update(input, id);
+    Integer resultId = dataService.update(input, id);
     return resultId;
   }
 
   @DeleteMapping("/product_type/{id}")
   public boolean delete(@PathVariable Integer id) {
     LOG.info("delete");
-    boolean result = crudService.delete(id);
+    boolean result = dataService.delete(id);
     return result;
   }
 }

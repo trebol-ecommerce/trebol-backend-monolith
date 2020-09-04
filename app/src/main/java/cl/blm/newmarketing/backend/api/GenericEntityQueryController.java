@@ -10,19 +10,18 @@ import cl.blm.newmarketing.backend.model.GenericEntity;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**
- * A basic setup for a class that communicates with a CrudService interface
- * implementation (should be a @RestController).
+ * Abstraction for controllers that communicate with a GenericDataService.
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public abstract class GenericEntityQueryController<P, E extends GenericEntity<K>, K> {
+public abstract class GenericEntityQueryController<P, E extends GenericEntity<I>, I> {
 
   protected CustomProperties globals;
-  protected GenericDataService<P, E, K> crudService;
+  protected GenericDataService<P, E, I> dataService;
 
-  public GenericEntityQueryController(CustomProperties globals, GenericDataService<P, E, K> crudService) {
+  public GenericEntityQueryController(CustomProperties globals, GenericDataService<P, E, I> dataService) {
     this.globals = globals;
-    this.crudService = crudService;
+    this.dataService = dataService;
   }
 
   /**
@@ -38,7 +37,7 @@ public abstract class GenericEntityQueryController<P, E extends GenericEntity<K>
    */
   public Collection<P> readMany(Integer requestPageSize, Integer requestPageIndex,
       Map<String, String> allRequestParams) {
-    if (this.crudService == null) {
+    if (this.dataService == null) {
       throw new Error("CrudService is not implemented properly in calling controller");
     }
     int pageSize = globals.ITEMS_PER_PAGE;
@@ -52,9 +51,9 @@ public abstract class GenericEntityQueryController<P, E extends GenericEntity<K>
       pageIndex = requestPageIndex - 1;
     }
     if (allRequestParams != null && !allRequestParams.isEmpty()) {
-      filters = crudService.queryParamsMapToPredicate(allRequestParams);
+      filters = dataService.queryParamsMapToPredicate(allRequestParams);
     }
 
-    return crudService.read(pageSize, pageIndex, filters);
+    return dataService.read(pageSize, pageIndex, filters);
   }
 }

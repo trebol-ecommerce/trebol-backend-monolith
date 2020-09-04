@@ -51,14 +51,14 @@ public class ClientsDataController
   @PostMapping("/client")
   public Integer create(@RequestBody @Valid ClientPojo input) {
     LOG.info("create");
-    Integer resultId = crudService.create(input);
+    Integer resultId = dataService.create(input);
     return resultId;
   }
 
   @GetMapping("/client/{id}")
   public ClientPojo readOne(@PathVariable Integer id) {
     LOG.info("read");
-    ClientPojo found = crudService.find(id);
+    ClientPojo found = dataService.find(id);
     return found;
   }
 
@@ -86,21 +86,21 @@ public class ClientsDataController
   @PutMapping("/client")
   public Integer update(@RequestBody @Valid ClientPojo input) {
     LOG.info("update");
-    Integer resultId = crudService.update(input, input.getId());
+    Integer resultId = dataService.update(input, input.getId());
     return resultId;
   }
 
   @PutMapping("/client/{id}")
   public Integer update(@RequestBody @Valid ClientPojo input, @PathVariable Integer id) {
     LOG.info("update");
-    Integer resultId = crudService.update(input, id);
+    Integer resultId = dataService.update(input, id);
     return resultId;
   }
 
   @DeleteMapping("/client/{id}")
   public boolean delete(@PathVariable Integer id) {
     LOG.info("delete");
-    boolean result = crudService.delete(id);
+    boolean result = dataService.delete(id);
     return result;
   }
 
