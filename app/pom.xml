@@ -12,7 +12,7 @@
   <artifactId>nm-store-rest-app</artifactId>
   <packaging>war</packaging>
 
-  <name>New Marketing Store REST App</name>
+  <name>REST API program</name>
 
   <properties>
     <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

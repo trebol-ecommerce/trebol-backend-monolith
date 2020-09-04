@@ -11,7 +11,7 @@
   <artifactId>nm-store-rest-package</artifactId>
   <packaging>ear</packaging>
 
-  <name>New Marketing Store REST Package</name>
+  <name>Packaging JAR</name>
 	
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
