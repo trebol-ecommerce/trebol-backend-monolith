@@ -8,24 +8,24 @@ import java.util.Map;
  * 
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * 
- * @param <P> The Entity class
- * @param <E> The Identifier class
+ * @param <P> The Pojo class
+ * @param <P> The Identifier class
  */
-public interface GenericDataController<E, I> {
+public interface GenericDataController<P, I> {
 
-  I create(E input);
+  I create(P input);
 
-  E readOne(I id);
+  P readOne(I id);
 
-  Collection<E> readMany(Map<String, String> requestParams);
+  Collection<P> readMany(Map<String, String> requestParams);
 
-  Collection<E> readMany(Integer pageSize, Map<String, String> requestParams);
+  Collection<P> readMany(Integer pageSize, Map<String, String> requestParams);
 
-  Collection<E> readMany(Integer pageSize, Integer pageIndex, Map<String, String> requestParams);
+  Collection<P> readMany(Integer pageSize, Integer pageIndex, Map<String, String> requestParams);
 
-  I update(E input);
+  I update(P input);
 
-  I update(E input, Integer id);
+  I update(P input, Integer id);
 
   boolean delete(Integer id);
 }
