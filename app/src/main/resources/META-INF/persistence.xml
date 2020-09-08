@@ -11,6 +11,9 @@
     <class>cl.blm.newmarketing.backend.model.entities.Sell</class>
     <class>cl.blm.newmarketing.backend.model.entities.SellType</class>
     <class>cl.blm.newmarketing.backend.model.entities.SellDetail</class>
+    <class>cl.blm.newmarketing.backend.model.entities.UserRole</class>
+    <class>cl.blm.newmarketing.backend.model.entities.User</class>
+    <class>cl.blm.newmarketing.backend.model.entities.Session</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://192.168.0.3:3306/nm_store"/>
