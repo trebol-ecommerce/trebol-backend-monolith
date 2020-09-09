@@ -1,22 +1,18 @@
 package cl.blm.newmarketing.backend.model.entities;
 
-import cl.blm.newmarketing.backend.model.GenericEntity;
-import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import cl.blm.newmarketing.backend.model.GenericEntity;
 
 /**
  *
@@ -24,9 +20,9 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "user_roles")
-@NamedQueries({
-  @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u")})
-public class UserRole implements GenericEntity<Integer> {
+@NamedQueries({ @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u") })
+public class UserRole
+    implements GenericEntity<Integer> {
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -92,5 +88,5 @@ public class UserRole implements GenericEntity<Integer> {
   public String toString() {
     return "cl.blm.newmarketing.backend.model.entities.UserRole[ userRoleId=" + id + " ]";
   }
-  
+
 }

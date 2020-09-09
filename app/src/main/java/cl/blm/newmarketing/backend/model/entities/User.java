@@ -1,8 +1,5 @@
 package cl.blm.newmarketing.backend.model.entities;
 
-import cl.blm.newmarketing.backend.model.GenericEntity;
-import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import cl.blm.newmarketing.backend.model.GenericEntity;
 
 /**
  *
@@ -25,9 +23,9 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "users")
-@NamedQueries({
-  @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")})
-public class User implements GenericEntity<Integer> {
+@NamedQueries({ @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u") })
+public class User
+    implements GenericEntity<Integer> {
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -129,5 +127,5 @@ public class User implements GenericEntity<Integer> {
   public String toString() {
     return "cl.blm.newmarketing.backend.model.entities.User[ userId=" + id + " ]";
   }
-  
+
 }
