@@ -3,8 +3,6 @@ package cl.blm.newmarketing.backend.api.controllers;
 import java.util.Collection;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,22 +25,22 @@ import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 @RequestMapping("/api")
 public class PeopleDataController
     extends GenericEntityDataController<PersonPojo, Person, Integer> {
-  private final static Logger LOG = LoggerFactory.getLogger(PeopleDataController.class);
 
   @Autowired
-  public PeopleDataController(CustomProperties globals, GenericEntityDataService<PersonPojo, Person, Integer> crudService) {
-    super(LOG, globals, crudService);
+  public PeopleDataController(CustomProperties globals,
+      GenericEntityDataService<PersonPojo, Person, Integer> crudService) {
+    super(globals, crudService);
   }
 
   @GetMapping("/people")
   public Collection<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return this.readMany(null, null, allRequestParams);
+    return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/people/{requestPageSize}")
   public Collection<PersonPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
-    return this.readMany(requestPageSize, null, allRequestParams);
+    return super.readMany(requestPageSize, null, allRequestParams);
   }
 
   @Override

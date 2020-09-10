@@ -5,8 +5,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,12 +35,11 @@ import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 @RequestMapping("/api")
 public class SellTypesDataController
     extends GenericEntityDataController<SellTypePojo, SellType, Integer> {
-  private final static Logger LOG = LoggerFactory.getLogger(SellTypesDataController.class);
 
   @Autowired
   public SellTypesDataController(CustomProperties globals,
       GenericEntityDataService<SellTypePojo, SellType, Integer> crudService) {
-    super(LOG, globals, crudService);
+    super(globals, crudService);
   }
 
   @Override

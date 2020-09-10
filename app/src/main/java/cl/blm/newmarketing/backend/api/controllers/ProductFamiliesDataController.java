@@ -5,8 +5,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,12 +35,11 @@ import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 @RequestMapping("/api")
 public class ProductFamiliesDataController
     extends GenericEntityDataController<ProductFamilyPojo, ProductFamily, Integer> {
-  private final static Logger LOG = LoggerFactory.getLogger(ProductFamiliesDataController.class);
 
   @Autowired
   public ProductFamiliesDataController(CustomProperties globals,
       GenericEntityDataService<ProductFamilyPojo, ProductFamily, Integer> crudService) {
-    super(LOG, globals, crudService);
+    super(globals, crudService);
   }
 
   @Override
@@ -72,9 +69,7 @@ public class ProductFamiliesDataController
   @GetMapping("/product_families/{requestPageSize}/{requestPageIndex}")
   public Collection<ProductFamilyPojo> readMany(@PathVariable Integer requestPageSize,
       @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
-    LOG.info("read");
-    Collection<ProductFamilyPojo> sales = super.readMany(requestPageSize, requestPageIndex, allRequestParams);
-    return sales;
+    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
   @PutMapping("/product_family")
