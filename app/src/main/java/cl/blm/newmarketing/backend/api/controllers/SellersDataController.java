@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.GenericEntityDataController;
 import cl.blm.newmarketing.backend.api.pojo.SellerPojo;
-import cl.blm.newmarketing.backend.model.entities.Seller;
+import cl.blm.newmarketing.backend.jpa.entities.Seller;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**

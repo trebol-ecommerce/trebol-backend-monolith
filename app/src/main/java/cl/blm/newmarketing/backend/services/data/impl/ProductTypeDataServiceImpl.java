@@ -15,9 +15,9 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.api.pojo.ProductTypePojo;
-import cl.blm.newmarketing.backend.model.entities.ProductType;
-import cl.blm.newmarketing.backend.model.entities.QProductType;
-import cl.blm.newmarketing.backend.model.repositories.ProductTypesRepository;
+import cl.blm.newmarketing.backend.jpa.entities.ProductType;
+import cl.blm.newmarketing.backend.jpa.repositories.ProductTypesRepository;
+import cl.blm.newmarketing.backend.jpa.entities.QProductType;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**

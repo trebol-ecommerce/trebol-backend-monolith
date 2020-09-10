@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 
 import cl.blm.newmarketing.backend.api.pojo.SellDetailPojo;
 import cl.blm.newmarketing.backend.api.pojo.SellPojo;
-import cl.blm.newmarketing.backend.model.entities.Client;
-import cl.blm.newmarketing.backend.model.entities.Product;
-import cl.blm.newmarketing.backend.model.entities.Sell;
-import cl.blm.newmarketing.backend.model.entities.SellDetail;
-import cl.blm.newmarketing.backend.model.entities.SellType;
-import cl.blm.newmarketing.backend.model.entities.Seller;
+import cl.blm.newmarketing.backend.jpa.entities.Client;
+import cl.blm.newmarketing.backend.jpa.entities.Product;
+import cl.blm.newmarketing.backend.jpa.entities.Sell;
+import cl.blm.newmarketing.backend.jpa.entities.SellDetail;
+import cl.blm.newmarketing.backend.jpa.entities.SellType;
+import cl.blm.newmarketing.backend.jpa.entities.Seller;
 
 @Component
 public class Sell2Entity

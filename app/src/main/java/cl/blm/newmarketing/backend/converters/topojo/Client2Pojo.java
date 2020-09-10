@@ -4,7 +4,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import cl.blm.newmarketing.backend.api.pojo.ClientPojo;
-import cl.blm.newmarketing.backend.model.entities.Client;
+import cl.blm.newmarketing.backend.jpa.entities.Client;
 
 @Component
 public class Client2Pojo

@@ -16,10 +16,10 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.api.pojo.ClientPojo;
 import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
-import cl.blm.newmarketing.backend.model.entities.Client;
-import cl.blm.newmarketing.backend.model.entities.Person;
-import cl.blm.newmarketing.backend.model.entities.QClient;
-import cl.blm.newmarketing.backend.model.repositories.ClientsRepository;
+import cl.blm.newmarketing.backend.jpa.entities.Client;
+import cl.blm.newmarketing.backend.jpa.entities.Person;
+import cl.blm.newmarketing.backend.jpa.repositories.ClientsRepository;
+import cl.blm.newmarketing.backend.jpa.entities.QClient;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**

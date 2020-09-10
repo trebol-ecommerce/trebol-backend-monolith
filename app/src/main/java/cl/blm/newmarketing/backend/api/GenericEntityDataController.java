@@ -11,7 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.CustomProperties;
-import cl.blm.newmarketing.backend.model.GenericEntity;
+import cl.blm.newmarketing.backend.jpa.GenericEntity;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**

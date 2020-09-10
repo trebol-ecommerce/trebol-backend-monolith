@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.backend.model.GenericEntity;
+import cl.blm.newmarketing.backend.jpa.GenericEntity;
 
 /**
  * A specialized extension of CrudService that supports bulk (massive) CRUD

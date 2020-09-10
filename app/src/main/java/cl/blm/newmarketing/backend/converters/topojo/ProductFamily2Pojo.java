@@ -4,7 +4,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import cl.blm.newmarketing.backend.api.pojo.ProductFamilyPojo;
-import cl.blm.newmarketing.backend.model.entities.ProductFamily;
+import cl.blm.newmarketing.backend.jpa.entities.ProductFamily;
 
 @Component
 public class ProductFamily2Pojo

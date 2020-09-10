@@ -14,8 +14,8 @@ import org.springframework.lang.Nullable;
 
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.backend.model.GenericEntity;
-import cl.blm.newmarketing.backend.model.GenericRepository;
+import cl.blm.newmarketing.backend.jpa.GenericEntity;
+import cl.blm.newmarketing.backend.jpa.GenericRepository;
 import cl.blm.newmarketing.backend.services.ConverterDataService;
 import cl.blm.newmarketing.backend.services.DataService;
 

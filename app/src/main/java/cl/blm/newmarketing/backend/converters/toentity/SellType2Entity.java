@@ -4,7 +4,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import cl.blm.newmarketing.backend.api.pojo.SellTypePojo;
-import cl.blm.newmarketing.backend.model.entities.SellType;
+import cl.blm.newmarketing.backend.jpa.entities.SellType;
 
 @Component
 public class SellType2Entity

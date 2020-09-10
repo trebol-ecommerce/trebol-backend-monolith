@@ -28,10 +28,10 @@ import cl.blm.newmarketing.backend.api.pojo.SellDetailPojo;
 import cl.blm.newmarketing.backend.api.pojo.SellPojo;
 import cl.blm.newmarketing.backend.api.pojo.SellTypePojo;
 import cl.blm.newmarketing.backend.api.pojo.SellerPojo;
-import cl.blm.newmarketing.backend.model.entities.QSell;
-import cl.blm.newmarketing.backend.model.entities.Sell;
-import cl.blm.newmarketing.backend.model.entities.SellDetail;
-import cl.blm.newmarketing.backend.model.repositories.SalesRepository;
+import cl.blm.newmarketing.backend.jpa.entities.Sell;
+import cl.blm.newmarketing.backend.jpa.entities.SellDetail;
+import cl.blm.newmarketing.backend.jpa.repositories.SalesRepository;
+import cl.blm.newmarketing.backend.jpa.entities.QSell;
 import cl.blm.newmarketing.backend.services.data.GenericDataService;
 
 /**

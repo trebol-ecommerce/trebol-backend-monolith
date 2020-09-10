@@ -2,18 +2,18 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="cl.blm.examples_spring-rest-ws-app_war_0.7.1PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>cl.blm.newmarketing.backend.model.entities.Client</class>
-    <class>cl.blm.newmarketing.backend.model.entities.ProductFamily</class>
-    <class>cl.blm.newmarketing.backend.model.entities.Product</class>
-    <class>cl.blm.newmarketing.backend.model.entities.Person</class>
-    <class>cl.blm.newmarketing.backend.model.entities.Seller</class>
-    <class>cl.blm.newmarketing.backend.model.entities.ProductType</class>
-    <class>cl.blm.newmarketing.backend.model.entities.Sell</class>
-    <class>cl.blm.newmarketing.backend.model.entities.SellType</class>
-    <class>cl.blm.newmarketing.backend.model.entities.SellDetail</class>
-    <class>cl.blm.newmarketing.backend.model.entities.UserRole</class>
-    <class>cl.blm.newmarketing.backend.model.entities.User</class>
-    <class>cl.blm.newmarketing.backend.model.entities.Session</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.Client</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.ProductFamily</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.Product</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.Person</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.Seller</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.ProductType</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.Sell</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.SellType</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.SellDetail</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.UserRole</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.User</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.Session</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://192.168.0.3:3306/nm_store"/>

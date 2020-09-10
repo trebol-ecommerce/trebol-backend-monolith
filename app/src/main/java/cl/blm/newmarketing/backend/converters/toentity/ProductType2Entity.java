@@ -4,8 +4,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import cl.blm.newmarketing.backend.api.pojo.ProductTypePojo;
-import cl.blm.newmarketing.backend.model.entities.ProductFamily;
-import cl.blm.newmarketing.backend.model.entities.ProductType;
+import cl.blm.newmarketing.backend.jpa.entities.ProductFamily;
+import cl.blm.newmarketing.backend.jpa.entities.ProductType;
 
 @Component
 public class ProductType2Entity
