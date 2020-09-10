@@ -32,7 +32,7 @@ import cl.blm.newmarketing.backend.jpa.entities.Sell;
 import cl.blm.newmarketing.backend.jpa.entities.SellDetail;
 import cl.blm.newmarketing.backend.jpa.repositories.SalesRepository;
 import cl.blm.newmarketing.backend.jpa.entities.QSell;
-import cl.blm.newmarketing.backend.services.data.GenericDataService;
+import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 
 /**
  *
@@ -41,7 +41,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class SellDataServiceImpl
-    extends GenericDataService<SellPojo, Sell, Integer> {
+    extends GenericEntityDataService<SellPojo, Sell, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellDataServiceImpl.class);
 
   private SalesRepository repository;

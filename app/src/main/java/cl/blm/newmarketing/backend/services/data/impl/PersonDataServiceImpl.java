@@ -16,7 +16,7 @@ import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
 import cl.blm.newmarketing.backend.jpa.entities.Person;
 import cl.blm.newmarketing.backend.jpa.repositories.PeopleRepository;
 import cl.blm.newmarketing.backend.jpa.entities.QPerson;
-import cl.blm.newmarketing.backend.services.data.GenericDataService;
+import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 
 /**
  *
@@ -25,7 +25,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class PersonDataServiceImpl
-    extends GenericDataService<PersonPojo, Person, Integer> {
+    extends GenericEntityDataService<PersonPojo, Person, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(PersonDataServiceImpl.class);
 
   private ConversionService conversion;

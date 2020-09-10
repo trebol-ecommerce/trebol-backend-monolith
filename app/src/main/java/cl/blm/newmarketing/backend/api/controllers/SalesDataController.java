@@ -26,7 +26,7 @@ import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.GenericEntityDataController;
 import cl.blm.newmarketing.backend.api.pojo.SellPojo;
 import cl.blm.newmarketing.backend.jpa.entities.Sell;
-import cl.blm.newmarketing.backend.services.data.GenericDataService;
+import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 
 /**
  * API point of entry for Sell entities
@@ -40,7 +40,7 @@ public class SalesDataController
   private final static Logger LOG = LoggerFactory.getLogger(SalesDataController.class);
 
   @Autowired
-  public SalesDataController(CustomProperties globals, GenericDataService<SellPojo, Sell, Integer> crudService) {
+  public SalesDataController(CustomProperties globals, GenericEntityDataService<SellPojo, Sell, Integer> crudService) {
     super(LOG, globals, crudService);
   }
 

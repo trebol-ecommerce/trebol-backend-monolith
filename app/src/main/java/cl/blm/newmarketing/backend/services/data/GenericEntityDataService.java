@@ -16,8 +16,8 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.jpa.GenericEntity;
 import cl.blm.newmarketing.backend.jpa.GenericRepository;
-import cl.blm.newmarketing.backend.services.ConverterDataService;
-import cl.blm.newmarketing.backend.services.DataService;
+import cl.blm.newmarketing.backend.services.TwoWayEntityPojoConverter;
+import cl.blm.newmarketing.backend.services.EntityDataService;
 
 /**
  * Abstract service that sends and receives data with pojos and keep entities
@@ -29,13 +29,13 @@ import cl.blm.newmarketing.backend.services.DataService;
  * @param <E> The entity class
  * @param <I> The identifier class
  */
-public abstract class GenericDataService<P, E extends GenericEntity<I>, I>
-    implements DataService<P, I>, ConverterDataService<E, P> {
+public abstract class GenericEntityDataService<P, E extends GenericEntity<I>, I>
+    implements EntityDataService<P, I>, TwoWayEntityPojoConverter<E, P> {
   protected static Logger LOG;
 
   protected GenericRepository<E, I> repository;
 
-  public GenericDataService(Logger logger, GenericRepository<E, I> repository) {
+  public GenericEntityDataService(Logger logger, GenericRepository<E, I> repository) {
     LOG = logger;
     this.repository = repository;
   }

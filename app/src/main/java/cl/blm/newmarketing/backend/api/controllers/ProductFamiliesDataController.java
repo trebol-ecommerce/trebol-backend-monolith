@@ -26,7 +26,7 @@ import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.GenericEntityDataController;
 import cl.blm.newmarketing.backend.api.pojo.ProductFamilyPojo;
 import cl.blm.newmarketing.backend.jpa.entities.ProductFamily;
-import cl.blm.newmarketing.backend.services.data.GenericDataService;
+import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 
 /**
  * API point of entry for ProductFamily entities
@@ -41,7 +41,7 @@ public class ProductFamiliesDataController
 
   @Autowired
   public ProductFamiliesDataController(CustomProperties globals,
-      GenericDataService<ProductFamilyPojo, ProductFamily, Integer> crudService) {
+      GenericEntityDataService<ProductFamilyPojo, ProductFamily, Integer> crudService) {
     super(LOG, globals, crudService);
   }
 

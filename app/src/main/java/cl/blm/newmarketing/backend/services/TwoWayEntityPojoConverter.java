@@ -9,7 +9,7 @@ package cl.blm.newmarketing.backend.services;
  * @param <E> The Entity class
  * @param <P> The Pojo class
  */
-public interface ConverterDataService<E, P> {
+public interface TwoWayEntityPojoConverter<E, P> {
   P entity2Pojo(E source);
 
   E pojo2Entity(P source);

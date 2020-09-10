@@ -20,7 +20,7 @@ import cl.blm.newmarketing.backend.jpa.entities.Person;
 import cl.blm.newmarketing.backend.jpa.entities.Seller;
 import cl.blm.newmarketing.backend.jpa.repositories.SellersRepository;
 import cl.blm.newmarketing.backend.jpa.entities.QSeller;
-import cl.blm.newmarketing.backend.services.data.GenericDataService;
+import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 
 /**
  *
@@ -29,7 +29,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class SellerDataServiceImpl
-    extends GenericDataService<SellerPojo, Seller, Integer> {
+    extends GenericEntityDataService<SellerPojo, Seller, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellerDataServiceImpl.class);
 
   private SellersRepository repository;

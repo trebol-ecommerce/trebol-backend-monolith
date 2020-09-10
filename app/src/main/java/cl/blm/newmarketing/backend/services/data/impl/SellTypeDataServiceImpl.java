@@ -16,7 +16,7 @@ import cl.blm.newmarketing.backend.api.pojo.SellTypePojo;
 import cl.blm.newmarketing.backend.jpa.entities.SellType;
 import cl.blm.newmarketing.backend.jpa.repositories.SellTypesRepository;
 import cl.blm.newmarketing.backend.jpa.entities.QSellType;
-import cl.blm.newmarketing.backend.services.data.GenericDataService;
+import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 
 /**
  *
@@ -25,7 +25,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class SellTypeDataServiceImpl
-    extends GenericDataService<SellTypePojo, SellType, Integer> {
+    extends GenericEntityDataService<SellTypePojo, SellType, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellTypeDataServiceImpl.class);
 
   private ConversionService conversion;

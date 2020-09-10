@@ -18,7 +18,7 @@ import cl.blm.newmarketing.backend.api.pojo.ProductPojo;
 import cl.blm.newmarketing.backend.jpa.entities.Product;
 import cl.blm.newmarketing.backend.jpa.repositories.ProductsRepository;
 import cl.blm.newmarketing.backend.jpa.entities.QProduct;
-import cl.blm.newmarketing.backend.services.data.GenericDataService;
+import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 
 /**
  *
@@ -27,7 +27,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class ProductDataServiceImpl
-    extends GenericDataService<ProductPojo, Product, Integer> {
+    extends GenericEntityDataService<ProductPojo, Product, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductDataServiceImpl.class);
 
   private ProductsRepository repository;

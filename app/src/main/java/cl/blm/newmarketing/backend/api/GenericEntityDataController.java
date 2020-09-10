@@ -12,10 +12,11 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.jpa.GenericEntity;
-import cl.blm.newmarketing.backend.services.data.GenericDataService;
+import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 
 /**
- * Abstraction for controllers that communicate with a GenericDataService.
+ * Abstraction for CrudControllers that communicate with a
+ * GenericEntityDataService.
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
@@ -23,10 +24,10 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
     implements CrudController<P, I> {
   protected static Logger LOG;
   protected CustomProperties globals;
-  protected GenericDataService<P, E, I> dataService;
+  protected GenericEntityDataService<P, E, I> dataService;
 
   public GenericEntityDataController(Logger logger, CustomProperties globals,
-      GenericDataService<P, E, I> dataService) {
+      GenericEntityDataService<P, E, I> dataService) {
     LOG = logger;
     this.globals = globals;
     this.dataService = dataService;

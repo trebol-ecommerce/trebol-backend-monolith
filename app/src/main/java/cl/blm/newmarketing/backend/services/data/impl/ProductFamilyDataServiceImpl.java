@@ -16,7 +16,7 @@ import cl.blm.newmarketing.backend.api.pojo.ProductFamilyPojo;
 import cl.blm.newmarketing.backend.jpa.entities.ProductFamily;
 import cl.blm.newmarketing.backend.jpa.repositories.ProductFamiliesRepository;
 import cl.blm.newmarketing.backend.jpa.entities.QProductFamily;
-import cl.blm.newmarketing.backend.services.data.GenericDataService;
+import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 
 /**
  *
@@ -25,7 +25,7 @@ import cl.blm.newmarketing.backend.services.data.GenericDataService;
 @Transactional
 @Service
 public class ProductFamilyDataServiceImpl
-    extends GenericDataService<ProductFamilyPojo, ProductFamily, Integer> {
+    extends GenericEntityDataService<ProductFamilyPojo, ProductFamily, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductFamilyDataServiceImpl.class);
 
   private ConversionService conversion;

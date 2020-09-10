@@ -16,7 +16,7 @@ import cl.blm.newmarketing.backend.CustomProperties;
 import cl.blm.newmarketing.backend.api.GenericEntityDataController;
 import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
 import cl.blm.newmarketing.backend.jpa.entities.Person;
-import cl.blm.newmarketing.backend.services.data.GenericDataService;
+import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
 
 /**
  * API point of entry for Person entities
@@ -30,7 +30,7 @@ public class PeopleDataController
   private final static Logger LOG = LoggerFactory.getLogger(PeopleDataController.class);
 
   @Autowired
-  public PeopleDataController(CustomProperties globals, GenericDataService<PersonPojo, Person, Integer> crudService) {
+  public PeopleDataController(CustomProperties globals, GenericEntityDataService<PersonPojo, Person, Integer> crudService) {
     super(LOG, globals, crudService);
   }
 
