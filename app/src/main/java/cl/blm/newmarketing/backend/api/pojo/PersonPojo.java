@@ -6,6 +6,10 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ * 
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 public class PersonPojo {
   @JsonInclude
   private Integer id;

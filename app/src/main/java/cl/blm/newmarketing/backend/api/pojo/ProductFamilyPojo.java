@@ -4,6 +4,10 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * 
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 public class ProductFamilyPojo {
   @JsonInclude
   private Integer id;
