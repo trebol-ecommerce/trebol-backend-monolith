@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.services.crud;
+package cl.blm.newmarketing.store.services;
 
 /**
  * Interface to ensure type-safety for services that require converting from
