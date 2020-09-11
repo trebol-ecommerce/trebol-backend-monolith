@@ -14,6 +14,7 @@
     <class>cl.blm.newmarketing.backend.jpa.entities.UserRole</class>
     <class>cl.blm.newmarketing.backend.jpa.entities.User</class>
     <class>cl.blm.newmarketing.backend.jpa.entities.Session</class>
+    <class>cl.blm.newmarketing.backend.jpa.entities.Permission</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://192.168.0.3:3306/nm_store"/>
