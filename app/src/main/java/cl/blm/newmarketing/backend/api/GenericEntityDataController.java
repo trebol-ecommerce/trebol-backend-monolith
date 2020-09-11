@@ -18,6 +18,9 @@ import cl.blm.newmarketing.backend.services.data.GenericEntityDataService;
  * GenericEntityDataService.
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ * @param <P> The Pojo class
+ * @param <E> The Entity class
+ * @param <I> The Identifier class
  */
 public abstract class GenericEntityDataController<P, E extends GenericEntity<I>, I>
     implements CrudController<P, I> {
