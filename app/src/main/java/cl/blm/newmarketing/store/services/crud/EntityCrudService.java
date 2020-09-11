@@ -16,7 +16,7 @@ import com.querydsl.core.types.Predicate;
  * @param <T> The type class of the item.
  * @param <I> The identifier type class of the item.
  */
-public interface EntityDataService<T, I>
+public interface EntityCrudService<T, I>
     extends Map2QueryDslPredicateConverterService {
 
   /**

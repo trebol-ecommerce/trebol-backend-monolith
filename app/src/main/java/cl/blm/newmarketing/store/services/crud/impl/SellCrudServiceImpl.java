@@ -32,7 +32,7 @@ import cl.blm.newmarketing.store.jpa.entities.QSell;
 import cl.blm.newmarketing.store.jpa.entities.Sell;
 import cl.blm.newmarketing.store.jpa.entities.SellDetail;
 import cl.blm.newmarketing.store.jpa.repositories.SalesRepository;
-import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
+import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
  *
@@ -40,15 +40,15 @@ import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
  */
 @Transactional
 @Service
-public class SellDataServiceImpl
-    extends GenericEntityDataService<SellPojo, Sell, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(SellDataServiceImpl.class);
+public class SellCrudServiceImpl
+    extends GenericEntityCrudService<SellPojo, Sell, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(SellCrudServiceImpl.class);
 
   private SalesRepository repository;
   private ConversionService conversion;
 
   @Autowired
-  public SellDataServiceImpl(SalesRepository repository, ConversionService conversion) {
+  public SellCrudServiceImpl(SalesRepository repository, ConversionService conversion) {
     super(LOG, repository);
     this.repository = repository;
     this.conversion = conversion;

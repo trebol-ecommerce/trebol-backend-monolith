@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.store.api.pojo.PersonPojo;
-import cl.blm.newmarketing.store.jpa.entities.Person;
-import cl.blm.newmarketing.store.jpa.entities.QPerson;
-import cl.blm.newmarketing.store.jpa.repositories.PeopleRepository;
-import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
+import cl.blm.newmarketing.store.api.pojo.ProductFamilyPojo;
+import cl.blm.newmarketing.store.jpa.entities.ProductFamily;
+import cl.blm.newmarketing.store.jpa.entities.QProductFamily;
+import cl.blm.newmarketing.store.jpa.repositories.ProductFamiliesRepository;
+import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
  *
@@ -24,32 +24,32 @@ import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
  */
 @Transactional
 @Service
-public class PersonDataServiceImpl
-    extends GenericEntityDataService<PersonPojo, Person, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(PersonDataServiceImpl.class);
+public class ProductFamilyCrudServiceImpl
+    extends GenericEntityCrudService<ProductFamilyPojo, ProductFamily, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(ProductFamilyCrudServiceImpl.class);
 
   private ConversionService conversion;
 
   @Autowired
-  public PersonDataServiceImpl(PeopleRepository people, ConversionService conversion) {
-    super(LOG, people);
+  public ProductFamilyCrudServiceImpl(ProductFamiliesRepository repository, ConversionService conversion) {
+    super(LOG, repository);
     this.conversion = conversion;
   }
 
   @Override
-  public PersonPojo entity2Pojo(Person source) {
-    return conversion.convert(source, PersonPojo.class);
+  public ProductFamilyPojo entity2Pojo(ProductFamily source) {
+    return conversion.convert(source, ProductFamilyPojo.class);
   }
 
   @Override
-  public Person pojo2Entity(PersonPojo source) {
-    return conversion.convert(source, Person.class);
+  public ProductFamily pojo2Entity(ProductFamilyPojo source) {
+    return conversion.convert(source, ProductFamily.class);
   }
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
     LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
-    QPerson qPerson = QPerson.person;
+    QProductFamily qProductFamily = QProductFamily.productFamily;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
@@ -58,15 +58,9 @@ public class PersonDataServiceImpl
         switch (paramName) {
         case "id":
           intValue = Integer.valueOf(stringValue);
-          return predicate.and(qPerson.id.eq(intValue)); // id matching is final
+          return predicate.and(qProductFamily.id.eq(intValue)); // match por id es único
         case "name":
-          predicate.and(qPerson.name.likeIgnoreCase("%" + stringValue + "%"));
-          break;
-        case "idnumber":
-          predicate.and(qPerson.idCard.likeIgnoreCase("%" + stringValue + "%"));
-          break;
-        case "email":
-          predicate.and(qPerson.email.likeIgnoreCase("%" + stringValue + "%"));
+          predicate.and(qProductFamily.name.likeIgnoreCase("%" + stringValue + "%"));
           break;
         default:
           break;

@@ -18,7 +18,7 @@ import cl.blm.newmarketing.store.api.pojo.ProductPojo;
 import cl.blm.newmarketing.store.jpa.entities.Product;
 import cl.blm.newmarketing.store.jpa.entities.QProduct;
 import cl.blm.newmarketing.store.jpa.repositories.ProductsRepository;
-import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
+import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
  *
@@ -26,15 +26,15 @@ import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
  */
 @Transactional
 @Service
-public class ProductDataServiceImpl
-    extends GenericEntityDataService<ProductPojo, Product, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(ProductDataServiceImpl.class);
+public class ProductCrudServiceImpl
+    extends GenericEntityCrudService<ProductPojo, Product, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(ProductCrudServiceImpl.class);
 
   private ProductsRepository repository;
   private ConversionService conversion;
 
   @Autowired
-  public ProductDataServiceImpl(ProductsRepository repository, ConversionService conversion) {
+  public ProductCrudServiceImpl(ProductsRepository repository, ConversionService conversion) {
     super(LOG, repository);
     this.repository = repository;
     this.conversion = conversion;

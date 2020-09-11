@@ -24,7 +24,7 @@ import cl.blm.newmarketing.store.CustomProperties;
 import cl.blm.newmarketing.store.api.GenericEntityDataController;
 import cl.blm.newmarketing.store.api.pojo.SellerPojo;
 import cl.blm.newmarketing.store.jpa.entities.Seller;
-import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
+import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
  * API point of entry for Seller entities
@@ -38,7 +38,7 @@ public class SellersDataController
 
   @Autowired
   public SellersDataController(CustomProperties globals,
-      GenericEntityDataService<SellerPojo, Seller, Integer> crudService) {
+      GenericEntityCrudService<SellerPojo, Seller, Integer> crudService) {
     super(globals, crudService);
   }
 

@@ -20,7 +20,7 @@ import cl.blm.newmarketing.store.jpa.entities.Person;
 import cl.blm.newmarketing.store.jpa.entities.QSeller;
 import cl.blm.newmarketing.store.jpa.entities.Seller;
 import cl.blm.newmarketing.store.jpa.repositories.SellersRepository;
-import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
+import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
  *
@@ -28,15 +28,15 @@ import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
  */
 @Transactional
 @Service
-public class SellerDataServiceImpl
-    extends GenericEntityDataService<SellerPojo, Seller, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(SellerDataServiceImpl.class);
+public class SellerCrudServiceImpl
+    extends GenericEntityCrudService<SellerPojo, Seller, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(SellerCrudServiceImpl.class);
 
   private SellersRepository repository;
   private ConversionService conversion;
 
   @Autowired
-  public SellerDataServiceImpl(SellersRepository repository, ConversionService conversion) {
+  public SellerCrudServiceImpl(SellersRepository repository, ConversionService conversion) {
     super(LOG, repository);
     this.repository = repository;
     this.conversion = conversion;

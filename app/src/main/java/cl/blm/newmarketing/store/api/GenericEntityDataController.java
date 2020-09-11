@@ -11,11 +11,11 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.store.CustomProperties;
 import cl.blm.newmarketing.store.jpa.GenericEntity;
-import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
+import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
  * Abstraction for CrudControllers that communicate with a
- * GenericEntityDataService.
+ * GenericEntityCrudService.
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * @param <P> The Pojo class
@@ -25,9 +25,9 @@ import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
 public abstract class GenericEntityDataController<P, E extends GenericEntity<I>, I>
     implements CrudController<P, I> {
   protected CustomProperties globals;
-  protected GenericEntityDataService<P, E, I> dataService;
+  protected GenericEntityCrudService<P, E, I> dataService;
 
-  public GenericEntityDataController(CustomProperties globals, GenericEntityDataService<P, E, I> dataService) {
+  public GenericEntityDataController(CustomProperties globals, GenericEntityCrudService<P, E, I> dataService) {
     this.globals = globals;
     this.dataService = dataService;
   }

@@ -27,13 +27,13 @@ import cl.blm.newmarketing.store.jpa.GenericRepository;
  * @param <E> The entity class
  * @param <I> The identifier class
  */
-public abstract class GenericEntityDataService<P, E extends GenericEntity<I>, I>
-    implements EntityDataService<P, I>, TwoWayEntityPojoConverterService<E, P> {
+public abstract class GenericEntityCrudService<P, E extends GenericEntity<I>, I>
+    implements EntityCrudService<P, I>, TwoWayEntityPojoConverterService<E, P> {
   protected static Logger LOG;
 
   protected GenericRepository<E, I> repository;
 
-  public GenericEntityDataService(Logger logger, GenericRepository<E, I> repository) {
+  public GenericEntityCrudService(Logger logger, GenericRepository<E, I> repository) {
     LOG = logger;
     this.repository = repository;
   }

@@ -15,8 +15,8 @@ import cl.blm.newmarketing.store.jpa.GenericEntity;
  * @param <T> The type class of the item.
  * @param <I> The identifier type class of the item.
  */
-public interface BulkEntityDataService<T extends GenericEntity<I>, I>
-    extends EntityDataService<T, I> {
+public interface BulkEntityCrudService<T extends GenericEntity<I>, I>
+    extends EntityCrudService<T, I> {
 
   /**
    * Inserts many items.
