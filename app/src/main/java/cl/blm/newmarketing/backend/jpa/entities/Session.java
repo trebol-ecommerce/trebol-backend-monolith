@@ -1,7 +1,5 @@
 package cl.blm.newmarketing.backend.jpa.entities;
 
-import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,8 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -39,17 +35,9 @@ public class Session
   private Long id;
   @Basic(optional = false)
   @NotNull
-  @Size(min = 1, max = 100)
+  @Size(min = 156, max = 156)
   @Column(name = "session_token")
   private String token;
-  @Basic(optional = false)
-  @NotNull
-  @Column(name = "session_opened")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date openedDate;
-  @Column(name = "session_closed")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date closedDate;
   @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = true, updatable = false)
   @ManyToOne(fetch = FetchType.LAZY)
   private User user;
@@ -61,10 +49,9 @@ public class Session
     this.id = sessionId;
   }
 
-  public Session(Long sessionId, String sessionToken, Date sessionOpened) {
+  public Session(Long sessionId, String sessionToken) {
     this.id = sessionId;
     this.token = sessionToken;
-    this.openedDate = sessionOpened;
   }
 
   public Long getId() {
@@ -81,22 +68,6 @@ public class Session
 
   public void setToken(String token) {
     this.token = token;
-  }
-
-  public Date getOpenedDate() {
-    return openedDate;
-  }
-
-  public void setOpenedDate(Date openedDate) {
-    this.openedDate = openedDate;
-  }
-
-  public Date getClosedDate() {
-    return closedDate;
-  }
-
-  public void setClosedDate(Date closedDate) {
-    this.closedDate = closedDate;
   }
 
   public User getUser() {
