@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * 
  * @param <P> The Pojo class
- * @param <P> The Identifier class
+ * @param <I> The Identifier class
  */
 public interface CrudController<P, I> {
 
