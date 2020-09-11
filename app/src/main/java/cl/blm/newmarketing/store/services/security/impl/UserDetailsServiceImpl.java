@@ -20,6 +20,7 @@ import cl.blm.newmarketing.store.jpa.entities.UserRole;
 import cl.blm.newmarketing.store.jpa.entities.UserRolePermission;
 import cl.blm.newmarketing.store.jpa.repositories.UserRolePermissionsRepository;
 import cl.blm.newmarketing.store.jpa.repositories.UsersRepository;
+import cl.blm.newmarketing.store.security.pojo.UserDetailsPojo;
 
 @Service
 public class UserDetailsServiceImpl
@@ -48,10 +49,11 @@ public class UserDetailsServiceImpl
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Optional<User> foundUser = usersRepository.findByName(username);
     if (foundUser.isPresent()) {
-      // TODO finish implementation
       User user = foundUser.get();
-//      UserDetailsPojo userDetails = new UserDetailsPojo();
-      return null;
+//      Collection<Permission> permissions = getAllUserRolePermissions(user);
+      // TODO implement conversion to List<GrantedAuthority>
+      UserDetailsPojo userDetails = new UserDetailsPojo(null, username, null, false, false, false, true);
+      return userDetails;
     } else {
       throw new UsernameNotFoundException(username);
     }
