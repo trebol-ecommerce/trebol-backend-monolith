@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 import cl.blm.newmarketing.backend.api.pojo.PersonPojo;
 import cl.blm.newmarketing.backend.jpa.entities.Person;
 
+/**
+ *
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 @Component
 public class Person2Pojo
     implements Converter<Person, PersonPojo> {

@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 import cl.blm.newmarketing.backend.api.pojo.ProductPojo;
 import cl.blm.newmarketing.backend.jpa.entities.Product;
 
+/**
+ *
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 @Component
 public class Product2Pojo
     implements Converter<Product, ProductPojo> {

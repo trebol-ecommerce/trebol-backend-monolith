@@ -7,6 +7,10 @@ import cl.blm.newmarketing.backend.api.pojo.SellDetailPojo;
 import cl.blm.newmarketing.backend.jpa.entities.Product;
 import cl.blm.newmarketing.backend.jpa.entities.SellDetail;
 
+/**
+ *
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 @Component
 public class SellDetail2Entity
     implements Converter<SellDetailPojo, SellDetail> {

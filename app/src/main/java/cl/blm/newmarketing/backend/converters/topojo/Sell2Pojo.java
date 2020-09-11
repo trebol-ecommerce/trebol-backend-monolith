@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 import cl.blm.newmarketing.backend.api.pojo.SellPojo;
 import cl.blm.newmarketing.backend.jpa.entities.Sell;
 
+/**
+ *
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 @Component
 public class Sell2Pojo
     implements Converter<Sell, SellPojo> {

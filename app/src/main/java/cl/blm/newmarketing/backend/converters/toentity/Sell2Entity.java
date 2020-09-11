@@ -14,6 +14,10 @@ import cl.blm.newmarketing.backend.jpa.entities.SellDetail;
 import cl.blm.newmarketing.backend.jpa.entities.SellType;
 import cl.blm.newmarketing.backend.jpa.entities.Seller;
 
+/**
+ *
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 @Component
 public class Sell2Entity
     implements Converter<SellPojo, Sell> {

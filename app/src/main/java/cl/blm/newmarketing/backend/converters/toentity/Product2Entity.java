@@ -7,6 +7,10 @@ import cl.blm.newmarketing.backend.api.pojo.ProductPojo;
 import cl.blm.newmarketing.backend.jpa.entities.Product;
 import cl.blm.newmarketing.backend.jpa.entities.ProductType;
 
+/**
+ *
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 @Component
 public class Product2Entity
     implements Converter<ProductPojo, Product> {

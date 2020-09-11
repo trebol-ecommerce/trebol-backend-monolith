@@ -7,6 +7,10 @@ import cl.blm.newmarketing.backend.api.pojo.ClientPojo;
 import cl.blm.newmarketing.backend.jpa.entities.Client;
 import cl.blm.newmarketing.backend.jpa.entities.Person;
 
+/**
+ *
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
 @Component
 public class Client2Entity
     implements Converter<ClientPojo, Client> {
