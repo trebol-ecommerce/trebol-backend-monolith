@@ -1,6 +1,5 @@
 package cl.blm.newmarketing.store.jpa.entities;
 
-import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,9 +21,9 @@ import cl.blm.newmarketing.store.jpa.GenericEntity;
  */
 @Entity
 @Table(name = "user_role_permissions")
-@NamedQueries({
-  @NamedQuery(name = "UserRolePermission.findAll", query = "SELECT u FROM UserRolePermission u")})
-public class UserRolePermission implements GenericEntity<Integer> {
+@NamedQueries({ @NamedQuery(name = "UserRolePermission.findAll", query = "SELECT u FROM UserRolePermission u") })
+public class UserRolePermission
+    implements GenericEntity<Integer> {
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -94,5 +93,5 @@ public class UserRolePermission implements GenericEntity<Integer> {
   public String toString() {
     return "cl.blm.newmarketing.store.jpa.entities.UserRolePermission[ userRolePermissionId=" + id + " ]";
   }
-  
+
 }
