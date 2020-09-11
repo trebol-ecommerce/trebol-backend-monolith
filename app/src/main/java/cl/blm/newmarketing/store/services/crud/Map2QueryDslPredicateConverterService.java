@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.services.data;
+package cl.blm.newmarketing.store.services.crud;
 
 import java.util.Map;
 

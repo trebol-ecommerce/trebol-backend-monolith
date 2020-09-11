@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.services.data.impl;
+package cl.blm.newmarketing.store.services.crud.impl;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,7 +32,7 @@ import cl.blm.newmarketing.store.jpa.entities.QSell;
 import cl.blm.newmarketing.store.jpa.entities.Sell;
 import cl.blm.newmarketing.store.jpa.entities.SellDetail;
 import cl.blm.newmarketing.store.jpa.repositories.SalesRepository;
-import cl.blm.newmarketing.store.services.data.GenericEntityDataService;
+import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
 
 /**
  *

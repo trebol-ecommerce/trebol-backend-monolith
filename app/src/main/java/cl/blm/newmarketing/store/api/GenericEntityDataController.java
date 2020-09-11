@@ -11,7 +11,7 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.store.CustomProperties;
 import cl.blm.newmarketing.store.jpa.GenericEntity;
-import cl.blm.newmarketing.store.services.data.GenericEntityDataService;
+import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
 
 /**
  * Abstraction for CrudControllers that communicate with a

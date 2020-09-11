@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.services.data.impl;
+package cl.blm.newmarketing.store.services.crud.impl;
 
 import java.util.Map;
 
@@ -18,7 +18,7 @@ import cl.blm.newmarketing.store.api.pojo.ProductTypePojo;
 import cl.blm.newmarketing.store.jpa.entities.ProductType;
 import cl.blm.newmarketing.store.jpa.entities.QProductType;
 import cl.blm.newmarketing.store.jpa.repositories.ProductTypesRepository;
-import cl.blm.newmarketing.store.services.data.GenericEntityDataService;
+import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
 
 /**
  *

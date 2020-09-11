@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.services.data.impl;
+package cl.blm.newmarketing.store.services.crud.impl;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import cl.blm.newmarketing.store.jpa.entities.Person;
 import cl.blm.newmarketing.store.jpa.entities.QSeller;
 import cl.blm.newmarketing.store.jpa.entities.Seller;
 import cl.blm.newmarketing.store.jpa.repositories.SellersRepository;
-import cl.blm.newmarketing.store.services.data.GenericEntityDataService;
+import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
 
 /**
  *

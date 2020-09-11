@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.services.data.impl;
+package cl.blm.newmarketing.store.services.crud.impl;
 
 import java.util.Map;
 
@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.store.api.pojo.ProductFamilyPojo;
-import cl.blm.newmarketing.store.jpa.entities.ProductFamily;
-import cl.blm.newmarketing.store.jpa.entities.QProductFamily;
-import cl.blm.newmarketing.store.jpa.repositories.ProductFamiliesRepository;
-import cl.blm.newmarketing.store.services.data.GenericEntityDataService;
+import cl.blm.newmarketing.store.api.pojo.SellTypePojo;
+import cl.blm.newmarketing.store.jpa.entities.QSellType;
+import cl.blm.newmarketing.store.jpa.entities.SellType;
+import cl.blm.newmarketing.store.jpa.repositories.SellTypesRepository;
+import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
 
 /**
  *
@@ -24,32 +24,32 @@ import cl.blm.newmarketing.store.services.data.GenericEntityDataService;
  */
 @Transactional
 @Service
-public class ProductFamilyDataServiceImpl
-    extends GenericEntityDataService<ProductFamilyPojo, ProductFamily, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(ProductFamilyDataServiceImpl.class);
+public class SellTypeDataServiceImpl
+    extends GenericEntityDataService<SellTypePojo, SellType, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(SellTypeDataServiceImpl.class);
 
   private ConversionService conversion;
 
   @Autowired
-  public ProductFamilyDataServiceImpl(ProductFamiliesRepository repository, ConversionService conversion) {
-    super(LOG, repository);
+  public SellTypeDataServiceImpl(SellTypesRepository sellTypes, ConversionService conversion) {
+    super(LOG, sellTypes);
     this.conversion = conversion;
   }
 
   @Override
-  public ProductFamilyPojo entity2Pojo(ProductFamily source) {
-    return conversion.convert(source, ProductFamilyPojo.class);
+  public SellTypePojo entity2Pojo(SellType source) {
+    return conversion.convert(source, SellTypePojo.class);
   }
 
   @Override
-  public ProductFamily pojo2Entity(ProductFamilyPojo source) {
-    return conversion.convert(source, ProductFamily.class);
+  public SellType pojo2Entity(SellTypePojo source) {
+    return conversion.convert(source, SellType.class);
   }
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
     LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
-    QProductFamily qProductFamily = QProductFamily.productFamily;
+    QSellType qSellType = QSellType.sellType;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
@@ -58,9 +58,9 @@ public class ProductFamilyDataServiceImpl
         switch (paramName) {
         case "id":
           intValue = Integer.valueOf(stringValue);
-          return predicate.and(qProductFamily.id.eq(intValue)); // match por id es único
+          return predicate.and(qSellType.id.eq(intValue)); // match por id es único
         case "name":
-          predicate.and(qProductFamily.name.likeIgnoreCase("%" + stringValue + "%"));
+          predicate.and(qSellType.name.likeIgnoreCase("%" + stringValue + "%"));
           break;
         default:
           break;

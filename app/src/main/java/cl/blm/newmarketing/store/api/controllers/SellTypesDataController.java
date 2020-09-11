@@ -24,7 +24,7 @@ import cl.blm.newmarketing.store.CustomProperties;
 import cl.blm.newmarketing.store.api.GenericEntityDataController;
 import cl.blm.newmarketing.store.api.pojo.SellTypePojo;
 import cl.blm.newmarketing.store.jpa.entities.SellType;
-import cl.blm.newmarketing.store.services.data.GenericEntityDataService;
+import cl.blm.newmarketing.store.services.crud.GenericEntityDataService;
 
 /**
  * API point of entry for Sell entities
