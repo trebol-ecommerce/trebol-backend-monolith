@@ -16,8 +16,6 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.backend.jpa.GenericEntity;
 import cl.blm.newmarketing.backend.jpa.GenericRepository;
-import cl.blm.newmarketing.backend.services.TwoWayEntityPojoConverter;
-import cl.blm.newmarketing.backend.services.EntityDataService;
 
 /**
  * Abstract service that sends and receives data with pojos and keep entities

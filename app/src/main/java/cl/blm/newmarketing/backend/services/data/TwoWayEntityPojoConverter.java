@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.services;
+package cl.blm.newmarketing.backend.services.data;
 
 /**
  * Interface to ensure type-safety for services that require converting from

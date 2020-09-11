@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.backend.services;
+package cl.blm.newmarketing.backend.services.data;
 
 import java.util.Map;
 
