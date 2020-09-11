@@ -9,7 +9,7 @@ import com.querydsl.core.types.Predicate;
  * 
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public interface QueryDslPredicateMapper {
+public interface Map2QueryDslPredicateConverterService {
 
   /**
    * Generates filtering conditions based on the provided Map data.

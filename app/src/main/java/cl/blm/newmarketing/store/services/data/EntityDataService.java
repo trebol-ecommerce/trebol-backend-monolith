@@ -8,7 +8,7 @@ import com.querydsl.core.types.Predicate;
 
 /**
  * Interface for implementing the basic CRUD service operations. Because it
- * extends QueryDslPredicateMapper, it's expected to comply to QueryDSL and
+ * extends Map2QueryDslPredicateConverterService, it's expected to comply to QueryDSL and
  * accept Predicate objects as filtering conditions.
  * 
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -17,7 +17,7 @@ import com.querydsl.core.types.Predicate;
  * @param <I> The identifier type class of the item.
  */
 public interface EntityDataService<T, I>
-    extends QueryDslPredicateMapper {
+    extends Map2QueryDslPredicateConverterService {
 
   /**
    * Inserts and persists an item.
