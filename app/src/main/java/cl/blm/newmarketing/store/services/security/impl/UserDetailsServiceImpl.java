@@ -32,12 +32,13 @@ public class UserDetailsServiceImpl
   private UserRolePermissionsRepository userRolePermissionsRepository;
 
   private Collection<Permission> getAllUserRolePermissions(User source) {
-    UserRole sourceRole = source.getUserRole();
-    Predicate qPermission = QUserRolePermission.userRolePermission.userRole.eq(sourceRole);
+    UserRole sourceUserRole = source.getUserRole();
+    Predicate sourceUserRolePermissions = QUserRolePermission.userRolePermission.userRole.eq(sourceUserRole);
 
     List<Permission> targetList = new ArrayList<>();
-    for (UserRolePermission permissions : userRolePermissionsRepository.findAll(qPermission)) {
-
+    for (UserRolePermission rolePermission : userRolePermissionsRepository.findAll(sourceUserRolePermissions)) {
+      Permission p = rolePermission.getPermission();
+      targetList.add(p);
     }
 
     return targetList;
