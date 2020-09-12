@@ -1,14 +1,18 @@
 package cl.blm.newmarketing.store.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import cl.blm.newmarketing.store.services.security.impl.UserDetailsServiceImpl;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig
     extends WebSecurityConfigurerAdapter {
 
@@ -18,12 +22,7 @@ public class SecurityConfig
         .antMatcher("/api/*").authorizeRequests().anyRequest().authenticated();
   }
 
-  @Override
-  protected AuthenticationManager authenticationManager() throws Exception {
-    // TODO implement an AuthenticationManager
-    return super.authenticationManager();
-  }
-
+  @Bean
   @Override
   protected UserDetailsService userDetailsService() {
     return new UserDetailsServiceImpl();
