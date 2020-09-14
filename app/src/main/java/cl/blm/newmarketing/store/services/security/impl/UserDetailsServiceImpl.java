@@ -13,10 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.querydsl.core.types.Predicate;
-
 import cl.blm.newmarketing.store.jpa.entities.Permission;
-import cl.blm.newmarketing.store.jpa.entities.QUserRolePermission;
 import cl.blm.newmarketing.store.jpa.entities.User;
 import cl.blm.newmarketing.store.jpa.entities.UserRole;
 import cl.blm.newmarketing.store.jpa.entities.UserRolePermission;
@@ -44,10 +41,12 @@ public class UserDetailsServiceImpl
 
   private Collection<Permission> getAllUserRolePermissions(User source) {
     UserRole sourceUserRole = source.getUserRole();
-    Predicate sourceUserRolePermissions = QUserRolePermission.userRolePermission.userRole.eq(sourceUserRole);
+    Integer userRoleId = sourceUserRole.getId();
+    Iterable<UserRolePermission> userRolePermissions = userRolePermissionsRepository
+        .deepFindPermissionsByUserRoleId(userRoleId);
 
     List<Permission> targetList = new ArrayList<>();
-    for (UserRolePermission rolePermission : userRolePermissionsRepository.findAll(sourceUserRolePermissions)) {
+    for (UserRolePermission rolePermission : userRolePermissions) {
       Permission p = rolePermission.getPermission();
       targetList.add(p);
     }
@@ -66,12 +65,12 @@ public class UserDetailsServiceImpl
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Optional<User> foundUser = usersRepository.findByName(username);
+    Optional<User> foundUser = usersRepository.findByNameWithRole(username);
     if (foundUser.isPresent()) {
       User user = foundUser.get();
       Collection<Permission> permissions = getAllUserRolePermissions(user);
       List<SimpleGrantedAuthority> authorities = convertPermissionList(permissions);
-      UserDetailsPojo userDetails = new UserDetailsPojo(authorities, username, null, false, false, false, true);
+      UserDetailsPojo userDetails = new UserDetailsPojo(authorities, username, null, true, true, true, true);
       return userDetails;
     } else {
       throw new UsernameNotFoundException(username);
