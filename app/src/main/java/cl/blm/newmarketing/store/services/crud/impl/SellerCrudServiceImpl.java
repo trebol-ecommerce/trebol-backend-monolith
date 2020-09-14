@@ -32,12 +32,12 @@ public class SellerCrudServiceImpl
     extends GenericEntityCrudService<SellerPojo, Seller, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellerCrudServiceImpl.class);
 
-  private SellersRepository repository;
-  private ConversionService conversion;
+  private final SellersRepository repository;
+  private final ConversionService conversion;
 
   @Autowired
   public SellerCrudServiceImpl(SellersRepository repository, ConversionService conversion) {
-    super(LOG, repository);
+    super(repository);
     this.repository = repository;
     this.conversion = conversion;
   }

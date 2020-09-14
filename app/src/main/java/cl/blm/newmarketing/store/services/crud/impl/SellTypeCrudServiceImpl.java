@@ -28,11 +28,11 @@ public class SellTypeCrudServiceImpl
     extends GenericEntityCrudService<SellTypePojo, SellType, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellTypeCrudServiceImpl.class);
 
-  private ConversionService conversion;
+  private final ConversionService conversion;
 
   @Autowired
   public SellTypeCrudServiceImpl(SellTypesRepository sellTypes, ConversionService conversion) {
-    super(LOG, sellTypes);
+    super(sellTypes);
     this.conversion = conversion;
   }
 
@@ -48,7 +48,6 @@ public class SellTypeCrudServiceImpl
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
-    LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
     QSellType qSellType = QSellType.sellType;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
@@ -66,7 +65,7 @@ public class SellTypeCrudServiceImpl
           break;
         }
       } catch (NumberFormatException exc) {
-        LOG.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        LOG.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
       }
     }
 

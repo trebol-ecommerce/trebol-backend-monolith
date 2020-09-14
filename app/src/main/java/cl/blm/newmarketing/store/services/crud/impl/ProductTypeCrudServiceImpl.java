@@ -30,12 +30,12 @@ public class ProductTypeCrudServiceImpl
     extends GenericEntityCrudService<ProductTypePojo, ProductType, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductTypeCrudServiceImpl.class);
 
-  private ProductTypesRepository repository;
-  private ConversionService conversion;
+  private final ProductTypesRepository repository;
+  private final ConversionService conversion;
 
   @Autowired
   public ProductTypeCrudServiceImpl(ProductTypesRepository repository, ConversionService conversion) {
-    super(LOG, repository);
+    super(repository);
     this.repository = repository;
     this.conversion = conversion;
   }
@@ -61,7 +61,6 @@ public class ProductTypeCrudServiceImpl
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
-    LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
     QProductType qProductType = QProductType.productType;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {

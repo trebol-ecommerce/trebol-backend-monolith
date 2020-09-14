@@ -28,11 +28,11 @@ public class ProductFamilyCrudServiceImpl
     extends GenericEntityCrudService<ProductFamilyPojo, ProductFamily, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductFamilyCrudServiceImpl.class);
 
-  private ConversionService conversion;
+  private final ConversionService conversion;
 
   @Autowired
   public ProductFamilyCrudServiceImpl(ProductFamiliesRepository repository, ConversionService conversion) {
-    super(LOG, repository);
+    super(repository);
     this.conversion = conversion;
   }
 
@@ -48,7 +48,6 @@ public class ProductFamilyCrudServiceImpl
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
-    LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
     QProductFamily qProductFamily = QProductFamily.productFamily;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
@@ -66,7 +65,7 @@ public class ProductFamilyCrudServiceImpl
           break;
         }
       } catch (NumberFormatException exc) {
-        LOG.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        LOG.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
       }
     }
 

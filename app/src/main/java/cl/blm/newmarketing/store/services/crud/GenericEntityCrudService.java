@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,12 +30,10 @@ import cl.blm.newmarketing.store.services.TwoWayEntityPojoConverterService;
  */
 public abstract class GenericEntityCrudService<P, E extends GenericEntity<I>, I>
     implements EntityCrudService<P, I>, TwoWayEntityPojoConverterService<E, P> {
-  protected static Logger LOG;
 
   protected GenericRepository<E, I> repository;
 
-  public GenericEntityCrudService(Logger logger, GenericRepository<E, I> repository) {
-    LOG = logger;
+  public GenericEntityCrudService(GenericRepository<E, I> repository) {
     this.repository = repository;
   }
 
@@ -63,7 +60,6 @@ public abstract class GenericEntityCrudService<P, E extends GenericEntity<I>, I>
   @Nullable
   @Override
   public I create(P inputPojo) {
-    LOG.debug("create({})", inputPojo);
     E input = pojo2Entity(inputPojo);
     E output = repository.saveAndFlush(input);
     return output.getId();
@@ -74,7 +70,6 @@ public abstract class GenericEntityCrudService<P, E extends GenericEntity<I>, I>
    */
   @Override
   public Collection<P> read(int pageSize, int pageIndex, Predicate filters) {
-    LOG.debug("read({}, {}, {})", pageSize, pageIndex, filters);
     Sort orden = Sort.by("id").ascending();
     Pageable paged = PageRequest.of(pageIndex, pageSize, orden);
     Page<E> iterable = getAllEntities(paged, filters);
@@ -95,7 +90,6 @@ public abstract class GenericEntityCrudService<P, E extends GenericEntity<I>, I>
   @Nullable
   @Override
   public I update(P input, I id) {
-    LOG.debug("update({})", input);
     Optional<E> existing = repository.findById(id);
     if (!existing.isPresent()) {
       return null;
@@ -109,7 +103,6 @@ public abstract class GenericEntityCrudService<P, E extends GenericEntity<I>, I>
           E result = repository.saveAndFlush(newEntity);
           return result.getId();
         } catch (Exception exc) {
-          LOG.error("Person could not be saved");
           return null;
         }
       }
@@ -118,13 +111,11 @@ public abstract class GenericEntityCrudService<P, E extends GenericEntity<I>, I>
 
   @Override
   public boolean delete(I id) {
-    LOG.debug("delete({})", id);
     try {
       repository.deleteById(id);
       repository.flush();
       return !repository.existsById(id);
     } catch (Exception exc) {
-      LOG.error("Could not delete person with id {}", id, exc);
       return false;
     }
   }
@@ -132,7 +123,6 @@ public abstract class GenericEntityCrudService<P, E extends GenericEntity<I>, I>
   @Nullable
   @Override
   public P find(I id) {
-    LOG.debug("find({})", id);
     Optional<E> personById = repository.findById(id);
     if (!personById.isPresent()) {
       return null;

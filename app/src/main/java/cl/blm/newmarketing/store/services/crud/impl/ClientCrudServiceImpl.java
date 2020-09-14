@@ -32,12 +32,12 @@ public class ClientCrudServiceImpl
     extends GenericEntityCrudService<ClientPojo, Client, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ClientCrudServiceImpl.class);
 
-  private ClientsRepository repository;
-  private ConversionService conversion;
+  private final ClientsRepository repository;
+  private final ConversionService conversion;
 
   @Autowired
   public ClientCrudServiceImpl(ClientsRepository repository, ConversionService conversion) {
-    super(LOG, repository);
+    super(repository);
     this.repository = repository;
     this.conversion = conversion;
   }
@@ -69,7 +69,6 @@ public class ClientCrudServiceImpl
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
-    LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
     QClient qClient = QClient.client;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
@@ -93,7 +92,7 @@ public class ClientCrudServiceImpl
           break;
         }
       } catch (NumberFormatException exc) {
-        LOG.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        LOG.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
       }
     }
 

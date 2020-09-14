@@ -44,24 +44,24 @@ public class SellCrudServiceImpl
     extends GenericEntityCrudService<SellPojo, Sell, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellCrudServiceImpl.class);
 
-  private SalesRepository repository;
-  private ConversionService conversion;
+  private final SalesRepository repository;
+  private final ConversionService conversion;
 
   @Autowired
   public SellCrudServiceImpl(SalesRepository repository, ConversionService conversion) {
-    super(LOG, repository);
+    super(repository);
     this.repository = repository;
     this.conversion = conversion;
   }
 
-  private ClientPojo convertClient(Sell source) {
+  private ClientPojo convertClientToPojo(Sell source) {
     ClientPojo client = conversion.convert(source.getClient(), ClientPojo.class);
     PersonPojo person = conversion.convert(source.getClient().getPerson(), PersonPojo.class);
     client.setPerson(person);
     return client;
   }
 
-  private List<SellDetailPojo> convertDetails(Sell source) {
+  private List<SellDetailPojo> convertDetailsToPojo(Sell source) {
     List<SellDetailPojo> sellDetails = new ArrayList<>();
     for (SellDetail sourceSellDetail : source.getSellDetails()) {
       SellDetailPojo targetSellDetail = conversion.convert(sourceSellDetail, SellDetailPojo.class);
@@ -72,7 +72,7 @@ public class SellCrudServiceImpl
     return sellDetails;
   }
 
-  private SellerPojo convertSeller(Sell source) {
+  private SellerPojo convertSellerToPojo(Sell source) {
     SellerPojo seller = conversion.convert(source.getSeller(), SellerPojo.class);
     PersonPojo person = conversion.convert(source.getSeller().getPerson(), PersonPojo.class);
     seller.setPerson(person);
@@ -85,11 +85,11 @@ public class SellCrudServiceImpl
     SellTypePojo sellType = conversion.convert(source.getSellType(), SellTypePojo.class);
     target.setSellType(sellType);
 
-    ClientPojo client = convertClient(source);
+    ClientPojo client = convertClientToPojo(source);
     target.setClient(client);
 
     if (source.getSeller() != null) {
-      SellerPojo seller = convertSeller(source);
+      SellerPojo seller = convertSellerToPojo(source);
       target.setSeller(seller);
     }
 
@@ -112,7 +112,6 @@ public class SellCrudServiceImpl
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
-    LOG.debug("queryParamsMapToPredicate({})", queryParamsMap);
     QSell qSell = QSell.sell;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
@@ -133,9 +132,9 @@ public class SellCrudServiceImpl
           break;
         }
       } catch (NumberFormatException exc) {
-        LOG.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        LOG.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
       } catch (ParseException exc) {
-        LOG.error("Param '{}' couldn't be parsed as date (value: '{}')", paramName, stringValue, exc);
+        LOG.warn("Param '{}' couldn't be parsed as date (value: '{}')", paramName, stringValue, exc);
       }
     }
 
@@ -145,14 +144,13 @@ public class SellCrudServiceImpl
   @Nullable
   @Override
   public SellPojo find(Integer id) {
-    LOG.debug("find({})", id);
     Optional<Sell> personById = repository.deepFindById(id);
     if (!personById.isPresent()) {
       return null;
     } else {
       Sell found = personById.get();
       SellPojo foundPojo = entity2Pojo(found);
-      List<SellDetailPojo> sellDetails = convertDetails(found);
+      List<SellDetailPojo> sellDetails = convertDetailsToPojo(found);
       foundPojo.setSellDetails(sellDetails);
       return foundPojo;
     }
