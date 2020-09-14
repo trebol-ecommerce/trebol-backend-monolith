@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store;
+package cl.blm.newmarketing.store.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

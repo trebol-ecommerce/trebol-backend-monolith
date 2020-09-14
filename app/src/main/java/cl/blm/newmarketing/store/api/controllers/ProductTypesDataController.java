@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.blm.newmarketing.store.CustomProperties;
 import cl.blm.newmarketing.store.api.GenericEntityDataController;
 import cl.blm.newmarketing.store.api.pojo.ProductTypePojo;
+import cl.blm.newmarketing.store.config.CustomProperties;
 import cl.blm.newmarketing.store.jpa.entities.ProductType;
 import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.store.CustomProperties;
+import cl.blm.newmarketing.store.config.CustomProperties;
 import cl.blm.newmarketing.store.jpa.GenericEntity;
 import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
