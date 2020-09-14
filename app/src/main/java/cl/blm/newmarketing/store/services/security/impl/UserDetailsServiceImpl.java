@@ -28,14 +28,19 @@ import cl.blm.newmarketing.store.security.pojo.UserDetailsPojo;
 public class UserDetailsServiceImpl
     implements UserDetailsService {
 
-  @Autowired
-  private ConversionService conversionService;
+  private final ConversionService conversionService;
+  private final UsersRepository usersRepository;
+  private final UserRolePermissionsRepository userRolePermissionsRepository;
 
   @Autowired
-  private UsersRepository usersRepository;
-
-  @Autowired
-  private UserRolePermissionsRepository userRolePermissionsRepository;
+  public UserDetailsServiceImpl(
+      ConversionService conversionService,
+      UsersRepository usersRepository,
+      UserRolePermissionsRepository userRolePermissionsRepository) {
+    this.conversionService = conversionService;
+    this.usersRepository = usersRepository;
+    this.userRolePermissionsRepository = userRolePermissionsRepository;
+  }
 
   private Collection<Permission> getAllUserRolePermissions(User source) {
     UserRole sourceUserRole = source.getUserRole();
