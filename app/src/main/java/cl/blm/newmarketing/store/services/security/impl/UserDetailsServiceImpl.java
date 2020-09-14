@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +22,6 @@ import cl.blm.newmarketing.store.jpa.entities.UserRole;
 import cl.blm.newmarketing.store.jpa.entities.UserRolePermission;
 import cl.blm.newmarketing.store.jpa.repositories.UserRolePermissionsRepository;
 import cl.blm.newmarketing.store.jpa.repositories.UsersRepository;
-import cl.blm.newmarketing.store.security.pojo.GranthedAuthorityPojo;
 import cl.blm.newmarketing.store.security.pojo.UserDetailsPojo;
 
 @Service
@@ -50,10 +50,10 @@ public class UserDetailsServiceImpl
     return targetList;
   }
 
-  private List<GranthedAuthorityPojo> convertPermissionList(Collection<Permission> sourceList) {
-    List<GranthedAuthorityPojo> targetList = new ArrayList<>();
+  private List<SimpleGrantedAuthority> convertPermissionList(Collection<Permission> sourceList) {
+    List<SimpleGrantedAuthority> targetList = new ArrayList<>();
     for (Permission source : sourceList) {
-      GranthedAuthorityPojo target = conversionService.convert(source, GranthedAuthorityPojo.class);
+      SimpleGrantedAuthority target = conversionService.convert(source, SimpleGrantedAuthority.class);
       targetList.add(target);
     }
     return targetList;
@@ -65,7 +65,7 @@ public class UserDetailsServiceImpl
     if (foundUser.isPresent()) {
       User user = foundUser.get();
       Collection<Permission> permissions = getAllUserRolePermissions(user);
-      List<GranthedAuthorityPojo> authorities = convertPermissionList(permissions);
+      List<SimpleGrantedAuthority> authorities = convertPermissionList(permissions);
       UserDetailsPojo userDetails = new UserDetailsPojo(authorities, username, null, false, false, false, true);
       return userDetails;
     } else {

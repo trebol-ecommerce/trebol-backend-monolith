@@ -1,10 +1,10 @@
 package cl.blm.newmarketing.store.converters.topojo;
 
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import cl.blm.newmarketing.store.jpa.entities.Permission;
-import cl.blm.newmarketing.store.security.pojo.GranthedAuthorityPojo;
 
 /**
  *
@@ -12,11 +12,11 @@ import cl.blm.newmarketing.store.security.pojo.GranthedAuthorityPojo;
  */
 @Component
 public class Permission2GranthedAuthorityPojo
-    implements Converter<Permission, GranthedAuthorityPojo> {
+    implements Converter<Permission, SimpleGrantedAuthority> {
 
   @Override
-  public GranthedAuthorityPojo convert(Permission source) {
-    GranthedAuthorityPojo target = new GranthedAuthorityPojo(source.getCode());
+  public SimpleGrantedAuthority convert(Permission source) {
+    SimpleGrantedAuthority target = new SimpleGrantedAuthority(source.getCode());
     return target;
   }
 
