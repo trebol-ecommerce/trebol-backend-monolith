@@ -24,12 +24,12 @@ import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
  */
 public abstract class GenericEntityDataController<P, E extends GenericEntity<I>, I>
     implements CrudController<P, I> {
-  protected CustomProperties globals;
-  protected GenericEntityCrudService<P, E, I> dataService;
+  protected CustomProperties customProperties;
+  protected GenericEntityCrudService<P, E, I> crudService;
 
-  public GenericEntityDataController(CustomProperties globals, GenericEntityCrudService<P, E, I> dataService) {
-    this.globals = globals;
-    this.dataService = dataService;
+  public GenericEntityDataController(CustomProperties customProperties, GenericEntityCrudService<P, E, I> crudService) {
+    this.customProperties = customProperties;
+    this.crudService = crudService;
   }
 
   /**
@@ -38,7 +38,7 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
    * @return The resulting item's ID
    */
   public I create(P input) {
-    I resultId = dataService.create(input);
+    I resultId = crudService.create(input);
     return resultId;
   }
 
@@ -49,7 +49,7 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
    * @return The item
    */
   public P readOne(I id) {
-    P found = dataService.find(id);
+    P found = crudService.find(id);
     return found;
   }
 
@@ -65,7 +65,7 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
    */
   public Collection<P> readMany(Integer requestPageSize, Integer requestPageIndex,
       Map<String, String> allRequestParams) {
-    int pageSize = globals.ITEMS_PER_PAGE;
+    int pageSize = customProperties.getItemsPerPage();
     int pageIndex = 0;
     Predicate filters = null;
 
@@ -76,10 +76,10 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
       pageIndex = requestPageIndex - 1;
     }
     if (allRequestParams != null && !allRequestParams.isEmpty()) {
-      filters = dataService.queryParamsMapToPredicate(allRequestParams);
+      filters = crudService.queryParamsMapToPredicate(allRequestParams);
     }
 
-    return dataService.read(pageSize, pageIndex, filters);
+    return crudService.read(pageSize, pageIndex, filters);
   }
 
   /**
@@ -90,7 +90,7 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
    * @return
    */
   public I update(P input, I id) {
-    I resultId = dataService.update(input, id);
+    I resultId = crudService.update(input, id);
     return resultId;
   }
 
@@ -101,7 +101,7 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
    * @return
    */
   public boolean delete(I id) {
-    boolean result = dataService.delete(id);
+    boolean result = crudService.delete(id);
     return result;
   }
 
