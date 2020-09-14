@@ -72,6 +72,6 @@ public class JwtUsernamePasswordAuthenticationFilter
         .signWith(secretKey)
         .compact();
 
-    response.addHeader("Authorization", jwtProperties.getTokenPrefix() + token);
+    response.addHeader(jwtProperties.getAuthorizationHeader(), jwtProperties.getTokenPrefix() + token);
   }
 }
