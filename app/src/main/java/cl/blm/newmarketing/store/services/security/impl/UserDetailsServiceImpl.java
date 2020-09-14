@@ -70,7 +70,10 @@ public class UserDetailsServiceImpl
       User user = foundUser.get();
       Collection<Permission> permissions = getAllUserRolePermissions(user);
       List<SimpleGrantedAuthority> authorities = convertPermissionList(permissions);
-      UserDetailsPojo userDetails = new UserDetailsPojo(authorities, username, null, true, true, true, true);
+      UserDetailsPojo userDetails = new UserDetailsPojo(authorities,
+          username,
+          user.getPassword(),
+          true, true, true, true);
       return userDetails;
     } else {
       throw new UsernameNotFoundException(username);
