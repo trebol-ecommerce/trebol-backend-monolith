@@ -11,19 +11,18 @@ public class UserDetailsPojo
   private static final long serialVersionUID = 1L;
 
   private final List<? extends GrantedAuthority> authorities;
-  private final String password;
   private final String username;
+  private final String password;
   private final boolean accountNonExpired;
   private final boolean accountNonLocked;
   private final boolean credentialsNonExpired;
   private final boolean enabled;
 
-  public UserDetailsPojo(List<? extends GrantedAuthority> authorities, String password, String username,
+  public UserDetailsPojo(List<? extends GrantedAuthority> authorities, String username, String password,
       boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {
-    super();
     this.authorities = authorities;
-    this.password = password;
     this.username = username;
+    this.password = password;
     this.accountNonExpired = accountNonExpired;
     this.accountNonLocked = accountNonLocked;
     this.credentialsNonExpired = credentialsNonExpired;
@@ -36,13 +35,13 @@ public class UserDetailsPojo
   }
 
   @Override
-  public String getPassword() {
-    return password;
+  public String getUsername() {
+    return username;
   }
 
   @Override
-  public String getUsername() {
-    return username;
+  public String getPassword() {
+    return password;
   }
 
   @Override
