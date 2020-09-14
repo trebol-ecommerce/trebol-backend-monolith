@@ -8,12 +8,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Configuration class for API-related settings and beans.
+ * Configuration class for the ObjectMapper bean.
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Configuration
-public abstract class ObjectMapperConfig {
+public class ObjectMapperConfig {
 
   // JSON parser / serializer
   @Bean
