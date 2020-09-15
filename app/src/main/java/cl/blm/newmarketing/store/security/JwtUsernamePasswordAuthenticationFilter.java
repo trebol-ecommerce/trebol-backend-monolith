@@ -34,7 +34,6 @@ public class JwtUsernamePasswordAuthenticationFilter
       AuthenticationManager authenticationManager,
       JwtProperties jwtProperties,
       SecretKey secretKey) {
-    super();
     this.authenticationManager = authenticationManager;
     this.jwtProperties = jwtProperties;
     this.secretKey = secretKey;
