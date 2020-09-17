@@ -2,19 +2,19 @@ package cl.blm.newmarketing.store.security.pojo;
 
 public class UsernamePasswordPojo {
 
-  private String username;
+  private String name;
   private String password;
 
   public UsernamePasswordPojo() {
     super();
   }
 
-  public String getUsername() {
-    return username;
+  public String getName() {
+    return name;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getPassword() {

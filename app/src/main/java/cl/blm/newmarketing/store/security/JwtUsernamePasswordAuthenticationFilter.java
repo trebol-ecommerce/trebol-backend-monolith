@@ -48,7 +48,7 @@ public class JwtUsernamePasswordAuthenticationFilter
       UsernamePasswordPojo authenticationRequest = new ObjectMapper().readValue(request.getInputStream(),
           UsernamePasswordPojo.class);
       Authentication authentication = new UsernamePasswordAuthenticationToken(
-          authenticationRequest.getUsername(),
+          authenticationRequest.getName(),
           authenticationRequest.getPassword());
       return authenticationManager.authenticate(authentication);
     } catch (IOException e) {
