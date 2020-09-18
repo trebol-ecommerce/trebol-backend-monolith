@@ -1,6 +1,8 @@
 package cl.blm.newmarketing.store.services.crud.impl;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,5 +85,19 @@ public class ProductCrudServiceImpl
     }
 
     return predicate;
+  }
+
+  @Override
+  public ProductPojo find(Integer id) {
+    Optional<Product> productById = repository.findById(id);
+    if (!productById.isPresent()) {
+      return null;
+    } else {
+      Product found = productById.get();
+      ProductPojo foundPojo = entity2Pojo(found);
+      // TODO consider refactoring Product entity and pull this method out
+      foundPojo.setImagesURL(new ArrayList<>());
+      return foundPojo;
+    }
   }
 }
