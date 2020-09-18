@@ -32,7 +32,7 @@ public class ProductPojo {
   private Integer currentStock;
   @JsonInclude(value = Include.NON_EMPTY)
   private Integer criticalStock;
-  @JsonInclude(value = Include.NON_EMPTY)
+  @JsonInclude(value = Include.NON_NULL)
   private Collection<String> imagesURL;
 
   public Integer getId() {
