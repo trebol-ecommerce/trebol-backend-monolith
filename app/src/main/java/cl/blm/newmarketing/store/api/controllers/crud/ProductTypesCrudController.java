@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.api.controllers;
+package cl.blm.newmarketing.store.api.controllers.crud;
 
 import java.util.Collection;
 import java.util.Map;
@@ -21,70 +21,70 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.store.api.GenericEntityDataController;
-import cl.blm.newmarketing.store.api.pojo.ProductPojo;
+import cl.blm.newmarketing.store.api.pojo.ProductTypePojo;
 import cl.blm.newmarketing.store.config.CustomProperties;
-import cl.blm.newmarketing.store.jpa.entities.Product;
+import cl.blm.newmarketing.store.jpa.entities.ProductType;
 import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
- * API point of entry for Product entities
+ * API point of entry for ProductType entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/api")
-public class ProductsDataController
-    extends GenericEntityDataController<ProductPojo, Product, Integer> {
+public class ProductTypesCrudController
+    extends GenericEntityDataController<ProductTypePojo, ProductType, Integer> {
 
   @Autowired
-  public ProductsDataController(CustomProperties globals,
-      GenericEntityCrudService<ProductPojo, Product, Integer> crudService) {
+  public ProductTypesCrudController(CustomProperties globals,
+      GenericEntityCrudService<ProductTypePojo, ProductType, Integer> crudService) {
     super(globals, crudService);
   }
 
   @Override
-  @PostMapping("/product")
-  public Integer create(@RequestBody @Valid ProductPojo input) {
+  @PostMapping("/product_type")
+  public Integer create(@RequestBody @Valid ProductTypePojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/product/{id}")
-  public ProductPojo readOne(@PathVariable Integer id) {
+  @GetMapping("/product_type/{id}")
+  public ProductTypePojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/products")
-  public Collection<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/product_types")
+  public Collection<ProductTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
-  @GetMapping("/products/{requestPageSize}")
-  public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize,
+  @GetMapping("/product_types/{requestPageSize}")
+  public Collection<ProductTypePojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
   }
 
   @Override
-  @GetMapping("/products/{requestPageSize}/{requestPageIndex}")
-  public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
-      @RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/product_types/{requestPageSize}/{requestPageIndex}")
+  public Collection<ProductTypePojo> readMany(@PathVariable Integer requestPageSize,
+      @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
-  @PutMapping("/product")
-  public Integer update(@RequestBody @Valid ProductPojo input) {
+  @PutMapping("/product_type")
+  public Integer update(@RequestBody @Valid ProductTypePojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
-  @PutMapping("/product/{id}")
-  public Integer update(@RequestBody @Valid ProductPojo input, @PathVariable Integer id) {
+  @PutMapping("/product_type/{id}")
+  public Integer update(@RequestBody @Valid ProductTypePojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/product/{id}")
+  @DeleteMapping("/product_type/{id}")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }

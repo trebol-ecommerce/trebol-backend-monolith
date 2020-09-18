@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.api.controllers;
+package cl.blm.newmarketing.store.api.controllers.crud;
 
 import java.util.Collection;
 import java.util.Map;
@@ -21,70 +21,70 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.store.api.GenericEntityDataController;
-import cl.blm.newmarketing.store.api.pojo.ProductTypePojo;
+import cl.blm.newmarketing.store.api.pojo.ClientPojo;
 import cl.blm.newmarketing.store.config.CustomProperties;
-import cl.blm.newmarketing.store.jpa.entities.ProductType;
+import cl.blm.newmarketing.store.jpa.entities.Client;
 import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
- * API point of entry for ProductType entities
+ * API point of entry for Client entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/api")
-public class ProductTypesDataController
-    extends GenericEntityDataController<ProductTypePojo, ProductType, Integer> {
+public class ClientsCrudController
+    extends GenericEntityDataController<ClientPojo, Client, Integer> {
 
   @Autowired
-  public ProductTypesDataController(CustomProperties globals,
-      GenericEntityCrudService<ProductTypePojo, ProductType, Integer> crudService) {
+  public ClientsCrudController(CustomProperties globals,
+      GenericEntityCrudService<ClientPojo, Client, Integer> crudService) {
     super(globals, crudService);
   }
 
   @Override
-  @PostMapping("/product_type")
-  public Integer create(@RequestBody @Valid ProductTypePojo input) {
+  @PostMapping("/client")
+  public Integer create(@RequestBody @Valid ClientPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/product_type/{id}")
-  public ProductTypePojo readOne(@PathVariable Integer id) {
+  @GetMapping("/client/{id}")
+  public ClientPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/product_types")
-  public Collection<ProductTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/clients")
+  public Collection<ClientPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
-  @GetMapping("/product_types/{requestPageSize}")
-  public Collection<ProductTypePojo> readMany(@PathVariable Integer requestPageSize,
+  @GetMapping("/clients/{requestPageSize}")
+  public Collection<ClientPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
   }
 
   @Override
-  @GetMapping("/product_types/{requestPageSize}/{requestPageIndex}")
-  public Collection<ProductTypePojo> readMany(@PathVariable Integer requestPageSize,
-      @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/clients/{requestPageSize}/{requestPageIndex}")
+  public Collection<ClientPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+      @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
-  @PutMapping("/product_type")
-  public Integer update(@RequestBody @Valid ProductTypePojo input) {
+  @PutMapping("/client")
+  public Integer update(@RequestBody @Valid ClientPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
-  @PutMapping("/product_type/{id}")
-  public Integer update(@RequestBody @Valid ProductTypePojo input, @PathVariable Integer id) {
+  @PutMapping("/client/{id}")
+  public Integer update(@RequestBody @Valid ClientPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/product_type/{id}")
+  @DeleteMapping("/client/{id}")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }

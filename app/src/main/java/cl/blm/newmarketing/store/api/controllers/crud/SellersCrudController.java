@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.api.controllers;
+package cl.blm.newmarketing.store.api.controllers.crud;
 
 import java.util.Collection;
 import java.util.Map;
@@ -33,11 +33,11 @@ import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
  */
 @RestController
 @RequestMapping("/api")
-public class SellersDataController
+public class SellersCrudController
     extends GenericEntityDataController<SellerPojo, Seller, Integer> {
 
   @Autowired
-  public SellersDataController(CustomProperties globals,
+  public SellersCrudController(CustomProperties globals,
       GenericEntityCrudService<SellerPojo, Seller, Integer> crudService) {
     super(globals, crudService);
   }

@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.api.controllers;
+package cl.blm.newmarketing.store.api.controllers.crud;
 
 import java.util.Collection;
 import java.util.Map;
@@ -21,69 +21,70 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.store.api.GenericEntityDataController;
-import cl.blm.newmarketing.store.api.pojo.SellPojo;
+import cl.blm.newmarketing.store.api.pojo.ProductFamilyPojo;
 import cl.blm.newmarketing.store.config.CustomProperties;
-import cl.blm.newmarketing.store.jpa.entities.Sell;
+import cl.blm.newmarketing.store.jpa.entities.ProductFamily;
 import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
- * API point of entry for Sell entities
+ * API point of entry for ProductFamily entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/api")
-public class SalesDataController
-    extends GenericEntityDataController<SellPojo, Sell, Integer> {
+public class ProductFamiliesCrudController
+    extends GenericEntityDataController<ProductFamilyPojo, ProductFamily, Integer> {
 
   @Autowired
-  public SalesDataController(CustomProperties globals, GenericEntityCrudService<SellPojo, Sell, Integer> crudService) {
+  public ProductFamiliesCrudController(CustomProperties globals,
+      GenericEntityCrudService<ProductFamilyPojo, ProductFamily, Integer> crudService) {
     super(globals, crudService);
   }
 
   @Override
-  @PostMapping("/sell")
-  public Integer create(@RequestBody @Valid SellPojo input) {
+  @PostMapping("/product_family")
+  public Integer create(@RequestBody @Valid ProductFamilyPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/sell/{id}")
-  public SellPojo readOne(@PathVariable Integer id) {
+  @GetMapping("/product_family/{id}")
+  public ProductFamilyPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/sales")
-  public Collection<SellPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/product_families")
+  public Collection<ProductFamilyPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
-  @GetMapping("/sales/{requestPageSize}")
-  public Collection<SellPojo> readMany(@PathVariable Integer requestPageSize,
+  @GetMapping("/product_families/{requestPageSize}")
+  public Collection<ProductFamilyPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
   }
 
   @Override
-  @GetMapping("/sales/{requestPageSize}/{requestPageIndex}")
-  public Collection<SellPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
-      @RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/product_families/{requestPageSize}/{requestPageIndex}")
+  public Collection<ProductFamilyPojo> readMany(@PathVariable Integer requestPageSize,
+      @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
-  @PutMapping("/sell")
-  public Integer update(@RequestBody @Valid SellPojo input) {
+  @PutMapping("/product_family")
+  public Integer update(@RequestBody @Valid ProductFamilyPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
-  @PutMapping("/sell/{id}")
-  public Integer update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
+  @PutMapping("/product_family/{id}")
+  public Integer update(@RequestBody @Valid ProductFamilyPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/sell/{id}")
+  @DeleteMapping("/product_family/{id}")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }

@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.api.controllers;
+package cl.blm.newmarketing.store.api.controllers.crud;
 
 import java.util.Collection;
 import java.util.Map;
@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.store.api.GenericEntityDataController;
-import cl.blm.newmarketing.store.api.pojo.SellTypePojo;
+import cl.blm.newmarketing.store.api.pojo.SellPojo;
 import cl.blm.newmarketing.store.config.CustomProperties;
-import cl.blm.newmarketing.store.jpa.entities.SellType;
+import cl.blm.newmarketing.store.jpa.entities.Sell;
 import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
@@ -33,58 +33,57 @@ import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
  */
 @RestController
 @RequestMapping("/api")
-public class SellTypesDataController
-    extends GenericEntityDataController<SellTypePojo, SellType, Integer> {
+public class SalesCrudController
+    extends GenericEntityDataController<SellPojo, Sell, Integer> {
 
   @Autowired
-  public SellTypesDataController(CustomProperties globals,
-      GenericEntityCrudService<SellTypePojo, SellType, Integer> crudService) {
+  public SalesCrudController(CustomProperties globals, GenericEntityCrudService<SellPojo, Sell, Integer> crudService) {
     super(globals, crudService);
   }
 
   @Override
-  @PostMapping("/sell_type")
-  public Integer create(@RequestBody @Valid SellTypePojo input) {
+  @PostMapping("/sell")
+  public Integer create(@RequestBody @Valid SellPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/sell_type/{id}")
-  public SellTypePojo readOne(@PathVariable Integer id) {
+  @GetMapping("/sell/{id}")
+  public SellPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/sell_types")
-  public Collection<SellTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/sales")
+  public Collection<SellPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
-  @GetMapping("/sell_types/{requestPageSize}")
-  public Collection<SellTypePojo> readMany(@PathVariable Integer requestPageSize,
+  @GetMapping("/sales/{requestPageSize}")
+  public Collection<SellPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
   }
 
   @Override
-  @GetMapping("/sell_types/{requestPageSize}/{requestPageIndex}")
-  public Collection<SellTypePojo> readMany(@PathVariable Integer requestPageSize,
-      @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/sales/{requestPageSize}/{requestPageIndex}")
+  public Collection<SellPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+      @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
-  @PutMapping("/sell_type")
-  public Integer update(@RequestBody @Valid SellTypePojo input) {
+  @PutMapping("/sell")
+  public Integer update(@RequestBody @Valid SellPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
-  @PutMapping("/sell_type/{id}")
-  public Integer update(@RequestBody @Valid SellTypePojo input, @PathVariable Integer id) {
+  @PutMapping("/sell/{id}")
+  public Integer update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/sell_type/{id}")
+  @DeleteMapping("/sell/{id}")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }

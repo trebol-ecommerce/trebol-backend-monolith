@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.api.controllers;
+package cl.blm.newmarketing.store.api.controllers.crud;
 
 import java.util.Collection;
 import java.util.Map;
@@ -21,70 +21,70 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.newmarketing.store.api.GenericEntityDataController;
-import cl.blm.newmarketing.store.api.pojo.ProductFamilyPojo;
+import cl.blm.newmarketing.store.api.pojo.ProductPojo;
 import cl.blm.newmarketing.store.config.CustomProperties;
-import cl.blm.newmarketing.store.jpa.entities.ProductFamily;
+import cl.blm.newmarketing.store.jpa.entities.Product;
 import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 /**
- * API point of entry for ProductFamily entities
+ * API point of entry for Product entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/api")
-public class ProductFamiliesDataController
-    extends GenericEntityDataController<ProductFamilyPojo, ProductFamily, Integer> {
+public class ProductsCrudController
+    extends GenericEntityDataController<ProductPojo, Product, Integer> {
 
   @Autowired
-  public ProductFamiliesDataController(CustomProperties globals,
-      GenericEntityCrudService<ProductFamilyPojo, ProductFamily, Integer> crudService) {
+  public ProductsCrudController(CustomProperties globals,
+      GenericEntityCrudService<ProductPojo, Product, Integer> crudService) {
     super(globals, crudService);
   }
 
   @Override
-  @PostMapping("/product_family")
-  public Integer create(@RequestBody @Valid ProductFamilyPojo input) {
+  @PostMapping("/product")
+  public Integer create(@RequestBody @Valid ProductPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/product_family/{id}")
-  public ProductFamilyPojo readOne(@PathVariable Integer id) {
+  @GetMapping("/product/{id}")
+  public ProductPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/product_families")
-  public Collection<ProductFamilyPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/products")
+  public Collection<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
-  @GetMapping("/product_families/{requestPageSize}")
-  public Collection<ProductFamilyPojo> readMany(@PathVariable Integer requestPageSize,
+  @GetMapping("/products/{requestPageSize}")
+  public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
   }
 
   @Override
-  @GetMapping("/product_families/{requestPageSize}/{requestPageIndex}")
-  public Collection<ProductFamilyPojo> readMany(@PathVariable Integer requestPageSize,
-      @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/products/{requestPageSize}/{requestPageIndex}")
+  public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+      @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
-  @PutMapping("/product_family")
-  public Integer update(@RequestBody @Valid ProductFamilyPojo input) {
+  @PutMapping("/product")
+  public Integer update(@RequestBody @Valid ProductPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
-  @PutMapping("/product_family/{id}")
-  public Integer update(@RequestBody @Valid ProductFamilyPojo input, @PathVariable Integer id) {
+  @PutMapping("/product/{id}")
+  public Integer update(@RequestBody @Valid ProductPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/product_family/{id}")
+  @DeleteMapping("/product/{id}")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }
