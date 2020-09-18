@@ -51,7 +51,7 @@ public class SecurityConfig
         .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
         .addFilterAfter(new JwtTokenVerifierFilter(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
-        .antMatchers("/login").permitAll()
+        .antMatchers("/login", "/catalog/**").permitAll()
         .anyRequest().authenticated();
   }
 
