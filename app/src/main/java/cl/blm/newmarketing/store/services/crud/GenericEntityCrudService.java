@@ -123,11 +123,11 @@ public abstract class GenericEntityCrudService<P, E extends GenericEntity<I>, I>
   @Nullable
   @Override
   public P find(I id) {
-    Optional<E> personById = repository.findById(id);
-    if (!personById.isPresent()) {
+    Optional<E> entityById = repository.findById(id);
+    if (!entityById.isPresent()) {
       return null;
     } else {
-      E found = personById.get();
+      E found = entityById.get();
       P foundPojo = entity2Pojo(found);
       return foundPojo;
     }
