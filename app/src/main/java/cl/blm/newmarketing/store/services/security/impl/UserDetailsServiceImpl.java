@@ -21,6 +21,12 @@ import cl.blm.newmarketing.store.jpa.repositories.UserRolePermissionsRepository;
 import cl.blm.newmarketing.store.jpa.repositories.UsersRepository;
 import cl.blm.newmarketing.store.security.pojo.UserDetailsPojo;
 
+/**
+ * Service required by the DaoAuthenticationProvider bean.
+ * 
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ *
+ */
 @Service
 public class UserDetailsServiceImpl
     implements UserDetailsService {
