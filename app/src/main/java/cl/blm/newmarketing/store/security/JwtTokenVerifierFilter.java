@@ -47,15 +47,18 @@ public class JwtTokenVerifierFilter
       throws ServletException, IOException, IllegalStateException {
 
     String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeaderFromRequest(request);
-    Claims tokenBody = jwtClaimsParserService.parseToken(authorizationHeader);
-    String username = tokenBody.getSubject();
-    Set<SimpleGrantedAuthority> authorities = extractAuthorities(tokenBody);
-    Authentication authentication = new UsernamePasswordAuthenticationToken(
-        username,
-        null,
-        authorities);
 
-    SecurityContextHolder.getContext().setAuthentication(authentication);
+    if (authorizationHeader != null) {
+      Claims tokenBody = jwtClaimsParserService.parseToken(authorizationHeader);
+      String username = tokenBody.getSubject();
+      Set<SimpleGrantedAuthority> authorities = extractAuthorities(tokenBody);
+      Authentication authentication = new UsernamePasswordAuthenticationToken(
+          username,
+          null,
+          authorities);
+
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
 
     filterChain.doFilter(request, response);
   }
