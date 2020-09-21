@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 	
   <groupId>cl.blm.newmarketing.store</groupId>
-  <artifactId>nm-store-rest</artifactId>
+  <artifactId>nm-trebol-rest-svc</artifactId>
   <version>${revision}</version>
   <packaging>pom</packaging>
 	
-  <name>New Marketing Store REST</name>
+  <name>New Marketing Trebol REST Service</name>
 
   <properties>
     <revision>0.8.2</revision>

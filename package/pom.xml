@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>cl.blm.newmarketing.backend</groupId>
-    <artifactId>nm-store-rest</artifactId>
+    <groupId>cl.blm.newmarketing.store</groupId>
+    <artifactId>nm-trebol-rest-svc</artifactId>
     <version>${revision}</version>
   </parent>
-  <artifactId>nm-store-rest-package</artifactId>
+  <artifactId>trebol-rest-package</artifactId>
   <packaging>ear</packaging>
 
   <name>Packaging JAR</name>

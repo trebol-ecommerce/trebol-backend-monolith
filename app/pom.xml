@@ -6,10 +6,10 @@
 
   <parent>
     <groupId>cl.blm.newmarketing.store</groupId>
-    <artifactId>nm-store-rest</artifactId>
+    <artifactId>nm-trebol-rest-svc</artifactId>
     <version>${revision}</version>
   </parent>
-  <artifactId>nm-store-rest-app</artifactId>
+  <artifactId>trebol-rest-app</artifactId>
   <packaging>war</packaging>
 
   <name>REST API program</name>
