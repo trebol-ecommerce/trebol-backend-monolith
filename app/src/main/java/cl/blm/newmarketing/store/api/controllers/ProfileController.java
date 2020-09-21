@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.lang.Maps;
 
 import com.querydsl.core.types.Predicate;
@@ -43,7 +42,7 @@ public class ProfileController {
   public PersonPojo getProfile(@RequestHeader Map<String, String> requestHeaders) {
     String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeaderFromMap(requestHeaders);
 
-    try {
+    if (authorizationHeader != null) {
       Claims body = jwtClaimsParserService.parseToken(authorizationHeader);
 
       String username = body.getSubject();
@@ -54,8 +53,8 @@ public class ProfileController {
         PersonPojo target = conversionService.convert(personByUserName, PersonPojo.class);
         return target;
       }
-    } catch (JwtException e) {
-      throw new IllegalStateException("Token cannot be trusted");
+    } else {
+      throw new RuntimeException("No authorization header was found");
     }
     return null;
   }
