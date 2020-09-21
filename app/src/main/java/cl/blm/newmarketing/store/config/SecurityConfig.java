@@ -15,8 +15,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import io.jsonwebtoken.Claims;
+
 import cl.blm.newmarketing.store.security.JwtTokenVerifierFilter;
 import cl.blm.newmarketing.store.security.JwtUsernamePasswordAuthenticationFilter;
+import cl.blm.newmarketing.store.services.security.AuthorizationTokenParserService;
 
 @Configuration
 @EnableWebSecurity(debug = false)
@@ -28,17 +31,20 @@ public class SecurityConfig
   private final UserDetailsService userDetailsService;
   private final SecretKey secretKey;
   private final JwtProperties jwtConfig;
+  private final AuthorizationTokenParserService<Claims> jwtClaimsParserService;
 
   @Autowired
   public SecurityConfig(
       PasswordEncoder passwordEncoder,
       UserDetailsService userDetailsService,
       SecretKey secretKey,
-      JwtProperties jwtConfig) {
+      JwtProperties jwtConfig,
+      AuthorizationTokenParserService<Claims> jwtClaimsParserService) {
     this.passwordEncoder = passwordEncoder;
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.jwtConfig = jwtConfig;
+    this.jwtClaimsParserService = jwtClaimsParserService;
   }
 
   @Override
@@ -49,7 +55,8 @@ public class SecurityConfig
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
-        .addFilterAfter(new JwtTokenVerifierFilter(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
+        .addFilterAfter(new JwtTokenVerifierFilter(jwtClaimsParserService),
+            JwtUsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
         .antMatchers("/login", "/catalog/**").permitAll()
         .anyRequest().authenticated();
