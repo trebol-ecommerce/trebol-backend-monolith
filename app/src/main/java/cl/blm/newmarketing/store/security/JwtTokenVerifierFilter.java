@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,29 +18,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
 
-import com.google.common.base.Strings;
-
-import cl.blm.newmarketing.store.config.JwtProperties;
+import cl.blm.newmarketing.store.services.security.AuthorizationTokenParserService;
 
 public class JwtTokenVerifierFilter
     extends OncePerRequestFilter {
 
-  private final SecretKey secretKey;
-  private final JwtProperties jwtProperties;
+  private final AuthorizationTokenParserService<Claims> jwtClaimsParserService;
 
-  public JwtTokenVerifierFilter(SecretKey secretKey, JwtProperties jwtProperties) {
+  public JwtTokenVerifierFilter(AuthorizationTokenParserService<Claims> jwtClaimsParserService) {
     super();
-    this.secretKey = secretKey;
-    this.jwtProperties = jwtProperties;
+    this.jwtClaimsParserService = jwtClaimsParserService;
   }
 
-  private Set<SimpleGrantedAuthority> extractAuthorities(Claims body) {
+  private Set<SimpleGrantedAuthority> extractAuthorities(Claims tokenBody) {
     @SuppressWarnings("unchecked")
-    List<Map<String, String>> jwsAuthorityMap = (List<Map<String, String>>) body.get("authorities");
+    List<Map<String, String>> jwsAuthorityMap = (List<Map<String, String>>) tokenBody.get("authorities");
     Set<SimpleGrantedAuthority> authorities = new HashSet<>();
     for (Map<String, String> authorityKeyValuePair : jwsAuthorityMap) {
       SimpleGrantedAuthority authority = new SimpleGrantedAuthority(authorityKeyValuePair.get("authority"));
@@ -52,37 +44,18 @@ public class JwtTokenVerifierFilter
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
+      throws ServletException, IOException, IllegalStateException {
 
-    String authorizationHeader = request.getHeader(jwtProperties.getAuthorizationHeader());
+    String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeaderFromRequest(request);
+    Claims tokenBody = jwtClaimsParserService.parseToken(authorizationHeader);
+    String username = tokenBody.getSubject();
+    Set<SimpleGrantedAuthority> authorities = extractAuthorities(tokenBody);
+    Authentication authentication = new UsernamePasswordAuthenticationToken(
+        username,
+        null,
+        authorities);
 
-    if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtProperties.getTokenPrefix())) {
-      filterChain.doFilter(request, response);
-      return;
-    }
-
-    String token = authorizationHeader.replace(jwtProperties.getTokenPrefix(), "");
-
-    try {
-      Jws<Claims> claimsJws = Jwts.parserBuilder()
-          .setSigningKey(secretKey)
-          .build()
-          .parseClaimsJws(token);
-
-      Claims body = claimsJws.getBody();
-
-      String username = body.getSubject();
-      Set<SimpleGrantedAuthority> authorities = extractAuthorities(body);
-      Authentication authentication = new UsernamePasswordAuthenticationToken(
-          username,
-          null,
-          authorities);
-
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-
-    } catch (JwtException e) {
-      throw new IllegalStateException(String.format("Token %s cannot be trusted", token));
-    }
+    SecurityContextHolder.getContext().setAuthentication(authentication);
 
     filterChain.doFilter(request, response);
   }
