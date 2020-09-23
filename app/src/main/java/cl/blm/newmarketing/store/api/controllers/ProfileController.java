@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +22,7 @@ public class ProfileController {
 
   private final AuthorizationTokenParserService<Claims> jwtClaimsParserService;
   private final ConversionService conversionService;
-  private final UserProfileService userCrudService;
+  private final UserProfileService userProfileService;
 
   @Autowired
   public ProfileController(AuthorizationTokenParserService<Claims> jwtClaimsParserService,
@@ -28,7 +30,7 @@ public class ProfileController {
       UserProfileService crudService) {
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.conversionService = conversionService;
-    this.userCrudService = crudService;
+    this.userProfileService = crudService;
   }
 
   @GetMapping("/profile")
@@ -39,7 +41,7 @@ public class ProfileController {
       Claims body = jwtClaimsParserService.parseToken(authorizationHeader);
 
       String username = body.getSubject();
-      Person personByUserName = userCrudService.getProfileFromUserName(username);
+      Person personByUserName = userProfileService.getProfileFromUserName(username);
       if (personByUserName != null) {
         PersonPojo target = conversionService.convert(personByUserName, PersonPojo.class);
         return target;
@@ -48,6 +50,18 @@ public class ProfileController {
       throw new RuntimeException("No authorization header was found");
     }
     return null;
+  }
+
+  @PutMapping("/profile")
+  public boolean updateProfile(@RequestHeader HttpHeaders requestHeaders, @RequestBody PersonPojo newProfile) {
+    PersonPojo currentProfile = getProfile(requestHeaders);
+
+    if (currentProfile != null && currentProfile.getId() == newProfile.getId()) {
+      Person target = conversionService.convert(newProfile, Person.class);
+      return userProfileService.updateProfile(target);
+    } else {
+      return false;
+    }
   }
 
   @GetMapping("/validate")
