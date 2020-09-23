@@ -15,11 +15,15 @@ import cl.blm.newmarketing.store.services.UserProfileService;
 public class UserProfileServiceImpl
     implements UserProfileService {
 
-  @Autowired
-  private UsersRepository usersRepository;
+  private final UsersRepository usersRepository;
+  private final PeopleRepository peopleRepository;
 
   @Autowired
-  private PeopleRepository peopleRepository;
+  public UserProfileServiceImpl(UsersRepository usersRepository, PeopleRepository peopleRepository) {
+    super();
+    this.usersRepository = usersRepository;
+    this.peopleRepository = peopleRepository;
+  }
 
   @Override
   public Person getProfileFromUserName(String userName) {
