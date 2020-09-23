@@ -1,12 +1,11 @@
 package cl.blm.newmarketing.store.services.security.impl;
 
-import java.util.Map;
-
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
@@ -53,10 +52,10 @@ public class JwtClaimsParserServiceImpl
 
   @Nullable
   @Override
-  public String extractAuthorizationHeaderFromMap(Map<String, String> httpHeaders) {
+  public String extractAuthorizationHeader(HttpHeaders httpHeaders) {
     String authHeaderKey = jwtProperties.getAuthorizationHeader();
     if (httpHeaders.containsKey(authHeaderKey)) {
-      String value = httpHeaders.get(authHeaderKey);
+      String value = httpHeaders.getFirst(authHeaderKey);
       return value;
     } else {
       return null;

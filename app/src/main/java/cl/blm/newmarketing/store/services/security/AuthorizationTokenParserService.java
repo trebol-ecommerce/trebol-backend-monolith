@@ -1,9 +1,9 @@
 package cl.blm.newmarketing.store.services.security;
 
-import java.util.Map;
-
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.HttpHeaders;
 
 /**
  * Interface for parsing Authorization headers into tokens
@@ -30,7 +30,7 @@ public interface AuthorizationTokenParserService<T> {
    * @return The value for the Authorization header, or null if not found
    */
   @Nullable
-  public String extractAuthorizationHeaderFromMap(Map<String, String> httpHeaders);
+  public String extractAuthorizationHeader(HttpHeaders httpHeaders);
 
   /**
    * Parse a full Authorization header into the expected token body class

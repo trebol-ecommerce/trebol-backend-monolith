@@ -1,11 +1,10 @@
 package cl.blm.newmarketing.store.api.controllers;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,8 +38,8 @@ public class ProfileController {
   }
 
   @GetMapping("/profile")
-  public PersonPojo getProfile(@RequestHeader Map<String, String> requestHeaders) {
-    String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeaderFromMap(requestHeaders);
+  public PersonPojo getProfile(@RequestHeader HttpHeaders requestHeaders) {
+    String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
 
     if (authorizationHeader != null) {
       Claims body = jwtClaimsParserService.parseToken(authorizationHeader);
