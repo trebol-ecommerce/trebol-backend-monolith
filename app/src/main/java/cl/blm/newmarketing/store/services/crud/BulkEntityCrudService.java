@@ -1,4 +1,4 @@
-package cl.blm.newmarketing.store.services;
+package cl.blm.newmarketing.store.services.crud;
 
 import java.util.Collection;
 

@@ -1,10 +1,12 @@
-package cl.blm.newmarketing.store.services;
+package cl.blm.newmarketing.store.services.crud;
 
 import java.util.Collection;
 
 import org.springframework.lang.Nullable;
 
 import com.querydsl.core.types.Predicate;
+
+import cl.blm.newmarketing.store.services.Map2QueryDslPredicateConverterService;
 
 /**
  * Interface for implementing the basic CRUD service operations. Because it

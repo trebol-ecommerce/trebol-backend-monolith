@@ -15,7 +15,6 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.store.jpa.GenericEntity;
 import cl.blm.newmarketing.store.jpa.GenericRepository;
-import cl.blm.newmarketing.store.services.EntityCrudService;
 import cl.blm.newmarketing.store.services.TwoWayEntityPojoConverterService;
 
 /**
