@@ -3,12 +3,14 @@ package cl.blm.newmarketing.store.services.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cl.blm.newmarketing.store.jpa.entities.Person;
 import cl.blm.newmarketing.store.jpa.entities.User;
 import cl.blm.newmarketing.store.jpa.repositories.UsersRepository;
 import cl.blm.newmarketing.store.services.UserProfileService;
 
+@Service
 public class UserProfileServiceImpl
     implements UserProfileService {
 
