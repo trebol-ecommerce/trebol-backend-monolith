@@ -1,7 +1,5 @@
 package cl.blm.newmarketing.store.api.controllers;
 
-import java.util.Optional;
-
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -41,10 +39,9 @@ public class ProfileController {
       Claims body = jwtClaimsParserService.parseToken(authorizationHeader);
 
       String username = body.getSubject();
-      Optional<Person> personByUserName = userCrudService.getProfileFromUserName(username);
-      if (personByUserName.isPresent()) {
-        Person source = personByUserName.get();
-        PersonPojo target = conversionService.convert(source, PersonPojo.class);
+      Person personByUserName = userCrudService.getProfileFromUserName(username);
+      if (personByUserName != null) {
+        PersonPojo target = conversionService.convert(personByUserName, PersonPojo.class);
         return target;
       }
     } else {

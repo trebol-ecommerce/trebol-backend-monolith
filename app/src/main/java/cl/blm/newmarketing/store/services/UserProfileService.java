@@ -1,9 +1,10 @@
 package cl.blm.newmarketing.store.services;
 
-import java.util.Optional;
+import javax.annotation.Nullable;
 
 import cl.blm.newmarketing.store.jpa.entities.Person;
 
 public interface UserProfileService {
-  public Optional<Person> getProfileFromUserName(String userName);
+  @Nullable
+  public Person getProfileFromUserName(String userName);
 }
