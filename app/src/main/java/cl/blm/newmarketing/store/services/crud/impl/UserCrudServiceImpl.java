@@ -69,7 +69,7 @@ public class UserCrudServiceImpl
           intValue = Integer.valueOf(stringValue);
           return predicate.and(qUser.id.eq(intValue)); // id matching is final
         case "name":
-          predicate.and(qUser.person.name.likeIgnoreCase("%" + stringValue + "%"));
+          predicate.and(qUser.name.likeIgnoreCase("%" + stringValue + "%"));
           break;
         default:
           break;
