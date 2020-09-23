@@ -19,4 +19,7 @@ public interface UsersRepository
 
   @Query("SELECT u FROM User u JOIN FETCH u.userRole WHERE u.name = :name")
   public Optional<User> findByNameWithRole(@Param("name") String name);
+
+  @Query("SELECT u FROM User u JOIN FETCH u.person WHERE u.name = :name")
+  public Optional<User> findByNameWithProfile(@Param("name") String name);
 }
