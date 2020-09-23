@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import cl.blm.newmarketing.store.jpa.entities.Person;
 import cl.blm.newmarketing.store.jpa.entities.User;
+import cl.blm.newmarketing.store.jpa.repositories.PeopleRepository;
 import cl.blm.newmarketing.store.jpa.repositories.UsersRepository;
 import cl.blm.newmarketing.store.services.UserProfileService;
 
@@ -15,12 +16,21 @@ public class UserProfileServiceImpl
     implements UserProfileService {
 
   @Autowired
-  private UsersRepository repository;
+  private UsersRepository usersRepository;
+
+  @Autowired
+  private PeopleRepository peopleRepository;
 
   @Override
   public Person getProfileFromUserName(String userName) {
-    Optional<User> userByName = repository.findByNameWithProfile(userName);
+    Optional<User> userByName = usersRepository.findByNameWithProfile(userName);
     Person target = userByName.get().getPerson();
     return target;
+  }
+
+  @Override
+  public boolean updateProfile(Person profile) {
+    peopleRepository.saveAndFlush(profile);
+    return true;
   }
 }
