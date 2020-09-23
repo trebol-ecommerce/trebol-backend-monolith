@@ -54,8 +54,11 @@ public class ProfileController {
 
   @PutMapping("/profile")
   public boolean updateProfile(@RequestHeader HttpHeaders requestHeaders, @RequestBody PersonPojo newProfile) {
+
+    // first retrieve profile with method above, validating token and what else
     PersonPojo currentProfile = getProfile(requestHeaders);
 
+    // compare fetched id to input
     if (currentProfile != null && currentProfile.getId() == newProfile.getId()) {
       Person target = conversionService.convert(newProfile, Person.class);
       return userProfileService.updateProfile(target);
