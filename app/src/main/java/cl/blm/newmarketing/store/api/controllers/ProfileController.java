@@ -27,10 +27,10 @@ public class ProfileController {
   @Autowired
   public ProfileController(AuthorizationTokenParserService<Claims> jwtClaimsParserService,
       ConversionService conversionService,
-      UserProfileService crudService) {
+      UserProfileService userProfileService) {
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.conversionService = conversionService;
-    this.userProfileService = crudService;
+    this.userProfileService = userProfileService;
   }
 
   @GetMapping("/profile")
