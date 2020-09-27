@@ -1,5 +1,7 @@
 package cl.blm.newmarketing.store.api.controllers;
 
+import io.jsonwebtoken.Claims;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -9,8 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.jsonwebtoken.Claims;
 
 import cl.blm.newmarketing.store.api.pojo.PersonPojo;
 import cl.blm.newmarketing.store.jpa.entities.Person;
