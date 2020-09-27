@@ -15,6 +15,8 @@
     <class>cl.blm.newmarketing.store.jpa.entities.User</class>
     <class>cl.blm.newmarketing.store.jpa.entities.Person</class>
     <class>cl.blm.newmarketing.store.jpa.entities.UserRole</class>
+    <class>cl.blm.newmarketing.store.jpa.entities.Image</class>
+    <class>cl.blm.newmarketing.store.jpa.entities.ProductImage</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://192.168.0.3:3306/nm_store"/>
