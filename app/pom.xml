@@ -5,14 +5,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>cl.blm.newmarketing.store</groupId>
-    <artifactId>nm-trebol-rest-svc</artifactId>
+    <groupId>cl.blm.trebol</groupId>
+    <artifactId>trebol-backend</artifactId>
     <version>${revision}</version>
   </parent>
-  <artifactId>trebol-rest-app</artifactId>
+  <artifactId>trebol-backend-rest-api</artifactId>
   <packaging>war</packaging>
 
-  <name>REST API program</name>
+  <name>Trebol Backend REST API</name>
 
   <properties>
     <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

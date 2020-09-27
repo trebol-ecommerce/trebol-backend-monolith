@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 	
-  <groupId>cl.blm.newmarketing.store</groupId>
-  <artifactId>nm-trebol-rest-svc</artifactId>
+  <groupId>cl.blm.trebol</groupId>
+  <artifactId>trebol-backend</artifactId>
   <version>${revision}</version>
   <packaging>pom</packaging>
 	
-  <name>New Marketing Trebol REST Service</name>
+  <name>Trebol Backend</name>
 
   <properties>
     <revision>0.8.2</revision>
@@ -25,7 +25,7 @@
   </properties>
 	
   <modules>
-    <module>app</module>
+    <module>api</module>
     <module>package</module>
   </modules>
 </project>
