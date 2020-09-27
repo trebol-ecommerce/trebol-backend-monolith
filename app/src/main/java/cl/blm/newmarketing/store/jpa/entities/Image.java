@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "images")
 @NamedQueries({
-    @NamedQuery(name = "Images.findAll", query = "SELECT i FROM Images i")})
+    @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i")})
 public class Image
     implements GenericEntity<Integer> {
 

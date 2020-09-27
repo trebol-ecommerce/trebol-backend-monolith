@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "product_images")
 @NamedQueries({
-    @NamedQuery(name = "ProductImages.findAll", query = "SELECT p FROM ProductImages p")})
+    @NamedQuery(name = "ProductImage.findAll", query = "SELECT p FROM ProductImage p")})
 public class ProductImage
     implements GenericEntity<Integer> {
 
