@@ -10,4 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public interface RouteService {
   public Collection<String> getAuthorizedApiRoutes(UserDetails userDetails);
+
+  public Collection<String> getAuthorizedApiRouteAccess(UserDetails userDetails, String apiRoute);
 }
