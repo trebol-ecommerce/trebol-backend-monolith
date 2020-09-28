@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import io.jsonwebtoken.Claims;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpHeaders;
@@ -65,18 +64,6 @@ public class ProfileController {
       Person target = conversionService.convert(newProfile, Person.class);
       return userProfileService.updateProfile(target);
     } else {
-      return false;
-    }
-  }
-
-  @GetMapping("/validate")
-  public boolean validateToken(@RequestHeader HttpHeaders requestHeaders) {
-    try {
-      String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
-      jwtClaimsParserService.parseToken(authorizationHeader);
-      return true;
-    } catch (Exception e) {
-      LoggerFactory.getLogger(ProfileController.class).warn("Could not validate token", e);
       return false;
     }
   }
