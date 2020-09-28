@@ -31,4 +31,18 @@ public class RouteServiceImpl
     return resourceRoutes;
   }
 
+  @Override
+  public Collection<String> getAuthorizedApiRouteAccess(UserDetails userDetails, String apiRoute) {
+    Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+    Set<String> authorizedActions = new HashSet<>();
+    for (GrantedAuthority authority : authorities) {
+      String resourceAuthority = authority.getAuthority();
+      if (resourceAuthority.contains(apiRoute)) {
+        String actionName = resourceAuthority.replaceAll("^.+:", "");
+        authorizedActions.add(actionName);
+      }
+    }
+    return authorizedActions;
+  }
+
 }
