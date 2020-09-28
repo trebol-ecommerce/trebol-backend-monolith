@@ -18,11 +18,11 @@ import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
 
 @RestController
 @RequestMapping("/catalog")
-public class StoreCatalogController
+public class CatalogController
     extends GenericEntityDataController<ProductPojo, Product, Integer> {
 
   @Autowired
-  public StoreCatalogController(CustomProperties customProperties,
+  public CatalogController(CustomProperties customProperties,
       GenericEntityCrudService<ProductPojo, Product, Integer> crudService) {
     super(customProperties, crudService);
   }
