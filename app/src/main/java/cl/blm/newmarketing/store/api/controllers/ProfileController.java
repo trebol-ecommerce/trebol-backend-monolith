@@ -1,5 +1,7 @@
 package cl.blm.newmarketing.store.api.controllers;
 
+import java.util.Objects;
+
 import io.jsonwebtoken.Claims;
 
 import org.slf4j.LoggerFactory;
@@ -59,7 +61,7 @@ public class ProfileController {
     PersonPojo currentProfile = getProfile(requestHeaders);
 
     // compare fetched id to input
-    if (currentProfile != null && currentProfile.getId() == newProfile.getId()) {
+    if (currentProfile != null && Objects.equals(currentProfile.getId(), newProfile.getId())) {
       Person target = conversionService.convert(newProfile, Person.class);
       return userProfileService.updateProfile(target);
     } else {
