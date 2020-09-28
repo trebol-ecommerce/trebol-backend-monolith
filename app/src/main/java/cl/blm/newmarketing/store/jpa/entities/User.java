@@ -22,7 +22,7 @@ import cl.blm.newmarketing.store.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "users")
+@Table(name = "app_users")
 @NamedQueries({ @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u") })
 public class User
     implements GenericEntity<Integer> {

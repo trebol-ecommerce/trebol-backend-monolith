@@ -22,7 +22,7 @@ import cl.blm.newmarketing.store.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "sessions")
+@Table(name = "app_sessions")
 @NamedQueries({ @NamedQuery(name = "Session.findAll", query = "SELECT s FROM Session s") })
 public class Session
     implements GenericEntity<Long> {

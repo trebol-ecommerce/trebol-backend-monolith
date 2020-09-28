@@ -19,7 +19,7 @@ import cl.blm.newmarketing.store.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "permissions")
+@Table(name = "app_permissions")
 @NamedQueries({ @NamedQuery(name = "Permission.findAll", query = "SELECT p FROM Permission p") })
 public class Permission
     implements GenericEntity<Integer> {

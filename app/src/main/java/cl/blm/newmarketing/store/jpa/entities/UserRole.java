@@ -19,7 +19,7 @@ import cl.blm.newmarketing.store.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "user_roles")
+@Table(name = "app_user_roles")
 @NamedQueries({ @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u") })
 public class UserRole
     implements GenericEntity<Integer> {
