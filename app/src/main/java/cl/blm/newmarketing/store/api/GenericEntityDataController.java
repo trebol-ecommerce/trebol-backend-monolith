@@ -34,9 +34,10 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
 
   /**
    * Pass a new item to the service.
-   * 
+   *
    * @return The resulting item's ID
    */
+  @Override
   public I create(P input) {
     I resultId = crudService.create(input);
     return resultId;
@@ -48,6 +49,7 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
    * @param id The identifier of the item
    * @return The item
    */
+  @Override
   public P readOne(I id) {
     P found = crudService.find(id);
     return found;
@@ -63,6 +65,7 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
    * @see Predicate
    * @return
    */
+  @Override
   public Collection<P> readMany(Integer requestPageSize, Integer requestPageIndex,
       Map<String, String> allRequestParams) {
     int pageSize = customProperties.getItemsPerPage();
@@ -84,7 +87,7 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
 
   /**
    * Update the item found with an id, using data provided as input.
-   * 
+   *
    * @param input
    * @param id
    * @return
@@ -96,7 +99,7 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
 
   /**
    * Delete an item by its id.
-   * 
+   *
    * @param id
    * @return
    */
