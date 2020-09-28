@@ -25,7 +25,7 @@ public class RouteServiceImpl
     for (GrantedAuthority authority : authorities) {
       String resourceAuthority = authority.getAuthority();
       String resourceName = resourceAuthority.replaceAll(":.+$", "");
-      resourceRoutes.add("/" + resourceName);
+      resourceRoutes.add(resourceName);
     }
 
     return resourceRoutes;
