@@ -35,6 +35,7 @@ public abstract class GenericEntityDataController<P, E extends GenericEntity<I>,
   /**
    * Pass a new item to the service.
    *
+   * @param input The new item
    * @return The resulting item's ID
    */
   @Override
