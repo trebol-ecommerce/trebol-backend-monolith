@@ -54,12 +54,11 @@ public class CatalogController {
   }
 
   @GetMapping("/product_types")
-  public Collection<ProductTypePojo> readProductTypes() {
-    return catalogService.readProductTypes();
-  }
-
-  @GetMapping("/product_types")
-  public Collection<ProductTypePojo> readProductTypes(@RequestParam("familyId") Integer familyId) {
-    return catalogService.readProductTypesByFamilyId(familyId);
+  public Collection<ProductTypePojo> readProductTypesByFamilyId(@RequestParam("familyId") Integer familyId) {
+    if (familyId == null) {
+      return catalogService.readProductTypes();
+    } else {
+      return catalogService.readProductTypesByFamilyId(familyId);
+    }
   }
 }
