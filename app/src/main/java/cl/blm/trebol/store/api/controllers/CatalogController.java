@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.blm.trebol.store.api.pojo.ProductFamilyPojo;
 import cl.blm.trebol.store.api.pojo.ProductPojo;
+import cl.blm.trebol.store.api.pojo.ProductTypePojo;
 import cl.blm.trebol.store.services.CatalogService;
 
 @RestController
@@ -46,4 +48,13 @@ public class CatalogController {
     return catalogService.readProducts(requestPageSize, requestPageIndex, allRequestParams);
   }
 
+  @GetMapping("/product_families")
+  public Collection<ProductFamilyPojo> readProductFamilies() {
+    return catalogService.readProductFamilies();
+  }
+
+  @GetMapping("/product_types")
+  public Collection<ProductTypePojo> readProductTypes() {
+    return catalogService.readProductTypes();
+  }
 }
