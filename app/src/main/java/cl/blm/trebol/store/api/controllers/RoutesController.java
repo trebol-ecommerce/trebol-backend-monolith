@@ -140,4 +140,14 @@ public class RoutesController {
     }
     return null;
   }
+
+  @GetMapping("/api/user")
+  public AuthorizedAccessPojo getUserApiAccess(@RequestHeader HttpHeaders requestHeaders) {
+    String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
+    if (authorizationHeader != null) {
+      AuthorizedAccessPojo target = loadApiRouteAccess(authorizationHeader, "users");
+      return target;
+    }
+    return null;
+  }
 }
