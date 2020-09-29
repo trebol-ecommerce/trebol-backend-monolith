@@ -3,6 +3,8 @@ package cl.blm.trebol.store.services.impl;
 import java.util.Collection;
 import java.util.Map;
 
+import io.jsonwebtoken.lang.Maps;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +54,13 @@ public class CatalogServiceImpl
   @Override
   public Collection<ProductTypePojo> readProductTypes() {
     return productTypesService.read(10, 0, null);
+  }
+
+  @Override
+  public Collection<ProductTypePojo> readProductTypesByFamilyId(int productFamilyId) {
+    Map<String, String> queryParamsMap = Maps.of("productFamily", String.valueOf(productFamilyId)).build();
+    Predicate filters = productsService.queryParamsMapToPredicate(queryParamsMap);
+    return productTypesService.read(10, 0, filters);
   }
 
   @Override
