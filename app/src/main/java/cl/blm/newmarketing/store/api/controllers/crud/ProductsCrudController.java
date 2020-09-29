@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,22 +45,26 @@ public class ProductsCrudController
 
   @Override
   @PostMapping("/product")
+  @PreAuthorize("hasAuthority('products:create')")
   public Integer create(@RequestBody @Valid ProductPojo input) {
     return super.create(input);
   }
 
   @Override
   @GetMapping("/product/{id}")
+  @PreAuthorize("hasAuthority('products:read')")
   public ProductPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @GetMapping("/products")
+  @PreAuthorize("hasAuthority('products:read')")
   public Collection<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}")
+  @PreAuthorize("hasAuthority('products:read')")
   public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
@@ -67,24 +72,28 @@ public class ProductsCrudController
 
   @Override
   @GetMapping("/products/{requestPageSize}/{requestPageIndex}")
+  @PreAuthorize("hasAuthority('products:read')")
   public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
   @PutMapping("/product")
+  @PreAuthorize("hasAuthority('products:update'")
   public Integer update(@RequestBody @Valid ProductPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
   @PutMapping("/product/{id}")
+  @PreAuthorize("hasAuthority('products:update'")
   public Integer update(@RequestBody @Valid ProductPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
   @DeleteMapping("/product/{id}")
+  @PreAuthorize("hasAuthority('products:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }

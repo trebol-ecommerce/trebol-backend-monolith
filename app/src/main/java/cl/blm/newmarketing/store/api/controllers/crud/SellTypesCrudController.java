@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,16 +51,19 @@ public class SellTypesCrudController
 
   @Override
   @GetMapping("/sell_type/{id}")
+  @PreAuthorize("hasAuthority('sell_types:read')")
   public SellTypePojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @GetMapping("/sell_types")
+  @PreAuthorize("hasAuthority('sell_types:read')")
   public Collection<SellTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/sell_types/{requestPageSize}")
+  @PreAuthorize("hasAuthority('sell_types:read')")
   public Collection<SellTypePojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
@@ -67,24 +71,28 @@ public class SellTypesCrudController
 
   @Override
   @GetMapping("/sell_types/{requestPageSize}/{requestPageIndex}")
+  @PreAuthorize("hasAuthority('sell_types:read')")
   public Collection<SellTypePojo> readMany(@PathVariable Integer requestPageSize,
       @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
   @PutMapping("/sell_type")
+  @PreAuthorize("hasAuthority('sell_types:update')")
   public Integer update(@RequestBody @Valid SellTypePojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
   @PutMapping("/sell_type/{id}")
+  @PreAuthorize("hasAuthority('sell_types:update')")
   public Integer update(@RequestBody @Valid SellTypePojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
   @DeleteMapping("/sell_type/{id}")
+  @PreAuthorize("hasAuthority('sell_types:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }

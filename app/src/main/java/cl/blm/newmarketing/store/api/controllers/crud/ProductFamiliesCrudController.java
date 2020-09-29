@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,22 +45,26 @@ public class ProductFamiliesCrudController
 
   @Override
   @PostMapping("/product_family")
+  @PreAuthorize("hasAuthority('product_families:create')")
   public Integer create(@RequestBody @Valid ProductFamilyPojo input) {
     return super.create(input);
   }
 
   @Override
   @GetMapping("/product_family/{id}")
+  @PreAuthorize("hasAuthority('product_families:read')")
   public ProductFamilyPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @GetMapping("/product_families")
+  @PreAuthorize("hasAuthority('product_families:read')")
   public Collection<ProductFamilyPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/product_families/{requestPageSize}")
+  @PreAuthorize("hasAuthority('product_families:read')")
   public Collection<ProductFamilyPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
@@ -67,24 +72,28 @@ public class ProductFamiliesCrudController
 
   @Override
   @GetMapping("/product_families/{requestPageSize}/{requestPageIndex}")
+  @PreAuthorize("hasAuthority('product_families:read')")
   public Collection<ProductFamilyPojo> readMany(@PathVariable Integer requestPageSize,
       @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
   @PutMapping("/product_family")
+  @PreAuthorize("hasAuthority('product_families:update'")
   public Integer update(@RequestBody @Valid ProductFamilyPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
   @PutMapping("/product_family/{id}")
+  @PreAuthorize("hasAuthority('product_families:update'")
   public Integer update(@RequestBody @Valid ProductFamilyPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
   @DeleteMapping("/product_family/{id}")
+  @PreAuthorize("hasAuthority('product_families:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }

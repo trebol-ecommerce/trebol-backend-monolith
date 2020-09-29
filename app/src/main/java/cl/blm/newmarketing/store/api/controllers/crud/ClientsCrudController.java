@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,22 +45,26 @@ public class ClientsCrudController
 
   @Override
   @PostMapping("/client")
+  @PreAuthorize("hasAuthority('clients:create')")
   public Integer create(@RequestBody @Valid ClientPojo input) {
     return super.create(input);
   }
 
   @Override
   @GetMapping("/client/{id}")
+  @PreAuthorize("hasAuthority('clients:read')")
   public ClientPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @GetMapping("/clients")
+  @PreAuthorize("hasAuthority('clients:read')")
   public Collection<ClientPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/clients/{requestPageSize}")
+  @PreAuthorize("hasAuthority('clients:read')")
   public Collection<ClientPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
@@ -67,24 +72,28 @@ public class ClientsCrudController
 
   @Override
   @GetMapping("/clients/{requestPageSize}/{requestPageIndex}")
+  @PreAuthorize("hasAuthority('clients:read')")
   public Collection<ClientPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
   @PutMapping("/client")
+  @PreAuthorize("hasAuthority('clients:update'")
   public Integer update(@RequestBody @Valid ClientPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
   @PutMapping("/client/{id}")
+  @PreAuthorize("hasAuthority('clients:update'")
   public Integer update(@RequestBody @Valid ClientPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
   @DeleteMapping("/client/{id}")
+  @PreAuthorize("hasAuthority('clients:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }

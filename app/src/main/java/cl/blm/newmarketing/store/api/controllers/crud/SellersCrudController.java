@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,22 +45,26 @@ public class SellersCrudController
 
   @Override
   @PostMapping("/seller")
+  @PreAuthorize("hasAuthority('sellers:create')")
   public Integer create(@RequestBody @Valid SellerPojo input) {
     return super.create(input);
   }
 
   @Override
   @GetMapping("/seller/{id}")
+  @PreAuthorize("hasAuthority('sellers:read')")
   public SellerPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @GetMapping("/sellers")
+  @PreAuthorize("hasAuthority('sellers:read')")
   public Collection<SellerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/sellers/{requestPageSize}")
+  @PreAuthorize("hasAuthority('sellers:read')")
   public Collection<SellerPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
@@ -67,24 +72,28 @@ public class SellersCrudController
 
   @Override
   @GetMapping("/sellers/{requestPageSize}/{requestPageIndex}")
+  @PreAuthorize("hasAuthority('sellers:read')")
   public Collection<SellerPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
   @PutMapping("/seller")
+  @PreAuthorize("hasAuthority('sellers:update')")
   public Integer update(@RequestBody @Valid SellerPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
   @PutMapping("/seller/{id}")
+  @PreAuthorize("hasAuthority('sellers:update')")
   public Integer update(@RequestBody @Valid SellerPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
   @DeleteMapping("/seller/{id}")
+  @PreAuthorize("hasAuthority('sellers:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }
