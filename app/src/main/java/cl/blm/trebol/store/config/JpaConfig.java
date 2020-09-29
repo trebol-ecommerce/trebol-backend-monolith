@@ -11,8 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Configuration
-@EntityScan(basePackages = { "cl.blm.newmarketing.store.jpa.entities" })
-@EnableJpaRepositories(basePackages = { "cl.blm.newmarketing.store.jpa.repositories" })
+@EntityScan(basePackages = {"cl.blm.trebol.store.jpa.entities"})
+@EnableJpaRepositories(basePackages = {"cl.blm.trebol.store.jpa.repositories"})
 @PropertySources({ @PropertySource("classpath:jpa.properties"), @PropertySource("classpath:datasource.properties") })
 public class JpaConfig {
 }
