@@ -10,45 +10,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.blm.newmarketing.store.api.GenericEntityDataController;
 import cl.blm.newmarketing.store.api.pojo.ProductPojo;
-import cl.blm.newmarketing.store.config.CustomProperties;
-import cl.blm.newmarketing.store.jpa.entities.Product;
-import cl.blm.newmarketing.store.services.crud.GenericEntityCrudService;
+import cl.blm.newmarketing.store.services.CatalogService;
 
 @RestController
 @RequestMapping("/catalog")
-public class CatalogController
-    extends GenericEntityDataController<ProductPojo, Product, Integer> {
+public class CatalogController {
+
+  private final CatalogService catalogService;
 
   @Autowired
-  public CatalogController(CustomProperties customProperties,
-      GenericEntityCrudService<ProductPojo, Product, Integer> crudService) {
-    super(customProperties, crudService);
+  public CatalogController(CatalogService catalogService) {
+    this.catalogService = catalogService;
   }
 
-  @Override
   @GetMapping("/product/{id}")
   public ProductPojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
+    return catalogService.readProduct(id);
   }
 
   @GetMapping("/products")
   public Collection<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
+    return catalogService.readProducts(null, null, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}")
   public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(requestPageSize, null, allRequestParams);
+    return catalogService.readProducts(requestPageSize, null, allRequestParams);
   }
 
-  @Override
   @GetMapping("/products/{requestPageSize}/{requestPageIndex}")
   public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
+    return catalogService.readProducts(requestPageSize, requestPageIndex, allRequestParams);
   }
 
 }
