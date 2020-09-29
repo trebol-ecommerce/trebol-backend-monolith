@@ -57,4 +57,9 @@ public class CatalogController {
   public Collection<ProductTypePojo> readProductTypes() {
     return catalogService.readProductTypes();
   }
+
+  @GetMapping("/product_types")
+  public Collection<ProductTypePojo> readProductTypes(@RequestParam("familyId") Integer familyId) {
+    return catalogService.readProductTypesByFamilyId(familyId);
+  }
 }
