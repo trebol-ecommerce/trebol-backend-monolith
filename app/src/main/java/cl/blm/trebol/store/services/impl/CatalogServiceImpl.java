@@ -53,19 +53,19 @@ public class CatalogServiceImpl
 
   @Override
   public Collection<ProductTypePojo> readProductTypes() {
-    return productTypesService.read(10, 0, null);
+    return productTypesService.read(Integer.MAX_VALUE, 0, null);
   }
 
   @Override
   public Collection<ProductTypePojo> readProductTypesByFamilyId(int productFamilyId) {
     Map<String, String> queryParamsMap = Maps.of("productFamily", String.valueOf(productFamilyId)).build();
     Predicate filters = productsService.queryParamsMapToPredicate(queryParamsMap);
-    return productTypesService.read(10, 0, filters);
+    return productTypesService.read(Integer.MAX_VALUE, 0, filters);
   }
 
   @Override
   public Collection<ProductFamilyPojo> readProductFamilies() {
-    return productFamiliesService.read(10, 0, null);
+    return productFamiliesService.read(Integer.MAX_VALUE, 0, null);
   }
 
 }
