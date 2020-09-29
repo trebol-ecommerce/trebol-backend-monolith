@@ -19,5 +19,7 @@ public interface CatalogService {
 
   public Collection<ProductTypePojo> readProductTypes();
 
+  public Collection<ProductTypePojo> readProductTypesByFamilyId(int productFamilyId);
+
   public Collection<ProductFamilyPojo> readProductFamilies();
 }
