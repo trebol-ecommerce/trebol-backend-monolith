@@ -79,14 +79,14 @@ public class ClientsCrudController
   }
 
   @PutMapping("/client")
-  @PreAuthorize("hasAuthority('clients:update'")
+  @PreAuthorize("hasAuthority('clients:update')")
   public Integer update(@RequestBody @Valid ClientPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
   @PutMapping("/client/{id}")
-  @PreAuthorize("hasAuthority('clients:update'")
+  @PreAuthorize("hasAuthority('clients:update')")
   public Integer update(@RequestBody @Valid ClientPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }

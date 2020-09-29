@@ -78,14 +78,14 @@ public class SalesCrudController
   }
 
   @PutMapping("/sell")
-  @PreAuthorize("hasAuthority('sales:update'")
+  @PreAuthorize("hasAuthority('sales:update')")
   public Integer update(@RequestBody @Valid SellPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
   @PutMapping("/sell/{id}")
-  @PreAuthorize("hasAuthority('sales:update'")
+  @PreAuthorize("hasAuthority('sales:update')")
   public Integer update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }

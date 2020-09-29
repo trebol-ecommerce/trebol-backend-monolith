@@ -79,14 +79,14 @@ public class ProductFamiliesCrudController
   }
 
   @PutMapping("/product_family")
-  @PreAuthorize("hasAuthority('product_families:update'")
+  @PreAuthorize("hasAuthority('product_families:update')")
   public Integer update(@RequestBody @Valid ProductFamilyPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
   @PutMapping("/product_family/{id}")
-  @PreAuthorize("hasAuthority('product_families:update'")
+  @PreAuthorize("hasAuthority('product_families:update')")
   public Integer update(@RequestBody @Valid ProductFamilyPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
