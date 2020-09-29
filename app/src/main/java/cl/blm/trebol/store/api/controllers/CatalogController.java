@@ -31,13 +31,13 @@ public class CatalogController {
 
   @GetMapping("/products")
   public Collection<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return catalogService.readProducts(null, null, allRequestParams);
+    return catalogService.readProducts(10, 0, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}")
   public Collection<ProductPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
-    return catalogService.readProducts(requestPageSize, null, allRequestParams);
+    return catalogService.readProducts(requestPageSize, 0, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}/{requestPageIndex}")
