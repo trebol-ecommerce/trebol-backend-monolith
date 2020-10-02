@@ -74,7 +74,7 @@ public class ProductCrudServiceImpl
             intValue = Integer.valueOf(stringValue);
             return predicate.and(qProduct.id.eq(intValue)); // match por id es único
           case "name":
-            predicate = predicate.and(qProduct.name.likeIgnoreCase("%" + stringValue + "%"));
+            predicate.and(qProduct.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "productType":
             intValue = Integer.valueOf(stringValue);
