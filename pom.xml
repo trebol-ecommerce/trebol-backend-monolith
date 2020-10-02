@@ -12,7 +12,7 @@
   <name>Trebol Backend</name>
 
   <properties>
-    <revision>0.9.6</revision>
+    <revision>0.9.7</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <java.ee.version>7.0</java.ee.version>
