@@ -120,16 +120,16 @@ public class SellCrudServiceImpl
         Integer intValue;
         Date dateValue;
         switch (paramName) {
-        case "id":
-          intValue = Integer.valueOf(stringValue);
-          return predicate.and(qSell.id.eq(intValue)); // match por id es único
-        case "date":
-          dateValue = DateFormat.getInstance().parse(stringValue);
-          predicate.and(qSell.date.eq(dateValue));
-          break;
-        // TODO add more filters
-        default:
-          break;
+          case "id":
+            intValue = Integer.valueOf(stringValue);
+            return predicate.and(qSell.id.eq(intValue)); // match por id es único
+          case "date":
+            dateValue = DateFormat.getInstance().parse(stringValue);
+            predicate.and(qSell.date.eq(dateValue));
+            break;
+          // TODO add more filters
+          default:
+            break;
         }
       } catch (NumberFormatException exc) {
         LOG.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);

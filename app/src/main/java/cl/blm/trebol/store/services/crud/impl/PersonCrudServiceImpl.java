@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.store.jpa.entities.QPerson;
 import cl.blm.trebol.store.api.pojo.PersonPojo;
 import cl.blm.trebol.store.jpa.entities.Person;
-import cl.blm.newmarketing.store.jpa.entities.QPerson;
 import cl.blm.trebol.store.jpa.repositories.PeopleRepository;
 import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 
@@ -55,20 +55,20 @@ public class PersonCrudServiceImpl
       try {
         Integer intValue;
         switch (paramName) {
-        case "id":
-          intValue = Integer.valueOf(stringValue);
-          return predicate.and(qPerson.id.eq(intValue)); // id matching is final
-        case "name":
-          predicate.and(qPerson.name.likeIgnoreCase("%" + stringValue + "%"));
-          break;
-        case "idnumber":
-          predicate.and(qPerson.idCard.likeIgnoreCase("%" + stringValue + "%"));
-          break;
-        case "email":
-          predicate.and(qPerson.email.likeIgnoreCase("%" + stringValue + "%"));
-          break;
-        default:
-          break;
+          case "id":
+            intValue = Integer.valueOf(stringValue);
+            return predicate.and(qPerson.id.eq(intValue)); // id matching is final
+          case "name":
+            predicate.and(qPerson.name.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "idnumber":
+            predicate.and(qPerson.idCard.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "email":
+            predicate.and(qPerson.email.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          default:
+            break;
         }
       } catch (NumberFormatException exc) {
         LOG.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);

@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.store.jpa.entities.QProductFamily;
 import cl.blm.trebol.store.api.pojo.ProductFamilyPojo;
 import cl.blm.trebol.store.jpa.entities.ProductFamily;
-import cl.blm.newmarketing.store.jpa.entities.QProductFamily;
 import cl.blm.trebol.store.jpa.repositories.ProductFamiliesRepository;
 import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 
@@ -55,14 +55,14 @@ public class ProductFamilyCrudServiceImpl
       try {
         Integer intValue;
         switch (paramName) {
-        case "id":
-          intValue = Integer.valueOf(stringValue);
-          return predicate.and(qProductFamily.id.eq(intValue)); // match por id es único
-        case "name":
-          predicate.and(qProductFamily.name.likeIgnoreCase("%" + stringValue + "%"));
-          break;
-        default:
-          break;
+          case "id":
+            intValue = Integer.valueOf(stringValue);
+            return predicate.and(qProductFamily.id.eq(intValue)); // match por id es único
+          case "name":
+            predicate.and(qProductFamily.name.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          default:
+            break;
         }
       } catch (NumberFormatException exc) {
         LOG.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);

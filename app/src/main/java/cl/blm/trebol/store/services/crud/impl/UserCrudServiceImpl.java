@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.trebol.store.api.pojo.UserPojo;
 import cl.blm.newmarketing.store.jpa.entities.QUser;
+import cl.blm.trebol.store.api.pojo.UserPojo;
 import cl.blm.trebol.store.jpa.entities.User;
 import cl.blm.trebol.store.jpa.repositories.UsersRepository;
 import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
@@ -51,7 +51,7 @@ public class UserCrudServiceImpl
   @Override
   public User pojo2Entity(UserPojo source) {
     User target = conversion.convert(source, User.class);
-//    Person personTarget = conversion.convert(source.getPerson(), Person.class); 
+//    Person personTarget = conversion.convert(source.getPerson(), Person.class);
 //    target.setPerson(personTarget);
     return target;
   }
@@ -65,14 +65,14 @@ public class UserCrudServiceImpl
       try {
         Integer intValue;
         switch (paramName) {
-        case "id":
-          intValue = Integer.valueOf(stringValue);
-          return predicate.and(qUser.id.eq(intValue)); // id matching is final
-        case "name":
-          predicate.and(qUser.name.likeIgnoreCase("%" + stringValue + "%"));
-          break;
-        default:
-          break;
+          case "id":
+            intValue = Integer.valueOf(stringValue);
+            return predicate.and(qUser.id.eq(intValue)); // id matching is final
+          case "name":
+            predicate.and(qUser.name.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          default:
+            break;
         }
       } catch (NumberFormatException exc) {
         LOG.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);

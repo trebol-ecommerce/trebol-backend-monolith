@@ -78,8 +78,8 @@ public class ProductTypeCrudServiceImpl
             intValue = Integer.valueOf(stringValue);
             predicate.and(qProductType.productFamily.id.eq(intValue));
             break;
-        default:
-          break;
+          default:
+            break;
         }
       } catch (NumberFormatException exc) {
         LOG.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);

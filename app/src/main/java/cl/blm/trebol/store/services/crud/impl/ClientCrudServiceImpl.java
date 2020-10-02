@@ -76,20 +76,20 @@ public class ClientCrudServiceImpl
       try {
         Integer intValue;
         switch (paramName) {
-        case "id":
-          intValue = Integer.valueOf(stringValue);
-          return predicate.and(qClient.id.eq(intValue)); // id matching is final
-        case "name":
-          predicate.and(qClient.person.name.likeIgnoreCase("%" + stringValue + "%"));
-          break;
-        case "idnumber":
-          predicate.and(qClient.person.idCard.likeIgnoreCase("%" + stringValue + "%"));
-          break;
-        case "email":
-          predicate.and(qClient.person.email.likeIgnoreCase("%" + stringValue + "%"));
-          break;
-        default:
-          break;
+          case "id":
+            intValue = Integer.valueOf(stringValue);
+            return predicate.and(qClient.id.eq(intValue)); // id matching is final
+          case "name":
+            predicate.and(qClient.person.name.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "idnumber":
+            predicate.and(qClient.person.idCard.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "email":
+            predicate.and(qClient.person.email.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          default:
+            break;
         }
       } catch (NumberFormatException exc) {
         LOG.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
