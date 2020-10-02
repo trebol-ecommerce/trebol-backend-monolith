@@ -16,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.store.jpa.entities.QProduct;
 import cl.blm.trebol.store.api.pojo.ProductPojo;
 import cl.blm.trebol.store.jpa.entities.Product;
-import cl.blm.newmarketing.store.jpa.entities.QProduct;
 import cl.blm.trebol.store.jpa.repositories.ProductsRepository;
 import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 
@@ -57,7 +57,7 @@ public class ProductCrudServiceImpl
     if (filters == null) {
       return repository.deepReadAll(paged);
     } else {
-      return repository.deepReadAll(filters, paged);
+      return repository.findAll(filters, paged);
     }
   }
 
@@ -70,12 +70,12 @@ public class ProductCrudServiceImpl
       try {
         Integer intValue;
         switch (paramName) {
-        case "id":
-          intValue = Integer.valueOf(stringValue);
-          return predicate.and(qProduct.id.eq(intValue)); // match por id es único
-        case "name":
-          predicate.and(qProduct.name.likeIgnoreCase("%" + stringValue + "%"));
-          break;
+          case "id":
+            intValue = Integer.valueOf(stringValue);
+            return predicate.and(qProduct.id.eq(intValue)); // match por id es único
+          case "name":
+            predicate = predicate.and(qProduct.name.likeIgnoreCase("%" + stringValue + "%"));
+            break;
         default:
           break;
         }

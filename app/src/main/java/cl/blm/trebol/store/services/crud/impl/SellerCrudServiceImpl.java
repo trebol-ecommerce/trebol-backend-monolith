@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.store.jpa.entities.QSeller;
 import cl.blm.trebol.store.api.pojo.PersonPojo;
 import cl.blm.trebol.store.api.pojo.SellerPojo;
 import cl.blm.trebol.store.jpa.entities.Person;
-import cl.blm.newmarketing.store.jpa.entities.QSeller;
 import cl.blm.trebol.store.jpa.entities.Seller;
 import cl.blm.trebol.store.jpa.repositories.SellersRepository;
 import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
@@ -63,7 +63,7 @@ public class SellerCrudServiceImpl
     if (filters == null) {
       return repository.deepReadAll(paged);
     } else {
-      return repository.deepReadAll(filters, paged);
+      return repository.findAll(filters, paged);
     }
   }
 

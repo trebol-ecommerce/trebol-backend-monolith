@@ -55,7 +55,7 @@ public class ProductTypeCrudServiceImpl
     if (filters == null) {
       return repository.deepReadAll(paged);
     } else {
-      return repository.deepReadAll(filters, paged);
+      return repository.findAll(filters, paged);
     }
   }
 

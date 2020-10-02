@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.newmarketing.store.jpa.entities.QSell;
 import cl.blm.trebol.store.api.pojo.ClientPojo;
 import cl.blm.trebol.store.api.pojo.PersonPojo;
 import cl.blm.trebol.store.api.pojo.ProductPojo;
@@ -28,7 +29,6 @@ import cl.blm.trebol.store.api.pojo.SellDetailPojo;
 import cl.blm.trebol.store.api.pojo.SellPojo;
 import cl.blm.trebol.store.api.pojo.SellTypePojo;
 import cl.blm.trebol.store.api.pojo.SellerPojo;
-import cl.blm.newmarketing.store.jpa.entities.QSell;
 import cl.blm.trebol.store.jpa.entities.Sell;
 import cl.blm.trebol.store.jpa.entities.SellDetail;
 import cl.blm.trebol.store.jpa.repositories.SalesRepository;
@@ -106,7 +106,7 @@ public class SellCrudServiceImpl
     if (filters == null) {
       return repository.deepFindAll(paged);
     } else {
-      return repository.deepFindAll(filters, paged);
+      return repository.findAll(filters, paged);
     }
   }
 
