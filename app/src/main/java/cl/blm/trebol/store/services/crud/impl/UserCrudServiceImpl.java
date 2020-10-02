@@ -1,11 +1,13 @@
 package cl.blm.trebol.store.services.crud.impl;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.store.jpa.entities.QUser;
+import cl.blm.trebol.store.api.pojo.PersonPojo;
 import cl.blm.trebol.store.api.pojo.UserPojo;
 import cl.blm.trebol.store.jpa.entities.User;
 import cl.blm.trebol.store.jpa.repositories.UsersRepository;
@@ -28,7 +31,7 @@ public class UserCrudServiceImpl
     extends GenericEntityCrudService<UserPojo, User, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(UserCrudServiceImpl.class);
 
-//  private final UsersRepository repository;
+  private final UsersRepository repository;
   private final ConversionService conversion;
 
   @Autowired
@@ -83,5 +86,20 @@ public class UserCrudServiceImpl
     }
 
     return predicate;
+  }
+
+  @Nullable
+  @Override
+  public UserPojo find(Integer id) {
+    Optional<User> userById = repository.findByIdWithProfile(id);
+    if (!userById.isPresent()) {
+      return null;
+    } else {
+      User found = userById.get();
+      UserPojo foundPojo = entity2Pojo(found);
+      PersonPojo person = conversion.convert(found.getPerson(), PersonPojo.class);
+      foundPojo.setPerson(person);
+      return foundPojo;
+    }
   }
 }
