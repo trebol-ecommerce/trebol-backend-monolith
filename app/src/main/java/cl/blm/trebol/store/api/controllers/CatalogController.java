@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.blm.trebol.store.api.pojo.ProductFamilyPojo;
 import cl.blm.trebol.store.api.pojo.ProductPojo;
 import cl.blm.trebol.store.api.pojo.ProductTypePojo;
+import cl.blm.trebol.store.config.CustomProperties;
 import cl.blm.trebol.store.services.CatalogService;
 
 @RestController
@@ -20,10 +21,12 @@ import cl.blm.trebol.store.services.CatalogService;
 public class CatalogController {
 
   private final CatalogService catalogService;
+  private final CustomProperties customProperties;
 
   @Autowired
-  public CatalogController(CatalogService catalogService) {
+  public CatalogController(CatalogService catalogService, CustomProperties customProperties) {
     this.catalogService = catalogService;
+    this.customProperties = customProperties;
   }
 
   @GetMapping("/product/{id}")
@@ -33,7 +36,8 @@ public class CatalogController {
 
   @GetMapping("/products")
   public Collection<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return catalogService.readProducts(10, 0, allRequestParams);
+    Integer requestPageSize = customProperties.getItemsPerPage();
+    return catalogService.readProducts(requestPageSize, 0, allRequestParams);
   }
 
   @GetMapping("/products/{requestPageSize}")
