@@ -1,4 +1,4 @@
-package cl.blm.trebol.store.converters.topojo;
+package cl.blm.trebol.store.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +11,7 @@ import cl.blm.trebol.store.jpa.entities.Permission;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Component
-public class Permission2GranthedAuthorityPojo
+public class PermissionEntity2SimpleGranthedAuthority
     implements Converter<Permission, SimpleGrantedAuthority> {
 
   @Override
