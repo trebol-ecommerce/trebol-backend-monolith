@@ -71,6 +71,9 @@ public class UserCrudServiceImpl
           case "name":
             predicate.and(qUser.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
+          case "email":
+            predicate.and(qUser.person.email.likeIgnoreCase("%" + stringValue + "%"));
+            break;
           default:
             break;
         }
