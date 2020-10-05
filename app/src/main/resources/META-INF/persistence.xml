@@ -17,6 +17,7 @@
     <class>cl.blm.trebol.store.jpa.entities.SellType</class>
     <class>cl.blm.trebol.store.jpa.entities.Session</class>
     <class>cl.blm.trebol.store.jpa.entities.User</class>
+    <class>cl.blm.trebol.store.jpa.entities.Param</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://192.168.0.3:3306/nm_store"/>
