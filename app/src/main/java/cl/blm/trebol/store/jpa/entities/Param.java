@@ -32,6 +32,11 @@ public class Param
   private Integer id;
   @Basic(optional = false)
   @NotNull
+  @Size(min = 1, max = 25)
+  @Column(name = "param_category")
+  private String category;
+  @Basic(optional = false)
+  @NotNull
   @Size(min = 1, max = 50)
   @Column(name = "param_name")
   private String name;
@@ -48,8 +53,9 @@ public class Param
     this.id = paramId;
   }
 
-  public Param(Integer paramId, String paramName, String paramValue) {
+  public Param(Integer paramId, String paramCategory, String paramName, String paramValue) {
     this.id = paramId;
+    this.category = paramCategory;
     this.name = paramName;
     this.value = paramValue;
   }
@@ -60,6 +66,14 @@ public class Param
 
   public void setId(Integer id) {
     this.id = id;
+  }
+
+  public String getCategory() {
+    return category;
+  }
+
+  public void setCategory(String category) {
+    this.category = category;
   }
 
   public String getName() {
