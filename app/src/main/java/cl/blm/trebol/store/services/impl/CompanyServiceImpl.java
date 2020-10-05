@@ -1,6 +1,7 @@
 package cl.blm.trebol.store.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cl.blm.trebol.store.api.pojo.CompanyDetailsPojo;
 import cl.blm.trebol.store.jpa.entities.Param;
@@ -11,6 +12,7 @@ import cl.blm.trebol.store.services.CompanyService;
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
+@Service
 public class CompanyServiceImpl
     implements CompanyService {
 
