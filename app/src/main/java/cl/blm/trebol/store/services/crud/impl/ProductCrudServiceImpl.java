@@ -1,8 +1,9 @@
 package cl.blm.trebol.store.services.crud.impl;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +14,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Sets;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.newmarketing.store.jpa.entities.QProduct;
 import cl.blm.trebol.store.api.pojo.ProductPojo;
+import cl.blm.trebol.store.jpa.entities.Image;
 import cl.blm.trebol.store.jpa.entities.Product;
+import cl.blm.trebol.store.jpa.entities.ProductImage;
+import cl.blm.trebol.store.jpa.repositories.ProductImagesRepository;
 import cl.blm.trebol.store.jpa.repositories.ProductsRepository;
 import cl.blm.trebol.store.services.crud.GenericCrudService;
 
@@ -33,18 +38,29 @@ public class ProductCrudServiceImpl
   private static final Logger LOG = LoggerFactory.getLogger(ProductCrudServiceImpl.class);
 
   private final ProductsRepository repository;
+  private final ProductImagesRepository imagesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public ProductCrudServiceImpl(ProductsRepository repository, ConversionService conversion) {
+  public ProductCrudServiceImpl(ProductsRepository repository, ProductImagesRepository imagesRepository,
+      ConversionService conversion) {
     super(repository);
     this.repository = repository;
+    this.imagesRepository = imagesRepository;
     this.conversion = conversion;
   }
 
   @Override
   public ProductPojo entity2Pojo(Product source) {
-    return conversion.convert(source, ProductPojo.class);
+    ProductPojo target = conversion.convert(source, ProductPojo.class);
+    Integer id = target.getId();
+    Optional<ProductImage> img = imagesRepository.deepFindFirstProductImageByProductId(id);
+    if (img.isPresent()) {
+      Image sourceImg = img.get().getImage();
+      Set<String> images = Sets.newHashSet(sourceImg.getUrl());
+      target.setImagesURL(images);
+    }
+    return target;
   }
 
   @Override
@@ -103,8 +119,14 @@ public class ProductCrudServiceImpl
     } else {
       Product found = productById.get();
       ProductPojo foundPojo = entity2Pojo(found);
-      // TODO consider refactoring Product entity and pull this method out
-      foundPojo.setImagesURL(new ArrayList<>());
+      Collection<String> imageURLs = foundPojo.getImagesURL();
+      if (!imageURLs.isEmpty()) {
+        Iterable<ProductImage> allProductImages = imagesRepository.deepFindProductImagesByProductId(id);
+        for (ProductImage pi : allProductImages) {
+          String url = pi.getImage().getUrl();
+          imageURLs.add(url);
+        }
+      }
       return foundPojo;
     }
   }
