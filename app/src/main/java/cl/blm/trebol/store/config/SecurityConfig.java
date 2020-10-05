@@ -60,6 +60,7 @@ public class SecurityConfig
         .authorizeRequests()
         .antMatchers(
             "/login",
+            "/company",
             "/catalog/**"
         ).permitAll()
         .anyRequest().authenticated();
