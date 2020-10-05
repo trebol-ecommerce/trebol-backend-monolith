@@ -1,10 +1,8 @@
 package cl.blm.trebol.store.services.security.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -16,9 +14,6 @@ import org.springframework.stereotype.Service;
 
 import cl.blm.trebol.store.jpa.entities.Permission;
 import cl.blm.trebol.store.jpa.entities.User;
-import cl.blm.trebol.store.jpa.entities.UserRole;
-import cl.blm.trebol.store.jpa.entities.UserRolePermission;
-import cl.blm.trebol.store.jpa.repositories.UserRolePermissionsRepository;
 import cl.blm.trebol.store.jpa.repositories.UsersRepository;
 import cl.blm.trebol.store.security.pojo.UserDetailsPojo;
 import cl.blm.trebol.store.services.security.UserPermissionsService;
@@ -31,20 +26,20 @@ import cl.blm.trebol.store.services.security.UserPermissionsService;
  */
 @Service
 public class UserDetailsServiceImpl
-    implements UserDetailsService, UserPermissionsService {
+    implements UserDetailsService {
 
   private final ConversionService conversionService;
   private final UsersRepository usersRepository;
-  private final UserRolePermissionsRepository userRolePermissionsRepository;
+  private final UserPermissionsService userPermissionsService;
 
   @Autowired
   public UserDetailsServiceImpl(
       ConversionService conversionService,
       UsersRepository usersRepository,
-      UserRolePermissionsRepository userRolePermissionsRepository) {
+      UserPermissionsService userPermissionsService) {
     this.conversionService = conversionService;
     this.usersRepository = usersRepository;
-    this.userRolePermissionsRepository = userRolePermissionsRepository;
+    this.userPermissionsService = userPermissionsService;
   }
 
   private List<SimpleGrantedAuthority> convertPermissionList(Iterable<Permission> sourceList) {
@@ -57,27 +52,11 @@ public class UserDetailsServiceImpl
   }
 
   @Override
-  public Set<Permission> loadPermissionsForUser(User source) {
-    UserRole sourceUserRole = source.getUserRole();
-    Integer userRoleId = sourceUserRole.getId();
-    Iterable<UserRolePermission> userRolePermissions = userRolePermissionsRepository
-        .deepFindPermissionsByUserRoleId(userRoleId);
-
-    Set<Permission> targetList = new HashSet<>();
-    for (UserRolePermission rolePermission : userRolePermissions) {
-      Permission p = rolePermission.getPermission();
-      targetList.add(p);
-    }
-
-    return targetList;
-  }
-
-  @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Optional<User> foundUser = usersRepository.findByNameWithRole(username);
     if (foundUser.isPresent()) {
       User user = foundUser.get();
-      Iterable<Permission> permissions = loadPermissionsForUser(user);
+      Iterable<Permission> permissions = userPermissionsService.loadPermissionsForUser(user);
       List<SimpleGrantedAuthority> authorities = convertPermissionList(permissions);
       UserDetailsPojo userDetails = new UserDetailsPojo(authorities,
           username,
