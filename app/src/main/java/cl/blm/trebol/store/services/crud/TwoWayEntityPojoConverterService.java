@@ -1,4 +1,4 @@
-package cl.blm.trebol.store.services;
+package cl.blm.trebol.store.services.crud;
 
 /**
  * Interface to ensure type-safety for services that require converting from

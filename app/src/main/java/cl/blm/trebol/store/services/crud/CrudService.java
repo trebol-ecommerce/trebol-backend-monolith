@@ -6,7 +6,6 @@ import org.springframework.lang.Nullable;
 
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.trebol.store.services.Map2QueryDslPredicateConverterService;
 
 /**
  * Interface for implementing the basic CRUD service operations. Because it

@@ -1,6 +1,5 @@
 package cl.blm.trebol.store.services.crud;
 
-import cl.blm.trebol.store.services.TwoWayEntityPojoConverterService;
 
 import java.util.ArrayList;
 import java.util.Collection;

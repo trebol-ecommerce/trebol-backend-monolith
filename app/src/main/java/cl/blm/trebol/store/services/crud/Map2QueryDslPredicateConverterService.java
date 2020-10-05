@@ -1,4 +1,4 @@
-package cl.blm.trebol.store.services;
+package cl.blm.trebol.store.services.crud;
 
 import java.util.Map;
 
