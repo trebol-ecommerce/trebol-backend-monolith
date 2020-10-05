@@ -2,6 +2,8 @@ package cl.blm.trebol.store.config;
 
 import javax.crypto.SecretKey;
 
+import io.jsonwebtoken.Claims;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import io.jsonwebtoken.Claims;
 
 import cl.blm.trebol.store.security.JwtTokenVerifierFilter;
 import cl.blm.trebol.store.security.JwtUsernamePasswordAuthenticationFilter;
@@ -58,7 +58,10 @@ public class SecurityConfig
         .addFilterAfter(new JwtTokenVerifierFilter(jwtClaimsParserService),
             JwtUsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
-        .antMatchers("/login", "/catalog/**").permitAll()
+        .antMatchers(
+            "/login",
+            "/catalog/**"
+        ).permitAll()
         .anyRequest().authenticated();
   }
 
