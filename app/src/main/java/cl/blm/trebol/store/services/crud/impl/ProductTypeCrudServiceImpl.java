@@ -18,7 +18,7 @@ import cl.blm.newmarketing.store.jpa.entities.QProductType;
 import cl.blm.trebol.store.api.pojo.ProductTypePojo;
 import cl.blm.trebol.store.jpa.entities.ProductType;
 import cl.blm.trebol.store.jpa.repositories.ProductTypesRepository;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  *
@@ -27,7 +27,7 @@ import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 @Transactional
 @Service
 public class ProductTypeCrudServiceImpl
-    extends GenericEntityCrudService<ProductTypePojo, ProductType, Integer> {
+    extends GenericCrudService<ProductTypePojo, ProductType, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductTypeCrudServiceImpl.class);
 
   private final ProductTypesRepository repository;

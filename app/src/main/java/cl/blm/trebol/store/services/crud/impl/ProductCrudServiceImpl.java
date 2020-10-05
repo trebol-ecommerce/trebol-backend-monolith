@@ -20,7 +20,7 @@ import cl.blm.newmarketing.store.jpa.entities.QProduct;
 import cl.blm.trebol.store.api.pojo.ProductPojo;
 import cl.blm.trebol.store.jpa.entities.Product;
 import cl.blm.trebol.store.jpa.repositories.ProductsRepository;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  *
@@ -29,7 +29,7 @@ import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 @Transactional
 @Service
 public class ProductCrudServiceImpl
-    extends GenericEntityCrudService<ProductPojo, Product, Integer> {
+    extends GenericCrudService<ProductPojo, Product, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductCrudServiceImpl.class);
 
   private final ProductsRepository repository;

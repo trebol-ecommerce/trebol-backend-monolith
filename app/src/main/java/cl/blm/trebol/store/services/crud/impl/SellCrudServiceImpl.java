@@ -32,7 +32,7 @@ import cl.blm.trebol.store.api.pojo.SellerPojo;
 import cl.blm.trebol.store.jpa.entities.Sell;
 import cl.blm.trebol.store.jpa.entities.SellDetail;
 import cl.blm.trebol.store.jpa.repositories.SalesRepository;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  *
@@ -41,7 +41,7 @@ import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 @Transactional
 @Service
 public class SellCrudServiceImpl
-    extends GenericEntityCrudService<SellPojo, Sell, Integer> {
+    extends GenericCrudService<SellPojo, Sell, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellCrudServiceImpl.class);
 
   private final SalesRepository repository;

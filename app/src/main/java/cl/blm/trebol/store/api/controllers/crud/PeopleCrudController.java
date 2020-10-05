@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.blm.trebol.store.api.GenericEntityDataController;
+import cl.blm.trebol.store.api.GenericCrudController;
 import cl.blm.trebol.store.api.pojo.PersonPojo;
 import cl.blm.trebol.store.config.CustomProperties;
 import cl.blm.trebol.store.jpa.entities.Person;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  * API point of entry for Person entities
@@ -25,11 +25,11 @@ import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 @RestController
 @RequestMapping("/api")
 public class PeopleCrudController
-    extends GenericEntityDataController<PersonPojo, Person, Integer> {
+    extends GenericCrudController<PersonPojo, Person, Integer> {
 
   @Autowired
   public PeopleCrudController(CustomProperties globals,
-      GenericEntityCrudService<PersonPojo, Person, Integer> crudService) {
+      GenericCrudService<PersonPojo, Person, Integer> crudService) {
     super(globals, crudService);
   }
 

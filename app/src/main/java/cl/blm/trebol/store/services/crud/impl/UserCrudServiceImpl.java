@@ -19,7 +19,7 @@ import cl.blm.trebol.store.api.pojo.PersonPojo;
 import cl.blm.trebol.store.api.pojo.UserPojo;
 import cl.blm.trebol.store.jpa.entities.User;
 import cl.blm.trebol.store.jpa.repositories.UsersRepository;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  *
@@ -28,7 +28,7 @@ import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 @Transactional
 @Service
 public class UserCrudServiceImpl
-    extends GenericEntityCrudService<UserPojo, User, Integer> {
+    extends GenericCrudService<UserPojo, User, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(UserCrudServiceImpl.class);
 
   private final UsersRepository repository;

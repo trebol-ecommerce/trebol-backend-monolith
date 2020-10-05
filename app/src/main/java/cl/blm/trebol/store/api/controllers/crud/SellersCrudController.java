@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.blm.trebol.store.api.GenericEntityDataController;
+import cl.blm.trebol.store.api.GenericCrudController;
 import cl.blm.trebol.store.api.pojo.SellerPojo;
 import cl.blm.trebol.store.config.CustomProperties;
 import cl.blm.trebol.store.jpa.entities.Seller;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  * API point of entry for Seller entities
@@ -35,11 +35,11 @@ import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 @RestController
 @RequestMapping("/api")
 public class SellersCrudController
-    extends GenericEntityDataController<SellerPojo, Seller, Integer> {
+    extends GenericCrudController<SellerPojo, Seller, Integer> {
 
   @Autowired
   public SellersCrudController(CustomProperties globals,
-      GenericEntityCrudService<SellerPojo, Seller, Integer> crudService) {
+      GenericCrudService<SellerPojo, Seller, Integer> crudService) {
     super(globals, crudService);
   }
 

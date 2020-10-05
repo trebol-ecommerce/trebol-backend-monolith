@@ -18,7 +18,7 @@ import cl.blm.trebol.store.services.Map2QueryDslPredicateConverterService;
  * @param <T> The type class of the item.
  * @param <I> The identifier type class of the item.
  */
-public interface EntityCrudService<T, I>
+public interface CrudService<T, I>
     extends Map2QueryDslPredicateConverterService {
 
   /**

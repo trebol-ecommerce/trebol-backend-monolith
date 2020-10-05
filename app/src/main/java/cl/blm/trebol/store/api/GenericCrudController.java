@@ -11,23 +11,23 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.store.config.CustomProperties;
 import cl.blm.trebol.store.jpa.GenericEntity;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  * Abstraction for CrudControllers that communicate with a
- * GenericEntityCrudService.
+ GenericCrudService.
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * @param <P> The Pojo class
  * @param <E> The Entity class
  * @param <I> The Identifier class
  */
-public abstract class GenericEntityDataController<P, E extends GenericEntity<I>, I>
+public abstract class GenericCrudController<P, E extends GenericEntity<I>, I>
     implements CrudController<P, I> {
   protected CustomProperties customProperties;
-  protected GenericEntityCrudService<P, E, I> crudService;
+  protected GenericCrudService<P, E, I> crudService;
 
-  public GenericEntityDataController(CustomProperties customProperties, GenericEntityCrudService<P, E, I> crudService) {
+  public GenericCrudController(CustomProperties customProperties, GenericCrudService<P, E, I> crudService) {
     this.customProperties = customProperties;
     this.crudService = crudService;
   }

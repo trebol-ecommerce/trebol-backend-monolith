@@ -17,7 +17,7 @@ import cl.blm.trebol.store.jpa.entities.Product;
 import cl.blm.trebol.store.jpa.entities.ProductFamily;
 import cl.blm.trebol.store.jpa.entities.ProductType;
 import cl.blm.trebol.store.services.CatalogService;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  *
@@ -27,14 +27,14 @@ import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 public class CatalogServiceImpl
     implements CatalogService {
 
-  private final GenericEntityCrudService<ProductFamilyPojo, ProductFamily, Integer> productFamiliesService;
-  private final GenericEntityCrudService<ProductTypePojo, ProductType, Integer> productTypesService;
-  private final GenericEntityCrudService<ProductPojo, Product, Integer> productsService;
+  private final GenericCrudService<ProductFamilyPojo, ProductFamily, Integer> productFamiliesService;
+  private final GenericCrudService<ProductTypePojo, ProductType, Integer> productTypesService;
+  private final GenericCrudService<ProductPojo, Product, Integer> productsService;
 
   @Autowired
-  public CatalogServiceImpl(GenericEntityCrudService<ProductFamilyPojo, ProductFamily, Integer> productFamiliesService,
-      GenericEntityCrudService<ProductTypePojo, ProductType, Integer> productTypesService,
-      GenericEntityCrudService<ProductPojo, Product, Integer> productsService) {
+  public CatalogServiceImpl(GenericCrudService<ProductFamilyPojo, ProductFamily, Integer> productFamiliesService,
+      GenericCrudService<ProductTypePojo, ProductType, Integer> productTypesService,
+      GenericCrudService<ProductPojo, Product, Integer> productsService) {
     this.productFamiliesService = productFamiliesService;
     this.productTypesService = productTypesService;
     this.productsService = productsService;

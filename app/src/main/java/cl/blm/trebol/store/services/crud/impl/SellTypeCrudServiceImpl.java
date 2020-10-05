@@ -16,7 +16,7 @@ import cl.blm.newmarketing.store.jpa.entities.QSellType;
 import cl.blm.trebol.store.api.pojo.SellTypePojo;
 import cl.blm.trebol.store.jpa.entities.SellType;
 import cl.blm.trebol.store.jpa.repositories.SellTypesRepository;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  *
@@ -25,7 +25,7 @@ import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 @Transactional
 @Service
 public class SellTypeCrudServiceImpl
-    extends GenericEntityCrudService<SellTypePojo, SellType, Integer> {
+    extends GenericCrudService<SellTypePojo, SellType, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellTypeCrudServiceImpl.class);
 
   private final ConversionService conversion;

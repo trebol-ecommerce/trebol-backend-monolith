@@ -16,7 +16,7 @@ import cl.blm.newmarketing.store.jpa.entities.QPerson;
 import cl.blm.trebol.store.api.pojo.PersonPojo;
 import cl.blm.trebol.store.jpa.entities.Person;
 import cl.blm.trebol.store.jpa.repositories.PeopleRepository;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  *
@@ -25,7 +25,7 @@ import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 @Transactional
 @Service
 public class PersonCrudServiceImpl
-    extends GenericEntityCrudService<PersonPojo, Person, Integer> {
+    extends GenericCrudService<PersonPojo, Person, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(PersonCrudServiceImpl.class);
 
   private final ConversionService conversion;

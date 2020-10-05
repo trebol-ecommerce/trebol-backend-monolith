@@ -27,12 +27,12 @@ import cl.blm.trebol.store.services.TwoWayEntityPojoConverterService;
  * @param <E> The entity class
  * @param <I> The identifier class
  */
-public abstract class GenericEntityCrudService<P, E extends GenericEntity<I>, I>
-    implements EntityCrudService<P, I>, TwoWayEntityPojoConverterService<E, P> {
+public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
+    implements CrudService<P, I>, TwoWayEntityPojoConverterService<E, P> {
 
   protected GenericRepository<E, I> repository;
 
-  public GenericEntityCrudService(GenericRepository<E, I> repository) {
+  public GenericCrudService(GenericRepository<E, I> repository) {
     this.repository = repository;
   }
 

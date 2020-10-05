@@ -16,7 +16,7 @@ import cl.blm.newmarketing.store.jpa.entities.QProductFamily;
 import cl.blm.trebol.store.api.pojo.ProductFamilyPojo;
 import cl.blm.trebol.store.jpa.entities.ProductFamily;
 import cl.blm.trebol.store.jpa.repositories.ProductFamiliesRepository;
-import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
+import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**
  *
@@ -25,7 +25,7 @@ import cl.blm.trebol.store.services.crud.GenericEntityCrudService;
 @Transactional
 @Service
 public class ProductFamilyCrudServiceImpl
-    extends GenericEntityCrudService<ProductFamilyPojo, ProductFamily, Integer> {
+    extends GenericCrudService<ProductFamilyPojo, ProductFamily, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductFamilyCrudServiceImpl.class);
 
   private final ConversionService conversion;

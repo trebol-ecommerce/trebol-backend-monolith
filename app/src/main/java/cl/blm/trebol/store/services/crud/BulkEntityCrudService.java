@@ -16,7 +16,7 @@ import cl.blm.trebol.store.jpa.GenericEntity;
  * @param <I> The identifier type class of the item.
  */
 public interface BulkEntityCrudService<T extends GenericEntity<I>, I>
-    extends EntityCrudService<T, I> {
+    extends CrudService<T, I> {
 
   /**
    * Inserts many items.
