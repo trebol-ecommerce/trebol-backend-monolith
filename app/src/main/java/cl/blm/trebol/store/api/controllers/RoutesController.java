@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.trebol.store.api.pojo.AuthorizedAccessPojo;
-import cl.blm.trebol.store.services.RouteService;
-import cl.blm.trebol.store.services.security.AuthorizationTokenParserService;
+import cl.blm.trebol.store.services.security.AuthorizedApiService;
+import cl.blm.trebol.store.services.security.AuthorizationHeaderParserService;
 
 @RestController
 public class RoutesController {
 
-  private final AuthorizationTokenParserService<Claims> jwtClaimsParserService;
+  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final UserDetailsService userDetailsService;
-  private final RouteService routeService;
+  private final AuthorizedApiService routeService;
 
   @Autowired
-  public RoutesController(AuthorizationTokenParserService<Claims> jwtClaimsParserService,
+  public RoutesController(AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
       UserDetailsService userDetailsService,
-      RouteService routeService) {
+      AuthorizedApiService routeService) {
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.userDetailsService = userDetailsService;
     this.routeService = routeService;

@@ -14,17 +14,17 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 
 import cl.blm.trebol.store.config.JwtProperties;
-import cl.blm.trebol.store.services.security.AuthorizationTokenParserService;
+import cl.blm.trebol.store.services.security.AuthorizationHeaderParserService;
 
 @Service
-public class JwtClaimsParserServiceImpl
-    implements AuthorizationTokenParserService<Claims> {
+public class ClaimsAuthorizationHeaderParserServiceImpl
+    implements AuthorizationHeaderParserService<Claims> {
 
   private final SecretKey secretKey;
   private final JwtProperties jwtProperties;
 
   @Autowired
-  public JwtClaimsParserServiceImpl(SecretKey secretKey, JwtProperties jwtProperties) {
+  public ClaimsAuthorizationHeaderParserServiceImpl(SecretKey secretKey, JwtProperties jwtProperties) {
     this.secretKey = secretKey;
     this.jwtProperties = jwtProperties;
   }

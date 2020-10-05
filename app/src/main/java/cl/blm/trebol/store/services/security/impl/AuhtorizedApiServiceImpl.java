@@ -1,4 +1,4 @@
-package cl.blm.trebol.store.services.impl;
+package cl.blm.trebol.store.services.security.impl;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,15 +8,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import cl.blm.trebol.store.services.RouteService;
+import cl.blm.trebol.store.services.security.AuthorizedApiService;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @Service
-public class RouteServiceImpl
-    implements RouteService {
+public class AuhtorizedApiServiceImpl
+    implements AuthorizedApiService {
 
   @Override
   public Collection<String> getAuthorizedApiRoutes(UserDetails userDetails) {

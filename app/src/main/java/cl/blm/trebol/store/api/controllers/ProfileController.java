@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.trebol.store.api.pojo.PersonPojo;
 import cl.blm.trebol.store.jpa.entities.Person;
-import cl.blm.trebol.store.services.UserProfileService;
-import cl.blm.trebol.store.services.security.AuthorizationTokenParserService;
+import cl.blm.trebol.store.services.user.UserProfileService;
+import cl.blm.trebol.store.services.security.AuthorizationHeaderParserService;
 
 @RestController
 public class ProfileController {
 
-  private final AuthorizationTokenParserService<Claims> jwtClaimsParserService;
+  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final ConversionService conversionService;
   private final UserProfileService userProfileService;
 
   @Autowired
-  public ProfileController(AuthorizationTokenParserService<Claims> jwtClaimsParserService,
+  public ProfileController(AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
       ConversionService conversionService,
       UserProfileService userProfileService) {
     this.jwtClaimsParserService = jwtClaimsParserService;

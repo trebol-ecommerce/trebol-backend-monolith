@@ -12,7 +12,7 @@ import org.springframework.http.HttpHeaders;
  *
  * @param <T> The token body type
  */
-public interface AuthorizationTokenParserService<T> {
+public interface AuthorizationHeaderParserService<T> {
 
   /**
    * Extracts the Authorization header value from an http request

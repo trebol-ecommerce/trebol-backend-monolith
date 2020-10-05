@@ -1,4 +1,4 @@
-package cl.blm.trebol.store.services.impl;
+package cl.blm.trebol.store.services.exposed.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import cl.blm.trebol.store.api.pojo.CompanyDetailsPojo;
 import cl.blm.trebol.store.jpa.entities.Param;
 import cl.blm.trebol.store.jpa.repositories.ParamsRepository;
-import cl.blm.trebol.store.services.CompanyService;
+import cl.blm.trebol.store.services.exposed.CompanyService;
 
 /**
  *

@@ -1,4 +1,4 @@
-package cl.blm.trebol.store.services.impl;
+package cl.blm.trebol.store.services.exposed.impl;
 
 import java.util.Collection;
 import java.util.Map;
@@ -16,7 +16,7 @@ import cl.blm.trebol.store.api.pojo.ProductTypePojo;
 import cl.blm.trebol.store.jpa.entities.Product;
 import cl.blm.trebol.store.jpa.entities.ProductFamily;
 import cl.blm.trebol.store.jpa.entities.ProductType;
-import cl.blm.trebol.store.services.CatalogService;
+import cl.blm.trebol.store.services.exposed.CatalogService;
 import cl.blm.trebol.store.services.crud.GenericCrudService;
 
 /**

@@ -1,4 +1,4 @@
-package cl.blm.trebol.store.services;
+package cl.blm.trebol.store.services.exposed;
 
 import java.util.Collection;
 import java.util.Map;

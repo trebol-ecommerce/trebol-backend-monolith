@@ -1,4 +1,4 @@
-package cl.blm.trebol.store.services.impl;
+package cl.blm.trebol.store.services.user.impl;
 
 import java.util.Optional;
 
@@ -9,7 +9,7 @@ import cl.blm.trebol.store.jpa.entities.Person;
 import cl.blm.trebol.store.jpa.entities.User;
 import cl.blm.trebol.store.jpa.repositories.PeopleRepository;
 import cl.blm.trebol.store.jpa.repositories.UsersRepository;
-import cl.blm.trebol.store.services.UserProfileService;
+import cl.blm.trebol.store.services.user.UserProfileService;
 
 @Service
 public class UserProfileServiceImpl

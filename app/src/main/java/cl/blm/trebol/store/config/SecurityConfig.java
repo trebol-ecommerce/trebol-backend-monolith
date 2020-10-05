@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import cl.blm.trebol.store.security.JwtTokenVerifierFilter;
 import cl.blm.trebol.store.security.JwtUsernamePasswordAuthenticationFilter;
-import cl.blm.trebol.store.services.security.AuthorizationTokenParserService;
+import cl.blm.trebol.store.services.security.AuthorizationHeaderParserService;
 
 @Configuration
 @EnableWebSecurity(debug = false)
@@ -31,7 +31,7 @@ public class SecurityConfig
   private final UserDetailsService userDetailsService;
   private final SecretKey secretKey;
   private final JwtProperties jwtConfig;
-  private final AuthorizationTokenParserService<Claims> jwtClaimsParserService;
+  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
   @Autowired
   public SecurityConfig(
@@ -39,7 +39,7 @@ public class SecurityConfig
       UserDetailsService userDetailsService,
       SecretKey secretKey,
       JwtProperties jwtConfig,
-      AuthorizationTokenParserService<Claims> jwtClaimsParserService) {
+      AuthorizationHeaderParserService<Claims> jwtClaimsParserService) {
     this.passwordEncoder = passwordEncoder;
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;

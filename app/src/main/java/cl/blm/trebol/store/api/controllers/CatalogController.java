@@ -14,7 +14,7 @@ import cl.blm.trebol.store.api.pojo.ProductFamilyPojo;
 import cl.blm.trebol.store.api.pojo.ProductPojo;
 import cl.blm.trebol.store.api.pojo.ProductTypePojo;
 import cl.blm.trebol.store.config.CustomProperties;
-import cl.blm.trebol.store.services.CatalogService;
+import cl.blm.trebol.store.services.exposed.CatalogService;
 
 @RestController
 @RequestMapping("/catalog")

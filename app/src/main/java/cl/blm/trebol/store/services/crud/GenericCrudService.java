@@ -1,5 +1,7 @@
 package cl.blm.trebol.store.services.crud;
 
+import cl.blm.trebol.store.services.TwoWayEntityPojoConverterService;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +17,6 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.store.jpa.GenericEntity;
 import cl.blm.trebol.store.jpa.GenericRepository;
-import cl.blm.trebol.store.services.TwoWayEntityPojoConverterService;
 
 /**
  * Abstract service that sends and receives data with pojos and keep entities
