@@ -1,7 +1,5 @@
 package cl.blm.trebol.store.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,12 +12,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public abstract class CorsConfig
     implements WebMvcConfigurer {
-  private Logger LOG = LoggerFactory.getLogger(CorsConfig.class);
 
-  // CORS configuration
   @Override
   public void addCorsMappings(CorsRegistry registry) {
-    LOG.debug("addCorsMappings");
     registry.addMapping("/*").allowedOrigins("http://localhost:4200") // angular app
         .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE").exposedHeaders("Authorization");
   }
