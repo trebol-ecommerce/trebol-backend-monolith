@@ -1,6 +1,5 @@
 package cl.blm.trebol.store.services.crud.impl;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -54,11 +53,11 @@ public class ProductCrudServiceImpl
   public ProductPojo entity2Pojo(Product source) {
     ProductPojo target = conversion.convert(source, ProductPojo.class);
     Integer id = target.getId();
-    Optional<ProductImage> img = imagesRepository.deepFindFirstProductImageByProductId(id);
-    if (img.isPresent()) {
-      Image sourceImg = img.get().getImage();
-      Set<String> images = Sets.newHashSet(sourceImg.getUrl());
-      target.setImagesURL(images);
+    Iterable<ProductImage> images = imagesRepository.deepFindProductImagesByProductId(id);
+    for (ProductImage pi : images) {
+      Image sourceImg = pi.getImage();
+      Set<String> imageUrls = Sets.newHashSet(sourceImg.getUrl());
+      target.setImagesURL(imageUrls);
     }
     return target;
   }
@@ -119,14 +118,6 @@ public class ProductCrudServiceImpl
     } else {
       Product found = productById.get();
       ProductPojo foundPojo = entity2Pojo(found);
-      Collection<String> imageURLs = foundPojo.getImagesURL();
-      if (!imageURLs.isEmpty()) {
-        Iterable<ProductImage> allProductImages = imagesRepository.deepFindProductImagesByProductId(id);
-        for (ProductImage pi : allProductImages) {
-          String url = pi.getImage().getUrl();
-          imageURLs.add(url);
-        }
-      }
       return foundPojo;
     }
   }
