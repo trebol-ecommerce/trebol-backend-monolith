@@ -16,8 +16,8 @@ import cl.blm.trebol.store.api.pojo.ProductTypePojo;
 import cl.blm.trebol.store.jpa.entities.Product;
 import cl.blm.trebol.store.jpa.entities.ProductFamily;
 import cl.blm.trebol.store.jpa.entities.ProductType;
-import cl.blm.trebol.store.services.exposed.CatalogService;
 import cl.blm.trebol.store.services.crud.GenericCrudService;
+import cl.blm.trebol.store.services.exposed.CatalogService;
 
 /**
  *
@@ -59,7 +59,7 @@ public class CatalogServiceImpl
   @Override
   public Collection<ProductTypePojo> readProductTypesByFamilyId(int productFamilyId) {
     Map<String, String> queryParamsMap = Maps.of("productFamily", String.valueOf(productFamilyId)).build();
-    Predicate filters = productsService.queryParamsMapToPredicate(queryParamsMap);
+    Predicate filters = productTypesService.queryParamsMapToPredicate(queryParamsMap);
     return productTypesService.read(Integer.MAX_VALUE, 0, filters);
   }
 
