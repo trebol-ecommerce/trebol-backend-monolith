@@ -20,6 +20,6 @@ public interface ProductImagesRepository
   @Query("SELECT pi FROM ProductImage pi JOIN FETCH pi.image WHERE pi.product.id = :id")
   public Iterable<ProductImage> deepFindProductImagesByProductId(@Param("id") Integer id);
 
-  @Query("SELECT pi FROM ProductImage pi JOIN FETCH pi.image WHERE pi.product.id = :id ORDER BY pi.id LIMIT 1")
+    @Query("SELECT pi FROM ProductImage pi JOIN FETCH pi.image WHERE pi.product.id = :id ORDER BY pi.id")
   public Optional<ProductImage> deepFindFirstProductImageByProductId(@Param("id") Integer id);
 }
