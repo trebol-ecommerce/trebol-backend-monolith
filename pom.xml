@@ -35,17 +35,10 @@
     <dependency>
       <groupId>com.jayway.jsonpath</groupId>
       <artifactId>json-path</artifactId>
-      <version>2.2.0</version>
       <scope>test</scope>
     </dependency>
     
     <!-- Spring Boot -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot</artifactId>
-      <version>${springframework.boot.version}</version>
-      <type>jar</type>
-    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -55,19 +48,16 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>${springframework.boot.version}</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
-      <version>${springframework.boot.version}</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
-      <version>${springframework.boot.version}</version>
       <type>jar</type>
     </dependency>
     
@@ -75,13 +65,11 @@
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
-      <version>${querydsl.version}</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>
-      <version>${querydsl.version}</version>
       <type>jar</type>
     </dependency>
 
@@ -192,7 +180,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${springframework.boot.version}</version>
       </plugin>
     </plugins>
   </build>
