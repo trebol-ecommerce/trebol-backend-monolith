@@ -87,7 +87,7 @@ public class Image
 
     @Override
     public String toString() {
-        return "cl.blm.newmarketing.store.jpa.entities.Images[ imageId=" + id + " ]";
+        return "cl.blm.trebol.store.jpa.entities.Images[ imageId=" + id + " ]";
     }
 
 }

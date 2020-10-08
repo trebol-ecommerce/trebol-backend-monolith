@@ -17,7 +17,7 @@ import com.google.common.collect.Sets;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.store.jpa.entities.QProduct;
+import cl.blm.trebol.store.jpa.entities.QProduct;
 import cl.blm.trebol.store.api.pojo.ProductPojo;
 import cl.blm.trebol.store.jpa.entities.Image;
 import cl.blm.trebol.store.jpa.entities.Product;

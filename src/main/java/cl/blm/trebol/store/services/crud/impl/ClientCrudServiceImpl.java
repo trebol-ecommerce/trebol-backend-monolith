@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.store.jpa.entities.QClient;
+import cl.blm.trebol.store.jpa.entities.QClient;
 import cl.blm.trebol.store.api.pojo.ClientPojo;
 import cl.blm.trebol.store.api.pojo.PersonPojo;
 import cl.blm.trebol.store.jpa.entities.Client;

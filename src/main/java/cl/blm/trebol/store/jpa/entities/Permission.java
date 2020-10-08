@@ -97,7 +97,7 @@ public class Permission
 
   @Override
   public String toString() {
-    return "cl.blm.newmarketing.store.jpa.entities.Permission[ permissionId=" + id + " ]";
+    return "cl.blm.trebol.store.jpa.entities.Permission[ permissionId=" + id + " ]";
   }
 
 }

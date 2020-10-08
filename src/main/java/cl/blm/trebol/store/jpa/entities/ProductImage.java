@@ -92,7 +92,7 @@ public class ProductImage
 
     @Override
     public String toString() {
-        return "cl.blm.newmarketing.store.jpa.entities.ProductImages[ productImageId=" + id + " ]";
+        return "cl.blm.trebol.store.jpa.entities.ProductImages[ productImageId=" + id + " ]";
     }
 
 }

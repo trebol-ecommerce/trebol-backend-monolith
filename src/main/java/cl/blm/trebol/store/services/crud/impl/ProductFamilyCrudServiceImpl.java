@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.newmarketing.store.jpa.entities.QProductFamily;
+import cl.blm.trebol.store.jpa.entities.QProductFamily;
 import cl.blm.trebol.store.api.pojo.ProductFamilyPojo;
 import cl.blm.trebol.store.jpa.entities.ProductFamily;
 import cl.blm.trebol.store.jpa.repositories.ProductFamiliesRepository;
