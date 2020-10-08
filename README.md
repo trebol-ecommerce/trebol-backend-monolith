@@ -15,14 +15,14 @@ This application is the backend to the virtual web store app Trebol. It it writt
 
 ## Configuring / Setting it up
 
-* Most common environment options can be changed from the `.properties` files, such as the server port and the connection details for the database. It's recommended to keep the settings separated by files (as-is), but you may alter `application.properties` completely depending on your needs.
-* Some core features are hard-coded in the 'cl.blm.trebol.store.config' package, including but not limiting them to the accepted `.properties` file for each separate concern.
+* Most common environment options such as the server port and the connection details for the database are present in `/src/main/resources/application.properties`. You might want to edit that file if you simply want to compile and run the application. You can also copy-paste it with an additional suffix, like `application-dev.properties`, to keep different Spring profiles for different environments.
+* Some core features are hard-coded in the `cl.blm.trebol.store.config` package, do give them a look.
 
 ## Compiling
 
-* Just run `mvn clean install` on the root directory.
+* Run `mvn clean generate-sources install` on the root directory.
 
 ## Running / Deploying
 
-* Do `mvn spring-boot:run` on the `/app` module to start an embedded Tomcat instance and serve this application on it.
-* Running `mvn package` generates an EAR package that can be deployed into an application server of your choice.
+* If you edited the `/src/main/resources/application.properties` file, you can do `mvn spring-boot:run` to run with those settings
+* If you use different profiles, add the option `-Dspring.profiles.active=%profilename%` using the filename suffix e.g. 'dev'
