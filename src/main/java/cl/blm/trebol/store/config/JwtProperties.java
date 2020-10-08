@@ -2,12 +2,10 @@ package cl.blm.trebol.store.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import com.google.common.net.HttpHeaders;
 
 @Configuration
-@PropertySource("jwt.properties")
 @ConfigurationProperties(prefix = "application.jwt")
 public class JwtProperties {
 
