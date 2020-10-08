@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="cl.blm.newmarketing.store.persistence-unit" transaction-type="RESOURCE_LOCAL">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>cl.blm.trebol.store.jpa.entities.Permission</class>
     <class>cl.blm.trebol.store.jpa.entities.Product</class>
     <class>cl.blm.trebol.store.jpa.entities.Person</class>
@@ -19,11 +18,5 @@
     <class>cl.blm.trebol.store.jpa.entities.User</class>
     <class>cl.blm.trebol.store.jpa.entities.Param</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://192.168.0.3:3306/nm_store"/>
-      <property name="javax.persistence.jdbc.user" value="nm-store"/>
-      <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="nm-store"/>
-    </properties>
   </persistence-unit>
 </persistence>
