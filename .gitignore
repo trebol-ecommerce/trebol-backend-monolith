@@ -2,7 +2,6 @@
 *setup*
 *bin*
 
-*.properties
 *nb-configuration.xml
 *nbactions.xml
 
