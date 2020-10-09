@@ -21,7 +21,8 @@
     <java.version>1.8</java.version>
     <java.endorsed.dir>${project.build.directory}/endorsed</java.endorsed.dir>
     <java.ee.version>7.0</java.ee.version>
-    <querydsl.version>4.2.2</querydsl.version>
+    <querydsl.generated.dir>${project.build.directory}/generated-sources</querydsl.generated.dir>
+    <querydsl.generated.version>4.2.2</querydsl.generated.version>
     <swagger.io.version>2.9.2</swagger.io.version>
     <jjwt.version>0.11.2</jjwt.version>
   </properties>
@@ -151,7 +152,7 @@
               <goal>process</goal>
             </goals>
             <configuration>
-              <outputDirectory>target/generated-sources</outputDirectory>
+              <outputDirectory>${querydsl.generated.dir}</outputDirectory>
               <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>
@@ -160,7 +161,7 @@
           <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
-            <version>${querydsl.version}</version>
+            <version>${querydsl.generated.version}</version>
           </dependency>
         </dependencies>
       </plugin>
