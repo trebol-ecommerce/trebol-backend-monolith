@@ -30,4 +30,4 @@ If you edited the `/src/main/resources/application.properties` file, you can do 
 
 ### After compiling
 
-By default, the `.war` file is dropped inside `/target`. You can run it with `java -jar trebol-backend-rest-api-%version%.war` (make sure to replace `%version%` correctly). And like above, you can attach a specific Spring profile adding the parameter `--spring.profiles.active=local` at the end.
+By default, the `.war` file is dropped inside `/target`. You can run it with `java -jar trebol-backend-rest-api-%version%.war` (make sure to replace `%version%` correctly). And like above, you can attach a specific Spring profile adding the parameter `--spring.profiles.active=%profilename%` at the end.
