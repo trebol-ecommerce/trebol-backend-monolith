@@ -12,7 +12,7 @@
   </parent>
   <artifactId>trebol-backend-rest-api</artifactId>
   <packaging>war</packaging>
-  <version>0.9.21</version>
+  <version>0.9.22</version>
 
   <name>Trebol Backend REST API</name>
 
@@ -172,7 +172,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.3</version>
+        <version>3.3.1</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
