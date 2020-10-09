@@ -20,9 +20,14 @@ This application is the backend to the virtual web store app Trebol. It it writt
 
 ## Compiling
 
-* Run `mvn clean generate-sources install` on the root directory.
+* Run `mvn clean install` on the root directory.
 
 ## Running / Deploying
 
-* If you edited the `/src/main/resources/application.properties` file, you can do `mvn spring-boot:run` to run with those settings
-* If you use different profiles, add the option `-Dspring.profiles.active=%profilename%` using the filename suffix e.g. 'dev'
+### Without compiling
+
+If you edited the `/src/main/resources/application.properties` file, you can do `mvn spring-boot:run` on the root directory to run the app with those settings. If you use different profiles, prepend the option `-Dspring-boot.run.arguments="--spring.profiles.active=%profilename%"` using the filename suffix e.g. 'dev'
+
+### After compiling
+
+By default, the `.war` file is dropped inside `/target`. You can run it with `java -jar trebol-backend-rest-api-%version%.war` (make sure to replace `%version%` correctly). And like above, you can attach a specific Spring profile adding the parameter `--spring.profiles.active=local` at the end.
