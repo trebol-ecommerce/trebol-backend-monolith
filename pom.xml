@@ -17,9 +17,9 @@
   <name>Trebol Backend REST API</name>
 
   <properties>
-    <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
+    <java.endorsed.dir>${project.build.directory}/endorsed</java.endorsed.dir>
     <java.ee.version>7.0</java.ee.version>
     <querydsl.version>4.2.2</querydsl.version>
     <swagger.io.version>2.9.2</swagger.io.version>
@@ -113,7 +113,7 @@
           <source>${java.version}</source>
           <target>${java.version}</target>
           <compilerArguments>
-            <endorseddirs>${endorsed.dir}</endorseddirs>
+            <endorseddirs>${java.endorsed.dir}</endorseddirs>
           </compilerArguments>
         </configuration>
       </plugin>
@@ -127,7 +127,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${endorsed.dir}</outputDirectory>
+              <outputDirectory>${java.endorsed.dir}</outputDirectory>
               <silent>true</silent>
               <artifactItems>
                 <artifactItem>
