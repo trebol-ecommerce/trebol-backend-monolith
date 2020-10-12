@@ -59,6 +59,7 @@ public class SecurityConfig
             JwtUsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
         .antMatchers(
+            "/",
             "/login",
             "/company",
             "/catalog/**"
