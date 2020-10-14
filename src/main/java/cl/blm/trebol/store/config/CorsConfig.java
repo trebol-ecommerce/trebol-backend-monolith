@@ -15,8 +15,11 @@ public abstract class CorsConfig
 
   @Override
   public void addCorsMappings(CorsRegistry registry) {
-    registry.addMapping("/*").allowedOrigins("http://localhost:4200") // angular app
-        .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE").exposedHeaders("Authorization");
+// uncomment and adjust as required
+//    registry.addMapping("/**")
+//        .allowedOrigins("*")
+//        .allowedMethods("GET,POST,PUT,DELETE,OPTIONS")
+//        .exposedHeaders("Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with");
   }
 
 }
