@@ -10,13 +10,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import io.jsonwebtoken.Jwts;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import io.jsonwebtoken.Jwts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -73,5 +73,6 @@ public class JwtUsernamePasswordAuthenticationFilter
 
     String headerValue = jwtProperties.getTokenPrefix() + token;
     response.addHeader(jwtProperties.getAuthorizationHeader(), headerValue);
+    response.getWriter().write(headerValue);
   }
 }
