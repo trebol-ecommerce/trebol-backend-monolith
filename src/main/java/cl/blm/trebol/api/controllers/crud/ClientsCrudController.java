@@ -33,7 +33,7 @@ import cl.blm.trebol.services.crud.GenericCrudService;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/data")
 public class ClientsCrudController
     extends GenericCrudController<ClientPojo, Client, Integer> {
 
@@ -44,14 +44,14 @@ public class ClientsCrudController
   }
 
   @Override
-  @PostMapping("/client")
+  @PostMapping("/clients")
   @PreAuthorize("hasAuthority('clients:create')")
   public Integer create(@RequestBody @Valid ClientPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/client/{id}")
+  @GetMapping("/clients/{id}")
   @PreAuthorize("hasAuthority('clients:read')")
   public ClientPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
@@ -78,21 +78,21 @@ public class ClientsCrudController
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
-  @PutMapping("/client")
+  @PutMapping("/clients")
   @PreAuthorize("hasAuthority('clients:update')")
   public Integer update(@RequestBody @Valid ClientPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
-  @PutMapping("/client/{id}")
+  @PutMapping("/clients/{id}")
   @PreAuthorize("hasAuthority('clients:update')")
   public Integer update(@RequestBody @Valid ClientPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/client/{id}")
+  @DeleteMapping("/clients/{id}")
   @PreAuthorize("hasAuthority('clients:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
