@@ -1,4 +1,4 @@
-package cl.blm.trebol.api.controllers.crud;
+package cl.blm.trebol.api.controllers.data;
 
 import java.util.Collection;
 import java.util.Map;
@@ -22,78 +22,78 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.trebol.api.GenericCrudController;
-import cl.blm.trebol.api.pojo.ProductTypePojo;
+import cl.blm.trebol.api.pojo.ProductFamilyPojo;
 import cl.blm.trebol.config.CustomProperties;
-import cl.blm.trebol.jpa.entities.ProductType;
+import cl.blm.trebol.jpa.entities.ProductFamily;
 import cl.blm.trebol.services.crud.GenericCrudService;
 
 /**
- * API point of entry for ProductType entities
+ * API point of entry for ProductFamily entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data")
-public class ProductTypesDataController
-    extends GenericCrudController<ProductTypePojo, ProductType, Integer> {
+public class ProductFamiliesDataController
+    extends GenericCrudController<ProductFamilyPojo, ProductFamily, Integer> {
 
   @Autowired
-  public ProductTypesDataController(CustomProperties globals,
-      GenericCrudService<ProductTypePojo, ProductType, Integer> crudService) {
+  public ProductFamiliesDataController(CustomProperties globals,
+      GenericCrudService<ProductFamilyPojo, ProductFamily, Integer> crudService) {
     super(globals, crudService);
   }
 
   @Override
-  @PostMapping("/product_types")
-  @PreAuthorize("hasAuthority('product_types:create')")
-  public Integer create(@RequestBody @Valid ProductTypePojo input) {
+  @PostMapping("/product_families")
+  @PreAuthorize("hasAuthority('product_families:create')")
+  public Integer create(@RequestBody @Valid ProductFamilyPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/product_types/{id}")
-  @PreAuthorize("hasAuthority('product_types:read')")
-  public ProductTypePojo readOne(@PathVariable Integer id) {
+  @GetMapping("/product_families/{id}")
+  @PreAuthorize("hasAuthority('product_families:read')")
+  public ProductFamilyPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/product_types")
-  @PreAuthorize("hasAuthority('product_types:read')")
-  public Collection<ProductTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  @GetMapping("/product_families")
+  @PreAuthorize("hasAuthority('product_families:read')")
+  public Collection<ProductFamilyPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
-//  @GetMapping("/product_types/{requestPageSize}")
-//  @PreAuthorize("hasAuthority('product_types:read')")
-//  public Collection<ProductTypePojo> readMany(@PathVariable Integer requestPageSize,
+//  @GetMapping("/product_families/{requestPageSize}")
+//  @PreAuthorize("hasAuthority('product_families:read')")
+//  public Collection<ProductFamilyPojo> readMany(@PathVariable Integer requestPageSize,
 //      @RequestParam Map<String, String> allRequestParams) {
 //    return super.readMany(requestPageSize, null, allRequestParams);
 //  }
 //
 //  @Override
-//  @GetMapping("/product_types/{requestPageSize}/{requestPageIndex}")
-//  @PreAuthorize("hasAuthority('product_types:read')")
-//  public Collection<ProductTypePojo> readMany(@PathVariable Integer requestPageSize,
+//  @GetMapping("/product_families/{requestPageSize}/{requestPageIndex}")
+//  @PreAuthorize("hasAuthority('product_families:read')")
+//  public Collection<ProductFamilyPojo> readMany(@PathVariable Integer requestPageSize,
 //      @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
 //    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
 //  }
 //
-//  @PutMapping("/product_type")
-//  @PreAuthorize("hasAuthority('product_types:update')")
-//  public Integer update(@RequestBody @Valid ProductTypePojo input) {
+//  @PutMapping("/product_families")
+//  @PreAuthorize("hasAuthority('product_families:update')")
+//  public Integer update(@RequestBody @Valid ProductFamilyPojo input) {
 //    return super.update(input, input.getId());
 //  }
 
   @Override
-  @PutMapping("/product_types/{id}")
-  @PreAuthorize("hasAuthority('product_types:update')")
-  public Integer update(@RequestBody @Valid ProductTypePojo input, @PathVariable Integer id) {
+  @PutMapping("/product_families/{id}")
+  @PreAuthorize("hasAuthority('product_families:update')")
+  public Integer update(@RequestBody @Valid ProductFamilyPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/product_types/{id}")
-  @PreAuthorize("hasAuthority('product_types:delete')")
+  @DeleteMapping("/product_families/{id}")
+  @PreAuthorize("hasAuthority('product_families:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }
