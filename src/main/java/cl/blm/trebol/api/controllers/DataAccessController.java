@@ -51,7 +51,7 @@ public class DataAccessController {
     return target;
   }
 
-  @GetMapping("/")
+  @GetMapping("")
   public AuthorizedAccessPojo getApiRoutesAccess(@RequestHeader HttpHeaders requestHeaders) {
     String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
     if (authorizationHeader != null) {
