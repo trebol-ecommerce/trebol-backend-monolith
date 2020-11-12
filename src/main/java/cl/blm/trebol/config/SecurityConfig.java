@@ -62,7 +62,7 @@ public class SecurityConfig
             "/",
             "/login",
             "/company",
-            "/catalog/**"
+            "/store/**"
         ).permitAll()
         .anyRequest().authenticated();
   }
