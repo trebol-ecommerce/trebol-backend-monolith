@@ -1,4 +1,4 @@
-package cl.blm.trebol.api.controllers.crud;
+package cl.blm.trebol.api.controllers.data.management;
 
 import java.util.Collection;
 import java.util.Map;
