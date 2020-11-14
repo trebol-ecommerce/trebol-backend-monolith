@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.blm.trebol.jpa.entities.SellDetail;
+import cl.blm.trebol.api.pojo.SellDetailPojo;
 
 /**
  *
@@ -19,7 +19,7 @@ public class StoreCheckoutController {
 
   // TODO Implement this
   @PostMapping("")
-  public Object submitCart(@RequestBody Collection<SellDetail> cartDetails) {
+  public Object submitCart(@RequestBody Collection<SellDetailPojo> cartDetails) {
     throw new UnsupportedOperationException("Method not implemented");
   }
 
