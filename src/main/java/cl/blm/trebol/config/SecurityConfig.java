@@ -61,8 +61,11 @@ public class SecurityConfig
         .antMatchers(
             "/",
             "/login",
-            "/company",
-            "/store/**"
+            "/store/about",
+            "/store/front",
+            "/store/categories",
+            "/store/categories/*",
+            "/store/product/*"
         ).permitAll()
         .anyRequest().authenticated();
   }
