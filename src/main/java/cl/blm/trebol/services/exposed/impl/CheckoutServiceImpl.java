@@ -10,11 +10,14 @@ import org.springframework.core.convert.ConversionService;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.SellPojo;
 import cl.blm.trebol.api.pojo.WebPayRedirectionData;
+import cl.blm.trebol.jpa.entities.Client;
 import cl.blm.trebol.jpa.entities.Product;
 import cl.blm.trebol.jpa.entities.Sell;
 import cl.blm.trebol.jpa.entities.SellDetail;
+import cl.blm.trebol.jpa.repositories.ClientsRepository;
 import cl.blm.trebol.jpa.repositories.ProductsRepository;
 import cl.blm.trebol.jpa.repositories.SalesRepository;
+import cl.blm.trebol.jpa.repositories.UsersRepository;
 import cl.blm.trebol.services.exposed.CheckoutService;
 
 /**
@@ -27,13 +30,15 @@ public class CheckoutServiceImpl
   private final ConversionService conversionService;
   private final SalesRepository salesRepository;
   private final ProductsRepository productsRepository;
+  private final ClientsRepository clientsRepository;
 
   @Autowired
   public CheckoutServiceImpl(ConversionService conversionService, SalesRepository salesRepository,
-      ProductsRepository productsRepository) {
+      ProductsRepository productsRepository, UsersRepository usersRepository, ClientsRepository clientsRepository) {
     this.conversionService = conversionService;
     this.salesRepository = salesRepository;
     this.productsRepository = productsRepository;
+    this.clientsRepository = clientsRepository;
   }
 
   private int calculateTotalCartValue(Collection<SellDetailPojo> cartDetails) {
@@ -47,7 +52,9 @@ public class CheckoutServiceImpl
   }
 
   @Override
-  public SellPojo saveCartAsTransactionRequest(Collection<SellDetailPojo> cartDetails) {
+  public SellPojo saveCartAsTransactionRequest(Integer clientId, Collection<SellDetailPojo> cartDetails) {
+
+    Client client = clientsRepository.getOne(clientId);
     int totalValue = calculateTotalCartValue(cartDetails);
     List<SellDetail> entityDetails = new ArrayList<>();
     for (SellDetailPojo p : cartDetails) {
@@ -58,7 +65,7 @@ public class CheckoutServiceImpl
     Sell target = new Sell();
     target.setSellDetails(entityDetails);
     target.setSubtotal(totalValue);
-    target.setClient(null); // TODO set client to the API consumer, identified by its USER TOKEN
+    target.setClient(client);
     target = salesRepository.saveAndFlush(target);
 
     SellPojo result = conversionService.convert(target, SellPojo.class);
