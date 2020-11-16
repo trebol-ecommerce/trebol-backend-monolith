@@ -1,11 +1,11 @@
 package cl.blm.trebol.services.user;
 
-import cl.blm.trebol.jpa.entities.Client;
+import cl.blm.trebol.api.pojo.ClientPojo;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 public interface ClientPersonRelationService {
-  Client getClientFromPersonId(int personId);
+  ClientPojo getClientFromPersonId(int personId);
 }
