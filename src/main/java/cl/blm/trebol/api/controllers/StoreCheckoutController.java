@@ -46,14 +46,20 @@ public class StoreCheckoutController {
     this.clientPersonRelationService = clientPersonRelationService;
   }
 
-  @PostMapping("")
-  public WebPayRedirectionData submitCart(@RequestHeader HttpHeaders requestHeaders,
-      @RequestBody Collection<SellDetailPojo> cartDetails) {
-    String authString = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
-    PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authString);
+  private int fetchClientId(HttpHeaders httpHeaders) {
+    String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(httpHeaders);
+    PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authorizationHeader);
     int personId = authenticatedPerson.getId();
     ClientPojo authenticatedClient = clientPersonRelationService.getClientFromPersonId(personId);
     int clientId = authenticatedClient.getId();
+    return clientId;
+  }
+
+  @PostMapping("")
+  public WebPayRedirectionData submitCart(
+      @RequestHeader HttpHeaders httpHeaders,
+      @RequestBody Collection<SellDetailPojo> cartDetails) {
+    int clientId = fetchClientId(httpHeaders);
     SellPojo savedCartTransactionRequest = checkoutService.saveCartAsTransactionRequest(clientId, cartDetails);
     WebPayRedirectionData transactionRedirect = checkoutService.startWebpayTransaction(savedCartTransactionRequest);
     return transactionRedirect;
