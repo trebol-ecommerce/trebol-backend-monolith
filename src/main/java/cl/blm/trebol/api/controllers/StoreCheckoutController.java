@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.blm.trebol.api.pojo.ClientPojo;
+import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.SellPojo;
 import cl.blm.trebol.api.pojo.WebPayRedirectionData;
-import cl.blm.trebol.jpa.entities.Client;
-import cl.blm.trebol.jpa.entities.Person;
 import cl.blm.trebol.services.exposed.CheckoutService;
 import cl.blm.trebol.services.security.AuthenticatedPeopleService;
 import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
@@ -45,8 +45,8 @@ public class StoreCheckoutController {
   public WebPayRedirectionData submitCart(@RequestHeader HttpHeaders requestHeaders,
       @RequestBody Collection<SellDetailPojo> cartDetails) {
     String authString = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
-    Person authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authString);
-    Client authenticatedClient = null;
+    PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authString);
+    ClientPojo authenticatedClient = null;
     int clientId = authenticatedClient.getId();
     SellPojo savedCartTransactionRequest = checkoutService.saveCartAsTransactionRequest(clientId, cartDetails);
     WebPayRedirectionData transactionRedirect = checkoutService.startWebpayTransaction(savedCartTransactionRequest);
