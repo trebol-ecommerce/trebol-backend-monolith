@@ -20,6 +20,7 @@ import cl.blm.trebol.api.pojo.WebPayRedirectionData;
 import cl.blm.trebol.services.exposed.CheckoutService;
 import cl.blm.trebol.services.security.AuthenticatedPeopleService;
 import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
+import cl.blm.trebol.services.user.ClientPersonRelationService;
 
 /**
  *
@@ -32,13 +33,17 @@ public class StoreCheckoutController {
   private final CheckoutService checkoutService;
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final AuthenticatedPeopleService authenticatedPeopleService;
+  private final ClientPersonRelationService clientPersonRelationService;
 
   @Autowired
   public StoreCheckoutController(CheckoutService checkoutService,
-      AuthorizationHeaderParserService<Claims> jwtClaimsParserService, AuthenticatedPeopleService authenticatedPeopleService) {
+      AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+      AuthenticatedPeopleService authenticatedPeopleService,
+      ClientPersonRelationService clientPersonRelationService) {
     this.checkoutService = checkoutService;
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.authenticatedPeopleService = authenticatedPeopleService;
+    this.clientPersonRelationService = clientPersonRelationService;
   }
 
   @PostMapping("")
@@ -46,7 +51,8 @@ public class StoreCheckoutController {
       @RequestBody Collection<SellDetailPojo> cartDetails) {
     String authString = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
     PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authString);
-    ClientPojo authenticatedClient = null;
+    int personId = authenticatedPerson.getId();
+    ClientPojo authenticatedClient = clientPersonRelationService.getClientFromPersonId(personId);
     int clientId = authenticatedClient.getId();
     SellPojo savedCartTransactionRequest = checkoutService.saveCartAsTransactionRequest(clientId, cartDetails);
     WebPayRedirectionData transactionRedirect = checkoutService.startWebpayTransaction(savedCartTransactionRequest);
