@@ -5,8 +5,10 @@ import java.util.Optional;
 import io.jsonwebtoken.Claims;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.jpa.entities.Person;
 import cl.blm.trebol.jpa.entities.User;
 import cl.blm.trebol.jpa.repositories.UsersRepository;
@@ -22,11 +24,13 @@ public class AuthenticatedPeopleServiceImpl
 
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final UsersRepository usersRepository;
+  private final ConversionService conversionService;
 
   @Autowired
-  public AuthenticatedPeopleServiceImpl(AuthorizationHeaderParserService<Claims> jwtClaimsParserService, UsersRepository usersRepository) {
+  public AuthenticatedPeopleServiceImpl(AuthorizationHeaderParserService<Claims> jwtClaimsParserService, UsersRepository usersRepository, ConversionService conversionService) {
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.usersRepository = usersRepository;
+    this.conversionService = conversionService;
   }
 
   private User getAuthenticatedUser(String authorizationHeader) throws UsernameNotFoundException {
@@ -40,10 +44,11 @@ public class AuthenticatedPeopleServiceImpl
   }
 
   @Override
-  public Person fetchAuthenticatedUserPersonProfile(String authorizationHeader) {
+  public PersonPojo fetchAuthenticatedUserPersonProfile(String authorizationHeader) {
     User authenticatedUser = getAuthenticatedUser(authorizationHeader);
     Person authenticatedPerson = authenticatedUser.getPerson();
-    return authenticatedPerson;
+    PersonPojo target = conversionService.convert(authenticatedPerson, PersonPojo.class);
+    return target;
   }
 
 }
