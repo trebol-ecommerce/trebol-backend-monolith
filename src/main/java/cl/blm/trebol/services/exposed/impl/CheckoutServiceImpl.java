@@ -6,10 +6,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.http.HttpStatus;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.SellPojo;
 import cl.blm.trebol.api.pojo.WebPayRedirectionData;
+import cl.blm.trebol.config.CheckoutConfig;
+import cl.blm.trebol.http.RestClient;
 import cl.blm.trebol.jpa.entities.Client;
 import cl.blm.trebol.jpa.entities.Product;
 import cl.blm.trebol.jpa.entities.Sell;
@@ -17,7 +24,6 @@ import cl.blm.trebol.jpa.entities.SellDetail;
 import cl.blm.trebol.jpa.repositories.ClientsRepository;
 import cl.blm.trebol.jpa.repositories.ProductsRepository;
 import cl.blm.trebol.jpa.repositories.SalesRepository;
-import cl.blm.trebol.jpa.repositories.UsersRepository;
 import cl.blm.trebol.services.exposed.CheckoutService;
 
 /**
@@ -31,14 +37,16 @@ public class CheckoutServiceImpl
   private final SalesRepository salesRepository;
   private final ProductsRepository productsRepository;
   private final ClientsRepository clientsRepository;
+  private final CheckoutConfig checkoutConfig;
 
   @Autowired
   public CheckoutServiceImpl(ConversionService conversionService, SalesRepository salesRepository,
-      ProductsRepository productsRepository, UsersRepository usersRepository, ClientsRepository clientsRepository) {
+      ProductsRepository productsRepository, ClientsRepository clientsRepository, CheckoutConfig checkoutConfig) {
     this.conversionService = conversionService;
     this.salesRepository = salesRepository;
     this.productsRepository = productsRepository;
     this.clientsRepository = clientsRepository;
+    this.checkoutConfig = checkoutConfig;
   }
 
   private int calculateTotalCartValue(Collection<SellDetailPojo> cartDetails) {
@@ -74,7 +82,22 @@ public class CheckoutServiceImpl
 
   @Override
   public WebPayRedirectionData startWebpayTransaction(SellPojo sellTransaction) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    ObjectMapper jsonMapper = new JsonMapper();
+    String payload;
+    try {
+      payload = jsonMapper.writeValueAsString(sellTransaction);
+    } catch (JsonProcessingException exc) {
+      throw new RuntimeException("The transaction data could not be parsed as JSON");
+    }
+
+    String serverURL = checkoutConfig.getServerURL();
+    RestClient restClient = new RestClient(serverURL);
+    String requestResult = restClient.post("", payload);
+    if (restClient.getStatus().equals(HttpStatus.OK)) {
+      WebPayRedirectionData data = jsonMapper.convertValue(requestResult, WebPayRedirectionData.class);
+      return data;
+    }
+    throw new RuntimeException("The transaction could not be started");
   }
 
   @Override
