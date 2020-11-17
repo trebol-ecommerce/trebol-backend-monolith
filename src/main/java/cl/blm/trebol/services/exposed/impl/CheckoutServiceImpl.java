@@ -1,7 +1,9 @@
 package cl.blm.trebol.services.exposed.impl;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import cl.blm.trebol.jpa.entities.Client;
 import cl.blm.trebol.jpa.entities.Product;
 import cl.blm.trebol.jpa.entities.Sell;
 import cl.blm.trebol.jpa.entities.SellDetail;
+import cl.blm.trebol.jpa.entities.SellType;
 import cl.blm.trebol.jpa.repositories.ClientsRepository;
 import cl.blm.trebol.jpa.repositories.ProductsRepository;
 import cl.blm.trebol.jpa.repositories.SalesRepository;
@@ -72,7 +75,13 @@ public class CheckoutServiceImpl
       entityDetails.add(e);
     }
 
+    Date date = Date.from(Instant.now());
+    SellType sellType = new SellType();
+    sellType.setId(1);
+
     Sell target = new Sell();
+    target.setDate(date);
+    target.setSellType(sellType);
     target.setSellDetails(entityDetails);
     target.setSubtotal(totalValue);
     target.setClient(client);
