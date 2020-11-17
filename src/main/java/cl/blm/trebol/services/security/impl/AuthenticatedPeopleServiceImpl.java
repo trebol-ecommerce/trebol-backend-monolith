@@ -7,6 +7,7 @@ import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.jpa.entities.Person;
@@ -19,6 +20,7 @@ import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
+@Service
 public class AuthenticatedPeopleServiceImpl
     implements AuthenticatedPeopleService {
 

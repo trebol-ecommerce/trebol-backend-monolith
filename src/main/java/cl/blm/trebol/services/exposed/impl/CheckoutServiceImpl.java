@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +31,7 @@ import cl.blm.trebol.services.exposed.CheckoutService;
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
+@Service
 public class CheckoutServiceImpl
     implements CheckoutService {
 
