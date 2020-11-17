@@ -15,6 +15,7 @@ public class BackendApp {
    * @param args
    */
   public static void main(String[] args) {
+    System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
     SpringApplication.run(BackendApp.class, args);
   }
 
