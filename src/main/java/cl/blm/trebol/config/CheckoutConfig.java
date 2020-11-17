@@ -11,16 +11,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "external.checkout")
 public class CheckoutConfig {
-  private Integer serverURL;
+  private String serverURL;
 
   public CheckoutConfig() {
   }
 
-  public Integer getServerURL() {
+  public String getServerURL() {
     return serverURL;
   }
 
-  public void setServerURL(Integer serverURL) {
+  public void setServerURL(String serverURL) {
     this.serverURL = serverURL;
   }
 }
