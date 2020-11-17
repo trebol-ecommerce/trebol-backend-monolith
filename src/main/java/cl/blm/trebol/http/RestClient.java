@@ -20,12 +20,13 @@ public class RestClient {
   private final HttpHeaders headers;
   private HttpStatus status;
 
-  public RestClient(String serverUrl) {
+  public RestClient(String originUrl, String targetUrl) {
     this.rest = new RestTemplate();
     this.headers = new HttpHeaders();
+    headers.setOrigin(originUrl);
     headers.add("Content-Type", "application/json");
     headers.add("Accept", "*/*");
-    this.server = serverUrl;
+    this.server = targetUrl;
   }
 
   public String get(String uri) {
