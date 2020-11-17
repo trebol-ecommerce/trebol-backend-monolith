@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "external.checkout")
 public class CheckoutConfig {
   private String serverURL;
+  private String originURL;
+  private String resourceURI;
 
   public CheckoutConfig() {
   }
@@ -22,5 +24,21 @@ public class CheckoutConfig {
 
   public void setServerURL(String serverURL) {
     this.serverURL = serverURL;
+  }
+
+  public String getOriginURL() {
+    return originURL;
+  }
+
+  public void setOriginURL(String originURL) {
+    this.originURL = originURL;
+  }
+
+  public String getResourceURI() {
+    return resourceURI;
+  }
+
+  public void setResourceURI(String resourceURI) {
+    this.resourceURI = resourceURI;
   }
 }
