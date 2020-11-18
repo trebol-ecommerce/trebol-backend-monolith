@@ -101,9 +101,11 @@ public class CheckoutServiceImpl
       throw new RuntimeException("The transaction data could not be parsed as JSON");
     }
 
-    String serverURL = checkoutConfig.getServerURL();
-    RestClient restClient = new RestClient(serverURL);
-    String requestResult = restClient.post("", payload);
+    String originUrl = checkoutConfig.getOriginURL();
+    String serverUrl = checkoutConfig.getServerURL();
+    String uri = checkoutConfig.getResourceURI();
+    RestClient restClient = new RestClient(originUrl, serverUrl);
+    String requestResult = restClient.post(uri, payload);
     if (restClient.getStatus().equals(HttpStatus.OK)) {
       WebPayRedirectionData data = jsonMapper.convertValue(requestResult, WebPayRedirectionData.class);
       return data;
