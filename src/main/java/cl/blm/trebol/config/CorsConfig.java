@@ -15,10 +15,18 @@ public abstract class CorsConfig
 
   @Override
   public void addCorsMappings(CorsRegistry registry) {
+    this.addDefaultCorsMapping(registry);
     this.addStoreCorsMappings(registry);
     this.addSessionCorsMappings(registry);
     this.addDataAccessCorsMappings(registry);
     this.addDataManagementCorsMappings(registry);
+  }
+
+  private void addDefaultCorsMapping(CorsRegistry registry) {
+    registry.addMapping("/")
+        .allowedOrigins("*")
+        .allowedMethods("GET,OPTIONS")
+        .allowedHeaders("Authorization");
   }
 
   protected void addStoreCorsMappings(CorsRegistry registry) {
@@ -81,6 +89,11 @@ public abstract class CorsConfig
   }
 
   protected void addDataAccessCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/access")
+        .allowedOrigins("*")
+        .allowedMethods("GET,OPTIONS")
+        .allowedHeaders("Authorization");
+
     registry.addMapping("/access/*")
         .allowedOrigins("*")
         .allowedMethods("GET,OPTIONS")
