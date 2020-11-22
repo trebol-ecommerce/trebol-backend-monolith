@@ -16,8 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfigurationSource;
 
-import cl.blm.trebol.security.CorsFilter;
 import cl.blm.trebol.security.JwtTokenVerifierFilter;
 import cl.blm.trebol.security.JwtUsernamePasswordAuthenticationFilter;
 import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
@@ -54,6 +54,8 @@ public class SecurityConfig
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+        .cors()
+        .and()
         .csrf().disable()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -88,8 +90,8 @@ public class SecurityConfig
   }
 
   @Bean
-  public CorsFilter corsFilter() {
-    return new CorsFilter(corsProperties);
+  public CorsConfigurationSource corsConfigurationSource() {
+    return new CorsConfigurationSourceBuilder(corsProperties).build();
   }
 
 }
