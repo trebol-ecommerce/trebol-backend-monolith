@@ -29,7 +29,7 @@ public class CorsProperties {
     for (String m : Arrays.asList(mappings.split(separator))) {
       String[] mapping = m.split(" ");
       try {
-        String method = mapping[0];
+        String method = mapping[0] + ",HEAD,OPTIONS";
         String path = mapping[1];
         map.put(path, method);
       } catch (ArrayIndexOutOfBoundsException e) {
