@@ -51,6 +51,7 @@ public class CorsFilter
         response.setHeader("Access-Control-Allow-Methods", methods);
         response.setHeader("Access-Control-Max-Age", "300");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, Authorization");
+        response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
         chain.doFilter(req, res);
       }
