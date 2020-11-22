@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import cl.blm.trebol.security.CorsFilter;
 import cl.blm.trebol.security.JwtTokenVerifierFilter;
 import cl.blm.trebol.security.JwtUsernamePasswordAuthenticationFilter;
 import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
@@ -31,6 +32,7 @@ public class SecurityConfig
   private final UserDetailsService userDetailsService;
   private final SecretKey secretKey;
   private final JwtProperties jwtConfig;
+  private final CorsProperties corsProperties;
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
   @Autowired
@@ -39,12 +41,14 @@ public class SecurityConfig
       UserDetailsService userDetailsService,
       SecretKey secretKey,
       JwtProperties jwtConfig,
-      AuthorizationHeaderParserService<Claims> jwtClaimsParserService) {
+      AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+      CorsProperties corsProperties) {
     this.passwordEncoder = passwordEncoder;
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.jwtConfig = jwtConfig;
     this.jwtClaimsParserService = jwtClaimsParserService;
+    this.corsProperties = corsProperties;
   }
 
   @Override
@@ -81,6 +85,11 @@ public class SecurityConfig
     provider.setPasswordEncoder(passwordEncoder);
     provider.setUserDetailsService(userDetailsService);
     return provider;
+  }
+
+  @Bean
+  public CorsFilter corsFilter() {
+    return new CorsFilter(corsProperties);
   }
 
 }
