@@ -23,6 +23,7 @@ public class CorsConfigurationSourceBuilder {
   public CorsConfigurationSourceBuilder(CorsProperties corsProperties) {
     this.origins = corsProperties.getOrigins();
     this.corsMappings = new HashMap<>();
+    corsMappings.putAll(parseMappings(corsProperties.getDefaultMapping()));
     corsMappings.putAll(parseMappings(corsProperties.getStoreMappings()));
     corsMappings.putAll(parseMappings(corsProperties.getSessionMappings()));
     corsMappings.putAll(parseMappings(corsProperties.getAccessMappings()));
