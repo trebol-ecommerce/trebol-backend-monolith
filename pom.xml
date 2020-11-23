@@ -10,11 +10,12 @@
     <version>2.3.4.RELEASE</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <artifactId>trebol-backend-rest-api</artifactId>
+  <groupId>cl.blm.trebol</groupId>
+  <artifactId>trebol-backend</artifactId>
   <packaging>war</packaging>
-  <version>0.10.6</version>
+  <version>0.11.0</version>
 
-  <name>Trebol Backend REST API</name>
+  <name>Trébol Backend</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
