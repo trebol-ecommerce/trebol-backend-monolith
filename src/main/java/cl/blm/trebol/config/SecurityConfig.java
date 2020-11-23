@@ -67,6 +67,7 @@ public class SecurityConfig
         .antMatchers(
             "/",
             "/login",
+            "/register",
             "/store/about",
             "/store/front",
             "/store/categories",
