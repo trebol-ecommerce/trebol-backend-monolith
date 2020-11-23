@@ -8,24 +8,24 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude
 public class WebpayTransactionPojo {
-  private String tr_amount;
+  private Integer tr_amount;
   private String tr_session;
   private String tr_id;
 
   public WebpayTransactionPojo() {
   }
 
-  public WebpayTransactionPojo(String tr_amount, String tr_session, String tr_id) {
+  public WebpayTransactionPojo(Integer tr_amount, String tr_session, String tr_id) {
     this.tr_amount = tr_amount;
     this.tr_session = tr_session;
     this.tr_id = tr_id;
   }
 
-  public String getTr_amount() {
+  public Integer getTr_amount() {
     return tr_amount;
   }
 
-  public void setTr_amount(String tr_amount) {
+  public void setTr_amount(Integer tr_amount) {
     this.tr_amount = tr_amount;
   }
 
