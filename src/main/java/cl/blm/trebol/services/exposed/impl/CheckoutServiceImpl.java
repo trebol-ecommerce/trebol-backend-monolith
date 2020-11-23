@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 
+import cl.blm.trebol.api.pojo.ClientPojo;
+import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.SellPojo;
 import cl.blm.trebol.api.pojo.WebPayRedirectionData;
+import cl.blm.trebol.api.pojo.WebpayTransactionPojo;
 import cl.blm.trebol.config.CheckoutConfig;
 import cl.blm.trebol.http.RestClient;
 import cl.blm.trebol.jpa.entities.Client;
@@ -29,6 +31,8 @@ import cl.blm.trebol.jpa.repositories.ClientsRepository;
 import cl.blm.trebol.jpa.repositories.ProductsRepository;
 import cl.blm.trebol.jpa.repositories.SalesRepository;
 import cl.blm.trebol.services.exposed.CheckoutService;
+import cl.blm.trebol.services.security.AuthenticatedPeopleService;
+import cl.blm.trebol.services.user.ClientPersonRelationService;
 
 /**
  *
@@ -43,15 +47,31 @@ public class CheckoutServiceImpl
   private final ProductsRepository productsRepository;
   private final ClientsRepository clientsRepository;
   private final CheckoutConfig checkoutConfig;
+  private final ObjectMapper objectMapper;
+  private final AuthenticatedPeopleService authenticatedPeopleService;
+  private final ClientPersonRelationService clientPersonRelationService;
 
   @Autowired
   public CheckoutServiceImpl(ConversionService conversionService, SalesRepository salesRepository,
-      ProductsRepository productsRepository, ClientsRepository clientsRepository, CheckoutConfig checkoutConfig) {
+      ProductsRepository productsRepository, ClientsRepository clientsRepository, CheckoutConfig checkoutConfig,
+      ObjectMapper objectMapper, AuthenticatedPeopleService authenticatedPeopleService,
+      ClientPersonRelationService clientPersonRelationService) {
     this.conversionService = conversionService;
     this.salesRepository = salesRepository;
     this.productsRepository = productsRepository;
     this.clientsRepository = clientsRepository;
     this.checkoutConfig = checkoutConfig;
+    this.objectMapper = objectMapper;
+    this.authenticatedPeopleService = authenticatedPeopleService;
+    this.clientPersonRelationService = clientPersonRelationService;
+  }
+
+  private int fetchClientId(String authorizationHeader) {
+    PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authorizationHeader);
+    int personId = authenticatedPerson.getId();
+    ClientPojo authenticatedClient = clientPersonRelationService.getClientFromPersonId(personId);
+    int clientId = authenticatedClient.getId();
+    return clientId;
   }
 
   private int calculateTotalCartValue(Collection<SellDetailPojo> cartDetails) {
@@ -64,9 +84,19 @@ public class CheckoutServiceImpl
     return value;
   }
 
-  @Override
-  public SellPojo saveCartAsTransactionRequest(Integer clientId, Collection<SellDetailPojo> cartDetails) {
+  private String webpayTransactionAsJSON(WebpayTransactionPojo transaction) throws RuntimeException {
+    String payload;
+    try {
+      payload = objectMapper.writeValueAsString(transaction);
+    } catch (JsonProcessingException exc) {
+      throw new RuntimeException("The transaction data could not be parsed as JSON");
+    }
+    return payload;
+  }
 
+  @Override
+  public WebpayTransactionPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
+    int clientId = this.fetchClientId(authorization);
     Client client = clientsRepository.getOne(clientId);
     int totalValue = calculateTotalCartValue(cartDetails);
     List<SellDetail> entityDetails = new ArrayList<>();
@@ -88,26 +118,23 @@ public class CheckoutServiceImpl
     target = salesRepository.saveAndFlush(target);
 
     SellPojo result = conversionService.convert(target, SellPojo.class);
-    return result;
+    WebpayTransactionPojo transaction = new WebpayTransactionPojo();
+    transaction.setTr_id(result.getId().toString());
+    transaction.setTr_session(authorization);
+    transaction.setTr_amount(totalValue);
+    return transaction;
   }
 
   @Override
-  public WebPayRedirectionData startWebpayTransaction(SellPojo sellTransaction) {
-    ObjectMapper jsonMapper = new JsonMapper();
-    String payload;
-    try {
-      payload = jsonMapper.writeValueAsString(sellTransaction);
-    } catch (JsonProcessingException exc) {
-      throw new RuntimeException("The transaction data could not be parsed as JSON");
-    }
-
+  public WebPayRedirectionData startWebpayTransaction(WebpayTransactionPojo transaction) {
+    String payload = this.webpayTransactionAsJSON(transaction);
     String originUrl = checkoutConfig.getOriginURL();
     String serverUrl = checkoutConfig.getServerURL();
     String uri = checkoutConfig.getResourceURI();
     RestClient restClient = new RestClient(originUrl, serverUrl);
     String requestResult = restClient.post(uri, payload);
     if (restClient.getStatus().equals(HttpStatus.OK)) {
-      WebPayRedirectionData data = jsonMapper.convertValue(requestResult, WebPayRedirectionData.class);
+      WebPayRedirectionData data = objectMapper.convertValue(requestResult, WebPayRedirectionData.class);
       return data;
     }
     throw new RuntimeException("The transaction could not be started");
