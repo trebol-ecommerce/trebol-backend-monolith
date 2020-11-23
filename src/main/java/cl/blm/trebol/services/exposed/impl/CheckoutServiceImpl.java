@@ -70,8 +70,11 @@ public class CheckoutServiceImpl
     PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authorizationHeader);
     int personId = authenticatedPerson.getId();
     ClientPojo authenticatedClient = clientPersonRelationService.getClientFromPersonId(personId);
-    int clientId = authenticatedClient.getId();
-    return clientId;
+    if (authenticatedClient != null) {
+      int clientId = authenticatedClient.getId();
+      return clientId;
+    }
+    throw new RuntimeException("The user requesting a cart checkout does not have an associated client ID");
   }
 
   private int calculateTotalCartValue(Collection<SellDetailPojo> cartDetails) {
