@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import cl.blm.trebol.security.JwtTokenVerifierFilter;
 import cl.blm.trebol.security.JwtUsernamePasswordAuthenticationFilter;
@@ -31,6 +32,7 @@ public class SecurityConfig
   private final UserDetailsService userDetailsService;
   private final SecretKey secretKey;
   private final JwtProperties jwtConfig;
+  private final CorsProperties corsProperties;
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
   @Autowired
@@ -39,17 +41,21 @@ public class SecurityConfig
       UserDetailsService userDetailsService,
       SecretKey secretKey,
       JwtProperties jwtConfig,
-      AuthorizationHeaderParserService<Claims> jwtClaimsParserService) {
+      AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+      CorsProperties corsProperties) {
     this.passwordEncoder = passwordEncoder;
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.jwtConfig = jwtConfig;
     this.jwtClaimsParserService = jwtClaimsParserService;
+    this.corsProperties = corsProperties;
   }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+        .cors()
+        .and()
         .csrf().disable()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -81,6 +87,11 @@ public class SecurityConfig
     provider.setPasswordEncoder(passwordEncoder);
     provider.setUserDetailsService(userDetailsService);
     return provider;
+  }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    return new CorsConfigurationSourceBuilder(corsProperties).build();
   }
 
 }
