@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -28,7 +29,6 @@ import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
 public class SecurityConfig
     extends WebSecurityConfigurerAdapter {
 
-  private final PasswordEncoder passwordEncoder;
   private final UserDetailsService userDetailsService;
   private final SecretKey secretKey;
   private final SecurityProperties securityProperties;
@@ -43,7 +43,6 @@ public class SecurityConfig
       SecurityProperties securityProperties,
       AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
       CorsProperties corsProperties) {
-    this.passwordEncoder = passwordEncoder;
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.securityProperties = securityProperties;
@@ -85,7 +84,7 @@ public class SecurityConfig
   @Bean
   public DaoAuthenticationProvider daoAuthenticationProvider() {
     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    provider.setPasswordEncoder(passwordEncoder);
+    provider.setPasswordEncoder(passwordEncoder());
     provider.setUserDetailsService(userDetailsService);
     return provider;
   }
@@ -93,6 +92,12 @@ public class SecurityConfig
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     return new CorsConfigurationSourceBuilder(corsProperties).build();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    Integer strength = securityProperties.getBcryptEncoderStrength();
+    return new BCryptPasswordEncoder(strength);
   }
 
 }
