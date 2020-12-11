@@ -20,19 +20,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cl.blm.trebol.config.JwtProperties;
+import cl.blm.trebol.config.SecurityProperties;
 import cl.blm.trebol.security.pojo.UsernamePasswordPojo;
 
 public class JwtUsernamePasswordAuthenticationFilter
     extends UsernamePasswordAuthenticationFilter {
 
   private final AuthenticationManager authenticationManager;
-  private final JwtProperties jwtProperties;
+  private final SecurityProperties jwtProperties;
   private final SecretKey secretKey;
 
   public JwtUsernamePasswordAuthenticationFilter(
       AuthenticationManager authenticationManager,
-      JwtProperties jwtProperties,
+      SecurityProperties jwtProperties,
       SecretKey secretKey) {
     this.authenticationManager = authenticationManager;
     this.jwtProperties = jwtProperties;
@@ -67,11 +67,11 @@ public class JwtUsernamePasswordAuthenticationFilter
         .setSubject(authResult.getName())
         .claim("authorities", authResult.getAuthorities())
         .setIssuedAt(new Date())
-        .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtProperties.getTokenExpirationAfterDays())))
+        .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtProperties.getJwtTokenExpirationAfterDays())))
         .signWith(secretKey)
         .compact();
 
-    String headerValue = jwtProperties.getTokenPrefix() + token;
+    String headerValue = jwtProperties.getJwtTokenPrefix() + token;
     response.addHeader(jwtProperties.getAuthorizationHeader(), headerValue);
     response.getWriter().write(headerValue);
   }

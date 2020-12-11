@@ -6,38 +6,38 @@ import org.springframework.context.annotation.Configuration;
 import com.google.common.net.HttpHeaders;
 
 @Configuration
-@ConfigurationProperties(prefix = "application.jwt")
+@ConfigurationProperties(prefix = "application.security")
 public class SecurityProperties {
 
-  private String secretKey;
-  private String tokenPrefix;
-  private Integer tokenExpirationAfterDays;
+  private String jwtSecretKey;
+  private String jwtTokenPrefix;
+  private Integer jwtTokenExpirationAfterDays;
 
   public SecurityProperties() {
   }
 
-  public String getSecretKey() {
-    return secretKey;
+  public String getJwtSecretKey() {
+    return jwtSecretKey;
   }
 
-  public void setSecretKey(String secretKey) {
-    this.secretKey = secretKey;
+  public void setJwtSecretKey(String jwtSecretKey) {
+    this.jwtSecretKey = jwtSecretKey;
   }
 
-  public String getTokenPrefix() {
-    return tokenPrefix;
+  public String getJwtTokenPrefix() {
+    return jwtTokenPrefix;
   }
 
-  public void setTokenPrefix(String tokenPrefix) {
-    this.tokenPrefix = tokenPrefix;
+  public void setJwtTokenPrefix(String jwtTokenPrefix) {
+    this.jwtTokenPrefix = jwtTokenPrefix;
   }
 
-  public Integer getTokenExpirationAfterDays() {
-    return tokenExpirationAfterDays;
+  public Integer getJwtTokenExpirationAfterDays() {
+    return jwtTokenExpirationAfterDays;
   }
 
-  public void setTokenExpirationAfterDays(Integer tokenExpirationAfterDays) {
-    this.tokenExpirationAfterDays = tokenExpirationAfterDays;
+  public void setJwtTokenExpirationAfterDays(Integer jwtTokenExpirationAfterDays) {
+    this.jwtTokenExpirationAfterDays = jwtTokenExpirationAfterDays;
   }
 
   public String getAuthorizationHeader() {
