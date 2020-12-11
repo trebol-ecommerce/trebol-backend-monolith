@@ -37,7 +37,6 @@ public class SecurityConfig
 
   @Autowired
   public SecurityConfig(
-      PasswordEncoder passwordEncoder,
       UserDetailsService userDetailsService,
       SecretKey secretKey,
       SecurityProperties securityProperties,
