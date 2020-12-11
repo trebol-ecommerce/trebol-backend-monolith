@@ -31,7 +31,7 @@ public class SecurityConfig
   private final PasswordEncoder passwordEncoder;
   private final UserDetailsService userDetailsService;
   private final SecretKey secretKey;
-  private final JwtProperties jwtConfig;
+  private final SecurityProperties securityProperties;
   private final CorsProperties corsProperties;
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
@@ -40,13 +40,13 @@ public class SecurityConfig
       PasswordEncoder passwordEncoder,
       UserDetailsService userDetailsService,
       SecretKey secretKey,
-      JwtProperties jwtConfig,
+      SecurityProperties securityProperties,
       AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
       CorsProperties corsProperties) {
     this.passwordEncoder = passwordEncoder;
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
-    this.jwtConfig = jwtConfig;
+    this.securityProperties = securityProperties;
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.corsProperties = corsProperties;
   }
@@ -60,7 +60,7 @@ public class SecurityConfig
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
+        .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), securityProperties, secretKey))
         .addFilterAfter(new JwtTokenVerifierFilter(jwtClaimsParserService),
             JwtUsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()

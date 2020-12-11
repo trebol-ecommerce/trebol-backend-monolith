@@ -11,7 +11,7 @@ import io.jsonwebtoken.security.Keys;
 @Configuration
 public class JwtKeyConfig {
   @Autowired
-  private JwtProperties jwtProperties;
+  private SecurityProperties jwtProperties;
 
   @Bean
   public SecretKey secretKey() {
