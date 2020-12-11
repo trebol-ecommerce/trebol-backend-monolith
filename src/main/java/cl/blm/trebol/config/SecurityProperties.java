@@ -12,6 +12,7 @@ public class SecurityProperties {
   private String jwtSecretKey;
   private String jwtTokenPrefix;
   private Integer jwtTokenExpirationAfterDays;
+  private Integer bcryptEncoderStrength;
 
   public SecurityProperties() {
   }
@@ -42,5 +43,13 @@ public class SecurityProperties {
 
   public String getAuthorizationHeader() {
     return HttpHeaders.AUTHORIZATION;
+  }
+
+  public Integer getBcryptEncoderStrength() {
+    return bcryptEncoderStrength;
+  }
+
+  public void setBcryptEncoderStrength(Integer bcryptEncoderStrength) {
+    this.bcryptEncoderStrength = bcryptEncoderStrength;
   }
 }
