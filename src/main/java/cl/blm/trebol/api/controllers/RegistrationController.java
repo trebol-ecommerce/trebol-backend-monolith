@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.blm.trebol.api.pojo.RegistrationPojo;
 import cl.blm.trebol.api.pojo.UserPojo;
 
 /**
@@ -16,7 +17,7 @@ import cl.blm.trebol.api.pojo.UserPojo;
 public class RegistrationController {
 
   @PostMapping
-  public boolean register(@RequestBody UserPojo userProfile) {
+  public boolean register(@RequestBody RegistrationPojo userProfile) {
     throw new UnsupportedOperationException();
   }
 }
