@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.api.pojo.RegistrationPojo;
+import cl.blm.trebol.jpa.entities.Person;
 import cl.blm.trebol.jpa.entities.QPerson;
 import cl.blm.trebol.jpa.entities.QUser;
 import cl.blm.trebol.jpa.entities.User;
@@ -32,11 +33,31 @@ public class RegistrationServiceImpl
   public boolean register(RegistrationPojo registration) {
     Predicate userWithSameName = QUser.user.name.eq(registration.getName());
     if (!usersRepository.exists(userWithSameName)) {
-      //Predicate sameProfile = QPerson.person.eq(right);
-      User newUser = null;
-      User savedUser = usersRepository.saveAndFlush(newUser);
+      return false;
     }
-    return false;
+
+    Person newPerson = this.createPersonFromRegistrationPojo(registration);
+    Predicate sameProfileData = QPerson.person.eq(newPerson);
+    if (!peopleRepository.exists(sameProfileData)) {
+      return false;
+    }
+
+    User newUser = null;
+    User savedUser = usersRepository.saveAndFlush(newUser);
+
+    return true;
+  }
+
+  protected Person createPersonFromRegistrationPojo(RegistrationPojo registration) {
+    RegistrationPojo.Profile source = registration.getProfile();
+    Person target = new Person();
+    target.setName(source.getName());
+    target.setIdCard(source.getIdCard());
+    target.setEmail(source.getEmail());
+    target.setAddress(source.getAddress());
+    target.setPhone1(source.getPhone1());
+    target.setPhone2(source.getPhone2());
+    return target;
   }
 
 }
