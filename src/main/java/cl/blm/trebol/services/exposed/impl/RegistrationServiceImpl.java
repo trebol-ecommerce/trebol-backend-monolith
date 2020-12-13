@@ -32,13 +32,13 @@ public class RegistrationServiceImpl
   @Override
   public boolean register(RegistrationPojo registration) {
     Predicate userWithSameName = QUser.user.name.eq(registration.getName());
-    if (!usersRepository.exists(userWithSameName)) {
+    if (usersRepository.exists(userWithSameName)) {
       return false;
     }
 
     Person newPerson = this.createPersonFromRegistrationPojo(registration);
     Predicate sameProfileData = QPerson.person.eq(newPerson);
-    if (!peopleRepository.exists(sameProfileData)) {
+    if (peopleRepository.exists(sameProfileData)) {
       return false;
     }
 
