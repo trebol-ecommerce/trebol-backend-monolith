@@ -1,6 +1,7 @@
 package cl.blm.trebol.services.exposed.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.querydsl.core.types.Predicate;
 
@@ -22,11 +23,13 @@ public class RegistrationServiceImpl
 
   private final PeopleRepository peopleRepository;
   private final UsersRepository usersRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public RegistrationServiceImpl(PeopleRepository peopleRepository, UsersRepository usersRepository) {
+  public RegistrationServiceImpl(PeopleRepository peopleRepository, UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -62,9 +65,10 @@ public class RegistrationServiceImpl
   }
 
   protected User createUserFromRegistrationPojo(RegistrationPojo registration) {
+    String password = passwordEncoder.encode(registration.getPassword());
     User target = new User();
     target.setName(registration.getName());
-//    target.setPassword(registration.getName());
+    target.setPassword(password);
     return target;
   }
 
