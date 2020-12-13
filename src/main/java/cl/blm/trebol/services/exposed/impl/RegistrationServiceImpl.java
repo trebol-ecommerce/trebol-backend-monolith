@@ -61,8 +61,12 @@ public class RegistrationServiceImpl
     target.setIdCard(source.getIdCard());
     target.setEmail(source.getEmail());
     target.setAddress(source.getAddress());
-    target.setPhone1(source.getPhone1());
-    target.setPhone2(source.getPhone2());
+    if (source.getPhone1() != null) {
+      target.setPhone1(source.getPhone1());
+    }
+    if (source.getPhone2() != null) {
+      target.setPhone2(source.getPhone2());
+    }
     return target;
   }
 
