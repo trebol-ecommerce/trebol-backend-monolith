@@ -42,7 +42,8 @@ public class RegistrationServiceImpl
       return false;
     }
 
-    User newUser = null;
+    User newUser = this.createUserFromRegistrationPojo(registration);
+    newUser.setPerson(newPerson);
     User savedUser = usersRepository.saveAndFlush(newUser);
 
     return true;
@@ -57,6 +58,13 @@ public class RegistrationServiceImpl
     target.setAddress(source.getAddress());
     target.setPhone1(source.getPhone1());
     target.setPhone2(source.getPhone2());
+    return target;
+  }
+
+  protected User createUserFromRegistrationPojo(RegistrationPojo registration) {
+    User target = new User();
+    target.setName(registration.getName());
+//    target.setPassword(registration.getName());
     return target;
   }
 
