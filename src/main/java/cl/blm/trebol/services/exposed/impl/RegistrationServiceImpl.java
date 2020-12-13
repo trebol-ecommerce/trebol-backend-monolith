@@ -45,6 +45,8 @@ public class RegistrationServiceImpl
     Predicate sameProfileData = QPerson.person.eq(newPerson);
     if (peopleRepository.exists(sameProfileData)) {
       return false;
+    } else {
+      newPerson = peopleRepository.saveAndFlush(newPerson);
     }
 
     User newUser = this.createUserFromRegistrationPojo(registration);
