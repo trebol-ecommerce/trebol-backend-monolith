@@ -2,6 +2,7 @@ package cl.blm.trebol.services.exposed.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
@@ -18,6 +19,7 @@ import cl.blm.trebol.services.exposed.RegistrationService;
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
+@Service
 public class RegistrationServiceImpl
   implements RegistrationService {
 
