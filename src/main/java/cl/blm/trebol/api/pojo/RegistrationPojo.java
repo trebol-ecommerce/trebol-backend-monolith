@@ -47,6 +47,9 @@ public class RegistrationPojo {
     private String name;
     private String idCard;
     private String email;
+    private String address;
+    private Integer phone1;
+    private Integer phone2;
 
     public String getName() {
       return name;
@@ -70,6 +73,30 @@ public class RegistrationPojo {
 
     public void setEmail(String email) {
       this.email = email;
+    }
+
+    public String getAddress() {
+      return address;
+    }
+
+    public void setAddress(String address) {
+      this.address = address;
+    }
+
+    public Integer getPhone1() {
+      return phone1;
+    }
+
+    public void setPhone1(Integer phone1) {
+      this.phone1 = phone1;
+    }
+
+    public Integer getPhone2() {
+      return phone2;
+    }
+
+    public void setPhone2(Integer phone2) {
+      this.phone2 = phone2;
     }
   }
 }
