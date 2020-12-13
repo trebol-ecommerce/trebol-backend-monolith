@@ -43,7 +43,7 @@ public class RegistrationPojo {
     this.profile = profile;
   }
 
-  class Profile {
+  public class Profile {
     private String name;
     private String idCard;
     private String email;
