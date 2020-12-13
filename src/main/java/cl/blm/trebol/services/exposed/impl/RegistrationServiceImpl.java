@@ -3,6 +3,7 @@ package cl.blm.trebol.services.exposed.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.types.Predicate;
 
@@ -35,6 +36,7 @@ public class RegistrationServiceImpl
   }
 
   @Override
+  @Transactional
   public boolean register(RegistrationPojo registration) {
     Predicate userWithSameName = QUser.user.name.eq(registration.getName());
     if (usersRepository.exists(userWithSameName)) {
