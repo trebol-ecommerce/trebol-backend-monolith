@@ -13,6 +13,7 @@ import cl.blm.trebol.jpa.entities.Person;
 import cl.blm.trebol.jpa.entities.QPerson;
 import cl.blm.trebol.jpa.entities.QUser;
 import cl.blm.trebol.jpa.entities.User;
+import cl.blm.trebol.jpa.entities.UserRole;
 import cl.blm.trebol.jpa.repositories.PeopleRepository;
 import cl.blm.trebol.jpa.repositories.UsersRepository;
 import cl.blm.trebol.services.exposed.RegistrationService;
@@ -82,6 +83,10 @@ public class RegistrationServiceImpl
     User target = new User();
     target.setName(registration.getName());
     target.setPassword(password);
+
+    UserRole userRole = new UserRole();
+    userRole.setId(1);
+    target.setUserRole(userRole);
     return target;
   }
 
