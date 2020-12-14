@@ -15,7 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import cl.blm.trebol.security.JwtTokenVerifierFilter;
 import cl.blm.trebol.security.JwtUsernamePasswordAuthenticationFilter;
@@ -27,42 +29,48 @@ import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
 public class SecurityConfig
     extends WebSecurityConfigurerAdapter {
 
-  private final PasswordEncoder passwordEncoder;
   private final UserDetailsService userDetailsService;
   private final SecretKey secretKey;
-  private final JwtProperties jwtConfig;
+  private final SecurityProperties securityProperties;
+  private final CorsProperties corsProperties;
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
   @Autowired
   public SecurityConfig(
-      PasswordEncoder passwordEncoder,
       UserDetailsService userDetailsService,
       SecretKey secretKey,
-      JwtProperties jwtConfig,
-      AuthorizationHeaderParserService<Claims> jwtClaimsParserService) {
-    this.passwordEncoder = passwordEncoder;
+      SecurityProperties securityProperties,
+      AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+      CorsProperties corsProperties) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
-    this.jwtConfig = jwtConfig;
+    this.securityProperties = securityProperties;
     this.jwtClaimsParserService = jwtClaimsParserService;
+    this.corsProperties = corsProperties;
   }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+        .cors()
+        .and()
         .csrf().disable()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
+        .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), securityProperties, secretKey))
         .addFilterAfter(new JwtTokenVerifierFilter(jwtClaimsParserService),
             JwtUsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
         .antMatchers(
             "/",
             "/login",
-            "/company",
-            "/store/**"
+            "/register",
+            "/store/about",
+            "/store/front",
+            "/store/categories",
+            "/store/categories/*",
+            "/store/product/*"
         ).permitAll()
         .anyRequest().authenticated();
   }
@@ -75,9 +83,20 @@ public class SecurityConfig
   @Bean
   public DaoAuthenticationProvider daoAuthenticationProvider() {
     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    provider.setPasswordEncoder(passwordEncoder);
+    provider.setPasswordEncoder(passwordEncoder());
     provider.setUserDetailsService(userDetailsService);
     return provider;
+  }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    return new CorsConfigurationSourceBuilder(corsProperties).build();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    Integer strength = securityProperties.getBcryptEncoderStrength();
+    return new BCryptPasswordEncoder(strength);
   }
 
 }

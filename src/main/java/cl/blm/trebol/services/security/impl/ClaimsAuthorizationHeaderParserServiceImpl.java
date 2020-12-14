@@ -13,7 +13,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 
-import cl.blm.trebol.config.JwtProperties;
+import cl.blm.trebol.config.SecurityProperties;
 import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
 
 @Service
@@ -21,10 +21,10 @@ public class ClaimsAuthorizationHeaderParserServiceImpl
     implements AuthorizationHeaderParserService<Claims> {
 
   private final SecretKey secretKey;
-  private final JwtProperties jwtProperties;
+  private final SecurityProperties jwtProperties;
 
   @Autowired
-  public ClaimsAuthorizationHeaderParserServiceImpl(SecretKey secretKey, JwtProperties jwtProperties) {
+  public ClaimsAuthorizationHeaderParserServiceImpl(SecretKey secretKey, SecurityProperties jwtProperties) {
     this.secretKey = secretKey;
     this.jwtProperties = jwtProperties;
   }
@@ -36,7 +36,7 @@ public class ClaimsAuthorizationHeaderParserServiceImpl
 
   @Override
   public Claims parseToken(String authorizationHeader) throws IllegalStateException {
-    String token = authorizationHeader.replace(jwtProperties.getTokenPrefix(), "");
+    String token = authorizationHeader.replace(jwtProperties.getJwtTokenPrefix(), "");
     try {
       Jws<Claims> claimsJws = Jwts.parserBuilder()
           .setSigningKey(secretKey)
