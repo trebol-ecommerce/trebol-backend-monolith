@@ -38,7 +38,6 @@ public class RegistrationServiceImpl
   }
 
   @Override
-  @Transactional
   public boolean register(RegistrationPojo registration) {
     Predicate userWithSameName = QUser.user.name.eq(registration.getName());
     if (usersRepository.exists(userWithSameName)) {

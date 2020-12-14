@@ -12,6 +12,5 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EntityScan(basePackages = {"cl.blm.trebol.jpa.entities"})
 @EnableJpaRepositories(basePackages = {"cl.blm.trebol.jpa.repositories"})
-@EnableTransactionManagement
 public class JpaConfig {
 }
