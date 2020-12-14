@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.api.pojo.RegistrationPojo;
@@ -44,7 +45,9 @@ public class RegistrationServiceImpl
     }
 
     Person newPerson = this.createPersonFromRegistrationPojo(registration);
-    Predicate sameProfileData = QPerson.person.eq(newPerson);
+    Predicate sameProfileData = new BooleanBuilder()
+        .and(QPerson.person.idCard.eq(newPerson.getIdCard()))
+        .and(QPerson.person.name.eq(newPerson.getName()));
     if (peopleRepository.exists(sameProfileData)) {
       return false;
     } else {
