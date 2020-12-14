@@ -56,7 +56,7 @@ public class RegistrationServiceImpl
 
     User newUser = this.createUserFromRegistrationPojo(registration);
     newUser.setPerson(newPerson);
-    User savedUser = usersRepository.saveAndFlush(newUser);
+    usersRepository.saveAndFlush(newUser);
 
     return true;
   }
