@@ -25,7 +25,7 @@ public class RegistrationController {
   }
 
   @PostMapping
-  public boolean register(@RequestBody RegistrationPojo userProfile) {
-    return this.registrationService.register(userProfile);
+  public void register(@RequestBody RegistrationPojo userProfile) {
+    this.registrationService.register(userProfile);
   }
 }
