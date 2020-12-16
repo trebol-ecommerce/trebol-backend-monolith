@@ -16,6 +16,8 @@ import cl.blm.trebol.jpa.entities.User;
 import cl.blm.trebol.jpa.entities.UserRole;
 import cl.blm.trebol.jpa.repositories.PeopleRepository;
 import cl.blm.trebol.jpa.repositories.UsersRepository;
+import cl.blm.trebol.services.exceptions.PersonAlreadyExistsException;
+import cl.blm.trebol.services.exceptions.UserAlreadyExistsException;
 import cl.blm.trebol.services.exposed.RegistrationService;
 
 /**
@@ -38,10 +40,11 @@ public class RegistrationServiceImpl
   }
 
   @Override
-  public boolean register(RegistrationPojo registration) {
-    Predicate userWithSameName = QUser.user.name.eq(registration.getName());
+  public void register(RegistrationPojo registration) throws PersonAlreadyExistsException, UserAlreadyExistsException {
+    String username = registration.getName();
+    Predicate userWithSameName = QUser.user.name.eq(username);
     if (usersRepository.exists(userWithSameName)) {
-      return false;
+      throw new UserAlreadyExistsException("With name '" + username + "'");
     }
 
     Person newPerson = this.createPersonFromRegistrationPojo(registration);
@@ -49,7 +52,7 @@ public class RegistrationServiceImpl
         .and(QPerson.person.idCard.eq(newPerson.getIdCard()))
         .and(QPerson.person.name.eq(newPerson.getName()));
     if (peopleRepository.exists(sameProfileData)) {
-      return false;
+      throw new PersonAlreadyExistsException("With same ID card and/or name");
     } else {
       newPerson = peopleRepository.saveAndFlush(newPerson);
     }
@@ -57,8 +60,6 @@ public class RegistrationServiceImpl
     User newUser = this.createUserFromRegistrationPojo(registration);
     newUser.setPerson(newPerson);
     usersRepository.saveAndFlush(newUser);
-
-    return true;
   }
 
   protected Person createPersonFromRegistrationPojo(RegistrationPojo registration) {
