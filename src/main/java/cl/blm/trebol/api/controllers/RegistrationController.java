@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.trebol.api.pojo.RegistrationPojo;
+import cl.blm.trebol.services.exceptions.PersonAlreadyExistsException;
+import cl.blm.trebol.services.exceptions.UserAlreadyExistsException;
 import cl.blm.trebol.services.exposed.RegistrationService;
 
 /**
@@ -25,7 +27,8 @@ public class RegistrationController {
   }
 
   @PostMapping
-  public void register(@RequestBody RegistrationPojo userProfile) {
+  public void register(@RequestBody RegistrationPojo userProfile) throws UserAlreadyExistsException,
+      PersonAlreadyExistsException {
     this.registrationService.register(userProfile);
   }
 }
