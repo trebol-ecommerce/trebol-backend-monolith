@@ -70,7 +70,8 @@ public class SecurityConfig
             "/store/front",
             "/store/categories",
             "/store/categories/*",
-            "/store/product/*"
+            "/store/product/*",
+            "/store/checkout/validate"
         ).permitAll()
         .anyRequest().authenticated();
   }

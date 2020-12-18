@@ -1,11 +1,14 @@
 package cl.blm.trebol.api.controllers;
 
 import java.util.Collection;
+import java.util.Map;
 
 import io.jsonwebtoken.Claims;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -52,9 +55,10 @@ public class StoreCheckoutController {
     return transactionRedirect;
   }
 
-  // TODO Implement this
   @PostMapping("/validate")
-  public Object validateTransaction(@RequestBody Object transactionIdentifier) {
-    throw new UnsupportedOperationException("Method not implemented");
+  public ResponseEntity<Void> validateTransaction(@RequestBody Map<String, String> transactionFormData) {
+//    TODO: formData should contain a token_ws that can be matched to a saved database transaction
+//    ResponseEntity<Void> response = ResponseEntity.status(HttpStatus.SEE_OTHER).header("Location", headerValues)
+    return ResponseEntity.ok().build();
   }
 }
