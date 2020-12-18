@@ -9,11 +9,13 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.api.pojo.RegistrationPojo;
+import cl.blm.trebol.jpa.entities.Client;
 import cl.blm.trebol.jpa.entities.Person;
 import cl.blm.trebol.jpa.entities.QPerson;
 import cl.blm.trebol.jpa.entities.QUser;
 import cl.blm.trebol.jpa.entities.User;
 import cl.blm.trebol.jpa.entities.UserRole;
+import cl.blm.trebol.jpa.repositories.ClientsRepository;
 import cl.blm.trebol.jpa.repositories.PeopleRepository;
 import cl.blm.trebol.jpa.repositories.UsersRepository;
 import cl.blm.trebol.services.exceptions.PersonAlreadyExistsException;
@@ -30,12 +32,14 @@ public class RegistrationServiceImpl
 
   private final PeopleRepository peopleRepository;
   private final UsersRepository usersRepository;
+  private final ClientsRepository clientsRepository;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public RegistrationServiceImpl(PeopleRepository peopleRepository, UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
+  public RegistrationServiceImpl(PeopleRepository peopleRepository, UsersRepository usersRepository, ClientsRepository clientsRepository, PasswordEncoder passwordEncoder) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;
+    this.clientsRepository = clientsRepository;
     this.passwordEncoder = passwordEncoder;
   }
 
@@ -60,6 +64,9 @@ public class RegistrationServiceImpl
     User newUser = this.createUserFromRegistrationPojo(registration);
     newUser.setPerson(newPerson);
     usersRepository.saveAndFlush(newUser);
+
+    Client newClient = this.createClientFromRegistrationPojo(newPerson);
+    clientsRepository.saveAndFlush(newClient);
   }
 
   protected Person createPersonFromRegistrationPojo(RegistrationPojo registration) {
@@ -87,6 +94,12 @@ public class RegistrationServiceImpl
     UserRole userRole = new UserRole();
     userRole.setId(1);
     target.setUserRole(userRole);
+    return target;
+  }
+
+  protected Client createClientFromRegistrationPojo(Person person) {
+    Client target = new Client();
+    target.setPerson(person);
     return target;
   }
 
