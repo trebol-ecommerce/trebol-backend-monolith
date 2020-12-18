@@ -137,8 +137,12 @@ public class CheckoutServiceImpl
     RestClient restClient = new RestClient(originUrl, serverUrl);
     String requestResult = restClient.post(uri, payload);
     if (restClient.getStatus().equals(HttpStatus.OK)) {
-      WebPayRedirectionData data = objectMapper.convertValue(requestResult, WebPayRedirectionData.class);
-      return data;
+      try {
+        WebPayRedirectionData data = objectMapper.readValue(requestResult, WebPayRedirectionData.class);
+        return data;
+      } catch (JsonProcessingException exc) {
+        throw new RuntimeException("The transaction server created an incorrect response");
+      }
     }
     throw new RuntimeException("The transaction could not be started");
   }
