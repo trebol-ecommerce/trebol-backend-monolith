@@ -14,6 +14,10 @@ public class CheckoutConfig {
   private String serverURL;
   private String originURL;
   private String resourceURI;
+  private String transactionValidationResourceURI;
+  private String successPageURL;
+  private String failurePageURL;
+  private String transactionTokenPostDataKey;
 
   public CheckoutConfig() {
   }
@@ -40,5 +44,37 @@ public class CheckoutConfig {
 
   public void setResourceURI(String resourceURI) {
     this.resourceURI = resourceURI;
+  }
+
+  public String getTransactionValidationResourceURI() {
+    return transactionValidationResourceURI;
+  }
+
+  public void setTransactionValidationResourceURI(String transactionValidationResourceURI) {
+    this.transactionValidationResourceURI = transactionValidationResourceURI;
+  }
+
+  public String getSuccessPageURL() {
+    return successPageURL;
+  }
+
+  public void setSuccessPageURL(String successPageURL) {
+    this.successPageURL = successPageURL;
+  }
+
+  public String getFailurePageURL() {
+    return failurePageURL;
+  }
+
+  public void setFailurePageURL(String failurePageURL) {
+    this.failurePageURL = failurePageURL;
+  }
+
+  public String getTransactionTokenPostDataKey() {
+    return transactionTokenPostDataKey;
+  }
+
+  public void setTransactionTokenPostDataKey(String transactionTokenPostDataKey) {
+    this.transactionTokenPostDataKey = transactionTokenPostDataKey;
   }
 }
