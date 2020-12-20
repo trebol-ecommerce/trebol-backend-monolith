@@ -13,17 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.blm.trebol.api.pojo.ClientPojo;
-import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.WebPayRedirectionData;
 import cl.blm.trebol.api.pojo.WebpayTransactionPojo;
 import cl.blm.trebol.config.CheckoutConfig;
 import cl.blm.trebol.services.exposed.CheckoutService;
-import cl.blm.trebol.services.security.AuthenticatedPeopleService;
 import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
 
 /**
