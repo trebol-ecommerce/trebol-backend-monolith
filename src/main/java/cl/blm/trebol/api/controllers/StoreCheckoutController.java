@@ -44,6 +44,13 @@ public class StoreCheckoutController {
     this.checkoutConfig = checkoutConfig;
   }
 
+  /**
+   * Save a new transaction, forward request to checkout server, and save the generated token for later validation
+   *
+   * @param httpHeaders
+   * @param cartDetails The checkout details (e.g. the items to be purchased)
+   * @return
+   */
   @PostMapping("")
   public WebpayCheckoutResponsePojo submitCart(
       @RequestHeader HttpHeaders httpHeaders,
@@ -54,6 +61,12 @@ public class StoreCheckoutController {
     return transactionRedirect;
   }
 
+  /**
+   * Validate the status of a pending transaction and save the resulting metadata
+   *
+   * @param transactionFormData
+   * @return
+   */
   @PostMapping("/validate")
   public ResponseEntity<Void> validateTransaction(@RequestBody MultiValueMap<String, String> transactionFormData) {
     String tokenWs = transactionFormData.getFirst(checkoutConfig.getTransactionTokenPostDataKey());
