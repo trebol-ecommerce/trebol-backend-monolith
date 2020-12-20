@@ -132,9 +132,9 @@ public class CheckoutServiceImpl
 
     SellPojo result = conversionService.convert(target, SellPojo.class);
     WebpayCheckoutRequestPojo transaction = new WebpayCheckoutRequestPojo();
-    transaction.setTr_id(result.getId().toString());
-    transaction.setTr_session(authorization);
-    transaction.setTr_amount(totalValue);
+    transaction.setTransactionId(result.getId().toString());
+    transaction.setSessionId(authorization);
+    transaction.setAmount(totalValue);
     return transaction;
   }
 

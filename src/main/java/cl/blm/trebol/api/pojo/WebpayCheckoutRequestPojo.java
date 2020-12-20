@@ -1,48 +1,52 @@
 package cl.blm.trebol.api.pojo;
 
+import javax.validation.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- *
+ * POJO sent to the webpay checkout server to request a new transaction
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @JsonInclude
 public class WebpayCheckoutRequestPojo {
-  private Integer tr_amount;
-  private String tr_session;
-  private String tr_id;
+  private int amount;
+  @NotEmpty
+  private String sessionId;
+  @NotEmpty
+  private String transactionId;
 
   public WebpayCheckoutRequestPojo() {
   }
 
-  public WebpayCheckoutRequestPojo(Integer tr_amount, String tr_session, String tr_id) {
-    this.tr_amount = tr_amount;
-    this.tr_session = tr_session;
-    this.tr_id = tr_id;
+  public WebpayCheckoutRequestPojo(int amount, String sessionId, String transactionId) {
+    this.amount = amount;
+    this.sessionId = sessionId;
+    this.transactionId = transactionId;
   }
 
-  public Integer getTr_amount() {
-    return tr_amount;
+  public int getAmount() {
+    return amount;
   }
 
-  public void setTr_amount(Integer tr_amount) {
-    this.tr_amount = tr_amount;
+  public void setAmount(int amount) {
+    this.amount = amount;
   }
 
-  public String getTr_session() {
-    return tr_session;
+  public String getSessionId() {
+    return sessionId;
   }
 
-  public void setTr_session(String tr_session) {
-    this.tr_session = tr_session;
+  public void setSessionId(String sessionId) {
+    this.sessionId = sessionId;
   }
 
-  public String getTr_id() {
-    return tr_id;
+  public String getTransactionId() {
+    return transactionId;
   }
 
-  public void setTr_id(String tr_id) {
-    this.tr_id = tr_id;
+  public void setTransactionId(String transactionId) {
+    this.transactionId = transactionId;
   }
 
 }

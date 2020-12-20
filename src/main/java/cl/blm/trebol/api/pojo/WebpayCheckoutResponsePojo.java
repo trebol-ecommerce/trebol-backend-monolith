@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- *
+ * POJO included in the response body by the checkout server after a succesful transaction
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @JsonInclude
@@ -13,7 +13,7 @@ public class WebpayCheckoutResponsePojo {
   @NotEmpty
   private String url;
   @NotEmpty
-  private String token_ws;
+  private String token;
 
   public WebpayCheckoutResponsePojo() {
   }
@@ -26,11 +26,11 @@ public class WebpayCheckoutResponsePojo {
     this.url = url;
   }
 
-  public String getToken_ws() {
-    return token_ws;
+  public String getToken() {
+    return token;
   }
 
-  public void setToken_ws(String token_ws) {
-    this.token_ws = token_ws;
+  public void setToken(String token) {
+    this.token = token;
   }
 }

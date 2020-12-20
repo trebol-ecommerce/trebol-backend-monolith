@@ -13,7 +13,7 @@
   <groupId>cl.blm.trebol</groupId>
   <artifactId>trebol-backend</artifactId>
   <packaging>war</packaging>
-  <version>0.11.8</version>
+  <version>0.11.9</version>
 
   <name>Trébol Backend</name>
 
