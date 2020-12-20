@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -97,6 +100,13 @@ public class CheckoutServiceImpl
     return payload;
   }
 
+  private WebPayRedirectionData requestWebpayTransaction(String originUrl, String serverUrl, String uri, String payload) throws JsonProcessingException, RestClientException {
+    RestClient restClient = new RestClient(originUrl, serverUrl);
+    String requestResult = restClient.post(uri, payload);
+    WebPayRedirectionData data = objectMapper.readValue(requestResult, WebPayRedirectionData.class);
+    return data;
+  }
+
   @Override
   public WebpayTransactionPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
     int clientId = this.fetchClientId(authorization);
@@ -134,17 +144,15 @@ public class CheckoutServiceImpl
     String originUrl = checkoutConfig.getOriginURL();
     String serverUrl = checkoutConfig.getServerURL();
     String uri = checkoutConfig.getResourceURI();
-    RestClient restClient = new RestClient(originUrl, serverUrl);
-    String requestResult = restClient.post(uri, payload);
-    if (restClient.getStatus().equals(HttpStatus.OK)) {
-      try {
-        WebPayRedirectionData data = objectMapper.readValue(requestResult, WebPayRedirectionData.class);
-        return data;
-      } catch (JsonProcessingException exc) {
-        throw new RuntimeException("The transaction server created an incorrect response");
-      }
+
+    try {
+      WebPayRedirectionData data = requestWebpayTransaction(originUrl, serverUrl, uri, payload);
+      return data;
+    } catch (RestClientException exc) {
+      throw new RuntimeException("The transaction could not be started", exc);
+    } catch (JsonProcessingException ex) {
+      throw new RuntimeException("The checkout server generated an incorrect response", ex);
     }
-    throw new RuntimeException("The transaction could not be started");
   }
 
   @Override
