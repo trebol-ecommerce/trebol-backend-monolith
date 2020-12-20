@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.trebol.api.pojo.SellDetailPojo;
-import cl.blm.trebol.api.pojo.WebPayRedirectionData;
-import cl.blm.trebol.api.pojo.WebpayTransactionPojo;
+import cl.blm.trebol.api.pojo.WebpayCheckoutResponsePojo;
+import cl.blm.trebol.api.pojo.WebpayCheckoutRequestPojo;
 import cl.blm.trebol.config.CheckoutConfig;
 import cl.blm.trebol.services.exposed.CheckoutService;
 import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
@@ -45,12 +45,12 @@ public class StoreCheckoutController {
   }
 
   @PostMapping("")
-  public WebPayRedirectionData submitCart(
+  public WebpayCheckoutResponsePojo submitCart(
       @RequestHeader HttpHeaders httpHeaders,
       @RequestBody Collection<SellDetailPojo> cartDetails) {
     String authorization = jwtClaimsParserService.extractAuthorizationHeader(httpHeaders);
-    WebpayTransactionPojo savedCartTransactionRequest = checkoutService.saveCartAsTransactionRequest(authorization, cartDetails);
-    WebPayRedirectionData transactionRedirect = checkoutService.startWebpayTransaction(savedCartTransactionRequest);
+    WebpayCheckoutRequestPojo savedCartTransactionRequest = checkoutService.saveCartAsTransactionRequest(authorization, cartDetails);
+    WebpayCheckoutResponsePojo transactionRedirect = checkoutService.startWebpayTransaction(savedCartTransactionRequest);
     return transactionRedirect;
   }
 

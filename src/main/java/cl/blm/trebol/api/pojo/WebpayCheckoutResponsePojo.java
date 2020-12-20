@@ -9,13 +9,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @JsonInclude
-public class WebPayRedirectionData {
+public class WebpayCheckoutResponsePojo {
   @NotEmpty
   private String url;
   @NotEmpty
   private String token_ws;
 
-  public WebPayRedirectionData() {
+  public WebpayCheckoutResponsePojo() {
   }
 
   public String getUrl() {

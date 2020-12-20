@@ -21,8 +21,8 @@ import cl.blm.trebol.api.pojo.ClientPojo;
 import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.SellPojo;
-import cl.blm.trebol.api.pojo.WebPayRedirectionData;
-import cl.blm.trebol.api.pojo.WebpayTransactionPojo;
+import cl.blm.trebol.api.pojo.WebpayCheckoutResponsePojo;
+import cl.blm.trebol.api.pojo.WebpayCheckoutRequestPojo;
 import cl.blm.trebol.config.CheckoutConfig;
 import cl.blm.trebol.http.RestClient;
 import cl.blm.trebol.jpa.entities.Client;
@@ -90,7 +90,7 @@ public class CheckoutServiceImpl
     return value;
   }
 
-  private String webpayTransactionAsJSON(WebpayTransactionPojo transaction) throws RuntimeException {
+  private String webpayTransactionAsJSON(WebpayCheckoutRequestPojo transaction) throws RuntimeException {
     String payload;
     try {
       payload = objectMapper.writeValueAsString(transaction);
@@ -100,15 +100,15 @@ public class CheckoutServiceImpl
     return payload;
   }
 
-  private WebPayRedirectionData requestWebpayTransaction(String originUrl, String serverUrl, String uri, String payload) throws JsonProcessingException, RestClientException {
+  private WebpayCheckoutResponsePojo requestWebpayTransaction(String originUrl, String serverUrl, String uri, String payload) throws JsonProcessingException, RestClientException {
     RestClient restClient = new RestClient(originUrl, serverUrl);
     String requestResult = restClient.post(uri, payload);
-    WebPayRedirectionData data = objectMapper.readValue(requestResult, WebPayRedirectionData.class);
+    WebpayCheckoutResponsePojo data = objectMapper.readValue(requestResult, WebpayCheckoutResponsePojo.class);
     return data;
   }
 
   @Override
-  public WebpayTransactionPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
+  public WebpayCheckoutRequestPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
     int clientId = this.fetchClientId(authorization);
     Client client = clientsRepository.getOne(clientId);
     int totalValue = calculateTotalCartValue(cartDetails);
@@ -131,7 +131,7 @@ public class CheckoutServiceImpl
     target = salesRepository.saveAndFlush(target);
 
     SellPojo result = conversionService.convert(target, SellPojo.class);
-    WebpayTransactionPojo transaction = new WebpayTransactionPojo();
+    WebpayCheckoutRequestPojo transaction = new WebpayCheckoutRequestPojo();
     transaction.setTr_id(result.getId().toString());
     transaction.setTr_session(authorization);
     transaction.setTr_amount(totalValue);
@@ -139,14 +139,14 @@ public class CheckoutServiceImpl
   }
 
   @Override
-  public WebPayRedirectionData startWebpayTransaction(WebpayTransactionPojo transaction) {
+  public WebpayCheckoutResponsePojo startWebpayTransaction(WebpayCheckoutRequestPojo transaction) {
     String payload = this.webpayTransactionAsJSON(transaction);
     String originUrl = checkoutConfig.getOriginURL();
     String serverUrl = checkoutConfig.getServerURL();
     String uri = checkoutConfig.getResourceURI();
 
     try {
-      WebPayRedirectionData data = requestWebpayTransaction(originUrl, serverUrl, uri, payload);
+      WebpayCheckoutResponsePojo data = requestWebpayTransaction(originUrl, serverUrl, uri, payload);
       return data;
     } catch (RestClientException exc) {
       throw new RuntimeException("The transaction could not be started", exc);

@@ -7,15 +7,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @JsonInclude
-public class WebpayTransactionPojo {
+public class WebpayCheckoutRequestPojo {
   private Integer tr_amount;
   private String tr_session;
   private String tr_id;
 
-  public WebpayTransactionPojo() {
+  public WebpayCheckoutRequestPojo() {
   }
 
-  public WebpayTransactionPojo(Integer tr_amount, String tr_session, String tr_id) {
+  public WebpayCheckoutRequestPojo(Integer tr_amount, String tr_session, String tr_id) {
     this.tr_amount = tr_amount;
     this.tr_session = tr_session;
     this.tr_id = tr_id;
