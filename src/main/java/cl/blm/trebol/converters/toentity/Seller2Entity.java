@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import cl.blm.trebol.api.pojo.SellerPojo;
 import cl.blm.trebol.jpa.entities.Person;
-import cl.blm.trebol.jpa.entities.Seller;
+import cl.blm.trebol.jpa.entities.Salesperson;
 
 /**
  *
@@ -13,11 +13,12 @@ import cl.blm.trebol.jpa.entities.Seller;
  */
 @Component
 public class Seller2Entity
-    implements Converter<SellerPojo, Seller> {
+    implements Converter<SellerPojo, Salesperson> {
 
   @Override
-  public Seller convert(SellerPojo source) {
-    Seller target = new Seller(source.getId());
+  public Salesperson convert(SellerPojo source) {
+    Salesperson target = new Salesperson();
+    target.setId(source.getId());
     target.setPerson(new Person(source.getPerson().getId()));
     return target;
   }

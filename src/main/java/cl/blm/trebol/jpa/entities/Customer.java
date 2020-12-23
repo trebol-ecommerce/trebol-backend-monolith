@@ -6,46 +6,39 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import cl.blm.trebol.jpa.GenericEntity;
 
 /**
  *
- * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @Entity
-@Table(name = "sell_types")
-@NamedQueries({ @NamedQuery(name = "SellType.findAll", query = "SELECT s FROM SellType s") })
-public class SellType
+@Table(name = "customers")
+@NamedQueries({ @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c") })
+public class Customer
     implements GenericEntity<Integer> {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
-  @Column(name = "sell_type_id")
+  @Column(name = "customer_id")
   private Integer id;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 100)
-  @Column(name = "sell_type_name")
-  private String name;
+  @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+  @OneToOne(optional = false)
+  private Person person;
 
-  public SellType() {
+  public Customer() {
   }
 
-  public SellType(Integer sellTypeId) {
-    this.id = sellTypeId;
-  }
-
-  public SellType(Integer sellTypeId, String sellTypeName) {
-    this.id = sellTypeId;
-    this.name = sellTypeName;
+  public Customer(Integer id) {
+    this.id = id;
   }
 
   public Integer getId() {
@@ -56,12 +49,12 @@ public class SellType
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public Person getPerson() {
+    return person;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setPerson(Person person) {
+    this.person = person;
   }
 
   @Override
@@ -74,10 +67,10 @@ public class SellType
   @Override
   public boolean equals(Object object) {
     // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof SellType)) {
+    if (!(object instanceof Customer)) {
       return false;
     }
-    SellType other = (SellType) object;
+    Customer other = (Customer)object;
     if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
       return false;
     }
@@ -86,7 +79,7 @@ public class SellType
 
   @Override
   public String toString() {
-    return "cl.blm.trebol.jpa.entities.SellType[ id=" + id + " ]";
+    return "cl.blm.trebol.jpa.entities.Customer[ id=" + id + " ]";
   }
 
 }

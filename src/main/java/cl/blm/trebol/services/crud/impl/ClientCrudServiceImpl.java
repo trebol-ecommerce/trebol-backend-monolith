@@ -17,10 +17,10 @@ import com.querydsl.core.types.Predicate;
 import cl.blm.trebol.jpa.entities.QClient;
 import cl.blm.trebol.api.pojo.ClientPojo;
 import cl.blm.trebol.api.pojo.PersonPojo;
-import cl.blm.trebol.jpa.entities.Client;
+import cl.blm.trebol.jpa.entities.Customer;
 import cl.blm.trebol.jpa.entities.Person;
-import cl.blm.trebol.jpa.repositories.ClientsRepository;
 import cl.blm.trebol.services.crud.GenericCrudService;
+import cl.blm.trebol.jpa.repositories.CustomersRepository;
 
 /**
  *
@@ -29,21 +29,21 @@ import cl.blm.trebol.services.crud.GenericCrudService;
 @Transactional
 @Service
 public class ClientCrudServiceImpl
-    extends GenericCrudService<ClientPojo, Client, Integer> {
+    extends GenericCrudService<ClientPojo, Customer, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(ClientCrudServiceImpl.class);
 
-  private final ClientsRepository repository;
+  private final CustomersRepository repository;
   private final ConversionService conversion;
 
   @Autowired
-  public ClientCrudServiceImpl(ClientsRepository repository, ConversionService conversion) {
+  public ClientCrudServiceImpl(CustomersRepository repository, ConversionService conversion) {
     super(repository);
     this.repository = repository;
     this.conversion = conversion;
   }
 
   @Override
-  public ClientPojo entity2Pojo(Client source) {
+  public ClientPojo entity2Pojo(Customer source) {
     ClientPojo target = conversion.convert(source, ClientPojo.class);
     PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
     target.setPerson(person);
@@ -51,15 +51,15 @@ public class ClientCrudServiceImpl
   }
 
   @Override
-  public Client pojo2Entity(ClientPojo source) {
-    Client target = conversion.convert(source, Client.class);
+  public Customer pojo2Entity(ClientPojo source) {
+    Customer target = conversion.convert(source, Customer.class);
     Person personTarget = conversion.convert(source.getPerson(), Person.class);
     target.setPerson(personTarget);
     return target;
   }
 
   @Override
-  public Page<Client> getAllEntities(Pageable paged, Predicate filters) {
+  public Page<Customer> getAllEntities(Pageable paged, Predicate filters) {
     if (filters == null) {
       return repository.deepReadAll(paged);
     } else {

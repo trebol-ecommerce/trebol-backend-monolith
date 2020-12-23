@@ -22,17 +22,17 @@ import cl.blm.trebol.api.pojo.WebPayRedirectionData;
 import cl.blm.trebol.api.pojo.WebpayTransactionPojo;
 import cl.blm.trebol.config.CheckoutConfig;
 import cl.blm.trebol.http.RestClient;
-import cl.blm.trebol.jpa.entities.Client;
+import cl.blm.trebol.jpa.entities.Customer;
 import cl.blm.trebol.jpa.entities.Product;
 import cl.blm.trebol.jpa.entities.Sell;
 import cl.blm.trebol.jpa.entities.SellDetail;
 import cl.blm.trebol.jpa.entities.SellType;
-import cl.blm.trebol.jpa.repositories.ClientsRepository;
 import cl.blm.trebol.jpa.repositories.ProductsRepository;
 import cl.blm.trebol.jpa.repositories.SalesRepository;
 import cl.blm.trebol.services.exposed.CheckoutService;
 import cl.blm.trebol.services.security.AuthenticatedPeopleService;
 import cl.blm.trebol.services.user.ClientPersonRelationService;
+import cl.blm.trebol.jpa.repositories.CustomersRepository;
 
 /**
  *
@@ -45,7 +45,7 @@ public class CheckoutServiceImpl
   private final ConversionService conversionService;
   private final SalesRepository salesRepository;
   private final ProductsRepository productsRepository;
-  private final ClientsRepository clientsRepository;
+  private final CustomersRepository clientsRepository;
   private final CheckoutConfig checkoutConfig;
   private final ObjectMapper objectMapper;
   private final AuthenticatedPeopleService authenticatedPeopleService;
@@ -53,7 +53,7 @@ public class CheckoutServiceImpl
 
   @Autowired
   public CheckoutServiceImpl(ConversionService conversionService, SalesRepository salesRepository,
-      ProductsRepository productsRepository, ClientsRepository clientsRepository, CheckoutConfig checkoutConfig,
+      ProductsRepository productsRepository, CustomersRepository clientsRepository, CheckoutConfig checkoutConfig,
       ObjectMapper objectMapper, AuthenticatedPeopleService authenticatedPeopleService,
       ClientPersonRelationService clientPersonRelationService) {
     this.conversionService = conversionService;
@@ -100,7 +100,7 @@ public class CheckoutServiceImpl
   @Override
   public WebpayTransactionPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
     int clientId = this.fetchClientId(authorization);
-    Client client = clientsRepository.getOne(clientId);
+    Customer customer = clientsRepository.getOne(clientId);
     int totalValue = calculateTotalCartValue(cartDetails);
     List<SellDetail> entityDetails = new ArrayList<>();
     for (SellDetailPojo p : cartDetails) {
@@ -114,10 +114,10 @@ public class CheckoutServiceImpl
 
     Sell target = new Sell();
     target.setDate(date);
-    target.setSellType(sellType);
-    target.setSellDetails(entityDetails);
-    target.setSubtotal(totalValue);
-    target.setClient(client);
+    target.setType(sellType);
+    target.setDetails(entityDetails);
+    target.setTotalValue(totalValue);
+    target.setCustomer(customer);
     target = salesRepository.saveAndFlush(target);
 
     SellPojo result = conversionService.convert(target, SellPojo.class);

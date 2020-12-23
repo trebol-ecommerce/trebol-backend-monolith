@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import cl.blm.trebol.jpa.GenericEntity;
 
@@ -45,21 +46,32 @@ public class Sell
   @Temporal(TemporalType.DATE)
   private Date date;
   @Basic(optional = false)
+  @NotNull @Column(name = "sell_total_value")
+  private int totalValue;
+  @Basic(optional = false)
   @NotNull
-  @Column(name = "sell_subtotal")
-  private int subtotal;
-  @JoinColumn(name = "sell_type_id", referencedColumnName = "sell_type_id", insertable = true, updatable = false)
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private SellType sellType;
-  @JoinColumn(name = "client_id", referencedColumnName = "client_id", insertable = true, updatable = false)
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private Client client;
-  @JoinColumn(name = "seller_id", referencedColumnName = "seller_id", insertable = true, updatable = false)
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Seller seller;
+  @Size(min = 1, max = 20)
+  @Column(name = "session_extract")
+  private String sessionExtract;
+  @Basic(optional = false)
+  @NotNull
+  @Column(name = "sell_total_items")
+  private int totalItems;
+  @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+  @ManyToOne(optional = false)
+  private Customer customer;
+  @JoinColumn(name = "salesperson_id", referencedColumnName = "salesperson_id")
+  @ManyToOne
+  private Salesperson salesperson;
+  @JoinColumn(name = "sell_status_id", referencedColumnName = "sell_status_id")
+  @ManyToOne
+  private SellStatus status;
+  @JoinColumn(name = "sell_type_id", referencedColumnName = "sell_type_id")
+  @ManyToOne(optional = false)
+  private SellType type;
   @JoinColumn(name = "sell_id", insertable = true, updatable = true, nullable = false)
   @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-  private Collection<SellDetail> sellDetails;
+  private Collection<SellDetail> details;
 
   public Sell() {
   }
@@ -68,10 +80,12 @@ public class Sell
     this.id = sellId;
   }
 
-  public Sell(Integer sellId, Date sellDate, int sellSubtotal) {
+  public Sell(Integer sellId, Date sellDate, int sellTotalValue, String sessionExtract, int sellTotalItems) {
     this.id = sellId;
     this.date = sellDate;
-    this.subtotal = sellSubtotal;
+    this.totalValue = sellTotalValue;
+    this.sessionExtract = sessionExtract;
+    this.totalItems = sellTotalItems;
   }
 
   public Integer getId() {
@@ -90,44 +104,68 @@ public class Sell
     this.date = date;
   }
 
-  public int getSubtotal() {
-    return subtotal;
+  public int getTotalValue() {
+    return totalValue;
   }
 
-  public void setSubtotal(int subtotal) {
-    this.subtotal = subtotal;
+  public void setTotalValue(int totalValue) {
+    this.totalValue = totalValue;
   }
 
-  public SellType getSellType() {
-    return sellType;
+  public String getSessionExtract() {
+    return sessionExtract;
   }
 
-  public void setSellType(SellType sellType) {
-    this.sellType = sellType;
+  public void setSessionExtract(String sessionExtract) {
+    this.sessionExtract = sessionExtract;
   }
 
-  public Client getClient() {
-    return client;
+  public int getTotalItems() {
+    return totalItems;
   }
 
-  public void setClient(Client client) {
-    this.client = client;
+  public void setTotalItems(int totalItems) {
+    this.totalItems = totalItems;
   }
 
-  public Seller getSeller() {
-    return seller;
+  public Customer getCustomer() {
+    return customer;
   }
 
-  public void setSeller(Seller seller) {
-    this.seller = seller;
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
   }
 
-  public Collection<SellDetail> getSellDetails() {
-    return sellDetails;
+  public Salesperson getSalesperson() {
+    return salesperson;
   }
 
-  public void setSellDetails(Collection<SellDetail> sellDetails) {
-    this.sellDetails = sellDetails;
+  public void setSalesperson(Salesperson salesperson) {
+    this.salesperson = salesperson;
+  }
+
+  public SellStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(SellStatus status) {
+    this.status = status;
+  }
+
+  public SellType getType() {
+    return type;
+  }
+
+  public void setType(SellType type) {
+    this.type = type;
+  }
+
+  public Collection<SellDetail> getDetails() {
+    return details;
+  }
+
+  public void setDetails(Collection<SellDetail> details) {
+    this.details = details;
   }
 
   @Override
@@ -143,7 +181,7 @@ public class Sell
     if (!(object instanceof Sell)) {
       return false;
     }
-    Sell other = (Sell) object;
+    Sell other = (Sell)object;
     if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
       return false;
     }
@@ -152,7 +190,7 @@ public class Sell
 
   @Override
   public String toString() {
-    return "cl.blm.newmarketing.store.model.entities.Sell[ sellId=" + id + " ]";
+    return "cl.blm.trebol.jpa.entities.Sell[ id=" + id + " ]";
   }
 
 }

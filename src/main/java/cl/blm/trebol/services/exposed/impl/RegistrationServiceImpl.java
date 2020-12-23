@@ -9,18 +9,18 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.api.pojo.RegistrationPojo;
-import cl.blm.trebol.jpa.entities.Client;
+import cl.blm.trebol.jpa.entities.Customer;
 import cl.blm.trebol.jpa.entities.Person;
 import cl.blm.trebol.jpa.entities.QPerson;
 import cl.blm.trebol.jpa.entities.QUser;
 import cl.blm.trebol.jpa.entities.User;
 import cl.blm.trebol.jpa.entities.UserRole;
-import cl.blm.trebol.jpa.repositories.ClientsRepository;
 import cl.blm.trebol.jpa.repositories.PeopleRepository;
 import cl.blm.trebol.jpa.repositories.UsersRepository;
 import cl.blm.trebol.services.exceptions.PersonAlreadyExistsException;
 import cl.blm.trebol.services.exceptions.UserAlreadyExistsException;
 import cl.blm.trebol.services.exposed.RegistrationService;
+import cl.blm.trebol.jpa.repositories.CustomersRepository;
 
 /**
  *
@@ -32,11 +32,11 @@ public class RegistrationServiceImpl
 
   private final PeopleRepository peopleRepository;
   private final UsersRepository usersRepository;
-  private final ClientsRepository clientsRepository;
+  private final CustomersRepository clientsRepository;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public RegistrationServiceImpl(PeopleRepository peopleRepository, UsersRepository usersRepository, ClientsRepository clientsRepository, PasswordEncoder passwordEncoder) {
+  public RegistrationServiceImpl(PeopleRepository peopleRepository, UsersRepository usersRepository, CustomersRepository clientsRepository, PasswordEncoder passwordEncoder) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;
     this.clientsRepository = clientsRepository;
@@ -65,7 +65,7 @@ public class RegistrationServiceImpl
     newUser.setPerson(newPerson);
     usersRepository.saveAndFlush(newUser);
 
-    Client newClient = this.createClientFromRegistrationPojo(newPerson);
+    Customer newClient = this.createClientFromRegistrationPojo(newPerson);
     clientsRepository.saveAndFlush(newClient);
   }
 
@@ -97,8 +97,8 @@ public class RegistrationServiceImpl
     return target;
   }
 
-  protected Client createClientFromRegistrationPojo(Person person) {
-    Client target = new Client();
+  protected Customer createClientFromRegistrationPojo(Person person) {
+    Customer target = new Customer();
     target.setPerson(person);
     return target;
   }

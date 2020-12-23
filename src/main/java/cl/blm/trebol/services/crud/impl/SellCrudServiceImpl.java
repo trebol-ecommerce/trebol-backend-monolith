@@ -55,15 +55,15 @@ public class SellCrudServiceImpl
   }
 
   private ClientPojo convertClientToPojo(Sell source) {
-    ClientPojo client = conversion.convert(source.getClient(), ClientPojo.class);
-    PersonPojo person = conversion.convert(source.getClient().getPerson(), PersonPojo.class);
+    ClientPojo client = conversion.convert(source.getCustomer(), ClientPojo.class);
+    PersonPojo person = conversion.convert(source.getCustomer().getPerson(), PersonPojo.class);
     client.setPerson(person);
     return client;
   }
 
   private List<SellDetailPojo> convertDetailsToPojo(Sell source) {
     List<SellDetailPojo> sellDetails = new ArrayList<>();
-    for (SellDetail sourceSellDetail : source.getSellDetails()) {
+    for (SellDetail sourceSellDetail : source.getDetails()) {
       SellDetailPojo targetSellDetail = conversion.convert(sourceSellDetail, SellDetailPojo.class);
       ProductPojo product = conversion.convert(sourceSellDetail.getProduct(), ProductPojo.class);
       targetSellDetail.setProduct(product);
@@ -73,8 +73,8 @@ public class SellCrudServiceImpl
   }
 
   private SellerPojo convertSellerToPojo(Sell source) {
-    SellerPojo seller = conversion.convert(source.getSeller(), SellerPojo.class);
-    PersonPojo person = conversion.convert(source.getSeller().getPerson(), PersonPojo.class);
+    SellerPojo seller = conversion.convert(source.getSalesperson(), SellerPojo.class);
+    PersonPojo person = conversion.convert(source.getSalesperson().getPerson(), PersonPojo.class);
     seller.setPerson(person);
     return seller;
   }
@@ -82,13 +82,13 @@ public class SellCrudServiceImpl
   @Override
   public SellPojo entity2Pojo(Sell source) {
     SellPojo target = conversion.convert(source, SellPojo.class);
-    SellTypePojo sellType = conversion.convert(source.getSellType(), SellTypePojo.class);
+    SellTypePojo sellType = conversion.convert(source.getType(), SellTypePojo.class);
     target.setSellType(sellType);
 
     ClientPojo client = convertClientToPojo(source);
     target.setClient(client);
 
-    if (source.getSeller() != null) {
+    if (source.getSalesperson()!= null) {
       SellerPojo seller = convertSellerToPojo(source);
       target.setSeller(seller);
     }

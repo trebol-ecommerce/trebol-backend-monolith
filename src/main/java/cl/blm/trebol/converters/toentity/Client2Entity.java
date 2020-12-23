@@ -4,7 +4,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import cl.blm.trebol.api.pojo.ClientPojo;
-import cl.blm.trebol.jpa.entities.Client;
+import cl.blm.trebol.jpa.entities.Customer;
 import cl.blm.trebol.jpa.entities.Person;
 
 /**
@@ -13,11 +13,11 @@ import cl.blm.trebol.jpa.entities.Person;
  */
 @Component
 public class Client2Entity
-    implements Converter<ClientPojo, Client> {
+    implements Converter<ClientPojo, Customer> {
 
   @Override
-  public Client convert(ClientPojo source) {
-    Client target = new Client(source.getId());
+  public Customer convert(ClientPojo source) {
+    Customer target = new Customer(source.getId());
     target.setPerson(new Person(source.getPerson().getId()));
     return target;
   }

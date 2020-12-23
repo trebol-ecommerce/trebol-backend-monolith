@@ -24,22 +24,22 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.blm.trebol.api.GenericCrudController;
 import cl.blm.trebol.api.pojo.SellerPojo;
 import cl.blm.trebol.config.CustomProperties;
-import cl.blm.trebol.jpa.entities.Seller;
+import cl.blm.trebol.jpa.entities.Salesperson;
 import cl.blm.trebol.services.crud.GenericCrudService;
 
 /**
- * API point of entry for Seller entities
+ * API point of entry for Salesperson entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data")
 public class SellersDataManagementController
-    extends GenericCrudController<SellerPojo, Seller, Integer> {
+    extends GenericCrudController<SellerPojo, Salesperson, Integer> {
 
   @Autowired
   public SellersDataManagementController(CustomProperties globals,
-      GenericCrudService<SellerPojo, Seller, Integer> crudService) {
+      GenericCrudService<SellerPojo, Salesperson, Integer> crudService) {
     super(globals, crudService);
   }
 

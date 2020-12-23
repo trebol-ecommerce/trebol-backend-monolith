@@ -91,7 +91,7 @@ public class UserRolePermission
 
   @Override
   public String toString() {
-    return "cl.blm.trebol.store.jpa.entities.UserRolePermission[ userRolePermissionId=" + id + " ]";
+    return "cl.blm.trebol.jpa.entities.UserRolePermission[ id=" + id + " ]";
   }
 
 }

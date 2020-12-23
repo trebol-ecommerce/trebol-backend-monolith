@@ -18,9 +18,9 @@ import cl.blm.trebol.jpa.entities.QSeller;
 import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.api.pojo.SellerPojo;
 import cl.blm.trebol.jpa.entities.Person;
-import cl.blm.trebol.jpa.entities.Seller;
-import cl.blm.trebol.jpa.repositories.SellersRepository;
+import cl.blm.trebol.jpa.entities.Salesperson;
 import cl.blm.trebol.services.crud.GenericCrudService;
+import cl.blm.trebol.jpa.repositories.SalespeopleRepository;
 
 /**
  *
@@ -29,21 +29,21 @@ import cl.blm.trebol.services.crud.GenericCrudService;
 @Transactional
 @Service
 public class SellerCrudServiceImpl
-    extends GenericCrudService<SellerPojo, Seller, Integer> {
+    extends GenericCrudService<SellerPojo, Salesperson, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellerCrudServiceImpl.class);
 
-  private final SellersRepository repository;
+  private final SalespeopleRepository repository;
   private final ConversionService conversion;
 
   @Autowired
-  public SellerCrudServiceImpl(SellersRepository repository, ConversionService conversion) {
+  public SellerCrudServiceImpl(SalespeopleRepository repository, ConversionService conversion) {
     super(repository);
     this.repository = repository;
     this.conversion = conversion;
   }
 
   @Override
-  public SellerPojo entity2Pojo(Seller source) {
+  public SellerPojo entity2Pojo(Salesperson source) {
     SellerPojo target = conversion.convert(source, SellerPojo.class);
     PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
     target.setPerson(person);
@@ -51,15 +51,15 @@ public class SellerCrudServiceImpl
   }
 
   @Override
-  public Seller pojo2Entity(SellerPojo source) {
-    Seller target = conversion.convert(source, Seller.class);
+  public Salesperson pojo2Entity(SellerPojo source) {
+    Salesperson target = conversion.convert(source, Salesperson.class);
     Person personTarget = conversion.convert(source.getPerson(), Person.class);
     target.setPerson(personTarget);
     return target;
   }
 
   @Override
-  public Page<Seller> getAllEntities(Pageable paged, Predicate filters) {
+  public Page<Salesperson> getAllEntities(Pageable paged, Predicate filters) {
     if (filters == null) {
       return repository.deepReadAll(paged);
     } else {

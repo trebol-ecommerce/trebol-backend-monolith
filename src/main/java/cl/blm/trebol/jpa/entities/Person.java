@@ -155,7 +155,7 @@ public class Person
 
   @Override
   public String toString() {
-    return "cl.blm.newmarketing.store.model.entities.Person[ personId=" + id + " ]";
+    return "cl.blm.trebol.jpa.entities.Person[ id=" + id + " ]";
   }
 
 }
