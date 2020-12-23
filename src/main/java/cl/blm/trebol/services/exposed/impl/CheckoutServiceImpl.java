@@ -100,13 +100,6 @@ public class CheckoutServiceImpl
     return payload;
   }
 
-  private WebpayCheckoutResponsePojo requestWebpayTransaction(String originUrl, String serverUrl, String uri, String payload) throws JsonProcessingException, RestClientException {
-    RestClient restClient = new RestClient(originUrl, serverUrl);
-    String requestResult = restClient.post(uri, payload);
-    WebpayCheckoutResponsePojo data = objectMapper.readValue(requestResult, WebpayCheckoutResponsePojo.class);
-    return data;
-  }
-
   @Override
   public WebpayCheckoutRequestPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
     int clientId = this.fetchClientId(authorization);
@@ -129,8 +122,9 @@ public class CheckoutServiceImpl
     target.setSubtotal(totalValue);
     target.setClient(client);
     target = salesRepository.saveAndFlush(target);
-
+    
     SellPojo result = conversionService.convert(target, SellPojo.class);
+
     WebpayCheckoutRequestPojo transaction = new WebpayCheckoutRequestPojo();
     transaction.setTransactionId(result.getId().toString());
     transaction.setSessionId(authorization);
@@ -144,9 +138,11 @@ public class CheckoutServiceImpl
     String originUrl = checkoutConfig.getOriginURL();
     String serverUrl = checkoutConfig.getServerURL();
     String uri = checkoutConfig.getResourceURI();
+    RestClient restClient = new RestClient(originUrl, serverUrl);
 
     try {
-      WebpayCheckoutResponsePojo data = requestWebpayTransaction(originUrl, serverUrl, uri, payload);
+      String requestResult = restClient.post(uri, payload);
+      WebpayCheckoutResponsePojo data = objectMapper.readValue(requestResult, WebpayCheckoutResponsePojo.class);
       return data;
     } catch (RestClientException exc) {
       throw new RuntimeException("The transaction could not be started", exc);
