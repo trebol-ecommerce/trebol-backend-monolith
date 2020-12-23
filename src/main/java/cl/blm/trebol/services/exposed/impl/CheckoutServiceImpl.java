@@ -6,8 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,7 @@ import cl.blm.trebol.services.user.ClientPersonRelationService;
 @Service
 public class CheckoutServiceImpl
     implements CheckoutService {
+  private final Logger LOG = LoggerFactory.getLogger(CheckoutServiceImpl.class);
 
   private final ConversionService conversionService;
   private final SalesRepository salesRepository;
@@ -122,7 +124,7 @@ public class CheckoutServiceImpl
     target.setSubtotal(totalValue);
     target.setClient(client);
     target = salesRepository.saveAndFlush(target);
-    
+
     SellPojo result = conversionService.convert(target, SellPojo.class);
 
     WebpayCheckoutRequestPojo transaction = new WebpayCheckoutRequestPojo();
@@ -139,15 +141,16 @@ public class CheckoutServiceImpl
     String serverUrl = checkoutConfig.getServerURL();
     String uri = checkoutConfig.getResourceURI();
     RestClient restClient = new RestClient(originUrl, serverUrl);
+    LOG.info("Requesting a transaction to the checkout server. Transaction ID / Amount: {} / {}", transaction.getTransactionId(), transaction.getAmount());
 
     try {
       String requestResult = restClient.post(uri, payload);
       WebpayCheckoutResponsePojo data = objectMapper.readValue(requestResult, WebpayCheckoutResponsePojo.class);
       return data;
     } catch (RestClientException exc) {
-      throw new RuntimeException("The transaction could not be started", exc);
+      throw new RuntimeException("The checkout server had a problem starting the transaction", exc);
     } catch (JsonProcessingException ex) {
-      throw new RuntimeException("The checkout server generated an incorrect response", ex);
+      throw new RuntimeException("The checkout server generated an incorrect response after starting the transaction", ex);
     }
   }
 
