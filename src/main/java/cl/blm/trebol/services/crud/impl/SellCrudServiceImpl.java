@@ -54,11 +54,11 @@ public class SellCrudServiceImpl
     this.conversion = conversion;
   }
 
-  private CustomerPojo convertClientToPojo(Sell source) {
-    CustomerPojo client = conversion.convert(source.getCustomer(), CustomerPojo.class);
+  private CustomerPojo convertCustomerToPojo(Sell source) {
+    CustomerPojo customer = conversion.convert(source.getCustomer(), CustomerPojo.class);
     PersonPojo person = conversion.convert(source.getCustomer().getPerson(), PersonPojo.class);
-    client.setPerson(person);
-    return client;
+    customer.setPerson(person);
+    return customer;
   }
 
   private List<SellDetailPojo> convertDetailsToPojo(Sell source) {
@@ -85,8 +85,8 @@ public class SellCrudServiceImpl
     SellTypePojo sellType = conversion.convert(source.getType(), SellTypePojo.class);
     target.setSellType(sellType);
 
-    CustomerPojo client = convertClientToPojo(source);
-    target.setClient(client);
+    CustomerPojo customer = convertCustomerToPojo(source);
+    target.setClient(customer);
 
     if (source.getSalesperson()!= null) {
       SalespersonPojo seller = convertSellerToPojo(source);
