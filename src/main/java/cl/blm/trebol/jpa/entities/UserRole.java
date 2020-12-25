@@ -86,7 +86,7 @@ public class UserRole
 
   @Override
   public String toString() {
-    return "cl.blm.newmarketing.store.model.entities.UserRole[ userRoleId=" + id + " ]";
+    return "cl.blm.trebol.jpa.entities.UserRole[ id=" + id + " ]";
   }
 
 }

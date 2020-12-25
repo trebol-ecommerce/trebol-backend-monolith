@@ -19,7 +19,7 @@ public class Sell2Pojo
     SellPojo target = new SellPojo();
     target.setId(source.getId());
     target.setDate(source.getDate());
-    target.setSubtotal(source.getSubtotal());
+    target.setSubtotal(source.getTotalValue());
     return target;
   }
 }

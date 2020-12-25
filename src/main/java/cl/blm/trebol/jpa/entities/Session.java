@@ -100,7 +100,7 @@ public class Session
 
   @Override
   public String toString() {
-    return "cl.blm.newmarketing.store.model.entities.Session[ sessionId=" + id + " ]";
+    return "cl.blm.trebol.jpa.entities.Session[ id=" + id + " ]";
   }
 
 }

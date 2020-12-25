@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cl.blm.trebol.api.pojo.ClientPojo;
+import cl.blm.trebol.api.pojo.CustomerPojo;
 import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.SellPojo;
@@ -22,17 +22,17 @@ import cl.blm.trebol.api.pojo.WebPayRedirectionData;
 import cl.blm.trebol.api.pojo.WebpayTransactionPojo;
 import cl.blm.trebol.config.CheckoutConfig;
 import cl.blm.trebol.http.RestClient;
-import cl.blm.trebol.jpa.entities.Client;
+import cl.blm.trebol.jpa.entities.Customer;
 import cl.blm.trebol.jpa.entities.Product;
 import cl.blm.trebol.jpa.entities.Sell;
 import cl.blm.trebol.jpa.entities.SellDetail;
 import cl.blm.trebol.jpa.entities.SellType;
-import cl.blm.trebol.jpa.repositories.ClientsRepository;
 import cl.blm.trebol.jpa.repositories.ProductsRepository;
 import cl.blm.trebol.jpa.repositories.SalesRepository;
 import cl.blm.trebol.services.exposed.CheckoutService;
 import cl.blm.trebol.services.security.AuthenticatedPeopleService;
-import cl.blm.trebol.services.user.ClientPersonRelationService;
+import cl.blm.trebol.jpa.repositories.CustomersRepository;
+import cl.blm.trebol.services.user.CustomerPersonRelationService;
 
 /**
  *
@@ -45,34 +45,39 @@ public class CheckoutServiceImpl
   private final ConversionService conversionService;
   private final SalesRepository salesRepository;
   private final ProductsRepository productsRepository;
-  private final ClientsRepository clientsRepository;
+  private final CustomersRepository customersRepository;
   private final CheckoutConfig checkoutConfig;
   private final ObjectMapper objectMapper;
   private final AuthenticatedPeopleService authenticatedPeopleService;
-  private final ClientPersonRelationService clientPersonRelationService;
+  private final CustomerPersonRelationService customerPersonRelationService;
 
   @Autowired
-  public CheckoutServiceImpl(ConversionService conversionService, SalesRepository salesRepository,
-      ProductsRepository productsRepository, ClientsRepository clientsRepository, CheckoutConfig checkoutConfig,
-      ObjectMapper objectMapper, AuthenticatedPeopleService authenticatedPeopleService,
-      ClientPersonRelationService clientPersonRelationService) {
+  public CheckoutServiceImpl(
+      ConversionService conversionService,
+      SalesRepository salesRepository,
+      ProductsRepository productsRepository,
+      CustomersRepository customerRepository,
+      CheckoutConfig checkoutConfig,
+      ObjectMapper objectMapper,
+      AuthenticatedPeopleService authenticatedPeopleService,
+      CustomerPersonRelationService customerPersonRelationService) {
     this.conversionService = conversionService;
     this.salesRepository = salesRepository;
     this.productsRepository = productsRepository;
-    this.clientsRepository = clientsRepository;
+    this.customersRepository = customerRepository;
     this.checkoutConfig = checkoutConfig;
     this.objectMapper = objectMapper;
     this.authenticatedPeopleService = authenticatedPeopleService;
-    this.clientPersonRelationService = clientPersonRelationService;
+    this.customerPersonRelationService = customerPersonRelationService;
   }
 
-  private int fetchClientId(String authorizationHeader) {
+  private int fetchCustomerId(String authorizationHeader) {
     PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authorizationHeader);
     int personId = authenticatedPerson.getId();
-    ClientPojo authenticatedClient = clientPersonRelationService.getClientFromPersonId(personId);
-    if (authenticatedClient != null) {
-      int clientId = authenticatedClient.getId();
-      return clientId;
+    CustomerPojo authenticatedCustomer = customerPersonRelationService.getCustomerFromPersonId(personId);
+    if (authenticatedCustomer != null) {
+      int customerId = authenticatedCustomer.getId();
+      return customerId;
     }
     throw new RuntimeException("The user requesting a cart checkout does not have an associated client ID");
   }
@@ -99,8 +104,8 @@ public class CheckoutServiceImpl
 
   @Override
   public WebpayTransactionPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
-    int clientId = this.fetchClientId(authorization);
-    Client client = clientsRepository.getOne(clientId);
+    int customerId = this.fetchCustomerId(authorization);
+    Customer customer = customersRepository.getOne(customerId);
     int totalValue = calculateTotalCartValue(cartDetails);
     List<SellDetail> entityDetails = new ArrayList<>();
     for (SellDetailPojo p : cartDetails) {
@@ -114,10 +119,10 @@ public class CheckoutServiceImpl
 
     Sell target = new Sell();
     target.setDate(date);
-    target.setSellType(sellType);
-    target.setSellDetails(entityDetails);
-    target.setSubtotal(totalValue);
-    target.setClient(client);
+    target.setType(sellType);
+    target.setDetails(entityDetails);
+    target.setTotalValue(totalValue);
+    target.setCustomer(customer);
     target = salesRepository.saveAndFlush(target);
 
     SellPojo result = conversionService.convert(target, SellPojo.class);

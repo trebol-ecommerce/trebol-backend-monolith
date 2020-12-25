@@ -33,7 +33,7 @@ import cl.blm.trebol.services.crud.GenericCrudService;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
-@RequestMapping("/data")
+@RequestMapping("/data/product_types")
 public class ProductTypesDataController
     extends GenericCrudController<ProductTypePojo, ProductType, Integer> {
 
@@ -43,56 +43,35 @@ public class ProductTypesDataController
     super(globals, crudService);
   }
 
+  @GetMapping
+  @PreAuthorize("hasAuthority('product_types:read')")
+  public Collection<ProductTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    return super.readMany(null, null, allRequestParams);
+  }
+
   @Override
-  @PostMapping("/product_types")
+  @PostMapping
   @PreAuthorize("hasAuthority('product_types:create')")
   public Integer create(@RequestBody @Valid ProductTypePojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/product_types/{id}")
+  @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('product_types:read')")
   public ProductTypePojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/product_types")
-  @PreAuthorize("hasAuthority('product_types:read')")
-  public Collection<ProductTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
-  }
-
-//  @GetMapping("/product_types/{requestPageSize}")
-//  @PreAuthorize("hasAuthority('product_types:read')")
-//  public Collection<ProductTypePojo> readMany(@PathVariable Integer requestPageSize,
-//      @RequestParam Map<String, String> allRequestParams) {
-//    return super.readMany(requestPageSize, null, allRequestParams);
-//  }
-//
-//  @Override
-//  @GetMapping("/product_types/{requestPageSize}/{requestPageIndex}")
-//  @PreAuthorize("hasAuthority('product_types:read')")
-//  public Collection<ProductTypePojo> readMany(@PathVariable Integer requestPageSize,
-//      @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
-//    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
-//  }
-//
-//  @PutMapping("/product_type")
-//  @PreAuthorize("hasAuthority('product_types:update')")
-//  public Integer update(@RequestBody @Valid ProductTypePojo input) {
-//    return super.update(input, input.getId());
-//  }
-
   @Override
-  @PutMapping("/product_types/{id}")
+  @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('product_types:update')")
   public Integer update(@RequestBody @Valid ProductTypePojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/product_types/{id}")
+  @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('product_types:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
