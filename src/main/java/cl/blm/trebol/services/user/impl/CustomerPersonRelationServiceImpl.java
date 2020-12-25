@@ -22,21 +22,21 @@ import cl.blm.trebol.services.user.CustomerPersonRelationService;
 public class CustomerPersonRelationServiceImpl
     implements CustomerPersonRelationService {
 
-  private final CustomersRepository clientsRepository;
+  private final CustomersRepository customerRepository;
   private final ConversionService conversionService;
 
   @Autowired
-  public CustomerPersonRelationServiceImpl(CustomersRepository clientsRepository, ConversionService conversionService) {
-    this.clientsRepository = clientsRepository;
+  public CustomerPersonRelationServiceImpl(CustomersRepository customerRepository, ConversionService conversionService) {
+    this.customerRepository = customerRepository;
     this.conversionService = conversionService;
   }
 
   @Override
   public CustomerPojo getCustomerFromPersonId(int personId) {
     Predicate query = QCustomer.customer.person.id.eq(personId);
-    Optional<Customer> foundClient = clientsRepository.findOne(query);
-    if (foundClient.isPresent()) {
-      Customer entity = foundClient.get();
+    Optional<Customer> match = customerRepository.findOne(query);
+    if (match.isPresent()) {
+      Customer entity = match.get();
       CustomerPojo target = conversionService.convert(entity, CustomerPojo.class);
       return target;
     }
