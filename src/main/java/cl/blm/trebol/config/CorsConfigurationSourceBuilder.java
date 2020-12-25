@@ -1,7 +1,9 @@
 package cl.blm.trebol.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.cors.CorsConfiguration;
@@ -15,13 +17,18 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  */
 public class CorsConfigurationSourceBuilder {
 
+  public static final String ORIGIN_SEPARATOR = ";";
   public static final String MAPPING_SEPARATOR = ";";
 
-  private final String origins;
+  private final List<String> origins;
   private final Map<String, String> corsMappings;
 
   public CorsConfigurationSourceBuilder(CorsProperties corsProperties) {
-    this.origins = corsProperties.getOrigins();
+    this.origins = new ArrayList<>();
+    for (String o : corsProperties.getOrigins().split(ORIGIN_SEPARATOR)) {
+      origins.add(o);
+    }
+
     this.corsMappings = new HashMap<>();
     corsMappings.putAll(parseMappings(corsProperties.getDefaultMapping()));
     corsMappings.putAll(parseMappings(corsProperties.getStoreMappings()));
@@ -54,10 +61,14 @@ public class CorsConfigurationSourceBuilder {
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     for (String path : corsMappings.keySet()) {
-      String methods = corsMappings.get(path);
+
+      List<String> methods = new ArrayList<>();
+      for (String m : corsMappings.get(path).split(",")) {
+        methods.add(m);
+      }
       CorsConfiguration pathConfig = new CorsConfiguration(baseConfig);
-      pathConfig.setAllowedOrigins(Arrays.asList(origins));
-      pathConfig.setAllowedMethods(Arrays.asList(methods.split(",")));
+      pathConfig.setAllowedOrigins(origins);
+      pathConfig.setAllowedMethods(methods);
       source.registerCorsConfiguration(path, pathConfig);
     }
     return source;
