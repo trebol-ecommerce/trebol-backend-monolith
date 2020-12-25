@@ -63,27 +63,6 @@ public class SalespeopleDataManagementController
     return super.readMany(null, null, allRequestParams);
   }
 
-//  @GetMapping("/salespeople/{requestPageSize}")
-//  @PreAuthorize("hasAuthority('salespeople:read')")
-//  public Collection<SellerPojo> readMany(@PathVariable Integer requestPageSize,
-//      @RequestParam Map<String, String> allRequestParams) {
-//    return super.readMany(requestPageSize, null, allRequestParams);
-//  }
-//
-//  @Override
-//  @GetMapping("/salespeople/{requestPageSize}/{requestPageIndex}")
-//  @PreAuthorize("hasAuthority('salespeople:read')")
-//  public Collection<SellerPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
-//      @RequestParam Map<String, String> allRequestParams) {
-//    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
-//  }
-//
-//  @PutMapping("/salespeople")
-//  @PreAuthorize("hasAuthority('salespeople:update')")
-//  public Integer update(@RequestBody @Valid SalespersonPojo input) {
-//    return super.update(input, input.getId());
-//  }
-
   @Override
   @PutMapping("/salespeople/{id}")
   @PreAuthorize("hasAuthority('salespeople:update')")
