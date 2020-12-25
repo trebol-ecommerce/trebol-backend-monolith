@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cl.blm.trebol.api.pojo.ClientPojo;
+import cl.blm.trebol.api.pojo.CustomerPojo;
 import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.SellPojo;
@@ -69,7 +69,7 @@ public class CheckoutServiceImpl
   private int fetchClientId(String authorizationHeader) {
     PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authorizationHeader);
     int personId = authenticatedPerson.getId();
-    ClientPojo authenticatedClient = clientPersonRelationService.getClientFromPersonId(personId);
+    CustomerPojo authenticatedClient = clientPersonRelationService.getClientFromPersonId(personId);
     if (authenticatedClient != null) {
       int clientId = authenticatedClient.getId();
       return clientId;

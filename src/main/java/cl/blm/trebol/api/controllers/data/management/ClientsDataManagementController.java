@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.trebol.api.GenericCrudController;
-import cl.blm.trebol.api.pojo.ClientPojo;
+import cl.blm.trebol.api.pojo.CustomerPojo;
 import cl.blm.trebol.config.CustomProperties;
 import cl.blm.trebol.jpa.entities.Customer;
 import cl.blm.trebol.services.crud.GenericCrudService;
@@ -35,37 +35,37 @@ import cl.blm.trebol.services.crud.GenericCrudService;
 @RestController
 @RequestMapping("/data")
 public class ClientsDataManagementController
-    extends GenericCrudController<ClientPojo, Customer, Integer> {
+    extends GenericCrudController<CustomerPojo, Customer, Integer> {
 
   @Autowired
   public ClientsDataManagementController(CustomProperties globals,
-      GenericCrudService<ClientPojo, Customer, Integer> crudService) {
+      GenericCrudService<CustomerPojo, Customer, Integer> crudService) {
     super(globals, crudService);
   }
 
   @Override
   @PostMapping("/clients")
   @PreAuthorize("hasAuthority('clients:create')")
-  public Integer create(@RequestBody @Valid ClientPojo input) {
+  public Integer create(@RequestBody @Valid CustomerPojo input) {
     return super.create(input);
   }
 
   @Override
   @GetMapping("/clients/{id}")
   @PreAuthorize("hasAuthority('clients:read')")
-  public ClientPojo readOne(@PathVariable Integer id) {
+  public CustomerPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @GetMapping("/clients")
   @PreAuthorize("hasAuthority('clients:read')")
-  public Collection<ClientPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public Collection<CustomerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/clients/{requestPageSize}")
   @PreAuthorize("hasAuthority('clients:read')")
-  public Collection<ClientPojo> readMany(@PathVariable Integer requestPageSize,
+  public Collection<CustomerPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
   }
@@ -73,21 +73,21 @@ public class ClientsDataManagementController
   @Override
   @GetMapping("/clients/{requestPageSize}/{requestPageIndex}")
   @PreAuthorize("hasAuthority('clients:read')")
-  public Collection<ClientPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
+  public Collection<CustomerPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
   @PutMapping("/clients")
   @PreAuthorize("hasAuthority('clients:update')")
-  public Integer update(@RequestBody @Valid ClientPojo input) {
+  public Integer update(@RequestBody @Valid CustomerPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
   @PutMapping("/clients/{id}")
   @PreAuthorize("hasAuthority('clients:update')")
-  public Integer update(@RequestBody @Valid ClientPojo input, @PathVariable Integer id) {
+  public Integer update(@RequestBody @Valid CustomerPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 

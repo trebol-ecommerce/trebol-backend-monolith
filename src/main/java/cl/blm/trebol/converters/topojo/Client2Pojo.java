@@ -3,7 +3,7 @@ package cl.blm.trebol.converters.topojo;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import cl.blm.trebol.api.pojo.ClientPojo;
+import cl.blm.trebol.api.pojo.CustomerPojo;
 import cl.blm.trebol.jpa.entities.Customer;
 
 /**
@@ -12,11 +12,11 @@ import cl.blm.trebol.jpa.entities.Customer;
  */
 @Component
 public class Client2Pojo
-    implements Converter<Customer, ClientPojo> {
+    implements Converter<Customer, CustomerPojo> {
 
   @Override
-  public ClientPojo convert(Customer source) {
-    ClientPojo target = new ClientPojo();
+  public CustomerPojo convert(Customer source) {
+    CustomerPojo target = new CustomerPojo();
     target.setId(source.getId());
     return target;
   }

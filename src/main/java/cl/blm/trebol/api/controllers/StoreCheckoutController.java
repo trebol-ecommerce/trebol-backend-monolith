@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.blm.trebol.api.pojo.ClientPojo;
+import cl.blm.trebol.api.pojo.CustomerPojo;
 import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.WebPayRedirectionData;

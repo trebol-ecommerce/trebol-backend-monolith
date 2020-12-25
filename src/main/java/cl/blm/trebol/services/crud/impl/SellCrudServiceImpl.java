@@ -22,7 +22,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.jpa.entities.QSell;
-import cl.blm.trebol.api.pojo.ClientPojo;
+import cl.blm.trebol.api.pojo.CustomerPojo;
 import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.api.pojo.ProductPojo;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
@@ -54,8 +54,8 @@ public class SellCrudServiceImpl
     this.conversion = conversion;
   }
 
-  private ClientPojo convertClientToPojo(Sell source) {
-    ClientPojo client = conversion.convert(source.getCustomer(), ClientPojo.class);
+  private CustomerPojo convertClientToPojo(Sell source) {
+    CustomerPojo client = conversion.convert(source.getCustomer(), CustomerPojo.class);
     PersonPojo person = conversion.convert(source.getCustomer().getPerson(), PersonPojo.class);
     client.setPerson(person);
     return client;
@@ -85,7 +85,7 @@ public class SellCrudServiceImpl
     SellTypePojo sellType = conversion.convert(source.getType(), SellTypePojo.class);
     target.setSellType(sellType);
 
-    ClientPojo client = convertClientToPojo(source);
+    CustomerPojo client = convertClientToPojo(source);
     target.setClient(client);
 
     if (source.getSalesperson()!= null) {

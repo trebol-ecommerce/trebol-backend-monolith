@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.trebol.api.pojo.ClientPojo;
+import cl.blm.trebol.api.pojo.CustomerPojo;
 import cl.blm.trebol.jpa.entities.Customer;
 import cl.blm.trebol.jpa.entities.QCustomer;
 import cl.blm.trebol.services.user.ClientPersonRelationService;
@@ -32,12 +32,12 @@ public class ClientPersonRelationServiceImpl
   }
 
   @Override
-  public ClientPojo getClientFromPersonId(int personId) {
+  public CustomerPojo getClientFromPersonId(int personId) {
     Predicate query = QCustomer.customer.person.id.eq(personId);
     Optional<Customer> foundClient = clientsRepository.findOne(query);
     if (foundClient.isPresent()) {
       Customer entity = foundClient.get();
-      ClientPojo target = conversionService.convert(entity, ClientPojo.class);
+      CustomerPojo target = conversionService.convert(entity, CustomerPojo.class);
       return target;
     }
     return null;
