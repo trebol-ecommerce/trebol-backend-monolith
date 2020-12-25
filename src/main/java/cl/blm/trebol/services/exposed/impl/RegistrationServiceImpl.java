@@ -32,14 +32,14 @@ public class RegistrationServiceImpl
 
   private final PeopleRepository peopleRepository;
   private final UsersRepository usersRepository;
-  private final CustomersRepository clientsRepository;
+  private final CustomersRepository customersRepository;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public RegistrationServiceImpl(PeopleRepository peopleRepository, UsersRepository usersRepository, CustomersRepository clientsRepository, PasswordEncoder passwordEncoder) {
+  public RegistrationServiceImpl(PeopleRepository peopleRepository, UsersRepository usersRepository, CustomersRepository customersRepository, PasswordEncoder passwordEncoder) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;
-    this.clientsRepository = clientsRepository;
+    this.customersRepository = customersRepository;
     this.passwordEncoder = passwordEncoder;
   }
 
@@ -65,8 +65,8 @@ public class RegistrationServiceImpl
     newUser.setPerson(newPerson);
     usersRepository.saveAndFlush(newUser);
 
-    Customer newClient = this.createClientFromRegistrationPojo(newPerson);
-    clientsRepository.saveAndFlush(newClient);
+    Customer newCustomer = this.createCustomerFromRegistrationPojo(newPerson);
+    customersRepository.saveAndFlush(newCustomer);
   }
 
   protected Person createPersonFromRegistrationPojo(RegistrationPojo registration) {
@@ -97,7 +97,7 @@ public class RegistrationServiceImpl
     return target;
   }
 
-  protected Customer createClientFromRegistrationPojo(Person person) {
+  protected Customer createCustomerFromRegistrationPojo(Person person) {
     Customer target = new Customer();
     target.setPerson(person);
     return target;

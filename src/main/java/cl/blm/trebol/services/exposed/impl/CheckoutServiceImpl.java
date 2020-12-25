@@ -45,34 +45,34 @@ public class CheckoutServiceImpl
   private final ConversionService conversionService;
   private final SalesRepository salesRepository;
   private final ProductsRepository productsRepository;
-  private final CustomersRepository clientsRepository;
+  private final CustomersRepository customersRepository;
   private final CheckoutConfig checkoutConfig;
   private final ObjectMapper objectMapper;
   private final AuthenticatedPeopleService authenticatedPeopleService;
-  private final CustomerPersonRelationService clientPersonRelationService;
+  private final CustomerPersonRelationService customerPersonRelationService;
 
   @Autowired
   public CheckoutServiceImpl(ConversionService conversionService, SalesRepository salesRepository,
-      ProductsRepository productsRepository, CustomersRepository clientsRepository, CheckoutConfig checkoutConfig,
+      ProductsRepository productsRepository, CustomersRepository customerRepository, CheckoutConfig checkoutConfig,
       ObjectMapper objectMapper, AuthenticatedPeopleService authenticatedPeopleService,
-      CustomerPersonRelationService clientPersonRelationService) {
+      CustomerPersonRelationService customerPersonRelationService) {
     this.conversionService = conversionService;
     this.salesRepository = salesRepository;
     this.productsRepository = productsRepository;
-    this.clientsRepository = clientsRepository;
+    this.customersRepository = customerRepository;
     this.checkoutConfig = checkoutConfig;
     this.objectMapper = objectMapper;
     this.authenticatedPeopleService = authenticatedPeopleService;
-    this.clientPersonRelationService = clientPersonRelationService;
+    this.customerPersonRelationService = customerPersonRelationService;
   }
 
-  private int fetchClientId(String authorizationHeader) {
+  private int fetchCustomerId(String authorizationHeader) {
     PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authorizationHeader);
     int personId = authenticatedPerson.getId();
-    CustomerPojo authenticatedClient = clientPersonRelationService.getCustomerFromPersonId(personId);
-    if (authenticatedClient != null) {
-      int clientId = authenticatedClient.getId();
-      return clientId;
+    CustomerPojo authenticatedCustomer = customerPersonRelationService.getCustomerFromPersonId(personId);
+    if (authenticatedCustomer != null) {
+      int customerId = authenticatedCustomer.getId();
+      return customerId;
     }
     throw new RuntimeException("The user requesting a cart checkout does not have an associated client ID");
   }
@@ -99,8 +99,8 @@ public class CheckoutServiceImpl
 
   @Override
   public WebpayTransactionPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
-    int clientId = this.fetchClientId(authorization);
-    Customer customer = clientsRepository.getOne(clientId);
+    int clientId = this.fetchCustomerId(authorization);
+    Customer customer = customersRepository.getOne(clientId);
     int totalValue = calculateTotalCartValue(cartDetails);
     List<SellDetail> entityDetails = new ArrayList<>();
     for (SellDetailPojo p : cartDetails) {
