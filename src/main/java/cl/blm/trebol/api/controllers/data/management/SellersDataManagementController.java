@@ -44,56 +44,56 @@ public class SellersDataManagementController
   }
 
   @Override
-  @PostMapping("/sellers")
-  @PreAuthorize("hasAuthority('sellers:create')")
+  @PostMapping("/salespeople")
+  @PreAuthorize("hasAuthority('salespeople:create')")
   public Integer create(@RequestBody @Valid SalespersonPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/sellers/{id}")
-  @PreAuthorize("hasAuthority('sellers:read')")
+  @GetMapping("/salespeople/{id}")
+  @PreAuthorize("hasAuthority('salespeople:read')")
   public SalespersonPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/sellers")
-  @PreAuthorize("hasAuthority('sellers:read')")
+  @GetMapping("/salespeople")
+  @PreAuthorize("hasAuthority('salespeople:read')")
   public Collection<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
-//  @GetMapping("/sellers/{requestPageSize}")
-//  @PreAuthorize("hasAuthority('sellers:read')")
+//  @GetMapping("/salespeople/{requestPageSize}")
+//  @PreAuthorize("hasAuthority('salespeople:read')")
 //  public Collection<SellerPojo> readMany(@PathVariable Integer requestPageSize,
 //      @RequestParam Map<String, String> allRequestParams) {
 //    return super.readMany(requestPageSize, null, allRequestParams);
 //  }
 //
 //  @Override
-//  @GetMapping("/sellers/{requestPageSize}/{requestPageIndex}")
-//  @PreAuthorize("hasAuthority('sellers:read')")
+//  @GetMapping("/salespeople/{requestPageSize}/{requestPageIndex}")
+//  @PreAuthorize("hasAuthority('salespeople:read')")
 //  public Collection<SellerPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
 //      @RequestParam Map<String, String> allRequestParams) {
 //    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
 //  }
 //
-//  @PutMapping("/sellers")
-//  @PreAuthorize("hasAuthority('sellers:update')")
+//  @PutMapping("/salespeople")
+//  @PreAuthorize("hasAuthority('salespeople:update')")
 //  public Integer update(@RequestBody @Valid SalespersonPojo input) {
 //    return super.update(input, input.getId());
 //  }
 
   @Override
-  @PutMapping("/sellers/{id}")
-  @PreAuthorize("hasAuthority('sellers:update')")
+  @PutMapping("/salespeople/{id}")
+  @PreAuthorize("hasAuthority('salespeople:update')")
   public Integer update(@RequestBody @Valid SalespersonPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/sellers/{id}")
-  @PreAuthorize("hasAuthority('sellers:delete')")
+  @DeleteMapping("/salespeople/{id}")
+  @PreAuthorize("hasAuthority('salespeople:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }
