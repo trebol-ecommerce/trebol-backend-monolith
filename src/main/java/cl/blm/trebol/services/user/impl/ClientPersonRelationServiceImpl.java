@@ -10,7 +10,7 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.api.pojo.ClientPojo;
 import cl.blm.trebol.jpa.entities.Customer;
-import cl.blm.trebol.jpa.entities.QClient;
+import cl.blm.trebol.jpa.entities.QCustomer;
 import cl.blm.trebol.services.user.ClientPersonRelationService;
 import cl.blm.trebol.jpa.repositories.CustomersRepository;
 
@@ -33,7 +33,7 @@ public class ClientPersonRelationServiceImpl
 
   @Override
   public ClientPojo getClientFromPersonId(int personId) {
-    Predicate query = QClient.client.person.id.eq(personId);
+    Predicate query = QCustomer.customer.person.id.eq(personId);
     Optional<Customer> foundClient = clientsRepository.findOne(query);
     if (foundClient.isPresent()) {
       Customer entity = foundClient.get();

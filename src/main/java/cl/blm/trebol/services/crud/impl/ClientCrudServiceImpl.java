@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import cl.blm.trebol.jpa.entities.QClient;
+import cl.blm.trebol.jpa.entities.QCustomer;
 import cl.blm.trebol.api.pojo.ClientPojo;
 import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.jpa.entities.Customer;
@@ -69,7 +69,7 @@ public class ClientCrudServiceImpl
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
-    QClient qClient = QClient.client;
+    QCustomer qCustomer = QCustomer.customer;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
@@ -78,15 +78,15 @@ public class ClientCrudServiceImpl
         switch (paramName) {
           case "id":
             intValue = Integer.valueOf(stringValue);
-            return predicate.and(qClient.id.eq(intValue)); // id matching is final
+            return predicate.and(qCustomer.id.eq(intValue)); // id matching is final
           case "name":
-            predicate.and(qClient.person.name.likeIgnoreCase("%" + stringValue + "%"));
+            predicate.and(qCustomer.person.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "idnumber":
-            predicate.and(qClient.person.idCard.likeIgnoreCase("%" + stringValue + "%"));
+            predicate.and(qCustomer.person.idCard.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "email":
-            predicate.and(qClient.person.email.likeIgnoreCase("%" + stringValue + "%"));
+            predicate.and(qCustomer.person.email.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:
             break;
