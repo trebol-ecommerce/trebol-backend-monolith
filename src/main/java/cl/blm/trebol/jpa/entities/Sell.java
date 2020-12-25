@@ -53,6 +53,10 @@ public class Sell
   @Size(min = 1, max = 20)
   @Column(name = "session_extract")
   private String sessionExtract;
+  @Basic(optional = true)
+  @Size(min = 64, max = 64)
+  @Column(name = "sell_token")
+  private String token;
   @Basic(optional = false)
   @NotNull
   @Column(name = "sell_total_items")
@@ -118,6 +122,14 @@ public class Sell
 
   public void setSessionExtract(String sessionExtract) {
     this.sessionExtract = sessionExtract;
+  }
+
+  public String getToken() {
+    return token;
+  }
+
+  public void setToken(String token) {
+    this.token = token;
   }
 
   public int getTotalItems() {
