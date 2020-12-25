@@ -72,11 +72,11 @@ public class SellCrudServiceImpl
     return sellDetails;
   }
 
-  private SalespersonPojo convertSellerToPojo(Sell source) {
-    SalespersonPojo seller = conversion.convert(source.getSalesperson(), SalespersonPojo.class);
+  private SalespersonPojo convertSalespersonToPojo(Sell source) {
+    SalespersonPojo target = conversion.convert(source.getSalesperson(), SalespersonPojo.class);
     PersonPojo person = conversion.convert(source.getSalesperson().getPerson(), PersonPojo.class);
-    seller.setPerson(person);
-    return seller;
+    target.setPerson(person);
+    return target;
   }
 
   @Override
@@ -89,8 +89,8 @@ public class SellCrudServiceImpl
     target.setCustomer(customer);
 
     if (source.getSalesperson()!= null) {
-      SalespersonPojo seller = convertSellerToPojo(source);
-      target.setSalesperson(seller);
+      SalespersonPojo salesperson = convertSalespersonToPojo(source);
+      target.setSalesperson(salesperson);
     }
 
     return target;
