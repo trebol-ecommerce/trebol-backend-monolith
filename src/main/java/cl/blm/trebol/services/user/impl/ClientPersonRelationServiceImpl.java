@@ -32,7 +32,7 @@ public class ClientPersonRelationServiceImpl
   }
 
   @Override
-  public CustomerPojo getClientFromPersonId(int personId) {
+  public CustomerPojo getCustomerFromPersonId(int personId) {
     Predicate query = QCustomer.customer.person.id.eq(personId);
     Optional<Customer> foundClient = clientsRepository.findOne(query);
     if (foundClient.isPresent()) {

@@ -69,7 +69,7 @@ public class CheckoutServiceImpl
   private int fetchClientId(String authorizationHeader) {
     PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authorizationHeader);
     int personId = authenticatedPerson.getId();
-    CustomerPojo authenticatedClient = clientPersonRelationService.getClientFromPersonId(personId);
+    CustomerPojo authenticatedClient = clientPersonRelationService.getCustomerFromPersonId(personId);
     if (authenticatedClient != null) {
       int clientId = authenticatedClient.getId();
       return clientId;

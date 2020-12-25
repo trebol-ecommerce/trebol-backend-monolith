@@ -11,5 +11,5 @@ import cl.blm.trebol.api.pojo.CustomerPojo;
  */
 public interface CustomerPersonRelationService {
   @Nullable
-  CustomerPojo getClientFromPersonId(int personId);
+  CustomerPojo getCustomerFromPersonId(int personId);
 }
