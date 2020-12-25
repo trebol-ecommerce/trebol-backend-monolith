@@ -52,9 +52,14 @@ public class CheckoutServiceImpl
   private final CustomerPersonRelationService customerPersonRelationService;
 
   @Autowired
-  public CheckoutServiceImpl(ConversionService conversionService, SalesRepository salesRepository,
-      ProductsRepository productsRepository, CustomersRepository customerRepository, CheckoutConfig checkoutConfig,
-      ObjectMapper objectMapper, AuthenticatedPeopleService authenticatedPeopleService,
+  public CheckoutServiceImpl(
+      ConversionService conversionService,
+      SalesRepository salesRepository,
+      ProductsRepository productsRepository,
+      CustomersRepository customerRepository,
+      CheckoutConfig checkoutConfig,
+      ObjectMapper objectMapper,
+      AuthenticatedPeopleService authenticatedPeopleService,
       CustomerPersonRelationService customerPersonRelationService) {
     this.conversionService = conversionService;
     this.salesRepository = salesRepository;

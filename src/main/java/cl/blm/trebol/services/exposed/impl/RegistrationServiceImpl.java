@@ -36,7 +36,11 @@ public class RegistrationServiceImpl
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public RegistrationServiceImpl(PeopleRepository peopleRepository, UsersRepository usersRepository, CustomersRepository customersRepository, PasswordEncoder passwordEncoder) {
+  public RegistrationServiceImpl(
+      PeopleRepository peopleRepository,
+      UsersRepository usersRepository,
+      CustomersRepository customersRepository,
+      PasswordEncoder passwordEncoder) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;
     this.customersRepository = customersRepository;
