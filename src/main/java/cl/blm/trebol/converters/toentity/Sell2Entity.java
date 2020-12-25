@@ -38,8 +38,8 @@ public class Sell2Entity
       target.getDetails().add(td);
     }
 
-    if (source.getSeller() != null) {
-      target.setSalesperson(new Salesperson(source.getSeller().getId()));
+    if (source.getSalesperson() != null) {
+      target.setSalesperson(new Salesperson(source.getSalesperson().getId()));
     }
     return target;
   }

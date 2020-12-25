@@ -90,7 +90,7 @@ public class SellCrudServiceImpl
 
     if (source.getSalesperson()!= null) {
       SalespersonPojo seller = convertSellerToPojo(source);
-      target.setSeller(seller);
+      target.setSalesperson(seller);
     }
 
     return target;
