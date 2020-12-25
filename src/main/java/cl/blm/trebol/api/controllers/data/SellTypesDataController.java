@@ -28,12 +28,12 @@ import cl.blm.trebol.jpa.entities.SellType;
 import cl.blm.trebol.services.crud.GenericCrudService;
 
 /**
- * API point of entry for Sell entities
+ * API point of entry for SellType entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
-@RequestMapping("/data")
+@RequestMapping("/data/sell_types")
 public class SellTypesDataController
     extends GenericCrudController<SellTypePojo, SellType, Integer> {
 
@@ -43,55 +43,35 @@ public class SellTypesDataController
     super(globals, crudService);
   }
 
-  @Override
-  @PostMapping("/sell_types")
-  public Integer create(@RequestBody @Valid SellTypePojo input) {
-    return super.create(input);
-  }
-
-  @Override
-  @GetMapping("/sell_types/{id}")
-  @PreAuthorize("hasAuthority('sell_types:read')")
-  public SellTypePojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
-  }
-
-  @GetMapping("/sell_types")
+  @GetMapping
   @PreAuthorize("hasAuthority('sell_types:read')")
   public Collection<SellTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
-//  @GetMapping("/sell_types/{requestPageSize}")
-//  @PreAuthorize("hasAuthority('sell_types:read')")
-//  public Collection<SellTypePojo> readMany(@PathVariable Integer requestPageSize,
-//      @RequestParam Map<String, String> allRequestParams) {
-//    return super.readMany(requestPageSize, null, allRequestParams);
-//  }
-//
-//  @Override
-//  @GetMapping("/sell_types/{requestPageSize}/{requestPageIndex}")
-//  @PreAuthorize("hasAuthority('sell_types:read')")
-//  public Collection<SellTypePojo> readMany(@PathVariable Integer requestPageSize,
-//      @PathVariable Integer requestPageIndex, @RequestParam Map<String, String> allRequestParams) {
-//    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
-//  }
-//
-//  @PutMapping("/sell_types")
-//  @PreAuthorize("hasAuthority('sell_types:update')")
-//  public Integer update(@RequestBody @Valid SellTypePojo input) {
-//    return super.update(input, input.getId());
-//  }
+  @Override
+  @PostMapping
+  @PreAuthorize("hasAuthority('sell_types:create')")
+  public Integer create(@RequestBody @Valid SellTypePojo input) {
+    return super.create(input);
+  }
 
   @Override
-  @PutMapping("/sell_types/{id}")
+  @GetMapping("/{id}")
+  @PreAuthorize("hasAuthority('sell_types:read')")
+  public SellTypePojo readOne(@PathVariable Integer id) {
+    return super.readOne(id);
+  }
+
+  @Override
+  @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('sell_types:update')")
   public Integer update(@RequestBody @Valid SellTypePojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/sell_types/{id}")
+  @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('sell_types:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
