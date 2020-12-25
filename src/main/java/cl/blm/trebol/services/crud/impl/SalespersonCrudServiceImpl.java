@@ -28,15 +28,15 @@ import cl.blm.trebol.jpa.repositories.SalespeopleRepository;
  */
 @Transactional
 @Service
-public class SellerCrudServiceImpl
+public class SalespersonCrudServiceImpl
     extends GenericCrudService<SalespersonPojo, Salesperson, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(SellerCrudServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SalespersonCrudServiceImpl.class);
 
   private final SalespeopleRepository repository;
   private final ConversionService conversion;
 
   @Autowired
-  public SellerCrudServiceImpl(SalespeopleRepository repository, ConversionService conversion) {
+  public SalespersonCrudServiceImpl(SalespeopleRepository repository, ConversionService conversion) {
     super(repository);
     this.repository = repository;
     this.conversion = conversion;
