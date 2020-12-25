@@ -11,7 +11,7 @@ import cl.blm.trebol.jpa.entities.Customer;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Component
-public class Client2Pojo
+public class Customer2Pojo
     implements Converter<Customer, CustomerPojo> {
 
   @Override

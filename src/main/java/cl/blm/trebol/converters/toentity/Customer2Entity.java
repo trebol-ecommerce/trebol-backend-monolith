@@ -12,7 +12,7 @@ import cl.blm.trebol.jpa.entities.Person;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Component
-public class Client2Entity
+public class Customer2Entity
     implements Converter<CustomerPojo, Customer> {
 
   @Override
