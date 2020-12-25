@@ -3,7 +3,7 @@ package cl.blm.trebol.converters.topojo;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import cl.blm.trebol.api.pojo.SellerPojo;
+import cl.blm.trebol.api.pojo.SalespersonPojo;
 import cl.blm.trebol.jpa.entities.Salesperson;
 
 /**
@@ -12,11 +12,11 @@ import cl.blm.trebol.jpa.entities.Salesperson;
  */
 @Component
 public class Seller2Pojo
-    implements Converter<Salesperson, SellerPojo> {
+    implements Converter<Salesperson, SalespersonPojo> {
 
   @Override
-  public SellerPojo convert(Salesperson source) {
-    SellerPojo target = new SellerPojo();
+  public SalespersonPojo convert(Salesperson source) {
+    SalespersonPojo target = new SalespersonPojo();
     target.setId(source.getId());
     return target;
   }

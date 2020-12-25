@@ -32,7 +32,7 @@ public class SellPojo {
   private CustomerPojo client;
   @JsonInclude
   @Nullable
-  private SellerPojo seller;
+  private SalespersonPojo seller;
   @JsonInclude(value = Include.NON_EMPTY)
   @NotEmpty
   @Valid
@@ -78,11 +78,11 @@ public class SellPojo {
     this.client = client;
   }
 
-  public SellerPojo getSeller() {
+  public SalespersonPojo getSeller() {
     return seller;
   }
 
-  public void setSeller(SellerPojo seller) {
+  public void setSeller(SalespersonPojo seller) {
     this.seller = seller;
   }
 

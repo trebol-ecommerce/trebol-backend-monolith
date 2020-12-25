@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.blm.trebol.api.GenericCrudController;
-import cl.blm.trebol.api.pojo.SellerPojo;
+import cl.blm.trebol.api.pojo.SalespersonPojo;
 import cl.blm.trebol.config.CustomProperties;
 import cl.blm.trebol.jpa.entities.Salesperson;
 import cl.blm.trebol.services.crud.GenericCrudService;
@@ -35,31 +35,31 @@ import cl.blm.trebol.services.crud.GenericCrudService;
 @RestController
 @RequestMapping("/data")
 public class SellersDataManagementController
-    extends GenericCrudController<SellerPojo, Salesperson, Integer> {
+    extends GenericCrudController<SalespersonPojo, Salesperson, Integer> {
 
   @Autowired
   public SellersDataManagementController(CustomProperties globals,
-      GenericCrudService<SellerPojo, Salesperson, Integer> crudService) {
+      GenericCrudService<SalespersonPojo, Salesperson, Integer> crudService) {
     super(globals, crudService);
   }
 
   @Override
   @PostMapping("/sellers")
   @PreAuthorize("hasAuthority('sellers:create')")
-  public Integer create(@RequestBody @Valid SellerPojo input) {
+  public Integer create(@RequestBody @Valid SalespersonPojo input) {
     return super.create(input);
   }
 
   @Override
   @GetMapping("/sellers/{id}")
   @PreAuthorize("hasAuthority('sellers:read')")
-  public SellerPojo readOne(@PathVariable Integer id) {
+  public SalespersonPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @GetMapping("/sellers")
   @PreAuthorize("hasAuthority('sellers:read')")
-  public Collection<SellerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public Collection<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
@@ -80,14 +80,14 @@ public class SellersDataManagementController
 //
 //  @PutMapping("/sellers")
 //  @PreAuthorize("hasAuthority('sellers:update')")
-//  public Integer update(@RequestBody @Valid SellerPojo input) {
+//  public Integer update(@RequestBody @Valid SalespersonPojo input) {
 //    return super.update(input, input.getId());
 //  }
 
   @Override
   @PutMapping("/sellers/{id}")
   @PreAuthorize("hasAuthority('sellers:update')")
-  public Integer update(@RequestBody @Valid SellerPojo input, @PathVariable Integer id) {
+  public Integer update(@RequestBody @Valid SalespersonPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 

@@ -16,7 +16,7 @@ import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.jpa.entities.QSalesperson;
 import cl.blm.trebol.api.pojo.PersonPojo;
-import cl.blm.trebol.api.pojo.SellerPojo;
+import cl.blm.trebol.api.pojo.SalespersonPojo;
 import cl.blm.trebol.jpa.entities.Person;
 import cl.blm.trebol.jpa.entities.Salesperson;
 import cl.blm.trebol.services.crud.GenericCrudService;
@@ -29,7 +29,7 @@ import cl.blm.trebol.jpa.repositories.SalespeopleRepository;
 @Transactional
 @Service
 public class SellerCrudServiceImpl
-    extends GenericCrudService<SellerPojo, Salesperson, Integer> {
+    extends GenericCrudService<SalespersonPojo, Salesperson, Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(SellerCrudServiceImpl.class);
 
   private final SalespeopleRepository repository;
@@ -43,15 +43,15 @@ public class SellerCrudServiceImpl
   }
 
   @Override
-  public SellerPojo entity2Pojo(Salesperson source) {
-    SellerPojo target = conversion.convert(source, SellerPojo.class);
+  public SalespersonPojo entity2Pojo(Salesperson source) {
+    SalespersonPojo target = conversion.convert(source, SalespersonPojo.class);
     PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
     target.setPerson(person);
     return target;
   }
 
   @Override
-  public Salesperson pojo2Entity(SellerPojo source) {
+  public Salesperson pojo2Entity(SalespersonPojo source) {
     Salesperson target = conversion.convert(source, Salesperson.class);
     Person personTarget = conversion.convert(source.getPerson(), Person.class);
     target.setPerson(personTarget);

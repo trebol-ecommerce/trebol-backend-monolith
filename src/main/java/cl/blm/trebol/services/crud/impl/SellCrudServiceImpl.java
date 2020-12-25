@@ -28,7 +28,7 @@ import cl.blm.trebol.api.pojo.ProductPojo;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.SellPojo;
 import cl.blm.trebol.api.pojo.SellTypePojo;
-import cl.blm.trebol.api.pojo.SellerPojo;
+import cl.blm.trebol.api.pojo.SalespersonPojo;
 import cl.blm.trebol.jpa.entities.Sell;
 import cl.blm.trebol.jpa.entities.SellDetail;
 import cl.blm.trebol.jpa.repositories.SalesRepository;
@@ -72,8 +72,8 @@ public class SellCrudServiceImpl
     return sellDetails;
   }
 
-  private SellerPojo convertSellerToPojo(Sell source) {
-    SellerPojo seller = conversion.convert(source.getSalesperson(), SellerPojo.class);
+  private SalespersonPojo convertSellerToPojo(Sell source) {
+    SalespersonPojo seller = conversion.convert(source.getSalesperson(), SalespersonPojo.class);
     PersonPojo person = conversion.convert(source.getSalesperson().getPerson(), PersonPojo.class);
     seller.setPerson(person);
     return seller;
@@ -89,7 +89,7 @@ public class SellCrudServiceImpl
     target.setClient(client);
 
     if (source.getSalesperson()!= null) {
-      SellerPojo seller = convertSellerToPojo(source);
+      SalespersonPojo seller = convertSellerToPojo(source);
       target.setSeller(seller);
     }
 
