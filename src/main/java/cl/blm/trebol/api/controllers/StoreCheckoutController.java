@@ -20,7 +20,7 @@ import cl.blm.trebol.api.pojo.WebpayTransactionPojo;
 import cl.blm.trebol.services.exposed.CheckoutService;
 import cl.blm.trebol.services.security.AuthenticatedPeopleService;
 import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
-import cl.blm.trebol.services.user.ClientPersonRelationService;
+import cl.blm.trebol.services.user.CustomerPersonRelationService;
 
 /**
  *
@@ -37,7 +37,7 @@ public class StoreCheckoutController {
   public StoreCheckoutController(CheckoutService checkoutService,
       AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
       AuthenticatedPeopleService authenticatedPeopleService,
-      ClientPersonRelationService clientPersonRelationService) {
+      CustomerPersonRelationService clientPersonRelationService) {
     this.checkoutService = checkoutService;
     this.jwtClaimsParserService = jwtClaimsParserService;
   }

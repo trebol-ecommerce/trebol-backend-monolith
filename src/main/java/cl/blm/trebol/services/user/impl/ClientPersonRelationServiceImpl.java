@@ -11,8 +11,8 @@ import com.querydsl.core.types.Predicate;
 import cl.blm.trebol.api.pojo.CustomerPojo;
 import cl.blm.trebol.jpa.entities.Customer;
 import cl.blm.trebol.jpa.entities.QCustomer;
-import cl.blm.trebol.services.user.ClientPersonRelationService;
 import cl.blm.trebol.jpa.repositories.CustomersRepository;
+import cl.blm.trebol.services.user.CustomerPersonRelationService;
 
 /**
  *
@@ -20,7 +20,7 @@ import cl.blm.trebol.jpa.repositories.CustomersRepository;
  */
 @Service
 public class ClientPersonRelationServiceImpl
-    implements ClientPersonRelationService {
+    implements CustomerPersonRelationService {
 
   private final CustomersRepository clientsRepository;
   private final ConversionService conversionService;

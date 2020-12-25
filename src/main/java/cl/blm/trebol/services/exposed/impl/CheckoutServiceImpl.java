@@ -31,8 +31,8 @@ import cl.blm.trebol.jpa.repositories.ProductsRepository;
 import cl.blm.trebol.jpa.repositories.SalesRepository;
 import cl.blm.trebol.services.exposed.CheckoutService;
 import cl.blm.trebol.services.security.AuthenticatedPeopleService;
-import cl.blm.trebol.services.user.ClientPersonRelationService;
 import cl.blm.trebol.jpa.repositories.CustomersRepository;
+import cl.blm.trebol.services.user.CustomerPersonRelationService;
 
 /**
  *
@@ -49,13 +49,13 @@ public class CheckoutServiceImpl
   private final CheckoutConfig checkoutConfig;
   private final ObjectMapper objectMapper;
   private final AuthenticatedPeopleService authenticatedPeopleService;
-  private final ClientPersonRelationService clientPersonRelationService;
+  private final CustomerPersonRelationService clientPersonRelationService;
 
   @Autowired
   public CheckoutServiceImpl(ConversionService conversionService, SalesRepository salesRepository,
       ProductsRepository productsRepository, CustomersRepository clientsRepository, CheckoutConfig checkoutConfig,
       ObjectMapper objectMapper, AuthenticatedPeopleService authenticatedPeopleService,
-      ClientPersonRelationService clientPersonRelationService) {
+      CustomerPersonRelationService clientPersonRelationService) {
     this.conversionService = conversionService;
     this.salesRepository = salesRepository;
     this.productsRepository = productsRepository;

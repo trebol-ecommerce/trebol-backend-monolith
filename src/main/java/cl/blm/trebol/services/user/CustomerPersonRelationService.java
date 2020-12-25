@@ -9,7 +9,7 @@ import cl.blm.trebol.api.pojo.CustomerPojo;
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
-public interface ClientPersonRelationService {
+public interface CustomerPersonRelationService {
   @Nullable
   CustomerPojo getClientFromPersonId(int personId);
 }
