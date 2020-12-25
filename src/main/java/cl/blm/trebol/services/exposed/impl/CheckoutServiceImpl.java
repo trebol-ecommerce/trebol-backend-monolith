@@ -104,8 +104,8 @@ public class CheckoutServiceImpl
 
   @Override
   public WebpayTransactionPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
-    int clientId = this.fetchCustomerId(authorization);
-    Customer customer = customersRepository.getOne(clientId);
+    int customerId = this.fetchCustomerId(authorization);
+    Customer customer = customersRepository.getOne(customerId);
     int totalValue = calculateTotalCartValue(cartDetails);
     List<SellDetail> entityDetails = new ArrayList<>();
     for (SellDetailPojo p : cartDetails) {
