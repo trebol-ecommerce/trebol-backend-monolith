@@ -29,7 +29,7 @@ public class SellPojo {
   private SellTypePojo sellType;
   @JsonInclude
   @NotNull
-  private CustomerPojo client;
+  private CustomerPojo customer;
   @JsonInclude
   @Nullable
   private SalespersonPojo seller;
@@ -70,12 +70,12 @@ public class SellPojo {
     this.sellType = sellType;
   }
 
-  public CustomerPojo getClient() {
-    return client;
+  public CustomerPojo getCustomer() {
+    return customer;
   }
 
-  public void setClient(CustomerPojo client) {
-    this.client = client;
+  public void setCustomer(CustomerPojo customer) {
+    this.customer = customer;
   }
 
   public SalespersonPojo getSeller() {

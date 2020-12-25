@@ -86,7 +86,7 @@ public class SellCrudServiceImpl
     target.setSellType(sellType);
 
     CustomerPojo customer = convertCustomerToPojo(source);
-    target.setClient(customer);
+    target.setCustomer(customer);
 
     if (source.getSalesperson()!= null) {
       SalespersonPojo seller = convertSellerToPojo(source);

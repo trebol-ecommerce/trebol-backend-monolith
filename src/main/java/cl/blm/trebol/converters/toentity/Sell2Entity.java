@@ -27,7 +27,7 @@ public class Sell2Entity
     Sell target = new Sell(source.getId());
     target.setDate(source.getDate());
     target.setTotalValue(source.getSubtotal());
-    target.setCustomer(new Customer(source.getClient().getId()));
+    target.setCustomer(new Customer(source.getCustomer().getId()));
     target.setType(new SellType(source.getSellType().getId()));
 
     target.setDetails(new ArrayList<>());
