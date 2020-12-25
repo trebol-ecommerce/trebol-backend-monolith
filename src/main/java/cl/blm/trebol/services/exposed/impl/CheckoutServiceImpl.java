@@ -28,6 +28,7 @@ import cl.blm.trebol.jpa.entities.Customer;
 import cl.blm.trebol.jpa.entities.Product;
 import cl.blm.trebol.jpa.entities.Sell;
 import cl.blm.trebol.jpa.entities.SellDetail;
+import cl.blm.trebol.jpa.entities.SellStatus;
 import cl.blm.trebol.jpa.entities.SellType;
 import cl.blm.trebol.jpa.repositories.ProductsRepository;
 import cl.blm.trebol.jpa.repositories.SalesRepository;
@@ -116,6 +117,8 @@ public class CheckoutServiceImpl
       entityDetails.add(e);
     }
 
+    String session = authorization.substring(authorization.length()-21,authorization.length()-1);
+
     Date date = Date.from(Instant.now());
     SellType sellType = new SellType();
     sellType.setId(1);
@@ -123,16 +126,19 @@ public class CheckoutServiceImpl
     Sell target = new Sell();
     target.setDate(date);
     target.setType(sellType);
-    target.setDetails(entityDetails);
-    target.setTotalValue(totalValue);
     target.setCustomer(customer);
+    target.setStatus(new SellStatus(1));
+    target.setSessionExtract(session);
+    target.setTotalValue(totalValue);
+    target.setTotalItems(cartDetails.size());
+    target.setDetails(entityDetails);
     target = salesRepository.saveAndFlush(target);
 
     SellPojo result = conversionService.convert(target, SellPojo.class);
 
     WebpayCheckoutRequestPojo transaction = new WebpayCheckoutRequestPojo();
     transaction.setTransactionId(result.getId().toString());
-    transaction.setSessionId(authorization);
+    transaction.setSessionId(session);
     transaction.setAmount(totalValue);
     return transaction;
   }
