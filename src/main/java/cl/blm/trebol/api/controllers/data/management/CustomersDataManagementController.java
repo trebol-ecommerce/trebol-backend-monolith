@@ -45,26 +45,26 @@ public class CustomersDataManagementController
 
   @Override
   @PostMapping("/customers")
-  @PreAuthorize("hasAuthority('clients:create')")
+  @PreAuthorize("hasAuthority('customers:create')")
   public Integer create(@RequestBody @Valid CustomerPojo input) {
     return super.create(input);
   }
 
   @Override
   @GetMapping("/customers/{id}")
-  @PreAuthorize("hasAuthority('clients:read')")
+  @PreAuthorize("hasAuthority('customers:read')")
   public CustomerPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @GetMapping("/customers")
-  @PreAuthorize("hasAuthority('clients:read')")
+  @PreAuthorize("hasAuthority('customers:read')")
   public Collection<CustomerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping("/customers/{requestPageSize}")
-  @PreAuthorize("hasAuthority('clients:read')")
+  @PreAuthorize("hasAuthority('customers:read')")
   public Collection<CustomerPojo> readMany(@PathVariable Integer requestPageSize,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, null, allRequestParams);
@@ -72,28 +72,28 @@ public class CustomersDataManagementController
 
   @Override
   @GetMapping("/customers/{requestPageSize}/{requestPageIndex}")
-  @PreAuthorize("hasAuthority('clients:read')")
+  @PreAuthorize("hasAuthority('customers:read')")
   public Collection<CustomerPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
       @RequestParam Map<String, String> allRequestParams) {
     return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
   }
 
   @PutMapping("/customers")
-  @PreAuthorize("hasAuthority('clients:update')")
+  @PreAuthorize("hasAuthority('customers:update')")
   public Integer update(@RequestBody @Valid CustomerPojo input) {
     return super.update(input, input.getId());
   }
 
   @Override
   @PutMapping("/customers/{id}")
-  @PreAuthorize("hasAuthority('clients:update')")
+  @PreAuthorize("hasAuthority('customers:update')")
   public Integer update(@RequestBody @Valid CustomerPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
   @DeleteMapping("/customers/{id}")
-  @PreAuthorize("hasAuthority('clients:delete')")
+  @PreAuthorize("hasAuthority('customers:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }
