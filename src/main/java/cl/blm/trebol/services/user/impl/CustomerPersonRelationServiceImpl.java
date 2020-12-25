@@ -19,14 +19,14 @@ import cl.blm.trebol.services.user.CustomerPersonRelationService;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @Service
-public class ClientPersonRelationServiceImpl
+public class CustomerPersonRelationServiceImpl
     implements CustomerPersonRelationService {
 
   private final CustomersRepository clientsRepository;
   private final ConversionService conversionService;
 
   @Autowired
-  public ClientPersonRelationServiceImpl(CustomersRepository clientsRepository, ConversionService conversionService) {
+  public CustomerPersonRelationServiceImpl(CustomersRepository clientsRepository, ConversionService conversionService) {
     this.clientsRepository = clientsRepository;
     this.conversionService = conversionService;
   }
