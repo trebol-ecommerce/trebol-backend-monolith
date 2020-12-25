@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestClientException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.api.pojo.CustomerPojo;
 import cl.blm.trebol.api.pojo.PersonPojo;
@@ -22,10 +24,13 @@ import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.SellPojo;
 import cl.blm.trebol.api.pojo.WebpayCheckoutResponsePojo;
 import cl.blm.trebol.api.pojo.WebpayCheckoutRequestPojo;
+import cl.blm.trebol.api.pojo.WebpayValidationRequestPojo;
+import cl.blm.trebol.api.pojo.WebpayValidationResponsePojo;
 import cl.blm.trebol.config.CheckoutConfig;
 import cl.blm.trebol.http.RestClient;
 import cl.blm.trebol.jpa.entities.Customer;
 import cl.blm.trebol.jpa.entities.Product;
+import cl.blm.trebol.jpa.entities.QSell;
 import cl.blm.trebol.jpa.entities.Sell;
 import cl.blm.trebol.jpa.entities.SellDetail;
 import cl.blm.trebol.jpa.entities.SellStatus;
@@ -106,6 +111,17 @@ public class CheckoutServiceImpl
     return payload;
   }
 
+  private String webpayValidationAsJSON(String token) throws RuntimeException {
+    WebpayValidationRequestPojo source = new WebpayValidationRequestPojo(token);
+    String payload;
+    try {
+      payload = objectMapper.writeValueAsString(source);
+    } catch (JsonProcessingException exc) {
+      throw new RuntimeException("The transaction data could not be parsed as JSON");
+    }
+    return payload;
+  }
+
   private WebpayCheckoutResponsePojo requestTransactionToCheckoutServer(WebpayCheckoutRequestPojo transaction) throws RuntimeException {
     String payload = this.webpayTransactionAsJSON(transaction);
     String originUrl = checkoutConfig.getOriginURL();
@@ -122,6 +138,24 @@ public class CheckoutServiceImpl
       throw new RuntimeException("The checkout server had a problem starting the transaction", exc);
     } catch (JsonProcessingException ex) {
       throw new RuntimeException("The checkout server generated an incorrect response after starting the transaction", ex);
+    }
+  }
+
+  private WebpayValidationResponsePojo requestValidationFromCheckoutServer(String transactionToken) throws RuntimeException {
+    String payload = this.webpayValidationAsJSON(transactionToken);
+    String originUrl = checkoutConfig.getOriginURL();
+    String serverUrl = checkoutConfig.getServerURL();
+    String uri = checkoutConfig.getResourceURI();
+    RestClient restClient = new RestClient(originUrl, serverUrl);
+
+    try {
+      String requestResult = restClient.post(uri, payload);
+      WebpayValidationResponsePojo data = objectMapper.readValue(requestResult, WebpayValidationResponsePojo.class);
+      return data;
+    } catch (RestClientException exc) {
+      throw new RuntimeException("The checkout server had a problem validating the transaction", exc);
+    } catch (JsonProcessingException ex) {
+      throw new RuntimeException("The checkout server generated an incorrect response after validating the transaction", ex);
     }
   }
 
@@ -176,7 +210,27 @@ public class CheckoutServiceImpl
 
   @Override
   public Integer confirmWebpayTransactionResult(String transactionToken) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    QSell qSell = QSell.sell;
+    Predicate associatedToTransactionToken = qSell.token.eq(transactionToken);
+    Optional<Sell> match = salesRepository.findOne(associatedToTransactionToken);
+    if (!match.isPresent()) {
+      return 1;
+    }
+    Sell foundMatch = match.get();
+
+    WebpayValidationResponsePojo validationResponse = this.requestValidationFromCheckoutServer(transactionToken);
+    Integer responseCode = validationResponse.getResponseCode();
+
+    switch (responseCode) {
+      case 0:
+        foundMatch.setStatus(new SellStatus(4));
+        salesRepository.saveAndFlush(foundMatch);
+        break;
+    }
+
+    Integer buyOrder = Integer.valueOf(validationResponse.getBuyOrder());
+
+    return buyOrder;
   }
 
 }
