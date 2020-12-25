@@ -33,7 +33,7 @@ import cl.blm.trebol.services.crud.GenericCrudService;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
-@RequestMapping("/data")
+@RequestMapping("/data/sales")
 public class SalesDataManagementController
     extends GenericCrudController<SellPojo, Sell, Integer> {
 
@@ -42,56 +42,35 @@ public class SalesDataManagementController
     super(globals, crudService);
   }
 
+  @GetMapping
+  @PreAuthorize("hasAuthority('sales:read')")
+  public Collection<SellPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    return super.readMany(null, null, allRequestParams);
+  }
+
   @Override
-  @PostMapping("/sales")
+  @PostMapping
   @PreAuthorize("hasAuthority('sales:create')")
   public Integer create(@RequestBody @Valid SellPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/sales/{id}")
+  @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('sales:read')")
   public SellPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/sales")
-  @PreAuthorize("hasAuthority('sales:read')")
-  public Collection<SellPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
-  }
-
-//  @GetMapping("/sales/{requestPageSize}")
-//  @PreAuthorize("hasAuthority('sales:read')")
-//  public Collection<SellPojo> readMany(@PathVariable Integer requestPageSize,
-//      @RequestParam Map<String, String> allRequestParams) {
-//    return super.readMany(requestPageSize, null, allRequestParams);
-//  }
-//
-//  @Override
-//  @GetMapping("/sales/{requestPageSize}/{requestPageIndex}")
-//  @PreAuthorize("hasAuthority('sales:read')")
-//  public Collection<SellPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
-//      @RequestParam Map<String, String> allRequestParams) {
-//    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
-//  }
-//
-//  @PutMapping("/sales")
-//  @PreAuthorize("hasAuthority('sales:update')")
-//  public Integer update(@RequestBody @Valid SellPojo input) {
-//    return super.update(input, input.getId());
-//  }
-
   @Override
-  @PutMapping("/sales/{id}")
+  @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('sales:update')")
   public Integer update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/sales/{id}")
+  @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('sales:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);

@@ -33,7 +33,7 @@ import cl.blm.trebol.services.crud.GenericCrudService;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
-@RequestMapping("/data")
+@RequestMapping("/data/customers")
 public class CustomersDataManagementController
     extends GenericCrudController<CustomerPojo, Customer, Integer> {
 
@@ -43,56 +43,35 @@ public class CustomersDataManagementController
     super(globals, crudService);
   }
 
+  @GetMapping
+  @PreAuthorize("hasAuthority('customers:read')")
+  public Collection<CustomerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    return super.readMany(null, null, allRequestParams);
+  }
+
   @Override
-  @PostMapping("/customers")
+  @PostMapping
   @PreAuthorize("hasAuthority('customers:create')")
   public Integer create(@RequestBody @Valid CustomerPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/customers/{id}")
+  @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('customers:read')")
   public CustomerPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/customers")
-  @PreAuthorize("hasAuthority('customers:read')")
-  public Collection<CustomerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
-  }
-
-  @GetMapping("/customers/{requestPageSize}")
-  @PreAuthorize("hasAuthority('customers:read')")
-  public Collection<CustomerPojo> readMany(@PathVariable Integer requestPageSize,
-      @RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(requestPageSize, null, allRequestParams);
-  }
-
   @Override
-  @GetMapping("/customers/{requestPageSize}/{requestPageIndex}")
-  @PreAuthorize("hasAuthority('customers:read')")
-  public Collection<CustomerPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
-      @RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
-  }
-
-  @PutMapping("/customers")
-  @PreAuthorize("hasAuthority('customers:update')")
-  public Integer update(@RequestBody @Valid CustomerPojo input) {
-    return super.update(input, input.getId());
-  }
-
-  @Override
-  @PutMapping("/customers/{id}")
+  @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('customers:update')")
   public Integer update(@RequestBody @Valid CustomerPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/customers/{id}")
+  @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('customers:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);

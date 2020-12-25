@@ -33,7 +33,7 @@ import cl.blm.trebol.services.crud.GenericCrudService;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
-@RequestMapping("/data")
+@RequestMapping("/data/salespeople")
 public class SalespeopleDataManagementController
     extends GenericCrudController<SalespersonPojo, Salesperson, Integer> {
 
@@ -43,35 +43,35 @@ public class SalespeopleDataManagementController
     super(globals, crudService);
   }
 
-  @Override
-  @PostMapping("/salespeople")
-  @PreAuthorize("hasAuthority('salespeople:create')")
-  public Integer create(@RequestBody @Valid SalespersonPojo input) {
-    return super.create(input);
-  }
-
-  @Override
-  @GetMapping("/salespeople/{id}")
-  @PreAuthorize("hasAuthority('salespeople:read')")
-  public SalespersonPojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
-  }
-
-  @GetMapping("/salespeople")
+  @GetMapping
   @PreAuthorize("hasAuthority('salespeople:read')")
   public Collection<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @Override
-  @PutMapping("/salespeople/{id}")
+  @PostMapping
+  @PreAuthorize("hasAuthority('salespeople:create')")
+  public Integer create(@RequestBody @Valid SalespersonPojo input) {
+    return super.create(input);
+  }
+
+  @Override
+  @GetMapping("/{id}")
+  @PreAuthorize("hasAuthority('salespeople:read')")
+  public SalespersonPojo readOne(@PathVariable Integer id) {
+    return super.readOne(id);
+  }
+
+  @Override
+  @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('salespeople:update')")
   public Integer update(@RequestBody @Valid SalespersonPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/salespeople/{id}")
+  @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('salespeople:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
