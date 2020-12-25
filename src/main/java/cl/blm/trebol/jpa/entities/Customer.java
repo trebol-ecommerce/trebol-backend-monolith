@@ -1,8 +1,10 @@
 package cl.blm.trebol.jpa.entities;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,8 +32,8 @@ public class Customer
   @Basic(optional = false)
   @Column(name = "customer_id")
   private Integer id;
-  @JoinColumn(name = "person_id", referencedColumnName = "person_id")
-  @OneToOne(optional = false)
+  @JoinColumn(name = "person_id", referencedColumnName = "person_id", insertable = true, updatable = true)
+  @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Person person;
 
   public Customer() {
