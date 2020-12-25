@@ -125,7 +125,7 @@ public class User
 
   @Override
   public String toString() {
-    return "cl.blm.newmarketing.store.model.entities.User[ userId=" + id + " ]";
+    return "cl.blm.trebol.jpa.entities.User[ userId=" + id + " ]";
   }
 
 }

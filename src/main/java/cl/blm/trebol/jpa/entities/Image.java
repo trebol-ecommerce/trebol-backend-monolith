@@ -20,8 +20,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "images")
-@NamedQueries({
-    @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i")})
+@NamedQueries({ @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i") })
 public class Image
     implements GenericEntity<Integer> {
 
@@ -87,7 +86,7 @@ public class Image
 
     @Override
     public String toString() {
-        return "cl.blm.trebol.store.jpa.entities.Images[ imageId=" + id + " ]";
+        return "cl.blm.trebol.jpa.entities.Image[ id=" + id + " ]";
     }
 
 }

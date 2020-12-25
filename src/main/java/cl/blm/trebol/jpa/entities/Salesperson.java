@@ -1,6 +1,7 @@
 package cl.blm.trebol.jpa.entities;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,44 +13,34 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import cl.blm.trebol.jpa.GenericEntity;
 
 /**
  *
- * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @Entity
-@Table(name = "sell_details")
-@NamedQueries({ @NamedQuery(name = "SellDetail.findAll", query = "SELECT s FROM SellDetail s") })
-public class SellDetail
+@Table(name = "salespeople")
+@NamedQueries({ @NamedQuery(name = "Salesperson.findAll", query = "SELECT s FROM Salesperson s") })
+public class Salesperson
     implements GenericEntity<Integer> {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
-  @Column(name = "sell_detail_id")
+  @Column(name = "salesperson_id")
   private Integer id;
-  @Basic(optional = false)
-  @NotNull
-  @Column(name = "sell_detail_units")
-  private int units;
-  @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = true, updatable = false)
-  @ManyToOne(optional = false, fetch = FetchType.EAGER)
-  private Product product;
+  @JoinColumn(name = "person_id", referencedColumnName = "person_id", insertable = true, updatable = true)
+  @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private Person person;
 
-  public SellDetail() {
+  public Salesperson() {
   }
 
-  public SellDetail(Integer sellDetailId) {
-    this.id = sellDetailId;
-  }
-
-  public SellDetail(Integer sellDetailId, int sellDetailUnits) {
-    this.id = sellDetailId;
-    this.units = sellDetailUnits;
+  public Salesperson(Integer id) {
+    this.id = id;
   }
 
   public Integer getId() {
@@ -60,20 +51,12 @@ public class SellDetail
     this.id = id;
   }
 
-  public int getUnits() {
-    return units;
+  public Person getPerson() {
+    return person;
   }
 
-  public void setUnits(int units) {
-    this.units = units;
-  }
-
-  public Product getProduct() {
-    return product;
-  }
-
-  public void setProduct(Product product) {
-    this.product = product;
+  public void setPerson(Person person) {
+    this.person = person;
   }
 
   @Override
@@ -86,10 +69,10 @@ public class SellDetail
   @Override
   public boolean equals(Object object) {
     // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof SellDetail)) {
+    if (!(object instanceof Salesperson)) {
       return false;
     }
-    SellDetail other = (SellDetail) object;
+    Salesperson other = (Salesperson)object;
     if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
       return false;
     }
@@ -98,6 +81,7 @@ public class SellDetail
 
   @Override
   public String toString() {
-    return "cl.blm.trebol.jpa.entities.SellDetail[ id=" + id + " ]";
+    return "cl.blm.trebol.jpa.entities.Salesperson[ id=" + id + " ]";
   }
+
 }

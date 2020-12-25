@@ -26,73 +26,73 @@ import javax.persistence.Table;
 public class ProductImage
     implements GenericEntity<Integer> {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "product_image_id")
-    private Integer id;
-    @JoinColumn(name = "image_id", referencedColumnName = "image_id", insertable = true, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Image image;
-    @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = true, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Product product;
+  private static final long serialVersionUID = 1L;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Basic(optional = false)
+  @Column(name = "product_image_id")
+  private Integer id;
+  @JoinColumn(name = "image_id", referencedColumnName = "image_id", insertable = true, updatable = false)
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  private Image image;
+  @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = true, updatable = false)
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  private Product product;
 
-    public ProductImage() {
-    }
+  public ProductImage() {
+  }
 
-    public ProductImage(Integer productImageId) {
-        this.id = productImageId;
-    }
+  public ProductImage(Integer productImageId) {
+      this.id = productImageId;
+  }
 
-    public Integer getId() {
-        return id;
-    }
+  public Integer getId() {
+      return id;
+  }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+  public void setId(Integer id) {
+      this.id = id;
+  }
 
-    public Image getImage() {
-        return image;
-    }
+  public Image getImage() {
+      return image;
+  }
 
-    public void setImage(Image image) {
-        this.image = image;
-    }
+  public void setImage(Image image) {
+      this.image = image;
+  }
 
-    public Product getProduct() {
-        return product;
-    }
+  public Product getProduct() {
+      return product;
+  }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+  public void setProduct(Product product) {
+      this.product = product;
+  }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+  @Override
+  public int hashCode() {
+      int hash = 0;
+      hash += (id != null ? id.hashCode() : 0);
+      return hash;
+  }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProductImage)) {
-            return false;
-        }
-        ProductImage other = (ProductImage) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+  @Override
+  public boolean equals(Object object) {
+      // TODO: Warning - this method won't work in the case the id fields are not set
+      if (!(object instanceof ProductImage)) {
+          return false;
+      }
+      ProductImage other = (ProductImage) object;
+      if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+          return false;
+      }
+      return true;
+  }
 
-    @Override
-    public String toString() {
-        return "cl.blm.trebol.store.jpa.entities.ProductImages[ productImageId=" + id + " ]";
-    }
+  @Override
+  public String toString() {
+      return "cl.blm.trebol.jpa.entities.ProductImage[ id=" + id + " ]";
+  }
 
 }

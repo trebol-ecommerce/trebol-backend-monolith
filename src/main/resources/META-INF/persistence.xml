@@ -4,9 +4,7 @@
     <class>cl.blm.trebol.jpa.entities.Image</class>
     <class>cl.blm.trebol.jpa.entities.Param</class>
     <class>cl.blm.trebol.jpa.entities.Product</class>
-    <class>cl.blm.trebol.jpa.entities.Client</class>
     <class>cl.blm.trebol.jpa.entities.SellType</class>
-    <class>cl.blm.trebol.jpa.entities.Seller</class>
     <class>cl.blm.trebol.jpa.entities.User</class>
     <class>cl.blm.trebol.jpa.entities.Permission</class>
     <class>cl.blm.trebol.jpa.entities.ProductType</class>
@@ -17,6 +15,9 @@
     <class>cl.blm.trebol.jpa.entities.ProductFamily</class>
     <class>cl.blm.trebol.jpa.entities.UserRole</class>
     <class>cl.blm.trebol.jpa.entities.Session</class>
+    <class>cl.blm.trebol.jpa.entities.SellStatus</class>
+    <class>cl.blm.trebol.jpa.entities.Salesperson</class>
+    <class>cl.blm.trebol.jpa.entities.Customer</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
   </persistence-unit>
 </persistence>

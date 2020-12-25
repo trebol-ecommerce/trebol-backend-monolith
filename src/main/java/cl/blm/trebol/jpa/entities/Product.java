@@ -151,7 +151,7 @@ public class Product
 
   @Override
   public String toString() {
-    return "cl.blm.newmarketing.store.model.entities.Product[ productId=" + id + " ]";
+    return "cl.blm.jpa.entities.Product[ id=" + id + " ]";
   }
 
 }

@@ -19,44 +19,32 @@ import cl.blm.trebol.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @Entity
-@Table(name = "app_params")
-@NamedQueries({ @NamedQuery(name = "Param.findAll", query = "SELECT p FROM Param p") })
-public class Param
+@Table(name = "sell_statuses")
+@NamedQueries({ @NamedQuery(name = "SellStatus.findAll", query = "SELECT s FROM SellStatus s") })
+public class SellStatus
     implements GenericEntity<Integer> {
+
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
-  @Column(name = "param_id")
+  @Column(name = "sell_status_id")
   private Integer id;
   @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 25)
-  @Column(name = "param_category")
-  private String category;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 50)
-  @Column(name = "param_name")
+  @NotNull @Size(min = 1, max = 100)
+  @Column(name = "sell_status_name")
   private String name;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 500)
-  @Column(name = "param_value")
-  private String value;
 
-  public Param() {
+  public SellStatus() {
   }
 
-  public Param(Integer paramId) {
-    this.id = paramId;
+  public SellStatus(Integer sellStatusId) {
+    this.id = sellStatusId;
   }
 
-  public Param(Integer paramId, String paramCategory, String paramName, String paramValue) {
-    this.id = paramId;
-    this.category = paramCategory;
-    this.name = paramName;
-    this.value = paramValue;
+  public SellStatus(Integer sellStatusId, String sellStatusName) {
+    this.id = sellStatusId;
+    this.name = sellStatusName;
   }
 
   public Integer getId() {
@@ -67,28 +55,12 @@ public class Param
     this.id = id;
   }
 
-  public String getCategory() {
-    return category;
-  }
-
-  public void setCategory(String category) {
-    this.category = category;
-  }
-
   public String getName() {
     return name;
   }
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public String getValue() {
-    return value;
-  }
-
-  public void setValue(String value) {
-    this.value = value;
   }
 
   @Override
@@ -101,10 +73,10 @@ public class Param
   @Override
   public boolean equals(Object object) {
     // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof Param)) {
+    if (!(object instanceof SellStatus)) {
       return false;
     }
-    Param other = (Param)object;
+    SellStatus other = (SellStatus)object;
     if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
       return false;
     }
@@ -113,7 +85,7 @@ public class Param
 
   @Override
   public String toString() {
-    return "cl.blm.trebol.jpa.entities.Param[ id=" + id + " ]";
+    return "cl.blm.trebol.jpa.entities.SellStatus[ id=" + id + " ]";
   }
 
 }

@@ -22,13 +22,13 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import cl.blm.trebol.jpa.entities.QSell;
-import cl.blm.trebol.api.pojo.ClientPojo;
+import cl.blm.trebol.api.pojo.CustomerPojo;
 import cl.blm.trebol.api.pojo.PersonPojo;
 import cl.blm.trebol.api.pojo.ProductPojo;
 import cl.blm.trebol.api.pojo.SellDetailPojo;
 import cl.blm.trebol.api.pojo.SellPojo;
 import cl.blm.trebol.api.pojo.SellTypePojo;
-import cl.blm.trebol.api.pojo.SellerPojo;
+import cl.blm.trebol.api.pojo.SalespersonPojo;
 import cl.blm.trebol.jpa.entities.Sell;
 import cl.blm.trebol.jpa.entities.SellDetail;
 import cl.blm.trebol.jpa.repositories.SalesRepository;
@@ -54,16 +54,16 @@ public class SellCrudServiceImpl
     this.conversion = conversion;
   }
 
-  private ClientPojo convertClientToPojo(Sell source) {
-    ClientPojo client = conversion.convert(source.getClient(), ClientPojo.class);
-    PersonPojo person = conversion.convert(source.getClient().getPerson(), PersonPojo.class);
-    client.setPerson(person);
-    return client;
+  private CustomerPojo convertCustomerToPojo(Sell source) {
+    CustomerPojo customer = conversion.convert(source.getCustomer(), CustomerPojo.class);
+    PersonPojo person = conversion.convert(source.getCustomer().getPerson(), PersonPojo.class);
+    customer.setPerson(person);
+    return customer;
   }
 
   private List<SellDetailPojo> convertDetailsToPojo(Sell source) {
     List<SellDetailPojo> sellDetails = new ArrayList<>();
-    for (SellDetail sourceSellDetail : source.getSellDetails()) {
+    for (SellDetail sourceSellDetail : source.getDetails()) {
       SellDetailPojo targetSellDetail = conversion.convert(sourceSellDetail, SellDetailPojo.class);
       ProductPojo product = conversion.convert(sourceSellDetail.getProduct(), ProductPojo.class);
       targetSellDetail.setProduct(product);
@@ -72,25 +72,25 @@ public class SellCrudServiceImpl
     return sellDetails;
   }
 
-  private SellerPojo convertSellerToPojo(Sell source) {
-    SellerPojo seller = conversion.convert(source.getSeller(), SellerPojo.class);
-    PersonPojo person = conversion.convert(source.getSeller().getPerson(), PersonPojo.class);
-    seller.setPerson(person);
-    return seller;
+  private SalespersonPojo convertSalespersonToPojo(Sell source) {
+    SalespersonPojo target = conversion.convert(source.getSalesperson(), SalespersonPojo.class);
+    PersonPojo person = conversion.convert(source.getSalesperson().getPerson(), PersonPojo.class);
+    target.setPerson(person);
+    return target;
   }
 
   @Override
   public SellPojo entity2Pojo(Sell source) {
     SellPojo target = conversion.convert(source, SellPojo.class);
-    SellTypePojo sellType = conversion.convert(source.getSellType(), SellTypePojo.class);
+    SellTypePojo sellType = conversion.convert(source.getType(), SellTypePojo.class);
     target.setSellType(sellType);
 
-    ClientPojo client = convertClientToPojo(source);
-    target.setClient(client);
+    CustomerPojo customer = convertCustomerToPojo(source);
+    target.setCustomer(customer);
 
-    if (source.getSeller() != null) {
-      SellerPojo seller = convertSellerToPojo(source);
-      target.setSeller(seller);
+    if (source.getSalesperson()!= null) {
+      SalespersonPojo salesperson = convertSalespersonToPojo(source);
+      target.setSalesperson(salesperson);
     }
 
     return target;

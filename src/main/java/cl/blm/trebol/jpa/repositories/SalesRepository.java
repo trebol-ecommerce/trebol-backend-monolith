@@ -21,13 +21,13 @@ import cl.blm.trebol.jpa.entities.Sell;
 public interface SalesRepository
     extends GenericRepository<Sell, Integer> {
 
-  @Query(value = "SELECT s FROM Sell s JOIN FETCH s.sellType JOIN FETCH s.client JOIN FETCH s.seller", countQuery = "SELECT COUNT(s.id) FROM Sell s")
+  @Query(value = "SELECT s FROM Sell s JOIN FETCH s.type JOIN FETCH s.customer JOIN FETCH s.salesperson", countQuery = "SELECT COUNT(s.id) FROM Sell s")
   Page<Sell> deepFindAll(Pageable pageable);
 
-  @Query(value = "SELECT s FROM Sell s JOIN FETCH s.sellType JOIN FETCH s.client JOIN FETCH s.seller", countQuery = "SELECT COUNT(s.id) FROM Sell s")
+  @Query(value = "SELECT s FROM Sell s JOIN FETCH s.type JOIN FETCH s.customer JOIN FETCH s.salesperson", countQuery = "SELECT COUNT(s.id) FROM Sell s")
   Page<Sell> deepFindAll(Predicate filters, Pageable pageable);
 
-  @Query(value = "SELECT s FROM Sell s JOIN FETCH s.sellType JOIN FETCH s.client JOIN FETCH s.seller "
-      + "JOIN FETCH s.sellDetails WHERE s.id = :id")
+  @Query(value = "SELECT s FROM Sell s JOIN FETCH s.type JOIN FETCH s.customer JOIN FETCH s.salesperson"
+      + " JOIN FETCH s.details WHERE s.id = :id")
   Optional<Sell> deepFindById(@Param("id") Integer id);
 }

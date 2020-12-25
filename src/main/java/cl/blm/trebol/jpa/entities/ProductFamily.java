@@ -86,7 +86,7 @@ public class ProductFamily
 
   @Override
   public String toString() {
-    return "cl.blm.newmarketing.store.model.entities.ProductFamily[ productFamilyId=" + id + " ]";
+    return "cl.blm.trbol.jpa.entities.ProductFamily[ id=" + id + " ]";
   }
 
 }

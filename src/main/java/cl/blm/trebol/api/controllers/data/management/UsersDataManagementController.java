@@ -33,7 +33,7 @@ import cl.blm.trebol.services.crud.GenericCrudService;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
-@RequestMapping("/data")
+@RequestMapping("/data/users")
 public class UsersDataManagementController
     extends GenericCrudController<UserPojo, User, Integer> {
 
@@ -43,56 +43,35 @@ public class UsersDataManagementController
     super(globals, crudService);
   }
 
+  @GetMapping
+  @PreAuthorize("hasAuthority('users:read')")
+  public Collection<UserPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    return super.readMany(null, null, allRequestParams);
+  }
+
   @Override
-  @PostMapping("/users")
+  @PostMapping
   @PreAuthorize("hasAuthority('users:create')")
   public Integer create(@RequestBody @Valid UserPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/users/{id}")
+  @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('users:read')")
   public UserPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
-  @GetMapping("/users")
-  @PreAuthorize("hasAuthority('users:read')")
-  public Collection<UserPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
-  }
-
-//  @GetMapping("/users/{requestPageSize}")
-//  @PreAuthorize("hasAuthority('users:read')")
-//  public Collection<UserPojo> readMany(@PathVariable Integer requestPageSize,
-//      @RequestParam Map<String, String> allRequestParams) {
-//    return super.readMany(requestPageSize, null, allRequestParams);
-//  }
-//
-//  @Override
-//  @GetMapping("/users/{requestPageSize}/{requestPageIndex}")
-//  @PreAuthorize("hasAuthority('users:read')")
-//  public Collection<UserPojo> readMany(@PathVariable Integer requestPageSize, @PathVariable Integer requestPageIndex,
-//      @RequestParam Map<String, String> allRequestParams) {
-//    return super.readMany(requestPageSize, requestPageIndex, allRequestParams);
-//  }
-//
-//  @PutMapping("/users")
-//  @PreAuthorize("hasAuthority('users:update')")
-//  public Integer update(@RequestBody @Valid UserPojo input) {
-//    return super.update(input, input.getId());
-//  }
-
   @Override
-  @PutMapping("/users/{id}")
+  @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('users:update')")
   public Integer update(@RequestBody @Valid UserPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/users/{id}")
+  @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('users:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
