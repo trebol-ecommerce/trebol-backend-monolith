@@ -34,11 +34,11 @@ import cl.blm.trebol.services.crud.GenericCrudService;
  */
 @RestController
 @RequestMapping("/data")
-public class SellersDataManagementController
+public class SalespeopleDataManagementController
     extends GenericCrudController<SalespersonPojo, Salesperson, Integer> {
 
   @Autowired
-  public SellersDataManagementController(CustomProperties globals,
+  public SalespeopleDataManagementController(CustomProperties globals,
       GenericCrudService<SalespersonPojo, Salesperson, Integer> crudService) {
     super(globals, crudService);
   }
