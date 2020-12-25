@@ -72,8 +72,11 @@ public class StoreCheckoutController {
     String tokenWs = transactionFormData.getFirst(checkoutConfig.getTransactionTokenPostDataKey());
     String returnUrl;
     try {
-      checkoutService.confirmWebpayTransactionResult(tokenWs);
-      returnUrl = checkoutConfig.getSuccessPageURL();
+      Integer buyOrder = checkoutService.confirmWebpayTransactionResult(tokenWs);
+      StringBuilder sb = new StringBuilder()
+          .append(checkoutConfig.getSuccessPageURL())
+          .append("/").append(buyOrder);
+      returnUrl = sb.toString();
     } catch (Exception exc) {
       returnUrl = checkoutConfig.getFailurePageURL();
     }
