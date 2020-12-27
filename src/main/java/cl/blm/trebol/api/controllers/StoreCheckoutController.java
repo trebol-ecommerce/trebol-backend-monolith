@@ -83,6 +83,7 @@ public class StoreCheckoutController {
           .append("/").append(buyOrder);
       returnUrl = sb.toString();
     } catch (Exception exc) {
+      LOG.warn("Could not validate the transaction", exc);
       returnUrl = checkoutConfig.getFailurePageURL();
     }
     LOG.debug("Validation is complete, redirecting to {}", returnUrl);
