@@ -27,7 +27,10 @@ public interface SalesRepository
   @Query(value = "SELECT s FROM Sell s JOIN FETCH s.type JOIN FETCH s.customer JOIN FETCH s.salesperson", countQuery = "SELECT COUNT(s.id) FROM Sell s")
   Page<Sell> deepFindAll(Predicate filters, Pageable pageable);
 
-  @Query(value = "SELECT s FROM Sell s JOIN FETCH s.type JOIN FETCH s.customer JOIN FETCH s.salesperson"
+  @Query(value = "SELECT s FROM Sell s JOIN FETCH s.type JOIN FETCH s.status JOIN FETCH s.customer JOIN FETCH s.salesperson"
       + " JOIN FETCH s.details WHERE s.id = :id")
   Optional<Sell> deepFindById(@Param("id") Integer id);
+
+  @Query(value = "SELECT s FROM Sell s JOIN FETCH s.details WHERE s.id = :id")
+  Optional<Sell> findByIdWithDetails(@Param("id") Integer id);
 }
