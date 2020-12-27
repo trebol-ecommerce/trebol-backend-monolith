@@ -145,7 +145,7 @@ public class CheckoutServiceImpl
     String payload = this.webpayValidationAsJSON(transactionToken);
     String originUrl = checkoutConfig.getOriginURL();
     String serverUrl = checkoutConfig.getServerURL();
-    String uri = checkoutConfig.getResourceURI();
+    String uri = checkoutConfig.getTransactionValidationResourceURI();
     RestClient restClient = new RestClient(originUrl, serverUrl);
 
     try {
