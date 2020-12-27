@@ -150,6 +150,7 @@ public class CheckoutServiceImpl
 
     try {
       String requestResult = restClient.post(uri, payload);
+      LOG.debug("The validation request got the following raw response: {}", requestResult);
       WebpayValidationResponsePojo data = objectMapper.readValue(requestResult, WebpayValidationResponsePojo.class);
       return data;
     } catch (RestClientException exc) {
@@ -214,12 +215,13 @@ public class CheckoutServiceImpl
     Predicate associatedToTransactionToken = qSell.token.eq(transactionToken);
     Optional<Sell> match = salesRepository.findOne(associatedToTransactionToken);
     if (!match.isPresent()) {
-      return 1;
+      throw new RuntimeException("The provided token did not match any sell transaction");
     }
     Sell foundMatch = match.get();
 
     WebpayValidationResponsePojo validationResponse = this.requestValidationFromCheckoutServer(transactionToken);
     Integer responseCode = validationResponse.getResponseCode();
+    LOG.debug("The response code of this transaction was: {}", responseCode);
 
     switch (responseCode) {
       case 0:

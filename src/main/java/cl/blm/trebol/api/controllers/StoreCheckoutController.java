@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import io.jsonwebtoken.Claims;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,7 @@ import cl.blm.trebol.services.security.AuthorizationHeaderParserService;
 @RestController
 @RequestMapping("/store/checkout")
 public class StoreCheckoutController {
+  private final Logger LOG = LoggerFactory.getLogger(StoreCheckoutController.class);
 
   private final CheckoutService checkoutService;
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
@@ -71,8 +74,10 @@ public class StoreCheckoutController {
   public ResponseEntity<Void> validateTransaction(@RequestBody MultiValueMap<String, String> transactionFormData) {
     String tokenWs = transactionFormData.getFirst(checkoutConfig.getTransactionTokenPostDataKey());
     String returnUrl;
+    LOG.debug("Validating transaction with token {}", tokenWs);
     try {
       Integer buyOrder = checkoutService.confirmWebpayTransactionResult(tokenWs);
+      LOG.debug("Webpay transaction confirmed. Result: {}", buyOrder);
       StringBuilder sb = new StringBuilder()
           .append(checkoutConfig.getSuccessPageURL())
           .append("/").append(buyOrder);
@@ -80,6 +85,7 @@ public class StoreCheckoutController {
     } catch (Exception exc) {
       returnUrl = checkoutConfig.getFailurePageURL();
     }
+    LOG.debug("Validation is complete, redirecting to {}", returnUrl);
     return ResponseEntity.status(HttpStatus.SEE_OTHER).header("Location", returnUrl).build();
   }
 }
