@@ -71,6 +71,7 @@ public class SecurityConfig
             "/store/categories",
             "/store/categories/*",
             "/store/product/*",
+            "/store/receipt/*",
             "/store/checkout/validate"
         ).permitAll()
         .anyRequest().authenticated();
