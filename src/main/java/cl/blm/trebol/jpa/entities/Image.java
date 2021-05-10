@@ -1,5 +1,7 @@
 package cl.blm.trebol.jpa.entities;
 
+import java.util.Objects;
+
 import cl.blm.trebol.jpa.GenericEntity;
 
 import javax.persistence.Basic;
@@ -22,71 +24,84 @@ import javax.validation.constraints.Size;
 @Table(name = "images")
 @NamedQueries({ @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i") })
 public class Image
-    implements GenericEntity<Integer> {
+  implements GenericEntity<Integer> {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "image_id")
-    private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 500)
-    @Column(name = "image_url")
-    private String url;
+  private static final long serialVersionUID = 1L;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Basic(optional = false)
+  @Column(name = "image_id")
+  private Integer id;
+  @Basic(optional = false)
+  @NotNull
+  @Size(min = 1, max = 100)
+  @Column(name = "image_filename")
+  private String filename;
+  @Basic(optional = false)
+  @NotNull
+  @Size(min = 1, max = 500)
+  @Column(name = "image_url")
+  private String url;
 
-    public Image() {
+  public Image() {
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getFilename() {
+    return filename;
+  }
+
+  public void setFilename(String filename) {
+    this.filename = filename;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
+  @Override
+  public String toString() {
+    return "Image{id=" + id + ", "
+        + "filename=" + filename + ", "
+        + "url=" + url + '}';
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    return hash;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
-
-    public Image(Integer imageId) {
-        this.id = imageId;
+    if (obj == null) {
+      return false;
     }
-
-    public Image(Integer imageId, String imageUrl) {
-        this.id = imageId;
-        this.url = imageUrl;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
-
-    public Integer getId() {
-        return id;
+    final Image other = (Image)obj;
+    if (!Objects.equals(this.filename, other.filename)) {
+      return false;
     }
-
-    public void setId(Integer id) {
-        this.id = id;
+    if (!Objects.equals(this.url, other.url)) {
+      return false;
     }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Image)) {
-            return false;
-        }
-        Image other = (Image) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "cl.blm.trebol.jpa.entities.Image[ id=" + id + " ]";
-    }
+    return true;
+  }
 
 }
