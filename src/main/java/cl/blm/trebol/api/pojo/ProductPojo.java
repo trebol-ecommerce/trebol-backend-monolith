@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * 
+ *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 public class ProductPojo {
@@ -33,7 +33,7 @@ public class ProductPojo {
   @JsonInclude(value = Include.NON_EMPTY)
   private Integer criticalStock;
   @JsonInclude(value = Include.NON_NULL)
-  private Collection<String> imagesURL;
+  private Collection<ImagePojo> images;
 
   public Integer getId() {
     return id;
@@ -99,12 +99,12 @@ public class ProductPojo {
     this.criticalStock = criticalStock;
   }
 
-  public Collection<String> getImagesURL() {
-    return imagesURL;
+  public Collection<ImagePojo> getImages() {
+    return images;
   }
 
-  public void setImagesURL(Collection<String> imagesURL) {
-    this.imagesURL = imagesURL;
+  public void setImages(Collection<ImagePojo> images) {
+    this.images = images;
   }
 
 }

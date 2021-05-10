@@ -1,5 +1,6 @@
 package cl.blm.trebol.services.crud.impl;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -17,6 +18,7 @@ import com.google.common.collect.Sets;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import cl.blm.trebol.api.pojo.ImagePojo;
 import cl.blm.trebol.jpa.entities.QProduct;
 import cl.blm.trebol.api.pojo.ProductPojo;
 import cl.blm.trebol.jpa.entities.Image;
@@ -53,12 +55,14 @@ public class ProductCrudServiceImpl
   public ProductPojo entity2Pojo(Product source) {
     ProductPojo target = conversion.convert(source, ProductPojo.class);
     Integer id = target.getId();
-    Iterable<ProductImage> images = imagesRepository.deepFindProductImagesByProductId(id);
-    for (ProductImage pi : images) {
-      Image sourceImg = pi.getImage();
-      Set<String> imageUrls = Sets.newHashSet(sourceImg.getUrl());
-      target.setImagesURL(imageUrls);
+
+    Set<ImagePojo> images = new HashSet<>();
+    for (ProductImage pi : imagesRepository.deepFindProductImagesByProductId(id)) {
+      Image sourceImage = pi.getImage();
+      ImagePojo targetImage = conversion.convert(sourceImage, ImagePojo.class);
+      images.add(targetImage);
     }
+    target.setImages(images);
     return target;
   }
 
