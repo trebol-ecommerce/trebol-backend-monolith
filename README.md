@@ -18,7 +18,7 @@ This application is the backend to the virtual web store app Trebol. It's writte
 Most common environment settings such as the server port and the connection details for the database are present in the default configuration profile in `/src/main/resources/application.properties`. You may edit that file if you want to try the application ASAP. 
 However, I recommend to copy-paste it to a new file and append a suffix to its name, e.g. `application-dev.properties`, so to keep profiles depending on the environment you're gonna use it on.
 
-Some core features remain hard-coded in the `cl.blm.trebol.store.config` package. This is expected to change in future releases.
+Some core features remain hard-coded in the `org.trebol.store.config` package. This is expected to change in future releases.
 
 ## Use
 

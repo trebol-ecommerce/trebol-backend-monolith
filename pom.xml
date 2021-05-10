@@ -10,7 +10,7 @@
     <version>2.3.4.RELEASE</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>cl.blm.trebol</groupId>
+  <groupId>org.trebol</groupId>
   <artifactId>trebol-backend</artifactId>
   <packaging>war</packaging>
   <version>0.14.1</version>
