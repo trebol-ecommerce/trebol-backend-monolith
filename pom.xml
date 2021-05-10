@@ -13,7 +13,7 @@
   <groupId>cl.blm.trebol</groupId>
   <artifactId>trebol-backend</artifactId>
   <packaging>war</packaging>
-  <version>0.14.0</version>
+  <version>0.14.1</version>
 
   <name>Trébol Backend</name>
 
@@ -92,6 +92,12 @@
     </dependency>
 
     <!-- MariaDB Driver -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.4.200</version>
+      <scope>runtime</scope>
+    </dependency>
     <dependency>
       <groupId>org.mariadb.jdbc</groupId>
       <artifactId>mariadb-java-client</artifactId>
