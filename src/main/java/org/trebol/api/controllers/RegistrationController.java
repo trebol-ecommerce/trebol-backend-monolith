@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.RegistrationPojo;
-import org.trebol.services.exceptions.PersonAlreadyExistsException;
-import org.trebol.services.exceptions.UserAlreadyExistsException;
-import org.trebol.services.exposed.RegistrationService;
+import org.trebol.jpa.exceptions.PersonAlreadyExistsException;
+import org.trebol.jpa.exceptions.UserAlreadyExistsException;
+import org.trebol.api.services.RegistrationService;
 
 /**
  *

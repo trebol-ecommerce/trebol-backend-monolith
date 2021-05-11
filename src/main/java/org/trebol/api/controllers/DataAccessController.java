@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.AuthorizedAccessPojo;
-import org.trebol.services.security.AuthorizationHeaderParserService;
-import org.trebol.services.security.AuthorizedApiService;
+import org.trebol.security.services.AuthorizationHeaderParserService;
+import org.trebol.security.services.AuthorizedApiService;
 
 @RestController
 @RequestMapping("/access")

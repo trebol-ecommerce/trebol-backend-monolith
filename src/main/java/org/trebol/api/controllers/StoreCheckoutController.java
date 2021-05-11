@@ -21,8 +21,8 @@ import org.trebol.api.pojo.SellDetailPojo;
 import org.trebol.api.pojo.WebpayCheckoutResponsePojo;
 import org.trebol.api.pojo.WebpayCheckoutRequestPojo;
 import org.trebol.config.CheckoutConfig;
-import org.trebol.services.exposed.CheckoutService;
-import org.trebol.services.security.AuthorizationHeaderParserService;
+import org.trebol.api.services.CheckoutService;
+import org.trebol.security.services.AuthorizationHeaderParserService;
 
 /**
  *

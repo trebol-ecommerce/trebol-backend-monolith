@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.PersonPojo;
 import org.trebol.jpa.entities.Person;
-import org.trebol.services.user.UserProfileService;
-import org.trebol.services.security.AuthorizationHeaderParserService;
+import org.trebol.services.UserProfileService;
+import org.trebol.security.services.AuthorizationHeaderParserService;
 
 @RestController
 public class ProfileController {

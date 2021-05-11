@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.trebol.config.SecurityProperties;
-import org.trebol.security.pojo.UsernamePasswordPojo;
+import org.trebol.api.pojo.UsernamePasswordPojo;
 
 public class JwtUsernamePasswordAuthenticationFilter
     extends UsernamePasswordAuthenticationFilter {

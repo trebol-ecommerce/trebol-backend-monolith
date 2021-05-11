@@ -25,7 +25,7 @@ import org.trebol.api.GenericCrudController;
 import org.trebol.api.pojo.UserPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.User;
-import org.trebol.services.crud.GenericCrudService;
+import org.trebol.jpa.services.GenericCrudService;
 
 /**
  * API point of entry for User entities
