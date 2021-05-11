@@ -11,7 +11,7 @@ import com.querydsl.core.types.Predicate;
 
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.GenericEntity;
-import org.trebol.services.crud.GenericCrudService;
+import org.trebol.jpa.services.GenericCrudService;
 
 /**
  * Abstraction for CrudControllers that communicate with a

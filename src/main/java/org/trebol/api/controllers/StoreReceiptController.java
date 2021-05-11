@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.ReceiptPojo;
-import org.trebol.services.exposed.ReceiptService;
+import org.trebol.api.services.ReceiptService;
 
 /**
  *

@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.Claims;
 
-import org.trebol.services.security.AuthorizationHeaderParserService;
+import org.trebol.security.services.AuthorizationHeaderParserService;
 
 public class JwtTokenVerifierFilter
     extends OncePerRequestFilter {

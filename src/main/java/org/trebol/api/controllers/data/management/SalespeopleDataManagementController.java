@@ -25,7 +25,7 @@ import org.trebol.api.GenericCrudController;
 import org.trebol.api.pojo.SalespersonPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.services.crud.GenericCrudService;
+import org.trebol.jpa.services.GenericCrudService;
 
 /**
  * API point of entry for Salesperson entities

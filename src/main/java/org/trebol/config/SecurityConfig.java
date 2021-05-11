@@ -21,7 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import org.trebol.security.JwtTokenVerifierFilter;
 import org.trebol.security.JwtUsernamePasswordAuthenticationFilter;
-import org.trebol.services.security.AuthorizationHeaderParserService;
+import org.trebol.security.services.AuthorizationHeaderParserService;
 
 @Configuration
 @EnableWebSecurity(debug = false)

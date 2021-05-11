@@ -14,7 +14,7 @@ import org.trebol.api.pojo.ProductFamilyPojo;
 import org.trebol.api.pojo.ProductPojo;
 import org.trebol.api.pojo.ProductTypePojo;
 import org.trebol.config.CustomProperties;
-import org.trebol.services.exposed.CatalogService;
+import org.trebol.api.services.CatalogService;
 
 @RestController
 @RequestMapping("/store")
