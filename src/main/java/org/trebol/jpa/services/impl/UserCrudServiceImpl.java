@@ -56,6 +56,7 @@ public class UserCrudServiceImpl
   }
 
   // TODO implement a more appropiate solution
+  @Nullable
   @Override
   public UserPojo entity2Pojo(User source) {
     UserPojo target = conversion.convert(source, UserPojo.class);
@@ -141,9 +142,13 @@ public class UserCrudServiceImpl
       return null;
     } else {
       User found = userById.get();
-      UserPojo foundPojo = entity2Pojo(found);
-      PersonPojo person = conversion.convert(found.getPerson(), PersonPojo.class);
-      foundPojo.setPerson(person);
+      UserPojo foundPojo = this.entity2Pojo(found);
+      if (foundPojo != null) {
+        PersonPojo person = conversion.convert(found.getPerson(), PersonPojo.class);
+        if (person != null) {
+          foundPojo.setPerson(person);
+        }
+      }
       return foundPojo;
     }
   }

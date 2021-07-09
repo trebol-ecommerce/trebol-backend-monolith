@@ -3,6 +3,8 @@ package org.trebol.api.services.impl;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import io.jsonwebtoken.lang.Maps;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,7 @@ public class CatalogServiceImpl
     return productsService.read(requestPageSize, requestPageIndex, filters);
   }
 
+  @Nullable
   @Override
   public ProductPojo readProduct(Integer id) {
     return productsService.find(id);

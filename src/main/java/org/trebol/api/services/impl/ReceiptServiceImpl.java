@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,7 @@ public class ReceiptServiceImpl
     this.conversionService = conversionService;
   }
 
+  @Nullable
   @Override
   public ReceiptPojo fetchReceiptById(int id) {
     Optional<Sell> match = salesRepository.findByIdWithDetails(id);
@@ -46,18 +49,22 @@ public class ReceiptServiceImpl
 
     ReceiptPojo target = conversionService.convert(foundMatch, ReceiptPojo.class);
 
-    List<ReceiptDetailPojo> targetDetails = new ArrayList<>();
-    for (SellDetail d : foundMatch.getDetails()) {
-      ReceiptDetailPojo targetDetail = conversionService.convert(d, ReceiptDetailPojo.class);
-      Product pd = d.getProduct();
-      ProductPojo targetDetailProduct = new ProductPojo();
-      targetDetailProduct.setName(pd.getName());
-      targetDetailProduct.setBarcode(pd.getBarcode());
-      targetDetailProduct.setPrice(pd.getPrice());
-      targetDetail.setProduct(targetDetailProduct);
-      targetDetails.add(targetDetail);
+    if (target != null) {
+      List<ReceiptDetailPojo> targetDetails = new ArrayList<>();
+      for (SellDetail d : foundMatch.getDetails()) {
+        ReceiptDetailPojo targetDetail = conversionService.convert(d, ReceiptDetailPojo.class);
+        if (targetDetail != null) {
+          Product pd = d.getProduct();
+          ProductPojo targetDetailProduct = new ProductPojo();
+          targetDetailProduct.setName(pd.getName());
+          targetDetailProduct.setBarcode(pd.getBarcode());
+          targetDetailProduct.setPrice(pd.getPrice());
+          targetDetail.setProduct(targetDetailProduct);
+          targetDetails.add(targetDetail);
+        }
+      }
+      target.setDetails(targetDetails);
     }
-    target.setDetails(targetDetails);
 
     return target;
   }

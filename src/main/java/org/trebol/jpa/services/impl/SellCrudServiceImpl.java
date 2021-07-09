@@ -3,10 +3,13 @@ package org.trebol.jpa.services.impl;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,8 @@ import org.trebol.api.pojo.SellDetailPojo;
 import org.trebol.api.pojo.SellPojo;
 import org.trebol.api.pojo.SellTypePojo;
 import org.trebol.api.pojo.SalespersonPojo;
+import org.trebol.jpa.entities.Customer;
+import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.repositories.SalesRepository;
@@ -55,48 +59,69 @@ public class SellCrudServiceImpl
     this.conversion = conversion;
   }
 
-  private CustomerPojo convertCustomerToPojo(Sell source) {
-    CustomerPojo customer = conversion.convert(source.getCustomer(), CustomerPojo.class);
-    PersonPojo person = conversion.convert(source.getCustomer().getPerson(), PersonPojo.class);
-    customer.setPerson(person);
+  @Nullable
+  private CustomerPojo convertCustomerToPojo(Customer source) {
+    CustomerPojo customer = conversion.convert(source, CustomerPojo.class);
+    if (customer != null) {
+      PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
+      if (person != null) {
+        customer.setPerson(person);
+      }
+    }
     return customer;
   }
 
-  private List<SellDetailPojo> convertDetailsToPojo(Sell source) {
+  private List<SellDetailPojo> convertDetailsToPojo(Collection<SellDetail> source) {
     List<SellDetailPojo> sellDetails = new ArrayList<>();
-    for (SellDetail sourceSellDetail : source.getDetails()) {
+    for (SellDetail sourceSellDetail : source) {
       SellDetailPojo targetSellDetail = conversion.convert(sourceSellDetail, SellDetailPojo.class);
-      ProductPojo product = conversion.convert(sourceSellDetail.getProduct(), ProductPojo.class);
-      targetSellDetail.setProduct(product);
-      sellDetails.add(targetSellDetail);
+      if (targetSellDetail != null) {
+        ProductPojo product = conversion.convert(sourceSellDetail.getProduct(), ProductPojo.class);
+        if (product != null) {
+          targetSellDetail.setProduct(product);
+        }
+        sellDetails.add(targetSellDetail);
+      }
     }
     return sellDetails;
   }
 
-  private SalespersonPojo convertSalespersonToPojo(Sell source) {
-    SalespersonPojo target = conversion.convert(source.getSalesperson(), SalespersonPojo.class);
-    PersonPojo person = conversion.convert(source.getSalesperson().getPerson(), PersonPojo.class);
-    target.setPerson(person);
+  @Nullable
+  private SalespersonPojo convertSalespersonToPojo(Salesperson source) {
+    SalespersonPojo target = conversion.convert(source, SalespersonPojo.class);
+    if (target != null) {
+      PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
+      if (person != null) {
+        target.setPerson(person);
+      }
+    }
     return target;
   }
 
+  @Nullable
   @Override
   public SellPojo entity2Pojo(Sell source) {
     SellPojo target = conversion.convert(source, SellPojo.class);
-    SellTypePojo sellType = conversion.convert(source.getType(), SellTypePojo.class);
-    target.setSellType(sellType);
+    if (target != null) {
+      SellTypePojo sellType = conversion.convert(source.getType(), SellTypePojo.class);
+      if (sellType != null) {
+        target.setSellType(sellType);
+      }
 
-    CustomerPojo customer = convertCustomerToPojo(source);
-    target.setCustomer(customer);
+      CustomerPojo customer = this.convertCustomerToPojo(source.getCustomer());
+      if (customer != null) {
+        target.setCustomer(customer);
+      }
 
-    if (source.getSalesperson()!= null) {
-      SalespersonPojo salesperson = convertSalespersonToPojo(source);
-      target.setSalesperson(salesperson);
+      SalespersonPojo salesperson = this.convertSalespersonToPojo(source.getSalesperson());
+      if (salesperson != null) {
+        target.setSalesperson(salesperson);
+      }
     }
-
     return target;
   }
 
+  @Nullable
   @Override
   public Sell pojo2Entity(SellPojo source) {
     return conversion.convert(source, Sell.class);
@@ -150,9 +175,11 @@ public class SellCrudServiceImpl
       return null;
     } else {
       Sell found = personById.get();
-      SellPojo foundPojo = entity2Pojo(found);
-      List<SellDetailPojo> sellDetails = convertDetailsToPojo(found);
-      foundPojo.setSellDetails(sellDetails);
+      SellPojo foundPojo = this.entity2Pojo(found);
+      if (foundPojo != null) {
+        List<SellDetailPojo> sellDetails = this.convertDetailsToPojo(found.getDetails());
+        foundPojo.setSellDetails(sellDetails);
+      }
       return foundPojo;
     }
   }

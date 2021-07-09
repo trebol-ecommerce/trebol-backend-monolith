@@ -1,5 +1,7 @@
 package org.trebol.api.services;
 
+import javax.annotation.Nullable;
+
 import org.trebol.api.pojo.ReceiptPojo;
 
 /**
@@ -7,5 +9,7 @@ import org.trebol.api.pojo.ReceiptPojo;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 public interface ReceiptService {
-  public ReceiptPojo fetchReceiptById(int id);
+
+  @Nullable
+  ReceiptPojo fetchReceiptById(int id);
 }

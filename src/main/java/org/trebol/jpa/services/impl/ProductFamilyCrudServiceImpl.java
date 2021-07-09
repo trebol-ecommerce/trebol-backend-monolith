@@ -2,6 +2,8 @@ package org.trebol.jpa.services.impl;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +39,13 @@ public class ProductFamilyCrudServiceImpl
     this.conversion = conversion;
   }
 
+  @Nullable
   @Override
   public ProductFamilyPojo entity2Pojo(ProductFamily source) {
     return conversion.convert(source, ProductFamilyPojo.class);
   }
 
+  @Nullable
   @Override
   public ProductFamily pojo2Entity(ProductFamilyPojo source) {
     return conversion.convert(source, ProductFamily.class);

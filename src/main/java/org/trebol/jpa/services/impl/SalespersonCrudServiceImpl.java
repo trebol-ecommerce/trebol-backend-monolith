@@ -2,6 +2,8 @@ package org.trebol.jpa.services.impl;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,19 +45,29 @@ public class SalespersonCrudServiceImpl
     this.conversion = conversion;
   }
 
+  @Nullable
   @Override
   public SalespersonPojo entity2Pojo(Salesperson source) {
     SalespersonPojo target = conversion.convert(source, SalespersonPojo.class);
-    PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
-    target.setPerson(person);
+    if (target != null) {
+      PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
+      if (person != null) {
+        target.setPerson(person);
+      }
+    }
     return target;
   }
 
+  @Nullable
   @Override
   public Salesperson pojo2Entity(SalespersonPojo source) {
     Salesperson target = conversion.convert(source, Salesperson.class);
-    Person personTarget = conversion.convert(source.getPerson(), Person.class);
-    target.setPerson(personTarget);
+    if (target != null) {
+      Person personTarget = conversion.convert(source.getPerson(), Person.class);
+      if (personTarget != null) {
+        target.setPerson(personTarget);
+      }
+    }
     return target;
   }
 
