@@ -20,7 +20,9 @@ public class Person2Entity
     target.setName(source.getName());
     target.setIdCard(source.getIdCard());
     target.setEmail(source.getEmail());
-    target.setAddress(source.getAddress());
+    if (source.getAddress() != null) {
+      target.setAddress(source.getAddress());
+    }
     if (source.getPhone1() != null) {
       target.setPhone1(source.getPhone1());
     }
