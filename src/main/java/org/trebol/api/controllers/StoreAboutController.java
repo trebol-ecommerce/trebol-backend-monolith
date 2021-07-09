@@ -13,17 +13,17 @@ import org.trebol.api.services.CompanyService;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @RestController
-@RequestMapping("/store")
-public class StoreCompanyController {
+@RequestMapping("/store/about")
+public class StoreAboutController {
 
   private final CompanyService companyService;
 
   @Autowired
-  public StoreCompanyController(CompanyService companyService) {
+  public StoreAboutController(CompanyService companyService) {
     this.companyService = companyService;
   }
 
-  @GetMapping("/about")
+  @GetMapping({"", "/"})
   public CompanyDetailsPojo readCompanyDetails() {
     CompanyDetailsPojo companyDetailsPojo = companyService.readDetails();
     return companyDetailsPojo;

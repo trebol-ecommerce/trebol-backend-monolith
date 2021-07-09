@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.PersonPojo;
@@ -19,6 +20,7 @@ import org.trebol.services.UserProfileService;
 import org.trebol.security.services.AuthorizationHeaderParserService;
 
 @RestController
+@RequestMapping("/profile")
 public class ProfileController {
 
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
@@ -34,7 +36,7 @@ public class ProfileController {
     this.userProfileService = userProfileService;
   }
 
-  @GetMapping("/profile")
+  @GetMapping({"", "/"})
   public PersonPojo getProfile(@RequestHeader HttpHeaders requestHeaders) {
     String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
 
@@ -53,7 +55,7 @@ public class ProfileController {
     return null;
   }
 
-  @PutMapping("/profile")
+  @PutMapping({"", "/"})
   public boolean updateProfile(@RequestHeader HttpHeaders requestHeaders, @RequestBody PersonPojo newProfile) {
 
     // first retrieve profile with method above, validating token and what else

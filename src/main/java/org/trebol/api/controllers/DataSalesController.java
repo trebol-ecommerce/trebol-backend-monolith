@@ -1,4 +1,4 @@
-package org.trebol.api.controllers.data.management;
+package org.trebol.api.controllers;
 
 import java.util.Collection;
 import java.util.Map;
@@ -34,43 +34,43 @@ import org.trebol.jpa.services.GenericCrudService;
  */
 @RestController
 @RequestMapping("/data/sales")
-public class SalesDataManagementController
+public class DataSalesController
     extends GenericCrudController<SellPojo, Sell, Integer> {
 
   @Autowired
-  public SalesDataManagementController(CustomProperties globals, GenericCrudService<SellPojo, Sell, Integer> crudService) {
+  public DataSalesController(CustomProperties globals, GenericCrudService<SellPojo, Sell, Integer> crudService) {
     super(globals, crudService);
   }
 
-  @GetMapping
+  @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:read')")
   public Collection<SellPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @Override
-  @PostMapping
+  @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:create')")
   public Integer create(@RequestBody @Valid SellPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/{id}")
+  @GetMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('sales:read')")
   public SellPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @Override
-  @PutMapping("/{id}")
+  @PutMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('sales:update')")
   public Integer update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/{id}")
+  @DeleteMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('sales:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);

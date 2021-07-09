@@ -1,4 +1,4 @@
-package org.trebol.api.controllers.data;
+package org.trebol.api.controllers;
 
 import java.util.Collection;
 import java.util.Map;
@@ -34,23 +34,23 @@ import org.trebol.jpa.services.GenericCrudService;
  */
 @RestController
 @RequestMapping("/data/product_families")
-public class ProductFamiliesDataController
+public class DataProductFamiliesController
     extends GenericCrudController<ProductFamilyPojo, ProductFamily, Integer> {
 
   @Autowired
-  public ProductFamiliesDataController(CustomProperties globals,
+  public DataProductFamiliesController(CustomProperties globals,
       GenericCrudService<ProductFamilyPojo, ProductFamily, Integer> crudService) {
     super(globals, crudService);
   }
 
-  @GetMapping
+  @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_families:read')")
   public Collection<ProductFamilyPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @Override
-  @PostMapping
+  @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_families:create')")
   public Integer create(@RequestBody @Valid ProductFamilyPojo input) {
     return super.create(input);
@@ -64,14 +64,14 @@ public class ProductFamiliesDataController
   }
 
   @Override
-  @PutMapping("/{id}")
+  @PutMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('product_families:update')")
   public Integer update(@RequestBody @Valid ProductFamilyPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/{id}")
+  @DeleteMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('product_families:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);

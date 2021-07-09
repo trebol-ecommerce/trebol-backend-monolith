@@ -54,7 +54,7 @@ public class StoreCheckoutController {
    * @param cartDetails The checkout details (e.g. the items to be purchased)
    * @return
    */
-  @PostMapping("")
+  @PostMapping({"", "/"})
   public WebpayCheckoutResponsePojo submitCart(
       @RequestHeader HttpHeaders httpHeaders,
       @RequestBody Collection<SellDetailPojo> cartDetails) {
@@ -70,7 +70,7 @@ public class StoreCheckoutController {
    * @param transactionFormData
    * @return
    */
-  @PostMapping("/validate")
+  @PostMapping({"/validate", "/validate/"})
   public ResponseEntity<Void> validateTransaction(@RequestBody MultiValueMap<String, String> transactionFormData) {
     String tokenWs = transactionFormData.getFirst(checkoutConfig.getTransactionTokenPostDataKey());
     String returnUrl;

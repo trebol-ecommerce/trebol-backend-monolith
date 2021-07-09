@@ -1,4 +1,4 @@
-package org.trebol.api.controllers.data;
+package org.trebol.api.controllers;
 
 import java.util.Collection;
 import java.util.Map;
@@ -22,57 +22,57 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.GenericCrudController;
-import org.trebol.api.pojo.SellTypePojo;
+import org.trebol.api.pojo.CustomerPojo;
 import org.trebol.config.CustomProperties;
-import org.trebol.jpa.entities.SellType;
+import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.GenericCrudService;
 
 /**
- * API point of entry for SellType entities
+ * API point of entry for Customer entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
-@RequestMapping("/data/sell_types")
-public class SellTypesDataController
-    extends GenericCrudController<SellTypePojo, SellType, Integer> {
+@RequestMapping("/data/customers")
+public class DataCustomersController
+    extends GenericCrudController<CustomerPojo, Customer, Integer> {
 
   @Autowired
-  public SellTypesDataController(CustomProperties globals,
-      GenericCrudService<SellTypePojo, SellType, Integer> crudService) {
+  public DataCustomersController(CustomProperties globals,
+      GenericCrudService<CustomerPojo, Customer, Integer> crudService) {
     super(globals, crudService);
   }
 
-  @GetMapping
-  @PreAuthorize("hasAuthority('sell_types:read')")
-  public Collection<SellTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  @GetMapping({"", "/"})
+  @PreAuthorize("hasAuthority('customers:read')")
+  public Collection<CustomerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @Override
-  @PostMapping
-  @PreAuthorize("hasAuthority('sell_types:create')")
-  public Integer create(@RequestBody @Valid SellTypePojo input) {
+  @PostMapping({"", "/"})
+  @PreAuthorize("hasAuthority('customers:create')")
+  public Integer create(@RequestBody @Valid CustomerPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/{id}")
-  @PreAuthorize("hasAuthority('sell_types:read')")
-  public SellTypePojo readOne(@PathVariable Integer id) {
+  @GetMapping({"/{id}", "/{id}/"})
+  @PreAuthorize("hasAuthority('customers:read')")
+  public CustomerPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @Override
-  @PutMapping("/{id}")
-  @PreAuthorize("hasAuthority('sell_types:update')")
-  public Integer update(@RequestBody @Valid SellTypePojo input, @PathVariable Integer id) {
+  @PutMapping({"/{id}", "/{id}/"})
+  @PreAuthorize("hasAuthority('customers:update')")
+  public Integer update(@RequestBody @Valid CustomerPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/{id}")
-  @PreAuthorize("hasAuthority('sell_types:delete')")
+  @DeleteMapping({"/{id}", "/{id}/"})
+  @PreAuthorize("hasAuthority('customers:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }
