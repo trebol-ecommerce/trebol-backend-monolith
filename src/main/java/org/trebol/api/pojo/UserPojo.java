@@ -21,6 +21,8 @@ public class UserPojo {
   private String password;
   @JsonInclude(Include.NON_NULL)
   private PersonPojo person;
+  @JsonInclude(Include.NON_NULL)
+  private String role;
 
   public Integer getId() {
     return id;
@@ -52,5 +54,13 @@ public class UserPojo {
 
   public void setPerson(PersonPojo person) {
     this.person = person;
+  }
+
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
   }
 }
