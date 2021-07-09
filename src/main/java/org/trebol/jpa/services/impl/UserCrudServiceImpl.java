@@ -18,7 +18,11 @@ import org.trebol.jpa.entities.QUser;
 
 import org.trebol.api.pojo.PersonPojo;
 import org.trebol.api.pojo.UserPojo;
+import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
+import org.trebol.jpa.entities.UserRole;
+import org.trebol.jpa.repositories.PeopleRepository;
+import org.trebol.jpa.repositories.UserRolesRepository;
 import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.GenericCrudService;
 
@@ -33,12 +37,21 @@ public class UserCrudServiceImpl
   private static final Logger LOG = LoggerFactory.getLogger(UserCrudServiceImpl.class);
 
   private final UsersRepository repository;
+  private final UserRolesRepository rolesRepository;
+  private final PeopleRepository peopleRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public UserCrudServiceImpl(UsersRepository repository, ConversionService conversion) {
+  public UserCrudServiceImpl(
+    UsersRepository repository,
+    UserRolesRepository rolesRepository,
+    PeopleRepository peopleRepository,
+    ConversionService conversion
+  ) {
     super(repository);
     this.repository = repository;
+    this.rolesRepository = rolesRepository;
+    this.peopleRepository = peopleRepository;
     this.conversion = conversion;
   }
 
@@ -46,17 +59,48 @@ public class UserCrudServiceImpl
   @Override
   public UserPojo entity2Pojo(User source) {
     UserPojo target = conversion.convert(source, UserPojo.class);
-//    PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
-//    target.setPerson(person);
+    // PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
+    // target.setPerson(person);
     return target;
   }
 
   // TODO implement a more appropiate solution
+  @Nullable
   @Override
   public User pojo2Entity(UserPojo source) {
+    LOG.trace("Converting input user instance to entity class...", source.getRole());
     User target = conversion.convert(source, User.class);
-//    Person personTarget = conversion.convert(source.getPerson(), Person.class);
-//    target.setPerson(personTarget);
+    if (target != null) {
+      if (source.getPerson() != null && source.getPerson().getId() != null) {
+        LOG.trace("Finding person profile...");
+        Optional<Person> personById = peopleRepository.findById(source.getPerson().getId());
+        if (personById.isPresent()) {
+          LOG.trace("Person profile found");
+          target.setPerson(personById.get());
+        } else {
+          LOG.error("Person profile not found");
+          return null;
+        }
+      } else {
+        LOG.error("Missing required person profile");
+        return null;
+      }
+
+      if (source.getRole() != null && !source.getRole().isEmpty()){
+        LOG.trace("Searching user role by name '{}'...", source.getRole());
+        Optional<UserRole> roleByName = rolesRepository.findByName(source.getRole());
+        if (roleByName.isPresent()) {
+          LOG.trace("User role found");
+          target.setUserRole(roleByName.get());
+        } else {
+          LOG.error("User role not found");
+          return null;
+        }
+      } else {
+        LOG.error("Missing required user role");
+        return null;
+      }
+    }
     return target;
   }
 
