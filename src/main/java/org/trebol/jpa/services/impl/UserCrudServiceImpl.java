@@ -55,17 +55,13 @@ public class UserCrudServiceImpl
     this.conversion = conversion;
   }
 
-  // TODO implement a more appropiate solution
   @Nullable
   @Override
   public UserPojo entity2Pojo(User source) {
     UserPojo target = conversion.convert(source, UserPojo.class);
-    // PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
-    // target.setPerson(person);
     return target;
   }
 
-  // TODO implement a more appropiate solution
   @Nullable
   @Override
   public User pojo2Entity(UserPojo source) {
