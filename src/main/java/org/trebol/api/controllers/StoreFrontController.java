@@ -14,7 +14,7 @@ import org.trebol.config.CustomProperties;
 import org.trebol.api.services.CatalogService;
 
 @RestController
-@RequestMapping("/store/products")
+@RequestMapping("/store/front")
 public class StoreFrontController {
 
   private final CatalogService catalogService;
