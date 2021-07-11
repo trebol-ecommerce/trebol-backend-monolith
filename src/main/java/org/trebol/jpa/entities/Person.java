@@ -1,5 +1,7 @@
 package org.trebol.jpa.entities;
 
+import java.util.Objects;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -31,33 +32,27 @@ public class Person
   @Column(name = "person_id")
   private Integer id;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 200)
   @Column(name = "person_name")
   private String name;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 20)
   @Column(name = "person_idcard")
   private String idCard;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 100)
   @Column(name = "person_email")
   private String email;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 200)
+  @Basic(optional = true)
+  @Size(max = 200)
   @Column(name = "person_address")
   private String address;
-  @Basic(optional = false)
-  @NotNull
+  @Basic(optional = true)
   @Column(name = "person_phone1")
-  private int phone1;
-  @Basic(optional = false)
-  @NotNull
+  private Integer phone1;
+  @Basic(optional = true)
   @Column(name = "person_phone2")
-  private int phone2;
+  private Integer phone2;
 
   public Person() {
   }
@@ -66,8 +61,15 @@ public class Person
     this.id = personId;
   }
 
-  public Person(Integer personId, String personName, String personIdcard, String personEmail, String personAddress,
-      int personPhone1, int personPhone2) {
+  public Person(
+    Integer personId,
+    String personName,
+    String personIdcard,
+    String personEmail,
+    String personAddress,
+    Integer personPhone1,
+    Integer personPhone2
+  ) {
     this.id = personId;
     this.name = personName;
     this.idCard = personIdcard;
@@ -77,6 +79,7 @@ public class Person
     this.phone2 = personPhone2;
   }
 
+  @Override
   public Integer getId() {
     return id;
   }
@@ -117,45 +120,53 @@ public class Person
     this.address = address;
   }
 
-  public int getPhone1() {
+  public Integer getPhone1() {
     return phone1;
   }
 
-  public void setPhone1(int phone1) {
+  public void setPhone1(Integer phone1) {
     this.phone1 = phone1;
   }
 
-  public int getPhone2() {
+  public Integer getPhone2() {
     return phone2;
   }
 
-  public void setPhone2(int phone2) {
+  public void setPhone2(Integer phone2) {
     this.phone2 = phone2;
   }
 
   @Override
   public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
+    int hash = 5;
+    hash = 83 * hash + Objects.hashCode(this.idCard);
     return hash;
   }
 
   @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof Person)) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
       return false;
     }
-    Person other = (Person) object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+    if (getClass() != obj.getClass()) {
       return false;
     }
-    return true;
+    final Person other = (Person)obj;
+    return !Objects.equals(this.idCard, other.idCard);
   }
 
   @Override
   public String toString() {
-    return "org.trebol.jpa.entities.Person[ id=" + id + " ]";
+    return "Person{id=" + id +
+        ", name=" + name +
+        ", idCard=" + idCard +
+        ", email=" + email +
+        ", address=" + address +
+        ", phone1=" + phone1 +
+        ", phone2=" + phone2 + '}';
   }
 
 }
