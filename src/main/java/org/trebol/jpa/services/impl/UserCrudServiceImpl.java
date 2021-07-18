@@ -76,6 +76,12 @@ public class UserCrudServiceImpl
         String rawPassword = source.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         target.setPassword(encodedPassword);
+      } else if (source.getId() != null) {
+        // TODO optimize this! if the user exists and no password was provided, "reload" password from the database
+        Optional<User> userById = repository.findById(source.getId());
+        if (userById.isPresent()) {
+          target.setPassword(userById.get().getPassword());
+        }
       }
 
       if (source.getPerson() != null && source.getPerson().getId() != null) {
