@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.lang.Nullable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,19 +41,22 @@ public class UserCrudServiceImpl
   private final UserRolesRepository rolesRepository;
   private final PeopleRepository peopleRepository;
   private final ConversionService conversion;
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
   public UserCrudServiceImpl(
     UsersRepository repository,
     UserRolesRepository rolesRepository,
     PeopleRepository peopleRepository,
-    ConversionService conversion
+    ConversionService conversion,
+    PasswordEncoder passwordEncoder
   ) {
     super(repository);
     this.repository = repository;
     this.rolesRepository = rolesRepository;
     this.peopleRepository = peopleRepository;
     this.conversion = conversion;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Nullable
@@ -68,6 +72,12 @@ public class UserCrudServiceImpl
     LOG.trace("Converting input user instance to entity class...", source.getRole());
     User target = conversion.convert(source, User.class);
     if (target != null) {
+      if (source.getPassword() != null && !source.getPassword().isEmpty()) {
+        String rawPassword = source.getPassword();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        target.setPassword(encodedPassword);
+      }
+
       if (source.getPerson() != null && source.getPerson().getId() != null) {
         LOG.trace("Finding person profile...");
         Optional<Person> personById = peopleRepository.findById(source.getPerson().getId());
