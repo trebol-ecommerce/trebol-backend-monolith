@@ -8,9 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -20,7 +22,13 @@ import org.trebol.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "people")
+@Table(
+  name = "people",
+  indexes = {
+    @Index(columnList = "person_idcard"),
+    @Index(columnList = "person_email")
+  },
+  uniqueConstraints = @UniqueConstraint(columnNames = {"person_idcard"}))
 @NamedQueries({ @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p") })
 public class Person
     implements GenericEntity<Integer> {

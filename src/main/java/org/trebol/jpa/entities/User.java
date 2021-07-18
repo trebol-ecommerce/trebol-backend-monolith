@@ -7,12 +7,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -22,7 +23,10 @@ import org.trebol.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "app_users")
+@Table(
+  name = "app_users",
+  indexes = @Index(columnList = "user_name"),
+  uniqueConstraints = @UniqueConstraint(columnNames = {"user_name"}))
 @NamedQueries({ @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u") })
 public class User
     implements GenericEntity<Integer> {
@@ -34,12 +38,10 @@ public class User
   @Column(name = "user_id")
   private Integer id;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 50)
   @Column(name = "user_name")
   private String name;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 100)
   @Column(name = "user_password")
   private String password;
