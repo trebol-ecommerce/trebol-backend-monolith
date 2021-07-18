@@ -54,9 +54,18 @@ public class SecurityConfig
     http
         .cors()
         .and()
-        .csrf().disable()
+        .csrf()
+          .ignoringAntMatchers(
+            "/",
+            "/store/about",
+            "/store/front",
+            "/store/categories",
+            "/store/categories/*",
+            "/store/product/*"
+          )
+        .and()
         .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+          .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), securityProperties, secretKey))
         .addFilterAfter(new JwtTokenVerifierFilter(jwtClaimsParserService),
