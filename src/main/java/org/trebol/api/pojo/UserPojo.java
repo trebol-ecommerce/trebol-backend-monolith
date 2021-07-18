@@ -1,27 +1,21 @@
 package org.trebol.api.pojo;
 
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-//TODO could a user pojo benefit from person pojo?
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
+@JsonInclude(NON_DEFAULT)
 public class UserPojo {
-  @JsonInclude
   private Integer id;
-  @JsonInclude(value = Include.NON_DEFAULT)
-  @NotNull
   private String name;
-  @JsonInclude(value = Include.NON_DEFAULT)
-  @NotNull
   private String password;
-  @JsonInclude(Include.NON_NULL)
+  @JsonInclude(NON_NULL)
   private PersonPojo person;
-  @JsonInclude(Include.NON_NULL)
+  @JsonInclude(NON_NULL)
   private String role;
 
   public Integer getId() {

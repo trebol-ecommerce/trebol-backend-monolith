@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.lang.Nullable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,37 +41,49 @@ public class UserCrudServiceImpl
   private final UserRolesRepository rolesRepository;
   private final PeopleRepository peopleRepository;
   private final ConversionService conversion;
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
   public UserCrudServiceImpl(
     UsersRepository repository,
     UserRolesRepository rolesRepository,
     PeopleRepository peopleRepository,
-    ConversionService conversion
+    ConversionService conversion,
+    PasswordEncoder passwordEncoder
   ) {
     super(repository);
     this.repository = repository;
     this.rolesRepository = rolesRepository;
     this.peopleRepository = peopleRepository;
     this.conversion = conversion;
+    this.passwordEncoder = passwordEncoder;
   }
 
-  // TODO implement a more appropiate solution
+  @Nullable
   @Override
   public UserPojo entity2Pojo(User source) {
     UserPojo target = conversion.convert(source, UserPojo.class);
-    // PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
-    // target.setPerson(person);
     return target;
   }
 
-  // TODO implement a more appropiate solution
   @Nullable
   @Override
   public User pojo2Entity(UserPojo source) {
     LOG.trace("Converting input user instance to entity class...", source.getRole());
     User target = conversion.convert(source, User.class);
     if (target != null) {
+      if (source.getPassword() != null && !source.getPassword().isEmpty()) {
+        String rawPassword = source.getPassword();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        target.setPassword(encodedPassword);
+      } else if (source.getId() != null) {
+        // TODO optimize this! if the user exists and no password was provided, "reload" password from the database
+        Optional<User> userById = repository.findById(source.getId());
+        if (userById.isPresent()) {
+          target.setPassword(userById.get().getPassword());
+        }
+      }
+
       if (source.getPerson() != null && source.getPerson().getId() != null) {
         LOG.trace("Finding person profile...");
         Optional<Person> personById = peopleRepository.findById(source.getPerson().getId());
@@ -141,9 +154,13 @@ public class UserCrudServiceImpl
       return null;
     } else {
       User found = userById.get();
-      UserPojo foundPojo = entity2Pojo(found);
-      PersonPojo person = conversion.convert(found.getPerson(), PersonPojo.class);
-      foundPojo.setPerson(person);
+      UserPojo foundPojo = this.entity2Pojo(found);
+      if (foundPojo != null) {
+        PersonPojo person = conversion.convert(found.getPerson(), PersonPojo.class);
+        if (person != null) {
+          foundPojo.setPerson(person);
+        }
+      }
       return foundPojo;
     }
   }

@@ -2,6 +2,8 @@ package org.trebol.jpa.services.impl;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +39,13 @@ public class UserRoleCrudServiceImpl
     this.conversion = conversion;
   }
 
+  @Nullable
   @Override
   public UserRolePojo entity2Pojo(UserRole source) {
     return conversion.convert(source, UserRolePojo.class);
   }
 
+  @Nullable
   @Override
   public UserRole pojo2Entity(UserRolePojo source) {
     return conversion.convert(source, UserRole.class);

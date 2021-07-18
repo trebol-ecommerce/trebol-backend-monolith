@@ -1,4 +1,4 @@
-package org.trebol.api.controllers.data;
+package org.trebol.api.controllers;
 
 import java.util.Collection;
 import java.util.Map;
@@ -22,57 +22,57 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.GenericCrudController;
-import org.trebol.api.pojo.UserRolePojo;
+import org.trebol.api.pojo.SalespersonPojo;
 import org.trebol.config.CustomProperties;
-import org.trebol.jpa.entities.UserRole;
+import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.GenericCrudService;
 
 /**
- * API point of entry for UserRole entities
+ * API point of entry for Salesperson entities
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
-@RequestMapping("/data/user_roles")
-public class UserRolesDataController
-    extends GenericCrudController<UserRolePojo, UserRole, Integer> {
+@RequestMapping("/data/salespeople")
+public class DataSalespeopleController
+    extends GenericCrudController<SalespersonPojo, Salesperson, Integer> {
 
   @Autowired
-  public UserRolesDataController(CustomProperties globals,
-      GenericCrudService<UserRolePojo, UserRole, Integer> crudService) {
+  public DataSalespeopleController(CustomProperties globals,
+      GenericCrudService<SalespersonPojo, Salesperson, Integer> crudService) {
     super(globals, crudService);
   }
 
-  @GetMapping
-  @PreAuthorize("hasAuthority('user_roles:read')")
-  public Collection<UserRolePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  @GetMapping({"", "/"})
+  @PreAuthorize("hasAuthority('salespeople:read')")
+  public Collection<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @Override
-  @PostMapping
-  @PreAuthorize("hasAuthority('user_roles:create')")
-  public Integer create(@RequestBody @Valid UserRolePojo input) {
+  @PostMapping({"", "/"})
+  @PreAuthorize("hasAuthority('salespeople:create')")
+  public Integer create(@RequestBody @Valid SalespersonPojo input) {
     return super.create(input);
   }
 
   @Override
-  @GetMapping("/{id}")
-  @PreAuthorize("hasAuthority('user_roles:read')")
-  public UserRolePojo readOne(@PathVariable Integer id) {
+  @GetMapping({"/{id}", "/{id}/"})
+  @PreAuthorize("hasAuthority('salespeople:read')")
+  public SalespersonPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @Override
-  @PutMapping("/{id}")
-  @PreAuthorize("hasAuthority('user_roles:update')")
-  public Integer update(@RequestBody @Valid UserRolePojo input, @PathVariable Integer id) {
+  @PutMapping({"/{id}", "/{id}/"})
+  @PreAuthorize("hasAuthority('salespeople:update')")
+  public Integer update(@RequestBody @Valid SalespersonPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
   @Override
-  @DeleteMapping("/{id}")
-  @PreAuthorize("hasAuthority('user_roles:delete')")
+  @DeleteMapping({"/{id}", "/{id}/"})
+  @PreAuthorize("hasAuthority('salespeople:delete')")
   public boolean delete(@PathVariable Integer id) {
     return super.delete(id);
   }

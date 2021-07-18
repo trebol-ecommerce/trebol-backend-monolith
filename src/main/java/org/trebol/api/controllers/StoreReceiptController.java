@@ -28,7 +28,7 @@ public class StoreReceiptController {
     this.receiptService = receiptService;
   }
 
-  @GetMapping("/{id}")
+  @GetMapping({"/{id}", "/{id}/"})
   public ReceiptPojo fetchReceiptById(@PathVariable("id") Integer id) {
     if (id == null) {
       throw new RuntimeException("An incorrect receipt id was provided");

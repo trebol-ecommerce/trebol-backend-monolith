@@ -1,5 +1,7 @@
 package org.trebol.jpa.entities;
 
+import java.util.Objects;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -131,19 +133,48 @@ public class Product
 
   @Override
   public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
+    int hash = 5;
+    hash = 11 * hash + Objects.hashCode(this.id);
+    hash = 11 * hash + Objects.hashCode(this.name);
+    hash = 11 * hash + Objects.hashCode(this.barcode);
+    hash = 11 * hash + this.price;
+    hash = 11 * hash + this.stockCurrent;
+    hash = 11 * hash + this.stockCritical;
+    hash = 11 * hash + Objects.hashCode(this.productType);
     return hash;
   }
 
   @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof Product)) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
       return false;
     }
-    Product other = (Product) object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final Product other = (Product)obj;
+    if (this.price != other.price) {
+      return false;
+    }
+    if (this.stockCurrent != other.stockCurrent) {
+      return false;
+    }
+    if (this.stockCritical != other.stockCritical) {
+      return false;
+    }
+    if (!Objects.equals(this.name, other.name)) {
+      return false;
+    }
+    if (!Objects.equals(this.barcode, other.barcode)) {
+      return false;
+    }
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.productType, other.productType)) {
       return false;
     }
     return true;
@@ -151,7 +182,13 @@ public class Product
 
   @Override
   public String toString() {
-    return "cl.blm.jpa.entities.Product[ id=" + id + " ]";
+    return "Product{id=" + id +
+        ", name=" + name +
+        ", barcode=" + barcode +
+        ", price=" + price +
+        ", stockCurrent=" + stockCurrent +
+        ", stockCritical=" + stockCritical +
+        ", productType=" + productType + '}';
   }
 
 }

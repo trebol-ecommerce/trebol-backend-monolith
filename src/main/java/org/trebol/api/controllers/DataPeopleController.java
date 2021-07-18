@@ -1,4 +1,4 @@
-package org.trebol.api.controllers.data;
+package org.trebol.api.controllers;
 
 import java.util.Collection;
 import java.util.Map;
@@ -23,16 +23,16 @@ import org.trebol.jpa.services.GenericCrudService;
  */
 @RestController
 @RequestMapping("/data/people")
-public class PeopleDataController
+public class DataPeopleController
     extends GenericCrudController<PersonPojo, Person, Integer> {
 
   @Autowired
-  public PeopleDataController(CustomProperties globals,
+  public DataPeopleController(CustomProperties globals,
       GenericCrudService<PersonPojo, Person, Integer> crudService) {
     super(globals, crudService);
   }
 
-  @GetMapping
+  @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('people:read')")
   public Collection<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);

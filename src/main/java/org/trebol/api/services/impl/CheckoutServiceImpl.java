@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,7 +154,7 @@ public class CheckoutServiceImpl
 
     try {
       String requestResult = restClient.post(uri, payload);
-      LOG.debug("The validation request got the following raw response: {}", requestResult);
+      LOG.trace("The validation request got the following raw response: {}", requestResult);
       WebpayValidationResponsePojo data = objectMapper.readValue(requestResult, WebpayValidationResponsePojo.class);
       return data;
     } catch (RestClientException exc) {
@@ -162,6 +164,7 @@ public class CheckoutServiceImpl
     }
   }
 
+  @Nullable
   @Override
   public WebpayCheckoutRequestPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
     int customerId = this.fetchCustomerId(authorization);
@@ -191,12 +194,15 @@ public class CheckoutServiceImpl
     target = salesRepository.saveAndFlush(target);
 
     SellPojo result = conversionService.convert(target, SellPojo.class);
+    if (result != null) {
+      WebpayCheckoutRequestPojo transaction = new WebpayCheckoutRequestPojo();
+      transaction.setTransactionId(result.getId().toString());
+      transaction.setSessionId(session);
+      transaction.setAmount(totalValue);
+      return transaction;
+    }
 
-    WebpayCheckoutRequestPojo transaction = new WebpayCheckoutRequestPojo();
-    transaction.setTransactionId(result.getId().toString());
-    transaction.setSessionId(session);
-    transaction.setAmount(totalValue);
-    return transaction;
+    return null;
   }
 
   @Override
@@ -211,22 +217,25 @@ public class CheckoutServiceImpl
     return response;
   }
 
+  @Nullable
   @Override
   public Integer confirmWebpayTransactionResult(String transactionToken) {
     QSell qSell = QSell.sell;
     Predicate associatedToTransactionToken = qSell.token.eq(transactionToken);
     Optional<Sell> match = salesRepository.findOne(associatedToTransactionToken);
     if (!match.isPresent()) {
-      throw new RuntimeException("The provided token did not match any sell transaction");
+      LOG.error("The provided token did not match any sell transaction");
+      return null;
     }
     Sell foundMatch = match.get();
 
     WebpayValidationResponsePojo validationResponse = this.requestValidationFromCheckoutServer(transactionToken);
     Integer responseCode = validationResponse.getResponseCode();
-    LOG.debug("The response code of this transaction was: {}", responseCode);
+    LOG.trace("Webpay Plus: transaction with token '{}' received response code '{}'", transactionToken, responseCode);
 
     switch (responseCode) {
       case 0:
+        LOG.info("Webpay Plus: transaction with token '{}' was succesful!!!", transactionToken);
         foundMatch.setStatus(new SellStatus(4));
         salesRepository.saveAndFlush(foundMatch);
         break;

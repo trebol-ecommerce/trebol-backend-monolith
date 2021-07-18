@@ -21,14 +21,14 @@ import org.trebol.security.services.AuthorizedApiService;
 
 @RestController
 @RequestMapping("/access")
-public class DataAccessController {
+public class AccessController {
 
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final UserDetailsService userDetailsService;
   private final AuthorizedApiService routeService;
 
   @Autowired
-  public DataAccessController(AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+  public AccessController(AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
       UserDetailsService userDetailsService,
       AuthorizedApiService routeService) {
     this.jwtClaimsParserService = jwtClaimsParserService;
@@ -51,7 +51,7 @@ public class DataAccessController {
     return target;
   }
 
-  @GetMapping("")
+  @GetMapping({"", "/"})
   public AuthorizedAccessPojo getApiRoutesAccess(@RequestHeader HttpHeaders requestHeaders) {
     String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
     if (authorizationHeader != null) {
@@ -64,7 +64,7 @@ public class DataAccessController {
     return null;
   }
 
-  @GetMapping("/{apiRoute}")
+  @GetMapping({"/{apiRoute}", "/{apiRoute}/"})
   public AuthorizedAccessPojo getApiResourceAccess(@RequestHeader HttpHeaders requestHeaders,
       @PathVariable String apiRoute) {
     String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);

@@ -1,14 +1,18 @@
 package org.trebol.jpa.entities;
 
+import java.util.Objects;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -19,7 +23,10 @@ import org.trebol.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "app_user_roles")
+@Table(
+  name = "app_user_roles",
+  indexes = @Index(columnList = "user_role_name"),
+  uniqueConstraints = @UniqueConstraint(columnNames = {"user_role_name"}))
 @NamedQueries({ @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u") })
 public class UserRole
     implements GenericEntity<Integer> {
@@ -66,19 +73,28 @@ public class UserRole
 
   @Override
   public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
+    int hash = 3;
+    hash = 29 * hash + Objects.hashCode(this.id);
+    hash = 29 * hash + Objects.hashCode(this.name);
     return hash;
   }
 
   @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof UserRole)) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
       return false;
     }
-    UserRole other = (UserRole) object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final UserRole other = (UserRole)obj;
+    if (!Objects.equals(this.name, other.name)) {
+      return false;
+    }
+    if (!Objects.equals(this.id, other.id)) {
       return false;
     }
     return true;
@@ -86,7 +102,8 @@ public class UserRole
 
   @Override
   public String toString() {
-    return "org.trebol.jpa.entities.UserRole[ id=" + id + " ]";
+    return "UserRole{id=" + id +
+        ", name=" + name + '}';
   }
 
 }

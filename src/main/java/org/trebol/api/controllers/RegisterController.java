@@ -17,18 +17,19 @@ import org.trebol.api.services.RegistrationService;
  */
 @RestController
 @RequestMapping("/register")
-public class RegistrationController {
+public class RegisterController {
 
   private final RegistrationService registrationService;
 
   @Autowired
-  public RegistrationController(RegistrationService registrationService) {
+  public RegisterController(RegistrationService registrationService) {
     this.registrationService = registrationService;
   }
 
-  @PostMapping
-  public void register(@RequestBody RegistrationPojo userProfile) throws UserAlreadyExistsException,
-      PersonAlreadyExistsException {
+  @PostMapping({"", "/"})
+  public void register(
+    @RequestBody RegistrationPojo userProfile
+  ) throws UserAlreadyExistsException, PersonAlreadyExistsException {
     this.registrationService.register(userProfile);
   }
 }

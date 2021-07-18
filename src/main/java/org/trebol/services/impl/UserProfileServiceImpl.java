@@ -2,6 +2,8 @@ package org.trebol.services.impl;
 
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +27,15 @@ public class UserProfileServiceImpl
     this.peopleRepository = peopleRepository;
   }
 
+  @Nullable
   @Override
   public Person getProfileFromUserName(String userName) {
     Optional<User> userByName = usersRepository.findByNameWithProfile(userName);
-    Person target = userByName.get().getPerson();
-    return target;
+    if (userByName.isPresent()) {
+      return userByName.get().getPerson();
+    } else {
+      return null;
+    }
   }
 
   @Override

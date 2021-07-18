@@ -2,6 +2,8 @@ package org.trebol.jpa.services.impl;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +39,13 @@ public class SellStatusCrudServiceImpl
     this.conversion = conversion;
   }
 
+  @Nullable
   @Override
   public SellStatusPojo entity2Pojo(SellStatus source) {
     return conversion.convert(source, SellStatusPojo.class);
   }
 
+  @Nullable
   @Override
   public SellStatus pojo2Entity(SellStatusPojo source) {
     return conversion.convert(source, SellStatus.class);

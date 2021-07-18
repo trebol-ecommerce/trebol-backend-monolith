@@ -1,5 +1,7 @@
 package org.trebol.jpa.entities;
 
+import java.util.Objects;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -78,19 +80,32 @@ public class SellDetail
 
   @Override
   public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
+    int hash = 3;
+    hash = 59 * hash + Objects.hashCode(this.id);
+    hash = 59 * hash + this.units;
+    hash = 59 * hash + Objects.hashCode(this.product);
     return hash;
   }
 
   @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof SellDetail)) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
       return false;
     }
-    SellDetail other = (SellDetail) object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final SellDetail other = (SellDetail)obj;
+    if (this.units != other.units) {
+      return false;
+    }
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.product, other.product)) {
       return false;
     }
     return true;
@@ -98,6 +113,8 @@ public class SellDetail
 
   @Override
   public String toString() {
-    return "org.trebol.jpa.entities.SellDetail[ id=" + id + " ]";
+    return "SellDetail{id=" + id +
+        ", units=" + units +
+        ", product=" + product + '}';
   }
 }

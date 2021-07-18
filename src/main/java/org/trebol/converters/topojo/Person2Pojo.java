@@ -21,9 +21,15 @@ public class Person2Pojo
     target.setIdCard(source.getIdCard());
     target.setName(source.getName());
     target.setEmail(source.getEmail());
-    target.setAddress(source.getAddress());
-    target.setPhone1(source.getPhone1());
-    target.setPhone2(source.getPhone2());
+    if (source.getAddress() != null) {
+      target.setAddress(source.getAddress());
+    }
+    if (source.getPhone1() != null) {
+      target.setPhone1(source.getPhone1());
+    }
+    if (source.getPhone2() != null) {
+      target.setPhone2(source.getPhone2());
+    }
     return target;
   }
 }

@@ -71,15 +71,11 @@ public class Image
   }
 
   @Override
-  public String toString() {
-    return "Image{id=" + id + ", "
-        + "filename=" + filename + ", "
-        + "url=" + url + '}';
-  }
-
-  @Override
   public int hashCode() {
     int hash = 7;
+    hash = 43 * hash + Objects.hashCode(this.id);
+    hash = 43 * hash + Objects.hashCode(this.filename);
+    hash = 43 * hash + Objects.hashCode(this.url);
     return hash;
   }
 
@@ -101,7 +97,17 @@ public class Image
     if (!Objects.equals(this.url, other.url)) {
       return false;
     }
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
     return true;
+  }
+
+  @Override
+  public String toString() {
+    return "Image{id=" + id +
+        ", filename=" + filename +
+        ", url=" + url + '}';
   }
 
 }

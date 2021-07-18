@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,21 +54,26 @@ public class ProductCrudServiceImpl
     this.conversion = conversion;
   }
 
+  @Nullable
   @Override
   public ProductPojo entity2Pojo(Product source) {
     ProductPojo target = conversion.convert(source, ProductPojo.class);
-    Integer id = target.getId();
+    if (target != null) {
+      Integer id = target.getId();
 
-    Set<ImagePojo> images = new HashSet<>();
-    for (ProductImage pi : imagesRepository.deepFindProductImagesByProductId(id)) {
-      Image sourceImage = pi.getImage();
-      ImagePojo targetImage = conversion.convert(sourceImage, ImagePojo.class);
-      images.add(targetImage);
+      Set<ImagePojo> images = new HashSet<>();
+      for (ProductImage pi : imagesRepository.deepFindProductImagesByProductId(id)) {
+        ImagePojo targetImage = conversion.convert(pi.getImage(), ImagePojo.class);
+        if (targetImage != null) {
+          images.add(targetImage);
+        }
+      }
+      target.setImages(images);
     }
-    target.setImages(images);
     return target;
   }
 
+  @Nullable
   @Override
   public Product pojo2Entity(ProductPojo source) {
     return conversion.convert(source, Product.class);

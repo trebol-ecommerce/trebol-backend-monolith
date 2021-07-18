@@ -23,10 +23,6 @@ public class User2Entity
       target.setId(source.getId());
     }
 
-    if (!(source.getPassword()== null || source.getPassword().isEmpty())) {
-      target.setPassword(source.getPassword());
-    }
-
     return target;
   }
 }
