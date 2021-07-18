@@ -1,5 +1,7 @@
 package org.trebol.jpa.entities;
 
+import java.util.Objects;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -107,19 +109,40 @@ public class User
 
   @Override
   public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
+    int hash = 7;
+    hash = 13 * hash + Objects.hashCode(this.id);
+    hash = 13 * hash + Objects.hashCode(this.name);
+    hash = 13 * hash + Objects.hashCode(this.password);
+    hash = 13 * hash + Objects.hashCode(this.person);
+    hash = 13 * hash + Objects.hashCode(this.userRole);
     return hash;
   }
 
   @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof User)) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
       return false;
     }
-    User other = (User) object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final User other = (User)obj;
+    if (!Objects.equals(this.name, other.name)) {
+      return false;
+    }
+    if (!Objects.equals(this.password, other.password)) {
+      return false;
+    }
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.person, other.person)) {
+      return false;
+    }
+    if (!Objects.equals(this.userRole, other.userRole)) {
       return false;
     }
     return true;
@@ -127,7 +150,11 @@ public class User
 
   @Override
   public String toString() {
-    return "org.trebol.jpa.entities.User[ userId=" + id + " ]";
+    return "User{id=" + id +
+        ", name=" + name +
+        ", password=" + password +
+        ", person=" + person +
+        ", userRole=" + userRole + '}';
   }
 
 }

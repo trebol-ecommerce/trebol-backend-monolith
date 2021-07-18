@@ -1,5 +1,7 @@
 package org.trebol.jpa.entities;
 
+import java.util.Objects;
+
 import org.trebol.jpa.GenericEntity;
 
 import javax.persistence.Basic;
@@ -72,27 +74,42 @@ public class ProductImage
 
   @Override
   public int hashCode() {
-      int hash = 0;
-      hash += (id != null ? id.hashCode() : 0);
-      return hash;
+    int hash = 3;
+    hash = 53 * hash + Objects.hashCode(this.id);
+    hash = 53 * hash + Objects.hashCode(this.image);
+    hash = 53 * hash + Objects.hashCode(this.product);
+    return hash;
   }
 
   @Override
-  public boolean equals(Object object) {
-      // TODO: Warning - this method won't work in the case the id fields are not set
-      if (!(object instanceof ProductImage)) {
-          return false;
-      }
-      ProductImage other = (ProductImage) object;
-      if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-          return false;
-      }
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final ProductImage other = (ProductImage)obj;
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.image, other.image)) {
+      return false;
+    }
+    if (!Objects.equals(this.product, other.product)) {
+      return false;
+    }
+    return true;
   }
 
   @Override
   public String toString() {
-      return "org.trebol.jpa.entities.ProductImage[ id=" + id + " ]";
+    return "ProductImage{id=" + id +
+        ", image=" + image + 
+        ", product=" + product + '}';
   }
 
 }

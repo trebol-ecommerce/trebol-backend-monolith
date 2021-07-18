@@ -147,7 +147,13 @@ public class Person
   @Override
   public int hashCode() {
     int hash = 5;
-    hash = 83 * hash + Objects.hashCode(this.idCard);
+    hash = 71 * hash + Objects.hashCode(this.id);
+    hash = 71 * hash + Objects.hashCode(this.name);
+    hash = 71 * hash + Objects.hashCode(this.idCard);
+    hash = 71 * hash + Objects.hashCode(this.email);
+    hash = 71 * hash + Objects.hashCode(this.address);
+    hash = 71 * hash + Objects.hashCode(this.phone1);
+    hash = 71 * hash + Objects.hashCode(this.phone2);
     return hash;
   }
 
@@ -163,7 +169,28 @@ public class Person
       return false;
     }
     final Person other = (Person)obj;
-    return !Objects.equals(this.idCard, other.idCard);
+    if (!Objects.equals(this.name, other.name)) {
+      return false;
+    }
+    if (!Objects.equals(this.idCard, other.idCard)) {
+      return false;
+    }
+    if (!Objects.equals(this.email, other.email)) {
+      return false;
+    }
+    if (!Objects.equals(this.address, other.address)) {
+      return false;
+    }
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.phone1, other.phone1)) {
+      return false;
+    }
+    if (!Objects.equals(this.phone2, other.phone2)) {
+      return false;
+    }
+    return true;
   }
 
   @Override

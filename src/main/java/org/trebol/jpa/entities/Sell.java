@@ -2,6 +2,7 @@ package org.trebol.jpa.entities;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -182,19 +183,64 @@ public class Sell
 
   @Override
   public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
+    int hash = 7;
+    hash = 97 * hash + Objects.hashCode(this.id);
+    hash = 97 * hash + Objects.hashCode(this.date);
+    hash = 97 * hash + this.totalValue;
+    hash = 97 * hash + Objects.hashCode(this.sessionExtract);
+    hash = 97 * hash + Objects.hashCode(this.token);
+    hash = 97 * hash + this.totalItems;
+    hash = 97 * hash + Objects.hashCode(this.customer);
+    hash = 97 * hash + Objects.hashCode(this.salesperson);
+    hash = 97 * hash + Objects.hashCode(this.status);
+    hash = 97 * hash + Objects.hashCode(this.type);
+    hash = 97 * hash + Objects.hashCode(this.details);
     return hash;
   }
 
   @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof Sell)) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
       return false;
     }
-    Sell other = (Sell)object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final Sell other = (Sell)obj;
+    if (this.totalValue != other.totalValue) {
+      return false;
+    }
+    if (this.totalItems != other.totalItems) {
+      return false;
+    }
+    if (!Objects.equals(this.sessionExtract, other.sessionExtract)) {
+      return false;
+    }
+    if (!Objects.equals(this.token, other.token)) {
+      return false;
+    }
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.date, other.date)) {
+      return false;
+    }
+    if (!Objects.equals(this.customer, other.customer)) {
+      return false;
+    }
+    if (!Objects.equals(this.salesperson, other.salesperson)) {
+      return false;
+    }
+    if (!Objects.equals(this.status, other.status)) {
+      return false;
+    }
+    if (!Objects.equals(this.type, other.type)) {
+      return false;
+    }
+    if (!Objects.equals(this.details, other.details)) {
       return false;
     }
     return true;
@@ -202,7 +248,17 @@ public class Sell
 
   @Override
   public String toString() {
-    return "org.trebol.jpa.entities.Sell[ id=" + id + " ]";
+    return "Sell{id=" + id +
+        ", date=" + date +
+        ", totalValue=" + totalValue +
+        ", sessionExtract=" + sessionExtract +
+        ", token=" + token +
+        ", totalItems=" + totalItems +
+        ", customer=" + customer +
+        ", salesperson=" + salesperson +
+        ", status=" + status +
+        ", type=" + type +
+        ", details=" + details + '}';
   }
 
 }

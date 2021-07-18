@@ -1,5 +1,7 @@
 package org.trebol.jpa.entities;
 
+import java.util.Objects;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -93,19 +95,36 @@ public class Param
 
   @Override
   public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
+    int hash = 7;
+    hash = 67 * hash + Objects.hashCode(this.id);
+    hash = 67 * hash + Objects.hashCode(this.category);
+    hash = 67 * hash + Objects.hashCode(this.name);
+    hash = 67 * hash + Objects.hashCode(this.value);
     return hash;
   }
 
   @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof Param)) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
       return false;
     }
-    Param other = (Param)object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final Param other = (Param)obj;
+    if (!Objects.equals(this.category, other.category)) {
+      return false;
+    }
+    if (!Objects.equals(this.name, other.name)) {
+      return false;
+    }
+    if (!Objects.equals(this.value, other.value)) {
+      return false;
+    }
+    if (!Objects.equals(this.id, other.id)) {
       return false;
     }
     return true;
@@ -113,7 +132,10 @@ public class Param
 
   @Override
   public String toString() {
-    return "org.trebol.jpa.entities.Param[ id=" + id + " ]";
+    return "Param{id=" + id +
+        ", category=" + category +
+        ", name=" + name +
+        ", value=" + value + '}';
   }
 
 }

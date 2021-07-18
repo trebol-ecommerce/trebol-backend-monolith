@@ -1,5 +1,7 @@
 package org.trebol.jpa.entities;
 
+import java.util.Objects;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -80,19 +82,32 @@ public class ProductType
 
   @Override
   public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
+    int hash = 5;
+    hash = 37 * hash + Objects.hashCode(this.id);
+    hash = 37 * hash + Objects.hashCode(this.name);
+    hash = 37 * hash + Objects.hashCode(this.productFamily);
     return hash;
   }
 
   @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof ProductType)) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
       return false;
     }
-    ProductType other = (ProductType) object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final ProductType other = (ProductType)obj;
+    if (!Objects.equals(this.name, other.name)) {
+      return false;
+    }
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.productFamily, other.productFamily)) {
       return false;
     }
     return true;
@@ -100,7 +115,9 @@ public class ProductType
 
   @Override
   public String toString() {
-    return "org.trebol.jpa.entities.ProductType[ id=" + id + " ]";
+    return "ProductType{id=" + id +
+        ", name=" + name +
+        ", productFamily=" + productFamily + '}';
   }
 
 }
