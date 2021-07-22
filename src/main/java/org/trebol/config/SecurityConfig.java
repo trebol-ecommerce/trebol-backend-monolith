@@ -54,16 +54,7 @@ public class SecurityConfig
     http
         .cors()
         .and()
-        .csrf()
-          .ignoringAntMatchers(
-            "/",
-            "/store/about",
-            "/store/front",
-            "/store/categories",
-            "/store/categories/*",
-            "/store/product/*"
-          )
-        .and()
+        .csrf().disable()
         .sessionManagement()
           .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
