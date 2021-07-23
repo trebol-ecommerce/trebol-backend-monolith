@@ -1,6 +1,7 @@
 package org.trebol.api.pojo;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
@@ -105,6 +106,68 @@ public class ProductPojo {
 
   public void setImages(Collection<ImagePojo> images) {
     this.images = images;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    hash = 29 * hash + Objects.hashCode(this.id);
+    hash = 29 * hash + Objects.hashCode(this.name);
+    hash = 29 * hash + Objects.hashCode(this.barcode);
+    hash = 29 * hash + Objects.hashCode(this.price);
+    hash = 29 * hash + Objects.hashCode(this.productType);
+    hash = 29 * hash + Objects.hashCode(this.description);
+    hash = 29 * hash + Objects.hashCode(this.currentStock);
+    hash = 29 * hash + Objects.hashCode(this.criticalStock);
+    hash = 29 * hash + Objects.hashCode(this.images);
+    return hash;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final ProductPojo other = (ProductPojo)obj;
+    if (!Objects.equals(this.name, other.name)) {
+      return false;
+    }
+    if (!Objects.equals(this.barcode, other.barcode)) {
+      return false;
+    }
+    if (!Objects.equals(this.description, other.description)) {
+      return false;
+    }
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.price, other.price)) {
+      return false;
+    }
+    if (!Objects.equals(this.productType, other.productType)) {
+      return false;
+    }
+    if (!Objects.equals(this.currentStock, other.currentStock)) {
+      return false;
+    }
+    if (!Objects.equals(this.criticalStock, other.criticalStock)) {
+      return false;
+    }
+    if (!Objects.equals(this.images, other.images)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "ProductPojo{" + "id=" + id + ", name=" + name + ", barcode=" + barcode + ", price=" + price + ", productType=" + productType + ", description=" + description + ", currentStock=" + currentStock + ", criticalStock=" + criticalStock + ", images=" + images + '}';
   }
 
 }

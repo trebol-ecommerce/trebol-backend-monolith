@@ -1,12 +1,14 @@
 package org.trebol.api.pojo;
 
+import java.util.Objects;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * 
+ *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 public class SalespersonPojo {
@@ -31,6 +33,40 @@ public class SalespersonPojo {
 
   public void setPerson(PersonPojo person) {
     this.person = person;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    hash = 71 * hash + Objects.hashCode(this.id);
+    hash = 71 * hash + Objects.hashCode(this.person);
+    return hash;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final SalespersonPojo other = (SalespersonPojo)obj;
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.person, other.person)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "SalespersonPojo{" + "id=" + id + ", person=" + person + '}';
   }
 
 }

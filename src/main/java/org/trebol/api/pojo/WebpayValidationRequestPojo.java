@@ -1,5 +1,7 @@
 package org.trebol.api.pojo;
 
+import java.util.Objects;
+
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,5 +28,35 @@ public class WebpayValidationRequestPojo {
 
   public void setToken(String token) {
     this.token = token;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 3;
+    hash = 97 * hash + Objects.hashCode(this.token);
+    return hash;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final WebpayValidationRequestPojo other = (WebpayValidationRequestPojo)obj;
+    if (!Objects.equals(this.token, other.token)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "WebpayValidationRequestPojo{" + "token=" + token + '}';
   }
 }

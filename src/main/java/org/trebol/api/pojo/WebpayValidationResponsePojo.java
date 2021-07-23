@@ -1,6 +1,7 @@
 package org.trebol.api.pojo;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -57,5 +58,47 @@ public class WebpayValidationResponsePojo {
 
   public void setBuyOrder(String buyOrder) {
     this.buyOrder = buyOrder;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    hash = 97 * hash + Objects.hashCode(this.responseCode);
+    hash = 97 * hash + Objects.hashCode(this.transactionDate);
+    hash = 97 * hash + Objects.hashCode(this.sessionId);
+    hash = 97 * hash + Objects.hashCode(this.buyOrder);
+    return hash;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final WebpayValidationResponsePojo other = (WebpayValidationResponsePojo)obj;
+    if (!Objects.equals(this.sessionId, other.sessionId)) {
+      return false;
+    }
+    if (!Objects.equals(this.buyOrder, other.buyOrder)) {
+      return false;
+    }
+    if (!Objects.equals(this.responseCode, other.responseCode)) {
+      return false;
+    }
+    if (!Objects.equals(this.transactionDate, other.transactionDate)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "WebpayValidationResponsePojo{" + "responseCode=" + responseCode + ", transactionDate=" + transactionDate + ", sessionId=" + sessionId + ", buyOrder=" + buyOrder + '}';
   }
 }
