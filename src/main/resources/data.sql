@@ -2,12 +2,34 @@
  * Author:  Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 
-INSERT INTO `product_families`
+INSERT INTO `sales_statuses`
+(`sell_status_id`, `sell_status_name`)
+VALUES
+(-6, 'Returned'),
+(-5, 'Delivery Failed'),
+(-4, 'Delivery Cancelled'),
+(-3, 'Rejected'),
+(-2, 'Payment Failed'),
+(-1, 'Payment Cancelled'),
+(01, 'Pending'),
+(02, 'Payment Started'),
+(03, 'Paid, Unconfirmed'),
+(04, 'Paid, Confirmed'),
+(05, 'Delivery On Route'),
+(06, 'Delivery Complete');
+
+INSERT INTO `sales_types`
+(`sell_type_id`, `sell_type_name`)
+VALUES
+(01, 'Bill'),
+(02, 'Enterprise Invoice');
+
+INSERT INTO `products_families`
 (`product_family_id`, `product_family_name`)
 VALUES
 (01, 'Vestuario y Calzado');
 
-INSERT INTO `product_types`
+INSERT INTO `products_types`
 (`product_type_id`, `product_type_name`, `product_family_id`)
 VALUES
 (01, 'Zapatillas', 01);
@@ -26,14 +48,14 @@ VALUES
 (02, '2.png', 'assets/img/products/photo-1578172433613-9f1b258f7d5b.jpg'),
 (03, '3.png', 'assets/img/products/photo-1580143881495-b21dde95fc60.jpg');
 
-INSERT INTO `product_images`
+INSERT INTO `products_images`
 (`product_id`, `image_id`)
 VALUES
 (01, 01),
 (02, 02),
 (03, 03);
 
-INSERT INTO `app_user_roles`
+INSERT INTO `app_users_roles`
 (`user_role_id`, `user_role_name`)
 VALUES 
 (01, 'Administrador'),
@@ -44,7 +66,16 @@ VALUES
 INSERT INTO `people`
 (`person_id`, `person_name`, `person_idcard`, `person_email`, `person_address`, `person_phone1`, `person_phone2`)
 VALUES
-(01, 'Test', '1111111', 'test@example.com', 'Example.com', 0, 0);
+(01, 'Test',  '1111111', 'test@example.com',  'example',   0, 0),
+(02, 'Test2', '2222222', 'test2@example.com', 'example 2', 0, 0),
+(03, 'Test3', '3333333', 'test3@example.com', 'example 3', 0, 0),
+(04, 'Test4', '4444444', 'test4@example.com', 'example 4', 0, 0),
+(05, 'Test5', '5555555', 'test5@example.com', 'example 5', 0, 0);
+
+INSERT INTO `customers`
+(`customer_id`, `person_id`)
+VALUES
+(01, 04);
 
 INSERT INTO `app_permissions`
 (`permission_id`, `permission_code`)
@@ -94,7 +125,7 @@ VALUES
 (43, 'people:update'),
 (44, 'people:read');
 
-INSERT INTO `app_user_role_permissions`
+INSERT INTO `app_users_roles_permissions`
 (`user_role_permission_id`, `permission_id`, `user_role_id`)
 VALUES
 (01, 01, 01),
@@ -140,10 +171,52 @@ VALUES
 (41, 41, 01),
 (42, 42, 01),
 (43, 43, 01),
-(44, 44, 01);
+(44, 44, 01),
+(45, 02, 02),
+(46, 03, 02),
+(47, 04, 02),
+(48, 06, 02),
+(49, 07, 02),
+(50, 08, 02),
+(51, 10, 02),
+(52, 11, 02),
+(53, 12, 02),
+(54, 14, 02),
+(55, 15, 02),
+(56, 16, 02),
+(57, 19, 02),
+(58, 20, 02),
+(59, 21, 02),
+(60, 22, 02),
+(61, 23, 02),
+(62, 24, 02),
+(63, 26, 02),
+(64, 27, 02),
+(65, 28, 02),
+(66, 29, 02),
+(67, 30, 02),
+(68, 31, 02),
+(69, 32, 02),
+(70, 36, 02),
+(71, 40, 02),
+(72, 42, 02),
+(73, 43, 02),
+(74, 44, 02),
+(75, 04, 03),
+(76, 08, 03),
+(77, 12, 03),
+(78, 16, 03),
+(79, 20, 03),
+(80, 24, 03),
+(81, 28, 03),
+(82, 32, 03),
+(83, 44, 03);
 
 INSERT INTO `app_users`
 (`user_id`, `user_name`, `user_password`, `user_role_id`, `person_id`)
 VALUES
-(01, 'admin', '$2a$10$U4vUIIlZDBvpwT.KkQuQHOfJrbGpGBol3WT9ryASiwPfYAX1bEq0K', 01, 01);
--- password is 'admin', was generated using bcrypt cli w/ strength 10
+(01, 'admin',    '$2a$10$U4vUIIlZDBvpwT.KkQuQHOfJrbGpGBol3WT9ryASiwPfYAX1bEq0K', 01, 01),
+(02, 'manager',  '$2a$10$qgNTjPGucz6/ul9/GfVwvO.cWo9.lDokYi6GQ3H4bwvAVG49uV/1K', 02, 02),
+(03, 'vendedor', '$2a$10$moc0.bFZsTztrgLrNvGC4uApdkBFihA6PlQsuy.dZ0k4A6eVhLwdu', 03, 03),
+(04, 'cliente',  '$2a$10$Mi39GIZtguqvm2aLl0JpHOm0WcPoN5aMYlbD.L6IymAEBOQU/6m6u', 04, 04);
+-- passwords equal usernames
