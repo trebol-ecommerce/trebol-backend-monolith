@@ -22,7 +22,7 @@ import javax.persistence.Table;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @Entity
-@Table(name = "product_images")
+@Table(name = "products_images")
 @NamedQueries({
     @NamedQuery(name = "ProductImage.findAll", query = "SELECT p FROM ProductImage p")})
 public class ProductImage
@@ -108,7 +108,7 @@ public class ProductImage
   @Override
   public String toString() {
     return "ProductImage{id=" + id +
-        ", image=" + image + 
+        ", image=" + image +
         ", product=" + product + '}';
   }
 

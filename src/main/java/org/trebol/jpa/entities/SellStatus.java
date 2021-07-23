@@ -21,7 +21,7 @@ import org.trebol.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @Entity
-@Table(name = "sell_statuses")
+@Table(name = "sales_statuses")
 @NamedQueries({ @NamedQuery(name = "SellStatus.findAll", query = "SELECT s FROM SellStatus s") })
 public class SellStatus
     implements GenericEntity<Integer> {

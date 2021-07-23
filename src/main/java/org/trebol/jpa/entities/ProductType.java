@@ -24,7 +24,7 @@ import org.trebol.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "product_types")
+@Table(name = "products_types")
 @NamedQueries({ @NamedQuery(name = "ProductType.findAll", query = "SELECT p FROM ProductType p") })
 public class ProductType
     implements GenericEntity<Integer> {

@@ -24,7 +24,7 @@ import org.trebol.jpa.GenericEntity;
  */
 @Entity
 @Table(
-  name = "app_user_roles",
+  name = "app_users_roles",
   indexes = @Index(columnList = "user_role_name"),
   uniqueConstraints = @UniqueConstraint(columnNames = {"user_role_name"}))
 @NamedQueries({ @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u") })

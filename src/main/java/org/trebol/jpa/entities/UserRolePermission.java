@@ -22,7 +22,7 @@ import org.trebol.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "app_user_role_permissions")
+@Table(name = "app_users_roles_permissions")
 @NamedQueries({ @NamedQuery(name = "UserRolePermission.findAll", query = "SELECT u FROM UserRolePermission u") })
 public class UserRolePermission
     implements GenericEntity<Integer> {
