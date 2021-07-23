@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import io.jsonwebtoken.lang.Maps;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +28,8 @@ import org.trebol.api.pojo.CustomerPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.GenericCrudService;
+
+import com.querydsl.core.types.Predicate;
 
 /**
  * API point of entry for Customer entities
@@ -57,24 +61,26 @@ public class DataCustomersController
   }
 
   @Override
-  @GetMapping({"/{id}", "/{id}/"})
+  @GetMapping({"/{idCard}", "/{idCard}/"})
   @PreAuthorize("hasAuthority('customers:read')")
-  public CustomerPojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
+  public CustomerPojo readOne(@PathVariable Integer idCard) {
+    Map<String, String> idCardMatchMap = Maps.of("idnumber", String.valueOf(idCard)).build();
+    Predicate filters = crudService.queryParamsMapToPredicate(idCardMatchMap);
+    return crudService.find(filters);
   }
 
   @Override
-  @PutMapping({"/{id}", "/{id}/"})
+  @PutMapping({"/{idCard}", "/{idCard}/"})
   @PreAuthorize("hasAuthority('customers:update')")
-  public Integer update(@RequestBody @Valid CustomerPojo input, @PathVariable Integer id) {
-    return super.update(input, id);
+  public Integer update(@RequestBody @Valid CustomerPojo input, @PathVariable Integer idCard) {
+    return super.update(input, idCard);
   }
 
   @Override
-  @DeleteMapping({"/{id}", "/{id}/"})
+  @DeleteMapping({"/{idCard}", "/{idCard}/"})
   @PreAuthorize("hasAuthority('customers:delete')")
-  public boolean delete(@PathVariable Integer id) {
-    return super.delete(id);
+  public boolean delete(@PathVariable Integer idCard) {
+    return super.delete(idCard);
   }
 
   @Override
