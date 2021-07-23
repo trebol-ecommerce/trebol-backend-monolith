@@ -86,11 +86,15 @@ public class CheckoutServiceImpl
 
   private int fetchCustomerId(String authorizationHeader) {
     PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authorizationHeader);
-    int personId = authenticatedPerson.getId();
-    CustomerPojo authenticatedCustomer = customerPersonRelationService.getCustomerFromPersonId(personId);
-    if (authenticatedCustomer != null) {
-      int customerId = authenticatedCustomer.getId();
-      return customerId;
+    if (authenticatedPerson != null) {
+      LOG.trace("Identified user as person={}", authenticatedPerson);
+      int personId = authenticatedPerson.getId();
+      CustomerPojo authenticatedCustomer = customerPersonRelationService.getCustomerFromPersonId(personId);
+      if (authenticatedCustomer != null) {
+        LOG.trace("User/Person exists as customer={}", authenticatedCustomer);
+        int customerId = authenticatedCustomer.getId();
+        return customerId;
+      }
     }
     throw new RuntimeException("The user requesting a cart checkout does not have an associated client ID");
   }
