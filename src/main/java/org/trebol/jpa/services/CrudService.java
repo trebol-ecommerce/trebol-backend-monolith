@@ -11,9 +11,9 @@ import com.querydsl.core.types.Predicate;
  * Interface for implementing the basic CRUD service operations. Because it
  * extends Map2QueryDslPredicateConverterService, it's expected to comply to QueryDSL and
  * accept Predicate objects as filtering conditions.
- * 
+ *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
- * 
+ *
  * @param <T> The type class of the item.
  * @param <I> The identifier type class of the item.
  */
@@ -73,4 +73,14 @@ public interface CrudService<T, I>
    */
   @Nullable
   public T find(I id);
+
+  /**
+   * Retrieves the first item that matches a certain filter.
+   *
+   * @param filters   Filtering conditions
+   *
+   * @return The requested item, or null if it was not found.
+   */
+  @Nullable
+  public T find(Predicate filters);
 }

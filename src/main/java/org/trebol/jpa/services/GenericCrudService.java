@@ -20,7 +20,7 @@ import org.trebol.jpa.GenericRepository;
 /**
  * Abstract service that sends and receives data with pojos and keep entities
  * out of public scope. API controllers should wire to subclasses of this.
- * 
+ *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  *
  * @param <P> The pojo class
@@ -39,7 +39,7 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
   /**
    * Query all entities for the type class. Override this method if you need
    * custom queries. Remember to declare the correct repository interface first.
-   * 
+   *
    * @param paged
    * @param filters
    * @return
@@ -127,6 +127,19 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
       return null;
     } else {
       E found = entityById.get();
+      P foundPojo = entity2Pojo(found);
+      return foundPojo;
+    }
+  }
+
+  @Nullable
+  @Override
+  public P find(Predicate filters) {
+    Optional<E> entity = repository.findOne(filters);
+    if (!entity.isPresent()) {
+      return null;
+    } else {
+      E found = entity.get();
       P foundPojo = entity2Pojo(found);
       return foundPojo;
     }
