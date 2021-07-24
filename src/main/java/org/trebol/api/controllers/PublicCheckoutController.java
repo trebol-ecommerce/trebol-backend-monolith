@@ -29,16 +29,16 @@ import org.trebol.security.services.AuthorizationHeaderParserService;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @RestController
-@RequestMapping("/store/checkout")
-public class StoreCheckoutController {
-  private final Logger LOG = LoggerFactory.getLogger(StoreCheckoutController.class);
+@RequestMapping("/public/checkout")
+public class PublicCheckoutController {
+  private final Logger LOG = LoggerFactory.getLogger(PublicCheckoutController.class);
 
   private final CheckoutService checkoutService;
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final CheckoutConfig checkoutConfig;
 
   @Autowired
-  public StoreCheckoutController(
+  public PublicCheckoutController(
       CheckoutService checkoutService,
       AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
       CheckoutConfig checkoutConfig) {
