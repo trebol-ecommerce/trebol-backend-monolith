@@ -54,27 +54,31 @@ public class SecurityConfig
     http
         .cors()
         .and()
-        .csrf().disable()
+        .csrf()
+            .disable()
         .sessionManagement()
-          .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), securityProperties, secretKey))
-        .addFilterAfter(new JwtTokenVerifierFilter(jwtClaimsParserService),
+        .addFilter(
+            this.jwtLoginAuthenticationFilter())
+        .addFilterAfter(
+            new JwtTokenVerifierFilter(jwtClaimsParserService),
             JwtUsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
         .antMatchers(
-            "/",
-            "/login",
-            "/register",
-            "/store/about",
-            "/store/front",
-            "/store/categories",
-            "/store/categories/*",
-            "/store/product/*",
-            "/store/receipt/*",
-            "/store/checkout/validate"
-        ).permitAll()
-        .anyRequest().authenticated();
+          "/",
+          "/public/login",
+          "/public/register",
+          "/public/about",
+          "/public/categories",
+          "/public/categories/*",
+          "/public/products",
+          "/public/products/*",
+          "/public/receipt/*",
+          "/public/checkout/validate")
+            .permitAll()
+        .anyRequest()
+            .authenticated();
   }
 
   @Override
@@ -99,6 +103,15 @@ public class SecurityConfig
   public PasswordEncoder passwordEncoder() {
     Integer strength = securityProperties.getBcryptEncoderStrength();
     return new BCryptPasswordEncoder(strength);
+  }
+
+  private JwtUsernamePasswordAuthenticationFilter jwtLoginAuthenticationFilter() throws Exception {
+    JwtUsernamePasswordAuthenticationFilter filter = new JwtUsernamePasswordAuthenticationFilter(
+      super.authenticationManager(),
+      securityProperties,
+      secretKey);
+    filter.setFilterProcessesUrl("/public/login");
+    return filter;
   }
 
 }
