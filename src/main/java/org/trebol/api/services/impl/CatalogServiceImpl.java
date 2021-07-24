@@ -19,7 +19,7 @@ import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductFamily;
 import org.trebol.jpa.entities.ProductType;
 import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.api.services.CatalogService;
+import org.trebol.api.services.PublicProductsService;
 
 /**
  *
@@ -27,7 +27,7 @@ import org.trebol.api.services.CatalogService;
  */
 @Service
 public class CatalogServiceImpl
-    implements CatalogService {
+    implements PublicProductsService {
 
   private final GenericCrudService<ProductFamilyPojo, ProductFamily, Integer> productFamiliesService;
   private final GenericCrudService<ProductTypePojo, ProductType, Integer> productTypesService;

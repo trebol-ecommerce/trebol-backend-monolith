@@ -13,7 +13,7 @@ import org.trebol.api.pojo.ProductTypePojo;
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
-public interface CatalogService {
+public interface PublicProductsService {
   public Collection<ProductPojo> readProducts(Integer requestPageSize, Integer requestPageIndex,
       Map<String, String> allRequestParams);
 

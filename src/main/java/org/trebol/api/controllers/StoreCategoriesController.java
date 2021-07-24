@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.ProductFamilyPojo;
 import org.trebol.api.pojo.ProductTypePojo;
-import org.trebol.api.services.CatalogService;
+import org.trebol.api.services.PublicProductsService;
 
 @RestController
 @RequestMapping("/store/categories")
 public class StoreCategoriesController {
 
-  private final CatalogService catalogService;
+  private final PublicProductsService catalogService;
 
   @Autowired
   public StoreCategoriesController(
-    CatalogService catalogService
+    PublicProductsService catalogService
   ) {
     this.catalogService = catalogService;
   }
