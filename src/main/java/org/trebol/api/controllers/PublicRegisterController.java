@@ -16,13 +16,13 @@ import org.trebol.api.services.RegistrationService;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @RestController
-@RequestMapping("/register")
-public class RegisterController {
+@RequestMapping("/public/register")
+public class PublicRegisterController {
 
   private final RegistrationService registrationService;
 
   @Autowired
-  public RegisterController(RegistrationService registrationService) {
+  public PublicRegisterController(RegistrationService registrationService) {
     this.registrationService = registrationService;
   }
 
