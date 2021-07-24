@@ -17,14 +17,14 @@ import org.trebol.api.services.ReceiptService;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
-@RequestMapping("/store/receipt")
-public class StoreReceiptController {
-  private final Logger LOG = LoggerFactory.getLogger(StoreReceiptController.class);
+@RequestMapping("/public/receipt")
+public class PublicReceiptController {
+  private final Logger LOG = LoggerFactory.getLogger(PublicReceiptController.class);
 
   private final ReceiptService receiptService;
 
   @Autowired
-  public StoreReceiptController(ReceiptService receiptService) {
+  public PublicReceiptController(ReceiptService receiptService) {
     this.receiptService = receiptService;
   }
 
