@@ -13,13 +13,13 @@ import org.trebol.api.pojo.ProductTypePojo;
 import org.trebol.api.services.PublicProductsService;
 
 @RestController
-@RequestMapping("/store/categories")
-public class StoreCategoriesController {
+@RequestMapping("/public/categories")
+public class PublicCategoriesController {
 
   private final PublicProductsService catalogService;
 
   @Autowired
-  public StoreCategoriesController(
+  public PublicCategoriesController(
     PublicProductsService catalogService
   ) {
     this.catalogService = catalogService;
