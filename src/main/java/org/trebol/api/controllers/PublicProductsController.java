@@ -38,6 +38,6 @@ public class PublicProductsController {
 
   @GetMapping({"/{id}", "/{id}/"})
   public ProductPojo readOne(@PathVariable Integer id) {
-    return catalogService.readProduct(id);
+    return catalogService.getProduct(id);
   }
 }

@@ -24,18 +24,14 @@ VALUES
 (01, 'Bill'),
 (02, 'Enterprise Invoice');
 
-INSERT INTO `products_families`
-(`product_family_id`, `product_family_name`)
+INSERT INTO `products_categories`
+(`product_category_id`, `product_category_name`, `parent_product_category_id`)
 VALUES
-(01, 'Vestuario y Calzado');
-
-INSERT INTO `products_types`
-(`product_type_id`, `product_type_name`, `product_family_id`)
-VALUES
-(01, 'Zapatillas', 01);
+(01, 'Vestuario y Calzado', null),
+(02, 'Zapatillas', 01);
 
 INSERT INTO `products`
-(`product_id`, `product_name`, `product_code`, `product_price`, `product_stock_current`, `product_stock_critical`, `product_type_id`)
+(`product_id`, `product_name`, `product_code`, `product_price`, `product_stock_current`, `product_stock_critical`, `product_category_id`)
 VALUES
 (01, 'Zapatillas Nike Air Jordan Azul/Negro', 'NIKE-AZLNGR-1', 14990, 50, 05, 01),
 (02, 'Zapatillas Nike Hi-Top Rojo/Negro', 'NIKE-ROJNGR-1', 14990, 50, 05, 01),
@@ -80,14 +76,14 @@ VALUES
 INSERT INTO `app_permissions`
 (`permission_id`, `permission_code`)
 VALUES
-(01, 'product_families:delete'),
-(02, 'product_families:create'),
-(03, 'product_families:update'),
-(04, 'product_families:read'),
-(05, 'product_types:delete'),
-(06, 'product_types:create'),
-(07, 'product_types:update'),
-(08, 'product_types:read'),
+(01, 'product_categories:delete'),
+(02, 'product_categories:create'),
+(03, 'product_categories:update'),
+(04, 'product_categories:read'),
+(05, ''), -- these may be of use later
+(06, ''),
+(07, ''),
+(08, ''),
 (09, 'sell_statuses:delete'),
 (10, 'sell_statuses:create'),
 (11, 'sell_statuses:update'),

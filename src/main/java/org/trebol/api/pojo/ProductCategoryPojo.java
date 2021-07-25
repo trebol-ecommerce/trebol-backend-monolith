@@ -2,7 +2,7 @@ package org.trebol.api.pojo;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -10,12 +10,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public class ProductFamilyPojo {
-  @JsonInclude
+@JsonInclude
+public class ProductCategoryPojo {
   private Integer id;
-  @JsonInclude
-  @NotNull
   private String name;
+  @Nullable
+  private ProductCategoryPojo parent;
 
   public Integer getId() {
     return id;
@@ -33,11 +33,20 @@ public class ProductFamilyPojo {
     this.name = name;
   }
 
+  public ProductCategoryPojo getParent() {
+    return parent;
+  }
+
+  public void setParent(ProductCategoryPojo parent) {
+    this.parent = parent;
+  }
+
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = 47 * hash + Objects.hashCode(this.id);
-    hash = 47 * hash + Objects.hashCode(this.name);
+    hash = 23 * hash + Objects.hashCode(this.id);
+    hash = 23 * hash + Objects.hashCode(this.name);
+    hash = 23 * hash + Objects.hashCode(this.parent);
     return hash;
   }
 
@@ -52,11 +61,14 @@ public class ProductFamilyPojo {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final ProductFamilyPojo other = (ProductFamilyPojo)obj;
+    final ProductCategoryPojo other = (ProductCategoryPojo)obj;
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
     if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.parent, other.parent)) {
       return false;
     }
     return true;
@@ -64,7 +76,8 @@ public class ProductFamilyPojo {
 
   @Override
   public String toString() {
-    return "ProductFamilyPojo{" + "id=" + id + ", name=" + name + '}';
+    return "ProductCategoryPojo{id=" + id +
+        ", name=" + name +
+        ", parent=" + parent + '}';
   }
-
 }

@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import org.trebol.security.JwtTokenVerifierFilter;
@@ -58,6 +59,10 @@ public class SecurityConfig
             .disable()
         .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            .invalidateHttpSession(true)
         .and()
         .addFilter(
             this.jwtLoginAuthenticationFilter())

@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.GenericCrudController;
-import org.trebol.api.pojo.ProductTypePojo;
+import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.config.CustomProperties;
-import org.trebol.jpa.entities.ProductType;
+import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.GenericCrudService;
 
 /**
@@ -35,38 +35,38 @@ import org.trebol.jpa.services.GenericCrudService;
 @RestController
 @RequestMapping("/data/sell_statuses")
 public class DataSellStatusesController
-    extends GenericCrudController<ProductTypePojo, ProductType, Integer> {
+    extends GenericCrudController<ProductCategoryPojo, ProductCategory, Integer> {
 
   @Autowired
   public DataSellStatusesController(CustomProperties globals,
-      GenericCrudService<ProductTypePojo, ProductType, Integer> crudService) {
+      GenericCrudService<ProductCategoryPojo, ProductCategory, Integer> crudService) {
     super(globals, crudService);
   }
 
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('sell_statuses:read')")
-  public Collection<ProductTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public Collection<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sell_statuses:create')")
-  public Integer create(@RequestBody @Valid ProductTypePojo input) {
+  public Integer create(@RequestBody @Valid ProductCategoryPojo input) {
     return super.create(input);
   }
 
   @Override
   @GetMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('sell_statuses:read')")
-  public ProductTypePojo readOne(@PathVariable Integer id) {
+  public ProductCategoryPojo readOne(@PathVariable Integer id) {
     return super.readOne(id);
   }
 
   @Override
   @PutMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('sell_statuses:update')")
-  public Integer update(@RequestBody @Valid ProductTypePojo input, @PathVariable Integer id) {
+  public Integer update(@RequestBody @Valid ProductCategoryPojo input, @PathVariable Integer id) {
     return super.update(input, id);
   }
 
