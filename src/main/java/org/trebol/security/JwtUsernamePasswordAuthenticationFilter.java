@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.Jwts;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -43,16 +45,19 @@ public class JwtUsernamePasswordAuthenticationFilter
   public Authentication attemptAuthentication(
       HttpServletRequest request,
       HttpServletResponse response) throws AuthenticationException {
-
-    try {
-      UsernamePasswordPojo authenticationRequest = new ObjectMapper().readValue(request.getInputStream(),
-          UsernamePasswordPojo.class);
-      Authentication authentication = new UsernamePasswordAuthenticationToken(
-          authenticationRequest.getName(),
-          authenticationRequest.getPassword());
-      return authenticationManager.authenticate(authentication);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    if (!HttpMethod.POST.matches(request.getMethod())) {
+      return null;
+    } else {
+      try {
+        UsernamePasswordPojo authenticationRequest = new ObjectMapper().readValue(request.getInputStream(),
+            UsernamePasswordPojo.class);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+            authenticationRequest.getName(),
+            authenticationRequest.getPassword());
+        return authenticationManager.authenticate(authentication);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
   }
 
