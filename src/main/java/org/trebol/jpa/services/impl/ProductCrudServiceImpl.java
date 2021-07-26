@@ -103,13 +103,12 @@ public class ProductCrudServiceImpl
           case "name":
             predicate.and(qProduct.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "productType":
+          case "productCategory":
             intValue = Integer.valueOf(stringValue);
-            predicate.and(qProduct.productType.id.eq(intValue));
+            predicate.and(qProduct.productCategory.id.eq(intValue));
             break;
-          case "productFamily":
-            intValue = Integer.valueOf(stringValue);
-            predicate.and(qProduct.productType.productFamily.id.eq(intValue));
+          case "productCategoryName":
+            predicate.and(qProduct.productCategory.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:
             break;

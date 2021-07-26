@@ -26,7 +26,7 @@ public class ProductPojo {
   private Integer price;
   @JsonInclude
   @NotNull
-  private ProductTypePojo productType;
+  private ProductCategoryPojo productType;
   @JsonInclude(value = Include.NON_EMPTY)
   private String description;
   @JsonInclude(value = Include.NON_EMPTY)
@@ -68,11 +68,11 @@ public class ProductPojo {
     this.price = price;
   }
 
-  public ProductTypePojo getProductType() {
+  public ProductCategoryPojo getProductType() {
     return productType;
   }
 
-  public void setProductType(ProductTypePojo productType) {
+  public void setProductType(ProductCategoryPojo productType) {
     this.productType = productType;
   }
 

@@ -3,20 +3,20 @@ package org.trebol.converters.topojo;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import org.trebol.api.pojo.ProductTypePojo;
-import org.trebol.jpa.entities.ProductType;
+import org.trebol.api.pojo.ProductCategoryPojo;
+import org.trebol.jpa.entities.ProductCategory;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Component
-public class ProductType2Pojo
-    implements Converter<ProductType, ProductTypePojo> {
+public class ProductCategory2Pojo
+    implements Converter<ProductCategory, ProductCategoryPojo> {
 
   @Override
-  public ProductTypePojo convert(ProductType source) {
-    ProductTypePojo target = new ProductTypePojo();
+  public ProductCategoryPojo convert(ProductCategory source) {
+    ProductCategoryPojo target = new ProductCategoryPojo();
     target.setId(source.getId());
     target.setName(source.getName());
     return target;

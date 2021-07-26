@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
-import org.trebol.api.pojo.ProductFamilyPojo;
 import org.trebol.api.pojo.ProductPojo;
-import org.trebol.api.pojo.ProductTypePojo;
+import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.jpa.entities.Product;
-import org.trebol.jpa.entities.ProductFamily;
-import org.trebol.jpa.entities.ProductType;
+import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.GenericCrudService;
 import org.trebol.api.services.PublicProductsService;
 
@@ -29,15 +27,13 @@ import org.trebol.api.services.PublicProductsService;
 public class CatalogServiceImpl
     implements PublicProductsService {
 
-  private final GenericCrudService<ProductFamilyPojo, ProductFamily, Integer> productFamiliesService;
-  private final GenericCrudService<ProductTypePojo, ProductType, Integer> productTypesService;
+  private final GenericCrudService<ProductCategoryPojo, ProductCategory, Integer> productTypesService;
   private final GenericCrudService<ProductPojo, Product, Integer> productsService;
 
   @Autowired
-  public CatalogServiceImpl(GenericCrudService<ProductFamilyPojo, ProductFamily, Integer> productFamiliesService,
-      GenericCrudService<ProductTypePojo, ProductType, Integer> productTypesService,
-      GenericCrudService<ProductPojo, Product, Integer> productsService) {
-    this.productFamiliesService = productFamiliesService;
+  public CatalogServiceImpl(
+    GenericCrudService<ProductCategoryPojo, ProductCategory, Integer> productTypesService,
+    GenericCrudService<ProductPojo, Product, Integer> productsService) {
     this.productTypesService = productTypesService;
     this.productsService = productsService;
   }
@@ -50,25 +46,20 @@ public class CatalogServiceImpl
 
   @Nullable
   @Override
-  public ProductPojo readProduct(Integer id) {
+  public ProductPojo getProduct(Integer id) {
     return productsService.find(id);
   }
 
   @Override
-  public Collection<ProductTypePojo> readProductTypes() {
+  public Collection<ProductCategoryPojo> getRootCategories() {
     return productTypesService.read(Integer.MAX_VALUE, 0, null);
   }
 
   @Override
-  public Collection<ProductTypePojo> readProductTypesByFamilyId(int productFamilyId) {
-    Map<String, String> queryParamsMap = Maps.of("productFamily", String.valueOf(productFamilyId)).build();
+  public Collection<ProductCategoryPojo> getChildrenCategories(int parentId) {
+    Map<String, String> queryParamsMap = Maps.of("productFamily", String.valueOf(parentId)).build();
     Predicate filters = productTypesService.queryParamsMapToPredicate(queryParamsMap);
     return productTypesService.read(Integer.MAX_VALUE, 0, filters);
-  }
-
-  @Override
-  public Collection<ProductFamilyPojo> readProductFamilies() {
-    return productFamiliesService.read(Integer.MAX_VALUE, 0, null);
   }
 
 }

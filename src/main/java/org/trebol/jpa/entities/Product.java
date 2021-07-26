@@ -55,9 +55,9 @@ public class Product
   @NotNull
   @Column(name = "product_stock_critical")
   private int stockCritical;
-  @JoinColumn(name = "product_type_id", referencedColumnName = "product_type_id", insertable = true, updatable = true)
+  @JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id", insertable = true, updatable = true)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private ProductType productType;
+  private ProductCategory productCategory;
 
   public Product() {
   }
@@ -123,12 +123,12 @@ public class Product
     this.stockCritical = stockCritical;
   }
 
-  public ProductType getProductType() {
-    return productType;
+  public ProductCategory getProductCategory() {
+    return productCategory;
   }
 
-  public void setProductType(ProductType productType) {
-    this.productType = productType;
+  public void setProductCategory(ProductCategory productCategory) {
+    this.productCategory = productCategory;
   }
 
   @Override
@@ -140,7 +140,7 @@ public class Product
     hash = 11 * hash + this.price;
     hash = 11 * hash + this.stockCurrent;
     hash = 11 * hash + this.stockCritical;
-    hash = 11 * hash + Objects.hashCode(this.productType);
+    hash = 11 * hash + Objects.hashCode(this.productCategory);
     return hash;
   }
 
@@ -174,7 +174,7 @@ public class Product
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.productType, other.productType)) {
+    if (!Objects.equals(this.productCategory, other.productCategory)) {
       return false;
     }
     return true;
@@ -188,7 +188,7 @@ public class Product
         ", price=" + price +
         ", stockCurrent=" + stockCurrent +
         ", stockCritical=" + stockCritical +
-        ", productType=" + productType + '}';
+        ", productCategory=" + productCategory + '}';
   }
 
 }

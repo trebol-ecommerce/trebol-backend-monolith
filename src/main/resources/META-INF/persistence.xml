@@ -6,7 +6,6 @@
     <class>org.trebol.jpa.entities.Sell</class>
     <class>org.trebol.jpa.entities.Param</class>
     <class>org.trebol.jpa.entities.Salesperson</class>
-    <class>org.trebol.jpa.entities.ProductType</class>
     <class>org.trebol.jpa.entities.ProductFamily</class>
     <class>org.trebol.jpa.entities.UserRole</class>
     <class>org.trebol.jpa.entities.Session</class>
@@ -18,6 +17,7 @@
     <class>org.trebol.jpa.entities.Person</class>
     <class>org.trebol.jpa.entities.User</class>
     <class>org.trebol.jpa.entities.SellType</class>
+    <class>org.trebol.jpa.entities.ProductCategory</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
   </persistence-unit>
 </persistence>

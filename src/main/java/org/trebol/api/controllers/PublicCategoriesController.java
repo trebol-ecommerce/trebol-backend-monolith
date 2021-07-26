@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.trebol.api.pojo.ProductFamilyPojo;
-import org.trebol.api.pojo.ProductTypePojo;
+import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.api.services.PublicProductsService;
 
 @RestController
@@ -26,16 +25,16 @@ public class PublicCategoriesController {
   }
 
   @GetMapping({"", "/"})
-  public Collection<ProductFamilyPojo> readProductFamilies() {
-    return catalogService.readProductFamilies();
+  public Collection<ProductCategoryPojo> getRootcategories() {
+    return catalogService.getRootCategories();
   }
 
-  @GetMapping({"/{familyId}", "/{familyId}/"})
-  public Collection<ProductTypePojo> readProductTypesByFamilyId(@PathVariable Integer familyId) {
-    if (familyId == null) {
-      return catalogService.readProductTypes();
+  @GetMapping({"/{parentId}", "/{parentId}/"})
+  public Collection<ProductCategoryPojo> getCategories(@PathVariable Integer parentId) {
+    if (parentId == null) {
+      return catalogService.getRootCategories();
     } else {
-      return catalogService.readProductTypesByFamilyId(familyId);
+      return catalogService.getChildrenCategories(parentId);
     }
   }
 }

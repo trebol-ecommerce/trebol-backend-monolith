@@ -8,20 +8,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import org.trebol.jpa.entities.QProductType;
-
-import org.trebol.api.pojo.ProductTypePojo;
-import org.trebol.jpa.entities.ProductType;
-import org.trebol.jpa.repositories.ProductTypesRepository;
+import org.trebol.api.pojo.ProductCategoryPojo;
+import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.jpa.entities.QProductCategory;
 import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 
 /**
  *
@@ -29,15 +26,15 @@ import org.trebol.jpa.services.GenericCrudService;
  */
 @Transactional
 @Service
-public class ProductTypeCrudServiceImpl
-    extends GenericCrudService<ProductTypePojo, ProductType, Integer> {
-  private static final Logger LOG = LoggerFactory.getLogger(ProductTypeCrudServiceImpl.class);
+public class ProductCategoryCrudServiceImpl
+    extends GenericCrudService<ProductCategoryPojo, ProductCategory, Integer> {
+  private static final Logger LOG = LoggerFactory.getLogger(ProductCategoryCrudServiceImpl.class);
 
-  private final ProductTypesRepository repository;
+  private final ProductsCategoriesRepository repository;
   private final ConversionService conversion;
 
   @Autowired
-  public ProductTypeCrudServiceImpl(ProductTypesRepository repository, ConversionService conversion) {
+  public ProductCategoryCrudServiceImpl(ProductsCategoriesRepository repository, ConversionService conversion) {
     super(repository);
     this.repository = repository;
     this.conversion = conversion;
@@ -45,28 +42,19 @@ public class ProductTypeCrudServiceImpl
 
   @Nullable
   @Override
-  public ProductTypePojo entity2Pojo(ProductType source) {
-    return conversion.convert(source, ProductTypePojo.class);
+  public ProductCategoryPojo entity2Pojo(ProductCategory source) {
+    return conversion.convert(source, ProductCategoryPojo.class);
   }
 
   @Nullable
   @Override
-  public ProductType pojo2Entity(ProductTypePojo source) {
-    return conversion.convert(source, ProductType.class);
-  }
-
-  @Override
-  public Page<ProductType> getAllEntities(Pageable paged, Predicate filters) {
-    if (filters == null) {
-      return repository.deepReadAll(paged);
-    } else {
-      return repository.findAll(filters, paged);
-    }
+  public ProductCategory pojo2Entity(ProductCategoryPojo source) {
+    return conversion.convert(source, ProductCategory.class);
   }
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
-    QProductType qProductType = QProductType.productType;
+    QProductCategory qProductCategory = QProductCategory.productCategory;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
@@ -75,13 +63,13 @@ public class ProductTypeCrudServiceImpl
         switch (paramName) {
           case "id":
             intValue = Integer.valueOf(stringValue);
-            return predicate.and(qProductType.id.eq(intValue)); // match por id es único
+            return predicate.and(qProductCategory.id.eq(intValue)); // match por id es único
           case "name":
-            predicate.and(qProductType.name.likeIgnoreCase("%" + stringValue + "%"));
+            predicate.and(qProductCategory.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "productFamily":
+          case "parent":
             intValue = Integer.valueOf(stringValue);
-            predicate.and(qProductType.productFamily.id.eq(intValue));
+            predicate.and(qProductCategory.parent.id.eq(intValue));
             break;
           default:
             break;

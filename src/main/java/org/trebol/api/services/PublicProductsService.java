@@ -5,9 +5,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import org.trebol.api.pojo.ProductFamilyPojo;
 import org.trebol.api.pojo.ProductPojo;
-import org.trebol.api.pojo.ProductTypePojo;
+import org.trebol.api.pojo.ProductCategoryPojo;
 
 /**
  *
@@ -18,11 +17,9 @@ public interface PublicProductsService {
       Map<String, String> allRequestParams);
 
   @Nullable
-  public ProductPojo readProduct(Integer id);
+  public ProductPojo getProduct(Integer id);
 
-  public Collection<ProductTypePojo> readProductTypes();
+  public Collection<ProductCategoryPojo> getRootCategories();
 
-  public Collection<ProductTypePojo> readProductTypesByFamilyId(int productFamilyId);
-
-  public Collection<ProductFamilyPojo> readProductFamilies();
+  public Collection<ProductCategoryPojo> getChildrenCategories(int parentId);
 }
