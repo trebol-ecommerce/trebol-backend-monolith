@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -16,6 +18,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 public class CorsConfigurationSourceBuilder {
+
+  private final Logger logger = LoggerFactory.getLogger(CorsConfigurationSourceBuilder.class);
 
   public static final String ORIGIN_SEPARATOR = ";";
   public static final String MAPPING_SEPARATOR = ";";
@@ -30,24 +34,28 @@ public class CorsConfigurationSourceBuilder {
     }
 
     this.corsMappings = new HashMap<>();
-    corsMappings.putAll(parseMappings(corsProperties.getDefaultMapping()));
-    corsMappings.putAll(parseMappings(corsProperties.getStoreMappings()));
-    corsMappings.putAll(parseMappings(corsProperties.getSessionMappings()));
-    corsMappings.putAll(parseMappings(corsProperties.getAccessMappings()));
-    corsMappings.putAll(parseMappings(corsProperties.getDataMappings()));
+    corsMappings.putAll(parseMappings(corsProperties.getMappings()));
   }
 
   private Map<String, String> parseMappings(String mappings) throws Error {
     Map<String, String> map = new HashMap<>();
 
+    if (logger.isDebugEnabled()) {
+      logger.debug("CORS: Note that HEAD and OPTIONS methods are internally included for every mapping", mappings);
+      logger.info("CORS: Reading mappings for raw metadata '{}'", mappings);
+    } else {
+      logger.info("CORS: Reading mappings...");
+    }
     for (String m : Arrays.asList(mappings.split(MAPPING_SEPARATOR))) {
+      logger.trace("CORS: Processing raw mapping '{}'", m);
       String[] mapping = m.split(" ");
       try {
         String method = mapping[0] + ",HEAD,OPTIONS";
         String path = mapping[1];
         map.put(path, method);
+        logger.debug("CORS: Mapping added on Path:'{}', Method(s):'{}'", path, method);
       } catch (ArrayIndexOutOfBoundsException e) {
-        throw new Error("Could not parse CORS mapping, format must be 'METHODS /path'");
+        throw new Error("CORS: Could not parse mapping, format must be 'METHODS /path'");
       }
     }
     return map;
