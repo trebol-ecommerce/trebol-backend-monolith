@@ -25,6 +25,7 @@ import org.trebol.api.DataPage;
 import org.trebol.api.pojo.UserPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.User;
+import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.services.GenericCrudService;
 
 /**
@@ -52,7 +53,9 @@ public class DataUsersController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('users:create')")
-  public void create(@RequestBody @Valid UserPojo input) {
+  public void create(
+    @RequestBody @Valid UserPojo input
+  ) throws EntityAlreadyExistsException {
     super.create(input);
   }
 
@@ -83,4 +86,8 @@ public class DataUsersController
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
     return super.handleValidationExceptions(ex);
   }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(EntityAlreadyExistsException.class)
+  public void handleConstraintExceptions(EntityAlreadyExistsException ex) { }
 }

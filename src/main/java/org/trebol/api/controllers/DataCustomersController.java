@@ -28,6 +28,7 @@ import org.trebol.api.pojo.CustomerPojo;
 import org.trebol.api.DataPage;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Customer;
+import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.services.GenericCrudService;
 
 import com.querydsl.core.types.Predicate;
@@ -57,7 +58,9 @@ public class DataCustomersController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:create')")
-  public void create(@RequestBody @Valid CustomerPojo input) {
+  public void create(
+    @RequestBody @Valid CustomerPojo input
+  ) throws EntityAlreadyExistsException {
     super.create(input);
   }
 
@@ -89,4 +92,8 @@ public class DataCustomersController
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
     return super.handleValidationExceptions(ex);
   }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(EntityAlreadyExistsException.class)
+  public void handleConstraintExceptions(EntityAlreadyExistsException ex) { }
 }

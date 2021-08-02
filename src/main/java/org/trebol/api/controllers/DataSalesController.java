@@ -25,6 +25,7 @@ import org.trebol.api.DataPage;
 import org.trebol.api.pojo.SellPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.services.GenericCrudService;
 
 /**
@@ -51,7 +52,9 @@ public class DataSalesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:create')")
-  public void create(@RequestBody @Valid SellPojo input) {
+  public void create(
+    @RequestBody @Valid SellPojo input
+  ) throws EntityAlreadyExistsException {
     super.create(input);
   }
 
@@ -82,4 +85,8 @@ public class DataSalesController
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
     return super.handleValidationExceptions(ex);
   }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(EntityAlreadyExistsException.class)
+  public void handleConstraintExceptions(EntityAlreadyExistsException ex) { }
 }

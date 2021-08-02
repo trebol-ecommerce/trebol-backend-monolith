@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import com.querydsl.core.types.Predicate;
 
 import org.trebol.jpa.GenericEntity;
 import org.trebol.jpa.GenericRepository;
+import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
 
 /**
  * Abstract service that sends and receives data with pojos and keep entities
@@ -55,13 +58,18 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
   /**
    * Convert a pojo to an entity, save it, convert it back to a pojo and return
    * it.
+   * @param inputPojo
    */
   @Nullable
   @Override
-  public I create(P inputPojo) {
+  public I create(P inputPojo) throws EntityAlreadyExistsException {
     E input = pojo2Entity(inputPojo);
-    E output = repository.saveAndFlush(input);
-    return output.getId();
+    try {
+      E output = repository.saveAndFlush(input);
+      return output.getId();
+    } catch (DataIntegrityViolationException exc) {
+      throw new EntityAlreadyExistsException("The provided data conflicts with existing data", exc);
+    }
   }
 
   /**
@@ -79,7 +87,7 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
       P outputItem = entity2Pojo(item);
       pojoList.add(outputItem);
     }
-    
+
     DataPage<P> output = new DataPage(pojoList, pageIndex, totalCount, pageSize);
 
     return output;

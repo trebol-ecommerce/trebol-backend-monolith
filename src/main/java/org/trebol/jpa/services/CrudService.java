@@ -2,6 +2,7 @@ package org.trebol.jpa.services;
 
 import org.springframework.lang.Nullable;
 import org.trebol.api.DataPage;
+import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
 
 import com.querydsl.core.types.Predicate;
 
@@ -26,9 +27,10 @@ public interface CrudService<T, I>
    *
    * @return The created item, with updated properties (most importantly its ID),
    *         or null if the item could not be created.
+   * @throws org.trebol.jpa.exceptions.EntityAlreadyExistsException
    */
   @Nullable
-  public I create(T dto);
+  public I create(T dto) throws EntityAlreadyExistsException;
 
   /**
    * Queries a paged collection of items.

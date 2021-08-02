@@ -11,6 +11,7 @@ import com.querydsl.core.types.Predicate;
 
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.GenericEntity;
+import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.services.GenericCrudService;
 
 /**
@@ -36,9 +37,10 @@ public abstract class GenericCrudController<P, E extends GenericEntity<I>, I>
    * Pass a new item to the service.
    *
    * @param input The new item
+   * @throws org.trebol.jpa.exceptions.EntityAlreadyExistsException
    */
   @Override
-  public void create(P input) {
+  public void create(P input) throws EntityAlreadyExistsException {
     crudService.create(input);
   }
 

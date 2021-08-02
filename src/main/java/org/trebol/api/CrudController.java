@@ -2,6 +2,8 @@ package org.trebol.api;
 
 import java.util.Map;
 
+import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
+
 /**
  * Interface for API controllers that handle CRUD requests.
  *
@@ -12,7 +14,7 @@ import java.util.Map;
  */
 public interface CrudController<P, I> {
 
-  void create(P input);
+  void create(P input) throws EntityAlreadyExistsException ;
 
   P readOne(I id);
 
