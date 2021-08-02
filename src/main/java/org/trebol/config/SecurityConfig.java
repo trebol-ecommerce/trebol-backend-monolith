@@ -80,6 +80,7 @@ public class SecurityConfig
           "/public/products",
           "/public/products/*",
           "/public/receipt/*",
+          "/public/checkout",
           "/public/checkout/validate")
             .permitAll()
         .anyRequest()
