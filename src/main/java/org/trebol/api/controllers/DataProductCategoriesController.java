@@ -1,6 +1,5 @@
 package org.trebol.api.controllers;
 
-import java.util.Collection;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.GenericCrudController;
+import org.trebol.api.GenericDataPage;
 import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.ProductCategory;
@@ -45,7 +45,7 @@ public class DataProductCategoriesController
 
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_categories:read')")
-  public Collection<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public GenericDataPage<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
