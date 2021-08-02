@@ -36,12 +36,10 @@ public abstract class GenericCrudController<P, E extends GenericEntity<I>, I>
    * Pass a new item to the service.
    *
    * @param input The new item
-   * @return The resulting item's ID
    */
   @Override
-  public I create(P input) {
-    I resultId = crudService.create(input);
-    return resultId;
+  public void create(P input) {
+    crudService.create(input);
   }
 
   /**
@@ -91,22 +89,18 @@ public abstract class GenericCrudController<P, E extends GenericEntity<I>, I>
    *
    * @param input
    * @param id
-   * @return
    */
-  public I update(P input, I id) {
-    I resultId = crudService.update(input, id);
-    return resultId;
+  public void update(P input, I id) {
+    crudService.update(input, id);
   }
 
   /**
    * Delete an item by its id.
    *
    * @param id
-   * @return
    */
-  public boolean delete(I id) {
-    boolean result = crudService.delete(id);
-    return result;
+  public void delete(I id) {
+    crudService.delete(id);
   }
 
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {

@@ -52,8 +52,8 @@ public class DataSellTypesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sell_types:create')")
-  public Integer create(@RequestBody @Valid SellTypePojo input) {
-    return super.create(input);
+  public void create(@RequestBody @Valid SellTypePojo input) {
+    super.create(input);
   }
 
   @Override
@@ -66,15 +66,15 @@ public class DataSellTypesController
   @Override
   @PutMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('sell_types:update')")
-  public Integer update(@RequestBody @Valid SellTypePojo input, @PathVariable Integer id) {
-    return super.update(input, id);
+  public void update(@RequestBody @Valid SellTypePojo input, @PathVariable Integer id) {
+    super.update(input, id);
   }
 
   @Override
   @DeleteMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('sell_types:delete')")
-  public boolean delete(@PathVariable Integer id) {
-    return super.delete(id);
+  public void delete(@PathVariable Integer id) {
+    super.delete(id);
   }
 
   @Override

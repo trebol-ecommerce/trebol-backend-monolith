@@ -52,8 +52,8 @@ public class DataUserRolesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:create')")
-  public Integer create(@RequestBody @Valid UserRolePojo input) {
-    return super.create(input);
+  public void create(@RequestBody @Valid UserRolePojo input) {
+    super.create(input);
   }
 
   @Override
@@ -66,15 +66,15 @@ public class DataUserRolesController
   @Override
   @PutMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('user_roles:update')")
-  public Integer update(@RequestBody @Valid UserRolePojo input, @PathVariable Integer id) {
-    return super.update(input, id);
+  public void update(@RequestBody @Valid UserRolePojo input, @PathVariable Integer id) {
+    super.update(input, id);
   }
 
   @Override
   @DeleteMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('user_roles:delete')")
-  public boolean delete(@PathVariable Integer id) {
-    return super.delete(id);
+  public void delete(@PathVariable Integer id) {
+    super.delete(id);
   }
 
   @Override

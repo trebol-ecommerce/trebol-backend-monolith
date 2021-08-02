@@ -57,8 +57,8 @@ public class DataCustomersController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:create')")
-  public Integer create(@RequestBody @Valid CustomerPojo input) {
-    return super.create(input);
+  public void create(@RequestBody @Valid CustomerPojo input) {
+    super.create(input);
   }
 
   @Override
@@ -73,15 +73,14 @@ public class DataCustomersController
   @Override
   @PutMapping({"/{idCard}", "/{idCard}/"})
   @PreAuthorize("hasAuthority('customers:update')")
-  public Integer update(@RequestBody @Valid CustomerPojo input, @PathVariable Integer idCard) {
-    return super.update(input, idCard);
+  public void update(@RequestBody @Valid CustomerPojo input, @PathVariable Integer idCard) {
+    super.update(input, idCard);
   }
 
-  @Override
   @DeleteMapping({"/{idCard}", "/{idCard}/"})
   @PreAuthorize("hasAuthority('customers:delete')")
-  public boolean delete(@PathVariable Integer idCard) {
-    return super.delete(idCard);
+  public void delete(@PathVariable Integer idCard) {
+    super.delete(idCard);
   }
 
   @Override

@@ -51,8 +51,8 @@ public class DataSalesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:create')")
-  public Integer create(@RequestBody @Valid SellPojo input) {
-    return super.create(input);
+  public void create(@RequestBody @Valid SellPojo input) {
+    super.create(input);
   }
 
   @Override
@@ -65,15 +65,15 @@ public class DataSalesController
   @Override
   @PutMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('sales:update')")
-  public Integer update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
-    return super.update(input, id);
+  public void update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
+    super.update(input, id);
   }
 
   @Override
   @DeleteMapping({"/{id}", "/{id}/"})
   @PreAuthorize("hasAuthority('sales:delete')")
-  public boolean delete(@PathVariable Integer id) {
-    return super.delete(id);
+  public void delete(@PathVariable Integer id) {
+    super.delete(id);
   }
 
   @Override

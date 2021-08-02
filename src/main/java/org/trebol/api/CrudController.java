@@ -12,13 +12,13 @@ import java.util.Map;
  */
 public interface CrudController<P, I> {
 
-  I create(P input);
+  void create(P input);
 
   P readOne(I id);
 
   DataPage<P> readMany(Integer pageSize, Integer pageIndex, Map<String, String> requestParams);
 
-  I update(P input, Integer id);
+  void update(P input, Integer id);
 
-  boolean delete(Integer id);
+  void delete(Integer id);
 }
