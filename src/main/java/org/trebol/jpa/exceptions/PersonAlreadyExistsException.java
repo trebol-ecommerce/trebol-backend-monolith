@@ -5,7 +5,7 @@ package org.trebol.jpa.exceptions;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 public class PersonAlreadyExistsException
-  extends Exception {
+  extends EntityAlreadyExistsException {
 
   public PersonAlreadyExistsException() {
   }
