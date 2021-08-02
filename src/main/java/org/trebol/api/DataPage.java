@@ -3,11 +3,14 @@ package org.trebol.api;
 import java.util.Collection;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * @param <T>
  */
+@JsonInclude
 public class DataPage<T extends Object> {
   private Collection<T> items;
   private int pageIndex;
