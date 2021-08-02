@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.GenericCrudController;
-import org.trebol.api.GenericDataPage;
+import org.trebol.api.DataPage;
 import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.ProductCategory;
@@ -45,7 +45,7 @@ public class DataSellStatusesController
 
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('sell_statuses:read')")
-  public GenericDataPage<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public DataPage<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 

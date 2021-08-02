@@ -8,13 +8,25 @@ import java.util.Objects;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * @param <T>
  */
-public abstract class GenericDataPage<T extends Object> {
+public class DataPage<T extends Object> {
   private Collection<T> items;
   private int pageIndex;
   private int totalCount;
   private int pageSize;
 
-  public GenericDataPage() { }
+  public DataPage() { }
+
+  public DataPage(
+    Collection<T> items,
+    int pageIndex,
+    int totalCount,
+    int pageSize
+  ) {
+    this.items = items;
+    this.pageIndex = pageIndex;
+    this.totalCount = totalCount;
+    this.pageSize = pageSize;
+  }
 
   public Collection<T> getItems() {
     return items;
@@ -69,7 +81,7 @@ public abstract class GenericDataPage<T extends Object> {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final GenericDataPage<?> other = (GenericDataPage<?>)obj;
+    final DataPage<?> other = (DataPage<?>)obj;
     if (this.pageIndex != other.pageIndex) {
       return false;
     }
@@ -87,7 +99,7 @@ public abstract class GenericDataPage<T extends Object> {
 
   @Override
   public String toString() {
-    return "IDataPagePojo{items=" + items
+    return "DataPage{items=" + items
         + ", pageIndex=" + pageIndex
         + ", totalCount=" + totalCount
         + ", pageSize=" + pageSize + '}';

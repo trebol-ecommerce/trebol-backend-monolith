@@ -67,7 +67,7 @@ public abstract class GenericCrudController<P, E extends GenericEntity<I>, I>
    * @return
    */
   @Override
-  public GenericDataPage<P> readMany(Integer requestPageSize, Integer requestPageIndex,
+  public DataPage<P> readMany(Integer requestPageSize, Integer requestPageIndex,
       Map<String, String> allRequestParams) {
     int pageSize = customProperties.getItemsPerPage();
     int pageIndex = 0;

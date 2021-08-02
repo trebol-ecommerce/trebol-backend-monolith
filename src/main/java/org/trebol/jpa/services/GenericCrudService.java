@@ -2,7 +2,6 @@ package org.trebol.jpa.services;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
+import org.trebol.api.DataPage;
 
 import com.querydsl.core.types.Predicate;
 
@@ -68,18 +68,21 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
    * Read entities, convert them to pojos and return the collection.
    */
   @Override
-  public Collection<P> read(int pageSize, int pageIndex, Predicate filters) {
+  public DataPage<P> read(int pageSize, int pageIndex, Predicate filters) {
     Sort orden = Sort.by("id").ascending();
     Pageable paged = PageRequest.of(pageIndex, pageSize, orden);
     Page<E> iterable = getAllEntities(paged, filters);
+    int totalCount = Long.valueOf(repository.count(filters)).intValue();
 
-    List<P> outputPojoList = new ArrayList<>();
+    List<P> pojoList = new ArrayList<>();
     for (E item : iterable) {
       P outputItem = entity2Pojo(item);
-      outputPojoList.add(outputItem);
+      pojoList.add(outputItem);
     }
+    
+    DataPage<P> output = new DataPage(pojoList, pageIndex, totalCount, pageSize);
 
-    return outputPojoList;
+    return output;
   }
 
   /**

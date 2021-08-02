@@ -1,8 +1,7 @@
 package org.trebol.jpa.services;
 
-import java.util.Collection;
-
 import org.springframework.lang.Nullable;
+import org.trebol.api.DataPage;
 
 import com.querydsl.core.types.Predicate;
 
@@ -40,7 +39,7 @@ public interface CrudService<T, I>
    *
    * @return The requested collection of items. May be zero-sized.
    */
-  public Collection<T> read(int pageSize, int pageIndex, @Nullable Predicate filters);
+  public DataPage<T> read(int pageSize, int pageIndex, @Nullable Predicate filters);
 
   /**
    * Updates an existing item.

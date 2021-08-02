@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.GenericCrudController;
-import org.trebol.api.GenericDataPage;
+import org.trebol.api.DataPage;
 import org.trebol.api.pojo.SalespersonPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Salesperson;
@@ -45,7 +45,7 @@ public class DataSalespeopleController
 
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:read')")
-  public GenericDataPage<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public DataPage<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 

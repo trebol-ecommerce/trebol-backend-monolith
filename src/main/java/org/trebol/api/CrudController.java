@@ -16,7 +16,7 @@ public interface CrudController<P, I> {
 
   P readOne(I id);
 
-  GenericDataPage<P> readMany(Integer pageSize, Integer pageIndex, Map<String, String> requestParams);
+  DataPage<P> readMany(Integer pageSize, Integer pageIndex, Map<String, String> requestParams);
 
   I update(P input, Integer id);
 

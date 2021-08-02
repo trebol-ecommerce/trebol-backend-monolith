@@ -41,7 +41,8 @@ public class CatalogServiceImpl
   @Override
   public Collection<ProductPojo> readProducts(Integer requestPageSize, Integer requestPageIndex, Map<String, String> queryParamsMap) {
     Predicate filters = productsService.queryParamsMapToPredicate(queryParamsMap);
-    return productsService.read(requestPageSize, requestPageIndex, filters);
+    return productsService.read(requestPageSize, requestPageIndex, filters)
+        .getItems(); // TODO refactor this
   }
 
   @Nullable
@@ -52,14 +53,16 @@ public class CatalogServiceImpl
 
   @Override
   public Collection<ProductCategoryPojo> getRootCategories() {
-    return productTypesService.read(Integer.MAX_VALUE, 0, null);
+    return productTypesService.read(Integer.MAX_VALUE, 0, null)
+        .getItems(); // TODO refactor this
   }
 
   @Override
   public Collection<ProductCategoryPojo> getChildrenCategories(int parentId) {
     Map<String, String> queryParamsMap = Maps.of("productFamily", String.valueOf(parentId)).build();
     Predicate filters = productTypesService.queryParamsMapToPredicate(queryParamsMap);
-    return productTypesService.read(Integer.MAX_VALUE, 0, filters);
+    return productTypesService.read(Integer.MAX_VALUE, 0, filters)
+        .getItems(); // TODO refactor this
   }
 
 }
