@@ -31,14 +31,14 @@ import org.trebol.jpa.GenericEntity;
   uniqueConstraints = @UniqueConstraint(columnNames = {"person_idcard"}))
 @NamedQueries({ @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p") })
 public class Person
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "person_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
   @Size(min = 1, max = 200)
   @Column(name = "person_name")
@@ -48,7 +48,7 @@ public class Person
   @Column(name = "person_idcard")
   private String idCard;
   @Basic(optional = false)
-  @Size(min = 1, max = 100)
+  @Size(min = 5, max = 100)
   @Column(name = "person_email")
   private String email;
   @Basic(optional = true)
@@ -65,34 +65,22 @@ public class Person
   public Person() {
   }
 
-  public Person(Integer personId) {
-    this.id = personId;
-  }
-
-  public Person(
-    Integer personId,
-    String personName,
-    String personIdcard,
-    String personEmail,
-    String personAddress,
-    Integer personPhone1,
-    Integer personPhone2
-  ) {
-    this.id = personId;
-    this.name = personName;
-    this.idCard = personIdcard;
-    this.email = personEmail;
-    this.address = personAddress;
-    this.phone1 = personPhone1;
-    this.phone2 = personPhone2;
+  public Person(Long id, String name, String idCard, String email, String address, Integer phone1, Integer phone2) {
+    this.id = id;
+    this.name = name;
+    this.idCard = idCard;
+    this.email = email;
+    this.address = address;
+    this.phone1 = phone1;
+    this.phone2 = phone2;
   }
 
   @Override
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

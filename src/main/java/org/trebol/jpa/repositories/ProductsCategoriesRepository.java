@@ -12,6 +12,6 @@ import org.trebol.jpa.entities.ProductCategory;
  */
 @Repository
 public interface ProductsCategoriesRepository
-    extends GenericRepository<ProductCategory, Integer> {
+    extends GenericRepository<ProductCategory> {
 
 }

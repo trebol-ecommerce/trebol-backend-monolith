@@ -14,7 +14,7 @@ import org.trebol.jpa.entities.UserRole;
  */
 @Repository
 public interface UserRolesRepository
-    extends GenericRepository<UserRole, Integer> {
+    extends GenericRepository<UserRole> {
 
   @Query
   Optional<UserRole> findByName(String name);

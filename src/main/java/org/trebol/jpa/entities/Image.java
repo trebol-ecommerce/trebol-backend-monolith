@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -24,21 +23,19 @@ import javax.validation.constraints.Size;
 @Table(name = "images")
 @NamedQueries({ @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i") })
 public class Image
-  implements GenericEntity<Integer> {
+  implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "image_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 100)
   @Column(name = "image_filename")
   private String filename;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 500)
   @Column(name = "image_url")
   private String url;
@@ -46,11 +43,18 @@ public class Image
   public Image() {
   }
 
-  public Integer getId() {
+  public Image(Long id, String filename, String url) {
+    this.id = id;
+    this.filename = filename;
+    this.url = url;
+  }
+
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

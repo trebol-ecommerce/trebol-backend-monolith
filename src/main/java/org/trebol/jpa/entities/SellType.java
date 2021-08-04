@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -24,16 +23,15 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "sales_types")
 @NamedQueries({ @NamedQuery(name = "SellType.findAll", query = "SELECT s FROM SellType s") })
 public class SellType
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "sell_type_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 100)
   @Column(name = "sell_type_name")
   private String name;
@@ -41,20 +39,17 @@ public class SellType
   public SellType() {
   }
 
-  public SellType(Integer sellTypeId) {
-    this.id = sellTypeId;
+  public SellType(Long id, String name) {
+    this.id = id;
+    this.name = name;
   }
 
-  public SellType(Integer sellTypeId, String sellTypeName) {
-    this.id = sellTypeId;
-    this.name = sellTypeName;
-  }
-
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

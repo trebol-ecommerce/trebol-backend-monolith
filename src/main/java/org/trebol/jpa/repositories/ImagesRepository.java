@@ -11,6 +11,6 @@ import org.trebol.jpa.entities.Image;
  */
 @Repository
 public interface ImagesRepository
-    extends GenericRepository<Image, Integer> {
+    extends GenericRepository<Image> {
 
 }

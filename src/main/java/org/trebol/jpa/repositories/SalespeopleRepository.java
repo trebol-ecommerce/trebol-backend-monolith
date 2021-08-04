@@ -16,7 +16,7 @@ import org.trebol.jpa.entities.Salesperson;
  */
 @Repository
 public interface SalespeopleRepository
-    extends GenericRepository<Salesperson, Integer> {
+    extends GenericRepository<Salesperson> {
 
   @Query(value = "SELECT s FROM Salesperson s JOIN FETCH s.person", countQuery = "SELECT s FROM Salesperson s")
   Page<Salesperson> deepReadAll(Pageable pageable);

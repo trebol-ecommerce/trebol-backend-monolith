@@ -11,6 +11,6 @@ import org.trebol.jpa.entities.Permission;
  */
 @Repository
 public interface PermissionsRepository
-    extends GenericRepository<Permission, Integer> {
+    extends GenericRepository<Permission> {
 
 }

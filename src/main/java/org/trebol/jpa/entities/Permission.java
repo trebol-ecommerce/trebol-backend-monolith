@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -24,16 +23,15 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "app_permissions")
 @NamedQueries({ @NamedQuery(name = "Permission.findAll", query = "SELECT p FROM Permission p") })
 public class Permission
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "permission_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 25)
   @Column(name = "permission_code")
   private String code;
@@ -44,20 +42,18 @@ public class Permission
   public Permission() {
   }
 
-  public Permission(Integer permissionId) {
-    this.id = permissionId;
+  public Permission(Long id, String code, String description) {
+    this.id = id;
+    this.code = code;
+    this.description = description;
   }
 
-  public Permission(Integer permissionId, String permissionCode) {
-    this.id = permissionId;
-    this.code = permissionCode;
-  }
-
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

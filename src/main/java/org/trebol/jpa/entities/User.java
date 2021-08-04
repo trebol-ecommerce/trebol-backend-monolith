@@ -31,14 +31,14 @@ import org.trebol.jpa.GenericEntity;
   uniqueConstraints = @UniqueConstraint(columnNames = {"user_name"}))
 @NamedQueries({ @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u") })
 public class User
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "user_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
   @Size(min = 1, max = 50)
   @Column(name = "user_name")
@@ -57,21 +57,20 @@ public class User
   public User() {
   }
 
-  public User(Integer userId) {
-    this.id = userId;
+  public User(Long id, String name, String password, Person person, UserRole userRole) {
+    this.id = id;
+    this.name = name;
+    this.password = password;
+    this.person = person;
+    this.userRole = userRole;
   }
 
-  public User(Integer userId, String userName, String userPassword) {
-    this.id = userId;
-    this.name = userName;
-    this.password = userPassword;
-  }
-
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

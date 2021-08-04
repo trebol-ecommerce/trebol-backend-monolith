@@ -2,6 +2,7 @@ package org.trebol.jpa.entities;
 
 import java.util.Objects;
 
+import javax.annotation.Nullable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -27,16 +27,15 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "products_categories")
 @NamedQueries({ @NamedQuery(name = "ProductCategory.findAll", query = "SELECT p FROM ProductCategory p") })
 public class ProductCategory
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "product_category_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 100)
   @Column(name = "product_category_name")
   private String name;
@@ -47,21 +46,18 @@ public class ProductCategory
   public ProductCategory() {
   }
 
-  public ProductCategory(Integer productTypeId) {
-    this.id = productTypeId;
-  }
-
-  public ProductCategory(Integer productTypeId, String productTypeName) {
-    this.id = productTypeId;
-    this.name = productTypeName;
+  public ProductCategory(Long id, String name, ProductCategory parent) {
+    this.id = id;
+    this.name = name;
+    this.parent = parent;
   }
 
   @Override
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

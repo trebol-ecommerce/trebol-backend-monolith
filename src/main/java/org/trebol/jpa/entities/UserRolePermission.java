@@ -25,14 +25,14 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "app_users_roles_permissions")
 @NamedQueries({ @NamedQuery(name = "UserRolePermission.findAll", query = "SELECT u FROM UserRolePermission u") })
 public class UserRolePermission
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "user_role_permission_id")
-  private Integer id;
+  private Long id;
   @JoinColumn(name = "permission_id", referencedColumnName = "permission_id", insertable = true, updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Permission permission;
@@ -43,15 +43,18 @@ public class UserRolePermission
   public UserRolePermission() {
   }
 
-  public UserRolePermission(Integer userRolePermissionId) {
-    this.id = userRolePermissionId;
+  public UserRolePermission(Long id, Permission permission, UserRole userRole) {
+    this.id = id;
+    this.permission = permission;
+    this.userRole = userRole;
   }
 
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

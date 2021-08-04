@@ -2,7 +2,7 @@ package org.trebol.jpa;
 
 import java.io.Serializable;
 
-public interface GenericEntity<I>
+public interface GenericEntity
     extends Serializable {
-  I getId();
+  Long getId();
 }

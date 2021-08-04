@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -24,25 +23,22 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "app_params")
 @NamedQueries({ @NamedQuery(name = "Param.findAll", query = "SELECT p FROM Param p") })
 public class Param
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "param_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 25)
   @Column(name = "param_category")
   private String category;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 50)
   @Column(name = "param_name")
   private String name;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 500)
   @Column(name = "param_value")
   private String value;
@@ -50,22 +46,19 @@ public class Param
   public Param() {
   }
 
-  public Param(Integer paramId) {
-    this.id = paramId;
+  public Param(Long id, String category, String name, String value) {
+    this.id = id;
+    this.category = category;
+    this.name = name;
+    this.value = value;
   }
 
-  public Param(Integer paramId, String paramCategory, String paramName, String paramValue) {
-    this.id = paramId;
-    this.category = paramCategory;
-    this.name = paramName;
-    this.value = paramValue;
-  }
-
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

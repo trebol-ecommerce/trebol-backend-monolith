@@ -20,7 +20,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -33,43 +32,39 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "sales")
 @NamedQueries({ @NamedQuery(name = "Sell.findAll", query = "SELECT s FROM Sell s") })
 public class Sell
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "sell_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
-  @NotNull
   @Column(name = "sell_date")
   @Temporal(TemporalType.DATE)
   private Date date;
   @Basic(optional = false)
-  @NotNull @Column(name = "sell_total_value")
+  @Column(name = "sell_total_value")
   private int totalValue;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 20)
   @Column(name = "session_extract")
   private String sessionExtract;
-  @Basic(optional = true)
   @Size(min = 64, max = 64)
   @Column(name = "sell_token")
   private String token;
   @Basic(optional = false)
-  @NotNull
   @Column(name = "sell_total_items")
   private int totalItems;
   @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
   @ManyToOne(optional = false)
   private Customer customer;
   @JoinColumn(name = "salesperson_id", referencedColumnName = "salesperson_id")
-  @ManyToOne
+  @ManyToOne(optional = true)
   private Salesperson salesperson;
   @JoinColumn(name = "sell_status_id", referencedColumnName = "sell_status_id")
-  @ManyToOne
+  @ManyToOne(optional = false)
   private SellStatus status;
   @JoinColumn(name = "sell_type_id", referencedColumnName = "sell_type_id")
   @ManyToOne(optional = false)
@@ -81,23 +76,27 @@ public class Sell
   public Sell() {
   }
 
-  public Sell(Integer sellId) {
-    this.id = sellId;
-  }
-
-  public Sell(Integer sellId, Date sellDate, int sellTotalValue, String sessionExtract, int sellTotalItems) {
-    this.id = sellId;
-    this.date = sellDate;
-    this.totalValue = sellTotalValue;
+  public Sell(Long id, Date date, int totalValue, String sessionExtract, String token, int totalItems,
+      Customer customer, Salesperson salesperson, SellStatus status, SellType type, Collection<SellDetail> details) {
+    this.id = id;
+    this.date = date;
+    this.totalValue = totalValue;
     this.sessionExtract = sessionExtract;
-    this.totalItems = sellTotalItems;
+    this.token = token;
+    this.totalItems = totalItems;
+    this.customer = customer;
+    this.salesperson = salesperson;
+    this.status = status;
+    this.type = type;
+    this.details = details;
   }
 
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
