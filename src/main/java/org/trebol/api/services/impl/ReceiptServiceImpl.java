@@ -40,7 +40,7 @@ public class ReceiptServiceImpl
 
   @Nullable
   @Override
-  public ReceiptPojo fetchReceiptById(int id) {
+  public ReceiptPojo fetchReceiptById(long id) {
     Optional<Sell> match = salesRepository.findByIdWithDetails(id);
     if (!match.isPresent()) {
       throw new RuntimeException("The transaction could not be found, no receipt can be created");

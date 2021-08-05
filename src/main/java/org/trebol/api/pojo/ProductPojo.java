@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class ProductPojo {
   @JsonInclude
-  private Integer id;
+  private Long id;
   @JsonInclude
   @NotNull
   private String name;
@@ -36,11 +36,11 @@ public class ProductPojo {
   @JsonInclude(value = Include.NON_NULL)
   private Collection<ImagePojo> images;
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

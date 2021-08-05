@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class SellPojo {
   @JsonInclude
-  private Integer id;
+  private Long id;
   @JsonInclude
   @NotNull
   private Date date;
@@ -39,11 +39,11 @@ public class SellPojo {
   @Valid
   private Collection<SellDetailPojo> sellDetails;
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

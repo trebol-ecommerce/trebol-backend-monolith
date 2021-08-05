@@ -98,7 +98,7 @@ public class RegistrationServiceImpl
     target.setPassword(password);
 
     UserRole userRole = new UserRole();
-    userRole.setId(1);
+    userRole.setId(1L);
     target.setUserRole(userRole);
     return target;
   }

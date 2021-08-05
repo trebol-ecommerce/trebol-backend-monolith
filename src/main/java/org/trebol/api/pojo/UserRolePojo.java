@@ -13,15 +13,15 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class UserRolePojo {
   @JsonInclude
-  private Integer id;
+  private Long id;
   @NotNull
   private String name;
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

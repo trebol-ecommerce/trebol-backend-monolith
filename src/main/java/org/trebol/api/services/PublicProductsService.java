@@ -17,9 +17,9 @@ public interface PublicProductsService {
       Map<String, String> allRequestParams);
 
   @Nullable
-  public ProductPojo getProduct(Integer id);
+  public ProductPojo getProduct(long id);
 
   public Collection<ProductCategoryPojo> getRootCategories();
 
-  public Collection<ProductCategoryPojo> getChildrenCategories(int parentId);
+  public Collection<ProductCategoryPojo> getChildrenCategories(long parentId);
 }

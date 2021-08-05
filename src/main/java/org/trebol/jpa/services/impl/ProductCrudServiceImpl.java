@@ -29,7 +29,7 @@ import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.repositories.ProductImagesRepository;
 import org.trebol.jpa.repositories.ProductsRepository;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  *
@@ -38,7 +38,7 @@ import org.trebol.jpa.services.GenericCrudService;
 @Transactional
 @Service
 public class ProductCrudServiceImpl
-    extends GenericCrudService<ProductPojo, Product, Integer> {
+    extends GenericJpaCrudService<ProductPojo, Product> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductCrudServiceImpl.class);
 
   private final ProductsRepository repository;
@@ -59,8 +59,7 @@ public class ProductCrudServiceImpl
   public ProductPojo entity2Pojo(Product source) {
     ProductPojo target = conversion.convert(source, ProductPojo.class);
     if (target != null) {
-      Integer id = target.getId();
-
+      Long id = target.getId();
       Set<ImagePojo> images = new HashSet<>();
       for (ProductImage pi : imagesRepository.deepFindProductImagesByProductId(id)) {
         ImagePojo targetImage = conversion.convert(pi.getImage(), ImagePojo.class);
@@ -95,17 +94,15 @@ public class ProductCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Integer intValue;
+        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            intValue = Integer.valueOf(stringValue);
-            return predicate.and(qProduct.id.eq(intValue)); // match por id es único
+            return predicate.and(qProduct.id.eq(longValue)); // match por id es único
           case "name":
             predicate.and(qProduct.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "productCategory":
-            intValue = Integer.valueOf(stringValue);
-            predicate.and(qProduct.productCategory.id.eq(intValue));
+            predicate.and(qProduct.productCategory.id.eq(longValue));
             break;
           case "productCategoryName":
             predicate.and(qProduct.productCategory.name.likeIgnoreCase("%" + stringValue + "%"));
@@ -119,17 +116,5 @@ public class ProductCrudServiceImpl
     }
 
     return predicate;
-  }
-
-  @Override
-  public ProductPojo find(Integer id) {
-    Optional<Product> productById = repository.findById(id);
-    if (!productById.isPresent()) {
-      return null;
-    } else {
-      Product found = productById.get();
-      ProductPojo foundPojo = entity2Pojo(found);
-      return foundPojo;
-    }
   }
 }

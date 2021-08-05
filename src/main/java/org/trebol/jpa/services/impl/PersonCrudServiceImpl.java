@@ -19,7 +19,7 @@ import org.trebol.jpa.entities.QPerson;
 import org.trebol.api.pojo.PersonPojo;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.repositories.PeopleRepository;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  *
@@ -28,7 +28,7 @@ import org.trebol.jpa.services.GenericCrudService;
 @Transactional
 @Service
 public class PersonCrudServiceImpl
-    extends GenericCrudService<PersonPojo, Person, Integer> {
+    extends GenericJpaCrudService<PersonPojo, Person> {
   private static final Logger LOG = LoggerFactory.getLogger(PersonCrudServiceImpl.class);
 
   private final ConversionService conversion;
@@ -58,11 +58,10 @@ public class PersonCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Integer intValue;
+        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            intValue = Integer.valueOf(stringValue);
-            return predicate.and(qPerson.id.eq(intValue)); // id matching is final
+            return predicate.and(qPerson.id.eq(longValue)); // id matching is final
           case "name":
             predicate.and(qPerson.name.likeIgnoreCase("%" + stringValue + "%"));
             break;

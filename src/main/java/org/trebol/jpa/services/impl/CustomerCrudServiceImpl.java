@@ -22,7 +22,7 @@ import org.trebol.api.pojo.CustomerPojo;
 import org.trebol.api.pojo.PersonPojo;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 import org.trebol.jpa.repositories.CustomersRepository;
 
 /**
@@ -32,7 +32,7 @@ import org.trebol.jpa.repositories.CustomersRepository;
 @Transactional
 @Service
 public class CustomerCrudServiceImpl
-    extends GenericCrudService<CustomerPojo, Customer, Integer> {
+    extends GenericJpaCrudService<CustomerPojo, Customer> {
   private static final Logger LOG = LoggerFactory.getLogger(CustomerCrudServiceImpl.class);
 
   private final CustomersRepository repository;
@@ -72,26 +72,16 @@ public class CustomerCrudServiceImpl
   }
 
   @Override
-  public Page<Customer> getAllEntities(Pageable paged, Predicate filters) {
-    if (filters == null) {
-      return repository.deepReadAll(paged);
-    } else {
-      return repository.findAll(filters, paged);
-    }
-  }
-
-  @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
     QCustomer qCustomer = QCustomer.customer;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Integer intValue;
+        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            intValue = Integer.valueOf(stringValue);
-            return predicate.and(qCustomer.id.eq(intValue)); // id matching is final
+            return predicate.and(qCustomer.id.eq(longValue)); // id matching is final
           case "name":
             predicate.and(qCustomer.person.name.likeIgnoreCase("%" + stringValue + "%"));
             break;

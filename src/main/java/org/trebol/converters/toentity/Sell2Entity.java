@@ -24,22 +24,34 @@ public class Sell2Entity
 
   @Override
   public Sell convert(SellPojo source) {
-    Sell target = new Sell(source.getId());
+    Sell target = new Sell();
+    target.setId(source.getId());
     target.setDate(source.getDate());
     target.setTotalValue(source.getSubtotal());
-    target.setCustomer(new Customer(source.getCustomer().getId()));
-    target.setType(new SellType(source.getSellType().getId()));
+
+    Customer targetCustomer = new Customer();
+    targetCustomer.setId(source.getCustomer().getId());
+    target.setCustomer(targetCustomer);
+
+    SellType targetSellType = new SellType();
+    targetSellType.setId(source.getSellType().getId());
+    target.setType(targetSellType);
 
     target.setDetails(new ArrayList<>());
     for (SellDetailPojo sd : source.getSellDetails()) {
-      SellDetail td = new SellDetail(sd.getId());
+      SellDetail td = new SellDetail();
+      td.setId(sd.getId());
       td.setUnits(sd.getUnits());
-      td.setProduct(new Product(sd.getProduct().getId()));
+      Product targetProduct = new Product();
+      targetProduct.setId(sd.getProduct().getId());
+      td.setProduct(targetProduct);
       target.getDetails().add(td);
     }
 
     if (source.getSalesperson() != null) {
-      target.setSalesperson(new Salesperson(source.getSalesperson().getId()));
+      Salesperson targetSalesperson = new Salesperson();
+      targetSalesperson.setId(source.getSalesperson().getId());
+      target.setSalesperson(targetSalesperson);
     }
     return target;
   }

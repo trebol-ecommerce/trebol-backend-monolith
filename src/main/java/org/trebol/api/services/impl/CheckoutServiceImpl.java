@@ -84,15 +84,15 @@ public class CheckoutServiceImpl
     this.customerPersonRelationService = customerPersonRelationService;
   }
 
-  private int fetchCustomerId(String authorizationHeader) {
+  private long fetchCustomerId(String authorizationHeader) {
     PersonPojo authenticatedPerson = authenticatedPeopleService.fetchAuthenticatedUserPersonProfile(authorizationHeader);
     if (authenticatedPerson != null) {
       LOG.trace("Identified user as person={}", authenticatedPerson);
-      int personId = authenticatedPerson.getId();
+      long personId = authenticatedPerson.getId();
       CustomerPojo authenticatedCustomer = customerPersonRelationService.getCustomerFromPersonId(personId);
       if (authenticatedCustomer != null) {
         LOG.trace("User/Person exists as customer={}", authenticatedCustomer);
-        int customerId = authenticatedCustomer.getId();
+        long customerId = authenticatedCustomer.getId();
         return customerId;
       }
     }
@@ -102,7 +102,7 @@ public class CheckoutServiceImpl
   private int calculateTotalCartValue(Collection<SellDetailPojo> cartDetails) {
     int value = 0;
     for (SellDetailPojo p : cartDetails) {
-      Integer productId = p.getProduct().getId();
+      Long productId = p.getProduct().getId();
       Product product = productsRepository.getOne(productId);
       value += product.getPrice();
     }
@@ -171,7 +171,7 @@ public class CheckoutServiceImpl
   @Nullable
   @Override
   public WebpayCheckoutRequestPojo saveCartAsTransactionRequest(String authorization, Collection<SellDetailPojo> cartDetails) {
-    int customerId = this.fetchCustomerId(authorization);
+    long customerId = this.fetchCustomerId(authorization);
     Customer customer = customersRepository.getOne(customerId);
     int totalValue = calculateTotalCartValue(cartDetails);
     List<SellDetail> entityDetails = new ArrayList<>();
@@ -184,13 +184,14 @@ public class CheckoutServiceImpl
 
     Date date = Date.from(Instant.now());
     SellType sellType = new SellType();
-    sellType.setId(1);
+    sellType.setId(1L);
+    SellStatus sellStatus = new SellStatus();
+    sellStatus.setId(1L);
 
     Sell target = new Sell();
     target.setDate(date);
     target.setType(sellType);
     target.setCustomer(customer);
-    target.setStatus(new SellStatus(1));
     target.setSessionExtract(session);
     target.setTotalValue(totalValue);
     target.setTotalItems(cartDetails.size());
@@ -212,9 +213,12 @@ public class CheckoutServiceImpl
   @Override
   public WebpayCheckoutResponsePojo startWebpayTransaction(WebpayCheckoutRequestPojo transaction) {
     WebpayCheckoutResponsePojo response = this.requestTransactionToCheckoutServer(transaction);
+    SellStatus sellStatus = new SellStatus();
+    sellStatus.setId(2L);
 
-    Sell current = salesRepository.getOne(Integer.valueOf(transaction.getTransactionId()));
-    current.setStatus(new SellStatus(2));
+    Long transactionId = Long.valueOf(transaction.getTransactionId());
+    Sell current = salesRepository.getOne(transactionId);
+    current.setStatus(sellStatus);
     current.setToken(response.getToken());
     salesRepository.saveAndFlush(current);
 
@@ -240,7 +244,9 @@ public class CheckoutServiceImpl
     switch (responseCode) {
       case 0:
         LOG.info("Webpay Plus: transaction with token '{}' was succesful!!!", transactionToken);
-        foundMatch.setStatus(new SellStatus(4));
+        SellStatus sellStatus = new SellStatus();
+        sellStatus.setId(4L);
+        foundMatch.setStatus(sellStatus);
         salesRepository.saveAndFlush(foundMatch);
         break;
     }

@@ -1,7 +1,6 @@
 package org.trebol.api.pojo;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,17 +11,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude
 public class ReceiptPojo {
-  private int buyOrder;
+  private long buyOrder;
   private int amount;
   private Collection<ReceiptDetailPojo> details;
   private String date;
   private String status;
 
-  public int getBuyOrder() {
+  public long getBuyOrder() {
     return buyOrder;
   }
 
-  public void setBuyOrder(int buyOrder) {
+  public void setBuyOrder(long buyOrder) {
     this.buyOrder = buyOrder;
   }
 
@@ -61,11 +60,11 @@ public class ReceiptPojo {
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = 43 * hash + this.buyOrder;
-    hash = 43 * hash + this.amount;
-    hash = 43 * hash + Objects.hashCode(this.details);
-    hash = 43 * hash + Objects.hashCode(this.date);
-    hash = 43 * hash + Objects.hashCode(this.status);
+    hash = 53 * hash + (int)(this.buyOrder ^ (this.buyOrder >>> 32));
+    hash = 53 * hash + this.amount;
+    hash = 53 * hash + Objects.hashCode(this.details);
+    hash = 53 * hash + Objects.hashCode(this.date);
+    hash = 53 * hash + Objects.hashCode(this.status);
     return hash;
   }
 

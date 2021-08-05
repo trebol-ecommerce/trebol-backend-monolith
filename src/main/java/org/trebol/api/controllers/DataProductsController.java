@@ -19,14 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.trebol.api.CrudController;
 
-import org.trebol.api.GenericCrudController;
 import org.trebol.api.DataPage;
+import org.trebol.api.GenericDataController;
 import org.trebol.api.pojo.ProductPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  * API point of entry for Product entities
@@ -36,11 +37,12 @@ import org.trebol.jpa.services.GenericCrudService;
 @RestController
 @RequestMapping("/data/products")
 public class DataProductsController
-    extends GenericCrudController<ProductPojo, Product, Integer> {
+  extends GenericDataController<ProductPojo, Product>
+  implements CrudController<ProductPojo, String> {
 
   @Autowired
   public DataProductsController(CustomProperties globals,
-      GenericCrudService<ProductPojo, Product, Integer> crudService) {
+      GenericJpaCrudService<ProductPojo, Product> crudService) {
     super(globals, crudService);
   }
 
@@ -56,28 +58,28 @@ public class DataProductsController
   public void create(
     @RequestBody @Valid ProductPojo input
   ) throws EntityAlreadyExistsException {
-    super.create(input);
+    crudService.create(input);
   }
 
   @Override
-  @GetMapping({"/{id}", "/{id}/"})
+  @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('products:read')")
-  public ProductPojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
+  public ProductPojo readOne(@PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
-  @PutMapping({"/{id}", "/{id}/"})
+  @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('products:update')")
-  public void update(@RequestBody @Valid ProductPojo input, @PathVariable Integer id) {
-    super.update(input, id);
+  public void update(@RequestBody @Valid ProductPojo input, @PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
-  @DeleteMapping({"/{id}", "/{id}/"})
+  @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('products:delete')")
-  public void delete(@PathVariable Integer id) {
-    super.delete(id);
+  public void delete(@PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override

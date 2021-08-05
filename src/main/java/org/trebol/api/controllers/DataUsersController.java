@@ -19,14 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.trebol.api.CrudController;
 
-import org.trebol.api.GenericCrudController;
 import org.trebol.api.DataPage;
+import org.trebol.api.GenericDataController;
 import org.trebol.api.pojo.UserPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  * API point of entry for User entities
@@ -36,11 +37,12 @@ import org.trebol.jpa.services.GenericCrudService;
 @RestController
 @RequestMapping("/data/users")
 public class DataUsersController
-    extends GenericCrudController<UserPojo, User, Integer> {
+  extends GenericDataController<UserPojo, User>
+  implements CrudController<UserPojo, String> {
 
   @Autowired
   public DataUsersController(CustomProperties globals,
-      GenericCrudService<UserPojo, User, Integer> crudService) {
+      GenericJpaCrudService<UserPojo, User> crudService) {
     super(globals, crudService);
   }
 
@@ -53,31 +55,29 @@ public class DataUsersController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('users:create')")
-  public void create(
-    @RequestBody @Valid UserPojo input
-  ) throws EntityAlreadyExistsException {
-    super.create(input);
+  public void create(@RequestBody @Valid UserPojo input) throws EntityAlreadyExistsException {
+    crudService.create(input);
   }
 
   @Override
-  @GetMapping({"/{id}", "/{id}/"})
+  @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('users:read')")
-  public UserPojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
+  public UserPojo readOne(@PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
-  @PutMapping({"/{id}", "/{id}/"})
+  @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('users:update')")
-  public void update(@RequestBody @Valid UserPojo input, @PathVariable Integer id) {
-    super.update(input, id);
+  public void update(@RequestBody @Valid UserPojo input, @PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
-  @DeleteMapping({"/{id}", "/{id}/"})
+  @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('users:delete')")
-  public void delete(@PathVariable Integer id) {
-    super.delete(id);
+  public void delete(@PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override

@@ -34,8 +34,9 @@ public class CustomerPersonRelationServiceImpl
   }
 
   @Override
-  public CustomerPojo getCustomerFromPersonId(int personId) {
-    Predicate query = QCustomer.customer.person.id.eq(personId);
+  public CustomerPojo getCustomerFromPersonId(long personId) {
+    QCustomer qCustomer = QCustomer.customer;
+    Predicate query = qCustomer.person.id.eq(personId);
     Optional<Customer> match = customerRepository.findOne(query);
     if (match.isPresent()) {
       Customer entity = match.get();

@@ -33,7 +33,7 @@ public class UserPermissionsServiceImpl
   @Override
   public Set<Permission> loadPermissionsForUser(User source) {
     UserRole sourceUserRole = source.getUserRole();
-    Integer userRoleId = sourceUserRole.getId();
+    Long userRoleId = sourceUserRole.getId();
     Iterable<UserRolePermission> userRolePermissions = userRolePermissionsRepository
         .deepFindPermissionsByUserRoleId(userRoleId);
 

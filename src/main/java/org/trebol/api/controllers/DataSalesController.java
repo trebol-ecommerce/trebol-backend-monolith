@@ -19,14 +19,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.trebol.api.CrudController;
 
-import org.trebol.api.GenericCrudController;
+import org.trebol.api.GenericDataController;
 import org.trebol.api.DataPage;
 import org.trebol.api.pojo.SellPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
+
+import javassist.NotFoundException;
 
 /**
  * API point of entry for Sell entities
@@ -36,10 +39,11 @@ import org.trebol.jpa.services.GenericCrudService;
 @RestController
 @RequestMapping("/data/sales")
 public class DataSalesController
-    extends GenericCrudController<SellPojo, Sell, Integer> {
+  extends GenericDataController<SellPojo, Sell>
+  implements CrudController<SellPojo, Long> {
 
   @Autowired
-  public DataSalesController(CustomProperties globals, GenericCrudService<SellPojo, Sell, Integer> crudService) {
+  public DataSalesController(CustomProperties globals, GenericJpaCrudService<SellPojo, Sell> crudService) {
     super(globals, crudService);
   }
 
@@ -52,31 +56,29 @@ public class DataSalesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:create')")
-  public void create(
-    @RequestBody @Valid SellPojo input
-  ) throws EntityAlreadyExistsException {
-    super.create(input);
+  public void create(@RequestBody @Valid SellPojo input) throws EntityAlreadyExistsException {
+    crudService.create(input);
   }
 
   @Override
-  @GetMapping({"/{id}", "/{id}/"})
+  @GetMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:read')")
-  public SellPojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
+  public SellPojo readOne(@PathVariable Long buyOrder) throws NotFoundException {
+    return crudService.readOne(buyOrder);
   }
 
   @Override
-  @PutMapping({"/{id}", "/{id}/"})
+  @PutMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:update')")
-  public void update(@RequestBody @Valid SellPojo input, @PathVariable Integer id) {
-    super.update(input, id);
+  public void update(@RequestBody @Valid SellPojo input, @PathVariable Long buyOrder) throws NotFoundException {
+    crudService.update(input, buyOrder);
   }
 
   @Override
-  @DeleteMapping({"/{id}", "/{id}/"})
+  @DeleteMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:delete')")
-  public void delete(@PathVariable Integer id) {
-    super.delete(id);
+  public void delete(@PathVariable Long buyOrder) throws NotFoundException {
+    crudService.delete(buyOrder);
   }
 
   @Override

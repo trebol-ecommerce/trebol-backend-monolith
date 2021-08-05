@@ -25,7 +25,7 @@ import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.jpa.repositories.UserRolesRepository;
 import org.trebol.jpa.repositories.UsersRepository;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  *
@@ -34,7 +34,7 @@ import org.trebol.jpa.services.GenericCrudService;
 @Transactional
 @Service
 public class UserCrudServiceImpl
-    extends GenericCrudService<UserPojo, User, Integer> {
+    extends GenericJpaCrudService<UserPojo, User> {
   private static final Logger LOG = LoggerFactory.getLogger(UserCrudServiceImpl.class);
 
   private final UsersRepository repository;
@@ -124,11 +124,10 @@ public class UserCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Integer intValue;
+        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            intValue = Integer.valueOf(stringValue);
-            return predicate.and(qUser.id.eq(intValue)); // id matching is final
+            return predicate.and(qUser.id.eq(longValue)); // id matching is final
           case "name":
             predicate.and(qUser.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
@@ -148,7 +147,7 @@ public class UserCrudServiceImpl
 
   @Nullable
   @Override
-  public UserPojo find(Integer id) {
+  public UserPojo readOne(Long id) {
     Optional<User> userById = repository.findByIdWithProfile(id);
     if (!userById.isPresent()) {
       return null;

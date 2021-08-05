@@ -17,7 +17,7 @@ import com.querydsl.core.types.Predicate;
 import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.QProductCategory;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 
 /**
@@ -27,7 +27,7 @@ import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 @Transactional
 @Service
 public class ProductCategoryCrudServiceImpl
-    extends GenericCrudService<ProductCategoryPojo, ProductCategory, Integer> {
+    extends GenericJpaCrudService<ProductCategoryPojo, ProductCategory> {
   private static final Logger LOG = LoggerFactory.getLogger(ProductCategoryCrudServiceImpl.class);
 
   private final ProductsCategoriesRepository repository;
@@ -59,17 +59,15 @@ public class ProductCategoryCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Integer intValue;
+        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            intValue = Integer.valueOf(stringValue);
-            return predicate.and(qProductCategory.id.eq(intValue)); // match por id es único
+            return predicate.and(qProductCategory.id.eq(longValue)); // match por id es único
           case "name":
             predicate.and(qProductCategory.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "parent":
-            intValue = Integer.valueOf(stringValue);
-            predicate.and(qProductCategory.parent.id.eq(intValue));
+            predicate.and(qProductCategory.parent.id.eq(longValue));
             break;
           default:
             break;

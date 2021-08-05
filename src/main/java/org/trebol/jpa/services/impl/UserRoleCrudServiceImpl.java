@@ -19,7 +19,7 @@ import org.trebol.jpa.entities.QUserRole;
 import org.trebol.api.pojo.UserRolePojo;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.UserRolesRepository;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  *
@@ -28,7 +28,7 @@ import org.trebol.jpa.services.GenericCrudService;
 @Transactional
 @Service
 public class UserRoleCrudServiceImpl
-    extends GenericCrudService<UserRolePojo, UserRole, Integer> {
+    extends GenericJpaCrudService<UserRolePojo, UserRole> {
   private static final Logger LOG = LoggerFactory.getLogger(UserRoleCrudServiceImpl.class);
 
   private final ConversionService conversion;
@@ -58,11 +58,10 @@ public class UserRoleCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Integer intValue;
+        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            intValue = Integer.valueOf(stringValue);
-            return predicate.and(qUserRole.id.eq(intValue)); // match por id es único
+            return predicate.and(qUserRole.id.eq(longValue)); // match por id es único
           case "name":
             predicate.and(qUserRole.name.likeIgnoreCase("%" + stringValue + "%"));
             break;

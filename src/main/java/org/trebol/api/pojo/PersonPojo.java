@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class PersonPojo {
   @JsonInclude
-  private Integer id;
+  private Long id;
   @JsonInclude
   @NotNull
   private String name;
@@ -32,11 +32,11 @@ public class PersonPojo {
   @JsonInclude(value = Include.NON_EMPTY)
   private Integer phone2;
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

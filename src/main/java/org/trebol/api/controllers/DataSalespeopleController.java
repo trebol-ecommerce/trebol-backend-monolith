@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import io.jsonwebtoken.lang.Maps;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,14 +21,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.trebol.api.CrudController;
 
-import org.trebol.api.GenericCrudController;
 import org.trebol.api.DataPage;
+import org.trebol.api.GenericDataController;
 import org.trebol.api.pojo.SalespersonPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
+
+import com.querydsl.core.types.Predicate;
 
 /**
  * API point of entry for Salesperson entities
@@ -36,11 +41,12 @@ import org.trebol.jpa.services.GenericCrudService;
 @RestController
 @RequestMapping("/data/salespeople")
 public class DataSalespeopleController
-    extends GenericCrudController<SalespersonPojo, Salesperson, Integer> {
+  extends GenericDataController<SalespersonPojo, Salesperson>
+  implements CrudController<SalespersonPojo, String> {
 
   @Autowired
   public DataSalespeopleController(CustomProperties globals,
-      GenericCrudService<SalespersonPojo, Salesperson, Integer> crudService) {
+    GenericJpaCrudService<SalespersonPojo, Salesperson> crudService) {
     super(globals, crudService);
   }
 
@@ -53,31 +59,34 @@ public class DataSalespeopleController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:create')")
-  public void create(
-    @RequestBody @Valid SalespersonPojo input
-  ) throws EntityAlreadyExistsException {
-    super.create(input);
+  public void create(@RequestBody @Valid SalespersonPojo input) throws EntityAlreadyExistsException {
+    crudService.create(input);
   }
 
   @Override
-  @GetMapping({"/{id}", "/{id}/"})
+  @GetMapping({"/{idCard}", "/{idCard}/"})
   @PreAuthorize("hasAuthority('salespeople:read')")
-  public SalespersonPojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
+  public SalespersonPojo readOne(@PathVariable String idCard) {
+    Map<String, String> idCardMatchMap = Maps.of("idnumber", idCard).build();
+    Predicate filters = crudService.queryParamsMapToPredicate(idCardMatchMap);
+    return crudService.readOne(filters);
   }
 
   @Override
-  @PutMapping({"/{id}", "/{id}/"})
+  @PutMapping({"/{idCard}", "/{idCard}/"})
   @PreAuthorize("hasAuthority('salespeople:update')")
-  public void update(@RequestBody @Valid SalespersonPojo input, @PathVariable Integer id) {
-    super.update(input, id);
+  public void update(@RequestBody @Valid SalespersonPojo input, @PathVariable String idCard) {
+     // TODO improve this implementation; the same salesperson will be fetched twice
+    Long salespersonId = this.readOne(idCard).getId();
+    crudService.update(input, salespersonId);
   }
 
   @Override
-  @DeleteMapping({"/{id}", "/{id}/"})
+  @DeleteMapping({"/{idCard}", "/{idCard}/"})
   @PreAuthorize("hasAuthority('salespeople:delete')")
-  public void delete(@PathVariable Integer id) {
-    super.delete(id);
+  public void delete(@PathVariable String idCard) {
+    Long salespersonId = this.readOne(idCard).getId();
+    crudService.delete(salespersonId);
   }
 
   @Override

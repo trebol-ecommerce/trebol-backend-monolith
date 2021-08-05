@@ -21,21 +21,27 @@ import org.trebol.jpa.GenericRepository;
 import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
 
 /**
- * Abstract service that sends and receives data with pojos and keep entities
- * out of public scope. API controllers should wire to subclasses of this.
+ * Base abstraction for JPA-based CRUD services that communicate with POJOs, keeping JPA entities out of scope.
+ *
+ * API controllers should wire to subclasses of this.
+ *
+ * Because it extends Map2QueryDslPredicateConverterService, it's expected to comply to QueryDSL and
+ * accept Predicate objects as filtering conditions.
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  *
  * @param <P> The pojo class
  * @param <E> The entity class
- * @param <I> The identifier class
  */
-public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
-    implements CrudService<P, I>, TwoWayEntityPojoConverterService<E, P> {
+public abstract class GenericJpaCrudService<P, E extends GenericEntity>
+    implements
+      CrudService<P, Predicate>,
+      TwoWayPojoEntityConverterService<P, E>,
+      Map2QueryDslPredicateConverterService {
 
-  protected GenericRepository<E, I> repository;
+  protected GenericRepository<E> repository;
 
-  public GenericCrudService(GenericRepository<E, I> repository) {
+  public GenericJpaCrudService(GenericRepository<E> repository) {
     this.repository = repository;
   }
 
@@ -62,11 +68,11 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
    */
   @Nullable
   @Override
-  public I create(P inputPojo) throws EntityAlreadyExistsException {
+  public P create(P inputPojo) throws EntityAlreadyExistsException {
     E input = pojo2Entity(inputPojo);
     try {
       E output = repository.saveAndFlush(input);
-      return output.getId();
+      return entity2Pojo(output);
     } catch (DataIntegrityViolationException exc) {
       throw new EntityAlreadyExistsException("The provided data conflicts with existing data", exc);
     }
@@ -76,7 +82,7 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
    * Read entities, convert them to pojos and return the collection.
    */
   @Override
-  public DataPage<P> read(int pageSize, int pageIndex, Predicate filters) {
+  public DataPage<P> readMany(int pageSize, int pageIndex, Predicate filters) {
     Sort orden = Sort.by("id").ascending();
     Pageable paged = PageRequest.of(pageIndex, pageSize, orden);
     Page<E> iterable = getAllEntities(paged, filters);
@@ -95,23 +101,27 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
 
   /**
    * Look up the entity, save it if exists and differs from existing, convert back
-   * to pojo and return. If it does not differ, return as-is.
+   * to pojo and return.If it does not differ, return as-is.
+   * @param input
+   * @param id
    */
   @Nullable
   @Override
-  public I update(P input, I id) {
+  public P update(P input, Long id) {
     Optional<E> existing = repository.findById(id);
     if (!existing.isPresent()) {
       return null;
     } else {
       E existingEntity = existing.get();
       E newEntity = pojo2Entity(input);
-      if (newEntity.equals(existingEntity)) {
-        return id;
+      if (newEntity == null) {
+        return null;
+      } else if (newEntity.equals(existingEntity)) {
+        return input;
       } else {
         try {
           E result = repository.saveAndFlush(newEntity);
-          return result.getId();
+          return entity2Pojo(result);
         } catch (Exception exc) {
           return null;
         }
@@ -120,7 +130,7 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
   }
 
   @Override
-  public boolean delete(I id) {
+  public boolean delete(Long id) {
     try {
       repository.deleteById(id);
       repository.flush();
@@ -132,7 +142,7 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
 
   @Nullable
   @Override
-  public P find(I id) {
+  public P readOne(Long id) {
     Optional<E> entityById = repository.findById(id);
     if (!entityById.isPresent()) {
       return null;
@@ -145,7 +155,7 @@ public abstract class GenericCrudService<P, E extends GenericEntity<I>, I>
 
   @Nullable
   @Override
-  public P find(Predicate filters) {
+  public P readOne(Predicate filters) {
     Optional<E> entity = repository.findOne(filters);
     if (!entity.isPresent()) {
       return null;

@@ -11,5 +11,5 @@ import org.trebol.api.pojo.ReceiptPojo;
 public interface ReceiptService {
 
   @Nullable
-  ReceiptPojo fetchReceiptById(int id);
+  ReceiptPojo fetchReceiptById(long id);
 }

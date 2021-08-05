@@ -19,14 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.trebol.api.CrudController;
 
-import org.trebol.api.GenericCrudController;
 import org.trebol.api.DataPage;
+import org.trebol.api.GenericDataController;
 import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  * API point of entry for SellStatus entities
@@ -36,11 +37,12 @@ import org.trebol.jpa.services.GenericCrudService;
 @RestController
 @RequestMapping("/data/sell_statuses")
 public class DataSellStatusesController
-    extends GenericCrudController<ProductCategoryPojo, ProductCategory, Integer> {
+  extends GenericDataController<ProductCategoryPojo, ProductCategory>
+  implements CrudController<ProductCategoryPojo, String> {
 
   @Autowired
   public DataSellStatusesController(CustomProperties globals,
-      GenericCrudService<ProductCategoryPojo, ProductCategory, Integer> crudService) {
+      GenericJpaCrudService<ProductCategoryPojo, ProductCategory> crudService) {
     super(globals, crudService);
   }
 
@@ -56,28 +58,28 @@ public class DataSellStatusesController
   public void create(
     @RequestBody @Valid ProductCategoryPojo input
   ) throws EntityAlreadyExistsException {
-    super.create(input);
+    crudService.create(input);
   }
 
   @Override
-  @GetMapping({"/{id}", "/{id}/"})
+  @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('sell_statuses:read')")
-  public ProductCategoryPojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
+  public ProductCategoryPojo readOne(@PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
-  @PutMapping({"/{id}", "/{id}/"})
+  @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('sell_statuses:update')")
-  public void update(@RequestBody @Valid ProductCategoryPojo input, @PathVariable Integer id) {
-    super.update(input, id);
+  public void update(@RequestBody @Valid ProductCategoryPojo input, @PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
-  @DeleteMapping({"/{id}", "/{id}/"})
+  @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('sell_statuses:delete')")
-  public void delete(@PathVariable Integer id) {
-    super.delete(id);
+  public void delete(@PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override

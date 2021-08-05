@@ -19,7 +19,11 @@ public class Salesperson2Entity
   public Salesperson convert(SalespersonPojo source) {
     Salesperson target = new Salesperson();
     target.setId(source.getId());
-    target.setPerson(new Person(source.getPerson().getId()));
+
+    Person targetPerson = new Person();
+    targetPerson.setId(source.getPerson().getId());
+    target.setPerson(targetPerson);
+
     return target;
   }
 }
