@@ -24,40 +24,13 @@ VALUES
 (01, 'Bill'),
 (02, 'Enterprise Invoice');
 
-INSERT INTO `products_categories`
-(`product_category_id`, `product_category_name`, `parent_product_category_id`)
-VALUES
-(01, 'Vestuario y Calzado', null),
-(02, 'Zapatillas', 01);
-
-INSERT INTO `products`
-(`product_id`, `product_name`, `product_code`, `product_price`, `product_stock_current`, `product_stock_critical`, `product_category_id`)
-VALUES
-(01, 'Zapatillas Nike Air Jordan Azul/Negro', 'NIKE-AZLNGR-1', 14990, 50, 05, 01),
-(02, 'Zapatillas Nike Hi-Top Rojo/Negro', 'NIKE-ROJNGR-1', 14990, 50, 05, 01),
-(03, 'Zapatillas Nike Hi-Top Rojo/Blanco', 'NIKE-ROJBCO-1', 13990, 50, 05, 01);
-
-INSERT INTO `images`
-(`image_id`, `image_filename`, `image_url`)
-VALUES
-(01, '1.png', 'assets/img/products/photo-1578116922645-3976907a7671.jpg'),
-(02, '2.png', 'assets/img/products/photo-1578172433613-9f1b258f7d5b.jpg'),
-(03, '3.png', 'assets/img/products/photo-1580143881495-b21dde95fc60.jpg');
-
-INSERT INTO `products_images`
-(`product_id`, `image_id`)
-VALUES
-(01, 01),
-(02, 02),
-(03, 03);
-
 INSERT INTO `app_users_roles`
 (`user_role_id`, `user_role_name`)
 VALUES 
-(01, 'Administrador'),
+(01, 'Administrator'),
 (02, 'Manager'),
-(03, 'Vendedor'),
-(04, 'Cliente');
+(03, 'Salesperson'),
+(04, 'Customer');
 
 INSERT INTO `people`
 (`person_id`, `person_name`, `person_idcard`, `person_email`, `person_address`, `person_phone1`, `person_phone2`)
@@ -67,11 +40,6 @@ VALUES
 (03, 'Test3', '3333333', 'test3@example.com', 'example 3', 0, 0),
 (04, 'Test4', '4444444', 'test4@example.com', 'example 4', 0, 0),
 (05, 'Test5', '5555555', 'test5@example.com', 'example 5', 0, 0);
-
-INSERT INTO `customers`
-(`customer_id`, `person_id`)
-VALUES
-(01, 04);
 
 INSERT INTO `app_permissions`
 (`permission_id`, `permission_code`)
