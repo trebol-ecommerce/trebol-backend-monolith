@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import org.trebol.security.JwtTokenVerifierFilter;
@@ -54,27 +55,36 @@ public class SecurityConfig
     http
         .cors()
         .and()
-        .csrf().disable()
+        .csrf()
+            .disable()
         .sessionManagement()
-          .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), securityProperties, secretKey))
-        .addFilterAfter(new JwtTokenVerifierFilter(jwtClaimsParserService),
+        .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            .invalidateHttpSession(true)
+        .and()
+        .addFilter(
+            this.jwtLoginAuthenticationFilter())
+        .addFilterAfter(
+            new JwtTokenVerifierFilter(jwtClaimsParserService),
             JwtUsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
         .antMatchers(
-            "/",
-            "/login",
-            "/register",
-            "/store/about",
-            "/store/front",
-            "/store/categories",
-            "/store/categories/*",
-            "/store/product/*",
-            "/store/receipt/*",
-            "/store/checkout/validate"
-        ).permitAll()
-        .anyRequest().authenticated();
+          "/",
+          "/public/login",
+          "/public/register",
+          "/public/about",
+          "/public/categories",
+          "/public/categories/*",
+          "/public/products",
+          "/public/products/*",
+          "/public/receipt/*",
+          "/public/checkout",
+          "/public/checkout/validate")
+            .permitAll()
+        .anyRequest()
+            .authenticated();
   }
 
   @Override
@@ -99,6 +109,15 @@ public class SecurityConfig
   public PasswordEncoder passwordEncoder() {
     Integer strength = securityProperties.getBcryptEncoderStrength();
     return new BCryptPasswordEncoder(strength);
+  }
+
+  private JwtUsernamePasswordAuthenticationFilter jwtLoginAuthenticationFilter() throws Exception {
+    JwtUsernamePasswordAuthenticationFilter filter = new JwtUsernamePasswordAuthenticationFilter(
+      super.authenticationManager(),
+      securityProperties,
+      secretKey);
+    filter.setFilterProcessesUrl("/public/login");
+    return filter;
   }
 
 }

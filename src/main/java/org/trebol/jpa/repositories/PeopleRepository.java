@@ -11,6 +11,6 @@ import org.trebol.jpa.entities.Person;
  */
 @Repository
 public interface PeopleRepository
-    extends GenericRepository<Person, Integer> {
+    extends GenericRepository<Person> {
 
 }

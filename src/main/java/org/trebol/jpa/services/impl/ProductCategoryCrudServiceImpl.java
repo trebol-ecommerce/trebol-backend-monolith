@@ -14,12 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import org.trebol.jpa.entities.QPerson;
-
-import org.trebol.api.pojo.PersonPojo;
-import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.repositories.PeopleRepository;
+import org.trebol.api.pojo.ProductCategoryPojo;
+import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.jpa.entities.QProductCategory;
 import org.trebol.jpa.services.GenericJpaCrudService;
+import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 
 /**
  *
@@ -27,33 +26,35 @@ import org.trebol.jpa.services.GenericJpaCrudService;
  */
 @Transactional
 @Service
-public class PersonCrudServiceImpl
-    extends GenericJpaCrudService<PersonPojo, Person> {
-  private static final Logger LOG = LoggerFactory.getLogger(PersonCrudServiceImpl.class);
+public class ProductCategoryCrudServiceImpl
+    extends GenericJpaCrudService<ProductCategoryPojo, ProductCategory> {
+  private static final Logger LOG = LoggerFactory.getLogger(ProductCategoryCrudServiceImpl.class);
 
+  private final ProductsCategoriesRepository repository;
   private final ConversionService conversion;
 
   @Autowired
-  public PersonCrudServiceImpl(PeopleRepository repository, ConversionService conversion) {
+  public ProductCategoryCrudServiceImpl(ProductsCategoriesRepository repository, ConversionService conversion) {
     super(repository);
+    this.repository = repository;
     this.conversion = conversion;
   }
 
   @Nullable
   @Override
-  public PersonPojo entity2Pojo(Person source) {
-    return conversion.convert(source, PersonPojo.class);
+  public ProductCategoryPojo entity2Pojo(ProductCategory source) {
+    return conversion.convert(source, ProductCategoryPojo.class);
   }
 
   @Nullable
   @Override
-  public Person pojo2Entity(PersonPojo source) {
-    return conversion.convert(source, Person.class);
+  public ProductCategory pojo2Entity(ProductCategoryPojo source) {
+    return conversion.convert(source, ProductCategory.class);
   }
 
   @Override
   public Predicate queryParamsMapToPredicate(Map<String, String> queryParamsMap) {
-    QPerson qPerson = QPerson.person;
+    QProductCategory qProductCategory = QProductCategory.productCategory;
     BooleanBuilder predicate = new BooleanBuilder();
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
@@ -61,21 +62,18 @@ public class PersonCrudServiceImpl
         Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qPerson.id.eq(longValue)); // id matching is final
+            return predicate.and(qProductCategory.id.eq(longValue)); // match por id es único
           case "name":
-            predicate.and(qPerson.name.likeIgnoreCase("%" + stringValue + "%"));
+            predicate.and(qProductCategory.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "idnumber":
-            predicate.and(qPerson.idCard.likeIgnoreCase("%" + stringValue + "%"));
-            break;
-          case "email":
-            predicate.and(qPerson.email.likeIgnoreCase("%" + stringValue + "%"));
+          case "parent":
+            predicate.and(qProductCategory.parent.id.eq(longValue));
             break;
           default:
             break;
         }
       } catch (NumberFormatException exc) {
-        LOG.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        LOG.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
       }
     }
 

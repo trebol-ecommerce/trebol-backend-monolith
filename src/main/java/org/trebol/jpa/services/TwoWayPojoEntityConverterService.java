@@ -8,14 +8,14 @@ import javax.annotation.Nullable;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  *
- * @param <E> The Entity class
  * @param <P> The Pojo class
+ * @param <E> The Entity class
  */
-public interface TwoWayEntityPojoConverterService<E, P> {
-
-  @Nullable
-  P entity2Pojo(E source);
+public interface TwoWayPojoEntityConverterService<P, E> {
 
   @Nullable
   E pojo2Entity(P source);
+
+  @Nullable
+  P entity2Pojo(E source);
 }

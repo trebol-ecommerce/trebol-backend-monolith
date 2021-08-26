@@ -1,6 +1,5 @@
 package org.trebol.api.controllers;
 
-import java.util.Collection;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -20,12 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.trebol.api.CrudController;
 
-import org.trebol.api.GenericCrudController;
+import org.trebol.api.DataPage;
+import org.trebol.api.GenericDataController;
 import org.trebol.api.pojo.UserRolePojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  * API point of entry for UserRole entities
@@ -35,46 +37,47 @@ import org.trebol.jpa.services.GenericCrudService;
 @RestController
 @RequestMapping("/data/user_roles")
 public class DataUserRolesController
-    extends GenericCrudController<UserRolePojo, UserRole, Integer> {
+  extends GenericDataController<UserRolePojo, UserRole>
+  implements CrudController<UserRolePojo, String> {
 
   @Autowired
   public DataUserRolesController(CustomProperties globals,
-      GenericCrudService<UserRolePojo, UserRole, Integer> crudService) {
+      GenericJpaCrudService<UserRolePojo, UserRole> crudService) {
     super(globals, crudService);
   }
 
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:read')")
-  public Collection<UserRolePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public DataPage<UserRolePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:create')")
-  public Integer create(@RequestBody @Valid UserRolePojo input) {
-    return super.create(input);
+  public void create(@RequestBody @Valid UserRolePojo input) throws EntityAlreadyExistsException {
+    crudService.create(input);
   }
 
   @Override
-  @GetMapping({"/{id}", "/{id}/"})
+  @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:read')")
-  public UserRolePojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
+  public UserRolePojo readOne(@PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
-  @PutMapping({"/{id}", "/{id}/"})
+  @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:update')")
-  public Integer update(@RequestBody @Valid UserRolePojo input, @PathVariable Integer id) {
-    return super.update(input, id);
+  public void update(@RequestBody @Valid UserRolePojo input, @PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
-  @DeleteMapping({"/{id}", "/{id}/"})
+  @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:delete')")
-  public boolean delete(@PathVariable Integer id) {
-    return super.delete(id);
+  public void delete(@PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
@@ -83,4 +86,8 @@ public class DataUserRolesController
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
     return super.handleValidationExceptions(ex);
   }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(EntityAlreadyExistsException.class)
+  public void handleConstraintExceptions(EntityAlreadyExistsException ex) { }
 }

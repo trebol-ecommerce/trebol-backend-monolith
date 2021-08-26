@@ -19,7 +19,7 @@ import org.trebol.jpa.entities.QSellStatus;
 
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.SellStatusesRepository;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  *
@@ -28,7 +28,7 @@ import org.trebol.jpa.services.GenericCrudService;
 @Transactional
 @Service
 public class SellStatusCrudServiceImpl
-    extends GenericCrudService<SellStatusPojo, SellStatus, Integer> {
+    extends GenericJpaCrudService<SellStatusPojo, SellStatus> {
   private static final Logger LOG = LoggerFactory.getLogger(SellStatusCrudServiceImpl.class);
 
   private final ConversionService conversion;
@@ -58,11 +58,10 @@ public class SellStatusCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Integer intValue;
+        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            intValue = Integer.valueOf(stringValue);
-            return predicate.and(qSellStatus.id.eq(intValue)); // match por id es único
+            return predicate.and(qSellStatus.id.eq(longValue)); // match por id es único
           case "name":
             predicate.and(qSellStatus.name.likeIgnoreCase("%" + stringValue + "%"));
             break;

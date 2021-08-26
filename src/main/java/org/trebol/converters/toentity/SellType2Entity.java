@@ -16,7 +16,8 @@ public class SellType2Entity
 
   @Override
   public SellType convert(SellTypePojo source) {
-    SellType target = new SellType(source.getId());
+    SellType target = new SellType();
+    target.setId(source.getId());
     target.setName(source.getName());
     return target;
   }

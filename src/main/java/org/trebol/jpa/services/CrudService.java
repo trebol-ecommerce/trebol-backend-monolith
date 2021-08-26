@@ -1,24 +1,18 @@
 package org.trebol.jpa.services;
 
-import java.util.Collection;
-
 import org.springframework.lang.Nullable;
-
-import com.querydsl.core.types.Predicate;
+import org.trebol.api.DataPage;
+import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
 
 
 /**
- * Interface for implementing the basic CRUD service operations. Because it
- * extends Map2QueryDslPredicateConverterService, it's expected to comply to QueryDSL and
- * accept Predicate objects as filtering conditions.
- * 
+ * Interface for implementing the basic CRUD service operations.
+ *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
- * 
- * @param <T> The type class of the item.
- * @param <I> The identifier type class of the item.
+ * @param <T> The items' type class.
+ * @param <F> The filters' type class.
  */
-public interface CrudService<T, I>
-    extends Map2QueryDslPredicateConverterService {
+public interface CrudService<T, F> {
 
   /**
    * Inserts and persists an item.
@@ -27,9 +21,10 @@ public interface CrudService<T, I>
    *
    * @return The created item, with updated properties (most importantly its ID),
    *         or null if the item could not be created.
+   * @throws org.trebol.jpa.exceptions.EntityAlreadyExistsException
    */
   @Nullable
-  public I create(T dto);
+  public T create(T dto) throws EntityAlreadyExistsException;
 
   /**
    * Queries a paged collection of items.
@@ -40,7 +35,27 @@ public interface CrudService<T, I>
    *
    * @return The requested collection of items. May be zero-sized.
    */
-  public Collection<T> read(int pageSize, int pageIndex, @Nullable Predicate filters);
+  public DataPage<T> readMany(int pageSize, int pageIndex, @Nullable F filters);
+
+  /**
+   * Retrieves an item by its ID.
+   *
+   * @param id The unique identifier of the item.
+   *
+   * @return The requested item, or null if it was not found.
+   */
+  @Nullable
+  public T readOne(Long id);
+
+  /**
+   * Retrieves the first item that matches a certain filter.
+   *
+   * @param filters   Filtering conditions
+   *
+   * @return The requested item, or null if it was not found.
+   */
+  @Nullable
+  public T readOne(F filters);
 
   /**
    * Updates an existing item.
@@ -53,7 +68,7 @@ public interface CrudService<T, I>
    *         found.
    */
   @Nullable
-  public I update(T dto, I id);
+  public T update(T dto, Long id);
 
   /**
    * Finds an item by its ID and deletes it.
@@ -62,15 +77,5 @@ public interface CrudService<T, I>
    *
    * @return true on success, false otherwise.
    */
-  public boolean delete(I id);
-
-  /**
-   * Retrieves an item by its ID.
-   *
-   * @param id The unique identifier of the item.
-   *
-   * @return The requested item, or null if it was not found.
-   */
-  @Nullable
-  public T find(I id);
+  public boolean delete(Long id);
 }

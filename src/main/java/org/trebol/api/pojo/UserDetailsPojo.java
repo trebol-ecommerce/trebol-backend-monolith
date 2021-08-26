@@ -2,6 +2,7 @@ package org.trebol.api.pojo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +19,15 @@ public class UserDetailsPojo
   private final boolean credentialsNonExpired;
   private final boolean enabled;
 
-  public UserDetailsPojo(List<? extends GrantedAuthority> authorities, String username, String password,
-      boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {
+  public UserDetailsPojo(
+      List<? extends GrantedAuthority> authorities,
+      String username,
+      String password,
+      boolean accountNonExpired,
+      boolean accountNonLocked,
+      boolean credentialsNonExpired,
+      boolean enabled
+  ) {
     this.authorities = authorities;
     this.username = username;
     this.password = password;
@@ -62,6 +70,60 @@ public class UserDetailsPojo
   @Override
   public boolean isEnabled() {
     return enabled;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 5;
+    hash = 73 * hash + Objects.hashCode(this.authorities);
+    hash = 73 * hash + Objects.hashCode(this.username);
+    hash = 73 * hash + Objects.hashCode(this.password);
+    hash = 73 * hash + (this.accountNonExpired ? 1 : 0);
+    hash = 73 * hash + (this.accountNonLocked ? 1 : 0);
+    hash = 73 * hash + (this.credentialsNonExpired ? 1 : 0);
+    hash = 73 * hash + (this.enabled ? 1 : 0);
+    return hash;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final UserDetailsPojo other = (UserDetailsPojo)obj;
+    if (this.accountNonExpired != other.accountNonExpired) {
+      return false;
+    }
+    if (this.accountNonLocked != other.accountNonLocked) {
+      return false;
+    }
+    if (this.credentialsNonExpired != other.credentialsNonExpired) {
+      return false;
+    }
+    if (this.enabled != other.enabled) {
+      return false;
+    }
+    if (!Objects.equals(this.username, other.username)) {
+      return false;
+    }
+    if (!Objects.equals(this.password, other.password)) {
+      return false;
+    }
+    if (!Objects.equals(this.authorities, other.authorities)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "UserDetailsPojo{" + "authorities=" + authorities + ", username=" + username + ", password=" + password + ", accountNonExpired=" + accountNonExpired + ", accountNonLocked=" + accountNonLocked + ", credentialsNonExpired=" + credentialsNonExpired + ", enabled=" + enabled + '}';
   }
 
 }

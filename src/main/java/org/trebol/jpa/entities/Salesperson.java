@@ -26,14 +26,14 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "salespeople")
 @NamedQueries({ @NamedQuery(name = "Salesperson.findAll", query = "SELECT s FROM Salesperson s") })
 public class Salesperson
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "salesperson_id")
-  private Integer id;
+  private Long id;
   @JoinColumn(name = "person_id", referencedColumnName = "person_id", insertable = true, updatable = true)
   @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Person person;
@@ -41,15 +41,17 @@ public class Salesperson
   public Salesperson() {
   }
 
-  public Salesperson(Integer id) {
+  public Salesperson(Long id, Person person) {
     this.id = id;
+    this.person = person;
   }
 
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

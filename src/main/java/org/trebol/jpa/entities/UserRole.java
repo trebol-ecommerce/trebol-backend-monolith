@@ -13,7 +13,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -24,21 +23,20 @@ import org.trebol.jpa.GenericEntity;
  */
 @Entity
 @Table(
-  name = "app_user_roles",
+  name = "app_users_roles",
   indexes = @Index(columnList = "user_role_name"),
   uniqueConstraints = @UniqueConstraint(columnNames = {"user_role_name"}))
 @NamedQueries({ @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u") })
 public class UserRole
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "user_role_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 50)
   @Column(name = "user_role_name")
   private String name;
@@ -46,20 +44,17 @@ public class UserRole
   public UserRole() {
   }
 
-  public UserRole(Integer userRoleId) {
-    this.id = userRoleId;
+  public UserRole(Long id, String name) {
+    this.id = id;
+    this.name = name;
   }
 
-  public UserRole(Integer userRoleId, String userRoleName) {
-    this.id = userRoleId;
-    this.name = userRoleName;
-  }
-
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

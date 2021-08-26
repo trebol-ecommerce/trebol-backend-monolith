@@ -11,6 +11,6 @@ import org.trebol.jpa.entities.SellType;
  */
 @Repository
 public interface SellTypesRepository
-    extends GenericRepository<SellType, Integer> {
+    extends GenericRepository<SellType> {
 
 }

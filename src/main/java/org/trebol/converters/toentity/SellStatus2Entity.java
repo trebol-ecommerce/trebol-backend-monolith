@@ -16,7 +16,8 @@ public class SellStatus2Entity
 
   @Override
   public SellStatus convert(SellStatusPojo source) {
-    SellStatus target = new SellStatus(source.getId());
+    SellStatus target = new SellStatus();
+    target.setId(source.getId());
     target.setName(source.getName());
     return target;
   }

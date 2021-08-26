@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -27,7 +26,7 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "app_sessions")
 @NamedQueries({ @NamedQuery(name = "Session.findAll", query = "SELECT s FROM Session s") })
 public class Session
-    implements GenericEntity<Long> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -36,26 +35,23 @@ public class Session
   @Column(name = "session_id")
   private Long id;
   @Basic(optional = false)
-  @NotNull
-  @Size(min = 156, max = 156)
+  @Size(min = 32, max = 500)
   @Column(name = "session_token")
   private String token;
   @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = true, updatable = false)
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private User user;
 
   public Session() {
   }
 
-  public Session(Long sessionId) {
-    this.id = sessionId;
+  public Session(Long id, String token, User user) {
+    this.id = id;
+    this.token = token;
+    this.user = user;
   }
 
-  public Session(Long sessionId, String sessionToken) {
-    this.id = sessionId;
-    this.token = sessionToken;
-  }
-
+  @Override
   public Long getId() {
     return id;
   }

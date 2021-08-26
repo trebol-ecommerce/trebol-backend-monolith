@@ -13,8 +13,8 @@ import org.trebol.jpa.entities.UserRolePermission;
  */
 @Repository
 public interface UserRolePermissionsRepository
-    extends GenericRepository<UserRolePermission, Integer> {
+  extends GenericRepository<UserRolePermission> {
 
   @Query("SELECT urp FROM UserRolePermission urp JOIN FETCH urp.permission WHERE urp.userRole.id = :userRoleId")
-  public Iterable<UserRolePermission> deepFindPermissionsByUserRoleId(@Param("userRoleId") Integer userRoleId);
+  public Iterable<UserRolePermission> deepFindPermissionsByUserRoleId(@Param("userRoleId") Long userRoleId);
 }

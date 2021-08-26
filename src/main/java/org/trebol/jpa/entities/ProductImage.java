@@ -22,18 +22,18 @@ import javax.persistence.Table;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @Entity
-@Table(name = "product_images")
+@Table(name = "products_images")
 @NamedQueries({
     @NamedQuery(name = "ProductImage.findAll", query = "SELECT p FROM ProductImage p")})
 public class ProductImage
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "product_image_id")
-  private Integer id;
+  private Long id;
   @JoinColumn(name = "image_id", referencedColumnName = "image_id", insertable = true, updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Image image;
@@ -44,15 +44,18 @@ public class ProductImage
   public ProductImage() {
   }
 
-  public ProductImage(Integer productImageId) {
-      this.id = productImageId;
+  public ProductImage(Long id, Image image, Product product) {
+    this.id = id;
+    this.image = image;
+    this.product = product;
   }
 
-  public Integer getId() {
+  @Override
+  public Long getId() {
       return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
       this.id = id;
   }
 
@@ -108,7 +111,7 @@ public class ProductImage
   @Override
   public String toString() {
     return "ProductImage{id=" + id +
-        ", image=" + image + 
+        ", image=" + image +
         ", product=" + product + '}';
   }
 

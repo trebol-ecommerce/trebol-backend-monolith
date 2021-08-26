@@ -11,5 +11,5 @@ import org.trebol.api.pojo.CustomerPojo;
  */
 public interface CustomerPersonRelationService {
   @Nullable
-  CustomerPojo getCustomerFromPersonId(int personId);
+  CustomerPojo getCustomerFromPersonId(long personId);
 }

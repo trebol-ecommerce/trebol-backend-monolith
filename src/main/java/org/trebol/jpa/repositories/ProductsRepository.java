@@ -16,12 +16,12 @@ import org.trebol.jpa.entities.Product;
  */
 @Repository
 public interface ProductsRepository
-    extends GenericRepository<Product, Integer> {
+    extends GenericRepository<Product> {
 
-  @Query(value = "SELECT p FROM Product p JOIN FETCH p.productType", countQuery = "SELECT p FROM Product p")
+  @Query(value = "SELECT p FROM Product p JOIN FETCH p.productCategory", countQuery = "SELECT p FROM Product p")
   Page<Product> deepReadAll(Pageable pageable);
 
-  @Query(value = "SELECT p FROM Product p JOIN FETCH p.productType", countQuery = "SELECT p FROM Product p")
+  @Query(value = "SELECT p FROM Product p JOIN FETCH p.productCategory", countQuery = "SELECT p FROM Product p")
   Page<Product> deepReadAll(Predicate filters, Pageable pageable);
 
 }

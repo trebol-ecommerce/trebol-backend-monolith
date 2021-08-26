@@ -16,7 +16,8 @@ public class Person2Entity
 
   @Override
   public Person convert(PersonPojo source) {
-    Person target = new Person(source.getId());
+    Person target = new Person();
+    target.setId(source.getId());
     target.setName(source.getName());
     target.setIdCard(source.getIdCard());
     target.setEmail(source.getEmail());

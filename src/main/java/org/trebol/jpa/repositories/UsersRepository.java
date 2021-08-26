@@ -15,7 +15,7 @@ import org.trebol.jpa.entities.User;
  */
 @Repository
 public interface UsersRepository
-    extends GenericRepository<User, Integer> {
+    extends GenericRepository<User> {
 
   @Query("SELECT u FROM User u JOIN FETCH u.userRole WHERE u.name = :name")
   public Optional<User> findByNameWithRole(@Param("name") String name);
@@ -24,5 +24,5 @@ public interface UsersRepository
   public Optional<User> findByNameWithProfile(@Param("name") String name);
 
   @Query("SELECT u FROM User u JOIN FETCH u.person WHERE u.id = :id")
-  public Optional<User> findByIdWithProfile(@Param("id") Integer id);
+  public Optional<User> findByIdWithProfile(@Param("id") Long id);
 }

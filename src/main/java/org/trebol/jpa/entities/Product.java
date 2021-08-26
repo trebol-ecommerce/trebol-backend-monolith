@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -27,16 +26,15 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "products")
 @NamedQueries({ @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p") })
 public class Product
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "product_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 200)
   @Column(name = "product_name")
   private String name;
@@ -44,42 +42,38 @@ public class Product
   @Column(name = "product_code")
   private String barcode;
   @Basic(optional = false)
-  @NotNull
   @Column(name = "product_price")
   private int price;
   @Basic(optional = false)
-  @NotNull
   @Column(name = "product_stock_current")
   private int stockCurrent;
   @Basic(optional = false)
-  @NotNull
   @Column(name = "product_stock_critical")
   private int stockCritical;
-  @JoinColumn(name = "product_type_id", referencedColumnName = "product_type_id", insertable = true, updatable = true)
+  @JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id", insertable = true, updatable = true)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private ProductType productType;
+  private ProductCategory productCategory;
 
   public Product() {
   }
 
-  public Product(Integer productId) {
-    this.id = productId;
+  public Product(Long id, String name, String barcode, int price, int stockCurrent, int stockCritical,
+      ProductCategory productCategory) {
+    this.id = id;
+    this.name = name;
+    this.barcode = barcode;
+    this.price = price;
+    this.stockCurrent = stockCurrent;
+    this.stockCritical = stockCritical;
+    this.productCategory = productCategory;
   }
 
-  public Product(Integer productId, String productName, int productPrice, int productStockCurrent,
-      int productStockCritical) {
-    this.id = productId;
-    this.name = productName;
-    this.price = productPrice;
-    this.stockCurrent = productStockCurrent;
-    this.stockCritical = productStockCritical;
-  }
-
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -123,12 +117,12 @@ public class Product
     this.stockCritical = stockCritical;
   }
 
-  public ProductType getProductType() {
-    return productType;
+  public ProductCategory getProductCategory() {
+    return productCategory;
   }
 
-  public void setProductType(ProductType productType) {
-    this.productType = productType;
+  public void setProductCategory(ProductCategory productCategory) {
+    this.productCategory = productCategory;
   }
 
   @Override
@@ -140,7 +134,7 @@ public class Product
     hash = 11 * hash + this.price;
     hash = 11 * hash + this.stockCurrent;
     hash = 11 * hash + this.stockCritical;
-    hash = 11 * hash + Objects.hashCode(this.productType);
+    hash = 11 * hash + Objects.hashCode(this.productCategory);
     return hash;
   }
 
@@ -174,7 +168,7 @@ public class Product
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.productType, other.productType)) {
+    if (!Objects.equals(this.productCategory, other.productCategory)) {
       return false;
     }
     return true;
@@ -188,7 +182,7 @@ public class Product
         ", price=" + price +
         ", stockCurrent=" + stockCurrent +
         ", stockCritical=" + stockCritical +
-        ", productType=" + productType + '}';
+        ", productCategory=" + productCategory + '}';
   }
 
 }

@@ -8,11 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class CorsProperties {
 
   private String origins;
-  private String defaultMapping;
-  private String storeMappings;
-  private String sessionMappings;
-  private String accessMappings;
-  private String dataMappings;
+  private String mappings;
 
   public CorsProperties() {
   }
@@ -25,44 +21,12 @@ public class CorsProperties {
     this.origins = origins;
   }
 
-  public String getDefaultMapping() {
-    return defaultMapping;
+  public String getMappings() {
+    return mappings;
   }
 
-  public void setDefaultMapping(String defaultMapping) {
-    this.defaultMapping = defaultMapping;
-  }
-
-  public String getStoreMappings() {
-    return storeMappings;
-  }
-
-  public void setStoreMappings(String storeMappings) {
-    this.storeMappings = storeMappings;
-  }
-
-  public String getSessionMappings() {
-    return sessionMappings;
-  }
-
-  public void setSessionMappings(String sessionMappings) {
-    this.sessionMappings = sessionMappings;
-  }
-
-  public String getAccessMappings() {
-    return accessMappings;
-  }
-
-  public void setAccessMappings(String accessMappings) {
-    this.accessMappings = accessMappings;
-  }
-
-  public String getDataMappings() {
-    return dataMappings;
-  }
-
-  public void setDataMappings(String dataMappings) {
-    this.dataMappings = dataMappings;
+  public void setMappings(String mappings) {
+    this.mappings = mappings;
   }
 
 }

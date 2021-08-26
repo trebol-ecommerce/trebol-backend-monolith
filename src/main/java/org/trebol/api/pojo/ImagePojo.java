@@ -37,6 +37,8 @@ public class ImagePojo {
   @Override
   public int hashCode() {
     int hash = 7;
+    hash = 13 * hash + Objects.hashCode(this.filename);
+    hash = 13 * hash + Objects.hashCode(this.url);
     return hash;
   }
 
@@ -59,5 +61,10 @@ public class ImagePojo {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public String toString() {
+    return "ImagePojo{" + "filename=" + filename + ", url=" + url + '}';
   }
 }

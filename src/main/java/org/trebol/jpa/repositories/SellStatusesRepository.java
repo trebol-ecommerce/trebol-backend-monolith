@@ -11,6 +11,6 @@ import org.trebol.jpa.entities.SellStatus;
  */
 @Repository
 public interface SellStatusesRepository
-    extends GenericRepository<SellStatus, Integer> {
+    extends GenericRepository<SellStatus> {
 
 }

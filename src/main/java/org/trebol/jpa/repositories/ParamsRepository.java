@@ -12,7 +12,7 @@ import org.trebol.jpa.entities.Param;
  */
 @Repository
 public interface ParamsRepository
-    extends GenericRepository<Param, Integer> {
+    extends GenericRepository<Param> {
 
   @Query("SELECT p FROM Param p WHERE p.category = :category")
   public Iterable<Param> findParamsByCategory(

@@ -1,6 +1,5 @@
 package org.trebol.api.controllers;
 
-import java.util.Collection;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -20,12 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.trebol.api.CrudController;
 
-import org.trebol.api.GenericCrudController;
+import org.trebol.api.DataPage;
+import org.trebol.api.GenericDataController;
 import org.trebol.api.pojo.SellTypePojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.SellType;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  * API point of entry for SellType entities
@@ -35,46 +37,49 @@ import org.trebol.jpa.services.GenericCrudService;
 @RestController
 @RequestMapping("/data/sell_types")
 public class DataSellTypesController
-    extends GenericCrudController<SellTypePojo, SellType, Integer> {
+  extends GenericDataController<SellTypePojo, SellType>
+  implements CrudController<SellTypePojo, String> {
 
   @Autowired
   public DataSellTypesController(CustomProperties globals,
-      GenericCrudService<SellTypePojo, SellType, Integer> crudService) {
+      GenericJpaCrudService<SellTypePojo, SellType> crudService) {
     super(globals, crudService);
   }
 
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('sell_types:read')")
-  public Collection<SellTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public DataPage<SellTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sell_types:create')")
-  public Integer create(@RequestBody @Valid SellTypePojo input) {
-    return super.create(input);
+  public void create(
+    @RequestBody @Valid SellTypePojo input
+  ) throws EntityAlreadyExistsException {
+    crudService.create(input);
   }
 
   @Override
-  @GetMapping({"/{id}", "/{id}/"})
+  @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('sell_types:read')")
-  public SellTypePojo readOne(@PathVariable Integer id) {
-    return super.readOne(id);
+  public SellTypePojo readOne(@PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
-  @PutMapping({"/{id}", "/{id}/"})
+  @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('sell_types:update')")
-  public Integer update(@RequestBody @Valid SellTypePojo input, @PathVariable Integer id) {
-    return super.update(input, id);
+  public void update(@RequestBody @Valid SellTypePojo input, @PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
-  @DeleteMapping({"/{id}", "/{id}/"})
+  @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('sell_types:delete')")
-  public boolean delete(@PathVariable Integer id) {
-    return super.delete(id);
+  public void delete(@PathVariable String code) {
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
@@ -83,4 +88,8 @@ public class DataSellTypesController
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
     return super.handleValidationExceptions(ex);
   }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(EntityAlreadyExistsException.class)
+  public void handleConstraintExceptions(EntityAlreadyExistsException ex) { }
 }

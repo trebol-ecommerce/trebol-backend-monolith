@@ -16,7 +16,7 @@ import org.trebol.jpa.entities.Customer;
  */
 @Repository
 public interface CustomersRepository
-    extends GenericRepository<Customer, Integer> {
+    extends GenericRepository<Customer> {
 
   @Query(value = "SELECT c FROM Customer c JOIN FETCH c.person", countQuery = "SELECT c FROM Customer c")
   Page<Customer> deepReadAll(Pageable pageable);

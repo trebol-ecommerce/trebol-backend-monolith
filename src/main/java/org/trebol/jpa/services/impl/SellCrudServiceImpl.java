@@ -37,7 +37,7 @@ import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.repositories.SalesRepository;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  *
@@ -46,7 +46,7 @@ import org.trebol.jpa.services.GenericCrudService;
 @Transactional
 @Service
 public class SellCrudServiceImpl
-    extends GenericCrudService<SellPojo, Sell, Integer> {
+    extends GenericJpaCrudService<SellPojo, Sell> {
   private static final Logger LOG = LoggerFactory.getLogger(SellCrudServiceImpl.class);
 
   private final SalesRepository repository;
@@ -143,14 +143,12 @@ public class SellCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Integer intValue;
-        Date dateValue;
+        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            intValue = Integer.valueOf(stringValue);
-            return predicate.and(qSell.id.eq(intValue)); // match por id es único
+            return predicate.and(qSell.id.eq(longValue)); // match por id es único
           case "date":
-            dateValue = DateFormat.getInstance().parse(stringValue);
+            Date dateValue = DateFormat.getInstance().parse(stringValue);
             predicate.and(qSell.date.eq(dateValue));
             break;
           // TODO add more filters
@@ -169,7 +167,7 @@ public class SellCrudServiceImpl
 
   @Nullable
   @Override
-  public SellPojo find(Integer id) {
+  public SellPojo readOne(Long id) {
     Optional<Sell> personById = repository.deepFindById(id);
     if (!personById.isPresent()) {
       return null;

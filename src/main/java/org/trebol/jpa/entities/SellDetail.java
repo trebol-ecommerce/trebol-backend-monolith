@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.trebol.jpa.GenericEntity;
 
@@ -26,16 +25,15 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "sell_details")
 @NamedQueries({ @NamedQuery(name = "SellDetail.findAll", query = "SELECT s FROM SellDetail s") })
 public class SellDetail
-    implements GenericEntity<Integer> {
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
   @Column(name = "sell_detail_id")
-  private Integer id;
+  private Long id;
   @Basic(optional = false)
-  @NotNull
   @Column(name = "sell_detail_units")
   private int units;
   @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = true, updatable = false)
@@ -45,20 +43,18 @@ public class SellDetail
   public SellDetail() {
   }
 
-  public SellDetail(Integer sellDetailId) {
-    this.id = sellDetailId;
+  public SellDetail(Long id, int units, Product product) {
+    this.id = id;
+    this.units = units;
+    this.product = product;
   }
 
-  public SellDetail(Integer sellDetailId, int sellDetailUnits) {
-    this.id = sellDetailId;
-    this.units = sellDetailUnits;
-  }
-
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

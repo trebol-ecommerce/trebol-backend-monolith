@@ -2,6 +2,7 @@ package org.trebol.jpa.entities;
 
 import java.util.Objects;
 
+import javax.annotation.Nullable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.trebol.jpa.GenericEntity;
@@ -24,43 +24,40 @@ import org.trebol.jpa.GenericEntity;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "product_types")
-@NamedQueries({ @NamedQuery(name = "ProductType.findAll", query = "SELECT p FROM ProductType p") })
-public class ProductType
-    implements GenericEntity<Integer> {
+@Table(name = "products_categories")
+@NamedQueries({ @NamedQuery(name = "ProductCategory.findAll", query = "SELECT p FROM ProductCategory p") })
+public class ProductCategory
+    implements GenericEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
-  @Column(name = "product_type_id")
-  private Integer id;
+  @Column(name = "product_category_id")
+  private Long id;
   @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 100)
-  @Column(name = "product_type_name")
+  @Column(name = "product_category_name")
   private String name;
-  @JoinColumn(name = "product_family_id", referencedColumnName = "product_family_id", insertable = false, updatable = false)
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private ProductFamily productFamily;
+  @JoinColumn(name = "parent_product_category_id", referencedColumnName = "product_category_id", insertable = true, updatable = true)
+  @ManyToOne(optional = true, fetch = FetchType.LAZY)
+  private ProductCategory parent;
 
-  public ProductType() {
+  public ProductCategory() {
   }
 
-  public ProductType(Integer productTypeId) {
-    this.id = productTypeId;
+  public ProductCategory(Long id, String name, ProductCategory parent) {
+    this.id = id;
+    this.name = name;
+    this.parent = parent;
   }
 
-  public ProductType(Integer productTypeId, String productTypeName) {
-    this.id = productTypeId;
-    this.name = productTypeName;
-  }
-
-  public Integer getId() {
+  @Override
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -72,20 +69,20 @@ public class ProductType
     this.name = name;
   }
 
-  public ProductFamily getProductFamily() {
-    return productFamily;
+  public ProductCategory getParent() {
+    return parent;
   }
 
-  public void setProductFamily(ProductFamily productFamily) {
-    this.productFamily = productFamily;
+  public void setParent(ProductCategory parent) {
+    this.parent = parent;
   }
 
   @Override
   public int hashCode() {
-    int hash = 5;
-    hash = 37 * hash + Objects.hashCode(this.id);
-    hash = 37 * hash + Objects.hashCode(this.name);
-    hash = 37 * hash + Objects.hashCode(this.productFamily);
+    int hash = 7;
+    hash = 97 * hash + Objects.hashCode(this.id);
+    hash = 97 * hash + Objects.hashCode(this.name);
+    hash = 97 * hash + Objects.hashCode(this.parent);
     return hash;
   }
 
@@ -100,14 +97,14 @@ public class ProductType
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final ProductType other = (ProductType)obj;
+    final ProductCategory other = (ProductCategory)obj;
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.productFamily, other.productFamily)) {
+    if (!Objects.equals(this.parent, other.parent)) {
       return false;
     }
     return true;
@@ -115,9 +112,9 @@ public class ProductType
 
   @Override
   public String toString() {
-    return "ProductType{id=" + id +
+    return "ProductCategory{id=" + id +
         ", name=" + name +
-        ", productFamily=" + productFamily + '}';
+        ", parent=" + parent + '}';
   }
 
 }

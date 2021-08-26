@@ -17,8 +17,13 @@ public class Customer2Entity
 
   @Override
   public Customer convert(CustomerPojo source) {
-    Customer target = new Customer(source.getId());
-    target.setPerson(new Person(source.getPerson().getId()));
+    Customer target = new Customer();
+    target.setId(source.getId());
+
+    Person targetPerson = new Person();
+    targetPerson.setId(source.getPerson().getId());
+    target.setPerson(targetPerson);
+    
     return target;
   }
 }

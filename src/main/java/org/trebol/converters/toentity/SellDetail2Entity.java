@@ -17,9 +17,14 @@ public class SellDetail2Entity
 
   @Override
   public SellDetail convert(SellDetailPojo source) {
-    SellDetail target = new SellDetail(source.getId());
+    SellDetail target = new SellDetail();
+    target.setId(source.getId());
     target.setUnits(source.getUnits());
-    target.setProduct(new Product(source.getProduct().getId()));
+
+    Product targetProduct = new Product();
+    targetProduct.setId(source.getProduct().getId());
+    target.setProduct(targetProduct);
+    
     return target;
   }
 }

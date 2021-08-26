@@ -1,6 +1,5 @@
 package org.trebol.api.controllers;
 
-import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.trebol.api.GenericCrudController;
+import org.trebol.api.DataPage;
+import org.trebol.api.GenericDataController;
 import org.trebol.api.pojo.PersonPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.services.GenericJpaCrudService;
 
 /**
  * API point of entry for Person entities
@@ -24,17 +24,16 @@ import org.trebol.jpa.services.GenericCrudService;
 @RestController
 @RequestMapping("/data/people")
 public class DataPeopleController
-    extends GenericCrudController<PersonPojo, Person, Integer> {
+  extends GenericDataController<PersonPojo, Person> {
 
   @Autowired
-  public DataPeopleController(CustomProperties globals,
-      GenericCrudService<PersonPojo, Person, Integer> crudService) {
+  public DataPeopleController(CustomProperties globals, GenericJpaCrudService<PersonPojo, Person> crudService) {
     super(globals, crudService);
   }
 
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('people:read')")
-  public Collection<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public DataPage<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 }

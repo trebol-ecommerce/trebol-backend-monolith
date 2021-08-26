@@ -2,6 +2,7 @@ package org.trebol.api.pojo;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 import javax.validation.Valid;
@@ -12,12 +13,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * 
+ *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 public class SellPojo {
   @JsonInclude
-  private Integer id;
+  private Long id;
   @JsonInclude
   @NotNull
   private Date date;
@@ -38,11 +39,11 @@ public class SellPojo {
   @Valid
   private Collection<SellDetailPojo> sellDetails;
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -92,6 +93,60 @@ public class SellPojo {
 
   public void setSellDetails(Collection<SellDetailPojo> sellDetails) {
     this.sellDetails = sellDetails;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    hash = 97 * hash + Objects.hashCode(this.id);
+    hash = 97 * hash + Objects.hashCode(this.date);
+    hash = 97 * hash + this.subtotal;
+    hash = 97 * hash + Objects.hashCode(this.sellType);
+    hash = 97 * hash + Objects.hashCode(this.customer);
+    hash = 97 * hash + Objects.hashCode(this.salesperson);
+    hash = 97 * hash + Objects.hashCode(this.sellDetails);
+    return hash;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final SellPojo other = (SellPojo)obj;
+    if (this.subtotal != other.subtotal) {
+      return false;
+    }
+    if (!Objects.equals(this.id, other.id)) {
+      return false;
+    }
+    if (!Objects.equals(this.date, other.date)) {
+      return false;
+    }
+    if (!Objects.equals(this.sellType, other.sellType)) {
+      return false;
+    }
+    if (!Objects.equals(this.customer, other.customer)) {
+      return false;
+    }
+    if (!Objects.equals(this.salesperson, other.salesperson)) {
+      return false;
+    }
+    if (!Objects.equals(this.sellDetails, other.sellDetails)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "SellPojo{" + "id=" + id + ", date=" + date + ", subtotal=" + subtotal + ", sellType=" + sellType + ", customer=" + customer + ", salesperson=" + salesperson + ", sellDetails=" + sellDetails + '}';
   }
 
 }

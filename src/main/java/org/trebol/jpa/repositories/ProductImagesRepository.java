@@ -13,8 +13,8 @@ import org.trebol.jpa.entities.ProductImage;
  */
 @Repository
 public interface ProductImagesRepository
-    extends GenericRepository<ProductImage, Integer> {
+  extends GenericRepository<ProductImage> {
 
   @Query("SELECT pi FROM ProductImage pi JOIN FETCH pi.image WHERE pi.product.id = :id")
-  public Iterable<ProductImage> deepFindProductImagesByProductId(@Param("id") Integer id);
+  public Iterable<ProductImage> deepFindProductImagesByProductId(@Param("id") Long id);
 }

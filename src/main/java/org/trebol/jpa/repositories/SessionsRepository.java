@@ -11,6 +11,6 @@ import org.trebol.jpa.entities.Session;
  */
 @Repository
 public interface SessionsRepository
-    extends GenericRepository<Session, Long> {
+    extends GenericRepository<Session> {
 
 }
