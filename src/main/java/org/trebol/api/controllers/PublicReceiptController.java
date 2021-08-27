@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.pojo.ReceiptPojo;
 import org.trebol.api.IReceiptService;
 
+import javassist.NotFoundException;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -29,7 +31,8 @@ public class PublicReceiptController {
   }
 
   @GetMapping({"/{id}", "/{id}/"})
-  public ReceiptPojo fetchReceiptById(@PathVariable("id") Integer id) {
+  public ReceiptPojo fetchReceiptById(@PathVariable("id") Integer id)
+    throws NotFoundException {
     if (id == null) {
       throw new RuntimeException("An incorrect receipt id was provided");
     }

@@ -83,7 +83,28 @@ public class SecurityConfig
               "/public/receipt/*",
               "/public/checkout",
               "/public/checkout/validate")
-                .permitAll();
+                .permitAll()
+            .antMatchers(
+              "/data/customers",
+              "/data/customers/*",
+              "/data/people",
+              "/data/people/*",
+              "/data/product_categories",
+              "/data/product_categories/*",
+              "/data/products",
+              "/data/products/*",
+              "/data/sales",
+              "/data/sales/*",
+              "/data/salespeople",
+              "/data/salespeople/*",
+              "/data/sell_statuses",
+              "/data/user_roles",
+              "/data/users",
+              "/data/users/*",
+              "/access",
+              "/access/*",
+              "/profile")
+                .authenticated();
   }
 
   @Override

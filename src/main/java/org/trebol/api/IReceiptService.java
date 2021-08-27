@@ -1,15 +1,13 @@
 package org.trebol.api;
 
-import javax.annotation.Nullable;
-
 import org.trebol.api.pojo.ReceiptPojo;
+
+import javassist.NotFoundException;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 public interface IReceiptService {
-
-  @Nullable
-  ReceiptPojo fetchReceiptById(long id);
+  ReceiptPojo fetchReceiptById(long id) throws NotFoundException;
 }

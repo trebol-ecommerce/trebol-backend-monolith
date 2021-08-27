@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.Jwts;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +32,7 @@ import org.trebol.api.pojo.UsernamePasswordPojo;
 public class JwtUsernamePasswordAuthenticationFilter
   extends UsernamePasswordAuthenticationFilter {
 
+  private final Logger myLogger = LoggerFactory.getLogger(JwtUsernamePasswordAuthenticationFilter.class);
   private final AuthenticationManager authenticationManager;
   private final SecurityProperties jwtProperties;
   private final SecretKey secretKey;
@@ -55,7 +58,8 @@ public class JwtUsernamePasswordAuthenticationFilter
             authenticationRequest.getPassword());
         return authenticationManager.authenticate(authentication);
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        myLogger.error("There was a problem while reading the login request", e);
+        throw new RuntimeException("El servidor no pudo procesar la solicitud correctamente");
       }
     }
   }
@@ -64,7 +68,6 @@ public class JwtUsernamePasswordAuthenticationFilter
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
     FilterChain chain, Authentication authResult)
     throws IOException, ServletException {
-
     int minutesToExpire = jwtProperties.getJwtExpirationAfterMinutes();
     int hoursToExpire = jwtProperties.getJwtExpirationAfterHours();
     int daysToExpire = jwtProperties.getJwtExpirationAfterDays();
