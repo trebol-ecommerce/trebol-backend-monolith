@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.trebol.exceptions.CorsMappingParseException;
 
 import org.trebol.security.JwtTokenVerifierFilter;
 import org.trebol.security.JwtUsernamePasswordAuthenticationFilter;
@@ -101,7 +102,7 @@ public class SecurityConfig
   }
 
   @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
+  public CorsConfigurationSource corsConfigurationSource() throws CorsMappingParseException {
     return new CorsConfigurationSourceBuilder(corsProperties).build();
   }
 

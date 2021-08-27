@@ -13,7 +13,6 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 
-import org.trebol.config.SecurityProperties;
 import org.trebol.security.IAuthorizationHeaderParserService;
 
 @Service
@@ -21,22 +20,20 @@ public class ClaimsAuthorizationHeaderParserServiceImpl
     implements IAuthorizationHeaderParserService<Claims> {
 
   private final SecretKey secretKey;
-  private final SecurityProperties jwtProperties;
 
   @Autowired
-  public ClaimsAuthorizationHeaderParserServiceImpl(SecretKey secretKey, SecurityProperties jwtProperties) {
+  public ClaimsAuthorizationHeaderParserServiceImpl(SecretKey secretKey) {
     this.secretKey = secretKey;
-    this.jwtProperties = jwtProperties;
   }
 
   @Override
   public String extractAuthorizationHeaderFromRequest(HttpServletRequest request) {
-    return request.getHeader(jwtProperties.getAuthorizationHeader());
+    return request.getHeader(HttpHeaders.AUTHORIZATION);
   }
 
   @Override
   public Claims parseToken(String authorizationHeader) throws IllegalStateException {
-    String token = authorizationHeader.replace(jwtProperties.getJwtTokenPrefix(), "");
+    String token = authorizationHeader.replace("Bearer ", "");
     try {
       Jws<Claims> claimsJws = Jwts.parserBuilder()
           .setSigningKey(secretKey)
@@ -53,7 +50,7 @@ public class ClaimsAuthorizationHeaderParserServiceImpl
   @Nullable
   @Override
   public String extractAuthorizationHeader(HttpHeaders httpHeaders) {
-    String authHeaderKey = jwtProperties.getAuthorizationHeader();
+    String authHeaderKey = HttpHeaders.AUTHORIZATION;
     if (httpHeaders.containsKey(authHeaderKey)) {
       String value = httpHeaders.getFirst(authHeaderKey);
       return value;
