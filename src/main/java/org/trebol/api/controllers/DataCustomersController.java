@@ -102,7 +102,9 @@ public class DataCustomersController
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(EntityAlreadyExistsException.class)
-  public void handleException(EntityAlreadyExistsException ex) { }
+  public String handleException(EntityAlreadyExistsException ex) {
+    return ex.getMessage();
+  }
 
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(NotFoundException.class)

@@ -60,5 +60,7 @@ public class DataProductCategoriesController
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(EntityAlreadyExistsException.class)
-  public void handleConstraintExceptions(EntityAlreadyExistsException ex) { }
+  public String handleException(EntityAlreadyExistsException ex) {
+    return ex.getMessage();
+  }
 }
