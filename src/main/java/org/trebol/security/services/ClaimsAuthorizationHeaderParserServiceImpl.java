@@ -27,13 +27,7 @@ public class ClaimsAuthorizationHeaderParserServiceImpl
   }
 
   @Override
-  public String extractAuthorizationHeaderFromRequest(HttpServletRequest request) {
-    return request.getHeader(HttpHeaders.AUTHORIZATION);
-  }
-
-  @Override
-  public Claims parseToken(String authorizationHeader) throws IllegalStateException {
-    String token = authorizationHeader.replace("Bearer ", "");
+  public Claims parseToken(String token) throws IllegalStateException {
     try {
       Jws<Claims> claimsJws = Jwts.parserBuilder()
           .setSigningKey(secretKey)
