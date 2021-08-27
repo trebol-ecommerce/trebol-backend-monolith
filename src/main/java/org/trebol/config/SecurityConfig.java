@@ -1,6 +1,7 @@
 package org.trebol.config;
 
 import javax.crypto.SecretKey;
+import javax.servlet.Filter;
 
 import io.jsonwebtoken.Claims;
 
@@ -17,7 +18,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.trebol.exceptions.CorsMappingParseException;
 
@@ -38,12 +38,9 @@ public class SecurityConfig
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
   @Autowired
-  public SecurityConfig(
-      UserDetailsService userDetailsService,
-      SecretKey secretKey,
-      SecurityProperties securityProperties,
-      IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-      CorsProperties corsProperties) {
+  public SecurityConfig(UserDetailsService userDetailsService, SecretKey secretKey,
+    SecurityProperties securityProperties, IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+    CorsProperties corsProperties) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.securityProperties = securityProperties;
@@ -65,11 +62,11 @@ public class SecurityConfig
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
           .and()
         .logout()
-            .logoutRequestMatcher(new AntPathRequestMatcher("/public/logout"))
+            .logoutUrl("/public/logout")
             .invalidateHttpSession(true)
           .and()
         .addFilter(
-            this.jwtLoginAuthenticationFilter())
+            this.loginUrl("/public/login"))
         .addFilterAfter(
             new JwtTokenVerifierFilter(jwtClaimsParserService),
             JwtUsernamePasswordAuthenticationFilter.class)
@@ -113,12 +110,12 @@ public class SecurityConfig
     return new BCryptPasswordEncoder(strength);
   }
 
-  private JwtUsernamePasswordAuthenticationFilter jwtLoginAuthenticationFilter() throws Exception {
+  private Filter loginUrl(String url) throws Exception {
     JwtUsernamePasswordAuthenticationFilter filter = new JwtUsernamePasswordAuthenticationFilter(
       super.authenticationManager(),
       securityProperties,
       secretKey);
-    filter.setFilterProcessesUrl("/public/login");
+    filter.setFilterProcessesUrl(url);
     return filter;
   }
 
