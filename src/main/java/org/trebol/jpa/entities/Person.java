@@ -1,5 +1,6 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Basic;
@@ -15,8 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
-import org.trebol.jpa.GenericEntity;
-
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -25,15 +24,16 @@ import org.trebol.jpa.GenericEntity;
 @Table(
   name = "people",
   indexes = {
-    @Index(columnList = "person_idcard"),
+    @Index(columnList = "person_id_number"),
     @Index(columnList = "person_email")
   },
-  uniqueConstraints = @UniqueConstraint(columnNames = {"person_idcard"}))
+  uniqueConstraints = @UniqueConstraint(columnNames = {"person_id_number"}))
 @NamedQueries({ @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p") })
 public class Person
-    implements GenericEntity {
+  implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
@@ -45,16 +45,12 @@ public class Person
   private String name;
   @Basic(optional = false)
   @Size(min = 1, max = 20)
-  @Column(name = "person_idcard")
-  private String idCard;
+  @Column(name = "person_id_number")
+  private String idNumber;
   @Basic(optional = false)
   @Size(min = 5, max = 100)
   @Column(name = "person_email")
   private String email;
-  @Basic(optional = true)
-  @Size(max = 200)
-  @Column(name = "person_address")
-  private String address;
   @Basic(optional = true)
   @Column(name = "person_phone1")
   private Integer phone1;
@@ -62,20 +58,8 @@ public class Person
   @Column(name = "person_phone2")
   private Integer phone2;
 
-  public Person() {
-  }
+  public Person() { }
 
-  public Person(Long id, String name, String idCard, String email, String address, Integer phone1, Integer phone2) {
-    this.id = id;
-    this.name = name;
-    this.idCard = idCard;
-    this.email = email;
-    this.address = address;
-    this.phone1 = phone1;
-    this.phone2 = phone2;
-  }
-
-  @Override
   public Long getId() {
     return id;
   }
@@ -92,12 +76,12 @@ public class Person
     this.name = name;
   }
 
-  public String getIdCard() {
-    return idCard;
+  public String getIdNumber() {
+    return idNumber;
   }
 
-  public void setIdCard(String idCard) {
-    this.idCard = idCard;
+  public void setIdNumber(String idNumber) {
+    this.idNumber = idNumber;
   }
 
   public String getEmail() {
@@ -106,14 +90,6 @@ public class Person
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
   }
 
   public Integer getPhone1() {
@@ -137,9 +113,8 @@ public class Person
     int hash = 5;
     hash = 71 * hash + Objects.hashCode(this.id);
     hash = 71 * hash + Objects.hashCode(this.name);
-    hash = 71 * hash + Objects.hashCode(this.idCard);
+    hash = 71 * hash + Objects.hashCode(this.idNumber);
     hash = 71 * hash + Objects.hashCode(this.email);
-    hash = 71 * hash + Objects.hashCode(this.address);
     hash = 71 * hash + Objects.hashCode(this.phone1);
     hash = 71 * hash + Objects.hashCode(this.phone2);
     return hash;
@@ -160,13 +135,10 @@ public class Person
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
-    if (!Objects.equals(this.idCard, other.idCard)) {
+    if (!Objects.equals(this.idNumber, other.idNumber)) {
       return false;
     }
     if (!Objects.equals(this.email, other.email)) {
-      return false;
-    }
-    if (!Objects.equals(this.address, other.address)) {
       return false;
     }
     if (!Objects.equals(this.id, other.id)) {
@@ -185,9 +157,8 @@ public class Person
   public String toString() {
     return "Person{id=" + id +
         ", name=" + name +
-        ", idCard=" + idCard +
+        ", idNumber=" + idNumber +
         ", email=" + email +
-        ", address=" + address +
         ", phone1=" + phone1 +
         ", phone2=" + phone2 + '}';
   }

@@ -18,12 +18,9 @@ public class Person2Pojo
   public PersonPojo convert(Person source) {
     PersonPojo target = new PersonPojo();
     target.setId(source.getId());
-    target.setIdCard(source.getIdCard());
+    target.setIdNumber(source.getIdNumber());
     target.setName(source.getName());
     target.setEmail(source.getEmail());
-    if (source.getAddress() != null) {
-      target.setAddress(source.getAddress());
-    }
     if (source.getPhone1() != null) {
       target.setPhone1(source.getPhone1());
     }

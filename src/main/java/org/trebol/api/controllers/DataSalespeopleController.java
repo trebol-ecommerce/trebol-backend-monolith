@@ -21,17 +21,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.trebol.api.CrudController;
 
 import org.trebol.api.DataPage;
 import org.trebol.api.GenericDataController;
 import org.trebol.api.pojo.SalespersonPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.services.GenericJpaCrudService;
+import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.GenericJpaCrudService;
 
 import com.querydsl.core.types.Predicate;
+
+import org.trebol.api.IDataCrudController;
+import org.trebol.exceptions.BadInputException;
+
+import javassist.NotFoundException;
 
 /**
  * API point of entry for Salesperson entities
@@ -42,7 +46,7 @@ import com.querydsl.core.types.Predicate;
 @RequestMapping("/data/salespeople")
 public class DataSalespeopleController
   extends GenericDataController<SalespersonPojo, Salesperson>
-  implements CrudController<SalespersonPojo, String> {
+  implements IDataCrudController<SalespersonPojo, String> {
 
   @Autowired
   public DataSalespeopleController(CustomProperties globals,
@@ -59,44 +63,55 @@ public class DataSalespeopleController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:create')")
-  public void create(@RequestBody @Valid SalespersonPojo input) throws EntityAlreadyExistsException {
+  public void create(@RequestBody @Valid SalespersonPojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
   @Override
-  @GetMapping({"/{idCard}", "/{idCard}/"})
+  @GetMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:read')")
-  public SalespersonPojo readOne(@PathVariable String idCard) {
-    Map<String, String> idCardMatchMap = Maps.of("idnumber", idCard).build();
-    Predicate filters = crudService.queryParamsMapToPredicate(idCardMatchMap);
+  public SalespersonPojo readOne(@PathVariable String idNumber) throws NotFoundException {
+    Map<String, String> idNumberMatchMap = Maps.of("idnumber", idNumber).build();
+    Predicate filters = crudService.parsePredicate(idNumberMatchMap);
     return crudService.readOne(filters);
   }
 
   @Override
-  @PutMapping({"/{idCard}", "/{idCard}/"})
+  @PutMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:update')")
-  public void update(@RequestBody @Valid SalespersonPojo input, @PathVariable String idCard) {
+  public void update(@RequestBody @Valid SalespersonPojo input, @PathVariable String idNumber)
+    throws BadInputException, NotFoundException {
      // TODO improve this implementation; the same salesperson will be fetched twice
-    Long salespersonId = this.readOne(idCard).getId();
+    Long salespersonId = this.readOne(idNumber).getId();
     crudService.update(input, salespersonId);
   }
 
   @Override
-  @DeleteMapping({"/{idCard}", "/{idCard}/"})
+  @DeleteMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:delete')")
-  public void delete(@PathVariable String idCard) {
-    Long salespersonId = this.readOne(idCard).getId();
+  public void delete(@PathVariable String idNumber) throws NotFoundException {
+    Long salespersonId = this.readOne(idNumber).getId();
     crudService.delete(salespersonId);
   }
 
   @Override
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-    return super.handleValidationExceptions(ex);
+  public Map<String, String> handleException(MethodArgumentNotValidException ex) {
+    return super.handleException(ex);
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(EntityAlreadyExistsException.class)
-  public void handleConstraintExceptions(EntityAlreadyExistsException ex) { }
+  public void handleException(EntityAlreadyExistsException ex) { }
+
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(NotFoundException.class)
+  public void handleException(NotFoundException ex) { }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(BadInputException.class)
+  public String handleException(BadInputException ex) {
+    return ex.getMessage();
+  }
 }

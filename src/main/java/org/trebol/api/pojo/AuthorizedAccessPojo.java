@@ -5,14 +5,15 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
+@JsonInclude(NON_NULL)
 public class AuthorizedAccessPojo {
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Collection<String> routes;
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Collection<String> permissions;
 
   public Collection<String> getRoutes() {
@@ -62,6 +63,7 @@ public class AuthorizedAccessPojo {
 
   @Override
   public String toString() {
-    return "AuthorizedAccessPojo{" + "routes=" + routes + ", permissions=" + permissions + '}';
+    return "AuthorizedAccessPojo{routes=" + routes +
+        ", permissions=" + permissions + '}';
   }
 }

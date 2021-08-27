@@ -20,7 +20,7 @@ public class PersonPojo {
   private String name;
   @JsonInclude
   @NotNull
-  private String idCard;
+  private String idNumber;
   @JsonInclude
   @NotNull
   private String email;
@@ -48,12 +48,12 @@ public class PersonPojo {
     this.name = name;
   }
 
-  public String getIdCard() {
-    return idCard;
+  public String getIdNumber() {
+    return idNumber;
   }
 
-  public void setIdCard(String idCard) {
-    this.idCard = idCard;
+  public void setIdNumber(String idNumber) {
+    this.idNumber = idNumber;
   }
 
   public String getEmail() {
@@ -93,7 +93,7 @@ public class PersonPojo {
     int hash = 3;
     hash = 79 * hash + Objects.hashCode(this.id);
     hash = 79 * hash + Objects.hashCode(this.name);
-    hash = 79 * hash + Objects.hashCode(this.idCard);
+    hash = 79 * hash + Objects.hashCode(this.idNumber);
     hash = 79 * hash + Objects.hashCode(this.email);
     hash = 79 * hash + Objects.hashCode(this.address);
     hash = 79 * hash + Objects.hashCode(this.phone1);
@@ -116,7 +116,7 @@ public class PersonPojo {
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
-    if (!Objects.equals(this.idCard, other.idCard)) {
+    if (!Objects.equals(this.idNumber, other.idNumber)) {
       return false;
     }
     if (!Objects.equals(this.email, other.email)) {
@@ -139,7 +139,13 @@ public class PersonPojo {
 
   @Override
   public String toString() {
-    return "PersonPojo{" + "id=" + id + ", name=" + name + ", idCard=" + idCard + ", email=" + email + ", address=" + address + ", phone1=" + phone1 + ", phone2=" + phone2 + '}';
+    return "PersonPojo{id=" + id +
+        ", name=" + name +
+        ", idNumber=" + idNumber +
+        ", email=" + email +
+        ", address=" + address +
+        ", phone1=" + phone1 +
+        ", phone2=" + phone2 + '}';
   }
 
 }

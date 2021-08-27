@@ -1,5 +1,6 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Basic;
@@ -15,8 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
-import org.trebol.jpa.GenericEntity;
-
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -28,9 +27,10 @@ import org.trebol.jpa.GenericEntity;
   uniqueConstraints = @UniqueConstraint(columnNames = {"user_role_name"}))
 @NamedQueries({ @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u") })
 public class UserRole
-    implements GenericEntity {
+  implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
@@ -41,15 +41,8 @@ public class UserRole
   @Column(name = "user_role_name")
   private String name;
 
-  public UserRole() {
-  }
+  public UserRole() { }
 
-  public UserRole(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
-
-  @Override
   public Long getId() {
     return id;
   }

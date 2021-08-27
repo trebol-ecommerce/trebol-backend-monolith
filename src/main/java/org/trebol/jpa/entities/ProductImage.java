@@ -1,8 +1,7 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
-
-import org.trebol.jpa.GenericEntity;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -26,9 +25,10 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "ProductImage.findAll", query = "SELECT p FROM ProductImage p")})
 public class ProductImage
-    implements GenericEntity {
+  implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
@@ -41,16 +41,8 @@ public class ProductImage
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Product product;
 
-  public ProductImage() {
-  }
+  public ProductImage() { }
 
-  public ProductImage(Long id, Image image, Product product) {
-    this.id = id;
-    this.image = image;
-    this.product = product;
-  }
-
-  @Override
   public Long getId() {
       return id;
   }

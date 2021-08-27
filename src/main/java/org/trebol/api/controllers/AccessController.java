@@ -16,21 +16,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.AuthorizedAccessPojo;
-import org.trebol.security.services.AuthorizationHeaderParserService;
-import org.trebol.security.services.AuthorizedApiService;
+import org.trebol.security.IAuthorizedApiService;
+import org.trebol.security.IAuthorizationHeaderParserService;
 
 @RestController
 @RequestMapping("/access")
 public class AccessController {
 
-  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final UserDetailsService userDetailsService;
-  private final AuthorizedApiService routeService;
+  private final IAuthorizedApiService routeService;
 
   @Autowired
-  public AccessController(AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+  public AccessController(IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
       UserDetailsService userDetailsService,
-      AuthorizedApiService routeService) {
+      IAuthorizedApiService routeService) {
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.userDetailsService = userDetailsService;
     this.routeService = routeService;

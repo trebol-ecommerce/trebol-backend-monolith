@@ -1,5 +1,6 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Basic;
@@ -13,8 +14,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.trebol.jpa.GenericEntity;
-
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
@@ -23,8 +22,10 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "app_params")
 @NamedQueries({ @NamedQuery(name = "Param.findAll", query = "SELECT p FROM Param p") })
 public class Param
-    implements GenericEntity {
+  implements Serializable {
+
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
@@ -43,17 +44,8 @@ public class Param
   @Column(name = "param_value")
   private String value;
 
-  public Param() {
-  }
+  public Param() { }
 
-  public Param(Long id, String category, String name, String value) {
-    this.id = id;
-    this.category = category;
-    this.name = name;
-    this.value = value;
-  }
-
-  @Override
   public Long getId() {
     return id;
   }

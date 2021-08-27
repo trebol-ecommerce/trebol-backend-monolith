@@ -1,8 +1,7 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
-
-import org.trebol.jpa.GenericEntity;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -23,9 +22,10 @@ import javax.validation.constraints.Size;
 @Table(name = "images")
 @NamedQueries({ @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i") })
 public class Image
-  implements GenericEntity {
+  implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
@@ -40,16 +40,8 @@ public class Image
   @Column(name = "image_url")
   private String url;
 
-  public Image() {
-  }
+  public Image() { }
 
-  public Image(Long id, String filename, String url) {
-    this.id = id;
-    this.filename = filename;
-    this.url = url;
-  }
-
-  @Override
   public Long getId() {
     return id;
   }

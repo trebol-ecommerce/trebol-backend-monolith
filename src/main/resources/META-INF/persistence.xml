@@ -16,8 +16,8 @@
     <class>org.trebol.jpa.entities.Product</class>
     <class>org.trebol.jpa.entities.Person</class>
     <class>org.trebol.jpa.entities.User</class>
-    <class>org.trebol.jpa.entities.SellType</class>
     <class>org.trebol.jpa.entities.ProductCategory</class>
+    <class>org.trebol.jpa.entities.BillingType</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
   </persistence-unit>
 </persistence>

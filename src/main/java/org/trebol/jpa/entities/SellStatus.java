@@ -1,5 +1,6 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Basic;
@@ -13,8 +14,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.trebol.jpa.GenericEntity;
-
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
@@ -23,9 +22,10 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "sales_statuses")
 @NamedQueries({ @NamedQuery(name = "SellStatus.findAll", query = "SELECT s FROM SellStatus s") })
 public class SellStatus
-    implements GenericEntity {
+  implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
@@ -36,15 +36,8 @@ public class SellStatus
   @Column(name = "sell_status_name")
   private String name;
 
-  public SellStatus() {
-  }
+  public SellStatus() { }
 
-  public SellStatus(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
-
-  @Override
   public Long getId() {
     return id;
   }
@@ -92,7 +85,8 @@ public class SellStatus
 
   @Override
   public String toString() {
-    return "SellStatus{id=" + id + ", name=" + name + '}';
+    return "SellStatus{id=" + id +
+        ", name=" + name + '}';
   }
 
 }

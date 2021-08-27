@@ -47,7 +47,7 @@ public class RegistrationPojo {
 
   public class Profile {
     private String name;
-    private String idCard;
+    private String idNumber;
     private String email;
     private String address;
     private Integer phone1;
@@ -61,12 +61,12 @@ public class RegistrationPojo {
       this.name = name;
     }
 
-    public String getIdCard() {
-      return idCard;
+    public String getIdNumber() {
+      return idNumber;
     }
 
-    public void setIdCard(String idCard) {
-      this.idCard = idCard;
+    public void setIdNumber(String idNumber) {
+      this.idNumber = idNumber;
     }
 
     public String getEmail() {
@@ -137,6 +137,6 @@ public class RegistrationPojo {
 
   @Override
   public String toString() {
-    return "RegistrationPojo{" + "name=" + name + ", password=" + password + ", profile=" + profile + '}';
+    return "RegistrationPojo{name=" + name + ", password=" + password + ", profile=" + profile + '}';
   }
 }

@@ -19,17 +19,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.trebol.api.CrudController;
 
 import org.trebol.api.GenericDataController;
 import org.trebol.api.DataPage;
 import org.trebol.api.pojo.SellPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.services.GenericJpaCrudService;
+import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.GenericJpaCrudService;
 
 import javassist.NotFoundException;
+
+import org.trebol.api.IDataCrudController;
+import org.trebol.exceptions.BadInputException;
 
 /**
  * API point of entry for Sell entities
@@ -40,7 +42,7 @@ import javassist.NotFoundException;
 @RequestMapping("/data/sales")
 public class DataSalesController
   extends GenericDataController<SellPojo, Sell>
-  implements CrudController<SellPojo, Long> {
+  implements IDataCrudController<SellPojo, Long> {
 
   @Autowired
   public DataSalesController(CustomProperties globals, GenericJpaCrudService<SellPojo, Sell> crudService) {
@@ -56,7 +58,7 @@ public class DataSalesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:create')")
-  public void create(@RequestBody @Valid SellPojo input) throws EntityAlreadyExistsException {
+  public void create(@RequestBody @Valid SellPojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
@@ -70,7 +72,8 @@ public class DataSalesController
   @Override
   @PutMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:update')")
-  public void update(@RequestBody @Valid SellPojo input, @PathVariable Long buyOrder) throws NotFoundException {
+  public void update(@RequestBody @Valid SellPojo input, @PathVariable Long buyOrder)
+    throws BadInputException, NotFoundException {
     crudService.update(input, buyOrder);
   }
 
@@ -84,9 +87,19 @@ public class DataSalesController
   @Override
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-    return super.handleValidationExceptions(ex);
+  public Map<String, String> handleException(MethodArgumentNotValidException ex) {
+    return super.handleException(ex);
   }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(BadInputException.class)
+  public String handleException(BadInputException ex) {
+    return ex.getMessage();
+  }
+
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(NotFoundException.class)
+  public void handleException(NotFoundException ex) { }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(EntityAlreadyExistsException.class)

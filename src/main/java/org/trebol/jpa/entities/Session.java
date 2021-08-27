@@ -1,5 +1,6 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Basic;
@@ -16,8 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.trebol.jpa.GenericEntity;
-
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -26,9 +25,10 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "app_sessions")
 @NamedQueries({ @NamedQuery(name = "Session.findAll", query = "SELECT s FROM Session s") })
 public class Session
-    implements GenericEntity {
+  implements Serializable {
 
   private static final long serialVersionUID = 1L;
+  
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
@@ -42,16 +42,8 @@ public class Session
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private User user;
 
-  public Session() {
-  }
+  public Session() { }
 
-  public Session(Long id, String token, User user) {
-    this.id = id;
-    this.token = token;
-    this.user = user;
-  }
-
-  @Override
   public Long getId() {
     return id;
   }

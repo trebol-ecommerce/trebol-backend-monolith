@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.ReceiptPojo;
-import org.trebol.api.services.ReceiptService;
+import org.trebol.api.IReceiptService;
 
 /**
  *
@@ -21,10 +21,10 @@ import org.trebol.api.services.ReceiptService;
 public class PublicReceiptController {
   private final Logger LOG = LoggerFactory.getLogger(PublicReceiptController.class);
 
-  private final ReceiptService receiptService;
+  private final IReceiptService receiptService;
 
   @Autowired
-  public PublicReceiptController(ReceiptService receiptService) {
+  public PublicReceiptController(IReceiptService receiptService) {
     this.receiptService = receiptService;
   }
 
