@@ -2,34 +2,26 @@ package org.trebol.api.pojo;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
+@JsonInclude(NON_NULL)
 public class PersonPojo {
-  @JsonInclude
   private Long id;
-  @JsonInclude
-  @NotNull
+  @NotBlank
   private String name;
-  @JsonInclude
-  @NotNull
+  @NotBlank
   private String idNumber;
-  @JsonInclude
-  @NotNull
+  @NotBlank
   private String email;
-  @JsonInclude(value = Include.NON_EMPTY)
-  @NotEmpty
-  private String address;
-  @JsonInclude(value = Include.NON_EMPTY)
   private Integer phone1;
-  @JsonInclude(value = Include.NON_EMPTY)
   private Integer phone2;
 
   public Long getId() {
@@ -64,14 +56,6 @@ public class PersonPojo {
     this.email = email;
   }
 
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
   public Integer getPhone1() {
     return phone1;
   }
@@ -95,7 +79,6 @@ public class PersonPojo {
     hash = 79 * hash + Objects.hashCode(this.name);
     hash = 79 * hash + Objects.hashCode(this.idNumber);
     hash = 79 * hash + Objects.hashCode(this.email);
-    hash = 79 * hash + Objects.hashCode(this.address);
     hash = 79 * hash + Objects.hashCode(this.phone1);
     hash = 79 * hash + Objects.hashCode(this.phone2);
     return hash;
@@ -122,9 +105,6 @@ public class PersonPojo {
     if (!Objects.equals(this.email, other.email)) {
       return false;
     }
-    if (!Objects.equals(this.address, other.address)) {
-      return false;
-    }
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
@@ -143,7 +123,6 @@ public class PersonPojo {
         ", name=" + name +
         ", idNumber=" + idNumber +
         ", email=" + email +
-        ", address=" + address +
         ", phone1=" + phone1 +
         ", phone2=" + phone2 + '}';
   }

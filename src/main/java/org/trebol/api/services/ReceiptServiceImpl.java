@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
@@ -19,31 +17,30 @@ import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.api.IReceiptService;
 
+import javassist.NotFoundException;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Service
 public class ReceiptServiceImpl
-    implements IReceiptService {
+  implements IReceiptService {
 
   private final ISalesJpaRepository salesRepository;
   private final ConversionService conversionService;
 
   @Autowired
-  public ReceiptServiceImpl(
-      ISalesJpaRepository salesRepository,
-      ConversionService conversionService) {
+  public ReceiptServiceImpl(ISalesJpaRepository salesRepository, ConversionService conversionService) {
     this.salesRepository = salesRepository;
     this.conversionService = conversionService;
   }
 
-  @Nullable
   @Override
-  public ReceiptPojo fetchReceiptById(long id) {
+  public ReceiptPojo fetchReceiptById(long id) throws NotFoundException {
     Optional<Sell> match = salesRepository.findByIdWithDetails(id);
     if (!match.isPresent()) {
-      throw new RuntimeException("The transaction could not be found, no receipt can be created");
+      throw new NotFoundException("The transaction could not be found, no receipt can be created");
     }
     Sell foundMatch = match.get();
 

@@ -1,6 +1,9 @@
 package org.trebol.api.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,8 @@ import org.trebol.jpa.repositories.ICustomersJpaRepository;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.api.IRegistrationService;
+import org.trebol.api.pojo.PersonPojo;
+import org.trebol.exceptions.BadInputException;
 
 /**
  *
@@ -30,37 +35,42 @@ import org.trebol.api.IRegistrationService;
 public class RegistrationServiceImpl
   implements IRegistrationService {
 
+  private final Logger logger = LoggerFactory.getLogger(RegistrationServiceImpl.class);
   private final IPeopleJpaRepository peopleRepository;
   private final IUsersJpaRepository usersRepository;
   private final ICustomersJpaRepository customersRepository;
   private final PasswordEncoder passwordEncoder;
+  private final ConversionService conversionService;
 
   @Autowired
-  public RegistrationServiceImpl(
-      IPeopleJpaRepository peopleRepository,
-      IUsersJpaRepository usersRepository,
-      ICustomersJpaRepository customersRepository,
-      PasswordEncoder passwordEncoder) {
+  public RegistrationServiceImpl(IPeopleJpaRepository peopleRepository,
+    IUsersJpaRepository usersRepository, ICustomersJpaRepository customersRepository,
+    PasswordEncoder passwordEncoder, ConversionService conversionService) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;
     this.customersRepository = customersRepository;
     this.passwordEncoder = passwordEncoder;
+    this.conversionService = conversionService;
   }
 
   @Override
-  public void register(RegistrationPojo registration) throws EntityAlreadyExistsException {
+  public void register(RegistrationPojo registration) throws BadInputException, EntityAlreadyExistsException {
     String username = registration.getName();
     Predicate userWithSameName = QUser.user.name.eq(username);
     if (usersRepository.exists(userWithSameName)) {
-      throw new EntityAlreadyExistsException("User with name '" + username + "'");
+      throw new EntityAlreadyExistsException("That username is taken.");
     }
 
-    Person newPerson = this.createPersonFromRegistrationPojo(registration);
+    PersonPojo sourcePerson = registration.getProfile();
+    Person newPerson = conversionService.convert(sourcePerson, Person.class);
+    if (newPerson == null) {
+      throw new BadInputException("Input profile has insufficient or invalid data.");
+    }
+
     Predicate sameProfileData = new BooleanBuilder()
-        .and(QPerson.person.idNumber.eq(newPerson.getIdNumber()))
-        .and(QPerson.person.name.eq(newPerson.getName()));
+        .and(QPerson.person.idNumber.eq(newPerson.getIdNumber()));
     if (peopleRepository.exists(sameProfileData)) {
-      throw new EntityAlreadyExistsException("Person with same ID card and/or name");
+      throw new EntityAlreadyExistsException("That ID card is already registered and associated to an account.");
     } else {
       newPerson = peopleRepository.saveAndFlush(newPerson);
     }
@@ -68,24 +78,11 @@ public class RegistrationServiceImpl
     User newUser = this.createUserFromRegistrationPojo(registration);
     newUser.setPerson(newPerson);
     usersRepository.saveAndFlush(newUser);
+    logger.info("New user created with name '{}' and idNumber '{}'", newUser.getName(), newPerson.getIdNumber());
 
-    Customer newCustomer = this.createCustomerFromRegistrationPojo(newPerson);
+    Customer newCustomer = new Customer();
+    newCustomer.setPerson(newPerson);
     customersRepository.saveAndFlush(newCustomer);
-  }
-
-  protected Person createPersonFromRegistrationPojo(RegistrationPojo registration) {
-    RegistrationPojo.Profile source = registration.getProfile();
-    Person target = new Person();
-    target.setName(source.getName());
-    target.setIdNumber(source.getIdNumber());
-    target.setEmail(source.getEmail());
-    if (source.getPhone1() != null) {
-      target.setPhone1(source.getPhone1());
-    }
-    if (source.getPhone2() != null) {
-      target.setPhone2(source.getPhone2());
-    }
-    return target;
   }
 
   protected User createUserFromRegistrationPojo(RegistrationPojo registration) {
@@ -97,12 +94,6 @@ public class RegistrationServiceImpl
     UserRole userRole = new UserRole();
     userRole.setId(1L);
     target.setUserRole(userRole);
-    return target;
-  }
-
-  protected Customer createCustomerFromRegistrationPojo(Person person) {
-    Customer target = new Customer();
-    target.setPerson(person);
     return target;
   }
 

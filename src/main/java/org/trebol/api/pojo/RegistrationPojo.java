@@ -2,24 +2,23 @@ package org.trebol.api.pojo;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-//TODO could a user pojo benefit from person pojo?
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-@JsonInclude
+@JsonInclude(NON_NULL)
 public class RegistrationPojo {
-  @NotEmpty
+  @NotBlank
   private String name;
-  @NotEmpty
+  @NotBlank
   private String password;
-  @NotNull
-  private RegistrationPojo.Profile profile;
+  private PersonPojo profile;
 
   public String getName() {
     return name;
@@ -37,77 +36,20 @@ public class RegistrationPojo {
     this.password = password;
   }
 
-  public RegistrationPojo.Profile getProfile() {
+  public PersonPojo getProfile() {
     return profile;
   }
 
-  public void setProfile(RegistrationPojo.Profile profile) {
+  public void setProfile(PersonPojo profile) {
     this.profile = profile;
-  }
-
-  public class Profile {
-    private String name;
-    private String idNumber;
-    private String email;
-    private String address;
-    private Integer phone1;
-    private Integer phone2;
-
-    public String getName() {
-      return name;
-    }
-
-    public void setName(String name) {
-      this.name = name;
-    }
-
-    public String getIdNumber() {
-      return idNumber;
-    }
-
-    public void setIdNumber(String idNumber) {
-      this.idNumber = idNumber;
-    }
-
-    public String getEmail() {
-      return email;
-    }
-
-    public void setEmail(String email) {
-      this.email = email;
-    }
-
-    public String getAddress() {
-      return address;
-    }
-
-    public void setAddress(String address) {
-      this.address = address;
-    }
-
-    public Integer getPhone1() {
-      return phone1;
-    }
-
-    public void setPhone1(Integer phone1) {
-      this.phone1 = phone1;
-    }
-
-    public Integer getPhone2() {
-      return phone2;
-    }
-
-    public void setPhone2(Integer phone2) {
-      this.phone2 = phone2;
-    }
   }
 
   @Override
   public int hashCode() {
-    int hash = 7;
-    hash = 19 * hash + Objects.hashCode(this.name);
-    hash = 19 * hash + Objects.hashCode(this.password);
-    hash = 19 * hash + Objects.hashCode(this.profile);
+    int hash = 3;
+    hash = 67 * hash + Objects.hashCode(this.name);
+    hash = 67 * hash + Objects.hashCode(this.password);
+    hash = 67 * hash + Objects.hashCode(this.profile);
     return hash;
   }
 
@@ -137,6 +79,8 @@ public class RegistrationPojo {
 
   @Override
   public String toString() {
-    return "RegistrationPojo{name=" + name + ", password=" + password + ", profile=" + profile + '}';
+    return "RegistrationPojo{name=" + name +
+        ", password=" + password +
+        ", profile=" + profile + '}';
   }
 }
