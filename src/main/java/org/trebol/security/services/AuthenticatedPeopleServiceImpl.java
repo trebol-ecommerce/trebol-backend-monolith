@@ -1,4 +1,4 @@
-package org.trebol.security.services.impl;
+package org.trebol.security.services;
 
 import java.util.Optional;
 
@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import org.trebol.api.pojo.PersonPojo;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
-import org.trebol.security.services.AuthenticatedPeopleService;
-import org.trebol.security.services.AuthorizationHeaderParserService;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
+import org.trebol.security.IAuthenticatedPeopleService;
+import org.trebol.security.IAuthorizationHeaderParserService;
 
 /**
  *
@@ -23,14 +23,14 @@ import org.trebol.jpa.repositories.IUsersJpaRepository;
  */
 @Service
 public class AuthenticatedPeopleServiceImpl
-    implements AuthenticatedPeopleService {
+    implements IAuthenticatedPeopleService {
 
-  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final IUsersJpaRepository usersRepository;
   private final ConversionService conversionService;
 
   @Autowired
-  public AuthenticatedPeopleServiceImpl(AuthorizationHeaderParserService<Claims> jwtClaimsParserService, IUsersJpaRepository usersRepository, ConversionService conversionService) {
+  public AuthenticatedPeopleServiceImpl(IAuthorizationHeaderParserService<Claims> jwtClaimsParserService, IUsersJpaRepository usersRepository, ConversionService conversionService) {
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.usersRepository = usersRepository;
     this.conversionService = conversionService;

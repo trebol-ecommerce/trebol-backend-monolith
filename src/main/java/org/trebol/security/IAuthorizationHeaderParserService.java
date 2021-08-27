@@ -1,4 +1,4 @@
-package org.trebol.security.services;
+package org.trebol.security;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import org.springframework.http.HttpHeaders;
  *
  * @param <T> The token body type
  */
-public interface AuthorizationHeaderParserService<T> {
+public interface IAuthorizationHeaderParserService<T> {
 
   /**
    * Extracts the Authorization header value from an http request

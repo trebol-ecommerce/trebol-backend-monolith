@@ -1,4 +1,4 @@
-package org.trebol.security.services;
+package org.trebol.security;
 
 import javax.annotation.Nullable;
 
@@ -9,7 +9,7 @@ import org.trebol.api.pojo.PersonPojo;
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
-public interface AuthenticatedPeopleService {
+public interface IAuthenticatedPeopleService {
   @Nullable
   PersonPojo fetchAuthenticatedUserPersonProfile(String authorizationHeader);
 }

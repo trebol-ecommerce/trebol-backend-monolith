@@ -22,7 +22,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import org.trebol.security.JwtTokenVerifierFilter;
 import org.trebol.security.JwtUsernamePasswordAuthenticationFilter;
-import org.trebol.security.services.AuthorizationHeaderParserService;
+import org.trebol.security.IAuthorizationHeaderParserService;
 
 @Configuration
 @EnableWebSecurity(debug = false)
@@ -34,14 +34,14 @@ public class SecurityConfig
   private final SecretKey secretKey;
   private final SecurityProperties securityProperties;
   private final CorsProperties corsProperties;
-  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
   @Autowired
   public SecurityConfig(
       UserDetailsService userDetailsService,
       SecretKey secretKey,
       SecurityProperties securityProperties,
-      AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+      IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
       CorsProperties corsProperties) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;

@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.PersonPojo;
 import org.trebol.jpa.entities.Person;
-import org.trebol.security.services.AuthorizationHeaderParserService;
 import org.trebol.api.IProfileService;
+import org.trebol.security.IAuthorizationHeaderParserService;
 
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
 
-  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final ConversionService conversionService;
   private final IProfileService userProfileService;
 
   @Autowired
-  public ProfileController(AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+  public ProfileController(IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
       ConversionService conversionService,
       IProfileService userProfileService) {
     this.jwtClaimsParserService = jwtClaimsParserService;

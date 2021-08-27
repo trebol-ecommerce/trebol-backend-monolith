@@ -1,4 +1,4 @@
-package org.trebol.security.services.impl;
+package org.trebol.security.services;
 
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
@@ -14,11 +14,11 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 
 import org.trebol.config.SecurityProperties;
-import org.trebol.security.services.AuthorizationHeaderParserService;
+import org.trebol.security.IAuthorizationHeaderParserService;
 
 @Service
 public class ClaimsAuthorizationHeaderParserServiceImpl
-    implements AuthorizationHeaderParserService<Claims> {
+    implements IAuthorizationHeaderParserService<Claims> {
 
   private final SecretKey secretKey;
   private final SecurityProperties jwtProperties;
