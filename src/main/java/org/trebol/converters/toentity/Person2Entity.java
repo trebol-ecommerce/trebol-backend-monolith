@@ -19,11 +19,8 @@ public class Person2Entity
     Person target = new Person();
     target.setId(source.getId());
     target.setName(source.getName());
-    target.setIdCard(source.getIdCard());
+    target.setIdNumber(source.getIdNumber());
     target.setEmail(source.getEmail());
-    if (source.getAddress() != null) {
-      target.setAddress(source.getAddress());
-    }
     if (source.getPhone1() != null) {
       target.setPhone1(source.getPhone1());
     }

@@ -1,8 +1,8 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-import javax.annotation.Nullable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,8 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.trebol.jpa.GenericEntity;
-
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -27,7 +25,7 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "products_categories")
 @NamedQueries({ @NamedQuery(name = "ProductCategory.findAll", query = "SELECT p FROM ProductCategory p") })
 public class ProductCategory
-    implements GenericEntity {
+  implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -43,16 +41,8 @@ public class ProductCategory
   @ManyToOne(optional = true, fetch = FetchType.LAZY)
   private ProductCategory parent;
 
-  public ProductCategory() {
-  }
+  public ProductCategory() { }
 
-  public ProductCategory(Long id, String name, ProductCategory parent) {
-    this.id = id;
-    this.name = name;
-    this.parent = parent;
-  }
-
-  @Override
   public Long getId() {
     return id;
   }

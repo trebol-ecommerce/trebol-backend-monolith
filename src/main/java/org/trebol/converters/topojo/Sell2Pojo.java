@@ -17,9 +17,7 @@ public class Sell2Pojo
   @Override
   public SellPojo convert(Sell source) {
     SellPojo target = new SellPojo();
-    target.setId(source.getId());
-    target.setDate(source.getDate());
-    target.setSubtotal(source.getTotalValue());
+    
     return target;
   }
 }

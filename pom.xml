@@ -13,7 +13,7 @@
   <groupId>org.trebol</groupId>
   <artifactId>trebol-backend</artifactId>
   <packaging>war</packaging>
-  <version>0.20.0</version>
+  <version>0.21.0</version>
 
   <name>Trébol Backend</name>
 
@@ -22,7 +22,7 @@
     <java.version>1.8</java.version>
     <java.endorsed.dir>${project.build.directory}/endorsed</java.endorsed.dir>
     <java.ee.version>7.0</java.ee.version>
-    <querydsl.generated.dir>${project.build.directory}/generated-sources</querydsl.generated.dir>
+    <querydsl.generated.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.generated.dir>
     <querydsl.generated.version>4.2.2</querydsl.generated.version>
     <springfox.version>3.0.0</springfox.version>
     <jjwt.version>0.11.2</jjwt.version>
@@ -91,7 +91,7 @@
       <version>${springfox.version}</version>
     </dependency>
 
-    <!-- MariaDB Driver -->
+    <!-- Supported database drivers -->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -119,6 +119,13 @@
       <artifactId>jjwt-jackson</artifactId>
       <version>${jjwt.version}</version>
       <scope>runtime</scope>
+    </dependency>
+    
+    <!-- WebPay SDK -->
+    <dependency>
+      <groupId>com.github.transbankdevelopers</groupId>
+      <artifactId>transbank-sdk-java</artifactId>
+      <version>1.9.0</version>
     </dependency>
 
   </dependencies>

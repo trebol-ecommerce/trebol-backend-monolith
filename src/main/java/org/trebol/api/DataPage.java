@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class DataPage<T extends Object> {
   private Collection<T> items;
   private int pageIndex;
-  private int totalCount;
+  private long totalCount;
   private int pageSize;
 
   public DataPage() { }
@@ -22,7 +22,7 @@ public class DataPage<T extends Object> {
   public DataPage(
     Collection<T> items,
     int pageIndex,
-    int totalCount,
+    long totalCount,
     int pageSize
   ) {
     this.items = items;
@@ -47,11 +47,11 @@ public class DataPage<T extends Object> {
     this.pageIndex = pageIndex;
   }
 
-  public int getTotalCount() {
+  public long getTotalCount() {
     return totalCount;
   }
 
-  public void setTotalCount(int totalCount) {
+  public void setTotalCount(long totalCount) {
     this.totalCount = totalCount;
   }
 
@@ -66,10 +66,10 @@ public class DataPage<T extends Object> {
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = 17 * hash + Objects.hashCode(this.items);
-    hash = 17 * hash + this.pageIndex;
-    hash = 17 * hash + this.totalCount;
-    hash = 17 * hash + this.pageSize;
+    hash = 37 * hash + Objects.hashCode(this.items);
+    hash = 37 * hash + this.pageIndex;
+    hash = 37 * hash + (int)(this.totalCount ^ (this.totalCount >>> 32));
+    hash = 37 * hash + this.pageSize;
     return hash;
   }
 

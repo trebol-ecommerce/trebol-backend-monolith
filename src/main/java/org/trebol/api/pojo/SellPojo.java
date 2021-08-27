@@ -1,43 +1,46 @@
 package org.trebol.api.pojo;
 
+import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Objects;
 
-import javax.annotation.Nullable;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
+@JsonInclude(NON_NULL)
 public class SellPojo {
-  @JsonInclude
   private Long id;
-  @JsonInclude
-  @NotNull
-  private Date date;
-  @JsonInclude
-  @NotNull
-  private int subtotal;
-  @JsonInclude
-  @NotNull
-  private SellTypePojo sellType;
-  @JsonInclude
-  @NotNull
-  private CustomerPojo customer;
-  @JsonInclude
-  @Nullable
-  private SalespersonPojo salesperson;
-  @JsonInclude(value = Include.NON_EMPTY)
-  @NotEmpty
+  @JsonIgnore
+  private String token;
+  @JsonFormat(shape = STRING, pattern = "yyyy/MM/dd HH:mm:ss OOOO", timezone = "UTC")
+  private Instant date;
   @Valid
-  private Collection<SellDetailPojo> sellDetails;
+  @NotEmpty
+  @JsonInclude(NON_EMPTY)
+  private Collection<SellDetailPojo> details;
+  @JsonInclude
+  private int netValue;
+  private String billingType;
+  private String paymentType;
+  private CustomerPojo customer;
+  private SalespersonPojo salesperson;
+  private BillingCompanyPojo billingCompany;
+  private AddressPojo billingAddress;
+  private AddressPojo shippingAddress;
+
+  public SellPojo() { }
 
   public Long getId() {
     return id;
@@ -47,28 +50,52 @@ public class SellPojo {
     this.id = id;
   }
 
-  public Date getDate() {
+  public String getToken() {
+    return token;
+  }
+
+  public void setToken(String token) {
+    this.token = token;
+  }
+
+  public Instant getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public void setDate(Instant date) {
     this.date = date;
   }
 
-  public int getSubtotal() {
-    return subtotal;
+  public Collection<SellDetailPojo> getDetails() {
+    return details;
   }
 
-  public void setSubtotal(int subtotal) {
-    this.subtotal = subtotal;
+  public void setDetails(Collection<SellDetailPojo> details) {
+    this.details = details;
   }
 
-  public SellTypePojo getSellType() {
-    return sellType;
+  public int getNetValue() {
+    return netValue;
   }
 
-  public void setSellType(SellTypePojo sellType) {
-    this.sellType = sellType;
+  public void setNetValue(int netValue) {
+    this.netValue = netValue;
+  }
+
+  public String getBillingType() {
+    return billingType;
+  }
+
+  public void setBillingType(String billingType) {
+    this.billingType = billingType;
+  }
+
+  public String getPaymentType() {
+    return paymentType;
+  }
+
+  public void setPaymentType(String paymentType) {
+    this.paymentType = paymentType;
   }
 
   public CustomerPojo getCustomer() {
@@ -87,24 +114,45 @@ public class SellPojo {
     this.salesperson = salesperson;
   }
 
-  public Collection<SellDetailPojo> getSellDetails() {
-    return sellDetails;
+  public BillingCompanyPojo getBillingCompany() {
+    return billingCompany;
   }
 
-  public void setSellDetails(Collection<SellDetailPojo> sellDetails) {
-    this.sellDetails = sellDetails;
+  public void setBillingCompany(BillingCompanyPojo billingCompany) {
+    this.billingCompany = billingCompany;
+  }
+
+  public AddressPojo getBillingAddress() {
+    return billingAddress;
+  }
+
+  public void setBillingAddress(AddressPojo billingAddress) {
+    this.billingAddress = billingAddress;
+  }
+
+  public AddressPojo getShippingAddress() {
+    return shippingAddress;
+  }
+
+  public void setShippingAddress(AddressPojo shippingAddress) {
+    this.shippingAddress = shippingAddress;
   }
 
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = 97 * hash + Objects.hashCode(this.id);
-    hash = 97 * hash + Objects.hashCode(this.date);
-    hash = 97 * hash + this.subtotal;
-    hash = 97 * hash + Objects.hashCode(this.sellType);
-    hash = 97 * hash + Objects.hashCode(this.customer);
-    hash = 97 * hash + Objects.hashCode(this.salesperson);
-    hash = 97 * hash + Objects.hashCode(this.sellDetails);
+    hash = 43 * hash + Objects.hashCode(this.id);
+    hash = 43 * hash + Objects.hashCode(this.token);
+    hash = 43 * hash + Objects.hashCode(this.date);
+    hash = 43 * hash + Objects.hashCode(this.details);
+    hash = 43 * hash + this.netValue;
+    hash = 43 * hash + Objects.hashCode(this.billingType);
+    hash = 43 * hash + Objects.hashCode(this.paymentType);
+    hash = 43 * hash + Objects.hashCode(this.customer);
+    hash = 43 * hash + Objects.hashCode(this.salesperson);
+    hash = 43 * hash + Objects.hashCode(this.billingCompany);
+    hash = 43 * hash + Objects.hashCode(this.billingAddress);
+    hash = 43 * hash + Objects.hashCode(this.shippingAddress);
     return hash;
   }
 
@@ -120,7 +168,16 @@ public class SellPojo {
       return false;
     }
     final SellPojo other = (SellPojo)obj;
-    if (this.subtotal != other.subtotal) {
+    if (this.netValue != other.netValue) {
+      return false;
+    }
+    if (!Objects.equals(this.token, other.token)) {
+      return false;
+    }
+    if (!Objects.equals(this.billingType, other.billingType)) {
+      return false;
+    }
+    if (!Objects.equals(this.paymentType, other.paymentType)) {
       return false;
     }
     if (!Objects.equals(this.id, other.id)) {
@@ -129,7 +186,7 @@ public class SellPojo {
     if (!Objects.equals(this.date, other.date)) {
       return false;
     }
-    if (!Objects.equals(this.sellType, other.sellType)) {
+    if (!Objects.equals(this.details, other.details)) {
       return false;
     }
     if (!Objects.equals(this.customer, other.customer)) {
@@ -138,7 +195,13 @@ public class SellPojo {
     if (!Objects.equals(this.salesperson, other.salesperson)) {
       return false;
     }
-    if (!Objects.equals(this.sellDetails, other.sellDetails)) {
+    if (!Objects.equals(this.billingCompany, other.billingCompany)) {
+      return false;
+    }
+    if (!Objects.equals(this.billingAddress, other.billingAddress)) {
+      return false;
+    }
+    if (!Objects.equals(this.shippingAddress, other.shippingAddress)) {
       return false;
     }
     return true;
@@ -146,7 +209,19 @@ public class SellPojo {
 
   @Override
   public String toString() {
-    return "SellPojo{" + "id=" + id + ", date=" + date + ", subtotal=" + subtotal + ", sellType=" + sellType + ", customer=" + customer + ", salesperson=" + salesperson + ", sellDetails=" + sellDetails + '}';
+    return "SellPojo{id=" + id +
+        ", token=" + token +
+        ", date=" + date +
+        ", details=" + details +
+        ", netValue=" + netValue +
+        ", billingType=" + billingType +
+        ", paymentType=" + paymentType +
+        ", customer=" + customer +
+        ", salesperson=" + salesperson +
+        ", billingCompany=" + billingCompany +
+        ", billingAddress=" + billingAddress +
+        ", shippingAddress=" + shippingAddress + '}';
   }
+
 
 }

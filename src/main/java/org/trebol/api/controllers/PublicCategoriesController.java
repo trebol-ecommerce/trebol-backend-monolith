@@ -9,32 +9,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.ProductCategoryPojo;
-import org.trebol.api.services.PublicProductsService;
+import org.trebol.api.IProductCategoriesService;
 
 @RestController
 @RequestMapping("/public/categories")
 public class PublicCategoriesController {
 
-  private final PublicProductsService catalogService;
+  private final IProductCategoriesService service;
 
   @Autowired
-  public PublicCategoriesController(
-    PublicProductsService catalogService
-  ) {
-    this.catalogService = catalogService;
+  public PublicCategoriesController(IProductCategoriesService productCategoriesService) {
+    this.service = productCategoriesService;
   }
 
   @GetMapping({"", "/"})
   public Collection<ProductCategoryPojo> getRootcategories() {
-    return catalogService.getRootCategories();
+    return service.getRootCategories();
   }
 
   @GetMapping({"/{parentId}", "/{parentId}/"})
   public Collection<ProductCategoryPojo> getCategories(@PathVariable Integer parentId) {
     if (parentId == null) {
-      return catalogService.getRootCategories();
+      return service.getRootCategories();
     } else {
-      return catalogService.getChildrenCategories(parentId);
+      return service.getChildrenCategories(parentId);
     }
   }
 }

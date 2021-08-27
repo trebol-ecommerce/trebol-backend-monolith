@@ -1,5 +1,6 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Basic;
@@ -16,8 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import org.trebol.jpa.GenericEntity;
-
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
@@ -26,9 +25,10 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "salespeople")
 @NamedQueries({ @NamedQuery(name = "Salesperson.findAll", query = "SELECT s FROM Salesperson s") })
 public class Salesperson
-    implements GenericEntity {
+  implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
@@ -38,15 +38,8 @@ public class Salesperson
   @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Person person;
 
-  public Salesperson() {
-  }
+  public Salesperson() { }
 
-  public Salesperson(Long id, Person person) {
-    this.id = id;
-    this.person = person;
-  }
-
-  @Override
   public Long getId() {
     return id;
   }

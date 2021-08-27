@@ -19,8 +19,8 @@ import org.trebol.api.DataPage;
 import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.services.GenericJpaCrudService;
+import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.GenericJpaCrudService;
 
 /**
  * API point of entry for ProductCategory entities
@@ -54,8 +54,8 @@ public class DataProductCategoriesController
   @Override
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-    return super.handleValidationExceptions(ex);
+  public Map<String, String> handleException(MethodArgumentNotValidException ex) {
+    return super.handleException(ex);
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)

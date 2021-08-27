@@ -11,8 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import com.querydsl.core.types.Predicate;
 
 import org.trebol.config.CustomProperties;
-import org.trebol.jpa.GenericEntity;
-import org.trebol.jpa.services.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaCrudService;
 
 /**
  * Abstraction for CrudControllers that communicate with a GenericJpaCrudService.
@@ -21,8 +20,8 @@ import org.trebol.jpa.services.GenericJpaCrudService;
  * @param <P> The Pojo class
  * @param <E> The Entity class
  */
-public abstract class GenericDataController<P, E extends GenericEntity>
-  implements DataController<P> {
+public abstract class GenericDataController<P, E>
+  implements IDataController<P> {
 
   protected CustomProperties customProperties;
   protected GenericJpaCrudService<P, E> crudService;
@@ -50,13 +49,13 @@ public abstract class GenericDataController<P, E extends GenericEntity>
 
     Predicate filters = null;
     if (!requestParams.isEmpty()) {
-      filters = crudService.queryParamsMapToPredicate(requestParams);
+      filters = crudService.parsePredicate(requestParams);
     }
 
     return crudService.readMany(pageSize, pageIndex, filters);
   }
 
-  public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+  public Map<String, String> handleException(MethodArgumentNotValidException ex) {
     Map<String, String> errors = new HashMap<>();
     ex.getBindingResult().getAllErrors().forEach((error) -> {
       String fieldName = ((FieldError) error).getField();

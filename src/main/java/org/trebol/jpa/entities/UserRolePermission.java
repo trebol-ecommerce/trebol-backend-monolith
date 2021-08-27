@@ -1,5 +1,6 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Basic;
@@ -15,8 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import org.trebol.jpa.GenericEntity;
-
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -25,9 +24,10 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "app_users_roles_permissions")
 @NamedQueries({ @NamedQuery(name = "UserRolePermission.findAll", query = "SELECT u FROM UserRolePermission u") })
 public class UserRolePermission
-    implements GenericEntity {
+  implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
@@ -40,16 +40,8 @@ public class UserRolePermission
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
-  public UserRolePermission() {
-  }
+  public UserRolePermission() { }
 
-  public UserRolePermission(Long id, Permission permission, UserRole userRole) {
-    this.id = id;
-    this.permission = permission;
-    this.userRole = userRole;
-  }
-
-  @Override
   public Long getId() {
     return id;
   }

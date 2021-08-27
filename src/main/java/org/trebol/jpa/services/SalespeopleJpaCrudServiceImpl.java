@@ -1,0 +1,107 @@
+package org.trebol.jpa.services;
+
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+
+import org.trebol.jpa.entities.QSalesperson;
+
+import org.trebol.api.pojo.PersonPojo;
+import org.trebol.api.pojo.SalespersonPojo;
+import org.trebol.exceptions.BadInputException;
+import org.trebol.jpa.entities.Person;
+import org.trebol.jpa.entities.Salesperson;
+import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.repositories.ISalespeopleJpaRepository;
+
+/**
+ *
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
+@Transactional
+@Service
+public class SalespeopleJpaCrudServiceImpl
+  extends GenericJpaCrudService<SalespersonPojo, Salesperson> {
+
+  private static final Logger logger = LoggerFactory.getLogger(SalespeopleJpaCrudServiceImpl.class);
+  private final ConversionService conversion;
+
+  @Autowired
+  public SalespeopleJpaCrudServiceImpl(ISalespeopleJpaRepository repository, ConversionService conversion) {
+    super(repository);
+    this.conversion = conversion;
+  }
+
+  @Nullable
+  @Override
+  public SalespersonPojo entity2Pojo(Salesperson source) {
+    SalespersonPojo target = conversion.convert(source, SalespersonPojo.class);
+    if (target != null) {
+      PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
+      if (person != null) {
+        target.setPerson(person);
+      }
+    }
+    return target;
+  }
+
+  @Nullable
+  @Override
+  public Salesperson pojo2Entity(SalespersonPojo source) {
+    Salesperson target = conversion.convert(source, Salesperson.class);
+    if (target != null) {
+      Person personTarget = conversion.convert(source.getPerson(), Person.class);
+      if (personTarget != null) {
+        target.setPerson(personTarget);
+      }
+    }
+    return target;
+  }
+
+  @Override
+  public Predicate parsePredicate(Map<String, String> queryParamsMap) {
+    logger.debug("queryParamsMapToPredicate({})", queryParamsMap);
+    QSalesperson qSalesperson = QSalesperson.salesperson;
+    BooleanBuilder predicate = new BooleanBuilder();
+    for (String paramName : queryParamsMap.keySet()) {
+      String stringValue = queryParamsMap.get(paramName);
+      try {
+        Long longValue = Long.valueOf(stringValue);
+        switch (paramName) {
+          case "id":
+            return predicate.and(qSalesperson.id.eq(longValue)); // id matching is final
+          case "name":
+            predicate.and(qSalesperson.person.name.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "idnumber":
+            predicate.and(qSalesperson.person.idNumber.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "email":
+            predicate.and(qSalesperson.person.email.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          default:
+            break;
+        }
+      } catch (NumberFormatException exc) {
+        logger.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+      }
+    }
+
+    return predicate;
+  }
+
+  @Override
+  public boolean itemExists(SalespersonPojo input) throws BadInputException {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+}

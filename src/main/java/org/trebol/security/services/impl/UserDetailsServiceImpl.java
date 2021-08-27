@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 
 import org.trebol.jpa.entities.Permission;
 import org.trebol.jpa.entities.User;
-import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.api.pojo.UserDetailsPojo;
 import org.trebol.security.services.UserPermissionsService;
+import org.trebol.jpa.repositories.IUsersJpaRepository;
 
 /**
  * Service required by the DaoAuthenticationProvider bean.
@@ -29,13 +29,13 @@ public class UserDetailsServiceImpl
     implements UserDetailsService {
 
   private final ConversionService conversionService;
-  private final UsersRepository usersRepository;
+  private final IUsersJpaRepository usersRepository;
   private final UserPermissionsService userPermissionsService;
 
   @Autowired
   public UserDetailsServiceImpl(
       ConversionService conversionService,
-      UsersRepository usersRepository,
+      IUsersJpaRepository usersRepository,
       UserPermissionsService userPermissionsService) {
     this.conversionService = conversionService;
     this.usersRepository = usersRepository;

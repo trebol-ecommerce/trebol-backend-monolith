@@ -18,8 +18,8 @@ VALUES
 (05, 'Delivery On Route'),
 (06, 'Delivery Complete');
 
-INSERT INTO `sales_types`
-(`sell_type_id`, `sell_type_name`)
+INSERT INTO `billing_types`
+(`billing_type_id`, `billing_type_name`)
 VALUES
 (01, 'Bill'),
 (02, 'Enterprise Invoice');
@@ -33,13 +33,13 @@ VALUES
 (04, 'Customer');
 
 INSERT INTO `people`
-(`person_id`, `person_name`, `person_idcard`, `person_email`, `person_address`, `person_phone1`, `person_phone2`)
+(`person_id`, `person_name`, `person_id_number`, `person_email`)
 VALUES
-(01, 'Test',  '1111111', 'test@example.com',  'example',   0, 0),
-(02, 'Test2', '2222222', 'test2@example.com', 'example 2', 0, 0),
-(03, 'Test3', '3333333', 'test3@example.com', 'example 3', 0, 0),
-(04, 'Test4', '4444444', 'test4@example.com', 'example 4', 0, 0),
-(05, 'Test5', '5555555', 'test5@example.com', 'example 5', 0, 0);
+(01, 'Test',  '1111111', 'test@example.com'),
+(02, 'Test2', '2222222', 'test2@example.com'),
+(03, 'Test3', '3333333', 'test3@example.com'),
+(04, 'Test4', '4444444', 'test4@example.com'),
+(05, 'Test5', '5555555', 'test5@example.com');
 
 INSERT INTO `app_permissions`
 (`permission_id`, `permission_code`)

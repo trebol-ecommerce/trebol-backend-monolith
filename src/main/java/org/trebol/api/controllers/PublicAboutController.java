@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.pojo.CompanyDetailsPojo;
-import org.trebol.api.services.CompanyService;
+import org.trebol.api.ICompanyService;
 
 /**
  *
@@ -16,10 +16,10 @@ import org.trebol.api.services.CompanyService;
 @RequestMapping("/public/about")
 public class PublicAboutController {
 
-  private final CompanyService companyService;
+  private final ICompanyService companyService;
 
   @Autowired
-  public PublicAboutController(CompanyService companyService) {
+  public PublicAboutController(ICompanyService companyService) {
     this.companyService = companyService;
   }
 

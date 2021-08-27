@@ -1,7 +1,8 @@
 package org.trebol.jpa.entities;
 
+import java.io.Serializable;
+import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Basic;
@@ -18,11 +19,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
-import org.trebol.jpa.GenericEntity;
+import org.hibernate.annotations.CreationTimestamp;
 
 /**
  *
@@ -32,9 +31,10 @@ import org.trebol.jpa.GenericEntity;
 @Table(name = "sales")
 @NamedQueries({ @NamedQuery(name = "Sell.findAll", query = "SELECT s FROM Sell s") })
 public class Sell
-    implements GenericEntity {
+  implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Basic(optional = false)
@@ -42,56 +42,60 @@ public class Sell
   private Long id;
   @Basic(optional = false)
   @Column(name = "sell_date")
-  @Temporal(TemporalType.DATE)
-  private Date date;
-  @Basic(optional = false)
-  @Column(name = "sell_total_value")
-  private int totalValue;
-  @Basic(optional = false)
-  @Size(min = 1, max = 20)
-  @Column(name = "session_extract")
-  private String sessionExtract;
-  @Size(min = 64, max = 64)
-  @Column(name = "sell_token")
-  private String token;
+  @CreationTimestamp
+  private Instant date;
   @Basic(optional = false)
   @Column(name = "sell_total_items")
   private int totalItems;
-  @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-  @ManyToOne(optional = false)
+  @Basic(optional = false)
+  @Column(name = "sell_net_value")
+  private int netValue;
+  @Basic(optional = false)
+  @Column(name = "sell_transport_value")
+  private int transportValue;
+  @Basic(optional = false)
+  @Column(name = "sell_taxes_value")
+  private int taxesValue;
+  @Basic(optional = false)
+  @Column(name = "sell_total_value")
+  private int totalValue;
+  @Basic(optional = true)
+  @Size(min = 64, max = 64)
+  @Column(name = "sell_transaction_token")
+  private String transactionToken;
+  @JoinColumn(name = "customer_id", insertable = true, updatable = true, nullable = true)
+  @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
   private Customer customer;
-  @JoinColumn(name = "salesperson_id", referencedColumnName = "salesperson_id")
-  @ManyToOne(optional = true)
-  private Salesperson salesperson;
-  @JoinColumn(name = "sell_status_id", referencedColumnName = "sell_status_id")
-  @ManyToOne(optional = false)
+  @JoinColumn(name = "payment_type_id", insertable = false, updatable = false, nullable = false)
+  @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+  private PaymentType paymentType;
+  @JoinColumn(name = "sell_status_id", insertable = false, updatable = false, nullable = false)
+  @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private SellStatus status;
-  @JoinColumn(name = "sell_type_id", referencedColumnName = "sell_type_id")
-  @ManyToOne(optional = false)
-  private SellType type;
+  @JoinColumn(name = "sell_type_id", insertable = false, updatable = false, nullable = false)
+  @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+  private BillingType billingType;
+  @JoinColumn(name = "billing_company_id", insertable = true, updatable = true, nullable = true)
+  @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  private BillingCompany billingCompany;
+  @JoinColumn(name = "billing_address_id", insertable = true, updatable = false, nullable = true)
+  @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  private Address billingAddress;
+  @JoinColumn(name = "shipper_id", insertable = false, updatable = false, nullable = true)
+  @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+  private Shipper shipper;
+  @JoinColumn(name = "shipping_address_id", insertable = true, updatable = false, nullable = true)
+  @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  private Address shippingAddress;
+  @JoinColumn(name = "salesperson_id", insertable = false, updatable = true, nullable = true)
+  @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  private Salesperson salesperson;
   @JoinColumn(name = "sell_id", insertable = true, updatable = true, nullable = false)
   @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
   private Collection<SellDetail> details;
 
-  public Sell() {
-  }
+  public Sell() { }
 
-  public Sell(Long id, Date date, int totalValue, String sessionExtract, String token, int totalItems,
-      Customer customer, Salesperson salesperson, SellStatus status, SellType type, Collection<SellDetail> details) {
-    this.id = id;
-    this.date = date;
-    this.totalValue = totalValue;
-    this.sessionExtract = sessionExtract;
-    this.token = token;
-    this.totalItems = totalItems;
-    this.customer = customer;
-    this.salesperson = salesperson;
-    this.status = status;
-    this.type = type;
-    this.details = details;
-  }
-
-  @Override
   public Long getId() {
     return id;
   }
@@ -100,36 +104,12 @@ public class Sell
     this.id = id;
   }
 
-  public Date getDate() {
+  public Instant getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public void setDate(Instant date) {
     this.date = date;
-  }
-
-  public int getTotalValue() {
-    return totalValue;
-  }
-
-  public void setTotalValue(int totalValue) {
-    this.totalValue = totalValue;
-  }
-
-  public String getSessionExtract() {
-    return sessionExtract;
-  }
-
-  public void setSessionExtract(String sessionExtract) {
-    this.sessionExtract = sessionExtract;
-  }
-
-  public String getToken() {
-    return token;
-  }
-
-  public void setToken(String token) {
-    this.token = token;
   }
 
   public int getTotalItems() {
@@ -140,6 +120,46 @@ public class Sell
     this.totalItems = totalItems;
   }
 
+  public int getNetValue() {
+    return netValue;
+  }
+
+  public void setNetValue(int netValue) {
+    this.netValue = netValue;
+  }
+
+  public int getTransportValue() {
+    return transportValue;
+  }
+
+  public void setTransportValue(int transportValue) {
+    this.transportValue = transportValue;
+  }
+
+  public int getTaxesValue() {
+    return taxesValue;
+  }
+
+  public void setTaxesValue(int taxesValue) {
+    this.taxesValue = taxesValue;
+  }
+
+  public int getTotalValue() {
+    return totalValue;
+  }
+
+  public void setTotalValue(int totalValue) {
+    this.totalValue = totalValue;
+  }
+
+  public String getTransactionToken() {
+    return transactionToken;
+  }
+
+  public void setTransactionToken(String transactionToken) {
+    this.transactionToken = transactionToken;
+  }
+
   public Customer getCustomer() {
     return customer;
   }
@@ -148,12 +168,12 @@ public class Sell
     this.customer = customer;
   }
 
-  public Salesperson getSalesperson() {
-    return salesperson;
+  public PaymentType getPaymentType() {
+    return paymentType;
   }
 
-  public void setSalesperson(Salesperson salesperson) {
-    this.salesperson = salesperson;
+  public void setPaymentType(PaymentType paymentType) {
+    this.paymentType = paymentType;
   }
 
   public SellStatus getStatus() {
@@ -164,12 +184,52 @@ public class Sell
     this.status = status;
   }
 
-  public SellType getType() {
-    return type;
+  public BillingType getBillingType() {
+    return billingType;
   }
 
-  public void setType(SellType type) {
-    this.type = type;
+  public void setBillingType(BillingType billingType) {
+    this.billingType = billingType;
+  }
+
+  public BillingCompany getBillingCompany() {
+    return billingCompany;
+  }
+
+  public void setBillingCompany(BillingCompany billingCompany) {
+    this.billingCompany = billingCompany;
+  }
+
+  public Address getBillingAddress() {
+    return billingAddress;
+  }
+
+  public void setBillingAddress(Address billingAddress) {
+    this.billingAddress = billingAddress;
+  }
+
+  public Shipper getShipper() {
+    return shipper;
+  }
+
+  public void setShipper(Shipper shipper) {
+    this.shipper = shipper;
+  }
+
+  public Address getShippingAddress() {
+    return shippingAddress;
+  }
+
+  public void setShippingAddress(Address shippingAddress) {
+    this.shippingAddress = shippingAddress;
+  }
+
+  public Salesperson getSalesperson() {
+    return salesperson;
+  }
+
+  public void setSalesperson(Salesperson salesperson) {
+    this.salesperson = salesperson;
   }
 
   public Collection<SellDetail> getDetails() {
@@ -182,18 +242,25 @@ public class Sell
 
   @Override
   public int hashCode() {
-    int hash = 7;
-    hash = 97 * hash + Objects.hashCode(this.id);
-    hash = 97 * hash + Objects.hashCode(this.date);
-    hash = 97 * hash + this.totalValue;
-    hash = 97 * hash + Objects.hashCode(this.sessionExtract);
-    hash = 97 * hash + Objects.hashCode(this.token);
-    hash = 97 * hash + this.totalItems;
-    hash = 97 * hash + Objects.hashCode(this.customer);
-    hash = 97 * hash + Objects.hashCode(this.salesperson);
-    hash = 97 * hash + Objects.hashCode(this.status);
-    hash = 97 * hash + Objects.hashCode(this.type);
-    hash = 97 * hash + Objects.hashCode(this.details);
+    int hash = 5;
+    hash = 67 * hash + Objects.hashCode(this.id);
+    hash = 67 * hash + Objects.hashCode(this.date);
+    hash = 67 * hash + this.totalItems;
+    hash = 67 * hash + this.netValue;
+    hash = 67 * hash + this.transportValue;
+    hash = 67 * hash + this.taxesValue;
+    hash = 67 * hash + this.totalValue;
+    hash = 67 * hash + Objects.hashCode(this.transactionToken);
+    hash = 67 * hash + Objects.hashCode(this.customer);
+    hash = 67 * hash + Objects.hashCode(this.paymentType);
+    hash = 67 * hash + Objects.hashCode(this.status);
+    hash = 67 * hash + Objects.hashCode(this.billingType);
+    hash = 67 * hash + Objects.hashCode(this.billingCompany);
+    hash = 67 * hash + Objects.hashCode(this.billingAddress);
+    hash = 67 * hash + Objects.hashCode(this.shipper);
+    hash = 67 * hash + Objects.hashCode(this.shippingAddress);
+    hash = 67 * hash + Objects.hashCode(this.salesperson);
+    hash = 67 * hash + Objects.hashCode(this.details);
     return hash;
   }
 
@@ -209,16 +276,22 @@ public class Sell
       return false;
     }
     final Sell other = (Sell)obj;
-    if (this.totalValue != other.totalValue) {
-      return false;
-    }
     if (this.totalItems != other.totalItems) {
       return false;
     }
-    if (!Objects.equals(this.sessionExtract, other.sessionExtract)) {
+    if (this.netValue != other.netValue) {
       return false;
     }
-    if (!Objects.equals(this.token, other.token)) {
+    if (this.transportValue != other.transportValue) {
+      return false;
+    }
+    if (this.taxesValue != other.taxesValue) {
+      return false;
+    }
+    if (this.totalValue != other.totalValue) {
+      return false;
+    }
+    if (!Objects.equals(this.transactionToken, other.transactionToken)) {
       return false;
     }
     if (!Objects.equals(this.id, other.id)) {
@@ -230,13 +303,28 @@ public class Sell
     if (!Objects.equals(this.customer, other.customer)) {
       return false;
     }
-    if (!Objects.equals(this.salesperson, other.salesperson)) {
+    if (!Objects.equals(this.paymentType, other.paymentType)) {
       return false;
     }
     if (!Objects.equals(this.status, other.status)) {
       return false;
     }
-    if (!Objects.equals(this.type, other.type)) {
+    if (!Objects.equals(this.billingType, other.billingType)) {
+      return false;
+    }
+    if (!Objects.equals(this.billingCompany, other.billingCompany)) {
+      return false;
+    }
+    if (!Objects.equals(this.billingAddress, other.billingAddress)) {
+      return false;
+    }
+    if (!Objects.equals(this.shipper, other.shipper)) {
+      return false;
+    }
+    if (!Objects.equals(this.shippingAddress, other.shippingAddress)) {
+      return false;
+    }
+    if (!Objects.equals(this.salesperson, other.salesperson)) {
       return false;
     }
     if (!Objects.equals(this.details, other.details)) {
@@ -249,15 +337,24 @@ public class Sell
   public String toString() {
     return "Sell{id=" + id +
         ", date=" + date +
-        ", totalValue=" + totalValue +
-        ", sessionExtract=" + sessionExtract +
-        ", token=" + token +
         ", totalItems=" + totalItems +
+        ", netValue=" + netValue +
+        ", transportValue=" + transportValue +
+        ", taxesValue=" + taxesValue +
+        ", totalValue=" + totalValue +
+        ", transactionToken=" + transactionToken +
         ", customer=" + customer +
-        ", salesperson=" + salesperson +
+        ", paymentType=" + paymentType +
         ", status=" + status +
-        ", type=" + type +
+        ", billingType=" + billingType +
+        ", billingCompany=" + billingCompany +
+        ", billingAddress=" + billingAddress +
+        ", shipper=" + shipper +
+        ", shippingAddress=" + shippingAddress +
+        ", salesperson=" + salesperson +
         ", details=" + details + '}';
   }
+
+
 
 }

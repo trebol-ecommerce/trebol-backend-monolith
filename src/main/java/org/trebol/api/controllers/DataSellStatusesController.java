@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.trebol.api.CrudController;
 
 import org.trebol.api.DataPage;
 import org.trebol.api.GenericDataController;
 import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.services.GenericJpaCrudService;
+import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.api.IDataCrudController;
+import org.trebol.exceptions.BadInputException;
+
+import javassist.NotFoundException;
 
 /**
  * API point of entry for SellStatus entities
@@ -38,7 +41,7 @@ import org.trebol.jpa.services.GenericJpaCrudService;
 @RequestMapping("/data/sell_statuses")
 public class DataSellStatusesController
   extends GenericDataController<ProductCategoryPojo, ProductCategory>
-  implements CrudController<ProductCategoryPojo, String> {
+  implements IDataCrudController<ProductCategoryPojo, String> {
 
   @Autowired
   public DataSellStatusesController(CustomProperties globals,
@@ -55,41 +58,51 @@ public class DataSellStatusesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sell_statuses:create')")
-  public void create(
-    @RequestBody @Valid ProductCategoryPojo input
-  ) throws EntityAlreadyExistsException {
+  public void create(@RequestBody @Valid ProductCategoryPojo input)
+    throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
   @Override
   @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('sell_statuses:read')")
-  public ProductCategoryPojo readOne(@PathVariable String code) {
+  public ProductCategoryPojo readOne(@PathVariable String code) throws NotFoundException {
     throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
   @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('sell_statuses:update')")
-  public void update(@RequestBody @Valid ProductCategoryPojo input, @PathVariable String code) {
+  public void update(@RequestBody @Valid ProductCategoryPojo input, @PathVariable String code)
+    throws BadInputException, NotFoundException {
     throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
   @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('sell_statuses:delete')")
-  public void delete(@PathVariable String code) {
+  public void delete(@PathVariable String code) throws NotFoundException {
     throw new UnsupportedOperationException("Method not implemented");
   }
 
   @Override
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-    return super.handleValidationExceptions(ex);
+  public Map<String, String> handleException(MethodArgumentNotValidException ex) {
+    return super.handleException(ex);
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(EntityAlreadyExistsException.class)
-  public void handleConstraintExceptions(EntityAlreadyExistsException ex) { }
+  public void handleException(EntityAlreadyExistsException ex) { }
+
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(NotFoundException.class)
+  public void handleException(NotFoundException ex) { }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(BadInputException.class)
+  public String handleException(BadInputException ex) {
+    return ex.getMessage();
+  }
 }

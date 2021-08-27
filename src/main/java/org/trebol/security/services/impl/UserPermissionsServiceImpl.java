@@ -10,8 +10,8 @@ import org.trebol.jpa.entities.Permission;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.entities.UserRolePermission;
-import org.trebol.jpa.repositories.UserRolePermissionsRepository;
 import org.trebol.security.services.UserPermissionsService;
+import org.trebol.jpa.repositories.IUserRolePermissionsJpaRepository;
 
 /**
  * Service required by the DaoAuthenticationProvider bean.
@@ -23,10 +23,10 @@ import org.trebol.security.services.UserPermissionsService;
 public class UserPermissionsServiceImpl
     implements UserPermissionsService {
 
-  private final UserRolePermissionsRepository userRolePermissionsRepository;
+  private final IUserRolePermissionsJpaRepository userRolePermissionsRepository;
 
   @Autowired
-  public UserPermissionsServiceImpl(UserRolePermissionsRepository userRolePermissionsRepository) {
+  public UserPermissionsServiceImpl(IUserRolePermissionsJpaRepository userRolePermissionsRepository) {
     this.userRolePermissionsRepository = userRolePermissionsRepository;
   }
 

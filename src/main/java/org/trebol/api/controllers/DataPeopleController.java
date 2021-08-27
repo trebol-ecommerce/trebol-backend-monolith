@@ -14,7 +14,7 @@ import org.trebol.api.GenericDataController;
 import org.trebol.api.pojo.PersonPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaCrudService;
 
 /**
  * API point of entry for Person entities
