@@ -54,38 +54,39 @@ public class SecurityConfig
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+        .headers()
+            .frameOptions().sameOrigin()
+          .and()
         .cors()
-        .and()
+          .and()
         .csrf()
             .disable()
         .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+          .and()
         .logout()
-            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            .logoutRequestMatcher(new AntPathRequestMatcher("/public/logout"))
             .invalidateHttpSession(true)
-        .and()
+          .and()
         .addFilter(
             this.jwtLoginAuthenticationFilter())
         .addFilterAfter(
             new JwtTokenVerifierFilter(jwtClaimsParserService),
             JwtUsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
-        .antMatchers(
-          "/",
-          "/public/login",
-          "/public/register",
-          "/public/about",
-          "/public/categories",
-          "/public/categories/*",
-          "/public/products",
-          "/public/products/*",
-          "/public/receipt/*",
-          "/public/checkout",
-          "/public/checkout/validate")
-            .permitAll()
-        .anyRequest()
-            .authenticated();
+            .antMatchers(
+              "/",
+              "/public/login",
+              "/public/register",
+              "/public/about",
+              "/public/categories",
+              "/public/categories/*",
+              "/public/products",
+              "/public/products/*",
+              "/public/receipt/*",
+              "/public/checkout",
+              "/public/checkout/validate")
+                .permitAll();
   }
 
   @Override
