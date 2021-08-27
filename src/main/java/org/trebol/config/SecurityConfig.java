@@ -1,6 +1,7 @@
 package org.trebol.config;
 
 import javax.crypto.SecretKey;
+import javax.servlet.Filter;
 
 import io.jsonwebtoken.Claims;
 
@@ -17,8 +18,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.trebol.exceptions.CorsMappingParseException;
 
 import org.trebol.security.JwtTokenVerifierFilter;
 import org.trebol.security.JwtUsernamePasswordAuthenticationFilter;
@@ -37,12 +38,9 @@ public class SecurityConfig
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
   @Autowired
-  public SecurityConfig(
-      UserDetailsService userDetailsService,
-      SecretKey secretKey,
-      SecurityProperties securityProperties,
-      IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-      CorsProperties corsProperties) {
+  public SecurityConfig(UserDetailsService userDetailsService, SecretKey secretKey,
+    SecurityProperties securityProperties, IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+    CorsProperties corsProperties) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.securityProperties = securityProperties;
@@ -53,38 +51,39 @@ public class SecurityConfig
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+        .headers()
+            .frameOptions().sameOrigin()
+          .and()
         .cors()
-        .and()
+          .and()
         .csrf()
             .disable()
         .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+          .and()
         .logout()
-            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            .logoutUrl("/public/logout")
             .invalidateHttpSession(true)
-        .and()
+          .and()
         .addFilter(
-            this.jwtLoginAuthenticationFilter())
+            this.loginUrl("/public/login"))
         .addFilterAfter(
             new JwtTokenVerifierFilter(jwtClaimsParserService),
             JwtUsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
-        .antMatchers(
-          "/",
-          "/public/login",
-          "/public/register",
-          "/public/about",
-          "/public/categories",
-          "/public/categories/*",
-          "/public/products",
-          "/public/products/*",
-          "/public/receipt/*",
-          "/public/checkout",
-          "/public/checkout/validate")
-            .permitAll()
-        .anyRequest()
-            .authenticated();
+            .antMatchers(
+              "/",
+              "/public/login",
+              "/public/register",
+              "/public/about",
+              "/public/categories",
+              "/public/categories/*",
+              "/public/products",
+              "/public/products/*",
+              "/public/receipt/*",
+              "/public/checkout",
+              "/public/checkout/validate")
+                .permitAll();
   }
 
   @Override
@@ -101,7 +100,7 @@ public class SecurityConfig
   }
 
   @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
+  public CorsConfigurationSource corsConfigurationSource() throws CorsMappingParseException {
     return new CorsConfigurationSourceBuilder(corsProperties).build();
   }
 
@@ -111,12 +110,12 @@ public class SecurityConfig
     return new BCryptPasswordEncoder(strength);
   }
 
-  private JwtUsernamePasswordAuthenticationFilter jwtLoginAuthenticationFilter() throws Exception {
+  private Filter loginUrl(String url) throws Exception {
     JwtUsernamePasswordAuthenticationFilter filter = new JwtUsernamePasswordAuthenticationFilter(
       super.authenticationManager(),
       securityProperties,
       secretKey);
-    filter.setFilterProcessesUrl("/public/login");
+    filter.setFilterProcessesUrl(url);
     return filter;
   }
 

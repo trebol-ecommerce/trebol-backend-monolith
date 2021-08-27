@@ -1,21 +1,30 @@
 package org.trebol.config;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.annotation.Validated;
 
-import com.google.common.net.HttpHeaders;
-
+@Validated
 @Configuration
 @ConfigurationProperties(prefix = "application.security")
 public class SecurityProperties {
 
+  @NotBlank
   private String jwtSecretKey;
-  private String jwtTokenPrefix;
-  private Integer jwtTokenExpirationAfterDays;
-  private Integer bcryptEncoderStrength;
+  @PositiveOrZero
+  private int jwtExpirationAfterMinutes;
+  @PositiveOrZero
+  private int jwtExpirationAfterHours;
+  @PositiveOrZero
+  private int jwtExpirationAfterDays;
+  @Min(6)
+  private int bcryptEncoderStrength;
 
-  public SecurityProperties() {
-  }
+  public SecurityProperties() { }
 
   public String getJwtSecretKey() {
     return jwtSecretKey;
@@ -25,31 +34,35 @@ public class SecurityProperties {
     this.jwtSecretKey = jwtSecretKey;
   }
 
-  public String getJwtTokenPrefix() {
-    return jwtTokenPrefix;
+  public int getJwtExpirationAfterDays() {
+    return jwtExpirationAfterDays;
   }
 
-  public void setJwtTokenPrefix(String jwtTokenPrefix) {
-    this.jwtTokenPrefix = jwtTokenPrefix;
+  public void setJwtExpirationAfterDays(int jwtExpirationAfterDays) {
+    this.jwtExpirationAfterDays = jwtExpirationAfterDays;
   }
 
-  public Integer getJwtTokenExpirationAfterDays() {
-    return jwtTokenExpirationAfterDays;
+  public int getJwtExpirationAfterMinutes() {
+    return jwtExpirationAfterMinutes;
   }
 
-  public void setJwtTokenExpirationAfterDays(Integer jwtTokenExpirationAfterDays) {
-    this.jwtTokenExpirationAfterDays = jwtTokenExpirationAfterDays;
+  public void setJwtExpirationAfterMinutes(int jwtExpirationAfterMinutes) {
+    this.jwtExpirationAfterMinutes = jwtExpirationAfterMinutes;
   }
 
-  public String getAuthorizationHeader() {
-    return HttpHeaders.AUTHORIZATION;
+  public int getJwtExpirationAfterHours() {
+    return jwtExpirationAfterHours;
   }
 
-  public Integer getBcryptEncoderStrength() {
+  public void setJwtExpirationAfterHours(int jwtExpirationAfterHours) {
+    this.jwtExpirationAfterHours = jwtExpirationAfterHours;
+  }
+
+  public int getBcryptEncoderStrength() {
     return bcryptEncoderStrength;
   }
 
-  public void setBcryptEncoderStrength(Integer bcryptEncoderStrength) {
+  public void setBcryptEncoderStrength(int bcryptEncoderStrength) {
     this.bcryptEncoderStrength = bcryptEncoderStrength;
   }
 }
