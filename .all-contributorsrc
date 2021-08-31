@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "bglamadrid",
+      "name": "bglamadrid",
+      "avatar_url": "https://avatars.githubusercontent.com/u/68207359?v=4",
+      "profile": "http://benjaminlamadrid.cl",
+      "contributions": [
+        "code",
+        "design"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "trebol-jee",
+  "projectOwner": "trebol-ecommerce",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
