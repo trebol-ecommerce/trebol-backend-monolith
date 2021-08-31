@@ -1,5 +1,7 @@
 package org.trebol.jpa.repositories;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import org.trebol.jpa.entities.BillingType;
@@ -13,4 +15,5 @@ import org.trebol.jpa.IJpaRepository;
 public interface IBillingTypesJpaRepository
     extends IJpaRepository<BillingType> {
 
+  Optional<BillingType> findByName(String name);
 }

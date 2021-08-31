@@ -1,5 +1,7 @@
 package org.trebol.jpa.repositories;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import org.trebol.jpa.entities.PaymentType;
@@ -12,5 +14,7 @@ import org.trebol.jpa.IJpaRepository;
 @Repository
 public interface IPaymentTypesJpaRepository
     extends IJpaRepository<PaymentType> {
+
+  Optional<PaymentType> findByName(String name);
 
 }
