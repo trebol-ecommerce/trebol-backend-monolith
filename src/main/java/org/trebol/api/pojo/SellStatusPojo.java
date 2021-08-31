@@ -13,17 +13,17 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class SellStatusPojo {
   @JsonInclude
-  private Long id;
+  private Integer code;
   @JsonInclude(value = Include.NON_DEFAULT)
   @NotNull
   private String name;
 
-  public Long getId() {
-    return id;
+  public Integer getCode() {
+    return code;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setCode(Integer code) {
+    this.code = code;
   }
 
   public String getName() {
@@ -37,7 +37,7 @@ public class SellStatusPojo {
   @Override
   public int hashCode() {
     int hash = 5;
-    hash = 79 * hash + Objects.hashCode(this.id);
+    hash = 79 * hash + Objects.hashCode(this.code);
     hash = 79 * hash + Objects.hashCode(this.name);
     return hash;
   }
@@ -57,7 +57,7 @@ public class SellStatusPojo {
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
-    if (!Objects.equals(this.id, other.id)) {
+    if (!Objects.equals(this.code, other.code)) {
       return false;
     }
     return true;
@@ -65,7 +65,7 @@ public class SellStatusPojo {
 
   @Override
   public String toString() {
-    return "SellStatusPojo{" + "id=" + id + ", name=" + name + '}';
+    return "SellStatusPojo{code=" + code + ", name=" + name + '}';
   }
 
 }

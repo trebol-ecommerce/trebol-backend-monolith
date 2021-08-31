@@ -17,7 +17,7 @@ public class SellStatus2Pojo
   @Override
   public SellStatusPojo convert(SellStatus source) {
     SellStatusPojo target = new SellStatusPojo();
-    target.setId(source.getId());
+    target.setCode(source.getCode());
     target.setName(source.getName());
     return target;
   }
