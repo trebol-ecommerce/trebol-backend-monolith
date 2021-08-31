@@ -3,7 +3,9 @@ package org.trebol.api.pojo;
 import java.util.Objects;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -14,15 +16,16 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  */
 @JsonInclude(NON_NULL)
 public class PersonPojo {
+  @JsonIgnore
   private Long id;
-  @NotBlank
   private String name;
   @NotBlank
   private String idNumber;
-  @NotBlank
   private String email;
-  private Integer phone1;
-  private Integer phone2;
+  @Pattern(regexp = "^(((\\(\\+?[0-9]{3}\\))|(\\+?[0-9]{3})) ?)?[0-9]{3,4}[ -]?[0-9]{4}$")
+  private String phone1;
+  @Pattern(regexp = "^(((\\(\\+?[0-9]{3}\\))|(\\+?[0-9]{3})) ?)?[0-9]{3,4}[ -]?[0-9]{4}$")
+  private String phone2;
 
   public Long getId() {
     return id;
@@ -56,19 +59,19 @@ public class PersonPojo {
     this.email = email;
   }
 
-  public Integer getPhone1() {
+  public String getPhone1() {
     return phone1;
   }
 
-  public void setPhone1(Integer phone1) {
+  public void setPhone1(String phone1) {
     this.phone1 = phone1;
   }
 
-  public Integer getPhone2() {
+  public String getPhone2() {
     return phone2;
   }
 
-  public void setPhone2(Integer phone2) {
+  public void setPhone2(String phone2) {
     this.phone2 = phone2;
   }
 
