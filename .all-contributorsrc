@@ -6,6 +6,15 @@
   "commit": false,
   "contributors": [
     {
+      "login": "amigoscode",
+      "name": "Amigoscode",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40702606?v=4",
+      "profile": "http://amigoscode.com",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
       "login": "bglamadrid",
       "name": "bglamadrid",
       "avatar_url": "https://avatars.githubusercontent.com/u/68207359?v=4",
