@@ -130,6 +130,16 @@ public class SalesJpaCrudServiceImpl
   public Sell pojo2Entity(SellPojo source) throws BadInputException {
     Sell target = new Sell();
 
+    String statusName = source.getStatus();
+    if (statusName != null && !statusName.isEmpty()) {
+      Optional<SellStatus> existingStatus = statusesRepository.findByName(statusName);
+      if (!existingStatus.isPresent()) {
+        throw new BadInputException("Status '" + statusName + "' is not valid");
+      } else {
+        target.setStatus(existingStatus.get());
+      }
+    }
+
     String paymentType = source.getPaymentType();
     if (paymentType != null && !paymentType.isEmpty()) {
       Optional<PaymentType> existingPaymentType = paymentTypesRepository.findByName(paymentType);

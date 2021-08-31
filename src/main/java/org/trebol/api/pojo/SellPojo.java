@@ -32,6 +32,7 @@ public class SellPojo {
   private Collection<SellDetailPojo> details;
   @JsonInclude
   private int netValue;
+  private String status;
   private String billingType;
   private String paymentType;
   private CustomerPojo customer;
@@ -81,6 +82,14 @@ public class SellPojo {
 
   public void setNetValue(int netValue) {
     this.netValue = netValue;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   public String getBillingType() {
@@ -149,12 +158,13 @@ public class SellPojo {
 
   @Override
   public int hashCode() {
-    int hash = 5;
+    int hash = 7;
     hash = 71 * hash + Objects.hashCode(this.id);
     hash = 71 * hash + Objects.hashCode(this.token);
     hash = 71 * hash + Objects.hashCode(this.date);
     hash = 71 * hash + Objects.hashCode(this.details);
     hash = 71 * hash + this.netValue;
+    hash = 71 * hash + Objects.hashCode(this.status);
     hash = 71 * hash + Objects.hashCode(this.billingType);
     hash = 71 * hash + Objects.hashCode(this.paymentType);
     hash = 71 * hash + Objects.hashCode(this.customer);
@@ -182,6 +192,9 @@ public class SellPojo {
       return false;
     }
     if (!Objects.equals(this.token, other.token)) {
+      return false;
+    }
+    if (!Objects.equals(this.status, other.status)) {
       return false;
     }
     if (!Objects.equals(this.billingType, other.billingType)) {
@@ -227,6 +240,7 @@ public class SellPojo {
         ", date=" + date +
         ", details=" + details +
         ", netValue=" + netValue +
+        ", status=" + status +
         ", billingType=" + billingType +
         ", paymentType=" + paymentType +
         ", customer=" + customer +
