@@ -3,36 +3,32 @@ package org.trebol.api.pojo;
 import java.util.Collection;
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
+@JsonInclude(NON_NULL)
 public class ProductPojo {
-  @JsonInclude
   private Long id;
-  @JsonInclude
-  @NotNull
   private String name;
-  @JsonInclude
-  @NotNull
+  @NotBlank
   private String barcode;
-  @JsonInclude
-  @NotNull
   private Integer price;
-  @JsonInclude
   private ProductCategoryPojo category;
-  @JsonInclude(value = Include.NON_EMPTY)
+  @JsonInclude(NON_EMPTY)
   private String description;
-  @JsonInclude(value = Include.NON_EMPTY)
+  @JsonIgnore
   private Integer currentStock;
-  @JsonInclude(value = Include.NON_EMPTY)
+  @JsonIgnore
   private Integer criticalStock;
-  @JsonInclude(value = Include.NON_NULL)
   private Collection<ImagePojo> images;
 
   public Long getId() {
