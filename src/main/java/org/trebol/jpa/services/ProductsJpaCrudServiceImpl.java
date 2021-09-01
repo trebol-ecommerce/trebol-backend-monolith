@@ -81,17 +81,25 @@ public class ProductsJpaCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qProduct.id.eq(longValue)); // match por id es único
+            return predicate.and(qProduct.id.eq(Long.valueOf(stringValue))); // match por id es único
+          case "barcode":
+            predicate.and(qProduct.barcode.eq(stringValue));
+            break;
           case "name":
+            predicate.and(qProduct.name.eq(stringValue));
+            break;
+          case "barcodeLike":
+            predicate.and(qProduct.barcode.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "nameLike":
             predicate.and(qProduct.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "productCategory":
-            predicate.and(qProduct.productCategory.id.eq(longValue));
+            predicate.and(qProduct.productCategory.name.eq(stringValue));
             break;
-          case "productCategoryName":
+          case "productCategoryLike":
             predicate.and(qProduct.productCategory.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:
