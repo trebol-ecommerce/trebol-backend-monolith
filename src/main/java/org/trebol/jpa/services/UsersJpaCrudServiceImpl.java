@@ -120,14 +120,16 @@ public class UsersJpaCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qUser.id.eq(longValue)); // id matching is final
+            return predicate.and(qUser.id.eq(Long.valueOf(stringValue))); // id matching is final
           case "name":
+            predicate.and(qUser.name.eq(stringValue));
+            break;
+          case "nameLike":
             predicate.and(qUser.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "email":
+          case "emailLike":
             predicate.and(qUser.person.email.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:
