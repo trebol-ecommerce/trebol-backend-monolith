@@ -25,7 +25,6 @@ public class ProductPojo {
   @NotNull
   private Integer price;
   @JsonInclude
-  @NotNull
   private ProductCategoryPojo category;
   @JsonInclude(value = Include.NON_EMPTY)
   private String description;
