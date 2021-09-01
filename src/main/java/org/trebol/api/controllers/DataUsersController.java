@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import io.jsonwebtoken.lang.Maps;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +32,8 @@ import org.trebol.jpa.GenericJpaCrudService;
 import org.trebol.api.IDataCrudController;
 import org.trebol.exceptions.BadInputException;
 
+import com.querydsl.core.types.Predicate;
+
 import javassist.NotFoundException;
 
 /**
@@ -44,8 +48,7 @@ public class DataUsersController
   implements IDataCrudController<UserPojo, String> {
 
   @Autowired
-  public DataUsersController(CustomProperties globals,
-      GenericJpaCrudService<UserPojo, User> crudService) {
+  public DataUsersController(CustomProperties globals, GenericJpaCrudService<UserPojo, User> crudService) {
     super(globals, crudService);
   }
 
@@ -63,25 +66,29 @@ public class DataUsersController
   }
 
   @Override
-  @GetMapping({"/{code}", "/{code}/"})
+  @GetMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:read')")
-  public UserPojo readOne(@PathVariable String code) throws NotFoundException {
-    throw new UnsupportedOperationException("Method not implemented");
+  public UserPojo readOne(@PathVariable String name) throws NotFoundException {
+    Map<String, String> nameMatcher = Maps.of("name", name).build();
+    Predicate matchesName = crudService.parsePredicate(nameMatcher);
+    return crudService.readOne(matchesName);
   }
 
   @Override
-  @PutMapping({"/{code}", "/{code}/"})
+  @PutMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:update')")
-  public void update(@RequestBody @Valid UserPojo input, @PathVariable String code)
+  public void update(@RequestBody @Valid UserPojo input, @PathVariable String name)
     throws BadInputException, NotFoundException {
-    throw new UnsupportedOperationException("Method not implemented");
+    Long userId = this.readOne(name).getId();
+    crudService.update(input, userId);
   }
 
   @Override
-  @DeleteMapping({"/{code}", "/{code}/"})
+  @DeleteMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:delete')")
-  public void delete(@PathVariable String code) throws NotFoundException {
-    throw new UnsupportedOperationException("Method not implemented");
+  public void delete(@PathVariable String name) throws NotFoundException {
+    Long userId = this.readOne(name).getId();
+    crudService.delete(userId);
   }
 
   @Override

@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import io.jsonwebtoken.lang.Maps;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +32,8 @@ import org.trebol.jpa.GenericJpaCrudService;
 import org.trebol.api.IDataCrudController;
 import org.trebol.exceptions.BadInputException;
 
+import com.querydsl.core.types.Predicate;
+
 import javassist.NotFoundException;
 
 /**
@@ -44,8 +48,7 @@ public class DataUserRolesController
   implements IDataCrudController<UserRolePojo, String> {
 
   @Autowired
-  public DataUserRolesController(CustomProperties globals,
-      GenericJpaCrudService<UserRolePojo, UserRole> crudService) {
+  public DataUserRolesController(CustomProperties globals, GenericJpaCrudService<UserRolePojo, UserRole> crudService) {
     super(globals, crudService);
   }
 
@@ -66,7 +69,9 @@ public class DataUserRolesController
   @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:read')")
   public UserRolePojo readOne(@PathVariable String code) throws NotFoundException {
-    throw new UnsupportedOperationException("Method not implemented");
+    Map<String, String> codeMatcher = Maps.of("code", code).build();
+    Predicate matchesCode = crudService.parsePredicate(codeMatcher);
+    return crudService.readOne(matchesCode);
   }
 
   @Override
@@ -74,14 +79,16 @@ public class DataUserRolesController
   @PreAuthorize("hasAuthority('user_roles:update')")
   public void update(@RequestBody @Valid UserRolePojo input, @PathVariable String code)
     throws BadInputException, NotFoundException {
-    throw new UnsupportedOperationException("Method not implemented");
+    Long userRoleId = this.readOne(code).getId();
+    crudService.update(input, userRoleId);
   }
 
   @Override
   @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:delete')")
   public void delete(@PathVariable String code) throws NotFoundException {
-    throw new UnsupportedOperationException("Method not implemented");
+    Long userRoleId = this.readOne(code).getId();
+    crudService.delete(userRoleId);
   }
 
   @Override
