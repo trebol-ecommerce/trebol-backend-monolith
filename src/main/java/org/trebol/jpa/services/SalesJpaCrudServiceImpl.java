@@ -141,7 +141,7 @@ public class SalesJpaCrudServiceImpl
     }
 
     String paymentType = source.getPaymentType();
-    if (paymentType != null && !paymentType.isEmpty()) {
+    if (paymentType != null && !paymentType.isBlank()) {
       Optional<PaymentType> existingPaymentType = paymentTypesRepository.findByName(paymentType);
       if (!existingPaymentType.isPresent()) {
         throw new BadInputException("Payment type '" + paymentType + "' is not valid");
@@ -151,7 +151,7 @@ public class SalesJpaCrudServiceImpl
     }
 
     String billingType = source.getBillingType();
-    if (billingType != null && !billingType.isEmpty()) {
+    if (billingType != null && !billingType.isBlank()) {
       Optional<BillingType> existingBillingType = billingTypesRepository.findByName(billingType);
       if (!existingBillingType.isPresent()) {
         throw new BadInputException("Billing type '" + billingType + "' is not valid");
