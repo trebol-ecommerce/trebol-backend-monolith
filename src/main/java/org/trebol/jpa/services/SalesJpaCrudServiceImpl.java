@@ -1,5 +1,10 @@
 package org.trebol.jpa.services;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+
+import javassist.NotFoundException;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,14 +27,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import org.trebol.api.pojo.AddressPojo;
 import org.trebol.api.pojo.BillingCompanyPojo;
-
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
-
 import org.trebol.jpa.entities.QSell;
-
 import org.trebol.api.pojo.CustomerPojo;
 import org.trebol.api.pojo.PersonPojo;
 import org.trebol.api.pojo.ProductPojo;
@@ -43,9 +44,6 @@ import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.GenericJpaCrudService;
 import org.trebol.jpa.entities.SellStatus;
-
-import javassist.NotFoundException;
-
 import org.trebol.jpa.ISalesJpaService;
 import org.trebol.jpa.entities.Address;
 import org.trebol.jpa.entities.BillingCompany;
@@ -277,12 +275,11 @@ public class SalesJpaCrudServiceImpl
     return predicate;
   }
 
-  @Nullable
   @Override
-  public SellPojo readOne(Long id) {
-    Optional<Sell> personById = salesRepository.deepFindById(id);
+  public SellPojo readOne(Long id) throws NotFoundException {
+    Optional<Sell> personById = salesRepository.findByIdWithDetails(id);
     if (!personById.isPresent()) {
-      return null;
+      throw new NotFoundException("No sell matches that buy order");
     } else {
       Sell found = personById.get();
       SellPojo foundPojo = this.entity2Pojo(found);
@@ -298,7 +295,7 @@ public class SalesJpaCrudServiceImpl
   public SellPojo find(Predicate conditions) throws NotFoundException {
     Optional<Sell> matchingSell = salesRepository.findOne(conditions);
     if (!matchingSell.isPresent()) {
-      throw new NotFoundException("The requested item does not exist");
+      throw new NotFoundException("No sell matches the filtering conditions");
     } else {
       Sell found = matchingSell.get();
       SellPojo foundPojo = this.entity2Pojo(found);
