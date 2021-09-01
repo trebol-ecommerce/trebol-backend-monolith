@@ -2,6 +2,8 @@ package org.trebol.api.controllers;
 
 import java.util.Map;
 
+import io.jsonwebtoken.lang.Maps;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,25 +25,27 @@ import javassist.NotFoundException;
 @RequestMapping("/public/products")
 public class PublicProductsController {
 
-  private final GenericJpaCrudService<ProductPojo, Product> productsCrudService;
+  private final GenericJpaCrudService<ProductPojo, Product> crudService;
   private final CustomProperties customProperties;
 
   @Autowired
-  public PublicProductsController(GenericJpaCrudService<ProductPojo, Product> catalogService,
+  public PublicProductsController(GenericJpaCrudService<ProductPojo, Product> crudService,
     CustomProperties customProperties) {
-    this.productsCrudService = catalogService;
+    this.crudService = crudService;
     this.customProperties = customProperties;
   }
 
   @GetMapping({"", "/"})
   public DataPage<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     Integer requestPageSize = customProperties.getItemsPerPage();
-    Predicate filters = productsCrudService.parsePredicate(allRequestParams);
-    return productsCrudService.readMany(requestPageSize, 0, filters);
+    Predicate filters = crudService.parsePredicate(allRequestParams);
+    return crudService.readMany(requestPageSize, 0, filters);
   }
 
-  @GetMapping({"/{id}", "/{id}/"})
-  public ProductPojo readOne(@PathVariable Long id) throws NotFoundException {
-    return productsCrudService.readOne(id);
+  @GetMapping({"/{barcode}", "/{barcode}/"})
+  public ProductPojo readOne(@PathVariable String barcode) throws NotFoundException {
+    Map<String, String> barcodeMatcher = Maps.of("barcode", barcode).build();
+    Predicate matchesBarcode = crudService.parsePredicate(barcodeMatcher);
+    return crudService.readOne(matchesBarcode);
   }
 }
