@@ -23,9 +23,9 @@ public class Product2Entity
     target.setBarcode(source.getBarcode());
     target.setPrice(source.getPrice());
 
-    if (source.getProductType() != null && source.getProductType().getId() != null) {
+    if (source.getCategory() != null && source.getCategory().getId() != null) {
       ProductCategory targetProductCategory = new ProductCategory();
-      targetProductCategory.setId(source.getProductType().getId());
+      targetProductCategory.setId(source.getCategory().getId());
       target.setProductCategory(targetProductCategory);
     }
 
