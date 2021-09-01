@@ -71,7 +71,7 @@ public class SalesJpaCrudServiceImpl
   extends GenericJpaCrudService<SellPojo, Sell>
   implements ISalesJpaService {
 
-  private static final Logger logger = LoggerFactory.getLogger(SalesJpaCrudServiceImpl.class);
+  private final Logger logger = LoggerFactory.getLogger(SalesJpaCrudServiceImpl.class);
   private final ISalesJpaRepository salesRepository;
   private final ISellStatusesJpaRepository statusesRepository;
   private final IBillingTypesJpaRepository billingTypesRepository;
@@ -108,8 +108,25 @@ public class SalesJpaCrudServiceImpl
     // TODO can lesser null checks be used ?
     SellPojo target = conversion.convert(source, SellPojo.class);
     if (target != null) {
-      if (source.getBillingType() != null) {
-        target.setBillingType(source.getBillingType().getName());
+
+      target.setStatus(source.getStatus().getName());
+      target.setPaymentType(source.getPaymentType().getName());
+      target.setBillingType(source.getBillingType().getName());
+
+      if (target.getBillingType().equals("Enterprise Invoice")) {
+        BillingCompany sourceBillingCompany = source.getBillingCompany();
+        if (sourceBillingCompany != null) {
+          BillingCompanyPojo targetBillingCompany = conversion.convert(sourceBillingCompany, BillingCompanyPojo.class);
+          target.setBillingCompany(targetBillingCompany);
+        }
+      }
+
+      AddressPojo billingAddress = conversion.convert(source.getBillingAddress(), AddressPojo.class);
+      target.setBillingAddress(billingAddress);
+
+      if (source.getShippingAddress() != null) {
+        AddressPojo shippingAddress = conversion.convert(source.getShippingAddress(), AddressPojo.class);
+        target.setShippingAddress(shippingAddress);
       }
 
       CustomerPojo customer = this.convertCustomerToPojo(source.getCustomer());
@@ -202,8 +219,23 @@ public class SalesJpaCrudServiceImpl
 
     Collection<SellDetailPojo> sourceDetails = source.getDetails();
     if (sourceDetails != null && !sourceDetails.isEmpty()) {
-      List<SellDetail> details = this.details2EntityList(sourceDetails);
+      List<SellDetail> details = new ArrayList<>();
+      int netValue = 0, totalItems = 0;
+      for (SellDetailPojo d : source.getDetails()) {
+        try {
+          SellDetail targetDetail = this.sellDetail2Entity(d);
+          details.add(targetDetail);
+          int units = targetDetail.getUnits();
+          netValue += (targetDetail.getProduct().getPrice() * units);
+          totalItems += units;
+        } catch (NotFoundException exc) {
+          throw new BadInputException("Unexisting product in sell details");
+        }
+      }
       target.setDetails(details);
+      target.setNetValue(netValue);
+      target.setTotalItems(totalItems);
+      // TODO note where to add total value, transport value...?
     }
 
     return target;
@@ -212,7 +244,7 @@ public class SalesJpaCrudServiceImpl
   @Override
   public Page<Sell> getAllEntities(Pageable paged, Predicate filters) {
     if (filters == null) {
-      return salesRepository.deepFindAll(paged);
+      return salesRepository.findAll(paged);
     } else {
       return salesRepository.findAll(filters, paged);
     }
@@ -418,19 +450,6 @@ public class SalesJpaCrudServiceImpl
     } else {
       return conversion.convert(sourceCustomer, Customer.class);
     }
-  }
-
-  private List<SellDetail> details2EntityList(Collection<SellDetailPojo> source) throws BadInputException {
-    List<SellDetail> details = new ArrayList<>();
-    for (SellDetailPojo d : source) {
-      try {
-        SellDetail targetDetail = this.sellDetail2Entity(d);
-        details.add(targetDetail);
-      } catch (NotFoundException exc) {
-        throw new BadInputException("Unexisting product in sell details");
-      }
-    }
-    return details;
   }
 
   private SellDetail sellDetail2Entity(SellDetailPojo d) throws NotFoundException {
