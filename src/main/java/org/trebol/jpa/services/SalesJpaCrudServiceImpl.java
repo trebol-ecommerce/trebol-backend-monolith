@@ -371,7 +371,8 @@ public class SalesJpaCrudServiceImpl
 
   @Override
   public boolean itemExists(SellPojo input) throws BadInputException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Long id = input.getId();
+    return ((id != null) && this.salesRepository.findById(id).isPresent());
   }
 
   private BillingCompany billingCompany2Entity(BillingCompanyPojo source) throws BadInputException {

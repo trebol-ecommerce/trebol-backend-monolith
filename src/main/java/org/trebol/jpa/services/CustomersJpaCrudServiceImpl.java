@@ -105,11 +105,11 @@ public class CustomersJpaCrudServiceImpl
   public boolean itemExists(CustomerPojo input) throws BadInputException {
     PersonPojo person = input.getPerson();
     if (person == null) {
-      throw new BadInputException("Customer does not have person data");
+      throw new BadInputException("Customer does not have profile information");
     } else {
       String idNumber = person.getIdNumber();
-      if (idNumber == null) {
-        throw new BadInputException("Customer does not have ID card");
+      if (idNumber == null || idNumber.isBlank()) {
+        throw new BadInputException("Customer does not have an ID card");
       } else {
         return (customersRepository.findByPersonIdNumber(idNumber).isPresent());
       }

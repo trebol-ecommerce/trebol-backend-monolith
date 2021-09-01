@@ -45,7 +45,7 @@ public class PeopleJpaCrudServiceImpl
   @Override
   public boolean itemExists(PersonPojo input) throws BadInputException {
     String idCard = input.getIdNumber();
-    if (idCard == null) {
+    if (idCard == null || idCard.isBlank()) {
       throw new BadInputException("Customer does not have ID card");
     } else {
       return (peopleRepository.findByIdNumber(idCard).isPresent());

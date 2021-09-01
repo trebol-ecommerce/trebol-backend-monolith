@@ -32,11 +32,13 @@ public class UserRolesJpaCrudServiceImpl
   extends GenericJpaCrudService<UserRolePojo, UserRole> {
 
   private static final Logger logger = LoggerFactory.getLogger(UserRolesJpaCrudServiceImpl.class);
+  private final IUserRolesJpaRepository userRolesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public UserRolesJpaCrudServiceImpl(IUserRolesJpaRepository sellTypes, ConversionService conversion) {
-    super(sellTypes);
+  public UserRolesJpaCrudServiceImpl(IUserRolesJpaRepository repository, ConversionService conversion) {
+    super(repository);
+    this.userRolesRepository = repository;
     this.conversion = conversion;
   }
 
@@ -79,6 +81,11 @@ public class UserRolesJpaCrudServiceImpl
 
   @Override
   public boolean itemExists(UserRolePojo input) throws BadInputException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String name = input.getName();
+    if (name == null || name.isBlank()) {
+      throw new BadInputException("Invalid user role name");
+    } else {
+      return userRolesRepository.findByName(name).isPresent();
+    }
   }
 }

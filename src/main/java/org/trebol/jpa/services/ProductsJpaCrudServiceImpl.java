@@ -37,14 +37,16 @@ public class ProductsJpaCrudServiceImpl
   extends GenericJpaCrudService<ProductPojo, Product> {
 
   private static final Logger logger = LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class);
-  private final IProductImagesJpaRepository imagesRepository;
+  private final IProductsJpaRepository productsRepository;
+  private final IProductImagesJpaRepository productImagesRepository;
   private final ConversionService conversion;
 
   @Autowired
   public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository, IProductImagesJpaRepository imagesRepository,
     ConversionService conversion) {
     super(repository);
-    this.imagesRepository = imagesRepository;
+    this.productsRepository = repository;
+    this.productImagesRepository = imagesRepository;
     this.conversion = conversion;
   }
 
@@ -55,7 +57,7 @@ public class ProductsJpaCrudServiceImpl
     if (target != null) {
       Long id = target.getId();
       Set<ImagePojo> images = new HashSet<>();
-      for (ProductImage pi : imagesRepository.deepFindProductImagesByProductId(id)) {
+      for (ProductImage pi : productImagesRepository.deepFindProductImagesByProductId(id)) {
         ImagePojo targetImage = conversion.convert(pi.getImage(), ImagePojo.class);
         if (targetImage != null) {
           images.add(targetImage);
@@ -105,6 +107,11 @@ public class ProductsJpaCrudServiceImpl
 
   @Override
   public boolean itemExists(ProductPojo input) throws BadInputException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String barcode = input.getBarcode();
+    if (barcode == null || barcode.isEmpty()) {
+      throw new BadInputException("Invalid product barcode");
+    } else {
+      return (this.productsRepository.findByBarcode(barcode).isPresent());
+    }
   }
 }

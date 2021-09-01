@@ -162,6 +162,11 @@ public class UsersJpaCrudServiceImpl
 
   @Override
   public boolean itemExists(UserPojo input) throws BadInputException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String name = input.getName();
+    if (name == null || name.isBlank()) {
+      throw new BadInputException("Invalid user name");
+    } else {
+      return (userRepository.findByName(name).isPresent());
+    }
   }
 }
