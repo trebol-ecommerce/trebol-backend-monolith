@@ -37,14 +37,16 @@ public class ProductsJpaCrudServiceImpl
   extends GenericJpaCrudService<ProductPojo, Product> {
 
   private static final Logger logger = LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class);
-  private final IProductImagesJpaRepository imagesRepository;
+  private final IProductsJpaRepository productsRepository;
+  private final IProductImagesJpaRepository productImagesRepository;
   private final ConversionService conversion;
 
   @Autowired
   public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository, IProductImagesJpaRepository imagesRepository,
     ConversionService conversion) {
     super(repository);
-    this.imagesRepository = imagesRepository;
+    this.productsRepository = repository;
+    this.productImagesRepository = imagesRepository;
     this.conversion = conversion;
   }
 
@@ -55,7 +57,7 @@ public class ProductsJpaCrudServiceImpl
     if (target != null) {
       Long id = target.getId();
       Set<ImagePojo> images = new HashSet<>();
-      for (ProductImage pi : imagesRepository.deepFindProductImagesByProductId(id)) {
+      for (ProductImage pi : productImagesRepository.deepFindProductImagesByProductId(id)) {
         ImagePojo targetImage = conversion.convert(pi.getImage(), ImagePojo.class);
         if (targetImage != null) {
           images.add(targetImage);
@@ -79,24 +81,32 @@ public class ProductsJpaCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qProduct.id.eq(longValue)); // match por id es único
+            return predicate.and(qProduct.id.eq(Long.valueOf(stringValue))); // match por id es único
+          case "barcode":
+            predicate.and(qProduct.barcode.eq(stringValue));
+            break;
           case "name":
+            predicate.and(qProduct.name.eq(stringValue));
+            break;
+          case "barcodeLike":
+            predicate.and(qProduct.barcode.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "nameLike":
             predicate.and(qProduct.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "productCategory":
-            predicate.and(qProduct.productCategory.id.eq(longValue));
+            predicate.and(qProduct.productCategory.name.eq(stringValue));
             break;
-          case "productCategoryName":
+          case "productCategoryLike":
             predicate.and(qProduct.productCategory.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:
             break;
         }
       } catch (NumberFormatException exc) {
-        logger.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       }
     }
 
@@ -105,6 +115,11 @@ public class ProductsJpaCrudServiceImpl
 
   @Override
   public boolean itemExists(ProductPojo input) throws BadInputException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String barcode = input.getBarcode();
+    if (barcode == null || barcode.isEmpty()) {
+      throw new BadInputException("Invalid product barcode");
+    } else {
+      return (this.productsRepository.findByBarcode(barcode).isPresent());
+    }
   }
 }

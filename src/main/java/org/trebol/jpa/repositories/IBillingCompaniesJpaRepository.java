@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import org.trebol.jpa.entities.SellStatus;
+import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.IJpaRepository;
 
 /**
@@ -12,8 +12,9 @@ import org.trebol.jpa.IJpaRepository;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Repository
-public interface ISellStatusesJpaRepository
-  extends IJpaRepository<SellStatus> {
+public interface IBillingCompaniesJpaRepository
+    extends IJpaRepository<BillingCompany> {
 
-  public Optional<SellStatus> findByName(String name);
+  Optional<BillingCompany> findByIdNumber(String idNumber);
+
 }

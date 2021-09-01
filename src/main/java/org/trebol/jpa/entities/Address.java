@@ -54,14 +54,14 @@ public class Address
   @Size(max = 100)
   @Column(name = "address_first_line")
   private String firstLine;
-  @Basic(optional = false)
+  @Basic(optional = true)
   @Size(max = 50)
   @Column(name = "address_second_line")
   private String secondLine;
-  @Basic(optional = false)
+  @Basic(optional = true)
   @Column(name = "address_postal_code")
   private String postalCode;
-  @Basic(optional = false)
+  @Basic(optional = true)
   @Size(max = 50)
   @Column(name = "address_notes")
   private String notes;

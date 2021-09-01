@@ -32,10 +32,12 @@ public class SellPojo {
   private Collection<SellDetailPojo> details;
   @JsonInclude
   private int netValue;
+  private String status;
   private String billingType;
   private String paymentType;
   private CustomerPojo customer;
   private SalespersonPojo salesperson;
+  private ShipperPojo shipper;
   private BillingCompanyPojo billingCompany;
   private AddressPojo billingAddress;
   private AddressPojo shippingAddress;
@@ -82,6 +84,14 @@ public class SellPojo {
     this.netValue = netValue;
   }
 
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
   public String getBillingType() {
     return billingType;
   }
@@ -114,6 +124,14 @@ public class SellPojo {
     this.salesperson = salesperson;
   }
 
+  public ShipperPojo getShipper() {
+    return shipper;
+  }
+
+  public void setShipper(ShipperPojo shipper) {
+    this.shipper = shipper;
+  }
+
   public BillingCompanyPojo getBillingCompany() {
     return billingCompany;
   }
@@ -141,18 +159,20 @@ public class SellPojo {
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = 43 * hash + Objects.hashCode(this.id);
-    hash = 43 * hash + Objects.hashCode(this.token);
-    hash = 43 * hash + Objects.hashCode(this.date);
-    hash = 43 * hash + Objects.hashCode(this.details);
-    hash = 43 * hash + this.netValue;
-    hash = 43 * hash + Objects.hashCode(this.billingType);
-    hash = 43 * hash + Objects.hashCode(this.paymentType);
-    hash = 43 * hash + Objects.hashCode(this.customer);
-    hash = 43 * hash + Objects.hashCode(this.salesperson);
-    hash = 43 * hash + Objects.hashCode(this.billingCompany);
-    hash = 43 * hash + Objects.hashCode(this.billingAddress);
-    hash = 43 * hash + Objects.hashCode(this.shippingAddress);
+    hash = 71 * hash + Objects.hashCode(this.id);
+    hash = 71 * hash + Objects.hashCode(this.token);
+    hash = 71 * hash + Objects.hashCode(this.date);
+    hash = 71 * hash + Objects.hashCode(this.details);
+    hash = 71 * hash + this.netValue;
+    hash = 71 * hash + Objects.hashCode(this.status);
+    hash = 71 * hash + Objects.hashCode(this.billingType);
+    hash = 71 * hash + Objects.hashCode(this.paymentType);
+    hash = 71 * hash + Objects.hashCode(this.customer);
+    hash = 71 * hash + Objects.hashCode(this.salesperson);
+    hash = 71 * hash + Objects.hashCode(this.shipper);
+    hash = 71 * hash + Objects.hashCode(this.billingCompany);
+    hash = 71 * hash + Objects.hashCode(this.billingAddress);
+    hash = 71 * hash + Objects.hashCode(this.shippingAddress);
     return hash;
   }
 
@@ -172,6 +192,9 @@ public class SellPojo {
       return false;
     }
     if (!Objects.equals(this.token, other.token)) {
+      return false;
+    }
+    if (!Objects.equals(this.status, other.status)) {
       return false;
     }
     if (!Objects.equals(this.billingType, other.billingType)) {
@@ -195,6 +218,9 @@ public class SellPojo {
     if (!Objects.equals(this.salesperson, other.salesperson)) {
       return false;
     }
+    if (!Objects.equals(this.shipper, other.shipper)) {
+      return false;
+    }
     if (!Objects.equals(this.billingCompany, other.billingCompany)) {
       return false;
     }
@@ -214,14 +240,15 @@ public class SellPojo {
         ", date=" + date +
         ", details=" + details +
         ", netValue=" + netValue +
+        ", status=" + status +
         ", billingType=" + billingType +
         ", paymentType=" + paymentType +
         ", customer=" + customer +
         ", salesperson=" + salesperson +
+        ", shipper=" + shipper +
         ", billingCompany=" + billingCompany +
         ", billingAddress=" + billingAddress +
         ", shippingAddress=" + shippingAddress + '}';
   }
-
 
 }

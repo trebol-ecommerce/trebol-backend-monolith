@@ -45,7 +45,7 @@ public class PeopleJpaCrudServiceImpl
   @Override
   public boolean itemExists(PersonPojo input) throws BadInputException {
     String idCard = input.getIdNumber();
-    if (idCard == null) {
+    if (idCard == null || idCard.isBlank()) {
       throw new BadInputException("Customer does not have ID card");
     } else {
       return (peopleRepository.findByIdNumber(idCard).isPresent());
@@ -88,7 +88,7 @@ public class PeopleJpaCrudServiceImpl
             break;
         }
       } catch (NumberFormatException exc) {
-        logger.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       }
     }
 

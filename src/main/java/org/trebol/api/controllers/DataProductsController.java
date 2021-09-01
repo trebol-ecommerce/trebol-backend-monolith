@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import io.jsonwebtoken.lang.Maps;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +32,8 @@ import org.trebol.jpa.GenericJpaCrudService;
 import org.trebol.api.IDataCrudController;
 import org.trebol.exceptions.BadInputException;
 
+import com.querydsl.core.types.Predicate;
+
 import javassist.NotFoundException;
 
 /**
@@ -44,8 +48,7 @@ public class DataProductsController
   implements IDataCrudController<ProductPojo, String> {
 
   @Autowired
-  public DataProductsController(CustomProperties globals,
-      GenericJpaCrudService<ProductPojo, Product> crudService) {
+  public DataProductsController(CustomProperties globals, GenericJpaCrudService<ProductPojo, Product> crudService) {
     super(globals, crudService);
   }
 
@@ -63,25 +66,29 @@ public class DataProductsController
   }
 
   @Override
-  @GetMapping({"/{code}", "/{code}/"})
+  @GetMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:read')")
-  public ProductPojo readOne(@PathVariable String code) {
-    throw new UnsupportedOperationException("Method not implemented");
+  public ProductPojo readOne(@PathVariable String barcode) throws NotFoundException {
+    Map<String, String> codeMatcher = Maps.of("barcode", barcode).build();
+    Predicate matchesCode = crudService.parsePredicate(codeMatcher);
+    return crudService.readOne(matchesCode);
   }
 
   @Override
-  @PutMapping({"/{code}", "/{code}/"})
+  @PutMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:update')")
   public void update(@RequestBody @Valid ProductPojo input, @PathVariable String code)
     throws BadInputException, NotFoundException {
-    throw new UnsupportedOperationException("Method not implemented");
+    Long productId = this.readOne(code).getId();
+    crudService.update(input, productId);
   }
 
   @Override
-  @DeleteMapping({"/{code}", "/{code}/"})
+  @DeleteMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:delete')")
   public void delete(@PathVariable String code) throws NotFoundException {
-    throw new UnsupportedOperationException("Method not implemented");
+    Long productId = this.readOne(code).getId();
+    crudService.delete(productId);
   }
 
   @Override

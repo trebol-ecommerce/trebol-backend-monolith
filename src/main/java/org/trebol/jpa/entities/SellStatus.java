@@ -32,6 +32,9 @@ public class SellStatus
   @Column(name = "sell_status_id")
   private Long id;
   @Basic(optional = false)
+  @Column(name = "sell_status_code")
+  private Integer code;
+  @Basic(optional = false)
   @Size(min = 1, max = 100)
   @Column(name = "sell_status_name")
   private String name;
@@ -46,6 +49,14 @@ public class SellStatus
     this.id = id;
   }
 
+  public Integer getCode() {
+    return code;
+  }
+
+  public void setCode(Integer code) {
+    this.code = code;
+  }
+
   public String getName() {
     return name;
   }
@@ -57,8 +68,9 @@ public class SellStatus
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = 73 * hash + Objects.hashCode(this.id);
-    hash = 73 * hash + Objects.hashCode(this.name);
+    hash = 53 * hash + Objects.hashCode(this.id);
+    hash = 53 * hash + Objects.hashCode(this.code);
+    hash = 53 * hash + Objects.hashCode(this.name);
     return hash;
   }
 
@@ -80,12 +92,16 @@ public class SellStatus
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
+    if (!Objects.equals(this.code, other.code)) {
+      return false;
+    }
     return true;
   }
 
   @Override
   public String toString() {
     return "SellStatus{id=" + id +
+        ", code=" + code +
         ", name=" + name + '}';
   }
 

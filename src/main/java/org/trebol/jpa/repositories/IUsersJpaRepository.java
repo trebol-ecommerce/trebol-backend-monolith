@@ -16,13 +16,15 @@ import org.trebol.jpa.IJpaRepository;
 @Repository
 public interface IUsersJpaRepository
     extends IJpaRepository<User> {
+  
+  Optional<User> findByName(String name);
 
   @Query("SELECT u FROM User u JOIN FETCH u.userRole WHERE u.name = :name")
-  public Optional<User> findByNameWithRole(@Param("name") String name);
+  Optional<User> findByNameWithRole(@Param("name") String name);
 
   @Query("SELECT u FROM User u JOIN FETCH u.person WHERE u.name = :name")
-  public Optional<User> findByNameWithProfile(@Param("name") String name);
+  Optional<User> findByNameWithProfile(@Param("name") String name);
 
   @Query("SELECT u FROM User u JOIN FETCH u.person WHERE u.id = :id")
-  public Optional<User> findByIdWithProfile(@Param("id") Long id);
+  Optional<User> findByIdWithProfile(@Param("id") Long id);
 }

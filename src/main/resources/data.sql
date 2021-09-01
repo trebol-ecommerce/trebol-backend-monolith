@@ -3,26 +3,31 @@
  */
 
 INSERT INTO `sales_statuses`
-(`sell_status_id`, `sell_status_name`)
+(`sell_status_id`, `sell_status_code`, `sell_status_name`)
 VALUES
-(-6, 'Returned'),
-(-5, 'Delivery Failed'),
-(-4, 'Delivery Cancelled'),
-(-3, 'Rejected'),
-(-2, 'Payment Failed'),
-(-1, 'Payment Cancelled'),
-(01, 'Pending'),
-(02, 'Payment Started'),
-(03, 'Paid, Unconfirmed'),
-(04, 'Paid, Confirmed'),
-(05, 'Delivery On Route'),
-(06, 'Delivery Complete');
+(01, -6, 'Returned'),
+(02, -5, 'Delivery Failed'),
+(03, -4, 'Delivery Cancelled'),
+(04, -3, 'Rejected'),
+(05, -2, 'Payment Failed'),
+(06, -1, 'Payment Cancelled'),
+(07, 01, 'Pending'),
+(08, 02, 'Payment Started'),
+(09, 03, 'Paid, Unconfirmed'),
+(10, 04, 'Paid, Confirmed'),
+(11, 05, 'Delivery On Route'),
+(12, 06, 'Delivery Complete');
 
 INSERT INTO `billing_types`
 (`billing_type_id`, `billing_type_name`)
 VALUES
 (01, 'Bill'),
 (02, 'Enterprise Invoice');
+
+INSERT INTO `payment_types`
+(`payment_type_id`, `payment_type_name`)
+VALUES
+(01, 'WebPay Plus');
 
 INSERT INTO `app_users_roles`
 (`user_role_id`, `user_role_name`)
@@ -31,15 +36,6 @@ VALUES
 (02, 'Manager'),
 (03, 'Salesperson'),
 (04, 'Customer');
-
-INSERT INTO `people`
-(`person_id`, `person_name`, `person_id_number`, `person_email`)
-VALUES
-(01, 'Test',  '1111111', 'test@example.com'),
-(02, 'Test2', '2222222', 'test2@example.com'),
-(03, 'Test3', '3333333', 'test3@example.com'),
-(04, 'Test4', '4444444', 'test4@example.com'),
-(05, 'Test5', '5555555', 'test5@example.com');
 
 INSERT INTO `app_permissions`
 (`permission_id`, `permission_code`)
@@ -160,10 +156,10 @@ VALUES
 (87, 40, 03);
 
 INSERT INTO `app_users`
-(`user_id`, `user_name`, `user_password`, `user_role_id`, `person_id`)
+(`user_id`, `user_name`, `user_password`, `user_role_id`)
 VALUES
-(01, 'admin',    '$2a$10$U4vUIIlZDBvpwT.KkQuQHOfJrbGpGBol3WT9ryASiwPfYAX1bEq0K', 01, 01),
-(02, 'manager',  '$2a$10$qgNTjPGucz6/ul9/GfVwvO.cWo9.lDokYi6GQ3H4bwvAVG49uV/1K', 02, 02),
-(03, 'vendedor', '$2a$10$moc0.bFZsTztrgLrNvGC4uApdkBFihA6PlQsuy.dZ0k4A6eVhLwdu', 03, 03),
-(04, 'cliente',  '$2a$10$Mi39GIZtguqvm2aLl0JpHOm0WcPoN5aMYlbD.L6IymAEBOQU/6m6u', 04, 04);
--- passwords equal usernames
+(01, 'admin',    '$2a$10$OiJF.agD0/Rdx/i3MGAmceGkxdrdmacBUXNyGFgCGKWaoBxY4FaOe', 01),
+(02, 'manager',  '$2a$10$sDmKrVsFaQ7O.hKwxiZQV.vnwZFZkLBY4XyKVOO9UjaupDvhRoUye', 02),
+(03, 'salesperson', '$2a$10$j3fyIRTlgzANU8b2uDAsL.k2djo9Ywj3IJHeKse7TyeMT1dfcs8q2', 03),
+(04, 'customer',  '$2a$10$jQDzZpBh8JE0Yi4tOrx2XuJP3vPgepZFNH0UNlrIQJJFtrzd/XO8q', 04);
+-- passwords equal usernames, bcrypt logarithm cost factor of 10

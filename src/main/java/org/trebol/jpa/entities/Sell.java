@@ -66,13 +66,13 @@ public class Sell
   @JoinColumn(name = "customer_id", insertable = true, updatable = true, nullable = true)
   @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
   private Customer customer;
-  @JoinColumn(name = "payment_type_id", insertable = false, updatable = false, nullable = false)
+  @JoinColumn(name = "payment_type_id", insertable = true, updatable = false, nullable = false)
   @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private PaymentType paymentType;
-  @JoinColumn(name = "sell_status_id", insertable = false, updatable = false, nullable = false)
+  @JoinColumn(name = "sell_status_id", insertable = true, updatable = false, nullable = false)
   @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private SellStatus status;
-  @JoinColumn(name = "sell_type_id", insertable = false, updatable = false, nullable = false)
+  @JoinColumn(name = "billing_type_id", insertable = true, updatable = false, nullable = false)
   @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private BillingType billingType;
   @JoinColumn(name = "billing_company_id", insertable = true, updatable = true, nullable = true)
@@ -81,13 +81,13 @@ public class Sell
   @JoinColumn(name = "billing_address_id", insertable = true, updatable = false, nullable = true)
   @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
   private Address billingAddress;
-  @JoinColumn(name = "shipper_id", insertable = false, updatable = false, nullable = true)
+  @JoinColumn(name = "shipper_id", insertable = true, updatable = false, nullable = true)
   @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private Shipper shipper;
   @JoinColumn(name = "shipping_address_id", insertable = true, updatable = false, nullable = true)
   @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
   private Address shippingAddress;
-  @JoinColumn(name = "salesperson_id", insertable = false, updatable = true, nullable = true)
+  @JoinColumn(name = "salesperson_id", insertable = true, updatable = true, nullable = true)
   @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
   private Salesperson salesperson;
   @JoinColumn(name = "sell_id", insertable = true, updatable = true, nullable = false)

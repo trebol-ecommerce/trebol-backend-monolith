@@ -32,11 +32,13 @@ public class SellStatusesJpaCrudServiceImpl
   extends GenericJpaCrudService<SellStatusPojo, SellStatus> {
 
   private static final Logger logger = LoggerFactory.getLogger(SellStatusesJpaCrudServiceImpl.class);
+  private final ISellStatusesJpaRepository statusesRepository;
   private final ConversionService conversion;
 
   @Autowired
   public SellStatusesJpaCrudServiceImpl(ISellStatusesJpaRepository repository, ConversionService conversion) {
     super(repository);
+    this.statusesRepository = repository;
     this.conversion = conversion;
   }
 
@@ -70,7 +72,7 @@ public class SellStatusesJpaCrudServiceImpl
             break;
         }
       } catch (NumberFormatException exc) {
-        logger.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       }
     }
 
@@ -79,6 +81,11 @@ public class SellStatusesJpaCrudServiceImpl
 
   @Override
   public boolean itemExists(SellStatusPojo input) throws BadInputException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String name = input.getName();
+    if (name == null || name.isBlank()) {
+      throw new BadInputException("Invalid status name");
+    } else {
+      return (statusesRepository.findByName(name).isPresent());
+    }
   }
 }

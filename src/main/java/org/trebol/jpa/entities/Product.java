@@ -51,7 +51,7 @@ public class Product
   @Column(name = "product_stock_critical")
   private int stockCritical;
   @JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id", insertable = true, updatable = true)
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @ManyToOne(optional = true, fetch = FetchType.LAZY)
   private ProductCategory productCategory;
 
   public Product() { }

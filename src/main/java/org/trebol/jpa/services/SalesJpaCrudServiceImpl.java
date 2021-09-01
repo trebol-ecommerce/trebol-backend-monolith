@@ -1,16 +1,18 @@
 package org.trebol.jpa.services;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.pojo.AddressPojo;
+import org.trebol.api.pojo.BillingCompanyPojo;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
@@ -43,6 +47,17 @@ import org.trebol.jpa.entities.SellStatus;
 import javassist.NotFoundException;
 
 import org.trebol.jpa.ISalesJpaService;
+import org.trebol.jpa.entities.Address;
+import org.trebol.jpa.entities.BillingCompany;
+import org.trebol.jpa.entities.BillingType;
+import org.trebol.jpa.entities.PaymentType;
+import org.trebol.jpa.entities.Product;
+import org.trebol.jpa.repositories.IAddressesJpaRepository;
+import org.trebol.jpa.repositories.IBillingCompaniesJpaRepository;
+import org.trebol.jpa.repositories.IBillingTypesJpaRepository;
+import org.trebol.jpa.repositories.ICustomersJpaRepository;
+import org.trebol.jpa.repositories.IPaymentTypesJpaRepository;
+import org.trebol.jpa.repositories.IProductsJpaRepository;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
 
@@ -56,18 +71,36 @@ public class SalesJpaCrudServiceImpl
   extends GenericJpaCrudService<SellPojo, Sell>
   implements ISalesJpaService {
 
-  private static final Logger logger = LoggerFactory.getLogger(SalesJpaCrudServiceImpl.class);
+  private final Logger logger = LoggerFactory.getLogger(SalesJpaCrudServiceImpl.class);
   private final ISalesJpaRepository salesRepository;
   private final ISellStatusesJpaRepository statusesRepository;
+  private final IBillingTypesJpaRepository billingTypesRepository;
+  private final IPaymentTypesJpaRepository paymentTypesRepository;
+  private final IBillingCompaniesJpaRepository billingCompaniesRepository;
+  private final IAddressesJpaRepository addressesRepository;
+  private final ICustomersJpaRepository customersRepository;
+  private final IProductsJpaRepository productsRepository;
   private final ConversionService conversion;
+  private final Validator validator;
 
   @Autowired
   public SalesJpaCrudServiceImpl(ISalesJpaRepository repository, ConversionService conversion,
-    ISellStatusesJpaRepository statusesRepository) {
+    ISellStatusesJpaRepository statusesRepository, IBillingTypesJpaRepository billingTypesRepository,
+    IBillingCompaniesJpaRepository billingCompaniesRepository, IPaymentTypesJpaRepository paymentTypesRepository,
+    IAddressesJpaRepository addressesRepository, ICustomersJpaRepository customersRepository,
+    IProductsJpaRepository productsRepository,
+    Validator validator) {
     super(repository);
     this.salesRepository = repository;
     this.conversion = conversion;
     this.statusesRepository = statusesRepository;
+    this.billingTypesRepository = billingTypesRepository;
+    this.billingCompaniesRepository = billingCompaniesRepository;
+    this.paymentTypesRepository = paymentTypesRepository;
+    this.addressesRepository = addressesRepository;
+    this.customersRepository = customersRepository;
+    this.productsRepository = productsRepository;
+    this.validator = validator;
   }
 
   @Override
@@ -75,8 +108,25 @@ public class SalesJpaCrudServiceImpl
     // TODO can lesser null checks be used ?
     SellPojo target = conversion.convert(source, SellPojo.class);
     if (target != null) {
-      if (source.getBillingType() != null) {
-        target.setBillingType(source.getBillingType().getName());
+
+      target.setStatus(source.getStatus().getName());
+      target.setPaymentType(source.getPaymentType().getName());
+      target.setBillingType(source.getBillingType().getName());
+
+      if (target.getBillingType().equals("Enterprise Invoice")) {
+        BillingCompany sourceBillingCompany = source.getBillingCompany();
+        if (sourceBillingCompany != null) {
+          BillingCompanyPojo targetBillingCompany = conversion.convert(sourceBillingCompany, BillingCompanyPojo.class);
+          target.setBillingCompany(targetBillingCompany);
+        }
+      }
+
+      AddressPojo billingAddress = conversion.convert(source.getBillingAddress(), AddressPojo.class);
+      target.setBillingAddress(billingAddress);
+
+      if (source.getShippingAddress() != null) {
+        AddressPojo shippingAddress = conversion.convert(source.getShippingAddress(), AddressPojo.class);
+        target.setShippingAddress(shippingAddress);
       }
 
       CustomerPojo customer = this.convertCustomerToPojo(source.getCustomer());
@@ -92,15 +142,109 @@ public class SalesJpaCrudServiceImpl
     return target;
   }
 
+  @Transactional
   @Override
   public Sell pojo2Entity(SellPojo source) throws BadInputException {
-    return conversion.convert(source, Sell.class);
+    Sell target = new Sell();
+
+    String statusName = source.getStatus();
+    if (statusName != null && !statusName.isEmpty()) {
+      Optional<SellStatus> existingStatus = statusesRepository.findByName(statusName);
+      if (!existingStatus.isPresent()) {
+        throw new BadInputException("Status '" + statusName + "' is not valid");
+      } else {
+        target.setStatus(existingStatus.get());
+      }
+    }
+
+    String paymentType = source.getPaymentType();
+    if (paymentType != null && !paymentType.isBlank()) {
+      Optional<PaymentType> existingPaymentType = paymentTypesRepository.findByName(paymentType);
+      if (!existingPaymentType.isPresent()) {
+        throw new BadInputException("Payment type '" + paymentType + "' is not valid");
+      } else {
+        target.setPaymentType(existingPaymentType.get());
+      }
+    }
+
+    String billingType = source.getBillingType();
+    if (billingType != null && !billingType.isBlank()) {
+      Optional<BillingType> existingBillingType = billingTypesRepository.findByName(billingType);
+      if (!existingBillingType.isPresent()) {
+        throw new BadInputException("Billing type '" + billingType + "' is not valid");
+      } else {
+        target.setBillingType(existingBillingType.get());
+      }
+
+      if (billingType.equals("Enterprise Invoice")) {
+        BillingCompanyPojo sourceBillingCompany = source.getBillingCompany();
+        if (sourceBillingCompany == null) {
+          throw new BadInputException("A billing company is required");
+        } else {
+          BillingCompany billingCompany = this.billingCompany2Entity(sourceBillingCompany);
+          target.setBillingCompany(billingCompany);
+        }
+      }
+    }
+
+    AddressPojo billingAddress = source.getBillingAddress();
+    if (billingAddress != null) {
+      Set<ConstraintViolation<AddressPojo>> validationResult = validator.validate(billingAddress);
+      if (!validationResult.isEmpty()) {
+        throw new BadInputException("The provided billing address is not valid");
+      } else {
+        Address targetAddress = conversion.convert(billingAddress, Address.class);
+        targetAddress = this.mergeAddress(targetAddress);
+        target.setBillingAddress(targetAddress);
+      }
+    }
+
+    AddressPojo shippingAddress = source.getShippingAddress();
+    if (shippingAddress != null) {
+      Set<ConstraintViolation<AddressPojo>> validationResult = validator.validate(shippingAddress);
+      if (!validationResult.isEmpty()) {
+        throw new BadInputException("The provided shipping address is not valid");
+      } else {
+        Address targetAddress = conversion.convert(shippingAddress, Address.class);
+        targetAddress = this.mergeAddress(targetAddress);
+        target.setShippingAddress(targetAddress);
+      }
+    }
+
+    CustomerPojo sourceCustomer = source.getCustomer();
+    if (sourceCustomer != null && sourceCustomer.getPerson() != null) {
+      Customer customer = this.customer2Entity(sourceCustomer);
+      target.setCustomer(customer);
+    }
+
+    Collection<SellDetailPojo> sourceDetails = source.getDetails();
+    if (sourceDetails != null && !sourceDetails.isEmpty()) {
+      List<SellDetail> details = new ArrayList<>();
+      int netValue = 0, totalItems = 0;
+      for (SellDetailPojo d : source.getDetails()) {
+        try {
+          SellDetail targetDetail = this.sellDetail2Entity(d);
+          details.add(targetDetail);
+          int units = targetDetail.getUnits();
+          netValue += (targetDetail.getProduct().getPrice() * units);
+          totalItems += units;
+        } catch (NotFoundException exc) {
+          throw new BadInputException("Unexisting product in sell details");
+        }
+      }
+      target.setDetails(details);
+      target.setNetValue(netValue);
+      target.setTotalItems(totalItems);
+      // TODO note where to add total value, transport value...?
+    }
+
+    return target;
   }
 
   @Override
   public Page<Sell> getAllEntities(Pageable paged, Predicate filters) {
     if (filters == null) {
-      return salesRepository.deepFindAll(paged);
+      return salesRepository.findAll(paged);
     } else {
       return salesRepository.findAll(filters, paged);
     }
@@ -126,7 +270,7 @@ public class SalesJpaCrudServiceImpl
             break;
         }
       } catch (NumberFormatException exc) {
-        logger.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       }
     }
 
@@ -259,6 +403,66 @@ public class SalesJpaCrudServiceImpl
 
   @Override
   public boolean itemExists(SellPojo input) throws BadInputException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Long id = input.getId();
+    return ((id != null) && this.salesRepository.findById(id).isPresent());
+  }
+
+  private BillingCompany billingCompany2Entity(BillingCompanyPojo source) throws BadInputException {
+    BillingCompany billingCompany;
+    String idNumber = source.getIdNumber();
+    // TODO parameterize regex/make a bean for pattern
+    Pattern rutPattern = Pattern.compile("^\\d{7,9}[\\dk]$");
+    Matcher rutMatcher = rutPattern.matcher(idNumber);
+    if (idNumber == null || idNumber.isBlank() || !rutMatcher.matches()) {
+      throw new BadInputException("Billing company's id number is not a valid RUT");
+    } else {
+      Optional<BillingCompany> companyByIdNumber = billingCompaniesRepository.findByIdNumber(idNumber);
+      if (companyByIdNumber.isPresent()) {
+        billingCompany = companyByIdNumber.get();
+      } else {
+        billingCompany = conversion.convert(source, BillingCompany.class);
+      }
+      return billingCompany;
+    }
+  }
+
+  private Address mergeAddress(Address source) {
+    Optional<Address> matchingAddress = addressesRepository.findByFields(
+        source.getCity(),
+        source.getMunicipality(),
+        source.getFirstLine(),
+        source.getSecondLine(),
+        source.getPostalCode(),
+        source.getNotes());
+    if (matchingAddress.isPresent()) {
+      return matchingAddress.get();
+    } else {
+      Address target = addressesRepository.saveAndFlush(source);
+      return target;
+    }
+  }
+
+  private Customer customer2Entity(CustomerPojo sourceCustomer) {
+    Optional<Customer> customerByIdCard = customersRepository.findByPersonIdNumber(sourceCustomer.getPerson().getIdNumber());
+    if (customerByIdCard.isPresent()) {
+      Customer target = customerByIdCard.get();
+      return target;
+    } else {
+      return conversion.convert(sourceCustomer, Customer.class);
+    }
+  }
+
+  private SellDetail sellDetail2Entity(SellDetailPojo d) throws NotFoundException {
+    String barcode = d.getProduct().getBarcode();
+    Optional<Product> productByBarcode = productsRepository.findByBarcode(barcode);
+    if (!productByBarcode.isPresent()) {
+      throw new NotFoundException("There is no product with barcode '" + barcode + "'");
+    } else {
+      Product targetProduct = productByBarcode.get();
+      SellDetail targetDetail = new SellDetail();
+      targetDetail.setProduct(targetProduct);
+      targetDetail.setUnits(d.getUnits());
+      return targetDetail;
+    }
   }
 }

@@ -2,29 +2,15 @@ package org.trebol.api.pojo;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public class SellStatusPojo {
-  @JsonInclude
-  private Integer code;
-  @JsonInclude(value = Include.NON_DEFAULT)
-  @NotNull
+@JsonInclude
+public class PaymentTypePojo {
   private String name;
-
-  public Integer getCode() {
-    return code;
-  }
-
-  public void setCode(Integer code) {
-    this.code = code;
-  }
 
   public String getName() {
     return name;
@@ -36,9 +22,8 @@ public class SellStatusPojo {
 
   @Override
   public int hashCode() {
-    int hash = 5;
-    hash = 79 * hash + Objects.hashCode(this.code);
-    hash = 79 * hash + Objects.hashCode(this.name);
+    int hash = 7;
+    hash = 67 * hash + Objects.hashCode(this.name);
     return hash;
   }
 
@@ -53,11 +38,8 @@ public class SellStatusPojo {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final SellStatusPojo other = (SellStatusPojo)obj;
+    final PaymentTypePojo other = (PaymentTypePojo)obj;
     if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.code, other.code)) {
       return false;
     }
     return true;
@@ -65,7 +47,7 @@ public class SellStatusPojo {
 
   @Override
   public String toString() {
-    return "SellStatusPojo{code=" + code + ", name=" + name + '}';
+    return "PaymentTypePojo{name=" + name + '}';
   }
 
 }

@@ -34,11 +34,13 @@ public class SalespeopleJpaCrudServiceImpl
   extends GenericJpaCrudService<SalespersonPojo, Salesperson> {
 
   private static final Logger logger = LoggerFactory.getLogger(SalespeopleJpaCrudServiceImpl.class);
+  private final ISalespeopleJpaRepository salespeopleRepository;
   private final ConversionService conversion;
 
   @Autowired
   public SalespeopleJpaCrudServiceImpl(ISalespeopleJpaRepository repository, ConversionService conversion) {
     super(repository);
+    this.salespeopleRepository = repository;
     this.conversion = conversion;
   }
 
@@ -93,7 +95,7 @@ public class SalespeopleJpaCrudServiceImpl
             break;
         }
       } catch (NumberFormatException exc) {
-        logger.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       }
     }
 
@@ -102,6 +104,16 @@ public class SalespeopleJpaCrudServiceImpl
 
   @Override
   public boolean itemExists(SalespersonPojo input) throws BadInputException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    PersonPojo person = input.getPerson();
+    if (person == null) {
+      throw new BadInputException("Salesperson does not have profile information");
+    } else {
+      String idNumber = person.getIdNumber();
+      if (idNumber == null) {
+        throw new BadInputException("Salesperson does not have an ID card");
+      } else {
+        return (salespeopleRepository.findByPersonIdNumber(idNumber).isPresent());
+      }
+    }
   }
 }

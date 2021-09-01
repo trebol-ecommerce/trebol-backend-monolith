@@ -1,6 +1,7 @@
 package org.trebol.jpa.services;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -31,11 +32,14 @@ public class ProductCategoriesJpaCrudServiceImpl
   extends GenericJpaCrudService<ProductCategoryPojo, ProductCategory> {
 
   private static final Logger logger = LoggerFactory.getLogger(ProductCategoriesJpaCrudServiceImpl.class);
+  private final IProductsCategoriesJpaRepository categoriesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public ProductCategoriesJpaCrudServiceImpl(IProductsCategoriesJpaRepository repository, ConversionService conversion) {
+  public ProductCategoriesJpaCrudServiceImpl(IProductsCategoriesJpaRepository repository,
+    ConversionService conversion) {
     super(repository);
+    this.categoriesRepository = repository;
     this.conversion = conversion;
   }
 
@@ -72,7 +76,7 @@ public class ProductCategoriesJpaCrudServiceImpl
             break;
         }
       } catch (NumberFormatException exc) {
-        logger.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       }
     }
 
@@ -81,6 +85,11 @@ public class ProductCategoriesJpaCrudServiceImpl
 
   @Override
   public boolean itemExists(ProductCategoryPojo input) throws BadInputException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String name = input.getName();
+    if (name == null || name.isBlank()) {
+      throw new BadInputException("Invalid category name");
+    } else {
+      return this.categoriesRepository.findByName(name).isPresent();
+    }
   }
 }

@@ -13,7 +13,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -35,12 +34,8 @@ public class Shipper
   @Column(name = "shipper_id")
   private Long id;
   @Basic(optional = false)
-  @Size(max = 100)
   @Column(name = "shipper_name")
   private String name;
-  @Basic(optional = false)
-  @Column(name = "shipper_price")
-  private Integer price;
 
   public Shipper() { }
 
@@ -60,20 +55,11 @@ public class Shipper
     this.name = name;
   }
 
-  public Integer getPrice() {
-    return price;
-  }
-
-  public void setPrice(Integer price) {
-    this.price = price;
-  }
-
   @Override
   public int hashCode() {
     int hash = 5;
     hash = 37 * hash + Objects.hashCode(this.id);
     hash = 37 * hash + Objects.hashCode(this.name);
-    hash = 37 * hash + Objects.hashCode(this.price);
     return hash;
   }
 
@@ -92,17 +78,13 @@ public class Shipper
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
-    if (!Objects.equals(this.price, other.price)) {
-      return false;
-    }
     return true;
   }
 
   @Override
   public String toString() {
     return "Shipper{id=" + id +
-        ", name=" + name +
-        ", price=" + price + '}';
+        ", name=" + name + '}';
   }
 
 }
