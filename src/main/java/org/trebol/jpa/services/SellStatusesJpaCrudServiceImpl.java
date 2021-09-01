@@ -72,7 +72,7 @@ public class SellStatusesJpaCrudServiceImpl
             break;
         }
       } catch (NumberFormatException exc) {
-        logger.warn("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       }
     }
 

@@ -76,7 +76,7 @@ public class ProductCategoriesJpaCrudServiceImpl
             break;
         }
       } catch (NumberFormatException exc) {
-        logger.error("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue, exc);
+        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       }
     }
 
