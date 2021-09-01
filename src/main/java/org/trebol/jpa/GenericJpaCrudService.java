@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.DataPage;
 import org.trebol.exceptions.BadInputException;
 
@@ -62,6 +62,7 @@ public abstract class GenericJpaCrudService<P, E>
    * it.
    * @param inputPojo
    */
+  @Transactional
   @Override
   public P create(P inputPojo) throws BadInputException, EntityAlreadyExistsException {
     if (this.itemExists(inputPojo)) {
@@ -79,8 +80,8 @@ public abstract class GenericJpaCrudService<P, E>
    */
   @Override
   public DataPage<P> readMany(int pageSize, int pageIndex, Predicate filters) {
-    Sort sortOrder = Sort.by("id").ascending();
-    Pageable paged = PageRequest.of(pageIndex, pageSize, sortOrder);
+    // TODO figure out sort order parameter
+    Pageable paged = PageRequest.of(pageIndex, pageSize);
     Page<E> iterable = this.getAllEntities(paged, filters);
     long totalCount = repository.count(filters);
 
