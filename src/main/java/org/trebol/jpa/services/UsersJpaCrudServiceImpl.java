@@ -28,6 +28,8 @@ import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 
+import javassist.NotFoundException;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -64,10 +66,11 @@ public class UsersJpaCrudServiceImpl
 
   @Nullable
   @Override
-  public User pojo2Entity(UserPojo source) {
-    logger.trace("Converting input user instance to entity class...", source.getRole());
+  public User pojo2Entity(UserPojo source) throws BadInputException {
     User target = conversion.convert(source, User.class);
-    if (target != null) {
+    if (target == null) {
+      throw new BadInputException("Invalid user data");
+    } else {
       if (source.getPassword() != null && !source.getPassword().isEmpty()) {
         String rawPassword = source.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
@@ -80,34 +83,29 @@ public class UsersJpaCrudServiceImpl
         }
       }
 
-      if (source.getPerson() != null && source.getPerson().getId() != null) {
+      PersonPojo sourcePerson = source.getPerson();
+      if (sourcePerson != null && sourcePerson.getIdNumber() != null &&
+          !sourcePerson.getIdNumber().isBlank()) {
         logger.trace("Finding person profile...");
-        Optional<Person> personById = peopleRepository.findById(source.getPerson().getId());
-        if (personById.isPresent()) {
+        Optional<Person> personByIdNumber = peopleRepository.findByIdNumber(sourcePerson.getIdNumber());
+        if (personByIdNumber.isPresent()) {
           logger.trace("Person profile found");
-          target.setPerson(personById.get());
-        } else {
-          logger.error("Person profile not found");
-          return null;
+          target.setPerson(personByIdNumber.get());
         }
-      } else {
-        logger.error("Missing required person profile");
-        return null;
       }
 
-      if (source.getRole() != null && !source.getRole().isEmpty()){
-        logger.trace("Searching user role by name '{}'...", source.getRole());
-        Optional<UserRole> roleByName = rolesRepository.findByName(source.getRole());
+      String role = source.getRole();
+      if (role != null && !role.isEmpty()){
+        logger.trace("Searching user role by name '{}'...", role);
+        Optional<UserRole> roleByName = rolesRepository.findByName(role);
         if (roleByName.isPresent()) {
           logger.trace("User role found");
           target.setUserRole(roleByName.get());
         } else {
-          logger.error("User role not found");
-          return null;
+          throw new BadInputException("The specified user role does not exist");
         }
       } else {
-        logger.error("Missing required user role");
-        return null;
+        throw new BadInputException("The user does not have a role");
       }
     }
     return target;
@@ -143,16 +141,15 @@ public class UsersJpaCrudServiceImpl
     return predicate;
   }
 
-  @Nullable
   @Override
-  public UserPojo readOne(Long id) {
+  public UserPojo readOne(Long id) throws NotFoundException {
     Optional<User> userById = userRepository.findByIdWithProfile(id);
     if (!userById.isPresent()) {
-      return null;
+      throw new NotFoundException("The requested user does not exist");
     } else {
       User found = userById.get();
       UserPojo foundPojo = this.entity2Pojo(found);
-      if (foundPojo != null) {
+      if (foundPojo != null && found.getPerson() != null) {
         PersonPojo person = conversion.convert(found.getPerson(), PersonPojo.class);
         if (person != null) {
           foundPojo.setPerson(person);
