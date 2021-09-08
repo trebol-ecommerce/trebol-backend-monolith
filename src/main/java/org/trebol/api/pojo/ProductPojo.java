@@ -18,10 +18,11 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @JsonInclude(NON_NULL)
 public class ProductPojo {
   private Long id;
+  @NotBlank
   private String name;
   @NotBlank
   private String barcode;
-  private Integer price;
+  private int price;
   private ProductCategoryPojo category;
   @JsonInclude(NON_EMPTY)
   private String description;

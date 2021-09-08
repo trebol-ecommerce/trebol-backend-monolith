@@ -2,7 +2,7 @@ package org.trebol.api.pojo;
 
 import java.util.Objects;
 
-import javax.annotation.Nullable;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude
 public class ProductCategoryPojo {
   private Long id;
+  @NotBlank
   private String name;
-  @Nullable
   private ProductCategoryPojo parent;
 
   public Long getId() {

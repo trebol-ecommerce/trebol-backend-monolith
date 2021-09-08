@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -34,7 +35,9 @@ public class SellPojo {
   private int netValue;
   private String status;
   private String billingType;
+  @NotBlank
   private String paymentType;
+  @Valid
   private CustomerPojo customer;
   private SalespersonPojo salesperson;
   private ShipperPojo shipper;
