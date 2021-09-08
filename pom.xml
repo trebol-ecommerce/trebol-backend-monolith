@@ -13,7 +13,7 @@
   <groupId>org.trebol</groupId>
   <artifactId>trebol-backend</artifactId>
   <packaging>war</packaging>
-  <version>0.21.41</version>
+  <version>0.21.42</version>
 
   <name>Trébol Backend</name>
 

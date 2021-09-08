@@ -16,18 +16,12 @@ import org.trebol.exceptions.EntityAlreadyExistsException;
 
 import javassist.NotFoundException;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
 /**
  * Catches declared exceptions at controller level and submits custom responses.
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestControllerAdvice
 public class ExceptionsControllerAdvice {
-
-  private final Logger logger = LoggerFactory.getLogger(ExceptionsControllerAdvice.class);
-
-  public ExceptionsControllerAdvice() { }
 
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(NotFoundException.class)
@@ -44,13 +38,6 @@ public class ExceptionsControllerAdvice {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(BadInputException.class)
   public String handleException(BadInputException ex) {
-    return ex.getMessage();
-  }
-
-  @ResponseStatus(INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(RuntimeException.class)
-  public String handleException(RuntimeException ex) {
-    logger.warn("Runtime exception caught: ", ex);
     return ex.getMessage();
   }
 
