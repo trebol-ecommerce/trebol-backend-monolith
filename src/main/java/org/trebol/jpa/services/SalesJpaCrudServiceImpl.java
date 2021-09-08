@@ -145,18 +145,26 @@ public class SalesJpaCrudServiceImpl
   public Sell pojo2Entity(SellPojo source) throws BadInputException {
     Sell target = new Sell();
 
+    if (source.getDate() != null) {
+      target.setDate(source.getDate());
+    }
+
     String statusName = source.getStatus();
-    if (statusName != null && !statusName.isEmpty()) {
-      Optional<SellStatus> existingStatus = statusesRepository.findByName(statusName);
-      if (!existingStatus.isPresent()) {
-        throw new BadInputException("Status '" + statusName + "' is not valid");
-      } else {
-        target.setStatus(existingStatus.get());
-      }
+    if (statusName == null || statusName.isBlank()) {
+      statusName = "Pending";
+    }
+
+    Optional<SellStatus> existingStatus = statusesRepository.findByName(statusName);
+    if (!existingStatus.isPresent()) {
+      throw new BadInputException("Status '" + statusName + "' is not valid");
+    } else {
+      target.setStatus(existingStatus.get());
     }
 
     String paymentType = source.getPaymentType();
-    if (paymentType != null && !paymentType.isBlank()) {
+    if (paymentType == null || paymentType.isBlank()) {
+      throw new BadInputException("An accepted payment type is required");
+    } else {
       Optional<PaymentType> existingPaymentType = paymentTypesRepository.findByName(paymentType);
       if (!existingPaymentType.isPresent()) {
         throw new BadInputException("Payment type '" + paymentType + "' is not valid");
@@ -166,23 +174,23 @@ public class SalesJpaCrudServiceImpl
     }
 
     String billingType = source.getBillingType();
-    if (billingType != null && !billingType.isBlank()) {
-      Optional<BillingType> existingBillingType = billingTypesRepository.findByName(billingType);
-      if (!existingBillingType.isPresent()) {
-        throw new BadInputException("Billing type '" + billingType + "' is not valid");
+    if (billingType == null || billingType.isBlank()) {
+      billingType = "Bill";
+    } else if (billingType.equals("Enterprise Invoice")) {
+      BillingCompanyPojo sourceBillingCompany = source.getBillingCompany();
+      if (sourceBillingCompany == null) {
+        throw new BadInputException("A billing company is required");
       } else {
-        target.setBillingType(existingBillingType.get());
+        BillingCompany billingCompany = this.billingCompany2Entity(sourceBillingCompany);
+        target.setBillingCompany(billingCompany);
       }
+    }
 
-      if (billingType.equals("Enterprise Invoice")) {
-        BillingCompanyPojo sourceBillingCompany = source.getBillingCompany();
-        if (sourceBillingCompany == null) {
-          throw new BadInputException("A billing company is required");
-        } else {
-          BillingCompany billingCompany = this.billingCompany2Entity(sourceBillingCompany);
-          target.setBillingCompany(billingCompany);
-        }
-      }
+    Optional<BillingType> existingBillingType = billingTypesRepository.findByName(billingType);
+    if (!existingBillingType.isPresent()) {
+      throw new BadInputException("Billing type '" + billingType + "' is not valid");
+    } else {
+      target.setBillingType(existingBillingType.get());
     }
 
     AddressPojo billingAddress = source.getBillingAddress();
