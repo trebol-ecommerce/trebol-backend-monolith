@@ -119,8 +119,10 @@ public class SalesJpaCrudServiceImpl
         }
       }
 
-      AddressPojo billingAddress = conversion.convert(source.getBillingAddress(), AddressPojo.class);
-      target.setBillingAddress(billingAddress);
+      if (source.getBillingAddress() != null) {
+        AddressPojo billingAddress = conversion.convert(source.getBillingAddress(), AddressPojo.class);
+        target.setBillingAddress(billingAddress);
+      }
 
       if (source.getShippingAddress() != null) {
         AddressPojo shippingAddress = conversion.convert(source.getShippingAddress(), AddressPojo.class);
@@ -149,113 +151,33 @@ public class SalesJpaCrudServiceImpl
       target.setDate(source.getDate());
     }
 
-    String statusName = source.getStatus();
-    if (statusName == null || statusName.isBlank()) {
-      statusName = "Pending";
-    }
-
-    Optional<SellStatus> existingStatus = statusesRepository.findByName(statusName);
-    if (!existingStatus.isPresent()) {
-      throw new BadInputException("Status '" + statusName + "' is not valid");
-    } else {
-      target.setStatus(existingStatus.get());
-    }
-
-    String paymentType = source.getPaymentType();
-    if (paymentType == null || paymentType.isBlank()) {
-      throw new BadInputException("An accepted payment type is required");
-    } else {
-      Optional<PaymentType> existingPaymentType = paymentTypesRepository.findByName(paymentType);
-      if (!existingPaymentType.isPresent()) {
-        throw new BadInputException("Payment type '" + paymentType + "' is not valid");
-      } else {
-        target.setPaymentType(existingPaymentType.get());
-      }
-    }
-
-    String billingType = source.getBillingType();
-    if (billingType == null || billingType.isBlank()) {
-      billingType = "Bill";
-    } else if (billingType.equals("Enterprise Invoice")) {
-      BillingCompanyPojo sourceBillingCompany = source.getBillingCompany();
-      if (sourceBillingCompany == null) {
-        throw new BadInputException("A billing company is required");
-      } else {
-        BillingCompany billingCompany = this.billingCompany2Entity(sourceBillingCompany);
-        target.setBillingCompany(billingCompany);
-      }
-    }
-
-    Optional<BillingType> existingBillingType = billingTypesRepository.findByName(billingType);
-    if (!existingBillingType.isPresent()) {
-      throw new BadInputException("Billing type '" + billingType + "' is not valid");
-    } else {
-      target.setBillingType(existingBillingType.get());
-    }
-
-    CustomerPojo sourceCustomer = source.getCustomer();
-    if (sourceCustomer == null) {
-      throw new BadInputException("Customer must posess valid personal information");
-    } else if (customersService.itemExists(sourceCustomer)) {
-      Customer existingCustomer = customersRepository.findByPersonIdNumber(sourceCustomer.getPerson().getIdNumber()).get();
-      customersService.applyChangesToExistingEntity(sourceCustomer, existingCustomer);
-      target.setCustomer(existingCustomer);
-    } else {
-      Customer newCustomer = customersService.convertToNewEntity(sourceCustomer);
-      target.setCustomer(newCustomer);
-    }
-
-    AddressPojo billingAddress = source.getBillingAddress();
-    if (billingAddress != null) {
-      Set<ConstraintViolation<AddressPojo>> validationResult = validator.validate(billingAddress);
-      if (!validationResult.isEmpty()) {
-        throw new BadInputException("The provided billing address is not valid");
-      } else {
-        Address targetAddress = conversion.convert(billingAddress, Address.class);
-        targetAddress = this.mergeAddress(targetAddress);
-        target.setBillingAddress(targetAddress);
-      }
-    }
-
-    AddressPojo shippingAddress = source.getShippingAddress();
-    if (shippingAddress != null) {
-      Set<ConstraintViolation<AddressPojo>> validationResult = validator.validate(shippingAddress);
-      if (!validationResult.isEmpty()) {
-        throw new BadInputException("The provided shipping address is not valid");
-      } else {
-        Address targetAddress = conversion.convert(shippingAddress, Address.class);
-        targetAddress = this.mergeAddress(targetAddress);
-        target.setShippingAddress(targetAddress);
-      }
-    }
-
-    Collection<SellDetailPojo> sourceDetails = source.getDetails();
-    if (sourceDetails != null && !sourceDetails.isEmpty()) {
-      List<SellDetail> details = new ArrayList<>();
-      int netValue = 0, totalItems = 0;
-      for (SellDetailPojo d : source.getDetails()) {
-        try {
-          SellDetail targetDetail = this.sellDetail2Entity(d);
-          details.add(targetDetail);
-          int units = targetDetail.getUnits();
-          netValue += (targetDetail.getProduct().getPrice() * units);
-          totalItems += units;
-        } catch (NotFoundException exc) {
-          throw new BadInputException("Unexisting product in sell details");
-        }
-      }
-      target.setDetails(details);
-      target.setNetValue(netValue);
-      target.setTotalItems(totalItems);
-      // TODO note where to add total value, transport value...?
-    }
+    this.applyStatus(source, target);
+    this.applyPaymentType(source, target);
+    this.applyBillingDetails(source, target);
+    this.applyCustomer(source, target);
+    this.applyBillingAddress(source, target);
+    this.applyShippingAddress(source, target);
+    this.applyDetails(source, target);
 
     return target;
   }
 
   @Override
   public void applyChangesToExistingEntity(SellPojo source, Sell target) throws BadInputException {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    // TODO test these methods... they're not guaranteed to work just now!
+    this.applyStatus(source, target);
+    this.applyPaymentType(source, target);
+    this.applyBillingDetails(source, target);
+    this.applyCustomer(source, target);
+    this.applyBillingAddress(source, target);
+    this.applyShippingAddress(source, target);
+    this.applyDetails(source, target);
+  }
+
+  @Override
+  public boolean itemExists(SellPojo input) throws BadInputException {
+    Long id = input.getId();
+    return ((id != null) && this.salesRepository.existsById(id));
   }
 
   @Override
@@ -406,10 +328,116 @@ public class SalesJpaCrudServiceImpl
     return target;
   }
 
-  @Override
-  public boolean itemExists(SellPojo input) throws BadInputException {
-    Long id = input.getId();
-    return ((id != null) && this.salesRepository.findById(id).isPresent());
+
+  private void applyStatus(SellPojo source, Sell target) throws BadInputException {
+    String statusName = source.getStatus();
+    if (statusName == null || statusName.isBlank()) {
+      statusName = "Pending";
+    }
+
+    Optional<SellStatus> existingStatus = statusesRepository.findByName(statusName);
+    if (!existingStatus.isPresent()) {
+      throw new BadInputException("Status '" + statusName + "' is not valid");
+    } else {
+      target.setStatus(existingStatus.get());
+    }
+  }
+
+  private void applyPaymentType(SellPojo source, Sell target) throws BadInputException {
+    String paymentType = source.getPaymentType();
+    if (paymentType == null || paymentType.isBlank()) {
+      throw new BadInputException("An accepted payment type is required");
+    } else {
+      Optional<PaymentType> existingPaymentType = paymentTypesRepository.findByName(paymentType);
+      if (!existingPaymentType.isPresent()) {
+        throw new BadInputException("Payment type '" + paymentType + "' is not valid");
+      } else {
+        target.setPaymentType(existingPaymentType.get());
+      }
+    }
+  }
+
+  private void applyBillingDetails(SellPojo source, Sell target) throws BadInputException {
+    String billingType = source.getBillingType();
+    if (billingType == null || billingType.isBlank()) {
+      billingType = "Bill";
+    } else if (billingType.equals("Enterprise Invoice")) {
+      BillingCompanyPojo sourceBillingCompany = source.getBillingCompany();
+      if (sourceBillingCompany == null) {
+        throw new BadInputException("A billing company is required");
+      } else {
+        BillingCompany billingCompany = this.billingCompany2Entity(sourceBillingCompany);
+        target.setBillingCompany(billingCompany);
+      }
+    }
+
+    Optional<BillingType> existingBillingType = billingTypesRepository.findByName(billingType);
+    if (!existingBillingType.isPresent()) {
+      throw new BadInputException("Billing type '" + billingType + "' is not valid");
+    } else {
+      target.setBillingType(existingBillingType.get());
+    }
+  }
+
+  private void applyCustomer(SellPojo source, Sell target) throws BadInputException {
+    CustomerPojo sourceCustomer = source.getCustomer();
+    if (sourceCustomer == null) {
+      throw new BadInputException("Customer must posess valid personal information");
+    } else if (customersService.itemExists(sourceCustomer)) {
+      Customer existingCustomer = customersRepository.findByPersonIdNumber(sourceCustomer.getPerson().getIdNumber()).get();
+      customersService.applyChangesToExistingEntity(sourceCustomer, existingCustomer);
+      target.setCustomer(existingCustomer);
+    } else {
+      Customer newCustomer = customersService.convertToNewEntity(sourceCustomer);
+      target.setCustomer(newCustomer);
+    }
+  }
+
+  private void applyBillingAddress(SellPojo source, Sell target) throws BadInputException {
+    AddressPojo billingAddress = source.getBillingAddress();
+    if (billingAddress != null) {
+      try {
+        Address targetAddress = this.mergeAddress(billingAddress);
+        target.setBillingAddress(targetAddress);
+      } catch (BadInputException ex) {
+        throw new BadInputException("The provided billing address is not valid");
+      }
+    }
+  }
+
+  private void applyShippingAddress(SellPojo source, Sell target) throws BadInputException {
+    AddressPojo shippingAddress = source.getShippingAddress();
+    if (shippingAddress != null) {
+      try {
+        Address targetAddress = this.mergeAddress(shippingAddress);
+        target.setShippingAddress(targetAddress);
+      } catch (BadInputException ex) {
+        throw new BadInputException("The provided shipping address is not valid");
+      }
+    }
+  }
+
+  private void applyDetails(SellPojo source, Sell target) throws BadInputException {
+    Collection<SellDetailPojo> sourceDetails = source.getDetails();
+    if (sourceDetails != null && !sourceDetails.isEmpty()) {
+      List<SellDetail> details = new ArrayList<>();
+      int netValue = 0, totalItems = 0;
+      for (SellDetailPojo d : source.getDetails()) {
+        try {
+          SellDetail targetDetail = this.sellDetail2Entity(d);
+          details.add(targetDetail);
+          int units = targetDetail.getUnits();
+          netValue += (targetDetail.getProduct().getPrice() * units);
+          totalItems += units;
+        } catch (NotFoundException exc) {
+          throw new BadInputException("Unexisting product in sell details");
+        }
+      }
+      target.setDetails(details);
+      target.setNetValue(netValue);
+      target.setTotalItems(totalItems);
+      // TODO note where to add total value, transport value...?
+    }
   }
 
   private BillingCompany billingCompany2Entity(BillingCompanyPojo source) throws BadInputException {
@@ -431,19 +459,30 @@ public class SalesJpaCrudServiceImpl
     }
   }
 
-  private Address mergeAddress(Address source) {
-    Optional<Address> matchingAddress = addressesRepository.findByFields(
-        source.getCity(),
-        source.getMunicipality(),
-        source.getFirstLine(),
-        source.getSecondLine(),
-        source.getPostalCode(),
-        source.getNotes());
-    if (matchingAddress.isPresent()) {
-      return matchingAddress.get();
+  private Address mergeAddress(AddressPojo source) throws BadInputException {
+    Set<ConstraintViolation<AddressPojo>> validations = validator.validate(source);
+    if (!validations.isEmpty()) {
+      throw new BadInputException("Invalid address");
     } else {
-      Address target = addressesRepository.saveAndFlush(source);
-      return target;
+      Address convertedSource = conversion.convert(source, Address.class);
+      if (convertedSource == null) {
+        throw new BadInputException("Invalid address");
+      } else {
+        Optional<Address> matchingAddress = addressesRepository.findByFields(
+            convertedSource.getCity(),
+            convertedSource.getMunicipality(),
+            convertedSource.getFirstLine(),
+            convertedSource.getSecondLine(),
+            convertedSource.getPostalCode(),
+            convertedSource.getNotes());
+        if (matchingAddress.isPresent()) {
+          return matchingAddress.get();
+        } else {
+          //Address target = addressesRepository.saveAndFlush(convertedSource);
+          //return target;
+          return convertedSource;
+        }
+      }
     }
   }
 
