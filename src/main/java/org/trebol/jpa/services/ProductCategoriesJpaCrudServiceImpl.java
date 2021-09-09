@@ -85,7 +85,7 @@ public class ProductCategoriesJpaCrudServiceImpl
           case "nameLike":
             predicate.and(qProductCategory.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "parent":
+          case "parentId":
             if (stringValue == null) {
               predicate.and(qProductCategory.parent.isNull());
             } else {
