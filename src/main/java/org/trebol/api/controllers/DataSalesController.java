@@ -54,7 +54,7 @@ public class DataSalesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:create')")
-  public void create(@RequestBody @Valid SellPojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody SellPojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
@@ -68,7 +68,7 @@ public class DataSalesController
   @Override
   @PutMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:update')")
-  public void update(@RequestBody @Valid SellPojo input, @PathVariable Long buyOrder)
+  public void update(@RequestBody SellPojo input, @PathVariable Long buyOrder)
     throws BadInputException, NotFoundException {
     crudService.update(input, buyOrder);
   }

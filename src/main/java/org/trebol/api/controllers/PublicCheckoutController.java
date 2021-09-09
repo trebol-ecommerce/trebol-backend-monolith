@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -91,7 +92,7 @@ public class PublicCheckoutController {
   }
 
   @GetMapping({"/result/{token}", "/result/{token}/"})
-  public SellPojo getTransactionResultFor(@Valid @PathVariable String token) throws NotFoundException {
+  public SellPojo getTransactionResultFor(@NotBlank @PathVariable String token) throws NotFoundException {
     return service.getResultingTransaction(token);
   }
 

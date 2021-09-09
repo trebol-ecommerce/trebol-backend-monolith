@@ -58,7 +58,7 @@ public class DataSellStatusesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sell_statuses:create')")
-  public void create(@RequestBody @Valid ProductCategoryPojo input)
+  public void create(@Valid @RequestBody ProductCategoryPojo input)
     throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
@@ -75,7 +75,7 @@ public class DataSellStatusesController
   @Override
   @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('sell_statuses:update')")
-  public void update(@RequestBody @Valid ProductCategoryPojo input, @PathVariable String code)
+  public void update(@RequestBody ProductCategoryPojo input, @PathVariable String code)
     throws BadInputException, NotFoundException {
     Long statusId = this.readOne(code).getId();
     crudService.update(input, statusId);

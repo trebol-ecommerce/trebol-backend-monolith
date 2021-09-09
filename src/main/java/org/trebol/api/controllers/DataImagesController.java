@@ -58,7 +58,7 @@ public class DataImagesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('images:create')")
-  public void create(@RequestBody @Valid ImagePojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody ImagePojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
@@ -74,7 +74,7 @@ public class DataImagesController
   @Override
   @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('images:update')")
-  public void update(@RequestBody @Valid ImagePojo input, @PathVariable String code)
+  public void update(@RequestBody ImagePojo input, @PathVariable String code)
     throws NotFoundException, BadInputException {
     // TODO improve this implementation; the same customer will be fetched twice
     Long imageId = this.readOne(code).getId();

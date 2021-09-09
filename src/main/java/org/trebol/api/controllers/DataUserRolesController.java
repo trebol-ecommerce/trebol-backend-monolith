@@ -57,7 +57,7 @@ public class DataUserRolesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:create')")
-  public void create(@RequestBody @Valid UserRolePojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody UserRolePojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
@@ -73,7 +73,7 @@ public class DataUserRolesController
   @Override
   @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:update')")
-  public void update(@RequestBody @Valid UserRolePojo input, @PathVariable String code)
+  public void update(@RequestBody UserRolePojo input, @PathVariable String code)
     throws BadInputException, NotFoundException {
     Long userRoleId = this.readOne(code).getId();
     crudService.update(input, userRoleId);

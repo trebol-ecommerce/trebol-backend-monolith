@@ -58,7 +58,7 @@ public class DataCustomersController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:create')")
-  public void create(@RequestBody @Valid CustomerPojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody CustomerPojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
@@ -74,7 +74,7 @@ public class DataCustomersController
   @Override
   @PutMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('customers:update')")
-  public void update(@RequestBody @Valid CustomerPojo input, @PathVariable String idNumber)
+  public void update(@RequestBody CustomerPojo input, @PathVariable String idNumber)
     throws NotFoundException, BadInputException {
     // TODO improve this implementation; the same customer will be fetched twice
     Long customerId = this.readOne(idNumber).getId();

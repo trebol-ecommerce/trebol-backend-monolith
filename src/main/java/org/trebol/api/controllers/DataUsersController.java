@@ -57,7 +57,7 @@ public class DataUsersController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('users:create')")
-  public void create(@RequestBody @Valid UserPojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody UserPojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
@@ -73,7 +73,7 @@ public class DataUsersController
   @Override
   @PutMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:update')")
-  public void update(@RequestBody @Valid UserPojo input, @PathVariable String name)
+  public void update(@RequestBody UserPojo input, @PathVariable String name)
     throws BadInputException, NotFoundException {
     Long userId = this.readOne(name).getId();
     crudService.update(input, userId);

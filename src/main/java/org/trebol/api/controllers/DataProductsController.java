@@ -57,7 +57,7 @@ public class DataProductsController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('products:create')")
-  public void create(@RequestBody @Valid ProductPojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody ProductPojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
@@ -73,7 +73,7 @@ public class DataProductsController
   @Override
   @PutMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:update')")
-  public void update(@RequestBody @Valid ProductPojo input, @PathVariable String code)
+  public void update(@RequestBody ProductPojo input, @PathVariable String code)
     throws BadInputException, NotFoundException {
     Long productId = this.readOne(code).getId();
     crudService.update(input, productId);
