@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
@@ -24,8 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,6 +74,7 @@ public class SalesJpaCrudServiceImpl
   private final IPaymentTypesJpaRepository paymentTypesRepository;
   private final IBillingCompaniesJpaRepository billingCompaniesRepository;
   private final IAddressesJpaRepository addressesRepository;
+  private final GenericJpaCrudService<CustomerPojo, Customer> customersService;
   private final ICustomersJpaRepository customersRepository;
   private final IProductsJpaRepository productsRepository;
   private final ConversionService conversion;
@@ -86,8 +84,8 @@ public class SalesJpaCrudServiceImpl
   public SalesJpaCrudServiceImpl(ISalesJpaRepository repository, ConversionService conversion,
     ISellStatusesJpaRepository statusesRepository, IBillingTypesJpaRepository billingTypesRepository,
     IBillingCompaniesJpaRepository billingCompaniesRepository, IPaymentTypesJpaRepository paymentTypesRepository,
-    IAddressesJpaRepository addressesRepository, ICustomersJpaRepository customersRepository,
-    IProductsJpaRepository productsRepository,
+    IAddressesJpaRepository addressesRepository, GenericJpaCrudService<CustomerPojo, Customer> customersService,
+    ICustomersJpaRepository customersRepository, IProductsJpaRepository productsRepository,
     Validator validator) {
     super(repository);
     this.salesRepository = repository;
@@ -97,6 +95,7 @@ public class SalesJpaCrudServiceImpl
     this.billingCompaniesRepository = billingCompaniesRepository;
     this.paymentTypesRepository = paymentTypesRepository;
     this.addressesRepository = addressesRepository;
+    this.customersService = customersService;
     this.customersRepository = customersRepository;
     this.productsRepository = productsRepository;
     this.validator = validator;
@@ -194,6 +193,18 @@ public class SalesJpaCrudServiceImpl
       target.setBillingType(existingBillingType.get());
     }
 
+    CustomerPojo sourceCustomer = source.getCustomer();
+    if (sourceCustomer == null) {
+      throw new BadInputException("Customer must posess valid personal information");
+    } else if (customersService.itemExists(sourceCustomer)) {
+      Customer existingCustomer = customersRepository.findByPersonIdNumber(sourceCustomer.getPerson().getIdNumber()).get();
+      customersService.applyChangesToExistingEntity(sourceCustomer, existingCustomer);
+      target.setCustomer(existingCustomer);
+    } else {
+      Customer newCustomer = customersService.convertToNewEntity(sourceCustomer);
+      target.setCustomer(newCustomer);
+    }
+
     AddressPojo billingAddress = source.getBillingAddress();
     if (billingAddress != null) {
       Set<ConstraintViolation<AddressPojo>> validationResult = validator.validate(billingAddress);
@@ -216,12 +227,6 @@ public class SalesJpaCrudServiceImpl
         targetAddress = this.mergeAddress(targetAddress);
         target.setShippingAddress(targetAddress);
       }
-    }
-
-    CustomerPojo sourceCustomer = source.getCustomer();
-    if (sourceCustomer != null && sourceCustomer.getPerson() != null) {
-      Customer customer = this.customer2Entity(sourceCustomer);
-      target.setCustomer(customer);
     }
 
     Collection<SellDetailPojo> sourceDetails = source.getDetails();
@@ -282,11 +287,11 @@ public class SalesJpaCrudServiceImpl
 
   @Override
   public SellPojo readOne(Long id) throws NotFoundException {
-    Optional<Sell> personById = salesRepository.findByIdWithDetails(id);
-    if (!personById.isPresent()) {
+    Optional<Sell> matchingSell = salesRepository.findByIdWithDetails(id);
+    if (!matchingSell.isPresent()) {
       throw new NotFoundException("No sell matches that buy order");
     } else {
-      Sell found = personById.get();
+      Sell found = matchingSell.get();
       SellPojo foundPojo = this.convertToPojo(found);
       if (foundPojo != null) {
         List<SellDetailPojo> sellDetails = this.convertDetailsToPojo(found.getDetails());
@@ -297,17 +302,17 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  public SellPojo find(Predicate conditions) throws NotFoundException {
+  public SellPojo readOne(Predicate conditions) throws NotFoundException {
     Optional<Sell> matchingSell = salesRepository.findOne(conditions);
     if (!matchingSell.isPresent()) {
       throw new NotFoundException("No sell matches the filtering conditions");
     } else {
       Sell found = matchingSell.get();
       SellPojo foundPojo = this.convertToPojo(found);
-
-      // TODO implement this
-      //List<SellDetailPojo> pojoDetails = this.details2PojoList(found);
-      //foundPojo.setDetails(pojoDetails);
+      if (foundPojo != null) {
+        List<SellDetailPojo> sellDetails = this.convertDetailsToPojo(found.getDetails());
+        foundPojo.setDetails(sellDetails);
+      }
       return foundPojo;
     }
   }
@@ -439,16 +444,6 @@ public class SalesJpaCrudServiceImpl
     } else {
       Address target = addressesRepository.saveAndFlush(source);
       return target;
-    }
-  }
-
-  private Customer customer2Entity(CustomerPojo sourceCustomer) {
-    Optional<Customer> customerByIdCard = customersRepository.findByPersonIdNumber(sourceCustomer.getPerson().getIdNumber());
-    if (customerByIdCard.isPresent()) {
-      Customer target = customerByIdCard.get();
-      return target;
-    } else {
-      return conversion.convert(sourceCustomer, Customer.class);
     }
   }
 

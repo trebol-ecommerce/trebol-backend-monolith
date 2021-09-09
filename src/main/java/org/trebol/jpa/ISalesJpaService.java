@@ -13,7 +13,6 @@ import javassist.NotFoundException;
 public interface ISalesJpaService
   extends IJpaCrudService<SellPojo, Long, Predicate> {
 
-  SellPojo find(Predicate conditions) throws NotFoundException;
   void setSellStatusToPaymentStartedWithToken(Long id, String token) throws NotFoundException;
   void setSellStatusToPaymentAborted(Long id) throws NotFoundException;
   void setSellStatusToPaymentFailed(Long id) throws NotFoundException;

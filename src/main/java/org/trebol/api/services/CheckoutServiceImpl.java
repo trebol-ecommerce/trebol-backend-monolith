@@ -95,7 +95,7 @@ public class CheckoutServiceImpl
     Predicate startedWithMatchingToken = salesCrudService.parsePredicate(
         Maps.of("token", transactionToken).build()
     );
-    return salesCrudService.find(startedWithMatchingToken);
+    return salesCrudService.readOne(startedWithMatchingToken);
   }
 
   /**
@@ -128,7 +128,7 @@ public class CheckoutServiceImpl
     Predicate startedTransactionWithMatchingToken = salesCrudService.parsePredicate(
         Maps.of("statusName", "Payment Started").and("token", transactionToken).build()
     );
-    return salesCrudService.find(startedTransactionWithMatchingToken);
+    return salesCrudService.readOne(startedTransactionWithMatchingToken);
   }
 
 }
