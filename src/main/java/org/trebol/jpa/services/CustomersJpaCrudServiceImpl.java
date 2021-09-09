@@ -34,40 +34,44 @@ public class CustomersJpaCrudServiceImpl
   extends GenericJpaCrudService<CustomerPojo, Customer> {
 
   private static final Logger logger = LoggerFactory.getLogger(CustomersJpaCrudServiceImpl.class);
+  private final GenericJpaCrudService<PersonPojo, Person> peopleService;
   private final ICustomersJpaRepository customersRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public CustomersJpaCrudServiceImpl(ICustomersJpaRepository repository, ConversionService conversion) {
+  public CustomersJpaCrudServiceImpl(ICustomersJpaRepository repository,
+    GenericJpaCrudService<PersonPojo, Person> peopleService, ConversionService conversion) {
     super(repository);
+    this.peopleService = peopleService;
     this.customersRepository = repository;
     this.conversion = conversion;
   }
 
-  @Nullable
   @Override
-  public CustomerPojo entity2Pojo(Customer source) {
-    CustomerPojo target = conversion.convert(source, CustomerPojo.class);
-    if (target != null) {
-      PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
-      if (person != null) {
-        target.setPerson(person);
-      }
-    }
+  public CustomerPojo convertToPojo(Customer source) {
+    CustomerPojo target = new CustomerPojo();
+    target.setId(source.getId());
+    PersonPojo targetPerson = peopleService.convertToPojo(source.getPerson());
+    target.setPerson(targetPerson);
     return target;
   }
 
-  @Nullable
   @Override
-  public Customer pojo2Entity(CustomerPojo source) {
-    Customer target = conversion.convert(source, Customer.class);
-    if (target != null) {
-      Person personTarget = conversion.convert(source.getPerson(), Person.class);
-      if (personTarget != null) {
-        target.setPerson(personTarget);
-      }
-    }
+  public Customer convertToNewEntity(CustomerPojo source) throws BadInputException {
+    Customer target = new Customer();
+    Person targetPerson = peopleService.convertToNewEntity(source.getPerson());
+    target.setPerson(targetPerson);
     return target;
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(CustomerPojo source, Customer target) throws BadInputException {
+    Person targetPerson = target.getPerson();
+    PersonPojo sourcePerson = source.getPerson();
+    if (sourcePerson == null) {
+      throw new BadInputException("Customer must have a person profile");
+    }
+    peopleService.applyChangesToExistingEntity(sourcePerson, targetPerson);
   }
 
   @Override
@@ -81,13 +85,13 @@ public class CustomersJpaCrudServiceImpl
         switch (paramName) {
           case "id":
             return predicate.and(qCustomer.id.eq(longValue)); // id matching is final
-          case "name":
+          case "nameLike":
             predicate.and(qCustomer.person.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "idnumber":
+          case "idnumberLike":
             predicate.and(qCustomer.person.idNumber.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "email":
+          case "emailLike":
             predicate.and(qCustomer.person.email.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:

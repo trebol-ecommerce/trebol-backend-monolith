@@ -68,9 +68,9 @@ public abstract class GenericJpaCrudService<P, E>
     if (this.itemExists(inputPojo)) {
       throw new EntityAlreadyExistsException("The item to be created already exists");
     } else {
-      E input = this.pojo2Entity(inputPojo);
+      E input = this.convertToNewEntity(inputPojo);
       E output = repository.saveAndFlush(input);
-      P result = this.entity2Pojo(output);
+      P result = this.convertToPojo(output);
       return result;
     }
   }
@@ -87,7 +87,7 @@ public abstract class GenericJpaCrudService<P, E>
 
     List<P> pojoList = new ArrayList<>();
     for (E item : iterable) {
-      P outputItem = entity2Pojo(item);
+      P outputItem = this.convertToPojo(item);
       pojoList.add(outputItem);
     }
 
@@ -102,20 +102,21 @@ public abstract class GenericJpaCrudService<P, E>
    * @param input
    * @param id
    */
+  @Transactional
   @Override
   public P update(P input, Long id) throws NotFoundException, BadInputException {
     Optional<E> itemById = repository.findById(id);
     if (!itemById.isPresent()) {
       throw new NotFoundException("The requested item does not exist");
     } else {
-      E existingEntity = itemById.get();
-      E newEntity = this.pojo2Entity(input);
-      if (newEntity.equals(existingEntity)) {
+      E target = itemById.get();
+      this.applyChangesToExistingEntity(input, target);
+      if (repository.findById(id).get().equals(target)) {
         return input;
       } else {
         try {
-          E output = repository.saveAndFlush(newEntity);
-          P result = this.entity2Pojo(output);
+          E output = repository.saveAndFlush(target);
+          P result = this.convertToPojo(output);
           return result;
         } catch (Exception exc) {
           return null;
@@ -141,7 +142,7 @@ public abstract class GenericJpaCrudService<P, E>
       throw new NotFoundException("The requested item does not exist");
     } else {
       E found = entityById.get();
-      P foundPojo = this.entity2Pojo(found);
+      P foundPojo = this.convertToPojo(found);
       return foundPojo;
     }
   }
@@ -153,7 +154,7 @@ public abstract class GenericJpaCrudService<P, E>
       throw new NotFoundException("The requested item does not exist");
     } else {
       E found = entity.get();
-      P foundPojo = entity2Pojo(found);
+      P foundPojo = this.convertToPojo(found);
       return foundPojo;
     }
   }

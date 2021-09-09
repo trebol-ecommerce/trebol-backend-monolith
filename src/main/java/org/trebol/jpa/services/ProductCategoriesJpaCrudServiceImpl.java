@@ -43,16 +43,33 @@ public class ProductCategoriesJpaCrudServiceImpl
     this.conversion = conversion;
   }
 
-  @Nullable
   @Override
-  public ProductCategoryPojo entity2Pojo(ProductCategory source) {
+  public ProductCategoryPojo convertToPojo(ProductCategory source) {
     return conversion.convert(source, ProductCategoryPojo.class);
   }
 
-  @Nullable
   @Override
-  public ProductCategory pojo2Entity(ProductCategoryPojo source) {
+  public ProductCategory convertToNewEntity(ProductCategoryPojo source) {
     return conversion.convert(source, ProductCategory.class);
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory target) throws BadInputException {
+    String name = source.getName();
+    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
+    }
+
+    ProductCategoryPojo parent = source.getParent();
+    if (parent != null) {
+      String parentName = parent.getName();
+      if (parentName != null && !parentName.isBlank() && !target.getParent().getName().equals(parentName)) {
+        Optional<ProductCategory> parentNameMatch = categoriesRepository.findByName(parentName);
+        if (parentNameMatch.isPresent()) {
+          target.setParent(parentNameMatch.get());
+        }
+      }
+    }
   }
 
   @Override
@@ -65,7 +82,7 @@ public class ProductCategoriesJpaCrudServiceImpl
         switch (paramName) {
           case "id":
             return predicate.and(qProductCategory.id.eq(Long.valueOf(stringValue))); // match por id es único
-          case "name":
+          case "nameLike":
             predicate.and(qProductCategory.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "parent":

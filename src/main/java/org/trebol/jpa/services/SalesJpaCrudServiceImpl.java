@@ -6,6 +6,7 @@ import com.querydsl.core.types.Predicate;
 import javassist.NotFoundException;
 
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -102,7 +103,7 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  public SellPojo entity2Pojo(Sell source) {
+  public SellPojo convertToPojo(Sell source) {
     // TODO can lesser null checks be used ?
     SellPojo target = conversion.convert(source, SellPojo.class);
     if (target != null) {
@@ -142,7 +143,7 @@ public class SalesJpaCrudServiceImpl
 
   @Transactional
   @Override
-  public Sell pojo2Entity(SellPojo source) throws BadInputException {
+  public Sell convertToNewEntity(SellPojo source) throws BadInputException {
     Sell target = new Sell();
 
     if (source.getDate() != null) {
@@ -248,12 +249,8 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  public Page<Sell> getAllEntities(Pageable paged, Predicate filters) {
-    if (filters == null) {
-      return salesRepository.findAll(paged);
-    } else {
-      return salesRepository.findAll(filters, paged);
-    }
+  public void applyChangesToExistingEntity(SellPojo source, Sell target) throws BadInputException {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
   @Override
@@ -263,13 +260,11 @@ public class SalesJpaCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
-        Instant valueAsInstant = Instant.parse(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qSell.id.eq(longValue)); // match por id es único
+            return predicate.and(qSell.id.eq(Long.valueOf(stringValue))); // match por id es único
           case "date":
-            predicate.and(qSell.date.eq(valueAsInstant));
+            predicate.and(qSell.date.eq(Instant.parse(stringValue)));
             break;
           // TODO add more filters
           default:
@@ -277,6 +272,8 @@ public class SalesJpaCrudServiceImpl
         }
       } catch (NumberFormatException exc) {
         logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
+      } catch (DateTimeParseException exc) {
+        logger.warn("Param '{}' couldn't be parsed as date (value: '{}')", paramName, stringValue, exc);
       }
     }
 
@@ -290,7 +287,7 @@ public class SalesJpaCrudServiceImpl
       throw new NotFoundException("No sell matches that buy order");
     } else {
       Sell found = personById.get();
-      SellPojo foundPojo = this.entity2Pojo(found);
+      SellPojo foundPojo = this.convertToPojo(found);
       if (foundPojo != null) {
         List<SellDetailPojo> sellDetails = this.convertDetailsToPojo(found.getDetails());
         foundPojo.setDetails(sellDetails);
@@ -306,7 +303,7 @@ public class SalesJpaCrudServiceImpl
       throw new NotFoundException("No sell matches the filtering conditions");
     } else {
       Sell found = matchingSell.get();
-      SellPojo foundPojo = this.entity2Pojo(found);
+      SellPojo foundPojo = this.convertToPojo(found);
 
       // TODO implement this
       //List<SellDetailPojo> pojoDetails = this.details2PojoList(found);
@@ -367,7 +364,6 @@ public class SalesJpaCrudServiceImpl
     }
   }
 
-  @Nullable
   private CustomerPojo convertCustomerToPojo(Customer source) {
     CustomerPojo customer = conversion.convert(source, CustomerPojo.class);
     if (customer != null) {
@@ -394,7 +390,6 @@ public class SalesJpaCrudServiceImpl
     return sellDetails;
   }
 
-  @Nullable
   private SalespersonPojo convertSalespersonToPojo(Salesperson source) {
     SalespersonPojo target = conversion.convert(source, SalespersonPojo.class);
     if (target != null) {

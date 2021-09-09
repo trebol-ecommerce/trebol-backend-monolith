@@ -52,16 +52,42 @@ public class PeopleJpaCrudServiceImpl
     }
   }
 
-  @Nullable
   @Override
-  public PersonPojo entity2Pojo(Person source) {
+  public PersonPojo convertToPojo(Person source) {
     return conversion.convert(source, PersonPojo.class);
   }
 
-  @Nullable
   @Override
-  public Person pojo2Entity(PersonPojo source) {
+  public Person convertToNewEntity(PersonPojo source) {
     return conversion.convert(source, Person.class);
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(PersonPojo source, Person target) throws BadInputException {
+    String name = source.getName();
+    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
+    }
+
+    String email = source.getEmail();
+    if (email != null && !email.isBlank() && !target.getEmail().equals(email)) {
+      target.setEmail(email);
+    }
+
+    // phones may be empty, but not null
+    String phone1 = source.getPhone1();
+    if (phone1 != null) {
+      if (!target.getPhone1().equals(phone1)) {
+        target.setPhone1(phone1);
+      }
+    }
+
+    String phone2 = source.getPhone2();
+    if (phone2 != null) {
+      if (!target.getPhone2().equals(phone2)) {
+        target.setPhone2(phone2);
+      }
+    }
   }
 
   @Override
@@ -71,17 +97,16 @@ public class PeopleJpaCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qPerson.id.eq(longValue)); // id matching is final
-          case "name":
+            return predicate.and(qPerson.id.eq(Long.valueOf(stringValue))); // id matching is final
+          case "nameLike":
             predicate.and(qPerson.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "idnumber":
+          case "idNumberLike":
             predicate.and(qPerson.idNumber.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "email":
+          case "emailLike":
             predicate.and(qPerson.email.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:

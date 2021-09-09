@@ -21,9 +21,6 @@ public class SellDetailPojo {
   @JsonInclude
   @NotNull
   private ProductPojo product;
-  @JsonInclude(value = Include.NON_EMPTY)
-  @Nullable
-  private SellPojo sell;
 
   public Long getId() {
     return id;
@@ -49,21 +46,12 @@ public class SellDetailPojo {
     this.product = product;
   }
 
-  public SellPojo getSell() {
-    return sell;
-  }
-
-  public void setSell(SellPojo sell) {
-    this.sell = sell;
-  }
-
   @Override
   public int hashCode() {
     int hash = 3;
     hash = 29 * hash + Objects.hashCode(this.id);
     hash = 29 * hash + this.units;
     hash = 29 * hash + Objects.hashCode(this.product);
-    hash = 29 * hash + Objects.hashCode(this.sell);
     return hash;
   }
 
@@ -88,15 +76,12 @@ public class SellDetailPojo {
     if (!Objects.equals(this.product, other.product)) {
       return false;
     }
-    if (!Objects.equals(this.sell, other.sell)) {
-      return false;
-    }
     return true;
   }
 
   @Override
   public String toString() {
-    return "SellDetailPojo{" + "id=" + id + ", units=" + units + ", product=" + product + ", sell=" + sell + '}';
+    return "SellDetailPojo{" + "id=" + id + ", units=" + units + ", product=" + product + '}';
   }
 
 }

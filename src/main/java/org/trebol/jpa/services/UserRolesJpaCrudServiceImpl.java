@@ -42,16 +42,22 @@ public class UserRolesJpaCrudServiceImpl
     this.conversion = conversion;
   }
 
-  @Nullable
   @Override
-  public UserRolePojo entity2Pojo(UserRole source) {
+  public UserRolePojo convertToPojo(UserRole source) {
     return conversion.convert(source, UserRolePojo.class);
   }
 
-  @Nullable
   @Override
-  public UserRole pojo2Entity(UserRolePojo source) {
+  public UserRole convertToNewEntity(UserRolePojo source) {
     return conversion.convert(source, UserRole.class);
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(UserRolePojo source, UserRole target) throws BadInputException {
+    String name = source.getName();
+    if (name != null && !name.isBlank() && target.getName().equals(name)) {
+      target.setName(name);
+    }
   }
 
   @Override

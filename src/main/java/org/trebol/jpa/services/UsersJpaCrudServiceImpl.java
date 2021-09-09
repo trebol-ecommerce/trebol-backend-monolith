@@ -57,16 +57,14 @@ public class UsersJpaCrudServiceImpl
     this.passwordEncoder = passwordEncoder;
   }
 
-  @Nullable
   @Override
-  public UserPojo entity2Pojo(User source) {
+  public UserPojo convertToPojo(User source) {
     UserPojo target = conversion.convert(source, UserPojo.class);
     return target;
   }
 
-  @Nullable
   @Override
-  public User pojo2Entity(UserPojo source) throws BadInputException {
+  public User convertToNewEntity(UserPojo source) throws BadInputException {
     User target = conversion.convert(source, User.class);
     if (target == null) {
       throw new BadInputException("Invalid user data");
@@ -112,6 +110,39 @@ public class UsersJpaCrudServiceImpl
   }
 
   @Override
+  public void applyChangesToExistingEntity(UserPojo source, User target) throws BadInputException {
+    String name = source.getName();
+    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
+    }
+
+    String roleName = source.getRole();
+    if (roleName != null && !roleName.isBlank() && !target.getUserRole().getName().equals(roleName)) {
+      Optional<UserRole> roleNameMatch = rolesRepository.findByName(roleName);
+      if (roleNameMatch.isPresent()) {
+        target.setUserRole(roleNameMatch.get());
+      }
+    }
+
+    String password = source.getPassword();
+    if (password != null && !password.isBlank() && !passwordEncoder.matches(password, target.getPassword())) {
+      String encodedPassword = passwordEncoder.encode(password);
+      target.setPassword(encodedPassword);
+    }
+
+    PersonPojo person = source.getPerson();
+    if (person != null) {
+      String idNumber = person.getIdNumber();
+      if (idNumber != null && !idNumber.isBlank() && !target.getPerson().getIdNumber().equals(idNumber)) {
+        Optional<Person> idNumberMatch = peopleRepository.findByIdNumber(idNumber);
+        if (idNumberMatch.isPresent()) {
+          target.setPerson(idNumberMatch.get());
+        }
+      }
+    }
+  }
+
+  @Override
   public Predicate parsePredicate(Map<String, String> queryParamsMap) {
     QUser qUser = QUser.user;
     BooleanBuilder predicate = new BooleanBuilder();
@@ -148,7 +179,7 @@ public class UsersJpaCrudServiceImpl
       throw new NotFoundException("The requested user does not exist");
     } else {
       User found = userById.get();
-      UserPojo foundPojo = this.entity2Pojo(found);
+      UserPojo foundPojo = this.convertToPojo(found);
       if (foundPojo != null && found.getPerson() != null) {
         PersonPojo person = conversion.convert(found.getPerson(), PersonPojo.class);
         if (person != null) {

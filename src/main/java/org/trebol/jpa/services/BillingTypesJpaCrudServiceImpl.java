@@ -52,16 +52,22 @@ public class BillingTypesJpaCrudServiceImpl
     }
   }
 
-  @Nullable
   @Override
-  public BillingTypePojo entity2Pojo(BillingType source) {
+  public BillingTypePojo convertToPojo(BillingType source) {
     return conversion.convert(source, BillingTypePojo.class);
   }
 
-  @Nullable
   @Override
-  public BillingType pojo2Entity(BillingTypePojo source) {
+  public BillingType convertToNewEntity(BillingTypePojo source) {
     return conversion.convert(source, BillingType.class);
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(BillingTypePojo source, BillingType target) throws BadInputException {
+    String name = source.getName();
+    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
+    }
   }
 
   @Override

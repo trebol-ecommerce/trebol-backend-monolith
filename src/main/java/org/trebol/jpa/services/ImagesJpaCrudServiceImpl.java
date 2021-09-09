@@ -50,16 +50,32 @@ public class ImagesJpaCrudServiceImpl
     }
   }
 
-  @Nullable
   @Override
-  public ImagePojo entity2Pojo(Image source) {
+  public ImagePojo convertToPojo(Image source) {
     return conversion.convert(source, ImagePojo.class);
   }
 
-  @Nullable
   @Override
-  public Image pojo2Entity(ImagePojo source) {
+  public Image convertToNewEntity(ImagePojo source) {
     return conversion.convert(source, Image.class);
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(ImagePojo source, Image target) throws BadInputException {
+    String code = source.getCode();
+    if (code != null && !code.isBlank() && !target.getCode().equals(code)) {
+      target.setCode(code);
+    }
+
+    String filename = source.getFilename();
+    if (filename != null && !filename.isBlank() && !target.getFilename().equals(filename)) {
+      target.setFilename(filename);
+    }
+
+    String url = source.getUrl();
+    if (url != null && !url.isBlank() && !target.getUrl().equals(url)) {
+      target.setUrl(url);
+    }
   }
 
   @Override

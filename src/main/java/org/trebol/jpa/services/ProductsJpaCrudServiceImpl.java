@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.annotation.Nullable;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +21,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import org.trebol.api.pojo.ImagePojo;
+import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.jpa.entities.QProduct;
 
 import org.trebol.api.pojo.ProductPojo;
@@ -33,6 +34,7 @@ import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.IImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
+import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
 
 /**
@@ -48,16 +50,22 @@ public class ProductsJpaCrudServiceImpl
   private final IProductsJpaRepository productsRepository;
   private final IImagesJpaRepository imagesRepository;
   private final IProductImagesJpaRepository productImagesRepository;
+  private final IProductsCategoriesJpaRepository categoriesRepository;
   private final ConversionService conversion;
+  private final Validator validator;
 
   @Autowired
   public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository, IImagesJpaRepository imagesRepository,
-    IProductImagesJpaRepository productImagesRepository, ConversionService conversion) {
+    IProductImagesJpaRepository productImagesRepository,
+    IProductsCategoriesJpaRepository categoriesRepository, ConversionService conversion,
+    Validator validator) {
     super(repository);
     this.productsRepository = repository;
     this.imagesRepository = imagesRepository;
     this.productImagesRepository = productImagesRepository;
+    this.categoriesRepository = categoriesRepository;
     this.conversion = conversion;
+    this.validator = validator;
   }
 
   @Transactional
@@ -66,36 +74,19 @@ public class ProductsJpaCrudServiceImpl
     if (this.itemExists(inputPojo)) {
       throw new EntityAlreadyExistsException("The item to be created already exists");
     } else {
-      Product input = this.pojo2Entity(inputPojo);
+      Product input = this.convertToNewEntity(inputPojo);
       Product output = repository.saveAndFlush(input);
-      ProductPojo result = this.entity2Pojo(output);
+      ProductPojo result = this.convertToPojo(output);
       Collection<ImagePojo> images = inputPojo.getImages();
       if (images != null && !images.isEmpty()) {
-        List<ProductImage> targetImages = new ArrayList<>();
-        for (ImagePojo inputImage : images) {
-          String filename = inputImage.getFilename();
-          Image image;
-          Optional<Image> filenameMatch = imagesRepository.findByFilename(filename);
-          if (filenameMatch.isEmpty()) {
-            image = conversion.convert(inputImage, Image.class);
-            image = imagesRepository.saveAndFlush(image);
-          } else {
-            image = filenameMatch.get();
-          }
-          ProductImage targetImage = new ProductImage();
-          targetImage.setProduct(output);
-          targetImage.setImage(image);
-          targetImages.add(targetImage);
-        }
-        productImagesRepository.saveAll(targetImages);
+        this.saveAllImages(images, output);
       }
       return result;
     }
   }
 
-  @Nullable
   @Override
-  public ProductPojo entity2Pojo(Product source) {
+  public ProductPojo convertToPojo(Product source) {
     ProductPojo target = conversion.convert(source, ProductPojo.class);
     if (target != null) {
       Long id = target.getId();
@@ -111,10 +102,62 @@ public class ProductsJpaCrudServiceImpl
     return target;
   }
 
-  @Nullable
   @Override
-  public Product pojo2Entity(ProductPojo source) {
+  public Product convertToNewEntity(ProductPojo source) {
     return conversion.convert(source, Product.class);
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(ProductPojo source, Product target) throws BadInputException {
+    String barcode = source.getBarcode();
+    if (barcode != null && !barcode.isBlank() && !target.getBarcode().equals(barcode)) {
+      target.setBarcode(barcode);
+    }
+
+    String name = source.getName();
+    if (name != null && !name.isBlank() && !target.getBarcode().equals(name)) {
+      target.setBarcode(name);
+    }
+
+    Integer price = source.getPrice();
+    if (price != null) {
+      target.setPrice(price);
+    }
+
+    String description = source.getDescription();
+    if (description != null && !description.isBlank() && !target.getBarcode().equals(description)) {
+      target.setBarcode(description);
+    }
+
+    ProductCategoryPojo category = source.getCategory();
+    if (category != null) {
+      String categoryName = category.getName();
+      if (categoryName != null && !categoryName.isBlank() && !target.getProductCategory().getName().equals(categoryName)) {
+        Optional<ProductCategory> categoryNameMatch = categoriesRepository.findByName(categoryName);
+        if (categoryNameMatch.isPresent()) {
+          target.setProductCategory(categoryNameMatch.get());
+        }
+      }
+    }
+
+    Integer currentStock = source.getCurrentStock();
+    if (price != null) {
+      target.setStockCurrent(currentStock);
+    }
+
+    Collection<ImagePojo> images = source.getImages();
+    if (images != null) {
+      List<ImagePojo> imagesToSave = new ArrayList<>();
+      for (ImagePojo img : images) {
+        if (validator.validate(img).isEmpty()) {
+          imagesToSave.add(img);
+        }
+      }
+
+      List<ProductImage> productImages = productImagesRepository.findByProductId(target.getId());
+      productImagesRepository.deleteAll(productImages);
+      this.saveAllImages(imagesToSave, target);
+    }
   }
 
   @Override
@@ -164,5 +207,25 @@ public class ProductsJpaCrudServiceImpl
     } else {
       return (this.productsRepository.findByBarcode(barcode).isPresent());
     }
+  }
+
+  private void saveAllImages(Collection<ImagePojo> images, Product output) {
+    List<ProductImage> targetImages = new ArrayList<>();
+    for (ImagePojo inputImage : images) {
+      String filename = inputImage.getFilename();
+      Image image;
+      Optional<Image> filenameMatch = imagesRepository.findByFilename(filename);
+      if (filenameMatch.isEmpty()) {
+        image = conversion.convert(inputImage, Image.class);
+        image = imagesRepository.saveAndFlush(image);
+      } else {
+        image = filenameMatch.get();
+      }
+      ProductImage targetImage = new ProductImage();
+      targetImage.setProduct(output);
+      targetImage.setImage(image);
+      targetImages.add(targetImage);
+    }
+    productImagesRepository.saveAll(targetImages);
   }
 }
