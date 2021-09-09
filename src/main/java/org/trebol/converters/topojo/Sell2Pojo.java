@@ -18,7 +18,7 @@ public class Sell2Pojo
   public SellPojo convert(Sell source) {
     SellPojo target = new SellPojo();
 
-    target.setId(source.getId());
+    target.setBuyOrder(source.getId());
     target.setDate(source.getDate());
     target.setNetValue(source.getNetValue());
     target.setToken(source.getTransactionToken());

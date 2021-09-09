@@ -46,7 +46,7 @@ public class WebpayplusPaymentServiceImpl
       WebpayPlus.Transaction.setIntegrationType(IntegrationType.LIVE);
     }
 
-    String buyOrder = transaction.getId().toString();
+    String buyOrder = transaction.getBuyOrder().toString();
     String sessionId = String.valueOf(transaction.hashCode());
     double amount = Double.valueOf(transaction.getNetValue());
     String returnUrl = properties.getCallbackUrl();

@@ -64,7 +64,7 @@ public class CheckoutServiceImpl
   public PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException {
     PaymentRedirectionDetailsPojo response = paymentIntegrationService.requestNewPaymentPageDetails(transaction);
     try {
-      salesCrudService.setSellStatusToPaymentStartedWithToken(transaction.getId(), response.getToken());
+      salesCrudService.setSellStatusToPaymentStartedWithToken(transaction.getBuyOrder(), response.getToken());
       return response;
     } catch (NotFoundException exc) {
       logger.error("A sell that was just created could not be found", exc);
@@ -77,7 +77,7 @@ public class CheckoutServiceImpl
     try {
       if (wasAborted) {
         SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
-        Long sellId = sellByToken.getId();
+        Long sellId = sellByToken.getBuyOrder();
         salesCrudService.setSellStatusToPaymentAborted(sellId);
       } else {
         this.processSellStatus(transactionToken);
@@ -111,7 +111,7 @@ public class CheckoutServiceImpl
     logger.trace("Looking up transaction with token={}...", transactionToken);
     SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
     int statusCode = paymentIntegrationService.requestPaymentResult(transactionToken);
-    Long sellId = sellByToken.getId();
+    Long sellId = sellByToken.getBuyOrder();
     logger.debug("Transaction found; updating sell status for id={}...", sellId);
     if (statusCode != 0) {
       logger.trace("Status code for transaction={}, means 'failed'", statusCode);

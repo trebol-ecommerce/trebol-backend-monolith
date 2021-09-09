@@ -176,7 +176,7 @@ public class SalesJpaCrudServiceImpl
 
   @Override
   public boolean itemExists(SellPojo input) throws BadInputException {
-    Long id = input.getId();
+    Long id = input.getBuyOrder();
     return ((id != null) && this.salesRepository.existsById(id));
   }
 
