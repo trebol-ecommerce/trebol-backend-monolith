@@ -37,6 +37,8 @@ import org.trebol.jpa.repositories.IProductImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
 
+import javassist.NotFoundException;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -82,6 +84,17 @@ public class ProductsJpaCrudServiceImpl
         this.saveAllImages(images, output);
       }
       return result;
+    }
+  }
+
+  @Override
+  public void delete(Long id) throws NotFoundException {
+    if (!repository.existsById(id)) {
+      throw new NotFoundException("The requested item does not exist");
+    } else {
+      productImagesRepository.deleteByProductId(id);
+      repository.deleteById(id);
+      repository.flush();
     }
   }
 
