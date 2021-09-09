@@ -22,7 +22,7 @@ public interface IJpaConverterService<P, E> {
   E convertToNewEntity(P source) throws BadInputException;
 
   /**
-   * Accurately updates entity with new data property-by-property.
+   * Accurately updates entity class instance with new data, property-by-property.
    * @param source The Pojo containing data updates.
    * @param target The target entity.
    * @throws BadInputException
