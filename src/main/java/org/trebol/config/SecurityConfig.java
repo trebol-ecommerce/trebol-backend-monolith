@@ -87,6 +87,8 @@ public class SecurityConfig
             .antMatchers(
               "/data/customers",
               "/data/customers/*",
+              "/data/images",
+              "/data/images/*",
               "/data/people",
               "/data/people/*",
               "/data/product_categories",

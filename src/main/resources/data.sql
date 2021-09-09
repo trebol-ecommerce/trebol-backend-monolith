@@ -79,7 +79,11 @@ VALUES
 (37, 'people:delete'),
 (38, 'people:create'),
 (39, 'people:update'),
-(40, 'people:read');
+(40, 'people:read'),
+(41, 'images:delete'),
+(42, 'images:create'),
+(43, 'images:update'),
+(44, 'images:read');
 
 INSERT INTO `app_users_roles_permissions`
 (`user_role_permission_id`, `permission_id`, `user_role_id`)
@@ -124,6 +128,10 @@ VALUES
 (38, 38, 01),
 (39, 39, 01),
 (40, 40, 01),
+(41, 41, 01),
+(42, 42, 01),
+(43, 43, 01),
+(44, 44, 01),
 (45, 01, 02),
 (46, 02, 02),
 (47, 03, 02),
@@ -141,6 +149,10 @@ VALUES
 (68, 28, 02),
 (69, 36, 02),
 (70, 40, 02),
+(71, 41, 02),
+(72, 42, 02),
+(73, 43, 02),
+(74, 44, 02),
 (75, 03, 03),
 (76, 04, 03),
 (77, 08, 03),
@@ -153,7 +165,8 @@ VALUES
 (84, 22, 03),
 (85, 24, 03),
 (86, 28, 03),
-(87, 40, 03);
+(87, 40, 03),
+(88, 44, 03);
 
 INSERT INTO `app_users`
 (`user_id`, `user_name`, `user_password`, `user_role_id`)

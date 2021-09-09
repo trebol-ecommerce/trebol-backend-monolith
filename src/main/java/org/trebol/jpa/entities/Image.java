@@ -32,6 +32,10 @@ public class Image
   @Column(name = "image_id")
   private Long id;
   @Basic(optional = false)
+  @Size(min = 1, max = 50)
+  @Column(name = "image_code")
+  private String code;
+  @Basic(optional = false)
   @Size(min = 1, max = 100)
   @Column(name = "image_filename")
   private String filename;
@@ -48,6 +52,14 @@ public class Image
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
   }
 
   public String getFilename() {
@@ -69,9 +81,10 @@ public class Image
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = 43 * hash + Objects.hashCode(this.id);
-    hash = 43 * hash + Objects.hashCode(this.filename);
-    hash = 43 * hash + Objects.hashCode(this.url);
+    hash = 89 * hash + Objects.hashCode(this.id);
+    hash = 89 * hash + Objects.hashCode(this.code);
+    hash = 89 * hash + Objects.hashCode(this.filename);
+    hash = 89 * hash + Objects.hashCode(this.url);
     return hash;
   }
 
@@ -87,6 +100,9 @@ public class Image
       return false;
     }
     final Image other = (Image)obj;
+    if (!Objects.equals(this.code, other.code)) {
+      return false;
+    }
     if (!Objects.equals(this.filename, other.filename)) {
       return false;
     }
@@ -102,6 +118,7 @@ public class Image
   @Override
   public String toString() {
     return "Image{id=" + id +
+        ", code=" + code +
         ", filename=" + filename +
         ", url=" + url + '}';
   }
