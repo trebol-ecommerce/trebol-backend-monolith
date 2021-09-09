@@ -2,12 +2,9 @@ package org.trebol.jpa.services;
 
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,15 +33,13 @@ public class CustomersJpaCrudServiceImpl
   private static final Logger logger = LoggerFactory.getLogger(CustomersJpaCrudServiceImpl.class);
   private final GenericJpaCrudService<PersonPojo, Person> peopleService;
   private final ICustomersJpaRepository customersRepository;
-  private final ConversionService conversion;
 
   @Autowired
   public CustomersJpaCrudServiceImpl(ICustomersJpaRepository repository,
-    GenericJpaCrudService<PersonPojo, Person> peopleService, ConversionService conversion) {
+    GenericJpaCrudService<PersonPojo, Person> peopleService) {
     super(repository);
     this.peopleService = peopleService;
     this.customersRepository = repository;
-    this.conversion = conversion;
   }
 
   @Override
@@ -81,14 +76,22 @@ public class CustomersJpaCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qCustomer.id.eq(longValue)); // id matching is final
+            return predicate.and(qCustomer.id.eq(Long.valueOf(stringValue))); // id matching is final
+          case "name":
+            predicate.and(qCustomer.person.name.eq(stringValue));
+            break;
+          case "idNumber":
+            predicate.and(qCustomer.person.idNumber.eq(stringValue));
+            break;
+          case "email":
+            predicate.and(qCustomer.person.email.eq(stringValue));
+            break;
           case "nameLike":
             predicate.and(qCustomer.person.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "idnumberLike":
+          case "idNumberLike":
             predicate.and(qCustomer.person.idNumber.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "emailLike":
