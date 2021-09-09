@@ -1,7 +1,11 @@
 package org.trebol.jpa.services;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -21,9 +25,13 @@ import org.trebol.jpa.entities.QProduct;
 
 import org.trebol.api.pojo.ProductPojo;
 import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.entities.Image;
+import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.jpa.repositories.IImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
 
@@ -38,16 +46,51 @@ public class ProductsJpaCrudServiceImpl
 
   private static final Logger logger = LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class);
   private final IProductsJpaRepository productsRepository;
+  private final IImagesJpaRepository imagesRepository;
   private final IProductImagesJpaRepository productImagesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository, IProductImagesJpaRepository imagesRepository,
-    ConversionService conversion) {
+  public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository, IImagesJpaRepository imagesRepository,
+    IProductImagesJpaRepository productImagesRepository, ConversionService conversion) {
     super(repository);
     this.productsRepository = repository;
-    this.productImagesRepository = imagesRepository;
+    this.imagesRepository = imagesRepository;
+    this.productImagesRepository = productImagesRepository;
     this.conversion = conversion;
+  }
+
+  @Transactional
+  @Override
+  public ProductPojo create(ProductPojo inputPojo) throws BadInputException, EntityAlreadyExistsException {
+    if (this.itemExists(inputPojo)) {
+      throw new EntityAlreadyExistsException("The item to be created already exists");
+    } else {
+      Product input = this.pojo2Entity(inputPojo);
+      Product output = repository.saveAndFlush(input);
+      ProductPojo result = this.entity2Pojo(output);
+      Collection<ImagePojo> images = inputPojo.getImages();
+      if (images != null && !images.isEmpty()) {
+        List<ProductImage> targetImages = new ArrayList<>();
+        for (ImagePojo inputImage : images) {
+          String filename = inputImage.getFilename();
+          Image image;
+          Optional<Image> filenameMatch = imagesRepository.findByFilename(filename);
+          if (filenameMatch.isEmpty()) {
+            image = conversion.convert(inputImage, Image.class);
+            image = imagesRepository.saveAndFlush(image);
+          } else {
+            image = filenameMatch.get();
+          }
+          ProductImage targetImage = new ProductImage();
+          targetImage.setProduct(output);
+          targetImage.setImage(image);
+          targetImages.add(targetImage);
+        }
+        productImagesRepository.saveAll(targetImages);
+      }
+      return result;
+    }
   }
 
   @Nullable
