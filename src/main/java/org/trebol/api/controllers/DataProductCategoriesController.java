@@ -2,6 +2,8 @@ package org.trebol.api.controllers;
 
 import java.util.Map;
 
+import io.jsonwebtoken.lang.Maps;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,9 +42,10 @@ public class DataProductCategoriesController
     return super.readMany(null, null, allRequestParams);
   }
 
-  @GetMapping({"/{code}", "/{code}/"})
+  @GetMapping({"/{parentId}", "/{parentId}/"})
   @PreAuthorize("hasAuthority('product_categories:read')")
-  public ProductCategoryPojo readOne(@PathVariable String code) {
-    throw new UnsupportedOperationException("Method not implemented");
+  public DataPage<ProductCategoryPojo> readChildren(@PathVariable Long parentId) {
+    Map<String, String> queryParamsMap = Maps.of("parentId", String.valueOf(parentId)).build();
+    return super.readMany(null, null, queryParamsMap);
   }
 }
