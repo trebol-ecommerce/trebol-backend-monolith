@@ -41,6 +41,9 @@ public class Product
   @Size(max = 50)
   @Column(name = "product_code")
   private String barcode;
+  @Size(max = 1000)
+  @Column(name = "product_description")
+  private String description;
   @Basic(optional = false)
   @Column(name = "product_price")
   private int price;
@@ -80,6 +83,14 @@ public class Product
     this.barcode = barcode;
   }
 
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   public int getPrice() {
     return price;
   }
@@ -114,14 +125,15 @@ public class Product
 
   @Override
   public int hashCode() {
-    int hash = 5;
-    hash = 11 * hash + Objects.hashCode(this.id);
-    hash = 11 * hash + Objects.hashCode(this.name);
-    hash = 11 * hash + Objects.hashCode(this.barcode);
-    hash = 11 * hash + this.price;
-    hash = 11 * hash + this.stockCurrent;
-    hash = 11 * hash + this.stockCritical;
-    hash = 11 * hash + Objects.hashCode(this.productCategory);
+    int hash = 7;
+    hash = 79 * hash + Objects.hashCode(this.id);
+    hash = 79 * hash + Objects.hashCode(this.name);
+    hash = 79 * hash + Objects.hashCode(this.barcode);
+    hash = 79 * hash + Objects.hashCode(this.description);
+    hash = 79 * hash + this.price;
+    hash = 79 * hash + this.stockCurrent;
+    hash = 79 * hash + this.stockCritical;
+    hash = 79 * hash + Objects.hashCode(this.productCategory);
     return hash;
   }
 
@@ -152,6 +164,9 @@ public class Product
     if (!Objects.equals(this.barcode, other.barcode)) {
       return false;
     }
+    if (!Objects.equals(this.description, other.description)) {
+      return false;
+    }
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
@@ -166,6 +181,7 @@ public class Product
     return "Product{id=" + id +
         ", name=" + name +
         ", barcode=" + barcode +
+        ", description=" + description +
         ", price=" + price +
         ", stockCurrent=" + stockCurrent +
         ", stockCritical=" + stockCritical +
