@@ -22,7 +22,7 @@ public class ProductPojo {
   private String name;
   @NotBlank
   private String barcode;
-  private int price;
+  private Integer price;
   private ProductCategoryPojo category;
   @JsonInclude(NON_EMPTY)
   private String description;
