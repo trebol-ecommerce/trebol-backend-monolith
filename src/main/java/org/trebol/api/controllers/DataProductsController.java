@@ -73,17 +73,17 @@ public class DataProductsController
   @Override
   @PutMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:update')")
-  public void update(@RequestBody ProductPojo input, @PathVariable String code)
+  public void update(@RequestBody ProductPojo input, @PathVariable String barcode)
     throws BadInputException, NotFoundException {
-    Long productId = this.readOne(code).getId();
+    Long productId = this.readOne(barcode).getId();
     crudService.update(input, productId);
   }
 
   @Override
   @DeleteMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:delete')")
-  public void delete(@PathVariable String code) throws NotFoundException {
-    Long productId = this.readOne(code).getId();
+  public void delete(@PathVariable String barcode) throws NotFoundException {
+    Long productId = this.readOne(barcode).getId();
     crudService.delete(productId);
   }
 }
