@@ -141,7 +141,7 @@ public class ProductsJpaCrudServiceImpl
     }
 
     Integer currentStock = source.getCurrentStock();
-    if (price != null) {
+    if (currentStock != null) {
       target.setStockCurrent(currentStock);
     }
 
