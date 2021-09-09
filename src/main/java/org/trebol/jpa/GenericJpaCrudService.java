@@ -35,6 +35,12 @@ public abstract class GenericJpaCrudService<P, E>
 
   protected IJpaRepository<E> repository;
 
+  /**
+   * Ensures that the item exists in the underlying persistence context.
+   * @param input The pojo class instance
+   * @return true if the item exists in the database, false otherwise
+   * @throws BadInputException When the item doesn't have its identifying property.
+   */
   public abstract boolean itemExists(P input) throws BadInputException;
 
   public GenericJpaCrudService(IJpaRepository<E> repository) {
