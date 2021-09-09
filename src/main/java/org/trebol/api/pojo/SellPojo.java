@@ -13,14 +13,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-@JsonInclude(NON_NULL)
+@JsonInclude
 public class SellPojo {
   private Long id;
   @JsonIgnore
@@ -31,7 +30,6 @@ public class SellPojo {
   @NotEmpty
   @JsonInclude(NON_EMPTY)
   private Collection<SellDetailPojo> details;
-  @JsonInclude
   private int netValue;
   private String status;
   private String billingType;
