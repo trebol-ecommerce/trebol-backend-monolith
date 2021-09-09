@@ -115,8 +115,8 @@ public class ProductsJpaCrudServiceImpl
     }
 
     String name = source.getName();
-    if (name != null && !name.isBlank() && !target.getBarcode().equals(name)) {
-      target.setBarcode(name);
+    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
     }
 
     Integer price = source.getPrice();
@@ -125,8 +125,8 @@ public class ProductsJpaCrudServiceImpl
     }
 
     String description = source.getDescription();
-    if (description != null && !description.isBlank() && !target.getBarcode().equals(description)) {
-      target.setBarcode(description);
+    if (description != null && !description.isBlank() && !target.getDescription().equals(description)) {
+      target.setDescription(description);
     }
 
     ProductCategoryPojo category = source.getCategory();
