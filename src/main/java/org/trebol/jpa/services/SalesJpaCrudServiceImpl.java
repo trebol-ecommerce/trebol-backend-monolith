@@ -73,6 +73,7 @@ public class SalesJpaCrudServiceImpl
   private final IPaymentTypesJpaRepository paymentTypesRepository;
   private final IBillingCompaniesJpaRepository billingCompaniesRepository;
   private final IAddressesJpaRepository addressesRepository;
+  private final GenericJpaCrudService<BillingCompanyPojo, BillingCompany> billingCompaniesService;
   private final GenericJpaCrudService<CustomerPojo, Customer> customersService;
   private final GenericJpaCrudService<SalespersonPojo, Salesperson> salespeopleService;
   private final ICustomersJpaRepository customersRepository;
@@ -84,7 +85,9 @@ public class SalesJpaCrudServiceImpl
   public SalesJpaCrudServiceImpl(ISalesJpaRepository repository, ConversionService conversion,
     ISellStatusesJpaRepository statusesRepository, IBillingTypesJpaRepository billingTypesRepository,
     IBillingCompaniesJpaRepository billingCompaniesRepository, IPaymentTypesJpaRepository paymentTypesRepository,
-    IAddressesJpaRepository addressesRepository, GenericJpaCrudService<CustomerPojo, Customer> customersService,
+    IAddressesJpaRepository addressesRepository,
+    GenericJpaCrudService<BillingCompanyPojo, BillingCompany> billingCompaniesService,
+    GenericJpaCrudService<CustomerPojo, Customer> customersService,
     GenericJpaCrudService<SalespersonPojo, Salesperson> salespeopleService,
     ICustomersJpaRepository customersRepository, IProductsJpaRepository productsRepository,
     Validator validator) {
@@ -96,6 +99,7 @@ public class SalesJpaCrudServiceImpl
     this.billingCompaniesRepository = billingCompaniesRepository;
     this.paymentTypesRepository = paymentTypesRepository;
     this.addressesRepository = addressesRepository;
+    this.billingCompaniesService = billingCompaniesService;
     this.customersService = customersService;
     this.salespeopleService = salespeopleService;
     this.customersRepository = customersRepository;
@@ -153,7 +157,7 @@ public class SalesJpaCrudServiceImpl
 
     this.applyStatus(source, target);
     this.applyPaymentType(source, target);
-    this.applyBillingDetails(source, target);
+    this.applyBillingTypeAndCompany(source, target);
     this.applyCustomer(source, target);
     this.applyBillingAddress(source, target);
     this.applyShippingAddress(source, target);
@@ -167,7 +171,7 @@ public class SalesJpaCrudServiceImpl
     // TODO test these methods... they're not guaranteed to work just now!
     this.applyStatus(source, target);
     this.applyPaymentType(source, target);
-    this.applyBillingDetails(source, target);
+    this.applyBillingTypeAndCompany(source, target);
     this.applyCustomer(source, target);
     this.applyBillingAddress(source, target);
     this.applyShippingAddress(source, target);
@@ -313,19 +317,10 @@ public class SalesJpaCrudServiceImpl
     }
   }
 
-  private void applyBillingDetails(SellPojo source, Sell target) throws BadInputException {
+  private void applyBillingTypeAndCompany(SellPojo source, Sell target) throws BadInputException {
     String billingType = source.getBillingType();
     if (billingType == null || billingType.isBlank()) {
       billingType = "Bill";
-    } else if (billingType.equals("Enterprise Invoice")) {
-      BillingCompanyPojo sourceBillingCompany = source.getBillingCompany();
-      if (sourceBillingCompany == null) {
-        throw new BadInputException("A billing company is required");
-      } else {
-        BillingCompany billingCompany = this.convertBillingCompanyToNewEntity(sourceBillingCompany);
-        billingCompany = billingCompaniesRepository.saveAndFlush(billingCompany);
-        target.setBillingCompany(billingCompany);
-      }
     }
 
     Optional<BillingType> existingBillingType = billingTypesRepository.findByName(billingType);
@@ -333,6 +328,16 @@ public class SalesJpaCrudServiceImpl
       throw new BadInputException("Billing type '" + billingType + "' is not valid");
     } else {
       target.setBillingType(existingBillingType.get());
+    }
+
+    if (billingType.equals("Enterprise Invoice")) {
+      BillingCompanyPojo sourceBillingCompany = source.getBillingCompany();
+      if (sourceBillingCompany == null) {
+        throw new BadInputException("Billing company details are required to generate enterprise invoices");
+      } else {
+        BillingCompany billingCompany = fetchOrConvertBillingCompany(target, sourceBillingCompany);
+        target.setBillingCompany(billingCompany);
+      }
     }
   }
 
@@ -408,39 +413,38 @@ public class SalesJpaCrudServiceImpl
     if (!validations.isEmpty()) {
       throw new BadInputException("Invalid address");
     } else {
-      Address convertedSource = conversion.convert(source, Address.class);
-      if (convertedSource == null) {
-        throw new BadInputException("Invalid address");
+      Optional<Address> matchingAddress = addressesRepository.findByFields(
+        source.getCity(),
+        source.getMunicipality(),
+        source.getFirstLine(),
+        source.getSecondLine(),
+        source.getPostalCode(),
+        source.getNotes());
+      if (matchingAddress.isPresent()) {
+        return matchingAddress.get();
       } else {
-        Optional<Address> matchingAddress = addressesRepository.findByFields(
-                convertedSource.getCity(),
-                convertedSource.getMunicipality(),
-                convertedSource.getFirstLine(),
-                convertedSource.getSecondLine(),
-                convertedSource.getPostalCode(),
-                convertedSource.getNotes());
-        if (matchingAddress.isPresent()) {
-          return matchingAddress.get();
-        } else {
-          return convertedSource;
-        }
+        Address convertedSource = conversion.convert(source, Address.class);
+        return convertedSource;
       }
     }
   }
 
-  private BillingCompany convertBillingCompanyToNewEntity(BillingCompanyPojo source) throws BadInputException {
-    String idNumber = source.getIdNumber();
+  private BillingCompany fetchOrConvertBillingCompany(Sell target, BillingCompanyPojo sourceBillingCompany)
+    throws BadInputException {
+    String idNumber = sourceBillingCompany.getIdNumber();
     // TODO parameterize regex/make a bean for pattern
     Pattern rutPattern = Pattern.compile("^\\d{7,9}[\\dk]$");
     Matcher rutMatcher = rutPattern.matcher(idNumber);
     if (idNumber == null || idNumber.isBlank() || !rutMatcher.matches()) {
-      throw new BadInputException("Billing company's id number is not a valid RUT");
+      throw new BadInputException("Billing company must have a correct id number");
     } else {
-      Optional<BillingCompany> companyByIdNumber = billingCompaniesRepository.findByIdNumber(idNumber);
-      if (companyByIdNumber.isPresent()) {
-        return companyByIdNumber.get();
+      Optional<BillingCompany> matchByIdNumber = billingCompaniesRepository.findByIdNumber(idNumber);
+      if (matchByIdNumber.isPresent()) {
+        return matchByIdNumber.get();
       } else {
-        return conversion.convert(source, BillingCompany.class);
+        BillingCompany billingCompany = billingCompaniesService.convertToNewEntity(sourceBillingCompany);
+        billingCompany = billingCompaniesRepository.saveAndFlush(billingCompany);
+        return billingCompany;
       }
     }
   }
