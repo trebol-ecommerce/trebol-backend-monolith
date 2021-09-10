@@ -30,7 +30,6 @@ import org.trebol.api.pojo.AddressPojo;
 import org.trebol.api.pojo.BillingCompanyPojo;
 import org.trebol.jpa.entities.QSell;
 import org.trebol.api.pojo.CustomerPojo;
-import org.trebol.api.pojo.PersonPojo;
 import org.trebol.api.pojo.ProductPojo;
 import org.trebol.api.pojo.SellDetailPojo;
 import org.trebol.api.pojo.SellPojo;
@@ -75,6 +74,7 @@ public class SalesJpaCrudServiceImpl
   private final IBillingCompaniesJpaRepository billingCompaniesRepository;
   private final IAddressesJpaRepository addressesRepository;
   private final GenericJpaCrudService<CustomerPojo, Customer> customersService;
+  private final GenericJpaCrudService<SalespersonPojo, Salesperson> salespeopleService;
   private final ICustomersJpaRepository customersRepository;
   private final IProductsJpaRepository productsRepository;
   private final ConversionService conversion;
@@ -85,6 +85,7 @@ public class SalesJpaCrudServiceImpl
     ISellStatusesJpaRepository statusesRepository, IBillingTypesJpaRepository billingTypesRepository,
     IBillingCompaniesJpaRepository billingCompaniesRepository, IPaymentTypesJpaRepository paymentTypesRepository,
     IAddressesJpaRepository addressesRepository, GenericJpaCrudService<CustomerPojo, Customer> customersService,
+    GenericJpaCrudService<SalespersonPojo, Salesperson> salespeopleService,
     ICustomersJpaRepository customersRepository, IProductsJpaRepository productsRepository,
     Validator validator) {
     super(repository);
@@ -96,6 +97,7 @@ public class SalesJpaCrudServiceImpl
     this.paymentTypesRepository = paymentTypesRepository;
     this.addressesRepository = addressesRepository;
     this.customersService = customersService;
+    this.salespeopleService = salespeopleService;
     this.customersRepository = customersRepository;
     this.productsRepository = productsRepository;
     this.validator = validator;
@@ -132,8 +134,8 @@ public class SalesJpaCrudServiceImpl
       CustomerPojo customer = customersService.convertToPojo(source.getCustomer());
       target.setCustomer(customer);
 
-      SalespersonPojo salesperson = this.convertSalespersonToPojo(source.getSalesperson());
-      if (salesperson != null) {
+      if (source.getSalesperson() != null) {
+        SalespersonPojo salesperson = salespeopleService.convertToPojo(source.getSalesperson());
         target.setSalesperson(salesperson);
       }
     }
@@ -207,16 +209,13 @@ public class SalesJpaCrudServiceImpl
 
   @Override
   public SellPojo readOne(Long id) throws NotFoundException {
-    Optional<Sell> matchingSell = salesRepository.findByIdWithDetails(id);
+    Optional<Sell> matchingSell = salesRepository.findById(id);
     if (!matchingSell.isPresent()) {
       throw new NotFoundException("No sell matches that buy order");
     } else {
       Sell found = matchingSell.get();
       SellPojo foundPojo = this.convertToPojo(found);
-      if (foundPojo != null) {
-        List<SellDetailPojo> sellDetails = this.convertDetailsToPojo(found.getDetails());
-        foundPojo.setDetails(sellDetails);
-      }
+      this.applyDetails(found, foundPojo);
       return foundPojo;
     }
   }
@@ -229,10 +228,7 @@ public class SalesJpaCrudServiceImpl
     } else {
       Sell found = matchingSell.get();
       SellPojo foundPojo = this.convertToPojo(found);
-      if (foundPojo != null) {
-        List<SellDetailPojo> sellDetails = this.convertDetailsToPojo(found.getDetails());
-        foundPojo.setDetails(sellDetails);
-      }
+      this.applyDetails(found, foundPojo);
       return foundPojo;
     }
   }
@@ -289,33 +285,6 @@ public class SalesJpaCrudServiceImpl
     }
   }
 
-  private List<SellDetailPojo> convertDetailsToPojo(Collection<SellDetail> source) {
-    List<SellDetailPojo> sellDetails = new ArrayList<>();
-    for (SellDetail sourceSellDetail : source) {
-      SellDetailPojo targetSellDetail = conversion.convert(sourceSellDetail, SellDetailPojo.class);
-      if (targetSellDetail != null) {
-        ProductPojo product = conversion.convert(sourceSellDetail.getProduct(), ProductPojo.class);
-        if (product != null) {
-          targetSellDetail.setProduct(product);
-        }
-        sellDetails.add(targetSellDetail);
-      }
-    }
-    return sellDetails;
-  }
-
-  private SalespersonPojo convertSalespersonToPojo(Salesperson source) {
-    SalespersonPojo target = conversion.convert(source, SalespersonPojo.class);
-    if (target != null) {
-      PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
-      if (person != null) {
-        target.setPerson(person);
-      }
-    }
-    return target;
-  }
-
-
   private void applyStatus(SellPojo source, Sell target) throws BadInputException {
     String statusName = source.getStatus();
     if (statusName == null || statusName.isBlank()) {
@@ -353,7 +322,8 @@ public class SalesJpaCrudServiceImpl
       if (sourceBillingCompany == null) {
         throw new BadInputException("A billing company is required");
       } else {
-        BillingCompany billingCompany = this.billingCompany2Entity(sourceBillingCompany);
+        BillingCompany billingCompany = this.convertBillingCompanyToNewEntity(sourceBillingCompany);
+        billingCompany = billingCompaniesRepository.saveAndFlush(billingCompany);
         target.setBillingCompany(billingCompany);
       }
     }
@@ -385,7 +355,7 @@ public class SalesJpaCrudServiceImpl
     AddressPojo billingAddress = source.getBillingAddress();
     if (billingAddress != null) {
       try {
-        Address targetAddress = this.mergeAddress(billingAddress);
+        Address targetAddress = this.fetchOrConvertAddress(billingAddress);
         target.setBillingAddress(targetAddress);
       } catch (BadInputException ex) {
         throw new BadInputException("The provided billing address is not valid");
@@ -397,7 +367,7 @@ public class SalesJpaCrudServiceImpl
     AddressPojo shippingAddress = source.getShippingAddress();
     if (shippingAddress != null) {
       try {
-        Address targetAddress = this.mergeAddress(shippingAddress);
+        Address targetAddress = this.fetchOrConvertAddress(shippingAddress);
         target.setShippingAddress(targetAddress);
       } catch (BadInputException ex) {
         throw new BadInputException("The provided shipping address is not valid");
@@ -411,15 +381,20 @@ public class SalesJpaCrudServiceImpl
       List<SellDetail> details = new ArrayList<>();
       int netValue = 0, totalItems = 0;
       for (SellDetailPojo d : source.getDetails()) {
-        try {
-          SellDetail targetDetail = this.sellDetail2Entity(d);
-          details.add(targetDetail);
-          int units = targetDetail.getUnits();
-          netValue += (targetDetail.getProduct().getPrice() * units);
-          totalItems += units;
-        } catch (NotFoundException exc) {
+        SellDetail targetDetail = new SellDetail();
+        String barcode = d.getProduct().getBarcode();
+        Optional<Product> productByBarcode = productsRepository.findByBarcode(barcode);
+        if (!productByBarcode.isPresent()) {
           throw new BadInputException("Unexisting product in sell details");
+        } else {
+          Product targetProduct = productByBarcode.get();
+          targetDetail.setProduct(targetProduct);
+          targetDetail.setUnits(d.getUnits());
         }
+        details.add(targetDetail);
+        int units = targetDetail.getUnits();
+        netValue += (targetDetail.getProduct().getPrice() * units);
+        totalItems += units;
       }
       target.setDetails(details);
       target.setNetValue(netValue);
@@ -428,26 +403,7 @@ public class SalesJpaCrudServiceImpl
     }
   }
 
-  private BillingCompany billingCompany2Entity(BillingCompanyPojo source) throws BadInputException {
-    BillingCompany billingCompany;
-    String idNumber = source.getIdNumber();
-    // TODO parameterize regex/make a bean for pattern
-    Pattern rutPattern = Pattern.compile("^\\d{7,9}[\\dk]$");
-    Matcher rutMatcher = rutPattern.matcher(idNumber);
-    if (idNumber == null || idNumber.isBlank() || !rutMatcher.matches()) {
-      throw new BadInputException("Billing company's id number is not a valid RUT");
-    } else {
-      Optional<BillingCompany> companyByIdNumber = billingCompaniesRepository.findByIdNumber(idNumber);
-      if (companyByIdNumber.isPresent()) {
-        billingCompany = companyByIdNumber.get();
-      } else {
-        billingCompany = conversion.convert(source, BillingCompany.class);
-      }
-      return billingCompany;
-    }
-  }
-
-  private Address mergeAddress(AddressPojo source) throws BadInputException {
+  private Address fetchOrConvertAddress(AddressPojo source) throws BadInputException {
     Set<ConstraintViolation<AddressPojo>> validations = validator.validate(source);
     if (!validations.isEmpty()) {
       throw new BadInputException("Invalid address");
@@ -457,34 +413,51 @@ public class SalesJpaCrudServiceImpl
         throw new BadInputException("Invalid address");
       } else {
         Optional<Address> matchingAddress = addressesRepository.findByFields(
-            convertedSource.getCity(),
-            convertedSource.getMunicipality(),
-            convertedSource.getFirstLine(),
-            convertedSource.getSecondLine(),
-            convertedSource.getPostalCode(),
-            convertedSource.getNotes());
+                convertedSource.getCity(),
+                convertedSource.getMunicipality(),
+                convertedSource.getFirstLine(),
+                convertedSource.getSecondLine(),
+                convertedSource.getPostalCode(),
+                convertedSource.getNotes());
         if (matchingAddress.isPresent()) {
           return matchingAddress.get();
         } else {
-          //Address target = addressesRepository.saveAndFlush(convertedSource);
-          //return target;
           return convertedSource;
         }
       }
     }
   }
 
-  private SellDetail sellDetail2Entity(SellDetailPojo d) throws NotFoundException {
-    String barcode = d.getProduct().getBarcode();
-    Optional<Product> productByBarcode = productsRepository.findByBarcode(barcode);
-    if (!productByBarcode.isPresent()) {
-      throw new NotFoundException("There is no product with barcode '" + barcode + "'");
+  private BillingCompany convertBillingCompanyToNewEntity(BillingCompanyPojo source) throws BadInputException {
+    String idNumber = source.getIdNumber();
+    // TODO parameterize regex/make a bean for pattern
+    Pattern rutPattern = Pattern.compile("^\\d{7,9}[\\dk]$");
+    Matcher rutMatcher = rutPattern.matcher(idNumber);
+    if (idNumber == null || idNumber.isBlank() || !rutMatcher.matches()) {
+      throw new BadInputException("Billing company's id number is not a valid RUT");
     } else {
-      Product targetProduct = productByBarcode.get();
-      SellDetail targetDetail = new SellDetail();
-      targetDetail.setProduct(targetProduct);
-      targetDetail.setUnits(d.getUnits());
-      return targetDetail;
+      Optional<BillingCompany> companyByIdNumber = billingCompaniesRepository.findByIdNumber(idNumber);
+      if (companyByIdNumber.isPresent()) {
+        return companyByIdNumber.get();
+      } else {
+        return conversion.convert(source, BillingCompany.class);
+      }
+    }
+  }
+
+  private void applyDetails(Sell source, SellPojo target) {
+    Collection<SellDetail> details = source.getDetails();
+    if (details != null && !details.isEmpty()) {
+      List<SellDetailPojo> sellDetails = new ArrayList<>();
+      for (SellDetail sourceSellDetail : details) {
+        ProductPojo product = conversion.convert(sourceSellDetail.getProduct(), ProductPojo.class);
+        SellDetailPojo targetSellDetail = conversion.convert(sourceSellDetail, SellDetailPojo.class);
+        if (product != null && targetSellDetail != null) {
+          targetSellDetail.setProduct(product);
+          sellDetails.add(targetSellDetail);
+        }
+      }
+      target.setDetails(sellDetails);
     }
   }
 }
