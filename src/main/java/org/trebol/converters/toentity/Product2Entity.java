@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import org.trebol.api.pojo.ProductPojo;
 import org.trebol.jpa.entities.Product;
-import org.trebol.jpa.entities.ProductCategory;
 
 /**
  *
@@ -25,12 +24,6 @@ public class Product2Entity
     target.setName(source.getName());
     target.setBarcode(source.getBarcode());
     target.setPrice(source.getPrice());
-
-    if (source.getCategory() != null && source.getCategory().getId() != null) {
-      ProductCategory targetProductCategory = new ProductCategory();
-      targetProductCategory.setId(source.getCategory().getId());
-      target.setProductCategory(targetProductCategory);
-    }
 
     if (source.getCurrentStock() != null) {
       target.setStockCurrent(source.getCurrentStock());
