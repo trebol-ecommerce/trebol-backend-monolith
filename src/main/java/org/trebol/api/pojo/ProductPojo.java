@@ -163,7 +163,15 @@ public class ProductPojo {
 
   @Override
   public String toString() {
-    return "ProductPojo{" + "id=" + id + ", name=" + name + ", barcode=" + barcode + ", price=" + price + ", productType=" + category + ", description=" + description + ", currentStock=" + currentStock + ", criticalStock=" + criticalStock + ", images=" + images + '}';
+    return "ProductPojo{id=" + id +
+            ", name=" + name +
+            ", barcode=" + barcode +
+            ", price=" + price +
+            ", category=" + category +
+            ", description=" + description +
+            ", currentStock=" + currentStock +
+            ", criticalStock=" + criticalStock +
+            ", images=" + images + '}';
   }
 
 }
