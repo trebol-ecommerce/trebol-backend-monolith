@@ -13,13 +13,13 @@
   <groupId>org.trebol</groupId>
   <artifactId>trebol-backend</artifactId>
   <packaging>war</packaging>
-  <version>0.22.11.0</version>
+  <version>0.22.12.0</version>
 
   <name>Trébol Backend</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.8</java.version>
+    <java.version>11</java.version>
     <java.endorsed.dir>${project.build.directory}/endorsed</java.endorsed.dir>
     <java.ee.version>7.0</java.ee.version>
     <querydsl.generated.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.generated.dir>

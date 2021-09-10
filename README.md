@@ -16,7 +16,7 @@ Written using Java 8, Maven and current libraries and frameworks:
 
 ## Requirements
 
-* JDK 8+
+* JDK 11+
 * Apache Maven 3.6.0
 
 ## Configuration & Execution
