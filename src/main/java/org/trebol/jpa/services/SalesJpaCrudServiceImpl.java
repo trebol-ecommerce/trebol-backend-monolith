@@ -129,10 +129,8 @@ public class SalesJpaCrudServiceImpl
         target.setShippingAddress(shippingAddress);
       }
 
-      CustomerPojo customer = this.convertCustomerToPojo(source.getCustomer());
-      if (customer != null) {
-        target.setCustomer(customer);
-      }
+      CustomerPojo customer = customersService.convertToPojo(source.getCustomer());
+      target.setCustomer(customer);
 
       SalespersonPojo salesperson = this.convertSalespersonToPojo(source.getSalesperson());
       if (salesperson != null) {
@@ -291,17 +289,6 @@ public class SalesJpaCrudServiceImpl
     }
   }
 
-  private CustomerPojo convertCustomerToPojo(Customer source) {
-    CustomerPojo customer = conversion.convert(source, CustomerPojo.class);
-    if (customer != null) {
-      PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
-      if (person != null) {
-        customer.setPerson(person);
-      }
-    }
-    return customer;
-  }
-
   private List<SellDetailPojo> convertDetailsToPojo(Collection<SellDetail> source) {
     List<SellDetailPojo> sellDetails = new ArrayList<>();
     for (SellDetail sourceSellDetail : source) {
@@ -389,6 +376,7 @@ public class SalesJpaCrudServiceImpl
       target.setCustomer(existingCustomer);
     } else {
       Customer newCustomer = customersService.convertToNewEntity(sourceCustomer);
+      newCustomer = customersRepository.saveAndFlush(newCustomer);
       target.setCustomer(newCustomer);
     }
   }
