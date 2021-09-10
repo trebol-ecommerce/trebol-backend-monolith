@@ -12,17 +12,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude
 public class ProductCategoryPojo {
-  private Long id;
+  private Long code;
   @NotBlank
   private String name;
   private ProductCategoryPojo parent;
 
-  public Long getId() {
-    return id;
+  public Long getCode() {
+    return code;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setCode(Long code) {
+    this.code = code;
   }
 
   public String getName() {
@@ -44,7 +44,7 @@ public class ProductCategoryPojo {
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = 23 * hash + Objects.hashCode(this.id);
+    hash = 23 * hash + Objects.hashCode(this.code);
     hash = 23 * hash + Objects.hashCode(this.name);
     hash = 23 * hash + Objects.hashCode(this.parent);
     return hash;
@@ -65,7 +65,7 @@ public class ProductCategoryPojo {
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
-    if (!Objects.equals(this.id, other.id)) {
+    if (!Objects.equals(this.code, other.code)) {
       return false;
     }
     if (!Objects.equals(this.parent, other.parent)) {
@@ -76,7 +76,7 @@ public class ProductCategoryPojo {
 
   @Override
   public String toString() {
-    return "ProductCategoryPojo{id=" + id +
+    return "ProductCategoryPojo{id=" + code +
         ", name=" + name +
         ", parent=" + parent + '}';
   }

@@ -17,14 +17,10 @@ public class ProductCategory2Entity
   @Override
   public ProductCategory convert(ProductCategoryPojo source) {
     ProductCategory target = new ProductCategory();
-    target.setId(source.getId());
-    target.setName(source.getName());
-
-    if (source.getParent() != null && source.getParent().getId() != null) {
-      ProductCategory targetParent = new ProductCategory();
-      targetParent.setId(source.getParent().getId());
-      target.setParent(targetParent);
+    if (source.getCode() != null) {
+      target.setId(source.getCode());
     }
+    target.setName(source.getName());
     return target;
   }
 }
