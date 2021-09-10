@@ -6,6 +6,8 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -15,6 +17,7 @@ public class ProductCategoryPojo {
   private Long code;
   @NotBlank
   private String name;
+  @JsonInclude(NON_NULL)
   private ProductCategoryPojo parent;
 
   public Long getCode() {
