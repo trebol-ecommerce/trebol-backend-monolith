@@ -50,7 +50,9 @@ public class ProductCategoriesJpaCrudServiceImpl
 
   @Override
   public ProductCategory convertToNewEntity(ProductCategoryPojo source) {
-    return conversion.convert(source, ProductCategory.class);
+    ProductCategory target = conversion.convert(source, ProductCategory.class);
+    this.applyParent(source, target);
+    return target;
   }
 
   @Override
@@ -60,16 +62,7 @@ public class ProductCategoriesJpaCrudServiceImpl
       target.setName(name);
     }
 
-    ProductCategoryPojo parent = source.getParent();
-    if (parent != null) {
-      String parentName = parent.getName();
-      if (parentName != null && !parentName.isBlank() && !target.getParent().getName().equals(parentName)) {
-        Optional<ProductCategory> parentNameMatch = categoriesRepository.findByName(parentName);
-        if (parentNameMatch.isPresent()) {
-          target.setParent(parentNameMatch.get());
-        }
-      }
-    }
+    this.applyParent(source, target);
   }
 
   @Override
@@ -111,5 +104,29 @@ public class ProductCategoriesJpaCrudServiceImpl
     } else {
       return this.categoriesRepository.findByName(name).isPresent();
     }
+  }
+
+  private void applyParent(ProductCategoryPojo source, ProductCategory target) {
+    ProductCategoryPojo parent = source.getParent();
+    if (parent != null) {
+      Long parentCode = parent.getCode();
+      ProductCategory previousParent = target.getParent();
+      if (parentCode == null) {
+        this.applyNewParent(target, parent);
+      } else if (previousParent == null || !previousParent.getId().equals(parentCode)) {
+        Optional<ProductCategory> parentMatch = categoriesRepository.findById(parentCode);
+        if (parentMatch.isPresent()) {
+          target.setParent(parentMatch.get());
+        } else {
+          this.applyNewParent(target, parent);
+        }
+      }
+    }
+  }
+
+  private void applyNewParent(ProductCategory target, ProductCategoryPojo parent) {
+    ProductCategory newParentEntity = this.convertToNewEntity(parent);
+    newParentEntity = categoriesRepository.save(newParentEntity);
+    target.setParent(newParentEntity);
   }
 }
