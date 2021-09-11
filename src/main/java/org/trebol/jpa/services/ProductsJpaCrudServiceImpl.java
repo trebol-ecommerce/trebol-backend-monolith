@@ -1,10 +1,14 @@
 package org.trebol.jpa.services;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
-import javax.annotation.Nullable;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +21,23 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import org.trebol.api.pojo.ImagePojo;
+import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.jpa.entities.QProduct;
 
 import org.trebol.api.pojo.ProductPojo;
 import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.entities.Image;
+import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.jpa.repositories.IImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
+import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
+
+import javassist.NotFoundException;
 
 /**
  *
@@ -38,21 +50,57 @@ public class ProductsJpaCrudServiceImpl
 
   private static final Logger logger = LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class);
   private final IProductsJpaRepository productsRepository;
+  private final IImagesJpaRepository imagesRepository;
   private final IProductImagesJpaRepository productImagesRepository;
+  private final IProductsCategoriesJpaRepository categoriesRepository;
+  private final GenericJpaCrudService<ProductCategoryPojo, ProductCategory> categoriesService;
   private final ConversionService conversion;
+  private final Validator validator;
 
   @Autowired
-  public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository, IProductImagesJpaRepository imagesRepository,
-    ConversionService conversion) {
+  public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository, IImagesJpaRepository imagesRepository,
+    IProductImagesJpaRepository productImagesRepository,
+    IProductsCategoriesJpaRepository categoriesRepository,
+    GenericJpaCrudService<ProductCategoryPojo, ProductCategory> categoriesService,
+    ConversionService conversion,
+    Validator validator) {
     super(repository);
     this.productsRepository = repository;
-    this.productImagesRepository = imagesRepository;
+    this.imagesRepository = imagesRepository;
+    this.productImagesRepository = productImagesRepository;
+    this.categoriesRepository = categoriesRepository;
+    this.categoriesService = categoriesService;
     this.conversion = conversion;
+    this.validator = validator;
   }
 
-  @Nullable
+  @Transactional
   @Override
-  public ProductPojo entity2Pojo(Product source) {
+  public ProductPojo create(ProductPojo inputPojo) throws BadInputException, EntityAlreadyExistsException {
+    if (this.itemExists(inputPojo)) {
+      throw new EntityAlreadyExistsException("The item to be created already exists");
+    } else {
+      Product input = this.convertToNewEntity(inputPojo);
+      Product output = repository.saveAndFlush(input);
+      ProductPojo result = this.convertToPojo(output);
+      this.applyImages(inputPojo, output);
+      return result;
+    }
+  }
+
+  @Override
+  public void delete(Long id) throws NotFoundException {
+    if (!repository.existsById(id)) {
+      throw new NotFoundException("The requested item does not exist");
+    } else {
+      productImagesRepository.deleteByProductId(id);
+      repository.deleteById(id);
+      repository.flush();
+    }
+  }
+
+  @Override
+  public ProductPojo convertToPojo(Product source) {
     ProductPojo target = conversion.convert(source, ProductPojo.class);
     if (target != null) {
       Long id = target.getId();
@@ -64,14 +112,53 @@ public class ProductsJpaCrudServiceImpl
         }
       }
       target.setImages(images);
+
+      ProductCategory category = source.getProductCategory();
+      if (category != null) {
+        ProductCategoryPojo categoryPojo = conversion.convert(category, ProductCategoryPojo.class);
+        target.setCategory(categoryPojo);
+      }
     }
     return target;
   }
 
-  @Nullable
   @Override
-  public Product pojo2Entity(ProductPojo source) {
-    return conversion.convert(source, Product.class);
+  public Product convertToNewEntity(ProductPojo source) throws BadInputException {
+    Product target = conversion.convert(source, Product.class);
+    this.applyCategory(source, target);
+    return target;
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(ProductPojo source, Product target) throws BadInputException {
+    String barcode = source.getBarcode();
+    if (barcode != null && !barcode.isBlank() && !target.getBarcode().equals(barcode)) {
+      target.setBarcode(barcode);
+    }
+
+    String name = source.getName();
+    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
+    }
+
+    Integer price = source.getPrice();
+    if (price != null) {
+      target.setPrice(price);
+    }
+
+    String description = source.getDescription();
+    if (description != null && !description.isBlank() && !target.getDescription().equals(description)) {
+      target.setDescription(description);
+    }
+
+
+    Integer currentStock = source.getCurrentStock();
+    if (currentStock != null) {
+      target.setStockCurrent(currentStock);
+    }
+
+    this.applyCategory(source, target);
+    this.applyImages(source, target);
   }
 
   @Override
@@ -120,6 +207,63 @@ public class ProductsJpaCrudServiceImpl
       throw new BadInputException("Invalid product barcode");
     } else {
       return (this.productsRepository.findByBarcode(barcode).isPresent());
+    }
+  }
+
+  private void applyCategory(ProductPojo source, Product target) throws BadInputException {
+    ProductCategoryPojo category = source.getCategory();
+    if (category != null) {
+      Long categoryCode = category.getCode();
+      ProductCategory previousCategory = target.getProductCategory();
+      if (categoryCode == null) {
+        this.applyNewCategory(target, category);
+      } else if (previousCategory == null || !previousCategory.getId().equals(categoryCode)) {
+        Optional<ProductCategory> categoryCodeMatch = categoriesRepository.findById(categoryCode);
+        if (categoryCodeMatch.isPresent()) {
+          target.setProductCategory(categoryCodeMatch.get());
+        } else {
+          this.applyNewCategory(target, category);
+        }
+      }
+    }
+  }
+
+  private void applyNewCategory(Product target, ProductCategoryPojo category) throws BadInputException {
+    ProductCategory newCategoryEntity = categoriesService.convertToNewEntity(category);
+    newCategoryEntity = categoriesRepository.saveAndFlush(newCategoryEntity);
+    target.setProductCategory(newCategoryEntity);
+  }
+
+  private void applyImages(ProductPojo source, Product target) {
+    Collection<ImagePojo> images = source.getImages();
+    if (images != null) {
+      List<ProductImage> targetImages = new ArrayList<>();
+      for (ImagePojo img : images) {
+        if (validator.validate(img).isEmpty()) {
+          String filename = img.getFilename();
+          Image image;
+          Optional<Image> filenameMatch = imagesRepository.findByFilename(filename);
+          if (filenameMatch.isEmpty()) {
+            image = conversion.convert(img, Image.class);
+            if (image != null) {
+              image = imagesRepository.saveAndFlush(image);
+            }
+          } else {
+            image = filenameMatch.get();
+          }
+          ProductImage targetImage = new ProductImage();
+          targetImage.setProduct(target);
+          targetImage.setImage(image);
+          targetImages.add(targetImage);
+        }
+      }
+
+      if (target.getId() != null) {
+        productImagesRepository.deleteByProductId(target.getId());
+      }
+      if (!targetImages.isEmpty()) {
+        productImagesRepository.saveAll(targetImages);
+      }
     }
   }
 }

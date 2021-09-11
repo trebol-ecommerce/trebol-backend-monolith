@@ -7,11 +7,8 @@ import javax.validation.Valid;
 import io.jsonwebtoken.lang.Maps;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.DataPage;
@@ -63,7 +59,7 @@ public class DataSalespeopleController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:create')")
-  public void create(@RequestBody @Valid SalespersonPojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody SalespersonPojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
@@ -79,7 +75,7 @@ public class DataSalespeopleController
   @Override
   @PutMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:update')")
-  public void update(@RequestBody @Valid SalespersonPojo input, @PathVariable String idNumber)
+  public void update(@RequestBody SalespersonPojo input, @PathVariable String idNumber)
     throws BadInputException, NotFoundException {
      // TODO improve this implementation; the same salesperson will be fetched twice
     Long salespersonId = this.readOne(idNumber).getId();
@@ -92,28 +88,5 @@ public class DataSalespeopleController
   public void delete(@PathVariable String idNumber) throws NotFoundException {
     Long salespersonId = this.readOne(idNumber).getId();
     crudService.delete(salespersonId);
-  }
-
-  @Override
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Map<String, String> handleException(MethodArgumentNotValidException ex) {
-    return super.handleException(ex);
-  }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(EntityAlreadyExistsException.class)
-  public String handleException(EntityAlreadyExistsException ex) {
-    return ex.getMessage();
-  }
-
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  @ExceptionHandler(NotFoundException.class)
-  public void handleException(NotFoundException ex) { }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(BadInputException.class)
-  public String handleException(BadInputException ex) {
-    return ex.getMessage();
   }
 }

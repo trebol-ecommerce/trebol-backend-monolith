@@ -2,8 +2,6 @@ package org.trebol.jpa.services;
 
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,39 +33,41 @@ public class SalespeopleJpaCrudServiceImpl
 
   private static final Logger logger = LoggerFactory.getLogger(SalespeopleJpaCrudServiceImpl.class);
   private final ISalespeopleJpaRepository salespeopleRepository;
-  private final ConversionService conversion;
+  private final GenericJpaCrudService<PersonPojo, Person> peopleService;
 
   @Autowired
-  public SalespeopleJpaCrudServiceImpl(ISalespeopleJpaRepository repository, ConversionService conversion) {
+  public SalespeopleJpaCrudServiceImpl(ISalespeopleJpaRepository repository,
+    GenericJpaCrudService<PersonPojo, Person> peopleService) {
     super(repository);
     this.salespeopleRepository = repository;
-    this.conversion = conversion;
+    this.peopleService = peopleService;
   }
 
-  @Nullable
   @Override
-  public SalespersonPojo entity2Pojo(Salesperson source) {
-    SalespersonPojo target = conversion.convert(source, SalespersonPojo.class);
-    if (target != null) {
-      PersonPojo person = conversion.convert(source.getPerson(), PersonPojo.class);
-      if (person != null) {
-        target.setPerson(person);
-      }
-    }
+  public SalespersonPojo convertToPojo(Salesperson source) {
+    SalespersonPojo target = new SalespersonPojo();
+    target.setId(source.getId());
+    PersonPojo targetPerson = peopleService.convertToPojo(source.getPerson());
+    target.setPerson(targetPerson);
     return target;
   }
 
-  @Nullable
   @Override
-  public Salesperson pojo2Entity(SalespersonPojo source) {
-    Salesperson target = conversion.convert(source, Salesperson.class);
-    if (target != null) {
-      Person personTarget = conversion.convert(source.getPerson(), Person.class);
-      if (personTarget != null) {
-        target.setPerson(personTarget);
-      }
-    }
+  public Salesperson convertToNewEntity(SalespersonPojo source) throws BadInputException {
+    Salesperson target = new Salesperson();
+    Person targetPerson = peopleService.convertToNewEntity(source.getPerson());
+    target.setPerson(targetPerson);
     return target;
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(SalespersonPojo source, Salesperson target) throws BadInputException {
+    Person targetPerson = target.getPerson();
+    PersonPojo sourcePerson = source.getPerson();
+    if (sourcePerson == null) {
+      throw new BadInputException("Salesperson must have a person profile");
+    }
+    peopleService.applyChangesToExistingEntity(sourcePerson, targetPerson);
   }
 
   @Override
@@ -78,17 +78,25 @@ public class SalespeopleJpaCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qSalesperson.id.eq(longValue)); // id matching is final
+            return predicate.and(qSalesperson.id.eq(Long.valueOf(stringValue))); // id matching is final
           case "name":
-            predicate.and(qSalesperson.person.name.likeIgnoreCase("%" + stringValue + "%"));
+            predicate.and(qSalesperson.person.idNumber.eq(stringValue));
             break;
-          case "idnumber":
-            predicate.and(qSalesperson.person.idNumber.likeIgnoreCase("%" + stringValue + "%"));
+          case "idNumber":
+            predicate.and(qSalesperson.person.idNumber.eq(stringValue));
             break;
           case "email":
+            predicate.and(qSalesperson.person.idNumber.eq(stringValue));
+            break;
+          case "nameLike":
+            predicate.and(qSalesperson.person.name.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "idNumberLike":
+            predicate.and(qSalesperson.person.idNumber.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "emailLike":
             predicate.and(qSalesperson.person.email.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:

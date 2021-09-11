@@ -1,7 +1,6 @@
 package org.trebol.config;
 
 import javax.crypto.SecretKey;
-import javax.servlet.Filter;
 
 import io.jsonwebtoken.Claims;
 
@@ -18,11 +17,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.trebol.api.pojo.CustomerPojo;
 import org.trebol.exceptions.CorsMappingParseException;
 
+import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.entities.Customer;
+import org.trebol.security.JwtGuestAuthenticationFilter;
 import org.trebol.security.JwtTokenVerifierFilter;
-import org.trebol.security.JwtUsernamePasswordAuthenticationFilter;
+import org.trebol.security.JwtLoginAuthenticationFilter;
 import org.trebol.security.IAuthorizationHeaderParserService;
 
 @Configuration
@@ -36,16 +40,18 @@ public class SecurityConfig
   private final SecurityProperties securityProperties;
   private final CorsProperties corsProperties;
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  private final GenericJpaCrudService<CustomerPojo, Customer> customersService;
 
   @Autowired
   public SecurityConfig(UserDetailsService userDetailsService, SecretKey secretKey,
     SecurityProperties securityProperties, IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-    CorsProperties corsProperties) {
+    CorsProperties corsProperties, GenericJpaCrudService<CustomerPojo, Customer> customersService) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.securityProperties = securityProperties;
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.corsProperties = corsProperties;
+    this.customersService = customersService;
   }
 
   @Override
@@ -66,10 +72,13 @@ public class SecurityConfig
             .invalidateHttpSession(true)
           .and()
         .addFilter(
-            this.loginUrl("/public/login"))
+            this.loginFilterForUrl("/public/login"))
+        .addFilterAfter(
+            this.guestFilterForUrl("/public/guest"),
+            JwtLoginAuthenticationFilter.class)
         .addFilterAfter(
             new JwtTokenVerifierFilter(jwtClaimsParserService),
-            JwtUsernamePasswordAuthenticationFilter.class)
+            JwtGuestAuthenticationFilter.class)
         .authorizeRequests()
             .antMatchers(
               "/",
@@ -87,6 +96,8 @@ public class SecurityConfig
             .antMatchers(
               "/data/customers",
               "/data/customers/*",
+              "/data/images",
+              "/data/images/*",
               "/data/people",
               "/data/people/*",
               "/data/product_categories",
@@ -110,6 +121,10 @@ public class SecurityConfig
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.authenticationProvider(daoAuthenticationProvider());
+    auth.inMemoryAuthentication()
+            .withUser("guest")
+            .password(passwordEncoder().encode("guest"))
+            .authorities("checkout");
   }
 
   @Bean
@@ -131,11 +146,21 @@ public class SecurityConfig
     return new BCryptPasswordEncoder(strength);
   }
 
-  private Filter loginUrl(String url) throws Exception {
-    JwtUsernamePasswordAuthenticationFilter filter = new JwtUsernamePasswordAuthenticationFilter(
-      super.authenticationManager(),
+  private UsernamePasswordAuthenticationFilter loginFilterForUrl(String url) throws Exception {
+    JwtLoginAuthenticationFilter filter = new JwtLoginAuthenticationFilter(
       securityProperties,
-      secretKey);
+      secretKey,
+      super.authenticationManager());
+    filter.setFilterProcessesUrl(url);
+    return filter;
+  }
+
+  private UsernamePasswordAuthenticationFilter guestFilterForUrl(String url) throws Exception {
+    JwtGuestAuthenticationFilter filter = new JwtGuestAuthenticationFilter(
+      securityProperties,
+      secretKey,
+      super.authenticationManager(),
+      customersService);
     filter.setFilterProcessesUrl(url);
     return filter;
   }

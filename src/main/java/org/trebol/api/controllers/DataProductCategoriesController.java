@@ -2,16 +2,14 @@ package org.trebol.api.controllers;
 
 import java.util.Map;
 
+import io.jsonwebtoken.lang.Maps;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.GenericDataController;
@@ -19,7 +17,6 @@ import org.trebol.api.DataPage;
 import org.trebol.api.pojo.ProductCategoryPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.GenericJpaCrudService;
 
 /**
@@ -45,22 +42,10 @@ public class DataProductCategoriesController
     return super.readMany(null, null, allRequestParams);
   }
 
-  @GetMapping({"/{code}", "/{code}/"})
+  @GetMapping({"/{parentId}", "/{parentId}/"})
   @PreAuthorize("hasAuthority('product_categories:read')")
-  public ProductCategoryPojo readOne(@PathVariable String code) {
-    throw new UnsupportedOperationException("Method not implemented");
-  }
-
-  @Override
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Map<String, String> handleException(MethodArgumentNotValidException ex) {
-    return super.handleException(ex);
-  }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(EntityAlreadyExistsException.class)
-  public String handleException(EntityAlreadyExistsException ex) {
-    return ex.getMessage();
+  public DataPage<ProductCategoryPojo> readChildren(@PathVariable Long parentId) {
+    Map<String, String> queryParamsMap = Maps.of("parentId", String.valueOf(parentId)).build();
+    return super.readMany(null, null, queryParamsMap);
   }
 }

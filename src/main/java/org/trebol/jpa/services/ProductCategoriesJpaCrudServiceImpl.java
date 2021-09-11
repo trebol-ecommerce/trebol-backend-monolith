@@ -43,16 +43,26 @@ public class ProductCategoriesJpaCrudServiceImpl
     this.conversion = conversion;
   }
 
-  @Nullable
   @Override
-  public ProductCategoryPojo entity2Pojo(ProductCategory source) {
+  public ProductCategoryPojo convertToPojo(ProductCategory source) {
     return conversion.convert(source, ProductCategoryPojo.class);
   }
 
-  @Nullable
   @Override
-  public ProductCategory pojo2Entity(ProductCategoryPojo source) {
-    return conversion.convert(source, ProductCategory.class);
+  public ProductCategory convertToNewEntity(ProductCategoryPojo source) {
+    ProductCategory target = conversion.convert(source, ProductCategory.class);
+    this.applyParent(source, target);
+    return target;
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory target) throws BadInputException {
+    String name = source.getName();
+    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
+    }
+
+    this.applyParent(source, target);
   }
 
   @Override
@@ -62,15 +72,18 @@ public class ProductCategoriesJpaCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qProductCategory.id.eq(longValue)); // match por id es único
-          case "name":
+            return predicate.and(qProductCategory.id.eq(Long.valueOf(stringValue))); // match por id es único
+          case "nameLike":
             predicate.and(qProductCategory.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "parent":
-            predicate.and(qProductCategory.parent.id.eq(longValue));
+          case "parentId":
+            if (stringValue == null) {
+              predicate.and(qProductCategory.parent.isNull());
+            } else {
+              predicate.and(qProductCategory.parent.id.eq(Long.valueOf(stringValue)));
+            }
             break;
           default:
             break;
@@ -91,5 +104,29 @@ public class ProductCategoriesJpaCrudServiceImpl
     } else {
       return this.categoriesRepository.findByName(name).isPresent();
     }
+  }
+
+  private void applyParent(ProductCategoryPojo source, ProductCategory target) {
+    ProductCategoryPojo parent = source.getParent();
+    if (parent != null) {
+      Long parentCode = parent.getCode();
+      ProductCategory previousParent = target.getParent();
+      if (parentCode == null) {
+        this.applyNewParent(target, parent);
+      } else if (previousParent == null || !previousParent.getId().equals(parentCode)) {
+        Optional<ProductCategory> parentMatch = categoriesRepository.findById(parentCode);
+        if (parentMatch.isPresent()) {
+          target.setParent(parentMatch.get());
+        } else {
+          this.applyNewParent(target, parent);
+        }
+      }
+    }
+  }
+
+  private void applyNewParent(ProductCategory target, ProductCategoryPojo parent) {
+    ProductCategory newParentEntity = this.convertToNewEntity(parent);
+    newParentEntity = categoriesRepository.save(newParentEntity);
+    target.setParent(newParentEntity);
   }
 }

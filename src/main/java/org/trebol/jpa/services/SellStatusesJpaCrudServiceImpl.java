@@ -42,16 +42,27 @@ public class SellStatusesJpaCrudServiceImpl
     this.conversion = conversion;
   }
 
-  @Nullable
   @Override
-  public SellStatusPojo entity2Pojo(SellStatus source) {
+  public SellStatusPojo convertToPojo(SellStatus source) {
     return conversion.convert(source, SellStatusPojo.class);
   }
 
-  @Nullable
   @Override
-  public SellStatus pojo2Entity(SellStatusPojo source) {
+  public SellStatus convertToNewEntity(SellStatusPojo source) {
     return conversion.convert(source, SellStatus.class);
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(SellStatusPojo source, SellStatus target) throws BadInputException {
+    Integer code = source.getCode();
+    if (code != null && !target.getCode().equals(code))  {
+      target.setCode(code);
+    }
+
+    String name = source.getName();
+    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
+    }
   }
 
   @Override

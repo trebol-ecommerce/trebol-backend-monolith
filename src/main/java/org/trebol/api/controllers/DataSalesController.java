@@ -5,11 +5,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.GenericDataController;
@@ -58,7 +54,7 @@ public class DataSalesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:create')")
-  public void create(@RequestBody @Valid SellPojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody SellPojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
@@ -72,7 +68,7 @@ public class DataSalesController
   @Override
   @PutMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:update')")
-  public void update(@RequestBody @Valid SellPojo input, @PathVariable Long buyOrder)
+  public void update(@RequestBody SellPojo input, @PathVariable Long buyOrder)
     throws BadInputException, NotFoundException {
     crudService.update(input, buyOrder);
   }
@@ -82,28 +78,5 @@ public class DataSalesController
   @PreAuthorize("hasAuthority('sales:delete')")
   public void delete(@PathVariable Long buyOrder) throws NotFoundException {
     crudService.delete(buyOrder);
-  }
-
-  @Override
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Map<String, String> handleException(MethodArgumentNotValidException ex) {
-    return super.handleException(ex);
-  }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(BadInputException.class)
-  public String handleException(BadInputException ex) {
-    return ex.getMessage();
-  }
-
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  @ExceptionHandler(NotFoundException.class)
-  public void handleException(NotFoundException ex) { }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(EntityAlreadyExistsException.class)
-  public String handleException(EntityAlreadyExistsException ex) {
-    return ex.getMessage();
   }
 }

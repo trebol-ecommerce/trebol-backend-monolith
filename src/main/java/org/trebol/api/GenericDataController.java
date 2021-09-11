@@ -1,12 +1,8 @@
 package org.trebol.api;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
-
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.querydsl.core.types.Predicate;
 
@@ -53,16 +49,6 @@ public abstract class GenericDataController<P, E>
     }
 
     return crudService.readMany(pageSize, pageIndex, filters);
-  }
-
-  public Map<String, String> handleException(MethodArgumentNotValidException ex) {
-    Map<String, String> errors = new HashMap<>();
-    ex.getBindingResult().getAllErrors().forEach((error) -> {
-      String fieldName = ((FieldError) error).getField();
-      String errorMessage = error.getDefaultMessage();
-      errors.put(fieldName, errorMessage);
-    });
-    return errors;
   }
 
   private int determineRequestedPageIndex(Integer requestPageIndex, Map<String, String> allRequestParams) throws NumberFormatException {

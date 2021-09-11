@@ -51,12 +51,12 @@ public class Person
   @Size(min = 5, max = 100)
   @Column(name = "person_email")
   private String email;
-  @Basic(optional = true)
+  @Basic(optional = false)
   @Column(name = "person_phone1")
-  private String phone1;
-  @Basic(optional = true)
+  private String phone1 = "";
+  @Basic(optional = false)
   @Column(name = "person_phone2")
-  private String phone2;
+  private String phone2 = "";
 
   public Person() { }
 

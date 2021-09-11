@@ -13,7 +13,26 @@ import org.trebol.exceptions.BadInputException;
  */
 public interface IJpaConverterService<P, E> {
 
-  E pojo2Entity(P source) throws BadInputException;
+  /**
+   * Straightly converts a Pojo to a new entity, assuming that the Pojo is already @Valid.
+   * @param source The source Pojo.
+   * @return A new entity, prepared to be saved to the database.
+   * @throws BadInputException
+   */
+  E convertToNewEntity(P source) throws BadInputException;
 
-  P entity2Pojo(E source);
+  /**
+   * Accurately updates entity class instance with new data, property-by-property.
+   * @param source The Pojo containing data updates.
+   * @param target The target entity.
+   * @throws BadInputException
+   */
+  void applyChangesToExistingEntity(P source, E target) throws BadInputException;
+
+  /**
+   * Converts an existing Entity to its Pojo equivalent.
+   * @param source The source entity.
+   * @return The resulting Pojo.
+   */
+  P convertToPojo(E source);
 }

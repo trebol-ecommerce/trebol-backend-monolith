@@ -38,7 +38,7 @@ public class ProductCategoriesServiceImpl
 
   @Override
   public Collection<ProductCategoryPojo> getChildrenCategories(long parentId) {
-    Map<String, String> queryParamsMap = Maps.of("productFamily", String.valueOf(parentId)).build();
+    Map<String, String> queryParamsMap = Maps.of("parentId", String.valueOf(parentId)).build();
     Predicate filters = crudService.parsePredicate(queryParamsMap);
     return crudService.readMany(Integer.MAX_VALUE, 0, filters)
         .getItems(); // TODO refactor this

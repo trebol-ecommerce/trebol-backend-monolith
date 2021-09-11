@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,16 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-@JsonInclude(NON_NULL)
+@JsonInclude
 public class SellPojo {
-  private Long id;
+  private Long buyOrder;
   @JsonIgnore
   private String token;
   @JsonFormat(shape = STRING, pattern = "yyyy/MM/dd HH:mm:ss OOOO", timezone = "UTC")
@@ -30,11 +30,12 @@ public class SellPojo {
   @NotEmpty
   @JsonInclude(NON_EMPTY)
   private Collection<SellDetailPojo> details;
-  @JsonInclude
   private int netValue;
   private String status;
   private String billingType;
+  @NotBlank
   private String paymentType;
+  @Valid
   private CustomerPojo customer;
   private SalespersonPojo salesperson;
   private ShipperPojo shipper;
@@ -44,12 +45,12 @@ public class SellPojo {
 
   public SellPojo() { }
 
-  public Long getId() {
-    return id;
+  public Long getBuyOrder() {
+    return buyOrder;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setBuyOrder(Long buyOrder) {
+    this.buyOrder = buyOrder;
   }
 
   public String getToken() {
@@ -159,7 +160,7 @@ public class SellPojo {
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = 71 * hash + Objects.hashCode(this.id);
+    hash = 71 * hash + Objects.hashCode(this.buyOrder);
     hash = 71 * hash + Objects.hashCode(this.token);
     hash = 71 * hash + Objects.hashCode(this.date);
     hash = 71 * hash + Objects.hashCode(this.details);
@@ -203,7 +204,7 @@ public class SellPojo {
     if (!Objects.equals(this.paymentType, other.paymentType)) {
       return false;
     }
-    if (!Objects.equals(this.id, other.id)) {
+    if (!Objects.equals(this.buyOrder, other.buyOrder)) {
       return false;
     }
     if (!Objects.equals(this.date, other.date)) {
@@ -235,7 +236,7 @@ public class SellPojo {
 
   @Override
   public String toString() {
-    return "SellPojo{id=" + id +
+    return "SellPojo{id=" + buyOrder +
         ", token=" + token +
         ", date=" + date +
         ", details=" + details +

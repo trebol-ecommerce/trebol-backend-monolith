@@ -28,6 +28,8 @@ import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 
+import javassist.NotFoundException;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
@@ -55,19 +57,18 @@ public class UsersJpaCrudServiceImpl
     this.passwordEncoder = passwordEncoder;
   }
 
-  @Nullable
   @Override
-  public UserPojo entity2Pojo(User source) {
+  public UserPojo convertToPojo(User source) {
     UserPojo target = conversion.convert(source, UserPojo.class);
     return target;
   }
 
-  @Nullable
   @Override
-  public User pojo2Entity(UserPojo source) {
-    logger.trace("Converting input user instance to entity class...", source.getRole());
+  public User convertToNewEntity(UserPojo source) throws BadInputException {
     User target = conversion.convert(source, User.class);
-    if (target != null) {
+    if (target == null) {
+      throw new BadInputException("Invalid user data");
+    } else {
       if (source.getPassword() != null && !source.getPassword().isEmpty()) {
         String rawPassword = source.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
@@ -80,37 +81,65 @@ public class UsersJpaCrudServiceImpl
         }
       }
 
-      if (source.getPerson() != null && source.getPerson().getId() != null) {
+      PersonPojo sourcePerson = source.getPerson();
+      if (sourcePerson != null && sourcePerson.getIdNumber() != null &&
+          !sourcePerson.getIdNumber().isBlank()) {
         logger.trace("Finding person profile...");
-        Optional<Person> personById = peopleRepository.findById(source.getPerson().getId());
-        if (personById.isPresent()) {
+        Optional<Person> personByIdNumber = peopleRepository.findByIdNumber(sourcePerson.getIdNumber());
+        if (personByIdNumber.isPresent()) {
           logger.trace("Person profile found");
-          target.setPerson(personById.get());
-        } else {
-          logger.error("Person profile not found");
-          return null;
+          target.setPerson(personByIdNumber.get());
         }
-      } else {
-        logger.error("Missing required person profile");
-        return null;
       }
 
-      if (source.getRole() != null && !source.getRole().isEmpty()){
-        logger.trace("Searching user role by name '{}'...", source.getRole());
-        Optional<UserRole> roleByName = rolesRepository.findByName(source.getRole());
+      String role = source.getRole();
+      if (role != null && !role.isEmpty()){
+        logger.trace("Searching user role by name '{}'...", role);
+        Optional<UserRole> roleByName = rolesRepository.findByName(role);
         if (roleByName.isPresent()) {
           logger.trace("User role found");
           target.setUserRole(roleByName.get());
         } else {
-          logger.error("User role not found");
-          return null;
+          throw new BadInputException("The specified user role does not exist");
         }
       } else {
-        logger.error("Missing required user role");
-        return null;
+        throw new BadInputException("The user does not have a role");
       }
     }
     return target;
+  }
+
+  @Override
+  public void applyChangesToExistingEntity(UserPojo source, User target) throws BadInputException {
+    String name = source.getName();
+    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
+    }
+
+    String roleName = source.getRole();
+    if (roleName != null && !roleName.isBlank() && !target.getUserRole().getName().equals(roleName)) {
+      Optional<UserRole> roleNameMatch = rolesRepository.findByName(roleName);
+      if (roleNameMatch.isPresent()) {
+        target.setUserRole(roleNameMatch.get());
+      }
+    }
+
+    String password = source.getPassword();
+    if (password != null && !password.isBlank() && !passwordEncoder.matches(password, target.getPassword())) {
+      String encodedPassword = passwordEncoder.encode(password);
+      target.setPassword(encodedPassword);
+    }
+
+    PersonPojo person = source.getPerson();
+    if (person != null) {
+      String idNumber = person.getIdNumber();
+      if (idNumber != null && !idNumber.isBlank() && !target.getPerson().getIdNumber().equals(idNumber)) {
+        Optional<Person> idNumberMatch = peopleRepository.findByIdNumber(idNumber);
+        if (idNumberMatch.isPresent()) {
+          target.setPerson(idNumberMatch.get());
+        }
+      }
+    }
   }
 
   @Override
@@ -120,14 +149,16 @@ public class UsersJpaCrudServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qUser.id.eq(longValue)); // id matching is final
+            return predicate.and(qUser.id.eq(Long.valueOf(stringValue))); // id matching is final
           case "name":
+            predicate.and(qUser.name.eq(stringValue));
+            break;
+          case "nameLike":
             predicate.and(qUser.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "email":
+          case "emailLike":
             predicate.and(qUser.person.email.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:
@@ -141,16 +172,15 @@ public class UsersJpaCrudServiceImpl
     return predicate;
   }
 
-  @Nullable
   @Override
-  public UserPojo readOne(Long id) {
+  public UserPojo readOne(Long id) throws NotFoundException {
     Optional<User> userById = userRepository.findByIdWithProfile(id);
     if (!userById.isPresent()) {
-      return null;
+      throw new NotFoundException("The requested user does not exist");
     } else {
       User found = userById.get();
-      UserPojo foundPojo = this.entity2Pojo(found);
-      if (foundPojo != null) {
+      UserPojo foundPojo = this.convertToPojo(found);
+      if (foundPojo != null && found.getPerson() != null) {
         PersonPojo person = conversion.convert(found.getPerson(), PersonPojo.class);
         if (person != null) {
           foundPojo.setPerson(person);

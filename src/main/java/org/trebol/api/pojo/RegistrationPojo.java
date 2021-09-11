@@ -2,6 +2,7 @@ package org.trebol.api.pojo;
 
 import java.util.Objects;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -18,6 +19,7 @@ public class RegistrationPojo {
   private String name;
   @NotBlank
   private String password;
+  @Valid
   private PersonPojo profile;
 
   public String getName() {

@@ -18,9 +18,11 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 public class PersonPojo {
   @JsonIgnore
   private Long id;
+  @NotBlank
   private String name;
   @NotBlank
   private String idNumber;
+  @NotBlank
   private String email;
   @Pattern(regexp = "^(((\\(\\+?[0-9]{3}\\))|(\\+?[0-9]{3})) ?)?[0-9]{3,4}[ -]?[0-9]{4}$")
   private String phone1;
