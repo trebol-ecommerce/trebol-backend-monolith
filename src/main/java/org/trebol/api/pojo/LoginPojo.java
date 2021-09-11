@@ -2,12 +2,12 @@ package org.trebol.api.pojo;
 
 import java.util.Objects;
 
-public class UsernamePasswordPojo {
+public class LoginPojo {
 
   private String name;
   private String password;
 
-  public UsernamePasswordPojo() {
+  public LoginPojo() {
     super();
   }
 
@@ -46,7 +46,7 @@ public class UsernamePasswordPojo {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final UsernamePasswordPojo other = (UsernamePasswordPojo)obj;
+    final LoginPojo other = (LoginPojo)obj;
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
@@ -58,6 +58,7 @@ public class UsernamePasswordPojo {
 
   @Override
   public String toString() {
-    return "UsernamePasswordPojo{" + "name=" + name + ", password=" + password + '}';
+    return "LoginPojo{name=" + name +
+        ", password=" + password + '}';
   }
 }
