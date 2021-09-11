@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +55,7 @@ public class PublicCheckoutController {
    * @throws org.trebol.integration.exceptions.PaymentServiceException
    */
   @PostMapping({"", "/"})
+  @PreAuthorize("hasAuthority('checkout')")
   public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody SellPojo transactionRequest)
     throws BadInputException, PaymentServiceException {
     SellPojo createdTransaction = service.saveCartAsPendingTransaction(transactionRequest);
