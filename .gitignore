@@ -1,12 +1,16 @@
-*target*
-*setup*
-*bin*
+# Binaries and generated sources
+target/
+bin/
+/src/main/setup/
 
-*.properties
-*nb-configuration.xml
-*nbactions.xml
+# Editor files and folders
+.classpath
+.project
+.settings/
+/nb-configuration.xml
+/nbactions.xml
+.idea/
+.vscode/
 
-*.classpath
-*.project
-*.settings
-
+# Configuration files others than the one provided by default
+/src/main/resources/application-*.properties
