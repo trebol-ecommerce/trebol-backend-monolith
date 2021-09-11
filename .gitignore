@@ -14,3 +14,7 @@ bin/
 
 # Configuration files others than the one provided by default
 /src/main/resources/application-*.properties
+
+# System Files
+.DS_Store
+Thumbs.db
