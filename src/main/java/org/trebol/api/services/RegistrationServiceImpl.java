@@ -7,7 +7,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import org.trebol.api.pojo.RegistrationPojo;
@@ -80,7 +79,7 @@ public class RegistrationServiceImpl
       newPerson = peopleRepository.saveAndFlush(newPerson);
     }
 
-    User newUser = this.createUserFromRegistrationPojo(registration);
+    User newUser = this.convertToUser(registration);
     newUser.setPerson(newPerson);
     usersRepository.saveAndFlush(newUser);
     logger.info("New user created with name '{}' and idNumber '{}'", newUser.getName(), newPerson.getIdNumber());
@@ -90,7 +89,7 @@ public class RegistrationServiceImpl
     customersRepository.saveAndFlush(newCustomer);
   }
 
-  protected User createUserFromRegistrationPojo(RegistrationPojo registration) {
+  protected User convertToUser(RegistrationPojo registration) {
     String password = passwordEncoder.encode(registration.getPassword());
     User target = new User();
     target.setName(registration.getName());
