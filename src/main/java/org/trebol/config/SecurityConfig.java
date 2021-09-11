@@ -66,7 +66,7 @@ public class SecurityConfig
             .invalidateHttpSession(true)
           .and()
         .addFilter(
-            this.loginUrl("/public/login"))
+            this.loginFilterForUrl("/public/login"))
         .addFilterAfter(
             new JwtTokenVerifierFilter(jwtClaimsParserService),
             JwtUsernamePasswordAuthenticationFilter.class)
@@ -133,7 +133,7 @@ public class SecurityConfig
     return new BCryptPasswordEncoder(strength);
   }
 
-  private Filter loginUrl(String url) throws Exception {
+  private Filter loginFilterForUrl(String url) throws Exception {
     JwtUsernamePasswordAuthenticationFilter filter = new JwtUsernamePasswordAuthenticationFilter(
       super.authenticationManager(),
       securityProperties,
