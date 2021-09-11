@@ -14,11 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.Jwts;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -32,7 +31,6 @@ import org.trebol.api.pojo.UsernamePasswordPojo;
 public class JwtUsernamePasswordAuthenticationFilter
   extends UsernamePasswordAuthenticationFilter {
 
-  private final Logger myLogger = LoggerFactory.getLogger(JwtUsernamePasswordAuthenticationFilter.class);
   private final AuthenticationManager authenticationManager;
   private final SecurityProperties jwtProperties;
   private final SecretKey secretKey;
@@ -58,8 +56,7 @@ public class JwtUsernamePasswordAuthenticationFilter
             authenticationRequest.getPassword());
         return authenticationManager.authenticate(authentication);
       } catch (IOException e) {
-        myLogger.error("There was a problem while reading the login request", e);
-        throw new RuntimeException("El servidor no pudo procesar la solicitud correctamente");
+        throw new BadCredentialsException("Request body is not a login request");
       }
     }
   }
