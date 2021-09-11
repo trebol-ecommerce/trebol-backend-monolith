@@ -22,10 +22,13 @@ import org.trebol.jpa.entities.UserRole;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.repositories.ICustomersJpaRepository;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
+import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.api.IRegistrationService;
 import org.trebol.api.pojo.PersonPojo;
 import org.trebol.exceptions.BadInputException;
+
+import java.util.Optional;
 
 /**
  *
@@ -38,16 +41,19 @@ public class RegistrationServiceImpl
   private final Logger logger = LoggerFactory.getLogger(RegistrationServiceImpl.class);
   private final IPeopleJpaRepository peopleRepository;
   private final IUsersJpaRepository usersRepository;
+  private final IUserRolesJpaRepository rolesRepository;
   private final ICustomersJpaRepository customersRepository;
   private final PasswordEncoder passwordEncoder;
   private final ConversionService conversionService;
 
   @Autowired
   public RegistrationServiceImpl(IPeopleJpaRepository peopleRepository,
-    IUsersJpaRepository usersRepository, ICustomersJpaRepository customersRepository,
-    PasswordEncoder passwordEncoder, ConversionService conversionService) {
+    IUsersJpaRepository usersRepository, IUserRolesJpaRepository rolesRepository,
+    ICustomersJpaRepository customersRepository, PasswordEncoder passwordEncoder,
+    ConversionService conversionService) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;
+    this.rolesRepository = rolesRepository;
     this.customersRepository = customersRepository;
     this.passwordEncoder = passwordEncoder;
     this.conversionService = conversionService;
@@ -67,10 +73,9 @@ public class RegistrationServiceImpl
       throw new BadInputException("Input profile has insufficient or invalid data.");
     }
 
-    Predicate sameProfileData = new BooleanBuilder()
-        .and(QPerson.person.idNumber.eq(newPerson.getIdNumber()));
+    Predicate sameProfileData = QPerson.person.idNumber.eq(newPerson.getIdNumber());
     if (peopleRepository.exists(sameProfileData)) {
-      throw new EntityAlreadyExistsException("That ID card is already registered and associated to an account.");
+      throw new EntityAlreadyExistsException("That ID number is already registered and associated to an account.");
     } else {
       newPerson = peopleRepository.saveAndFlush(newPerson);
     }
@@ -91,9 +96,8 @@ public class RegistrationServiceImpl
     target.setName(registration.getName());
     target.setPassword(password);
 
-    UserRole userRole = new UserRole();
-    userRole.setId(1L);
-    target.setUserRole(userRole);
+    Optional<UserRole> customerRole = rolesRepository.findByName("Customer");
+    target.setUserRole(customerRole.get());
     return target;
   }
 
