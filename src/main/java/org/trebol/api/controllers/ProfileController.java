@@ -20,7 +20,7 @@ import org.trebol.api.IProfileService;
 import org.trebol.security.IAuthorizationHeaderParserService;
 
 @RestController
-@RequestMapping("/profile")
+@RequestMapping("/account/profile")
 public class ProfileController {
 
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
