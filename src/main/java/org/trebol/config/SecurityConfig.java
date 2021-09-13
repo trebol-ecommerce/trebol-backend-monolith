@@ -67,10 +67,6 @@ public class SecurityConfig
         .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
           .and()
-        .logout()
-            .logoutUrl("/public/logout")
-            .invalidateHttpSession(true)
-          .and()
         .addFilter(
             this.loginFilterForUrl("/public/login"))
         .addFilterAfter(
