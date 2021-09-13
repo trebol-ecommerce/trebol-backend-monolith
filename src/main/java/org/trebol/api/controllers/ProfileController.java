@@ -41,7 +41,8 @@ public class ProfileController {
     String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
 
     if (authorizationHeader != null) {
-      Claims body = jwtClaimsParserService.parseToken(authorizationHeader);
+      String jwt = authorizationHeader.replace("Bearer ", "");
+      Claims body = jwtClaimsParserService.parseToken(jwt);
 
       String username = body.getSubject();
       Person personByUserName = userProfileService.getProfileFromUserName(username);

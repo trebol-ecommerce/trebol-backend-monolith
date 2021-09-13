@@ -38,7 +38,8 @@ public class AuthenticatedPeopleServiceImpl
 
   @Nullable
   private User getAuthenticatedUser(String authorizationHeader) {
-    Claims body = jwtClaimsParserService.parseToken(authorizationHeader);
+    String jwt = authorizationHeader.replace("Bearer ", "");
+    Claims body = jwtClaimsParserService.parseToken(jwt);
     String username = body.getSubject();
     Optional<User> foundUser = usersRepository.findByNameWithProfile(username);
     if (foundUser.isPresent()) {

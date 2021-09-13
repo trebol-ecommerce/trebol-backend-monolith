@@ -45,8 +45,8 @@ public class AccessController {
     if (authorizationHeader == null || !authorizationHeader.matches("^Bearer .+$")) {
       return null;
     } else {
-      String token = authorizationHeader.replace("Bearer ", "");
-      Claims body = jwtClaimsParserService.parseToken(token);
+      String jwt = authorizationHeader.replace("Bearer ", "");
+      Claims body = jwtClaimsParserService.parseToken(jwt);
       String username = body.getSubject();
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
       return userDetails;
