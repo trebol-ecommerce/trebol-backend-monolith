@@ -2,11 +2,15 @@ package org.trebol.api.services;
 
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.trebol.api.pojo.PersonPojo;
+import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.PersonNotFoundException;
+import org.trebol.exceptions.UserNotFoundException;
+import org.trebol.jpa.GenericJpaCrudService;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
@@ -18,29 +22,52 @@ public class ProfileServiceImpl
     implements IProfileService {
 
   private final IUsersJpaRepository usersRepository;
+  private final GenericJpaCrudService<PersonPojo, Person> peopleService;
   private final IPeopleJpaRepository peopleRepository;
 
   @Autowired
-  public ProfileServiceImpl(IUsersJpaRepository usersRepository, IPeopleJpaRepository peopleRepository) {
+  public ProfileServiceImpl(IUsersJpaRepository usersRepository,
+                            GenericJpaCrudService<PersonPojo, Person> peopleService,
+                            IPeopleJpaRepository peopleRepository) {
     super();
     this.usersRepository = usersRepository;
+    this.peopleService = peopleService;
     this.peopleRepository = peopleRepository;
   }
 
-  @Nullable
   @Override
-  public Person getProfileFromUserName(String userName) {
-    Optional<User> userByName = usersRepository.findByNameWithProfile(userName);
-    if (userByName.isPresent()) {
-      return userByName.get().getPerson();
-    } else {
-      return null;
-    }
+  public PersonPojo getProfileFromUserName(String userName) throws NotFoundException {
+    Person person = this.getPersonEntityFromRelatedUserName(userName);
+    return peopleService.convertToPojo(person);
   }
 
   @Override
-  public boolean updateProfile(Person profile) {
-    peopleRepository.saveAndFlush(profile);
-    return true;
+  public void updateProfileForUserWithName(String userName, PersonPojo profile)
+          throws BadInputException, UserNotFoundException {
+    Person target;
+    try {
+      target = this.getPersonEntityFromRelatedUserName(userName);
+    } catch (PersonNotFoundException ex) {
+      Optional<Person> existingProfile = peopleService.getExisting(profile);
+      if (existingProfile.isPresent()) {
+        throw new BadInputException("Person profile already has another account, please log in to that one.");
+      } else {
+        target = peopleService.convertToNewEntity(profile);
+      }
+    }
+    peopleService.applyChangesToExistingEntity(profile, target);
+    peopleRepository.saveAndFlush(target);
+  }
+
+  private Person getPersonEntityFromRelatedUserName(String userName)
+          throws UserNotFoundException, PersonNotFoundException {
+    Optional<User> userByName = usersRepository.findByName(userName);
+    if (userByName.isEmpty()) {
+      throw new UserNotFoundException("There is no account with the specified username");
+    } else if (userByName.get().getPerson() == null) {
+      throw new PersonNotFoundException("The specified user does not have a person profile associated to it");
+    } else {
+      return userByName.get().getPerson();
+    }
   }
 }

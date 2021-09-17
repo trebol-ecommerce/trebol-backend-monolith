@@ -110,7 +110,7 @@ public class SecurityConfig
               "/data/users/*",
               "/access",
               "/access/*",
-              "/profile")
+              "/account/profile")
                 .authenticated();
   }
 
