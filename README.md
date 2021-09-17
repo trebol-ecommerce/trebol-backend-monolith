@@ -3,16 +3,20 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-This application is the main backend to the virtual web store app Trébol. 
-It's meant to implement the 
-[Trébol API](https://github.com/trebol-ecommerce/trebol-api).
-Written using Java 8, Maven and current libraries and frameworks:
-* Spring Boot
-* Spring Web MVC
-* Spring Data JPA w/ QueryDSL
-* Spring Security
-* JJWT
-* Transbank/Webpay Plus SDK
+This application powers a complete implemented backend for the eCommerce project Trébol.
+
+## Features:
+* A [REST API designed accordingly to the OpenAPI 3 standard](https://github.com/trebol-ecommerce/trebol-api).
+* Compatibility with any JDBC driver. By default comes with H2 and MariaDB drivers. 
+* Supports managing information about billing/shipping addresses, customers, products, images, categories, sales, salespeople, shippers.
+* Supports stateless sessions through JWTs authorization. 
+* Authentication is done through a database table of application users. Passwords are encoded using BCrypt.
+* Supports registering for new user accounts.
+* Currently only allows payment using Webpay Plus (service that accepts chilean credit and debit cards).
+* And all other Spring Boot goodness!
+
+## Roadmap
+See the issues section.
 
 ## Requirements
 
