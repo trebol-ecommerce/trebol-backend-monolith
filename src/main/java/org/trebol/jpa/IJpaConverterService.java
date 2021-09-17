@@ -15,6 +15,7 @@ public interface IJpaConverterService<P, E> {
 
   /**
    * Straightly converts a Pojo to a new entity, assuming that the Pojo is already @Valid.
+   * This method DOES NOT persist said entity.
    * @param source The source Pojo.
    * @return A new entity, prepared to be saved to the database.
    * @throws BadInputException
@@ -22,7 +23,8 @@ public interface IJpaConverterService<P, E> {
   E convertToNewEntity(P source) throws BadInputException;
 
   /**
-   * Accurately updates entity class instance with new data, property-by-property.
+   * Accurately updates the entity class instance with new data from a Pojo, property-by-property.
+   * This method DOES NOT persist said new data.
    * @param source The Pojo containing data updates.
    * @param target The target entity.
    * @throws BadInputException
