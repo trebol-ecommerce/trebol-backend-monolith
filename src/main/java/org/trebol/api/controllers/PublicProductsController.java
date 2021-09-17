@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.trebol.api.DataPage;
+import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.GenericJpaCrudService;
@@ -36,7 +36,7 @@ public class PublicProductsController {
   }
 
   @GetMapping({"", "/"})
-  public DataPage<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     Integer requestPageSize = customProperties.getItemsPerPage();
     Predicate filters = crudService.parsePredicate(allRequestParams);
     return crudService.readMany(requestPageSize, 0, filters);

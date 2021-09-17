@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import org.trebol.api.DataPage;
+import org.trebol.pojo.DataPagePojo;
 import org.trebol.exceptions.BadInputException;
 
 import com.querydsl.core.types.Predicate;
@@ -95,7 +95,7 @@ public abstract class GenericJpaCrudService<P, E>
    * Read entities, convert them to pojos and return the collection.
    */
   @Override
-  public DataPage<P> readMany(int pageSize, int pageIndex, Predicate filters) {
+  public DataPagePojo<P> readMany(int pageSize, int pageIndex, Predicate filters) {
     // TODO figure out sort order parameter
     Pageable paged = PageRequest.of(pageIndex, pageSize);
     Page<E> iterable = this.getAllEntities(paged, filters);
@@ -107,7 +107,7 @@ public abstract class GenericJpaCrudService<P, E>
       pojoList.add(outputItem);
     }
 
-    DataPage<P> output = new DataPage(pojoList, pageIndex, totalCount, pageSize);
+    DataPagePojo<P> output = new DataPagePojo<>(pojoList, pageIndex, totalCount, pageSize);
 
     return output;
   }

@@ -1,4 +1,4 @@
-package org.trebol.api;
+package org.trebol.pojo;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -11,15 +11,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @param <T>
  */
 @JsonInclude
-public class DataPage<T extends Object> {
+public class DataPagePojo<T> {
   private Collection<T> items;
   private int pageIndex;
   private long totalCount;
   private int pageSize;
 
-  public DataPage() { }
+  public DataPagePojo() { }
 
-  public DataPage(
+  public DataPagePojo(
     Collection<T> items,
     int pageIndex,
     long totalCount,
@@ -84,7 +84,7 @@ public class DataPage<T extends Object> {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final DataPage<?> other = (DataPage<?>)obj;
+    final DataPagePojo<?> other = (DataPagePojo<?>)obj;
     if (this.pageIndex != other.pageIndex) {
       return false;
     }

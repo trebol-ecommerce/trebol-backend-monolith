@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.GenericDataController;
-import org.trebol.api.DataPage;
+import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.ProductCategory;
@@ -38,13 +38,13 @@ public class DataProductCategoriesController
 
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_categories:read')")
-  public DataPage<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public DataPagePojo<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping({"/{parentId}", "/{parentId}/"})
   @PreAuthorize("hasAuthority('product_categories:read')")
-  public DataPage<ProductCategoryPojo> readChildren(@PathVariable Long parentId) {
+  public DataPagePojo<ProductCategoryPojo> readChildren(@PathVariable Long parentId) {
     Map<String, String> queryParamsMap = Maps.of("parentId", String.valueOf(parentId)).build();
     return super.readMany(null, null, queryParamsMap);
   }

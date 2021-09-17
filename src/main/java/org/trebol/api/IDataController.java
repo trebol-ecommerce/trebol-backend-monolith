@@ -1,5 +1,7 @@
 package org.trebol.api;
 
+import org.trebol.pojo.DataPagePojo;
+
 import java.util.Map;
 
 /**
@@ -10,5 +12,5 @@ import java.util.Map;
  */
 public interface IDataController<P> {
 
-  DataPage<P> readMany(Integer pageSize, Integer pageIndex, Map<String, String> requestParams);
+  DataPagePojo<P> readMany(Integer pageSize, Integer pageIndex, Map<String, String> requestParams);
 }

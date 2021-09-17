@@ -1,7 +1,7 @@
 package org.trebol.jpa;
 
 import org.springframework.lang.Nullable;
-import org.trebol.api.DataPage;
+import org.trebol.pojo.DataPagePojo;
 
 import javassist.NotFoundException;
 
@@ -26,7 +26,7 @@ public interface IJpaCrudService<T, I, F>
    *
    * @return The requested collection of items. May be zero-sized.
    */
-  public DataPage<T> readMany(int pageSize, int pageIndex, @Nullable F filters);
+  DataPagePojo<T> readMany(int pageSize, int pageIndex, @Nullable F filters);
 
   /**
    * Retrieves the first item that matches a certain filter.
@@ -36,5 +36,5 @@ public interface IJpaCrudService<T, I, F>
    * @return The requested item
    * @throws javassist.NotFoundException
    */
-  public T readOne(F filters) throws NotFoundException;
+  T readOne(F filters) throws NotFoundException;
 }

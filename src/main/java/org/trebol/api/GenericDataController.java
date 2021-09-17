@@ -8,6 +8,7 @@ import com.querydsl.core.types.Predicate;
 
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.pojo.DataPagePojo;
 
 /**
  * Abstraction for CrudControllers that communicate with a GenericJpaCrudService.
@@ -38,7 +39,7 @@ public abstract class GenericDataController<P, E>
    * @return
    */
   @Override
-  public DataPage<P> readMany(Integer requestPageSize, Integer requestPageIndex, @NotNull Map<String, String> requestParams) {
+  public DataPagePojo<P> readMany(Integer requestPageSize, Integer requestPageIndex, @NotNull Map<String, String> requestParams) {
 
     int pageSize = this.determineRequestedPageSize(requestPageSize, requestParams);
     int pageIndex = this.determineRequestedPageIndex(requestPageIndex, requestParams);

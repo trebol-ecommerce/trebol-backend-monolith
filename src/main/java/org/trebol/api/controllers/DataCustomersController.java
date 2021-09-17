@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.pojo.CustomerPojo;
-import org.trebol.api.DataPage;
+import org.trebol.pojo.DataPagePojo;
 import org.trebol.api.GenericDataController;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Customer;
@@ -51,7 +51,7 @@ public class DataCustomersController
 
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:read')")
-  public DataPage<CustomerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+  public DataPagePojo<CustomerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
