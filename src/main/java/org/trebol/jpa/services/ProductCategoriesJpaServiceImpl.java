@@ -17,7 +17,7 @@ import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.QProductCategory;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 
 /**
@@ -26,16 +26,16 @@ import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
  */
 @Transactional
 @Service
-public class ProductCategoriesJpaCrudServiceImpl
-  extends GenericJpaCrudService<ProductCategoryPojo, ProductCategory> {
+public class ProductCategoriesJpaServiceImpl
+  extends GenericJpaService<ProductCategoryPojo, ProductCategory> {
 
-  private static final Logger logger = LoggerFactory.getLogger(ProductCategoriesJpaCrudServiceImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(ProductCategoriesJpaServiceImpl.class);
   private final IProductsCategoriesJpaRepository categoriesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public ProductCategoriesJpaCrudServiceImpl(IProductsCategoriesJpaRepository repository,
-    ConversionService conversion) {
+  public ProductCategoriesJpaServiceImpl(IProductsCategoriesJpaRepository repository,
+                                         ConversionService conversion) {
     super(repository);
     this.categoriesRepository = repository;
     this.conversion = conversion;

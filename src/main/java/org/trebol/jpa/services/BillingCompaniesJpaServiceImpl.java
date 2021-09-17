@@ -9,7 +9,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.trebol.pojo.BillingCompanyPojo;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.entities.QBillingCompany;
 import org.trebol.jpa.repositories.IBillingCompaniesJpaRepository;
@@ -22,15 +22,15 @@ import java.util.Optional;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Service
-public class BillingCompaniesJpaCrudServiceImpl
-  extends GenericJpaCrudService<BillingCompanyPojo, BillingCompany> {
+public class BillingCompaniesJpaServiceImpl
+  extends GenericJpaService<BillingCompanyPojo, BillingCompany> {
 
-  private static final Logger logger = LoggerFactory.getLogger(BillingCompaniesJpaCrudServiceImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(BillingCompaniesJpaServiceImpl.class);
   private final IBillingCompaniesJpaRepository billingTypesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public BillingCompaniesJpaCrudServiceImpl(IBillingCompaniesJpaRepository repository, ConversionService conversion) {
+  public BillingCompaniesJpaServiceImpl(IBillingCompaniesJpaRepository repository, ConversionService conversion) {
     super(repository);
     this.billingTypesRepository = repository;
     this.conversion = conversion;

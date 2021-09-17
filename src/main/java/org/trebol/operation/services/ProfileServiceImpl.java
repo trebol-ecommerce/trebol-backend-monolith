@@ -10,7 +10,7 @@ import org.trebol.pojo.PersonPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.PersonNotFoundException;
 import org.trebol.exceptions.UserNotFoundException;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
@@ -22,12 +22,12 @@ public class ProfileServiceImpl
     implements IProfileService {
 
   private final IUsersJpaRepository usersRepository;
-  private final GenericJpaCrudService<PersonPojo, Person> peopleService;
+  private final GenericJpaService<PersonPojo, Person> peopleService;
   private final IPeopleJpaRepository peopleRepository;
 
   @Autowired
   public ProfileServiceImpl(IUsersJpaRepository usersRepository,
-                            GenericJpaCrudService<PersonPojo, Person> peopleService,
+                            GenericJpaService<PersonPojo, Person> peopleService,
                             IPeopleJpaRepository peopleRepository) {
     super();
     this.usersRepository = usersRepository;

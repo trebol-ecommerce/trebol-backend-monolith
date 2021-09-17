@@ -18,7 +18,7 @@ import org.trebol.jpa.entities.QUserRole;
 import org.trebol.pojo.UserRolePojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 
 /**
@@ -27,15 +27,15 @@ import org.trebol.jpa.repositories.IUserRolesJpaRepository;
  */
 @Transactional
 @Service
-public class UserRolesJpaCrudServiceImpl
-  extends GenericJpaCrudService<UserRolePojo, UserRole> {
+public class UserRolesJpaServiceImpl
+  extends GenericJpaService<UserRolePojo, UserRole> {
 
-  private static final Logger logger = LoggerFactory.getLogger(UserRolesJpaCrudServiceImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(UserRolesJpaServiceImpl.class);
   private final IUserRolesJpaRepository userRolesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public UserRolesJpaCrudServiceImpl(IUserRolesJpaRepository repository, ConversionService conversion) {
+  public UserRolesJpaServiceImpl(IUserRolesJpaRepository repository, ConversionService conversion) {
     super(repository);
     this.userRolesRepository = repository;
     this.conversion = conversion;

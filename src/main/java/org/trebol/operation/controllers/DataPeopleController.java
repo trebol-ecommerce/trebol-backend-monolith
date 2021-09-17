@@ -14,7 +14,7 @@ import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 
 /**
  * API point of entry for Person entities
@@ -27,7 +27,7 @@ public class DataPeopleController
   extends GenericDataController<PersonPojo, Person> {
 
   @Autowired
-  public DataPeopleController(CustomProperties globals, GenericJpaCrudService<PersonPojo, Person> crudService) {
+  public DataPeopleController(CustomProperties globals, GenericJpaService<PersonPojo, Person> crudService) {
     super(globals, crudService);
   }
 

@@ -22,7 +22,7 @@ import org.trebol.pojo.SellPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 
 import javassist.NotFoundException;
 
@@ -41,7 +41,7 @@ public class DataSalesController
   implements IDataCrudController<SellPojo, Long> {
 
   @Autowired
-  public DataSalesController(CustomProperties globals, GenericJpaCrudService<SellPojo, Sell> crudService) {
+  public DataSalesController(CustomProperties globals, GenericJpaService<SellPojo, Sell> crudService) {
     super(globals, crudService);
   }
 

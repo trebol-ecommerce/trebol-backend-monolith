@@ -24,7 +24,7 @@ import org.trebol.operation.GenericDataController;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Image;
 import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 
 import com.querydsl.core.types.Predicate;
 
@@ -45,7 +45,7 @@ public class DataImagesController
   implements IDataCrudController<ImagePojo, String> {
 
   @Autowired
-  public DataImagesController(CustomProperties globals, GenericJpaCrudService<ImagePojo, Image> crudService) {
+  public DataImagesController(CustomProperties globals, GenericJpaService<ImagePojo, Image> crudService) {
     super(globals, crudService);
   }
 

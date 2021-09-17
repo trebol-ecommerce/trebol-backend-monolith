@@ -17,7 +17,7 @@ import org.trebol.jpa.entities.QBillingType;
 import org.trebol.pojo.BillingTypePojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.repositories.IBillingTypesJpaRepository;
 
 /**
@@ -25,15 +25,15 @@ import org.trebol.jpa.repositories.IBillingTypesJpaRepository;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Service
-public class BillingTypesJpaCrudServiceImpl
-  extends GenericJpaCrudService<BillingTypePojo, BillingType> {
+public class BillingTypesJpaServiceImpl
+  extends GenericJpaService<BillingTypePojo, BillingType> {
 
-  private static final Logger logger = LoggerFactory.getLogger(BillingTypesJpaCrudServiceImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(BillingTypesJpaServiceImpl.class);
   private final IBillingTypesJpaRepository billingTypesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public BillingTypesJpaCrudServiceImpl(IBillingTypesJpaRepository repository, ConversionService conversion) {
+  public BillingTypesJpaServiceImpl(IBillingTypesJpaRepository repository, ConversionService conversion) {
     super(repository);
     this.billingTypesRepository = repository;
     this.conversion = conversion;

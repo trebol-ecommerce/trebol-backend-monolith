@@ -14,7 +14,7 @@ import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.SellStatusPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 
 /**
  * API point of entry for SellStatus entities
@@ -28,7 +28,7 @@ public class DataSellStatusesController
 
   @Autowired
   public DataSellStatusesController(CustomProperties globals,
-      GenericJpaCrudService<SellStatusPojo, SellStatus> crudService) {
+      GenericJpaService<SellStatusPojo, SellStatus> crudService) {
     super(globals, crudService);
   }
 

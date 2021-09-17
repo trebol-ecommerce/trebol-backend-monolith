@@ -19,7 +19,7 @@ import org.trebol.pojo.PersonPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.repositories.ICustomersJpaRepository;
 
 /**
@@ -28,16 +28,16 @@ import org.trebol.jpa.repositories.ICustomersJpaRepository;
  */
 @Transactional
 @Service
-public class CustomersJpaCrudServiceImpl
-  extends GenericJpaCrudService<CustomerPojo, Customer> {
+public class CustomersJpaServiceImpl
+  extends GenericJpaService<CustomerPojo, Customer> {
 
-  private static final Logger logger = LoggerFactory.getLogger(CustomersJpaCrudServiceImpl.class);
-  private final GenericJpaCrudService<PersonPojo, Person> peopleService;
+  private static final Logger logger = LoggerFactory.getLogger(CustomersJpaServiceImpl.class);
+  private final GenericJpaService<PersonPojo, Person> peopleService;
   private final ICustomersJpaRepository customersRepository;
 
   @Autowired
-  public CustomersJpaCrudServiceImpl(ICustomersJpaRepository repository,
-    GenericJpaCrudService<PersonPojo, Person> peopleService) {
+  public CustomersJpaServiceImpl(ICustomersJpaRepository repository,
+                                 GenericJpaService<PersonPojo, Person> peopleService) {
     super(repository);
     this.peopleService = peopleService;
     this.customersRepository = repository;

@@ -30,12 +30,12 @@ import javassist.NotFoundException;
  * @param <P> The pojo class
  * @param <E> The entity class
  */
-public abstract class GenericJpaCrudService<P, E>
+public abstract class GenericJpaService<P, E>
   implements IJpaCrudService<P, Long, Predicate>, IJpaConverterService<P, E> {
 
   protected IJpaRepository<E> repository;
 
-  public GenericJpaCrudService(IJpaRepository<E> repository) {
+  public GenericJpaService(IJpaRepository<E> repository) {
     this.repository = repository;
   }
 

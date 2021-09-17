@@ -24,7 +24,7 @@ import org.trebol.pojo.ProductPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Product;
 import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.operation.IDataCrudController;
 import org.trebol.exceptions.BadInputException;
 
@@ -44,7 +44,7 @@ public class DataProductsController
   implements IDataCrudController<ProductPojo, String> {
 
   @Autowired
-  public DataProductsController(CustomProperties globals, GenericJpaCrudService<ProductPojo, Product> crudService) {
+  public DataProductsController(CustomProperties globals, GenericJpaService<ProductPojo, Product> crudService) {
     super(globals, crudService);
   }
 

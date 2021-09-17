@@ -12,7 +12,7 @@ import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.BillingTypePojo;
 import org.trebol.config.CustomProperties;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.BillingType;
 
 /**
@@ -27,7 +27,7 @@ public class DataBillingTypesController
 
   @Autowired
   public DataBillingTypesController(CustomProperties globals,
-    GenericJpaCrudService<BillingTypePojo, BillingType> crudService) {
+    GenericJpaService<BillingTypePojo, BillingType> crudService) {
     super(globals, crudService);
   }
 

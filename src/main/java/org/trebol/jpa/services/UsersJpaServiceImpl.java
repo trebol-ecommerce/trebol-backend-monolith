@@ -22,7 +22,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
@@ -35,10 +35,10 @@ import javassist.NotFoundException;
  */
 @Transactional
 @Service
-public class UsersJpaCrudServiceImpl
-  extends GenericJpaCrudService<UserPojo, User> {
+public class UsersJpaServiceImpl
+  extends GenericJpaService<UserPojo, User> {
 
-  private static final Logger logger = LoggerFactory.getLogger(UsersJpaCrudServiceImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(UsersJpaServiceImpl.class);
   private final IUsersJpaRepository userRepository;
   private final IUserRolesJpaRepository rolesRepository;
   private final IPeopleJpaRepository peopleRepository;
@@ -46,8 +46,8 @@ public class UsersJpaCrudServiceImpl
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UsersJpaCrudServiceImpl(IUsersJpaRepository repository, IUserRolesJpaRepository rolesRepository,
-    IPeopleJpaRepository peopleRepository, ConversionService conversion, PasswordEncoder passwordEncoder) {
+  public UsersJpaServiceImpl(IUsersJpaRepository repository, IUserRolesJpaRepository rolesRepository,
+                             IPeopleJpaRepository peopleRepository, ConversionService conversion, PasswordEncoder passwordEncoder) {
     super(repository);
     this.userRepository = repository;
     this.rolesRepository = rolesRepository;

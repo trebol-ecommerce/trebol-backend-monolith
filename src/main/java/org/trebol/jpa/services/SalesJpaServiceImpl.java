@@ -39,7 +39,7 @@ import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.ISalesJpaService;
 import org.trebol.jpa.entities.Address;
@@ -62,35 +62,35 @@ import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
  */
 @Transactional
 @Service
-public class SalesJpaCrudServiceImpl
-  extends GenericJpaCrudService<SellPojo, Sell>
+public class SalesJpaServiceImpl
+  extends GenericJpaService<SellPojo, Sell>
   implements ISalesJpaService {
 
-  private final Logger logger = LoggerFactory.getLogger(SalesJpaCrudServiceImpl.class);
+  private final Logger logger = LoggerFactory.getLogger(SalesJpaServiceImpl.class);
   private final ISalesJpaRepository salesRepository;
   private final ISellStatusesJpaRepository statusesRepository;
   private final IBillingTypesJpaRepository billingTypesRepository;
   private final IPaymentTypesJpaRepository paymentTypesRepository;
   private final IBillingCompaniesJpaRepository billingCompaniesRepository;
   private final IAddressesJpaRepository addressesRepository;
-  private final GenericJpaCrudService<BillingCompanyPojo, BillingCompany> billingCompaniesService;
-  private final GenericJpaCrudService<CustomerPojo, Customer> customersService;
-  private final GenericJpaCrudService<SalespersonPojo, Salesperson> salespeopleService;
+  private final GenericJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesService;
+  private final GenericJpaService<CustomerPojo, Customer> customersService;
+  private final GenericJpaService<SalespersonPojo, Salesperson> salespeopleService;
   private final ICustomersJpaRepository customersRepository;
   private final IProductsJpaRepository productsRepository;
   private final ConversionService conversion;
   private final Validator validator;
 
   @Autowired
-  public SalesJpaCrudServiceImpl(ISalesJpaRepository repository, ConversionService conversion,
-    ISellStatusesJpaRepository statusesRepository, IBillingTypesJpaRepository billingTypesRepository,
-    IBillingCompaniesJpaRepository billingCompaniesRepository, IPaymentTypesJpaRepository paymentTypesRepository,
-    IAddressesJpaRepository addressesRepository,
-    GenericJpaCrudService<BillingCompanyPojo, BillingCompany> billingCompaniesService,
-    GenericJpaCrudService<CustomerPojo, Customer> customersService,
-    GenericJpaCrudService<SalespersonPojo, Salesperson> salespeopleService,
-    ICustomersJpaRepository customersRepository, IProductsJpaRepository productsRepository,
-    Validator validator) {
+  public SalesJpaServiceImpl(ISalesJpaRepository repository, ConversionService conversion,
+                             ISellStatusesJpaRepository statusesRepository, IBillingTypesJpaRepository billingTypesRepository,
+                             IBillingCompaniesJpaRepository billingCompaniesRepository, IPaymentTypesJpaRepository paymentTypesRepository,
+                             IAddressesJpaRepository addressesRepository,
+                             GenericJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesService,
+                             GenericJpaService<CustomerPojo, Customer> customersService,
+                             GenericJpaService<SalespersonPojo, Salesperson> salespeopleService,
+                             ICustomersJpaRepository customersRepository, IProductsJpaRepository productsRepository,
+                             Validator validator) {
     super(repository);
     this.salesRepository = repository;
     this.conversion = conversion;

@@ -7,8 +7,7 @@ import javax.validation.constraints.NotNull;
 import com.querydsl.core.types.Predicate;
 
 import org.trebol.config.CustomProperties;
-import org.trebol.jpa.GenericJpaCrudService;
-import org.trebol.operation.IDataController;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.pojo.DataPagePojo;
 
 /**
@@ -22,9 +21,9 @@ public abstract class GenericDataController<P, E>
   implements IDataController<P> {
 
   protected CustomProperties customProperties;
-  protected GenericJpaCrudService<P, E> crudService;
+  protected GenericJpaService<P, E> crudService;
 
-  public GenericDataController(CustomProperties customProperties, GenericJpaCrudService<P, E> crudService) {
+  public GenericDataController(CustomProperties customProperties, GenericJpaService<P, E> crudService) {
     this.customProperties = customProperties;
     this.crudService = crudService;
   }

@@ -18,7 +18,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.QSellStatus;
 
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
 
 /**
@@ -27,15 +27,15 @@ import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
  */
 @Transactional
 @Service
-public class SellStatusesJpaCrudServiceImpl
-  extends GenericJpaCrudService<SellStatusPojo, SellStatus> {
+public class SellStatusesJpaServiceImpl
+  extends GenericJpaService<SellStatusPojo, SellStatus> {
 
-  private static final Logger logger = LoggerFactory.getLogger(SellStatusesJpaCrudServiceImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(SellStatusesJpaServiceImpl.class);
   private final ISellStatusesJpaRepository statusesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public SellStatusesJpaCrudServiceImpl(ISellStatusesJpaRepository repository, ConversionService conversion) {
+  public SellStatusesJpaServiceImpl(ISellStatusesJpaRepository repository, ConversionService conversion) {
     super(repository);
     this.statusesRepository = repository;
     this.conversion = conversion;

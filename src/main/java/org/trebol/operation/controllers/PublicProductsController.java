@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.config.CustomProperties;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Product;
 
 import com.querydsl.core.types.Predicate;
@@ -25,12 +25,12 @@ import javassist.NotFoundException;
 @RequestMapping("/public/products")
 public class PublicProductsController {
 
-  private final GenericJpaCrudService<ProductPojo, Product> crudService;
+  private final GenericJpaService<ProductPojo, Product> crudService;
   private final CustomProperties customProperties;
 
   @Autowired
-  public PublicProductsController(GenericJpaCrudService<ProductPojo, Product> crudService,
-    CustomProperties customProperties) {
+  public PublicProductsController(GenericJpaService<ProductPojo, Product> crudService,
+                                  CustomProperties customProperties) {
     this.crudService = crudService;
     this.customProperties = customProperties;
   }

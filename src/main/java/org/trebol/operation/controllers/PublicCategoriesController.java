@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.pojo.ProductCategoryPojo;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.ProductCategory;
 
 import com.querydsl.core.types.Predicate;
@@ -21,10 +21,10 @@ import com.querydsl.core.types.Predicate;
 @RequestMapping("/public/categories")
 public class PublicCategoriesController {
 
-  private final GenericJpaCrudService<ProductCategoryPojo, ProductCategory> service;
+  private final GenericJpaService<ProductCategoryPojo, ProductCategory> service;
 
   @Autowired
-  public PublicCategoriesController(GenericJpaCrudService<ProductCategoryPojo, ProductCategory> crudService) {
+  public PublicCategoriesController(GenericJpaService<ProductCategoryPojo, ProductCategory> crudService) {
     this.service = crudService;
   }
 

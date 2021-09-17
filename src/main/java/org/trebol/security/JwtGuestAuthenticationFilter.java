@@ -12,7 +12,7 @@ import org.trebol.pojo.PersonPojo;
 import org.trebol.config.SecurityProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Customer;
 
 import javax.crypto.SecretKey;
@@ -26,10 +26,10 @@ public class JwtGuestAuthenticationFilter
   private final AuthenticationManager authenticationManager;
   private final SecurityProperties jwtProperties;
   private final SecretKey secretKey;
-  private final GenericJpaCrudService<CustomerPojo, Customer> customersService;
+  private final GenericJpaService<CustomerPojo, Customer> customersService;
 
   public JwtGuestAuthenticationFilter(SecurityProperties jwtProperties, SecretKey secretKey,
-                                      AuthenticationManager authenticationManager, GenericJpaCrudService<CustomerPojo, Customer> customersService) {
+                                      AuthenticationManager authenticationManager, GenericJpaService<CustomerPojo, Customer> customersService) {
     super(jwtProperties, secretKey);
     this.authenticationManager = authenticationManager;
     this.jwtProperties = jwtProperties;

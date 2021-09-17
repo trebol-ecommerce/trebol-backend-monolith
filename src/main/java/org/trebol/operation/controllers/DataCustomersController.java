@@ -24,7 +24,7 @@ import org.trebol.operation.GenericDataController;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 
 import com.querydsl.core.types.Predicate;
 
@@ -45,7 +45,7 @@ public class DataCustomersController
   implements IDataCrudController<CustomerPojo, String> {
 
   @Autowired
-  public DataCustomersController(CustomProperties globals, GenericJpaCrudService<CustomerPojo, Customer> crudService) {
+  public DataCustomersController(CustomProperties globals, GenericJpaService<CustomerPojo, Customer> crudService) {
     super(globals, crudService);
   }
 

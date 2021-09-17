@@ -17,7 +17,7 @@ import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 
 /**
  * API point of entry for ProductCategory entities
@@ -32,7 +32,7 @@ public class DataProductCategoriesController
   @Autowired
   public DataProductCategoriesController(
     CustomProperties globals,
-    GenericJpaCrudService<ProductCategoryPojo, ProductCategory> crudService) {
+    GenericJpaService<ProductCategoryPojo, ProductCategory> crudService) {
     super(globals, crudService);
   }
 

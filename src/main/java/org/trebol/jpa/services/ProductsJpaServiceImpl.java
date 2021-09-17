@@ -29,7 +29,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductImage;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.IImagesJpaRepository;
@@ -45,25 +45,25 @@ import javassist.NotFoundException;
  */
 @Transactional
 @Service
-public class ProductsJpaCrudServiceImpl
-  extends GenericJpaCrudService<ProductPojo, Product> {
+public class ProductsJpaServiceImpl
+  extends GenericJpaService<ProductPojo, Product> {
 
-  private static final Logger logger = LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(ProductsJpaServiceImpl.class);
   private final IProductsJpaRepository productsRepository;
   private final IImagesJpaRepository imagesRepository;
   private final IProductImagesJpaRepository productImagesRepository;
   private final IProductsCategoriesJpaRepository categoriesRepository;
-  private final GenericJpaCrudService<ProductCategoryPojo, ProductCategory> categoriesService;
+  private final GenericJpaService<ProductCategoryPojo, ProductCategory> categoriesService;
   private final ConversionService conversion;
   private final Validator validator;
 
   @Autowired
-  public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository, IImagesJpaRepository imagesRepository,
-    IProductImagesJpaRepository productImagesRepository,
-    IProductsCategoriesJpaRepository categoriesRepository,
-    GenericJpaCrudService<ProductCategoryPojo, ProductCategory> categoriesService,
-    ConversionService conversion,
-    Validator validator) {
+  public ProductsJpaServiceImpl(IProductsJpaRepository repository, IImagesJpaRepository imagesRepository,
+                                IProductImagesJpaRepository productImagesRepository,
+                                IProductsCategoriesJpaRepository categoriesRepository,
+                                GenericJpaService<ProductCategoryPojo, ProductCategory> categoriesService,
+                                ConversionService conversion,
+                                Validator validator) {
     super(repository);
     this.productsRepository = repository;
     this.imagesRepository = imagesRepository;

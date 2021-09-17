@@ -17,7 +17,7 @@ import org.trebol.jpa.entities.QImage;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.repositories.IImagesJpaRepository;
 
 /**
@@ -25,15 +25,15 @@ import org.trebol.jpa.repositories.IImagesJpaRepository;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Service
-public class ImagesJpaCrudServiceImpl
-  extends GenericJpaCrudService<ImagePojo, Image> {
+public class ImagesJpaServiceImpl
+  extends GenericJpaService<ImagePojo, Image> {
 
-  private static final Logger logger = LoggerFactory.getLogger(ImagesJpaCrudServiceImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(ImagesJpaServiceImpl.class);
   private final IImagesJpaRepository imagesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public ImagesJpaCrudServiceImpl(IImagesJpaRepository repository, ConversionService conversion) {
+  public ImagesJpaServiceImpl(IImagesJpaRepository repository, ConversionService conversion) {
     super(repository);
     this.imagesRepository = repository;
     this.conversion = conversion;
