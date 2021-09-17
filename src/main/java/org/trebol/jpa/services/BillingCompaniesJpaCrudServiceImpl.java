@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
-import org.trebol.api.pojo.BillingCompanyPojo;
+import org.trebol.pojo.BillingCompanyPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.GenericJpaCrudService;
 import org.trebol.jpa.entities.BillingCompany;

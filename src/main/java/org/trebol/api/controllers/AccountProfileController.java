@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.IProfileService;
-import org.trebol.api.pojo.PersonPojo;
+import org.trebol.pojo.PersonPojo;
 import org.trebol.exceptions.BadInputException;
 
 @RestController

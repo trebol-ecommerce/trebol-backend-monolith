@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.trebol.api.pojo.ProductCategoryPojo;
-import org.trebol.api.IProductCategoriesService;
+import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.jpa.GenericJpaCrudService;
 import org.trebol.jpa.entities.ProductCategory;
 

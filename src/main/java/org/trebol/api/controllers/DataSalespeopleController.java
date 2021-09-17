@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.DataPage;
 import org.trebol.api.GenericDataController;
-import org.trebol.api.pojo.SalespersonPojo;
+import org.trebol.pojo.SalespersonPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.exceptions.EntityAlreadyExistsException;

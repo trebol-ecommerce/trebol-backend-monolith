@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
-import org.trebol.api.pojo.RegistrationPojo;
+import org.trebol.pojo.RegistrationPojo;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
 
@@ -24,7 +24,7 @@ import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.api.IRegistrationService;
-import org.trebol.api.pojo.PersonPojo;
+import org.trebol.pojo.PersonPojo;
 import org.trebol.exceptions.BadInputException;
 
 import java.util.Optional;

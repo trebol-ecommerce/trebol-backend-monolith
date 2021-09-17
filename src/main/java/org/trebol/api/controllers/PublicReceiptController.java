@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.trebol.api.pojo.ReceiptPojo;
+import org.trebol.pojo.ReceiptPojo;
 import org.trebol.api.IReceiptService;
 
 import javassist.NotFoundException;

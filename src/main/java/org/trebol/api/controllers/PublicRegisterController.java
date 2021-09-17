@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.trebol.api.pojo.RegistrationPojo;
+import org.trebol.pojo.RegistrationPojo;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.api.IRegistrationService;
 import org.trebol.exceptions.BadInputException;

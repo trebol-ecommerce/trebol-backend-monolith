@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
-import org.trebol.api.pojo.SellPojo;
-import org.trebol.api.pojo.PaymentRedirectionDetailsPojo;
+import org.trebol.pojo.SellPojo;
+import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.integration.exceptions.PaymentServiceException;

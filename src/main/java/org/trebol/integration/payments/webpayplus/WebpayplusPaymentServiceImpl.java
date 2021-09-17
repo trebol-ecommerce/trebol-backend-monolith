@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.trebol.api.pojo.SellPojo;
-import org.trebol.api.pojo.PaymentRedirectionDetailsPojo;
+import org.trebol.pojo.SellPojo;
+import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.integration.exceptions.PaymentServiceException;
 
 import cl.transbank.common.IntegrationType;

@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import org.trebol.api.pojo.ProductPojo;
-import org.trebol.api.pojo.ReceiptDetailPojo;
-import org.trebol.api.pojo.ReceiptPojo;
+import org.trebol.pojo.ProductPojo;
+import org.trebol.pojo.ReceiptDetailPojo;
+import org.trebol.pojo.ReceiptPojo;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;

@@ -1,11 +1,10 @@
-package org.trebol.api.pojo;
+package org.trebol.pojo;
 
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 /**
  *

@@ -1,6 +1,6 @@
 package org.trebol.api;
 
-import org.trebol.api.pojo.RegistrationPojo;
+import org.trebol.pojo.RegistrationPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 

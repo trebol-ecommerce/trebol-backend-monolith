@@ -3,8 +3,6 @@ package org.trebol.jpa.services;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import org.trebol.api.pojo.SellStatusPojo;
+import org.trebol.pojo.SellStatusPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.QSellStatus;
 
-import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.GenericJpaCrudService;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;

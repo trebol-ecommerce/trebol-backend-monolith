@@ -1,4 +1,4 @@
-package org.trebol.api.pojo;
+package org.trebol.pojo;
 
 import java.util.Objects;
 
@@ -6,25 +6,25 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @JsonInclude
-public class ProductCategoryPojo {
-  private Long code;
+public class SellStatusPojo {
+  @NotBlank
+  private Integer code;
+  @JsonInclude(NON_EMPTY)
   @NotBlank
   private String name;
-  @JsonInclude(NON_NULL)
-  private ProductCategoryPojo parent;
 
-  public Long getCode() {
+  public Integer getCode() {
     return code;
   }
 
-  public void setCode(Long code) {
+  public void setCode(Integer code) {
     this.code = code;
   }
 
@@ -36,20 +36,11 @@ public class ProductCategoryPojo {
     this.name = name;
   }
 
-  public ProductCategoryPojo getParent() {
-    return parent;
-  }
-
-  public void setParent(ProductCategoryPojo parent) {
-    this.parent = parent;
-  }
-
   @Override
   public int hashCode() {
-    int hash = 7;
-    hash = 23 * hash + Objects.hashCode(this.code);
-    hash = 23 * hash + Objects.hashCode(this.name);
-    hash = 23 * hash + Objects.hashCode(this.parent);
+    int hash = 5;
+    hash = 79 * hash + Objects.hashCode(this.code);
+    hash = 79 * hash + Objects.hashCode(this.name);
     return hash;
   }
 
@@ -64,14 +55,11 @@ public class ProductCategoryPojo {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final ProductCategoryPojo other = (ProductCategoryPojo)obj;
+    final SellStatusPojo other = (SellStatusPojo)obj;
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
     if (!Objects.equals(this.code, other.code)) {
-      return false;
-    }
-    if (!Objects.equals(this.parent, other.parent)) {
       return false;
     }
     return true;
@@ -79,8 +67,7 @@ public class ProductCategoryPojo {
 
   @Override
   public String toString() {
-    return "ProductCategoryPojo{id=" + code +
-        ", name=" + name +
-        ", parent=" + parent + '}';
+    return "SellStatusPojo{code=" + code + ", name=" + name + '}';
   }
+
 }

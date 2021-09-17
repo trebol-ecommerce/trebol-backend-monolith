@@ -3,8 +3,6 @@ package org.trebol.jpa.services;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,7 @@ import com.querydsl.core.types.Predicate;
 
 import org.trebol.jpa.entities.QImage;
 
-import org.trebol.api.pojo.ImagePojo;
+import org.trebol.pojo.ImagePojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.GenericJpaCrudService;

@@ -1,6 +1,6 @@
 package org.trebol.jpa;
 
-import org.trebol.api.pojo.SellPojo;
+import org.trebol.pojo.SellPojo;
 
 import com.querydsl.core.types.Predicate;
 

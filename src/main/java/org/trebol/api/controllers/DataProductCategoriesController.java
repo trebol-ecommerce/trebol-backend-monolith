@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.GenericDataController;
 import org.trebol.api.DataPage;
-import org.trebol.api.pojo.ProductCategoryPojo;
+import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.GenericJpaCrudService;

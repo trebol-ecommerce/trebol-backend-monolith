@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.trebol.api.pojo.PaymentRedirectionDetailsPojo;
-import org.trebol.api.pojo.SellPojo;
+import org.trebol.pojo.PaymentRedirectionDetailsPojo;
+import org.trebol.pojo.SellPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.api.ICheckoutService;

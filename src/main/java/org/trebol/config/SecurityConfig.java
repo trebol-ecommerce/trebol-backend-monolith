@@ -19,7 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.trebol.api.pojo.CustomerPojo;
+import org.trebol.pojo.CustomerPojo;
 import org.trebol.exceptions.CorsMappingParseException;
 
 import org.trebol.jpa.GenericJpaCrudService;

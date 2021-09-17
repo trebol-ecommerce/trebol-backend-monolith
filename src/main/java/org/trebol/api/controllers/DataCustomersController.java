@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.trebol.api.pojo.CustomerPojo;
+import org.trebol.pojo.CustomerPojo;
 import org.trebol.api.DataPage;
 import org.trebol.api.GenericDataController;
 import org.trebol.config.CustomProperties;

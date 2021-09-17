@@ -14,8 +14,8 @@ import com.querydsl.core.types.Predicate;
 
 import org.trebol.jpa.entities.QCustomer;
 
-import org.trebol.api.pojo.CustomerPojo;
-import org.trebol.api.pojo.PersonPojo;
+import org.trebol.pojo.CustomerPojo;
+import org.trebol.pojo.PersonPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;

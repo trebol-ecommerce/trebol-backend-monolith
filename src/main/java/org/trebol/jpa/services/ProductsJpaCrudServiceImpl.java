@@ -20,11 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import org.trebol.api.pojo.ImagePojo;
-import org.trebol.api.pojo.ProductCategoryPojo;
+import org.trebol.pojo.ImagePojo;
+import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.jpa.entities.QProduct;
 
-import org.trebol.api.pojo.ProductPojo;
+import org.trebol.pojo.ProductPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Product;

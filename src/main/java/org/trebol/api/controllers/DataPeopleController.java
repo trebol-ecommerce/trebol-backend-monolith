@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.api.DataPage;
 import org.trebol.api.GenericDataController;
-import org.trebol.api.pojo.PersonPojo;
+import org.trebol.pojo.PersonPojo;
 import org.trebol.config.CustomProperties;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.GenericJpaCrudService;

@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +14,8 @@ import com.querydsl.core.types.Predicate;
 
 import org.trebol.jpa.entities.QSalesperson;
 
-import org.trebol.api.pojo.PersonPojo;
-import org.trebol.api.pojo.SalespersonPojo;
+import org.trebol.pojo.PersonPojo;
+import org.trebol.pojo.SalespersonPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;

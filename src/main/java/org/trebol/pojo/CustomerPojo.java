@@ -1,21 +1,24 @@
-package org.trebol.api.pojo;
+package org.trebol.pojo;
 
 import java.util.Objects;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-public class UserRolePojo {
-  @JsonInclude
+@JsonInclude
+public class CustomerPojo {
+  @JsonIgnore
   private Long id;
   @NotNull
-  private String name;
+  @Valid
+  private PersonPojo person;
 
   public Long getId() {
     return id;
@@ -25,19 +28,19 @@ public class UserRolePojo {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public PersonPojo getPerson() {
+    return person;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setPerson(PersonPojo person) {
+    this.person = person;
   }
 
   @Override
   public int hashCode() {
-    int hash = 3;
-    hash = 29 * hash + Objects.hashCode(this.id);
-    hash = 29 * hash + Objects.hashCode(this.name);
+    int hash = 5;
+    hash = 67 * hash + Objects.hashCode(this.id);
+    hash = 67 * hash + Objects.hashCode(this.person);
     return hash;
   }
 
@@ -52,11 +55,11 @@ public class UserRolePojo {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final UserRolePojo other = (UserRolePojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
+    final CustomerPojo other = (CustomerPojo)obj;
+    if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.id, other.id)) {
+    if (!Objects.equals(this.person, other.person)) {
       return false;
     }
     return true;
@@ -64,7 +67,7 @@ public class UserRolePojo {
 
   @Override
   public String toString() {
-    return "UserRolePojo{" + "id=" + id + ", name=" + name + '}';
+    return "CustomerPojo{" + "id=" + id + ", person=" + person + '}';
   }
 
 }

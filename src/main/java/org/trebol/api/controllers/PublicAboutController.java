@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.trebol.api.pojo.CompanyDetailsPojo;
+import org.trebol.pojo.CompanyDetailsPojo;
 import org.trebol.api.ICompanyService;
 
 /**

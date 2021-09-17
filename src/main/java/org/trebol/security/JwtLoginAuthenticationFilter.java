@@ -16,7 +16,7 @@ import org.springframework.security.core.AuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.trebol.config.SecurityProperties;
-import org.trebol.api.pojo.LoginPojo;
+import org.trebol.pojo.LoginPojo;
 
 public class JwtLoginAuthenticationFilter
   extends GenericJwtAuthenticationFilter {

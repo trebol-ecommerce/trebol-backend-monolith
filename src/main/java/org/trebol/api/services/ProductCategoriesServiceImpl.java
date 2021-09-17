@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
-import org.trebol.api.pojo.ProductCategoryPojo;
+import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.GenericJpaCrudService;
 import org.trebol.api.IProductCategoriesService;

@@ -1,4 +1,4 @@
-package org.trebol.api.pojo;
+package org.trebol.pojo;
 
 import java.util.Objects;
 

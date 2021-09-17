@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import org.trebol.jpa.entities.Permission;
 import org.trebol.jpa.entities.User;
-import org.trebol.api.pojo.UserDetailsPojo;
+import org.trebol.pojo.UserDetailsPojo;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.security.IUserPermissionsService;
 

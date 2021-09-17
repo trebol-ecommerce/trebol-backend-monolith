@@ -2,8 +2,8 @@ package org.trebol.api;
 
 import java.net.URI;
 
-import org.trebol.api.pojo.PaymentRedirectionDetailsPojo;
-import org.trebol.api.pojo.SellPojo;
+import org.trebol.pojo.PaymentRedirectionDetailsPojo;
+import org.trebol.pojo.SellPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 

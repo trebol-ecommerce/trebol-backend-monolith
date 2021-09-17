@@ -1,4 +1,4 @@
-package org.trebol.api.pojo;
+package org.trebol.pojo;
 
 import java.util.Objects;
 
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @JsonInclude
-public class ShipperPojo {
+public class BillingTypePojo {
   @NotBlank
   private String name;
 
@@ -41,7 +41,7 @@ public class ShipperPojo {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final ShipperPojo other = (ShipperPojo)obj;
+    final BillingTypePojo other = (BillingTypePojo)obj;
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
@@ -50,7 +50,7 @@ public class ShipperPojo {
 
   @Override
   public String toString() {
-    return "ShipperPojo{name=" + name + '}';
+    return "BillingTypePojo{name=" + name + '}';
   }
 
 }

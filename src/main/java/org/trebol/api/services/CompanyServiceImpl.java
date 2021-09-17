@@ -3,7 +3,7 @@ package org.trebol.api.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.trebol.api.pojo.CompanyDetailsPojo;
+import org.trebol.pojo.CompanyDetailsPojo;
 import org.trebol.jpa.entities.Param;
 import org.trebol.api.ICompanyService;
 import org.trebol.jpa.repositories.IParamsJpaRepository;

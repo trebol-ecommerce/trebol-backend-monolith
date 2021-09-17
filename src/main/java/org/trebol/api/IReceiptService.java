@@ -1,6 +1,6 @@
 package org.trebol.api;
 
-import org.trebol.api.pojo.ReceiptPojo;
+import org.trebol.pojo.ReceiptPojo;
 
 import javassist.NotFoundException;
 

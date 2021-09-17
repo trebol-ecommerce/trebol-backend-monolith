@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.trebol.api.pojo.AuthorizedAccessPojo;
+import org.trebol.pojo.AuthorizedAccessPojo;
 import org.trebol.security.IAuthorizedApiService;
 import org.trebol.security.IAuthorizationHeaderParserService;
 

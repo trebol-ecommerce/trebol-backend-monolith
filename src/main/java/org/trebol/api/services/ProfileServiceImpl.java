@@ -6,7 +6,7 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.trebol.api.pojo.PersonPojo;
+import org.trebol.pojo.PersonPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.PersonNotFoundException;
 import org.trebol.exceptions.UserNotFoundException;

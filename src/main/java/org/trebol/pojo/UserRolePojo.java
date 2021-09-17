@@ -1,16 +1,27 @@
-package org.trebol.api.pojo;
+package org.trebol.pojo;
 
-import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
-public class LoginPojo {
-  @NotBlank
-  private String name;
-  @NotBlank
-  private String password;
+import javax.validation.constraints.NotNull;
 
-  public LoginPojo() {
-    super();
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+/**
+ *
+ * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ */
+public class UserRolePojo {
+  @JsonInclude
+  private Long id;
+  @NotNull
+  private String name;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -21,19 +32,11 @@ public class LoginPojo {
     this.name = name;
   }
 
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
   @Override
   public int hashCode() {
     int hash = 3;
-    hash = 97 * hash + Objects.hashCode(this.name);
-    hash = 97 * hash + Objects.hashCode(this.password);
+    hash = 29 * hash + Objects.hashCode(this.id);
+    hash = 29 * hash + Objects.hashCode(this.name);
     return hash;
   }
 
@@ -48,11 +51,11 @@ public class LoginPojo {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final LoginPojo other = (LoginPojo)obj;
+    final UserRolePojo other = (UserRolePojo)obj;
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
-    if (!Objects.equals(this.password, other.password)) {
+    if (!Objects.equals(this.id, other.id)) {
       return false;
     }
     return true;
@@ -60,7 +63,7 @@ public class LoginPojo {
 
   @Override
   public String toString() {
-    return "LoginPojo{name=" + name +
-        ", password=" + password + '}';
+    return "UserRolePojo{" + "id=" + id + ", name=" + name + '}';
   }
+
 }

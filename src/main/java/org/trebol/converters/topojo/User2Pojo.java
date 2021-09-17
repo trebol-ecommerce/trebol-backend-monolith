@@ -3,7 +3,7 @@ package org.trebol.converters.topojo;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import org.trebol.api.pojo.UserPojo;
+import org.trebol.pojo.UserPojo;
 import org.trebol.jpa.entities.User;
 
 /**

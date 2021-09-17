@@ -2,7 +2,7 @@ package org.trebol.security;
 
 import javax.annotation.Nullable;
 
-import org.trebol.api.pojo.PersonPojo;
+import org.trebol.pojo.PersonPojo;
 
 /**
  * Service interface that can find a Person profile behind an authenticated user by reading auth information

@@ -1,19 +1,25 @@
-package org.trebol.api.pojo;
+package org.trebol.pojo;
 
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @JsonInclude
-public class BillingTypePojo {
-  @NotBlank
+public class BillingCompanyPojo {
+  private String idNumber;
   private String name;
+
+  public String getIdNumber() {
+    return idNumber;
+  }
+
+  public void setIdNumber(String idNumber) {
+    this.idNumber = idNumber;
+  }
 
   public String getName() {
     return name;
@@ -26,6 +32,7 @@ public class BillingTypePojo {
   @Override
   public int hashCode() {
     int hash = 7;
+    hash = 67 * hash + Objects.hashCode(this.idNumber);
     hash = 67 * hash + Objects.hashCode(this.name);
     return hash;
   }
@@ -41,7 +48,10 @@ public class BillingTypePojo {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final BillingTypePojo other = (BillingTypePojo)obj;
+    final BillingCompanyPojo other = (BillingCompanyPojo)obj;
+    if (!Objects.equals(this.idNumber, other.idNumber)) {
+      return false;
+    }
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
@@ -50,7 +60,8 @@ public class BillingTypePojo {
 
   @Override
   public String toString() {
-    return "BillingTypePojo{name=" + name + '}';
+    return "BillingCompanyPojo{idNumber=" + idNumber +
+        ", name=" + name + '}';
   }
 
 }
