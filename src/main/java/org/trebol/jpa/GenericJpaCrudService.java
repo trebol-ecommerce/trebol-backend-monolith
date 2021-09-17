@@ -35,6 +35,10 @@ public abstract class GenericJpaCrudService<P, E>
 
   protected IJpaRepository<E> repository;
 
+  public GenericJpaCrudService(IJpaRepository<E> repository) {
+    this.repository = repository;
+  }
+
   /**
    * Attempts to match the given example input's identification to an existing entity in the persistence context.
    * @param example The pojo class instance that should hold a valid identifying property
@@ -51,10 +55,6 @@ public abstract class GenericJpaCrudService<P, E>
    */
   public boolean itemExists(P input) throws BadInputException {
     return this.getExisting(input).isPresent();
-  }
-
-  public GenericJpaCrudService(IJpaRepository<E> repository) {
-    this.repository = repository;
   }
 
   /**
