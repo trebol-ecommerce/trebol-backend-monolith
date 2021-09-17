@@ -19,6 +19,7 @@ import org.trebol.api.pojo.SellStatusPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.QSellStatus;
 
+import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.GenericJpaCrudService;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
@@ -50,7 +51,10 @@ public class SellStatusesJpaCrudServiceImpl
 
   @Override
   public SellStatus convertToNewEntity(SellStatusPojo source) {
-    return conversion.convert(source, SellStatus.class);
+    SellStatus target = new SellStatus();
+    target.setCode(source.getCode());
+    target.setName(source.getName());
+    return target;
   }
 
   @Override

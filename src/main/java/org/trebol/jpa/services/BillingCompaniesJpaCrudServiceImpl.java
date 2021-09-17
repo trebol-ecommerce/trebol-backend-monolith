@@ -53,7 +53,10 @@ public class BillingCompaniesJpaCrudServiceImpl
 
   @Override
   public BillingCompany convertToNewEntity(BillingCompanyPojo source) {
-    return conversion.convert(source, BillingCompany.class);
+    BillingCompany target = new BillingCompany();
+    target.setIdNumber(source.getIdNumber());
+    target.setName(source.getName());
+    return target;
   }
 
   @Override

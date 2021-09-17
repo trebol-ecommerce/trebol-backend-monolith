@@ -17,18 +17,12 @@ public class Product2Entity
   @Override
   public Product convert(ProductPojo source) {
     Product target = new Product();
-    if (source.getId() != null) {
-      target.setId(source.getId());
-    }
-
     target.setName(source.getName());
     target.setBarcode(source.getBarcode());
     target.setPrice(source.getPrice());
-
     if (source.getCurrentStock() != null) {
       target.setStockCurrent(source.getCurrentStock());
     }
-
     if (source.getCriticalStock() != null) {
       target.setStockCritical(source.getCriticalStock());
     }

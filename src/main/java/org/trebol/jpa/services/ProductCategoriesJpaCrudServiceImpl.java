@@ -50,7 +50,11 @@ public class ProductCategoriesJpaCrudServiceImpl
 
   @Override
   public ProductCategory convertToNewEntity(ProductCategoryPojo source) {
-    ProductCategory target = conversion.convert(source, ProductCategory.class);
+    ProductCategory target = new ProductCategory();
+    if (source.getCode() != null) {
+      target.setId(source.getCode());
+    }
+    target.setName(source.getName());
     this.applyParent(source, target);
     return target;
   }

@@ -60,7 +60,9 @@ public class BillingTypesJpaCrudServiceImpl
 
   @Override
   public BillingType convertToNewEntity(BillingTypePojo source) {
-    return conversion.convert(source, BillingType.class);
+    BillingType target = new BillingType();
+    target.setName(source.getName());
+    return target;
   }
 
   @Override

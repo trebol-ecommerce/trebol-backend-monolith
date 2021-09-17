@@ -20,15 +20,12 @@ public class Address2Entity
     target.setFirstLine(source.getFirstLine());
     target.setCity(source.getCity());
     target.setMunicipality(source.getMunicipality());
-
     if (source.getPostalCode() != null) {
       target.setPostalCode(source.getPostalCode());
     }
-
     if (source.getNotes()!= null) {
       target.setNotes(source.getNotes());
     }
-
     return target;
   }
 }
