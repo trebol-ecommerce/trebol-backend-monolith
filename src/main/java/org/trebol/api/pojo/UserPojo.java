@@ -2,7 +2,10 @@ package org.trebol.api.pojo;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.validation.constraints.NotBlank;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -11,10 +14,13 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-@JsonInclude(NON_DEFAULT)
+@JsonInclude
 public class UserPojo {
+  @JsonIgnore
   private Long id;
+  @NotBlank
   private String name;
+  @NotBlank
   private String password;
   @JsonInclude(NON_NULL)
   private PersonPojo person;

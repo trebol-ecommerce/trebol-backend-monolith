@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,11 +18,13 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
  */
 @JsonInclude(NON_NULL)
 public class ProductPojo {
+  @JsonIgnore
   private Long id;
   @NotBlank
   private String name;
   @NotBlank
   private String barcode;
+  @NotNull
   private Integer price;
   private ProductCategoryPojo category;
   @JsonInclude(NON_EMPTY)

@@ -1,10 +1,12 @@
 package org.trebol.api.pojo;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 public class LoginPojo {
-
+  @NotBlank
   private String name;
+  @NotBlank
   private String password;
 
   public LoginPojo() {

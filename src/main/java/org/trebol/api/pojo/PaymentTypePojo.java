@@ -4,12 +4,16 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @JsonInclude
 public class PaymentTypePojo {
+  @NotBlank
   private String name;
 
   public String getName() {

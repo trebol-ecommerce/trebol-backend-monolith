@@ -4,12 +4,15 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @JsonInclude
 public class ShipperPojo {
+  @NotBlank
   private String name;
 
   public String getName() {

@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-@JsonInclude(NON_NULL)
+@JsonInclude
 public class RegistrationPojo {
   @NotBlank
   private String name;

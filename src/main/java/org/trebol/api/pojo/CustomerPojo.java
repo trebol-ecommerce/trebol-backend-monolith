@@ -3,17 +3,20 @@ package org.trebol.api.pojo;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
+@JsonInclude
 public class CustomerPojo {
-  @JsonInclude
+  @JsonIgnore
   private Long id;
-  @JsonInclude
+  @NotNull
   @Valid
   private PersonPojo person;
 

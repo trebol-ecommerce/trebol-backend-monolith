@@ -3,8 +3,11 @@ package org.trebol.api.pojo;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -12,14 +15,14 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
+@JsonInclude
 public class SellDetailPojo {
-  @JsonInclude
+  @JsonIgnore
   private Long id;
-  @JsonInclude
-  @NotNull
+  @Min(1)
   private int units;
-  @JsonInclude
   @NotNull
+  @Valid
   private ProductPojo product;
 
   public Long getId() {
