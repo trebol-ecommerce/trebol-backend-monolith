@@ -1,6 +1,7 @@
 package org.trebol.jpa.services;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -43,12 +44,12 @@ public class BillingTypesJpaCrudServiceImpl
   }
 
   @Override
-  public boolean itemExists(BillingTypePojo input) throws BadInputException {
+  public Optional<BillingType> getExisting(BillingTypePojo input) throws BadInputException {
     String name = input.getName();
     if (name == null || name.isBlank()) {
       throw new BadInputException("Billing type has no name");
     } else {
-      return (billingTypesRepository.findByName(name).isPresent());
+      return billingTypesRepository.findByName(name);
     }
   }
 

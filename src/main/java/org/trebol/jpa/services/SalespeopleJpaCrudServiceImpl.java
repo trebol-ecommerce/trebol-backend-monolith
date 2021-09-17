@@ -1,6 +1,7 @@
 package org.trebol.jpa.services;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +112,7 @@ public class SalespeopleJpaCrudServiceImpl
   }
 
   @Override
-  public boolean itemExists(SalespersonPojo input) throws BadInputException {
+  public Optional<Salesperson> getExisting(SalespersonPojo input) throws BadInputException {
     PersonPojo person = input.getPerson();
     if (person == null) {
       throw new BadInputException("Salesperson does not have profile information");
@@ -120,7 +121,7 @@ public class SalespeopleJpaCrudServiceImpl
       if (idNumber == null) {
         throw new BadInputException("Salesperson does not have an ID card");
       } else {
-        return (salespeopleRepository.findByPersonIdNumber(idNumber).isPresent());
+        return salespeopleRepository.findByPersonIdNumber(idNumber);
       }
     }
   }

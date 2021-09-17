@@ -201,12 +201,12 @@ public class ProductsJpaCrudServiceImpl
   }
 
   @Override
-  public boolean itemExists(ProductPojo input) throws BadInputException {
+  public Optional<Product> getExisting(ProductPojo input) throws BadInputException {
     String barcode = input.getBarcode();
     if (barcode == null || barcode.isEmpty()) {
       throw new BadInputException("Invalid product barcode");
     } else {
-      return (this.productsRepository.findByBarcode(barcode).isPresent());
+      return this.productsRepository.findByBarcode(barcode);
     }
   }
 

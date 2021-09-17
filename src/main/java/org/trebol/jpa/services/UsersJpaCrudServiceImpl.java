@@ -191,12 +191,12 @@ public class UsersJpaCrudServiceImpl
   }
 
   @Override
-  public boolean itemExists(UserPojo input) throws BadInputException {
+  public Optional<User> getExisting(UserPojo input) throws BadInputException {
     String name = input.getName();
     if (name == null || name.isBlank()) {
       throw new BadInputException("Invalid user name");
     } else {
-      return (userRepository.findByName(name).isPresent());
+      return userRepository.findByName(name);
     }
   }
 }

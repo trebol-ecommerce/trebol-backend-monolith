@@ -1,6 +1,7 @@
 package org.trebol.jpa.services;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -91,12 +92,12 @@ public class SellStatusesJpaCrudServiceImpl
   }
 
   @Override
-  public boolean itemExists(SellStatusPojo input) throws BadInputException {
+  public Optional<SellStatus> getExisting(SellStatusPojo input) throws BadInputException {
     String name = input.getName();
     if (name == null || name.isBlank()) {
       throw new BadInputException("Invalid status name");
     } else {
-      return (statusesRepository.findByName(name).isPresent());
+      return statusesRepository.findByName(name);
     }
   }
 }

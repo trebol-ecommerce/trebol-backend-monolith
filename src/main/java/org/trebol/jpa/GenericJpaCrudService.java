@@ -36,12 +36,22 @@ public abstract class GenericJpaCrudService<P, E>
   protected IJpaRepository<E> repository;
 
   /**
-   * Ensures that the item exists in the underlying persistence context.
+   * Attempts to match the given example input's identification to an existing entity in the persistence context.
+   * @param example The pojo class instance that should hold a valid identifying property
+   * @return An optional holding
+   * @throws BadInputException When the pojo doesn't have its identifying property.
+   */
+  public abstract Optional<E> getExisting(P example) throws BadInputException;
+
+  /**
+   * Swiftly check that a matching entity exists. Uses getExisting().
    * @param input The pojo class instance
    * @return true if the item exists in the database, false otherwise
-   * @throws BadInputException When the item doesn't have its identifying property.
+   * @throws BadInputException When the pojo doesn't have its identifying property.
    */
-  public abstract boolean itemExists(P input) throws BadInputException;
+  public boolean itemExists(P input) throws BadInputException {
+    return this.getExisting(input).isPresent();
+  }
 
   public GenericJpaCrudService(IJpaRepository<E> repository) {
     this.repository = repository;

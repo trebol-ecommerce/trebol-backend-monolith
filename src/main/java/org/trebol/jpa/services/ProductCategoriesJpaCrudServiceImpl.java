@@ -97,12 +97,12 @@ public class ProductCategoriesJpaCrudServiceImpl
   }
 
   @Override
-  public boolean itemExists(ProductCategoryPojo input) throws BadInputException {
+  public Optional<ProductCategory> getExisting(ProductCategoryPojo input) throws BadInputException {
     String name = input.getName();
     if (name == null || name.isBlank()) {
       throw new BadInputException("Invalid category name");
     } else {
-      return this.categoriesRepository.findByName(name).isPresent();
+      return this.categoriesRepository.findByName(name);
     }
   }
 

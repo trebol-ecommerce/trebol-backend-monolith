@@ -179,9 +179,13 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  public boolean itemExists(SellPojo input) throws BadInputException {
-    Long id = input.getBuyOrder();
-    return ((id != null) && this.salesRepository.existsById(id));
+  public Optional<Sell> getExisting(SellPojo input) throws BadInputException {
+    Long buyOrder = input.getBuyOrder();
+    if (buyOrder == null) {
+      throw new BadInputException("Invalid buy order.");
+    } else {
+      return this.salesRepository.findById(buyOrder);
+    }
   }
 
   @Override

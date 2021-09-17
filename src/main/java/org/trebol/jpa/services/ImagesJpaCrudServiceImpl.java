@@ -1,6 +1,7 @@
 package org.trebol.jpa.services;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -41,12 +42,12 @@ public class ImagesJpaCrudServiceImpl
   }
 
   @Override
-  public boolean itemExists(ImagePojo input) throws BadInputException {
+  public Optional<Image> getExisting(ImagePojo input) throws BadInputException {
     String name = input.getFilename();
     if (name == null || name.isBlank()) {
       throw new BadInputException("Invalid filename");
     } else {
-      return (imagesRepository.findByFilename(name).isPresent());
+      return imagesRepository.findByFilename(name);
     }
   }
 

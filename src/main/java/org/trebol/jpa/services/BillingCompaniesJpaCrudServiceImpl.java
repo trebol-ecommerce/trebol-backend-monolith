@@ -15,6 +15,7 @@ import org.trebol.jpa.entities.QBillingCompany;
 import org.trebol.jpa.repositories.IBillingCompaniesJpaRepository;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -36,12 +37,12 @@ public class BillingCompaniesJpaCrudServiceImpl
   }
 
   @Override
-  public boolean itemExists(BillingCompanyPojo input) throws BadInputException {
+  public Optional<BillingCompany> getExisting(BillingCompanyPojo input) throws BadInputException {
     String idNumber = input.getIdNumber();
     if (idNumber == null || idNumber.isBlank()) {
       throw new BadInputException("Billing company has no id number");
     } else {
-      return (billingTypesRepository.findByIdNumber(idNumber).isPresent());
+      return billingTypesRepository.findByIdNumber(idNumber);
     }
   }
 

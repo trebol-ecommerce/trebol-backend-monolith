@@ -1,6 +1,7 @@
 package org.trebol.jpa.services;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -86,12 +87,12 @@ public class UserRolesJpaCrudServiceImpl
   }
 
   @Override
-  public boolean itemExists(UserRolePojo input) throws BadInputException {
+  public Optional<UserRole> getExisting(UserRolePojo input) throws BadInputException {
     String name = input.getName();
     if (name == null || name.isBlank()) {
       throw new BadInputException("Invalid user role name");
     } else {
-      return userRolesRepository.findByName(name).isPresent();
+      return userRolesRepository.findByName(name);
     }
   }
 }
