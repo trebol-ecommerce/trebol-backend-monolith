@@ -18,5 +18,5 @@ public interface IQueryDslPredicateParserService {
    *
    * @return A Predicate representing filtering conditions.
    */
-  public Predicate parsePredicate(Map<String, String> queryParamsMap);
+  Predicate parsePredicate(Map<String, String> queryParamsMap);
 }
