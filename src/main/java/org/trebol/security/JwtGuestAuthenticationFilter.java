@@ -1,6 +1,8 @@
 package org.trebol.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,17 +25,14 @@ import java.io.IOException;
 public class JwtGuestAuthenticationFilter
   extends GenericJwtAuthenticationFilter {
 
+  private final Logger logger = LoggerFactory.getLogger(JwtGuestAuthenticationFilter.class);
   private final AuthenticationManager authenticationManager;
-  private final SecurityProperties jwtProperties;
-  private final SecretKey secretKey;
   private final GenericJpaService<CustomerPojo, Customer> customersService;
 
   public JwtGuestAuthenticationFilter(SecurityProperties jwtProperties, SecretKey secretKey,
                                       AuthenticationManager authenticationManager, GenericJpaService<CustomerPojo, Customer> customersService) {
     super(jwtProperties, secretKey);
     this.authenticationManager = authenticationManager;
-    this.jwtProperties = jwtProperties;
-    this.secretKey = secretKey;
     this.customersService = customersService;
   }
 
@@ -61,6 +60,8 @@ public class JwtGuestAuthenticationFilter
       CustomerPojo targetCustomer = new CustomerPojo();
       targetCustomer.setPerson(guestData);
       customersService.create(targetCustomer);
-    } catch (EntityAlreadyExistsException e) { }
+    } catch (EntityAlreadyExistsException e) {
+      logger.info("Guest with idNumber={} is already registered in the database", guestData.getIdNumber());
+    }
   }
 }
