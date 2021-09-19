@@ -30,13 +30,12 @@ import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
 public class SellStatusesJpaServiceImpl
   extends GenericJpaService<SellStatusPojo, SellStatus> {
 
-  private static final Logger logger = LoggerFactory.getLogger(SellStatusesJpaServiceImpl.class);
   private final ISellStatusesJpaRepository statusesRepository;
   private final ConversionService conversion;
 
   @Autowired
   public SellStatusesJpaServiceImpl(ISellStatusesJpaRepository repository, ConversionService conversion) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(SellStatusesJpaServiceImpl.class));
     this.statusesRepository = repository;
     this.conversion = conversion;
   }
@@ -55,7 +54,9 @@ public class SellStatusesJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(SellStatusPojo source, SellStatus target) throws BadInputException {
+  public SellStatus applyChangesToExistingEntity(SellStatusPojo source, SellStatus existing) throws BadInputException {
+    SellStatus target = new SellStatus(existing);
+
     Integer code = source.getCode();
     if (code != null && !target.getCode().equals(code))  {
       target.setCode(code);
@@ -65,6 +66,8 @@ public class SellStatusesJpaServiceImpl
     if (name != null && !name.isBlank() && !target.getName().equals(name)) {
       target.setName(name);
     }
+
+    return target;
   }
 
   @Override

@@ -29,14 +29,13 @@ import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 public class ProductCategoriesJpaServiceImpl
   extends GenericJpaService<ProductCategoryPojo, ProductCategory> {
 
-  private static final Logger logger = LoggerFactory.getLogger(ProductCategoriesJpaServiceImpl.class);
   private final IProductsCategoriesJpaRepository categoriesRepository;
   private final ConversionService conversion;
 
   @Autowired
   public ProductCategoriesJpaServiceImpl(IProductsCategoriesJpaRepository repository,
                                          ConversionService conversion) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(ProductCategoriesJpaServiceImpl.class));
     this.categoriesRepository = repository;
     this.conversion = conversion;
   }
@@ -58,13 +57,18 @@ public class ProductCategoriesJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory target) throws BadInputException {
+  public ProductCategory applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory existing)
+          throws BadInputException {
+    ProductCategory target = new ProductCategory(existing);
+
     String name = source.getName();
     if (name != null && !name.isBlank() && !target.getName().equals(name)) {
       target.setName(name);
     }
 
     this.applyParent(source, target);
+
+    return target;
   }
 
   @Override

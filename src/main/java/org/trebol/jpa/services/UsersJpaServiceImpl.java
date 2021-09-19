@@ -38,7 +38,6 @@ import javassist.NotFoundException;
 public class UsersJpaServiceImpl
   extends GenericJpaService<UserPojo, User> {
 
-  private static final Logger logger = LoggerFactory.getLogger(UsersJpaServiceImpl.class);
   private final IUsersJpaRepository userRepository;
   private final IUserRolesJpaRepository rolesRepository;
   private final IPeopleJpaRepository peopleRepository;
@@ -48,7 +47,7 @@ public class UsersJpaServiceImpl
   @Autowired
   public UsersJpaServiceImpl(IUsersJpaRepository repository, IUserRolesJpaRepository rolesRepository,
                              IPeopleJpaRepository peopleRepository, ConversionService conversion, PasswordEncoder passwordEncoder) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(UsersJpaServiceImpl.class));
     this.userRepository = repository;
     this.rolesRepository = rolesRepository;
     this.peopleRepository = peopleRepository;
@@ -58,8 +57,7 @@ public class UsersJpaServiceImpl
 
   @Override
   public UserPojo convertToPojo(User source) {
-    UserPojo target = conversion.convert(source, UserPojo.class);
-    return target;
+    return conversion.convert(source, UserPojo.class);
   }
 
   @Override
@@ -75,9 +73,7 @@ public class UsersJpaServiceImpl
       } else if (source.getId() != null) {
         // TODO optimize this! if the user exists and no password was provided, "reload" password from the database
         Optional<User> userById = userRepository.findById(source.getId());
-        if (userById.isPresent()) {
-          target.setPassword(userById.get().getPassword());
-        }
+        userById.ifPresent(user -> target.setPassword(user.getPassword()));
       }
 
       PersonPojo sourcePerson = source.getPerson();
@@ -109,7 +105,9 @@ public class UsersJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(UserPojo source, User target) throws BadInputException {
+  public User applyChangesToExistingEntity(UserPojo source, User existing) throws BadInputException {
+    User target = new User(existing);
+
     String name = source.getName();
     if (name != null && !name.isBlank() && !target.getName().equals(name)) {
       target.setName(name);
@@ -118,9 +116,7 @@ public class UsersJpaServiceImpl
     String roleName = source.getRole();
     if (roleName != null && !roleName.isBlank() && !target.getUserRole().getName().equals(roleName)) {
       Optional<UserRole> roleNameMatch = rolesRepository.findByName(roleName);
-      if (roleNameMatch.isPresent()) {
-        target.setUserRole(roleNameMatch.get());
-      }
+      roleNameMatch.ifPresent(target::setUserRole);
     }
 
     String password = source.getPassword();
@@ -134,11 +130,11 @@ public class UsersJpaServiceImpl
       String idNumber = person.getIdNumber();
       if (idNumber != null && !idNumber.isBlank() && !target.getPerson().getIdNumber().equals(idNumber)) {
         Optional<Person> idNumberMatch = peopleRepository.findByIdNumber(idNumber);
-        if (idNumberMatch.isPresent()) {
-          target.setPerson(idNumberMatch.get());
-        }
+        idNumberMatch.ifPresent(target::setPerson);
       }
     }
+
+    return target;
   }
 
   @Override
@@ -174,7 +170,7 @@ public class UsersJpaServiceImpl
   @Override
   public UserPojo readOne(Long id) throws NotFoundException {
     Optional<User> userById = userRepository.findByIdWithProfile(id);
-    if (!userById.isPresent()) {
+    if (userById.isEmpty()) {
       throw new NotFoundException("The requested user does not exist");
     } else {
       User found = userById.get();

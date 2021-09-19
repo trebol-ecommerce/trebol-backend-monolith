@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,12 +19,7 @@ import org.trebol.exceptions.EntityAlreadyExistsException;
 import javassist.NotFoundException;
 
 /**
- * Base abstraction for JPA-based CRUD services that communicate with POJOs, keeping JPA entities out of scope.
- *
- * API controllers should wire to subclasses of this.
- *
- * Because it extends Map2QueryDslPredicateConverterService, it's expected to comply to QueryDSL and
- * accept Predicate objects as filtering conditions.
+ * Base abstraction for JPA-based CRUD services that communicate with Pojos, keeping entity classes out of scope.
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  *
@@ -33,10 +29,12 @@ import javassist.NotFoundException;
 public abstract class GenericJpaService<P, E>
   implements IJpaCrudService<P, Long, Predicate>, IJpaConverterService<P, E> {
 
-  protected IJpaRepository<E> repository;
+  protected final IJpaRepository<E> repository;
+  protected final Logger logger;
 
-  public GenericJpaService(IJpaRepository<E> repository) {
+  public GenericJpaService(IJpaRepository<E> repository, Logger logger) {
     this.repository = repository;
+    this.logger = logger;
   }
 
   /**
@@ -61,22 +59,22 @@ public abstract class GenericJpaService<P, E>
    * Query all entities for the type class. Override this method if you need
    * custom queries. Remember to declare the correct repository interface first.
    *
-   * @param paged
-   * @param filters
-   * @return
+   * @param page Paging parameters (size/index).
+   * @param filters Object used for filtering.
+   * @return A page of entities.
    */
-  public Page<E> getAllEntities(Pageable paged, Predicate filters) {
+  public Page<E> getAllEntities(Pageable page, Predicate filters) {
     if (filters == null) {
-      return repository.findAll(paged);
+      return repository.findAll(page);
     } else {
-      return repository.findAll(filters, paged);
+      return repository.findAll(filters, page);
     }
   }
 
   /**
    * Convert a pojo to an entity, save it, convert it back to a pojo and return
    * it.
-   * @param inputPojo
+   * @param inputPojo The Pojo instance to be converted and inserted.
    */
   @Transactional
   @Override
@@ -86,8 +84,7 @@ public abstract class GenericJpaService<P, E>
     } else {
       E input = this.convertToNewEntity(inputPojo);
       E output = repository.saveAndFlush(input);
-      P result = this.convertToPojo(output);
-      return result;
+      return this.convertToPojo(output);
     }
   }
 
@@ -107,36 +104,29 @@ public abstract class GenericJpaService<P, E>
       pojoList.add(outputItem);
     }
 
-    DataPagePojo<P> output = new DataPagePojo<>(pojoList, pageIndex, totalCount, pageSize);
-
-    return output;
+    return new DataPagePojo<>(pojoList, pageIndex, totalCount, pageSize);
   }
 
   /**
    * Look up the entity, save it if exists and differs from existing, convert back
    * to pojo and return.If it does not differ, return as-is.
-   * @param input
-   * @param id
+   * @param input The Pojo instance.
+   * @param id The database-backed id of the entity.
    */
   @Transactional
   @Override
   public P update(P input, Long id) throws NotFoundException, BadInputException {
     Optional<E> itemById = repository.findById(id);
-    if (!itemById.isPresent()) {
+    if (itemById.isEmpty()) {
       throw new NotFoundException("The requested item does not exist");
     } else {
-      E target = itemById.get();
-      this.applyChangesToExistingEntity(input, target);
-      if (repository.findById(id).get().equals(target)) {
+      E existingEntity = itemById.get();
+      E updatedEntity = this.applyChangesToExistingEntity(input, existingEntity);
+      if (existingEntity.equals(updatedEntity)) {
         return input;
       } else {
-        try {
-          E output = repository.saveAndFlush(target);
-          P result = this.convertToPojo(output);
-          return result;
-        } catch (Exception exc) {
-          return null;
-        }
+        E output = repository.saveAndFlush(updatedEntity);
+        return this.convertToPojo(output);
       }
     }
   }
@@ -154,24 +144,22 @@ public abstract class GenericJpaService<P, E>
   @Override
   public P readOne(Long id) throws NotFoundException {
     Optional<E> entityById = repository.findById(id);
-    if (!entityById.isPresent()) {
+    if (entityById.isEmpty()) {
       throw new NotFoundException("The requested item does not exist");
     } else {
       E found = entityById.get();
-      P foundPojo = this.convertToPojo(found);
-      return foundPojo;
+      return this.convertToPojo(found);
     }
   }
 
   @Override
   public P readOne(Predicate filters) throws NotFoundException {
     Optional<E> entity = repository.findOne(filters);
-    if (!entity.isPresent()) {
+    if (entity.isEmpty()) {
       throw new NotFoundException("The requested item does not exist");
     } else {
       E found = entity.get();
-      P foundPojo = this.convertToPojo(found);
-      return foundPojo;
+      return this.convertToPojo(found);
     }
   }
 }

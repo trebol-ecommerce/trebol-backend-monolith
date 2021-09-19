@@ -30,13 +30,12 @@ import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 public class UserRolesJpaServiceImpl
   extends GenericJpaService<UserRolePojo, UserRole> {
 
-  private static final Logger logger = LoggerFactory.getLogger(UserRolesJpaServiceImpl.class);
   private final IUserRolesJpaRepository userRolesRepository;
   private final ConversionService conversion;
 
   @Autowired
   public UserRolesJpaServiceImpl(IUserRolesJpaRepository repository, ConversionService conversion) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(UserRolesJpaServiceImpl.class));
     this.userRolesRepository = repository;
     this.conversion = conversion;
   }
@@ -52,11 +51,15 @@ public class UserRolesJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(UserRolePojo source, UserRole target) throws BadInputException {
+  public UserRole applyChangesToExistingEntity(UserRolePojo source, UserRole existing) throws BadInputException {
+    UserRole target = new UserRole(existing);
+
     String name = source.getName();
     if (name != null && !name.isBlank() && target.getName().equals(name)) {
       target.setName(name);
     }
+
+    return target;
   }
 
   @Override

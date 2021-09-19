@@ -25,13 +25,12 @@ import java.util.Optional;
 public class BillingCompaniesJpaServiceImpl
   extends GenericJpaService<BillingCompanyPojo, BillingCompany> {
 
-  private static final Logger logger = LoggerFactory.getLogger(BillingCompaniesJpaServiceImpl.class);
   private final IBillingCompaniesJpaRepository billingTypesRepository;
   private final ConversionService conversion;
 
   @Autowired
   public BillingCompaniesJpaServiceImpl(IBillingCompaniesJpaRepository repository, ConversionService conversion) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(BillingCompaniesJpaServiceImpl.class));
     this.billingTypesRepository = repository;
     this.conversion = conversion;
   }
@@ -60,11 +59,16 @@ public class BillingCompaniesJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(BillingCompanyPojo source, BillingCompany target) throws BadInputException {
+  public BillingCompany applyChangesToExistingEntity(BillingCompanyPojo source, BillingCompany existing)
+          throws BadInputException {
+    BillingCompany target = new BillingCompany(existing);
+
     String name = source.getName();
     if (name != null && !name.isBlank() && !target.getName().equals(name)) {
       target.setName(name);
     }
+
+    return target;
   }
 
   @Override

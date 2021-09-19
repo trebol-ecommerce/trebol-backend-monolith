@@ -28,13 +28,12 @@ import org.trebol.jpa.repositories.IBillingTypesJpaRepository;
 public class BillingTypesJpaServiceImpl
   extends GenericJpaService<BillingTypePojo, BillingType> {
 
-  private static final Logger logger = LoggerFactory.getLogger(BillingTypesJpaServiceImpl.class);
   private final IBillingTypesJpaRepository billingTypesRepository;
   private final ConversionService conversion;
 
   @Autowired
   public BillingTypesJpaServiceImpl(IBillingTypesJpaRepository repository, ConversionService conversion) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(BillingTypesJpaServiceImpl.class));
     this.billingTypesRepository = repository;
     this.conversion = conversion;
   }
@@ -62,11 +61,15 @@ public class BillingTypesJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(BillingTypePojo source, BillingType target) throws BadInputException {
+  public BillingType applyChangesToExistingEntity(BillingTypePojo source, BillingType existing) throws BadInputException {
+    BillingType target = new BillingType(existing);
+
     String name = source.getName();
     if (name != null && !name.isBlank() && !target.getName().equals(name)) {
       target.setName(name);
     }
+
+    return target;
   }
 
   @Override

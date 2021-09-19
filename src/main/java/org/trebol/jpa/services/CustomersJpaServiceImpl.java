@@ -31,14 +31,13 @@ import org.trebol.jpa.repositories.ICustomersJpaRepository;
 public class CustomersJpaServiceImpl
   extends GenericJpaService<CustomerPojo, Customer> {
 
-  private static final Logger logger = LoggerFactory.getLogger(CustomersJpaServiceImpl.class);
   private final GenericJpaService<PersonPojo, Person> peopleService;
   private final ICustomersJpaRepository customersRepository;
 
   @Autowired
   public CustomersJpaServiceImpl(ICustomersJpaRepository repository,
                                  GenericJpaService<PersonPojo, Person> peopleService) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(CustomersJpaServiceImpl.class));
     this.peopleService = peopleService;
     this.customersRepository = repository;
   }
@@ -61,13 +60,18 @@ public class CustomersJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(CustomerPojo source, Customer target) throws BadInputException {
+  public Customer applyChangesToExistingEntity(CustomerPojo source, Customer existing) throws BadInputException {
+    Customer target = new Customer(existing);
     Person targetPerson = target.getPerson();
+
     PersonPojo sourcePerson = source.getPerson();
     if (sourcePerson == null) {
       throw new BadInputException("Customer must have a person profile");
     }
-    peopleService.applyChangesToExistingEntity(sourcePerson, targetPerson);
+    Person person = peopleService.applyChangesToExistingEntity(sourcePerson, targetPerson);
+    target.setPerson(person);
+
+    return target;
   }
 
   @Override

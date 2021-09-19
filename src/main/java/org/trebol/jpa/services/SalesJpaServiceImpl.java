@@ -66,7 +66,6 @@ public class SalesJpaServiceImpl
   extends GenericJpaService<SellPojo, Sell>
   implements ISalesJpaService {
 
-  private final Logger logger = LoggerFactory.getLogger(SalesJpaServiceImpl.class);
   private final ISalesJpaRepository salesRepository;
   private final ISellStatusesJpaRepository statusesRepository;
   private final IBillingTypesJpaRepository billingTypesRepository;
@@ -91,7 +90,7 @@ public class SalesJpaServiceImpl
                              GenericJpaService<SalespersonPojo, Salesperson> salespeopleService,
                              ICustomersJpaRepository customersRepository, IProductsJpaRepository productsRepository,
                              Validator validator) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(SalesJpaServiceImpl.class));
     this.salesRepository = repository;
     this.conversion = conversion;
     this.statusesRepository = statusesRepository;
@@ -167,8 +166,10 @@ public class SalesJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(SellPojo source, Sell target) throws BadInputException {
+  public Sell applyChangesToExistingEntity(SellPojo source, Sell existing) throws BadInputException {
     // TODO test these methods... they're not guaranteed to work just now!
+    Sell target = new Sell(existing);
+
     this.applyStatus(source, target);
     this.applyPaymentType(source, target);
     this.applyBillingTypeAndCompany(source, target);
@@ -176,6 +177,8 @@ public class SalesJpaServiceImpl
     this.applyBillingAddress(source, target);
     this.applyShippingAddress(source, target);
     this.applyDetails(source, target);
+
+    return target;
   }
 
   @Override
@@ -218,26 +221,26 @@ public class SalesJpaServiceImpl
   @Override
   public SellPojo readOne(Long id) throws NotFoundException {
     Optional<Sell> matchingSell = salesRepository.findById(id);
-    if (!matchingSell.isPresent()) {
-      throw new NotFoundException("No sell matches that buy order");
-    } else {
+    if (matchingSell.isPresent()) {
       Sell found = matchingSell.get();
       SellPojo foundPojo = this.convertToPojo(found);
       this.applyDetails(found, foundPojo);
       return foundPojo;
+    } else {
+      throw new NotFoundException("No sell matches that buy order");
     }
   }
 
   @Override
   public SellPojo readOne(Predicate conditions) throws NotFoundException {
     Optional<Sell> matchingSell = salesRepository.findOne(conditions);
-    if (!matchingSell.isPresent()) {
-      throw new NotFoundException("No sell matches the filtering conditions");
-    } else {
+    if (matchingSell.isPresent()) {
       Sell found = matchingSell.get();
       SellPojo foundPojo = this.convertToPojo(found);
       this.applyDetails(found, foundPojo);
       return foundPojo;
+    } else {
+      throw new NotFoundException("No sell matches the filtering conditions");
     }
   }
 
@@ -300,7 +303,7 @@ public class SalesJpaServiceImpl
     }
 
     Optional<SellStatus> existingStatus = statusesRepository.findByName(statusName);
-    if (!existingStatus.isPresent()) {
+    if (existingStatus.isEmpty()) {
       throw new BadInputException("Status '" + statusName + "' is not valid");
     } else {
       target.setStatus(existingStatus.get());
@@ -313,7 +316,7 @@ public class SalesJpaServiceImpl
       throw new BadInputException("An accepted payment type is required");
     } else {
       Optional<PaymentType> existingPaymentType = paymentTypesRepository.findByName(paymentType);
-      if (!existingPaymentType.isPresent()) {
+      if (existingPaymentType.isEmpty()) {
         throw new BadInputException("Payment type '" + paymentType + "' is not valid");
       } else {
         target.setPaymentType(existingPaymentType.get());
@@ -328,10 +331,10 @@ public class SalesJpaServiceImpl
     }
 
     Optional<BillingType> existingBillingType = billingTypesRepository.findByName(billingType);
-    if (!existingBillingType.isPresent()) {
-      throw new BadInputException("Billing type '" + billingType + "' is not valid");
-    } else {
+    if (existingBillingType.isPresent()) {
       target.setBillingType(existingBillingType.get());
+    } else {
+      throw new BadInputException("Billing type '" + billingType + "' is not valid");
     }
 
     if (billingType.equals("Enterprise Invoice")) {
@@ -349,14 +352,17 @@ public class SalesJpaServiceImpl
     CustomerPojo sourceCustomer = source.getCustomer();
     if (sourceCustomer == null) {
       throw new BadInputException("Customer must posess valid personal information");
-    } else if (customersService.itemExists(sourceCustomer)) {
-      Customer existingCustomer = customersRepository.findByPersonIdNumber(sourceCustomer.getPerson().getIdNumber()).get();
-      customersService.applyChangesToExistingEntity(sourceCustomer, existingCustomer);
-      target.setCustomer(existingCustomer);
     } else {
-      Customer newCustomer = customersService.convertToNewEntity(sourceCustomer);
-      newCustomer = customersRepository.saveAndFlush(newCustomer);
-      target.setCustomer(newCustomer);
+      Optional<Customer> existing = customersService.getExisting(sourceCustomer);
+      if (existing.isPresent()) {
+        Customer existingCustomer = existing.get();
+        Customer targetCustomer = customersService.applyChangesToExistingEntity(sourceCustomer, existingCustomer);
+        target.setCustomer(targetCustomer);
+      } else {
+        Customer newCustomer = customersService.convertToNewEntity(sourceCustomer);
+        newCustomer = customersRepository.saveAndFlush(newCustomer);
+        target.setCustomer(newCustomer);
+      }
     }
   }
 
@@ -393,7 +399,7 @@ public class SalesJpaServiceImpl
         SellDetail targetDetail = new SellDetail();
         String barcode = d.getProduct().getBarcode();
         Optional<Product> productByBarcode = productsRepository.findByBarcode(barcode);
-        if (!productByBarcode.isPresent()) {
+        if (productByBarcode.isEmpty()) {
           throw new BadInputException("Unexisting product in sell details");
         } else {
           Product targetProduct = productByBarcode.get();
@@ -424,22 +430,16 @@ public class SalesJpaServiceImpl
         source.getSecondLine(),
         source.getPostalCode(),
         source.getNotes());
-      if (matchingAddress.isPresent()) {
-        return matchingAddress.get();
-      } else {
-        Address convertedSource = conversion.convert(source, Address.class);
-        return convertedSource;
-      }
+      return matchingAddress.orElseGet(() -> conversion.convert(source, Address.class));
     }
   }
 
   private BillingCompany fetchOrConvertBillingCompany(Sell target, BillingCompanyPojo sourceBillingCompany)
     throws BadInputException {
     String idNumber = sourceBillingCompany.getIdNumber();
-    // TODO parameterize regex/make a bean for pattern
-    Pattern rutPattern = Pattern.compile("^\\d{7,9}[\\dk]$");
-    Matcher rutMatcher = rutPattern.matcher(idNumber);
-    if (idNumber == null || idNumber.isBlank() || !rutMatcher.matches()) {
+    if (idNumber == null || idNumber.isBlank() ) {
+      throw new BadInputException("Billing company must have an id number");
+    } else if (Pattern.compile("^\\d{7,9}[\\dk]$").matcher(idNumber).matches()) { // TODO parameterize regex
       throw new BadInputException("Billing company must have a correct id number");
     } else {
       Optional<BillingCompany> matchByIdNumber = billingCompaniesRepository.findByIdNumber(idNumber);

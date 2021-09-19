@@ -30,13 +30,12 @@ import org.trebol.jpa.repositories.IPeopleJpaRepository;
 public class PeopleJpaServiceImpl
   extends GenericJpaService<PersonPojo, Person> {
 
-  private static final Logger logger = LoggerFactory.getLogger(PeopleJpaServiceImpl.class);
   private final IPeopleJpaRepository peopleRepository;
   private final ConversionService conversion;
 
   @Autowired
   public PeopleJpaServiceImpl(IPeopleJpaRepository repository, ConversionService conversion) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(PeopleJpaServiceImpl.class));
     this.peopleRepository = repository;
     this.conversion = conversion;
   }
@@ -62,7 +61,9 @@ public class PeopleJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(PersonPojo source, Person target) throws BadInputException {
+  public Person applyChangesToExistingEntity(PersonPojo source, Person existing) throws BadInputException {
+    Person target = new Person(existing);
+
     String name = source.getName();
     if (name != null && !name.isBlank() && !target.getName().equals(name)) {
       target.setName(name);
@@ -87,6 +88,8 @@ public class PeopleJpaServiceImpl
         target.setPhone2(phone2);
       }
     }
+
+    return target;
   }
 
   @Override

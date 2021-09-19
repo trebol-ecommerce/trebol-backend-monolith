@@ -48,7 +48,6 @@ import javassist.NotFoundException;
 public class ProductsJpaServiceImpl
   extends GenericJpaService<ProductPojo, Product> {
 
-  private static final Logger logger = LoggerFactory.getLogger(ProductsJpaServiceImpl.class);
   private final IProductsJpaRepository productsRepository;
   private final IImagesJpaRepository imagesRepository;
   private final IProductImagesJpaRepository productImagesRepository;
@@ -64,7 +63,7 @@ public class ProductsJpaServiceImpl
                                 GenericJpaService<ProductCategoryPojo, ProductCategory> categoriesService,
                                 ConversionService conversion,
                                 Validator validator) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(ProductsJpaServiceImpl.class));
     this.productsRepository = repository;
     this.imagesRepository = imagesRepository;
     this.productImagesRepository = productImagesRepository;
@@ -130,7 +129,9 @@ public class ProductsJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(ProductPojo source, Product target) throws BadInputException {
+  public Product applyChangesToExistingEntity(ProductPojo source, Product existing) throws BadInputException {
+    Product target = new Product(existing);
+
     String barcode = source.getBarcode();
     if (barcode != null && !barcode.isBlank() && !target.getBarcode().equals(barcode)) {
       target.setBarcode(barcode);
@@ -159,6 +160,8 @@ public class ProductsJpaServiceImpl
 
     this.applyCategory(source, target);
     this.applyImages(source, target);
+
+    return target;
   }
 
   @Override

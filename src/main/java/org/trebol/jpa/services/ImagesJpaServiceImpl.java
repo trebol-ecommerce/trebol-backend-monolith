@@ -28,13 +28,12 @@ import org.trebol.jpa.repositories.IImagesJpaRepository;
 public class ImagesJpaServiceImpl
   extends GenericJpaService<ImagePojo, Image> {
 
-  private static final Logger logger = LoggerFactory.getLogger(ImagesJpaServiceImpl.class);
   private final IImagesJpaRepository imagesRepository;
   private final ConversionService conversion;
 
   @Autowired
   public ImagesJpaServiceImpl(IImagesJpaRepository repository, ConversionService conversion) {
-    super(repository);
+    super(repository, LoggerFactory.getLogger(ImagesJpaServiceImpl.class));
     this.imagesRepository = repository;
     this.conversion = conversion;
   }
@@ -60,7 +59,9 @@ public class ImagesJpaServiceImpl
   }
 
   @Override
-  public void applyChangesToExistingEntity(ImagePojo source, Image target) throws BadInputException {
+  public Image applyChangesToExistingEntity(ImagePojo source, Image existing) throws BadInputException {
+    Image target = new Image(existing);
+
     String code = source.getCode();
     if (code != null && !code.isBlank() && !target.getCode().equals(code)) {
       target.setCode(code);
@@ -75,6 +76,8 @@ public class ImagesJpaServiceImpl
     if (url != null && !url.isBlank() && !target.getUrl().equals(url)) {
       target.setUrl(url);
     }
+
+    return target;
   }
 
   @Override
