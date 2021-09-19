@@ -41,6 +41,11 @@ public class UserRole
   @Column(name = "user_role_name")
   private String name;
 
+  public UserRole(UserRole source) {
+    this.id = source.id;
+    this.name = source.name;
+  }
+
   public UserRole() { }
 
   public Long getId() {
@@ -82,10 +87,7 @@ public class UserRole
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.id, other.id);
   }
 
   @Override

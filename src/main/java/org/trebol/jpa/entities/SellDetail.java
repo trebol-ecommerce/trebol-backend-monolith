@@ -36,9 +36,15 @@ public class SellDetail
   @Basic(optional = false)
   @Column(name = "sell_detail_units")
   private int units;
-  @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = true, updatable = false)
+  @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.EAGER)
   private Product product;
+
+  public SellDetail(SellDetail source) {
+    this.id = source.id;
+    this.units = source.units;
+    this.product = source.product;
+  }
 
   public SellDetail() { }
 
@@ -93,10 +99,7 @@ public class SellDetail
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.product, other.product)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.product, other.product);
   }
 
   @Override

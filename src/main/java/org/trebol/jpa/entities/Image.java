@@ -46,6 +46,13 @@ public class Image
 
   public Image() { }
 
+  public Image(Image source) {
+    this.id = source.id;
+    this.code = source.code;
+    this.filename = source.filename;
+    this.url = source.url;
+  }
+
   public Long getId() {
     return id;
   }
@@ -109,10 +116,7 @@ public class Image
     if (!Objects.equals(this.url, other.url)) {
       return false;
     }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.id, other.id);
   }
 
   @Override

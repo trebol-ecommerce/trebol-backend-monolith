@@ -59,42 +59,62 @@ public class Sell
   @Basic(optional = false)
   @Column(name = "sell_total_value")
   private int totalValue;
-  @Basic(optional = true)
   @Size(min = 64, max = 64)
   @Column(name = "sell_transaction_token")
   private String transactionToken;
-  @JoinColumn(name = "customer_id", insertable = true, updatable = true, nullable = true)
-  @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  @JoinColumn(name = "customer_id")
+  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
   private Customer customer;
-  @JoinColumn(name = "payment_type_id", insertable = true, updatable = false, nullable = false)
+  @JoinColumn(name = "payment_type_id", updatable = false, nullable = false)
   @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private PaymentType paymentType;
-  @JoinColumn(name = "sell_status_id", insertable = true, updatable = false, nullable = false)
+  @JoinColumn(name = "sell_status_id", updatable = false, nullable = false)
   @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private SellStatus status;
-  @JoinColumn(name = "billing_type_id", insertable = true, updatable = false, nullable = false)
+  @JoinColumn(name = "billing_type_id", updatable = false, nullable = false)
   @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private BillingType billingType;
-  @JoinColumn(name = "billing_company_id", insertable = true, updatable = true, nullable = true)
-  @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  @JoinColumn(name = "billing_company_id")
+  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
   private BillingCompany billingCompany;
-  @JoinColumn(name = "billing_address_id", insertable = true, updatable = false, nullable = true)
-  @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  @JoinColumn(name = "billing_address_id", updatable = false)
+  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
   private Address billingAddress;
-  @JoinColumn(name = "shipper_id", insertable = true, updatable = false, nullable = true)
-  @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+  @JoinColumn(name = "shipper_id", updatable = false)
+  @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private Shipper shipper;
-  @JoinColumn(name = "shipping_address_id", insertable = true, updatable = false, nullable = true)
-  @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  @JoinColumn(name = "shipping_address_id", updatable = false)
+  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
   private Address shippingAddress;
-  @JoinColumn(name = "salesperson_id", insertable = true, updatable = true, nullable = true)
-  @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  @JoinColumn(name = "salesperson_id")
+  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
   private Salesperson salesperson;
-  @JoinColumn(name = "sell_id", insertable = true, updatable = true, nullable = false)
+  @JoinColumn(name = "sell_id", nullable = false)
   @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
   private Collection<SellDetail> details;
 
   public Sell() { }
+
+  public Sell(Sell source) {
+    this.id = source.id;
+    this.date = source.date;
+    this.totalItems = source.totalItems;
+    this.netValue = source.netValue;
+    this.transportValue = source.transportValue;
+    this.taxesValue = source.taxesValue;
+    this.totalValue = source.totalValue;
+    this.transactionToken = source.transactionToken;
+    this.customer = source.customer;
+    this.paymentType = source.paymentType;
+    this.status = source.status;
+    this.billingType = source.billingType;
+    this.billingCompany = source.billingCompany;
+    this.billingAddress = source.billingAddress;
+    this.shipper = source.shipper;
+    this.shippingAddress = source.shippingAddress;
+    this.salesperson = source.salesperson;
+    this.details = source.details;
+  }
 
   public Long getId() {
     return id;
@@ -327,10 +347,7 @@ public class Sell
     if (!Objects.equals(this.salesperson, other.salesperson)) {
       return false;
     }
-    if (!Objects.equals(this.details, other.details)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.details, other.details);
   }
 
   @Override

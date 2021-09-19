@@ -34,11 +34,16 @@ public class Salesperson
   @Basic(optional = false)
   @Column(name = "salesperson_id")
   private Long id;
-  @JoinColumn(name = "person_id", referencedColumnName = "person_id", insertable = true, updatable = true)
+  @JoinColumn(name = "person_id", referencedColumnName = "person_id")
   @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Person person;
 
   public Salesperson() { }
+
+  public Salesperson(Salesperson source) {
+    this.id = source.id;
+    this.person = source.person;
+  }
 
   public Long getId() {
     return id;
@@ -79,10 +84,7 @@ public class Salesperson
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.person, other.person)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.person, other.person);
   }
 
   @Override

@@ -34,11 +34,16 @@ public class Customer
   @Basic(optional = false)
   @Column(name = "customer_id")
   private Long id;
-  @JoinColumn(name = "person_id", referencedColumnName = "person_id", insertable = true, updatable = true)
+  @JoinColumn(name = "person_id", referencedColumnName = "person_id")
   @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Person person;
 
   public Customer() { }
+
+  public Customer(Customer source) {
+    this.id = source.id;
+    this.person = source.person;
+  }
 
   public Long getId() {
     return id;
@@ -79,10 +84,7 @@ public class Customer
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.person, other.person)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.person, other.person);
   }
 
   @Override

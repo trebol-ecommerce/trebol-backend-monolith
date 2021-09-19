@@ -47,14 +47,22 @@ public class User
   @Size(min = 1, max = 100)
   @Column(name = "user_password")
   private String password;
-  @JoinColumn(name = "person_id", referencedColumnName = "person_id", insertable = true, updatable = false)
-  @ManyToOne(optional = true, fetch = FetchType.LAZY)
+  @JoinColumn(name = "person_id", referencedColumnName = "person_id", updatable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
   private Person person;
-  @JoinColumn(name = "user_role_id", referencedColumnName = "user_role_id", insertable = true, updatable = true)
+  @JoinColumn(name = "user_role_id", referencedColumnName = "user_role_id")
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
   public User() { }
+
+  public User(User source) {
+    this.id = source.id;
+    this.name = source.name;
+    this.password = source.password;
+    this.person = source.person;
+    this.userRole = source.userRole;
+  }
 
   public Long getId() {
     return id;
@@ -131,10 +139,7 @@ public class User
     if (!Objects.equals(this.person, other.person)) {
       return false;
     }
-    if (!Objects.equals(this.userRole, other.userRole)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.userRole, other.userRole);
   }
 
   @Override
