@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
-import org.trebol.config.CustomProperties;
+import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.GenericJpaService;
 
@@ -31,7 +31,7 @@ public class DataProductCategoriesController
 
   @Autowired
   public DataProductCategoriesController(
-    CustomProperties globals,
+    OperationProperties globals,
     GenericJpaService<ProductCategoryPojo, ProductCategory> crudService) {
     super(globals, crudService);
   }

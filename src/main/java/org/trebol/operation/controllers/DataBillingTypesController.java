@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.BillingTypePojo;
-import org.trebol.config.CustomProperties;
+import org.trebol.config.OperationProperties;
 import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.BillingType;
 
@@ -26,8 +26,8 @@ public class DataBillingTypesController
   extends GenericDataController<BillingTypePojo, BillingType> {
 
   @Autowired
-  public DataBillingTypesController(CustomProperties globals,
-    GenericJpaService<BillingTypePojo, BillingType> crudService) {
+  public DataBillingTypesController(OperationProperties globals,
+                                    GenericJpaService<BillingTypePojo, BillingType> crudService) {
     super(globals, crudService);
   }
 

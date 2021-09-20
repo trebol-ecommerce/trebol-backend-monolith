@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
-import org.trebol.config.CustomProperties;
+import org.trebol.config.OperationProperties;
 import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Product;
 
@@ -26,18 +26,18 @@ import javassist.NotFoundException;
 public class PublicProductsController {
 
   private final GenericJpaService<ProductPojo, Product> crudService;
-  private final CustomProperties customProperties;
+  private final OperationProperties operationProperties;
 
   @Autowired
   public PublicProductsController(GenericJpaService<ProductPojo, Product> crudService,
-                                  CustomProperties customProperties) {
+                                  OperationProperties operationProperties) {
     this.crudService = crudService;
-    this.customProperties = customProperties;
+    this.operationProperties = operationProperties;
   }
 
   @GetMapping({"", "/"})
   public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    Integer requestPageSize = customProperties.getItemsPerPage();
+    Integer requestPageSize = operationProperties.getItemsPerPage();
     Predicate filters = crudService.parsePredicate(allRequestParams);
     return crudService.readMany(requestPageSize, 0, filters);
   }

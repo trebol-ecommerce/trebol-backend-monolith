@@ -48,8 +48,7 @@ public class AccessController {
       String jwt = authorizationHeader.replace("Bearer ", "");
       Claims body = jwtClaimsParserService.parseToken(jwt);
       String username = body.getSubject();
-      UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-      return userDetails;
+      return userDetailsService.loadUserByUsername(username);
     }
   }
 

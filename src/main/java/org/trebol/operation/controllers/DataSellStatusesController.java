@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.SellStatusPojo;
-import org.trebol.config.CustomProperties;
+import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.GenericJpaService;
 
@@ -27,8 +27,8 @@ public class DataSellStatusesController
   extends GenericDataController<SellStatusPojo, SellStatus> {
 
   @Autowired
-  public DataSellStatusesController(CustomProperties globals,
-      GenericJpaService<SellStatusPojo, SellStatus> crudService) {
+  public DataSellStatusesController(OperationProperties globals,
+                                    GenericJpaService<SellStatusPojo, SellStatus> crudService) {
     super(globals, crudService);
   }
 

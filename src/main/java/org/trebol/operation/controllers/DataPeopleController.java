@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.PersonPojo;
-import org.trebol.config.CustomProperties;
+import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.GenericJpaService;
 
@@ -27,7 +27,7 @@ public class DataPeopleController
   extends GenericDataController<PersonPojo, Person> {
 
   @Autowired
-  public DataPeopleController(CustomProperties globals, GenericJpaService<PersonPojo, Person> crudService) {
+  public DataPeopleController(OperationProperties globals, GenericJpaService<PersonPojo, Person> crudService) {
     super(globals, crudService);
   }
 

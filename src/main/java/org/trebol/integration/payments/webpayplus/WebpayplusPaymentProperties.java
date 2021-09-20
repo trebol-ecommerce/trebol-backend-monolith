@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
  */
 @Validated
 @Configuration
-@ConfigurationProperties(prefix = "integration.payment.webpayplus")
+@ConfigurationProperties(prefix = "trebol.integration.payment.webpayplus")
 public class WebpayplusPaymentProperties {
   @NotNull
   private Boolean production;

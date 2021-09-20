@@ -9,11 +9,11 @@ import org.springframework.context.annotation.Configuration;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Configuration
-@ConfigurationProperties(prefix = "application.custom")
-public class CustomProperties {
+@ConfigurationProperties(prefix = "trebol.operation")
+public class OperationProperties {
   private Integer itemsPerPage;
 
-  public CustomProperties() {
+  public OperationProperties() {
   }
 
   public Integer getItemsPerPage() {

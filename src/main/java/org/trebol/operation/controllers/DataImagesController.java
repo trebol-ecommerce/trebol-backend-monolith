@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.operation.GenericDataController;
-import org.trebol.config.CustomProperties;
+import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.Image;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.GenericJpaService;
@@ -45,7 +45,7 @@ public class DataImagesController
   implements IDataCrudController<ImagePojo, String> {
 
   @Autowired
-  public DataImagesController(CustomProperties globals, GenericJpaService<ImagePojo, Image> crudService) {
+  public DataImagesController(OperationProperties globals, GenericJpaService<ImagePojo, Image> crudService) {
     super(globals, crudService);
   }
 

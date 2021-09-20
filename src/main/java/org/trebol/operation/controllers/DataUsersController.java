@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.UserPojo;
-import org.trebol.config.CustomProperties;
+import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.User;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.GenericJpaService;
@@ -44,7 +44,7 @@ public class DataUsersController
   implements IDataCrudController<UserPojo, String> {
 
   @Autowired
-  public DataUsersController(CustomProperties globals, GenericJpaService<UserPojo, User> crudService) {
+  public DataUsersController(OperationProperties globals, GenericJpaService<UserPojo, User> crudService) {
     super(globals, crudService);
   }
 

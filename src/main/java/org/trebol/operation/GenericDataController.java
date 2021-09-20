@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import com.querydsl.core.types.Predicate;
 
-import org.trebol.config.CustomProperties;
+import org.trebol.config.OperationProperties;
 import org.trebol.jpa.GenericJpaService;
 import org.trebol.pojo.DataPagePojo;
 
@@ -20,11 +20,11 @@ import org.trebol.pojo.DataPagePojo;
 public abstract class GenericDataController<P, E>
   implements IDataController<P> {
 
-  protected final CustomProperties customProperties;
+  protected final OperationProperties operationProperties;
   protected final GenericJpaService<P, E> crudService;
 
-  public GenericDataController(CustomProperties customProperties, GenericJpaService<P, E> crudService) {
-    this.customProperties = customProperties;
+  public GenericDataController(OperationProperties operationProperties, GenericJpaService<P, E> crudService) {
+    this.operationProperties = operationProperties;
     this.crudService = crudService;
   }
 
@@ -65,7 +65,7 @@ public abstract class GenericDataController<P, E>
 
   private int determineRequestedPageSize(Integer requestPageSize, Map<String, String> allRequestParams)
           throws NumberFormatException {
-    int pageSize = customProperties.getItemsPerPage();
+    int pageSize = operationProperties.getItemsPerPage();
     if (requestPageSize != null && requestPageSize > 0) {
       pageSize = requestPageSize;
     } else if (allRequestParams != null && allRequestParams.containsKey("pageSize")) {

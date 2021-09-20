@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.SellPojo;
-import org.trebol.config.CustomProperties;
+import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.GenericJpaService;
@@ -41,7 +41,7 @@ public class DataSalesController
   implements IDataCrudController<SellPojo, Long> {
 
   @Autowired
-  public DataSalesController(CustomProperties globals, GenericJpaService<SellPojo, Sell> crudService) {
+  public DataSalesController(OperationProperties globals, GenericJpaService<SellPojo, Sell> crudService) {
     super(globals, crudService);
   }
 

@@ -14,7 +14,7 @@ import org.trebol.exceptions.CorsMappingParseException;
 
 @Validated
 @Configuration
-@ConfigurationProperties(prefix = "application.cors")
+@ConfigurationProperties(prefix = "trebol.cors")
 public class CorsProperties {
 
   @NotBlank
