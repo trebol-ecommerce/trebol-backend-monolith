@@ -13,17 +13,16 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
-@JsonInclude
+@JsonInclude(NON_NULL)
 public class UserPojo {
   @JsonIgnore
   private Long id;
   @NotBlank
+  @JsonInclude
   private String name;
   @NotBlank
   private String password;
-  @JsonInclude(NON_NULL)
   private PersonPojo person;
-  @JsonInclude(NON_NULL)
   private String role;
 
   public Long getId() {

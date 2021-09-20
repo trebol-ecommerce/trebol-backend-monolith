@@ -3,7 +3,6 @@ package org.trebol.jpa.services;
 import java.util.Map;
 import java.util.Optional;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -40,16 +39,22 @@ public class UsersJpaServiceImpl
 
   private final IUsersJpaRepository userRepository;
   private final IUserRolesJpaRepository rolesRepository;
+  private final GenericJpaService<PersonPojo, Person> peopleService;
   private final IPeopleJpaRepository peopleRepository;
   private final ConversionService conversion;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UsersJpaServiceImpl(IUsersJpaRepository repository, IUserRolesJpaRepository rolesRepository,
-                             IPeopleJpaRepository peopleRepository, ConversionService conversion, PasswordEncoder passwordEncoder) {
+  public UsersJpaServiceImpl(IUsersJpaRepository repository,
+                             IUserRolesJpaRepository rolesRepository,
+                             GenericJpaService<PersonPojo, Person> peopleService,
+                             IPeopleJpaRepository peopleRepository,
+                             ConversionService conversion,
+                             PasswordEncoder passwordEncoder) {
     super(repository, LoggerFactory.getLogger(UsersJpaServiceImpl.class));
     this.userRepository = repository;
     this.rolesRepository = rolesRepository;
+    this.peopleService = peopleService;
     this.peopleRepository = peopleRepository;
     this.conversion = conversion;
     this.passwordEncoder = passwordEncoder;
@@ -57,7 +62,18 @@ public class UsersJpaServiceImpl
 
   @Override
   public UserPojo convertToPojo(User source) {
-    return conversion.convert(source, UserPojo.class);
+    UserPojo target = new UserPojo();
+    target.setId(source.getId());
+    target.setName(source.getName());
+    target.setRole(source.getUserRole().getName());
+
+    Person sourcePerson = source.getPerson();
+    if (sourcePerson != null) {
+      PersonPojo personPojo = peopleService.convertToPojo(sourcePerson);
+      target.setPerson(personPojo);
+    }
+
+    return target;
   }
 
   @Override
