@@ -155,20 +155,41 @@ public class SalesJpaServiceImpl
     return target;
   }
 
+  @Transactional
   @Override
   public Sell applyChangesToExistingEntity(SellPojo source, Sell existing) throws BadInputException {
-    // TODO test these methods... they're not guaranteed to work just now!
     Sell target = new Sell(existing);
 
-    this.applyStatus(source, target);
-    this.applyPaymentType(source, target);
-    this.applyBillingTypeAndCompany(source, target);
-    this.applyCustomer(source, target);
-    this.applyBillingAddress(source, target);
-    this.applyShippingAddress(source, target);
-    // TODO uncomment when shipper API is included
-    // this.applyShipper(source, target);
-    this.applyDetails(source, target);
+    if (source.getDate() != null) {
+      target.setDate(source.getDate());
+    }
+    if (source.getStatus() != null) {
+      this.applyStatus(source, target);
+    }
+    if (source.getPaymentType() != null) {
+      this.applyPaymentType(source, target);
+    }
+    if (source.getBillingType() != null) {
+      this.applyBillingTypeAndCompany(source, target);
+    }
+    if (source.getCustomer() != null) {
+      this.applyCustomer(source, target);
+    }
+    if (source.getBillingAddress() != null) {
+      this.applyBillingAddress(source, target);
+    }
+    if (source.getShippingAddress() != null) {
+      this.applyShippingAddress(source, target);
+    }
+
+    /*
+    // TODO add shipper API
+    if (source.getShipper() != null) {
+      this.applyShipper(source, target);
+    } */
+    if (source.getDetails() != null) {
+      this.applyDetails(source, target);
+    }
 
     return target;
   }
@@ -346,10 +367,13 @@ public class SalesJpaServiceImpl
       throw new BadInputException("Customer must posess valid personal information");
     } else {
       Optional<Customer> existing = customersService.getExisting(sourceCustomer);
-      Customer targetCustomer = (existing.isPresent()) ?
-              customersService.applyChangesToExistingEntity(sourceCustomer, existing.get()) :
-              customersService.convertToNewEntity(sourceCustomer);
-      targetCustomer = customersRepository.saveAndFlush(targetCustomer);
+      Customer targetCustomer;
+      if (existing.isPresent()) {
+        targetCustomer = existing.get();
+      } else {
+        targetCustomer = customersService.convertToNewEntity(sourceCustomer);
+        targetCustomer = customersRepository.saveAndFlush(targetCustomer);
+      }
       target.setCustomer(targetCustomer);
     }
   }
