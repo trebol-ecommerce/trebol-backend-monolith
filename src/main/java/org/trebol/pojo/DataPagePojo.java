@@ -94,10 +94,7 @@ public class DataPagePojo<T> {
     if (this.pageSize != other.pageSize) {
       return false;
     }
-    if (!Objects.equals(this.items, other.items)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.items, other.items);
   }
 
   @Override

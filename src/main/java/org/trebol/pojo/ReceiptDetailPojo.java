@@ -52,10 +52,7 @@ public class ReceiptDetailPojo {
     if (this.units != other.units) {
       return false;
     }
-    if (!Objects.equals(this.product, other.product)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.product, other.product);
   }
 
   @Override

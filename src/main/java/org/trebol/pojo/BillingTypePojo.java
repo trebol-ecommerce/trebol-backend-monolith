@@ -42,10 +42,7 @@ public class BillingTypePojo {
       return false;
     }
     final BillingTypePojo other = (BillingTypePojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.name, other.name);
   }
 
   @Override

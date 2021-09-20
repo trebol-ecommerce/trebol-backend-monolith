@@ -109,10 +109,7 @@ public class Param
     if (!Objects.equals(this.value, other.value)) {
       return false;
     }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.id, other.id);
   }
 
   @Override

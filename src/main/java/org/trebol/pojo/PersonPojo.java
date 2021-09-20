@@ -116,10 +116,7 @@ public class PersonPojo {
     if (!Objects.equals(this.phone1, other.phone1)) {
       return false;
     }
-    if (!Objects.equals(this.phone2, other.phone2)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.phone2, other.phone2);
   }
 
   @Override

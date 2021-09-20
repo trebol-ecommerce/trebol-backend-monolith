@@ -80,10 +80,7 @@ public class CompanyDetailsPojo {
     if (!Objects.equals(this.bannerImageURL, other.bannerImageURL)) {
       return false;
     }
-    if (!Objects.equals(this.logoImageURL, other.logoImageURL)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.logoImageURL, other.logoImageURL);
   }
 
   @Override

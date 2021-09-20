@@ -115,10 +115,7 @@ public class UserDetailsPojo
     if (!Objects.equals(this.password, other.password)) {
       return false;
     }
-    if (!Objects.equals(this.authorities, other.authorities)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.authorities, other.authorities);
   }
 
   @Override

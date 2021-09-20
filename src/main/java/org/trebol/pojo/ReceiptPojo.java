@@ -92,10 +92,7 @@ public class ReceiptPojo {
     if (!Objects.equals(this.status, other.status)) {
       return false;
     }
-    if (!Objects.equals(this.details, other.details)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.details, other.details);
   }
 
   @Override

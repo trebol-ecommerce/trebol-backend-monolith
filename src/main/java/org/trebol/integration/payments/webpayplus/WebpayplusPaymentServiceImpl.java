@@ -48,7 +48,7 @@ public class WebpayplusPaymentServiceImpl
 
     String buyOrder = transaction.getBuyOrder().toString();
     String sessionId = String.valueOf(transaction.hashCode());
-    double amount = Double.valueOf(transaction.getNetValue());
+    double amount = transaction.getNetValue();
     String returnUrl = properties.getCallbackUrl();
 
     try {
@@ -66,16 +66,14 @@ public class WebpayplusPaymentServiceImpl
   }
 
   @Override
-  public Integer requestPaymentResult(String transactionToken) throws PaymentServiceException {
+  public int requestPaymentResult(String transactionToken) throws PaymentServiceException {
     try {
-      WebpayPlusTransactionCommitResponse commit = WebpayPlus.Transaction.commit(transactionToken);
-      Byte code = commit.getResponseCode();
-      return code.intValue();
+      return WebpayPlus.Transaction.commit(transactionToken).getResponseCode();
     } catch (TransactionCommitException exc) {
       return 1;
     } catch (IOException exc) {
       logger.error("Exception raised while requesting transaction result: ", exc);
-      throw new PaymentServiceException("Webpay failed to communicate when confirming the transaction", exc);
+      throw new PaymentServiceException("Webpay service failed when confirming the transaction", exc);
     }
   }
 

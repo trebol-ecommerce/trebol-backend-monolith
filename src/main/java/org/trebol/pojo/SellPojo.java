@@ -228,10 +228,7 @@ public class SellPojo {
     if (!Objects.equals(this.billingAddress, other.billingAddress)) {
       return false;
     }
-    if (!Objects.equals(this.shippingAddress, other.shippingAddress)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.shippingAddress, other.shippingAddress);
   }
 
   @Override

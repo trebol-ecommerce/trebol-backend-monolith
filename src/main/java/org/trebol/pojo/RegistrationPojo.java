@@ -71,10 +71,7 @@ public class RegistrationPojo {
     if (!Objects.equals(this.password, other.password)) {
       return false;
     }
-    if (!Objects.equals(this.profile, other.profile)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.profile, other.profile);
   }
 
   @Override

@@ -96,7 +96,11 @@ public class RegistrationServiceImpl
     target.setPassword(password);
 
     Optional<UserRole> customerRole = rolesRepository.findByName("Customer");
-    target.setUserRole(customerRole.get());
+    if (customerRole.isEmpty()) {
+      throw new IllegalStateException("No user role matches 'Customer', database might be compromised");
+    } else {
+      target.setUserRole(customerRole.get());
+    }
     return target;
   }
 

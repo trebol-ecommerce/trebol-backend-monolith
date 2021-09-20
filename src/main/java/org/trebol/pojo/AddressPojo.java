@@ -113,10 +113,7 @@ public class AddressPojo {
     if (!Objects.equals(this.postalCode, other.postalCode)) {
       return false;
     }
-    if (!Objects.equals(this.notes, other.notes)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.notes, other.notes);
   }
 
   @Override

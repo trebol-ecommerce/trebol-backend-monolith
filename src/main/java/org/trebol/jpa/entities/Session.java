@@ -38,7 +38,7 @@ public class Session
   @Size(min = 32, max = 500)
   @Column(name = "session_token")
   private String token;
-  @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = true, updatable = false)
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id", updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private User user;
 
@@ -95,10 +95,7 @@ public class Session
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.user, other.user)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.user, other.user);
   }
 
   @Override

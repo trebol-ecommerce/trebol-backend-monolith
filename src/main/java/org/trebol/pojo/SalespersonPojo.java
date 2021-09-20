@@ -59,10 +59,7 @@ public class SalespersonPojo {
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.person, other.person)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.person, other.person);
   }
 
   @Override

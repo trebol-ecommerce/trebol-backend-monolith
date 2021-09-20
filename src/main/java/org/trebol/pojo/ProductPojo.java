@@ -158,10 +158,7 @@ public class ProductPojo {
     if (!Objects.equals(this.criticalStock, other.criticalStock)) {
       return false;
     }
-    if (!Objects.equals(this.images, other.images)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.images, other.images);
   }
 
   @Override

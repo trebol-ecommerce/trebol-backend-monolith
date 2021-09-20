@@ -71,10 +71,7 @@ public class ProductCategoryPojo {
     if (!Objects.equals(this.code, other.code)) {
       return false;
     }
-    if (!Objects.equals(this.parent, other.parent)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.parent, other.parent);
   }
 
   @Override

@@ -10,6 +10,6 @@ import org.trebol.integration.exceptions.PaymentServiceException;
  */
 public interface IPaymentsIntegrationService {
   PaymentRedirectionDetailsPojo requestNewPaymentPageDetails(SellPojo transaction) throws PaymentServiceException;
-  Integer requestPaymentResult(String transactionToken) throws PaymentServiceException;
+  int requestPaymentResult(String transactionToken) throws PaymentServiceException;
   String getPaymentResultPageUrl();
 }

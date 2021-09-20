@@ -74,10 +74,7 @@ public class SellDetailPojo {
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.product, other.product)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.product, other.product);
   }
 
   @Override

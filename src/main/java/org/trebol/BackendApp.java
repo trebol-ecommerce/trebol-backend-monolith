@@ -12,7 +12,7 @@ public class BackendApp {
   /**
    * Application starting point.
    *
-   * @param args
+   * @param args Command-line arguments
    */
   public static void main(String[] args) {
     SpringApplication.run(BackendApp.class, args);

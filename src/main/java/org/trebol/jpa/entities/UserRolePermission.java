@@ -33,10 +33,10 @@ public class UserRolePermission
   @Basic(optional = false)
   @Column(name = "user_role_permission_id")
   private Long id;
-  @JoinColumn(name = "permission_id", referencedColumnName = "permission_id", insertable = true, updatable = false)
+  @JoinColumn(name = "permission_id", referencedColumnName = "permission_id", updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Permission permission;
-  @JoinColumn(name = "user_role_id", referencedColumnName = "user_role_id", insertable = true, updatable = false)
+  @JoinColumn(name = "user_role_id", referencedColumnName = "user_role_id", updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
@@ -93,10 +93,7 @@ public class UserRolePermission
     if (!Objects.equals(this.permission, other.permission)) {
       return false;
     }
-    if (!Objects.equals(this.userRole, other.userRole)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.userRole, other.userRole);
   }
 
   @Override

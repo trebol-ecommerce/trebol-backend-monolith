@@ -19,7 +19,8 @@ public interface ICheckoutService {
    * Analyze provided transaction, generate data for a transaction, mark it as "acknowledged" and save it
    * @param transaction The "requested" transaction
    * @return The "acknowledged" transaction
-   * @throws org.trebol.exceptions.BadInputException
+   * @throws org.trebol.exceptions.BadInputException If the transaction data is not valid; unexisting products,
+   *                                                incorrect values, among other reasons
    */
   SellPojo saveCartAsPendingTransaction(SellPojo transaction) throws BadInputException;
 
@@ -36,7 +37,7 @@ public interface ICheckoutService {
    * Confirm existence of a "started" transaction, then fetch its result to update saved metadata of that
    * transaction, and notify both to salespeople and the client by e-mail
    * @param token Previously emitted by the payment service
-   * @param wasAborted
+   * @param wasAborted Whether the transaction was aborted by the user doing the payment.
    * @return The "completed/failed" URI for requesting it later on
    * @throws javassist.NotFoundException When no transaction matches the provided hash
    * @throws PaymentServiceException On unexpected failures

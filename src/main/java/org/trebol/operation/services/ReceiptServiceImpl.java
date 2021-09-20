@@ -39,7 +39,7 @@ public class ReceiptServiceImpl
   @Override
   public ReceiptPojo fetchReceiptById(long id) throws NotFoundException {
     Optional<Sell> match = salesRepository.findByIdWithDetails(id);
-    if (!match.isPresent()) {
+    if (match.isEmpty()) {
       throw new NotFoundException("The transaction could not be found, no receipt can be created");
     }
     Sell foundMatch = match.get();

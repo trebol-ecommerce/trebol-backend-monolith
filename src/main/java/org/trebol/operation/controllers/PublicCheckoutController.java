@@ -50,27 +50,29 @@ public class PublicCheckoutController {
    * Save a new transaction, forward request to checkout server, and save the generated token for later validation
    *
    * @param transactionRequest The checkout details
-   * @return
-   * @throws org.trebol.exceptions.BadInputException
-   * @throws org.trebol.integration.exceptions.PaymentServiceException
+   * @return An object wrapping the URL and token to redirect the user with, towards their payment page.
+   * @throws org.trebol.exceptions.BadInputException If the input pojo class contains invalid data
+   * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during the payment
+   *                                                                   integration process
    */
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('checkout')")
   public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody SellPojo transactionRequest)
     throws BadInputException, PaymentServiceException {
     SellPojo createdTransaction = service.saveCartAsPendingTransaction(transactionRequest);
-    PaymentRedirectionDetailsPojo transactionRedirect = service.requestTransactionStart(createdTransaction);
-    return transactionRedirect;
+    return service.requestTransactionStart(createdTransaction);
   }
 
   /**
-   * Validate the status of a pending transaction and save the resulting metadata
+   * Validate which token HTTP header was sent from WebPay Plus, then update the status of the pending transaction
+   * matching said token.
    *
-   * @param transactionData
-   * @return
-   * @throws org.trebol.exceptions.BadInputException
-   * @throws javassist.NotFoundException
-   * @throws org.trebol.integration.exceptions.PaymentServiceException
+   * @param transactionData The HTTP headers
+   * @return A 303 SEE OTHER response
+   * @throws org.trebol.exceptions.BadInputException If no token resides in the expected HTTP headers.
+   * @throws javassist.NotFoundException If the token matches no stored, "pending" transaction
+   * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during the payment
+   *                                                                   integration process
    */
   @PostMapping({"/validate", "/validate/"})
   public ResponseEntity<Void> validateTransaction(@RequestParam Map<String, String> transactionData)

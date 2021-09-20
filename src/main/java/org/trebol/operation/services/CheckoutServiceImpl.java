@@ -52,8 +52,7 @@ public class CheckoutServiceImpl
       transaction.setType("Bill");
     }*/
     try {
-      SellPojo result = salesCrudService.create(transaction);
-      return result;
+      return salesCrudService.create(transaction);
     } catch (EntityAlreadyExistsException exc) {
       logger.error("Could not create a new sell", exc);
       throw new RuntimeException("The server had a problem requesting the transaction");
@@ -101,11 +100,10 @@ public class CheckoutServiceImpl
   /**
    * Finds a transaction by its token, fetches the result of its payment and updates it in the database.
    * @param transactionToken A token provided by the payment integration service.
-   * @return The ID of the transaction.
    * @throws NotFoundException If no transaction has a matching token.
    * @throws PaymentServiceException As raised at integration level.
    */
-  private Long processSellStatus(
+  private void processSellStatus(
     String transactionToken
   ) throws NotFoundException, PaymentServiceException {
     logger.trace("Looking up transaction with token={}...", transactionToken);
@@ -121,7 +119,6 @@ public class CheckoutServiceImpl
       salesCrudService.setSellStatusToPaidUnconfirmed(sellId);
     }
     logger.trace("Updating sell status: Done");
-    return sellId;
   }
 
   private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws NotFoundException {

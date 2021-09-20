@@ -59,10 +59,7 @@ public class SellStatusPojo {
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
-    if (!Objects.equals(this.code, other.code)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.code, other.code);
   }
 
   @Override

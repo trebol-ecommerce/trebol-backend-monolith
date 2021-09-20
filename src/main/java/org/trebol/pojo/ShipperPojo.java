@@ -42,10 +42,7 @@ public class ShipperPojo {
       return false;
     }
     final ShipperPojo other = (ShipperPojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.name, other.name);
   }
 
   @Override

@@ -26,8 +26,8 @@ public interface IJpaCrudService<T, I, F>
    *
    * @return The created item, with updated properties (most importantly its ID),
    *         or null if the item could not be created.
-   * @throws org.trebol.exceptions.BadInputException
-   * @throws org.trebol.exceptions.EntityAlreadyExistsException
+   * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid or is insufficient.
+   * @throws org.trebol.exceptions.EntityAlreadyExistsException When the data collides with an existing registry.
    */
   T create(T dto) throws BadInputException, EntityAlreadyExistsException;
 
@@ -48,7 +48,7 @@ public interface IJpaCrudService<T, I, F>
    * @param filters   Filtering conditions
    *
    * @return The requested item
-   * @throws javassist.NotFoundException
+   * @throws javassist.NotFoundException When no item matches the filter.
    */
   T readOne(F filters) throws NotFoundException;
 
@@ -58,7 +58,7 @@ public interface IJpaCrudService<T, I, F>
    * @param id The unique identifier of the item.
    *
    * @return The requested item.
-   * @throws javassist.NotFoundException
+   * @throws javassist.NotFoundException When there are no item matches for the identifier.
    */
   T readOne(Long id) throws NotFoundException;
 
@@ -71,8 +71,8 @@ public interface IJpaCrudService<T, I, F>
    *
    * @return The saved item, with updated properties, or null if the item was not
    *         found.
-   * @throws javassist.NotFoundException
-   * @throws org.trebol.exceptions.BadInputException
+   * @throws javassist.NotFoundException When no item matches the identifier.
+   * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
    */
   T update(T dto, I id) throws NotFoundException, BadInputException;
 
@@ -81,7 +81,7 @@ public interface IJpaCrudService<T, I, F>
    *
    * @param id Its unique identifier.
    *
-   * @throws javassist.NotFoundException
+   * @throws javassist.NotFoundException When no item matches the identifier.
    */
   void delete(I id) throws NotFoundException;
 }

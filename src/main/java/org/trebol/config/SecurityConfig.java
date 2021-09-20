@@ -30,7 +30,7 @@ import org.trebol.security.JwtLoginAuthenticationFilter;
 import org.trebol.security.IAuthorizationHeaderParserService;
 
 @Configuration
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig
     extends WebSecurityConfigurerAdapter {
@@ -138,7 +138,7 @@ public class SecurityConfig
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    Integer strength = securityProperties.getBcryptEncoderStrength();
+    int strength = securityProperties.getBcryptEncoderStrength();
     return new BCryptPasswordEncoder(strength);
   }
 

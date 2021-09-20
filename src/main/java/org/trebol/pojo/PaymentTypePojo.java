@@ -42,10 +42,7 @@ public class PaymentTypePojo {
       return false;
     }
     final PaymentTypePojo other = (PaymentTypePojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.name, other.name);
   }
 
   @Override

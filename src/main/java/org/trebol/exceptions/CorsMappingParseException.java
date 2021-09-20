@@ -7,7 +7,7 @@ package org.trebol.exceptions;
 public class CorsMappingParseException
     extends Exception {
 
-  private String corsMapping;
+  private final String corsMapping;
 
   public CorsMappingParseException(String corsMapping) {
     super();

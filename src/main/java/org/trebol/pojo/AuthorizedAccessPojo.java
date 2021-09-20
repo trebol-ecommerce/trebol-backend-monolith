@@ -55,10 +55,7 @@ public class AuthorizedAccessPojo {
     if (!Objects.equals(this.routes, other.routes)) {
       return false;
     }
-    if (!Objects.equals(this.permissions, other.permissions)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.permissions, other.permissions);
   }
 
   @Override
