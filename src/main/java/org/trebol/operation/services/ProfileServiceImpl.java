@@ -6,6 +6,7 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.PersonNotFoundException;
@@ -29,7 +30,6 @@ public class ProfileServiceImpl
   public ProfileServiceImpl(IUsersJpaRepository usersRepository,
                             GenericJpaService<PersonPojo, Person> peopleService,
                             IPeopleJpaRepository peopleRepository) {
-    super();
     this.usersRepository = usersRepository;
     this.peopleService = peopleService;
     this.peopleRepository = peopleRepository;
@@ -37,37 +37,50 @@ public class ProfileServiceImpl
 
   @Override
   public PersonPojo getProfileFromUserName(String userName) throws NotFoundException {
-    Person person = this.getPersonEntityFromRelatedUserName(userName);
-    return peopleService.convertToPojo(person);
+    User user = this.getUserFromName(userName);
+    Person person = user.getPerson();
+    if (person == null) {
+      throw new PersonNotFoundException("The account does not have an associated profile");
+    } else {
+      return peopleService.convertToPojo(person);
+    }
   }
 
+  @Transactional
   @Override
   public void updateProfileForUserWithName(String userName, PersonPojo profile)
           throws BadInputException, UserNotFoundException {
-    Person target;
-    try {
-      target = this.getPersonEntityFromRelatedUserName(userName);
-    } catch (PersonNotFoundException ex) {
+    User targetUser = this.getUserFromName(userName);
+    Person target = targetUser.getPerson();
+    if (target == null) {
       Optional<Person> existingProfile = peopleService.getExisting(profile);
       if (existingProfile.isPresent()) {
-        throw new BadInputException("Person profile already has another account, please log in to that one.");
+        Person person = existingProfile.get();
+        Optional<User> userByIdNumber = usersRepository.findByPersonIdNumber(person.getIdNumber());
+        if (userByIdNumber.isPresent()) {
+          throw new BadInputException("Person profile is associated to another account. Cannot use it.");
+        } else {
+          targetUser.setPerson(person);
+          usersRepository.saveAndFlush(targetUser);
+        }
       } else {
-        target = peopleService.convertToNewEntity(profile);
+        Person newProfile = peopleService.convertToNewEntity(profile);
+        newProfile = peopleRepository.saveAndFlush(newProfile);
+        targetUser.setPerson(newProfile);
+        usersRepository.saveAndFlush(targetUser);
       }
+    } else {
+      target = peopleService.applyChangesToExistingEntity(profile, target);
+      peopleRepository.saveAndFlush(target);
     }
-    peopleService.applyChangesToExistingEntity(profile, target);
-    peopleRepository.saveAndFlush(target);
   }
 
-  private Person getPersonEntityFromRelatedUserName(String userName)
-          throws UserNotFoundException, PersonNotFoundException {
+  private User getUserFromName(String userName) throws UserNotFoundException {
     Optional<User> userByName = usersRepository.findByName(userName);
     if (userByName.isEmpty()) {
       throw new UserNotFoundException("There is no account with the specified username");
-    } else if (userByName.get().getPerson() == null) {
-      throw new PersonNotFoundException("The specified user does not have a person profile associated to it");
     } else {
-      return userByName.get().getPerson();
+      return userByName.get();
     }
   }
 }

@@ -47,7 +47,7 @@ public class User
   @Size(min = 1, max = 100)
   @Column(name = "user_password")
   private String password;
-  @JoinColumn(name = "person_id", referencedColumnName = "person_id", updatable = false)
+  @JoinColumn(name = "person_id", referencedColumnName = "person_id")
   @ManyToOne(fetch = FetchType.LAZY)
   private Person person;
   @JoinColumn(name = "user_role_id", referencedColumnName = "user_role_id")
