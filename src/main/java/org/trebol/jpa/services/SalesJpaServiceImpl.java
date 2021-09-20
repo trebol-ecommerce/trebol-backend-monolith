@@ -26,35 +26,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.pojo.AddressPojo;
-import org.trebol.pojo.BillingCompanyPojo;
-import org.trebol.jpa.entities.QSell;
-import org.trebol.pojo.CustomerPojo;
-import org.trebol.pojo.ProductPojo;
-import org.trebol.pojo.SellDetailPojo;
-import org.trebol.pojo.SellPojo;
-import org.trebol.pojo.SalespersonPojo;
+import org.trebol.jpa.entities.*;
+import org.trebol.jpa.repositories.*;
+import org.trebol.pojo.*;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.GenericJpaService;
-import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.ISalesJpaService;
-import org.trebol.jpa.entities.Address;
-import org.trebol.jpa.entities.BillingCompany;
-import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.entities.PaymentType;
-import org.trebol.jpa.entities.Product;
-import org.trebol.jpa.repositories.IAddressesJpaRepository;
-import org.trebol.jpa.repositories.IBillingCompaniesJpaRepository;
-import org.trebol.jpa.repositories.IBillingTypesJpaRepository;
-import org.trebol.jpa.repositories.ICustomersJpaRepository;
-import org.trebol.jpa.repositories.IPaymentTypesJpaRepository;
-import org.trebol.jpa.repositories.IProductsJpaRepository;
-import org.trebol.jpa.repositories.ISalesJpaRepository;
-import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
 
 /**
  *
@@ -71,6 +48,7 @@ public class SalesJpaServiceImpl
   private final IBillingTypesJpaRepository billingTypesRepository;
   private final IPaymentTypesJpaRepository paymentTypesRepository;
   private final IBillingCompaniesJpaRepository billingCompaniesRepository;
+  private final IShippersJpaRepository shippersRepository;
   private final IAddressesJpaRepository addressesRepository;
   private final GenericJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesService;
   private final GenericJpaService<CustomerPojo, Customer> customersService;
@@ -85,6 +63,7 @@ public class SalesJpaServiceImpl
                              ISellStatusesJpaRepository statusesRepository, IBillingTypesJpaRepository billingTypesRepository,
                              IBillingCompaniesJpaRepository billingCompaniesRepository, IPaymentTypesJpaRepository paymentTypesRepository,
                              IAddressesJpaRepository addressesRepository,
+                             IShippersJpaRepository shippersRepository,
                              GenericJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesService,
                              GenericJpaService<CustomerPojo, Customer> customersService,
                              GenericJpaService<SalespersonPojo, Salesperson> salespeopleService,
@@ -98,6 +77,7 @@ public class SalesJpaServiceImpl
     this.billingCompaniesRepository = billingCompaniesRepository;
     this.paymentTypesRepository = paymentTypesRepository;
     this.addressesRepository = addressesRepository;
+    this.shippersRepository = shippersRepository;
     this.billingCompaniesService = billingCompaniesService;
     this.customersService = customersService;
     this.salespeopleService = salespeopleService;
@@ -168,6 +148,8 @@ public class SalesJpaServiceImpl
     this.applyCustomer(source, target);
     this.applyBillingAddress(source, target);
     this.applyShippingAddress(source, target);
+    // TODO uncomment when shipper API is included
+    // this.applyShipper(source, target);
     this.applyDetails(source, target);
 
     return target;
@@ -184,6 +166,8 @@ public class SalesJpaServiceImpl
     this.applyCustomer(source, target);
     this.applyBillingAddress(source, target);
     this.applyShippingAddress(source, target);
+    // TODO uncomment when shipper API is included
+    // this.applyShipper(source, target);
     this.applyDetails(source, target);
 
     return target;
@@ -390,6 +374,23 @@ public class SalesJpaServiceImpl
         target.setShippingAddress(targetAddress);
       } catch (BadInputException ex) {
         throw new BadInputException("The provided shipping address is not valid");
+      }
+    }
+  }
+
+  private void applyShipper(SellPojo source, Sell target) throws BadInputException {
+    ShipperPojo sourceShipper = source.getShipper();
+    if (sourceShipper != null) {
+      Set<ConstraintViolation<ShipperPojo>> validations = validator.validate(sourceShipper);
+      if (!validations.isEmpty()) {
+        throw new BadInputException("Invalid shipper");
+      } else {
+        Optional<Shipper> byName = shippersRepository.findByName(sourceShipper.getName());
+        if (byName.isEmpty()) {
+          throw new BadInputException("The specified shipper does not exist");
+        } else {
+          target.setShipper(byName.get());
+        }
       }
     }
   }
