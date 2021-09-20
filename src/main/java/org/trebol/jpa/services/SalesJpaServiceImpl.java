@@ -25,6 +25,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.pojo.AddressPojo;
 import org.trebol.pojo.BillingCompanyPojo;
 import org.trebol.jpa.entities.QSell;
@@ -103,6 +104,14 @@ public class SalesJpaServiceImpl
     this.customersRepository = customersRepository;
     this.productsRepository = productsRepository;
     this.validator = validator;
+  }
+
+  @Transactional
+  @Override
+  public SellPojo create(SellPojo inputPojo) throws BadInputException, EntityAlreadyExistsException {
+    Sell input = this.convertToNewEntity(inputPojo);
+    Sell output = repository.saveAndFlush(input);
+    return this.convertToPojo(output);
   }
 
   @Override
@@ -353,15 +362,11 @@ public class SalesJpaServiceImpl
       throw new BadInputException("Customer must posess valid personal information");
     } else {
       Optional<Customer> existing = customersService.getExisting(sourceCustomer);
-      if (existing.isPresent()) {
-        Customer existingCustomer = existing.get();
-        Customer targetCustomer = customersService.applyChangesToExistingEntity(sourceCustomer, existingCustomer);
-        target.setCustomer(targetCustomer);
-      } else {
-        Customer newCustomer = customersService.convertToNewEntity(sourceCustomer);
-        newCustomer = customersRepository.saveAndFlush(newCustomer);
-        target.setCustomer(newCustomer);
-      }
+      Customer targetCustomer = (existing.isPresent()) ?
+              customersService.applyChangesToExistingEntity(sourceCustomer, existing.get()) :
+              customersService.convertToNewEntity(sourceCustomer);
+      targetCustomer = customersRepository.saveAndFlush(targetCustomer);
+      target.setCustomer(targetCustomer);
     }
   }
 

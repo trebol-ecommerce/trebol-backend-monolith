@@ -20,7 +20,6 @@ public class SellDetailPojo {
   @Min(1)
   private int units;
   @NotNull
-  @Valid
   private ProductPojo product;
 
   public Long getId() {
