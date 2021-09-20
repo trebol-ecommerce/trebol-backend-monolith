@@ -63,7 +63,7 @@ public class Sell
   @Column(name = "sell_transaction_token")
   private String transactionToken;
   @JoinColumn(name = "customer_id")
-  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
   private Customer customer;
   @JoinColumn(name = "payment_type_id", updatable = false, nullable = false)
   @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
