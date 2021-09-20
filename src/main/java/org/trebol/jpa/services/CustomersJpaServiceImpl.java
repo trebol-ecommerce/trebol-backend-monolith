@@ -62,13 +62,13 @@ public class CustomersJpaServiceImpl
   @Override
   public Customer applyChangesToExistingEntity(CustomerPojo source, Customer existing) throws BadInputException {
     Customer target = new Customer(existing);
-    Person targetPerson = target.getPerson();
+    Person existingPerson = existing.getPerson();
 
     PersonPojo sourcePerson = source.getPerson();
     if (sourcePerson == null) {
       throw new BadInputException("Customer must have a person profile");
     }
-    Person person = peopleService.applyChangesToExistingEntity(sourcePerson, targetPerson);
+    Person person = peopleService.applyChangesToExistingEntity(sourcePerson, existingPerson);
     target.setPerson(person);
 
     return target;
