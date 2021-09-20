@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @Configuration
-@ConfigurationProperties(prefix = "application.security")
+@ConfigurationProperties(prefix = "trebol.security")
 public class SecurityProperties {
 
   @NotBlank

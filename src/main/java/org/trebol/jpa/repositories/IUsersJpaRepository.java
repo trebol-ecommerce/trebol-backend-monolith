@@ -27,4 +27,7 @@ public interface IUsersJpaRepository
 
   @Query("SELECT u FROM User u JOIN FETCH u.person WHERE u.id = :id")
   Optional<User> findByIdWithProfile(@Param("id") Long id);
+
+  @Query("SELECT u FROM User u JOIN FETCH u.person p WHERE p.idNumber = :idNumber")
+  Optional<User> findByPersonIdNumber(@Param("idNumber") String idNumber);
 }

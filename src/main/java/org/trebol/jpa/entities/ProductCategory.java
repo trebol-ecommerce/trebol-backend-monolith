@@ -37,11 +37,17 @@ public class ProductCategory
   @Size(min = 1, max = 100)
   @Column(name = "product_category_name")
   private String name;
-  @JoinColumn(name = "parent_product_category_id", referencedColumnName = "product_category_id", insertable = true, updatable = true)
-  @ManyToOne(optional = true, fetch = FetchType.LAZY)
+  @JoinColumn(name = "parent_product_category_id", referencedColumnName = "product_category_id")
+  @ManyToOne(fetch = FetchType.LAZY)
   private ProductCategory parent;
 
   public ProductCategory() { }
+
+  public ProductCategory(ProductCategory source) {
+    this.id = source.id;
+    this.name = source.name;
+    this.parent = source.parent;
+  }
 
   public Long getId() {
     return id;
@@ -94,10 +100,7 @@ public class ProductCategory
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.parent, other.parent)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.parent, other.parent);
   }
 
   @Override

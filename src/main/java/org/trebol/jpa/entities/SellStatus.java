@@ -41,6 +41,12 @@ public class SellStatus
 
   public SellStatus() { }
 
+  public SellStatus(SellStatus source) {
+    this.id = source.id;
+    this.code = source.code;
+    this.name = source.name;
+  }
+
   public Long getId() {
     return id;
   }
@@ -92,10 +98,7 @@ public class SellStatus
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.code, other.code)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.code, other.code);
   }
 
   @Override

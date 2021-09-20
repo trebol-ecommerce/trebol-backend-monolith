@@ -3,7 +3,7 @@ package org.trebol.converters.topojo;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import org.trebol.api.pojo.BillingTypePojo;
+import org.trebol.pojo.BillingTypePojo;
 import org.trebol.jpa.entities.BillingType;
 
 /**

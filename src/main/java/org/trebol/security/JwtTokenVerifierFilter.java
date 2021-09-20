@@ -2,12 +2,12 @@ package org.trebol.security;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +49,7 @@ public class JwtTokenVerifierFilter
   }
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+  protected void doFilterInternal(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull FilterChain filterChain)
       throws ServletException, IOException, IllegalStateException {
 
     String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);

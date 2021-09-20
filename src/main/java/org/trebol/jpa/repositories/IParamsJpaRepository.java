@@ -15,6 +15,6 @@ public interface IParamsJpaRepository
     extends IJpaRepository<Param> {
 
   @Query("SELECT p FROM Param p WHERE p.category = :category")
-  public Iterable<Param> findParamsByCategory(
+  Iterable<Param> findParamsByCategory(
       @org.springframework.data.repository.query.Param("category") String category);
 }

@@ -34,14 +34,20 @@ public class ProductImage
   @Basic(optional = false)
   @Column(name = "product_image_id")
   private Long id;
-  @JoinColumn(name = "image_id", referencedColumnName = "image_id", insertable = true, updatable = false)
+  @JoinColumn(name = "image_id", referencedColumnName = "image_id", updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Image image;
-  @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = true, updatable = false)
+  @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Product product;
 
   public ProductImage() { }
+
+  public ProductImage(ProductImage source) {
+    this.id = source.id;
+    this.image = source.image;
+    this.product = source.product;
+  }
 
   public Long getId() {
       return id;
@@ -94,10 +100,7 @@ public class ProductImage
     if (!Objects.equals(this.image, other.image)) {
       return false;
     }
-    if (!Objects.equals(this.product, other.product)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.product, other.product);
   }
 
   @Override

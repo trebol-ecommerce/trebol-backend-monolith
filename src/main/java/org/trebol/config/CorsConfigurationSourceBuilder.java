@@ -1,6 +1,7 @@
 package org.trebol.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -35,10 +36,7 @@ public class CorsConfigurationSourceBuilder {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     for (String path : corsMappings.keySet()) {
 
-      List<String> methods = new ArrayList<>();
-      for (String m : corsMappings.get(path).split(",")) {
-        methods.add(m);
-      }
+      List<String> methods = Arrays.asList(corsMappings.get(path).split(","));
       CorsConfiguration pathConfig = new CorsConfiguration(baseConfig);
       pathConfig.setAllowedOrigins(allowedOrigins);
       pathConfig.setAllowedMethods(methods);

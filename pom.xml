@@ -11,11 +11,11 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>org.trebol</groupId>
-  <artifactId>trebol-backend</artifactId>
+  <artifactId>spring-boot-backend</artifactId>
   <packaging>war</packaging>
-  <version>0.23.3.0</version>
+  <version>1.0.0</version>
 
-  <name>Trébol Backend</name>
+  <name>Trébol Spring Boot Backend</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,7 +24,6 @@
     <java.ee.version>7.0</java.ee.version>
     <querydsl.generated.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.generated.dir>
     <querydsl.generated.version>4.2.2</querydsl.generated.version>
-    <springfox.version>3.0.0</springfox.version>
     <jjwt.version>0.11.2</jjwt.version>
   </properties>
   
@@ -82,13 +81,6 @@
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>
       <type>jar</type>
-    </dependency>
-
-    <!-- Springfox Swagger -->
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-boot-starter</artifactId>
-      <version>${springfox.version}</version>
     </dependency>
 
     <!-- Supported database drivers -->

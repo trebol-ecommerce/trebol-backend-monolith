@@ -53,11 +53,22 @@ public class Product
   @Basic(optional = false)
   @Column(name = "product_stock_critical")
   private int stockCritical;
-  @JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id", insertable = true, updatable = true)
-  @ManyToOne(optional = true, fetch = FetchType.LAZY)
+  @JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id")
+  @ManyToOne(fetch = FetchType.LAZY)
   private ProductCategory productCategory;
 
   public Product() { }
+
+  public Product(Product source) {
+    this.id = source.id;
+    this.name = source.name;
+    this.barcode = source.barcode;
+    this.description = source.description;
+    this.price = source.price;
+    this.stockCurrent = source.stockCurrent;
+    this.stockCritical = source.stockCritical;
+    this.productCategory = source.productCategory;
+  }
 
   public Long getId() {
     return id;
@@ -170,10 +181,7 @@ public class Product
     if (!Objects.equals(this.id, other.id)) {
       return false;
     }
-    if (!Objects.equals(this.productCategory, other.productCategory)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.productCategory, other.productCategory);
   }
 
   @Override

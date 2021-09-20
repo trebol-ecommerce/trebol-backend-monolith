@@ -3,7 +3,7 @@ package org.trebol.converters.topojo;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import org.trebol.api.pojo.SellStatusPojo;
+import org.trebol.pojo.SellStatusPojo;
 import org.trebol.jpa.entities.SellStatus;
 
 /**

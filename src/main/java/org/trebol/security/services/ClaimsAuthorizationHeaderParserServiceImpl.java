@@ -2,7 +2,6 @@ package org.trebol.security.services;
 
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -34,8 +33,7 @@ public class ClaimsAuthorizationHeaderParserServiceImpl
           .build()
           .parseClaimsJws(token);
 
-      Claims body = claimsJws.getBody();
-      return body;
+      return claimsJws.getBody();
     } catch (JwtException e) {
       throw new IllegalStateException(String.format("Token %s can't be trusted", token));
     }
@@ -45,12 +43,7 @@ public class ClaimsAuthorizationHeaderParserServiceImpl
   @Override
   public String extractAuthorizationHeader(HttpHeaders httpHeaders) {
     String authHeaderKey = HttpHeaders.AUTHORIZATION;
-    if (httpHeaders.containsKey(authHeaderKey)) {
-      String value = httpHeaders.getFirst(authHeaderKey);
-      return value;
-    } else {
-      return null;
-    }
+    return httpHeaders.containsKey(authHeaderKey) ? httpHeaders.getFirst(authHeaderKey) : null;
   }
 
 }

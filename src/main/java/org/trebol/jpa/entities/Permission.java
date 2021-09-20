@@ -92,10 +92,7 @@ public class Permission
     if (!Objects.equals(this.description, other.description)) {
       return false;
     }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.id, other.id);
   }
 
   @Override

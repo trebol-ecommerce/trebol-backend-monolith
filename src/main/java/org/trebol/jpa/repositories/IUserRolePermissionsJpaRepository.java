@@ -16,5 +16,5 @@ public interface IUserRolePermissionsJpaRepository
   extends IJpaRepository<UserRolePermission> {
 
   @Query("SELECT urp FROM UserRolePermission urp JOIN FETCH urp.permission WHERE urp.userRole.id = :userRoleId")
-  public Iterable<UserRolePermission> deepFindPermissionsByUserRoleId(@Param("userRoleId") Long userRoleId);
+  Iterable<UserRolePermission> deepFindPermissionsByUserRoleId(@Param("userRoleId") Long userRoleId);
 }

@@ -60,6 +60,15 @@ public class Person
 
   public Person() { }
 
+  public Person(Person source) {
+    this.id = source.id;
+    this.name = source.name;
+    this.idNumber = source.idNumber;
+    this.email = source.email;
+    this.phone1 = source.phone1;
+    this.phone2 = source.phone2;
+  }
+
   public Long getId() {
     return id;
   }
@@ -147,10 +156,7 @@ public class Person
     if (!Objects.equals(this.phone1, other.phone1)) {
       return false;
     }
-    if (!Objects.equals(this.phone2, other.phone2)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.phone2, other.phone2);
   }
 
   @Override

@@ -48,6 +48,12 @@ public class BillingCompany
 
   public BillingCompany() { }
 
+  public BillingCompany(BillingCompany source) {
+    this.id = source.id;
+    this.name = source.name;
+    this.idNumber = source.idNumber;
+  }
+
   public Long getId() {
     return id;
   }
@@ -99,10 +105,7 @@ public class BillingCompany
     if (!Objects.equals(this.idNumber, other.idNumber)) {
       return false;
     }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.id, other.id);
   }
 
   @Override

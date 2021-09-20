@@ -19,10 +19,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.trebol.api.pojo.CustomerPojo;
+import org.trebol.pojo.CustomerPojo;
 import org.trebol.exceptions.CorsMappingParseException;
 
-import org.trebol.jpa.GenericJpaCrudService;
+import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.security.JwtGuestAuthenticationFilter;
 import org.trebol.security.JwtTokenVerifierFilter;
@@ -30,7 +30,7 @@ import org.trebol.security.JwtLoginAuthenticationFilter;
 import org.trebol.security.IAuthorizationHeaderParserService;
 
 @Configuration
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig
     extends WebSecurityConfigurerAdapter {
@@ -40,12 +40,12 @@ public class SecurityConfig
   private final SecurityProperties securityProperties;
   private final CorsProperties corsProperties;
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
-  private final GenericJpaCrudService<CustomerPojo, Customer> customersService;
+  private final GenericJpaService<CustomerPojo, Customer> customersService;
 
   @Autowired
   public SecurityConfig(UserDetailsService userDetailsService, SecretKey secretKey,
     SecurityProperties securityProperties, IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-    CorsProperties corsProperties, GenericJpaCrudService<CustomerPojo, Customer> customersService) {
+    CorsProperties corsProperties, GenericJpaService<CustomerPojo, Customer> customersService) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.securityProperties = securityProperties;
@@ -138,7 +138,7 @@ public class SecurityConfig
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    Integer strength = securityProperties.getBcryptEncoderStrength();
+    int strength = securityProperties.getBcryptEncoderStrength();
     return new BCryptPasswordEncoder(strength);
   }
 

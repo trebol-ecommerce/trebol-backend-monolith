@@ -38,6 +38,11 @@ public class BillingType
 
   public BillingType() { }
 
+  public BillingType(BillingType source) {
+    this.id = source.id;
+    this.name = source.name;
+  }
+
   public Long getId() {
     return id;
   }
@@ -77,10 +82,7 @@ public class BillingType
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.id, other.id);
   }
 
   @Override

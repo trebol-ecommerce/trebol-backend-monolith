@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import org.trebol.jpa.entities.Permission;
 import org.trebol.jpa.entities.User;
-import org.trebol.api.pojo.UserDetailsPojo;
+import org.trebol.pojo.UserDetailsPojo;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.security.IUserPermissionsService;
 
@@ -58,11 +58,8 @@ public class UserDetailsServiceImpl
       User user = foundUser.get();
       Iterable<Permission> permissions = userPermissionsService.loadPermissionsForUser(user);
       List<SimpleGrantedAuthority> authorities = convertPermissionList(permissions);
-      UserDetailsPojo userDetails = new UserDetailsPojo(authorities,
-          username,
-          user.getPassword(),
+      return new UserDetailsPojo(authorities, username, user.getPassword(),
           true, true, true, true);
-      return userDetails;
     } else {
       throw new UsernameNotFoundException(username);
     }

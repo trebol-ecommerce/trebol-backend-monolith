@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import org.trebol.api.pojo.ReceiptPojo;
+import org.trebol.pojo.ReceiptPojo;
 import org.trebol.jpa.entities.Sell;
 
 /**

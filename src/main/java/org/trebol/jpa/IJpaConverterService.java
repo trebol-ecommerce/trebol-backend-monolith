@@ -18,18 +18,18 @@ public interface IJpaConverterService<P, E> {
    * This method DOES NOT persist said entity.
    * @param source The source Pojo.
    * @return A new entity, prepared to be saved to the database.
-   * @throws BadInputException
+   * @throws BadInputException If the source object does not include required data or has invalid values
    */
   E convertToNewEntity(P source) throws BadInputException;
 
   /**
-   * Accurately updates the entity class instance with new data from a Pojo, property-by-property.
-   * This method DOES NOT persist said new data.
+   * Creates a clone entity, then updates it with new data from a Pojo class, putting differences
+   * property-by-property. This method DOES NOT persist the aforementioned entity.
    * @param source The Pojo containing data updates.
    * @param target The target entity.
-   * @throws BadInputException
+   * @throws BadInputException If the object with changes has invalid values
    */
-  void applyChangesToExistingEntity(P source, E target) throws BadInputException;
+  E applyChangesToExistingEntity(P source, E target) throws BadInputException;
 
   /**
    * Converts an existing Entity to its Pojo equivalent.

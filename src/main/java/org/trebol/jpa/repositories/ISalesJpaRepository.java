@@ -29,11 +29,11 @@ public interface ISalesJpaRepository
   @Query("UPDATE Sell s "
       + "SET s.status = :status "
       + "WHERE s.id = :id")
-  public Integer setStatus(@Param("id") Long id, @Param("status") SellStatus status);
+  int setStatus(@Param("id") Long id, @Param("status") SellStatus status);
 
   @Modifying
   @Query("UPDATE Sell s "
       + "SET s.transactionToken = :token "
       + "WHERE s.id = :id")
-  public Integer setTransactionToken(@Param("id") Long id, @Param("token") String token);
+  int setTransactionToken(@Param("id") Long id, @Param("token") String token);
 }

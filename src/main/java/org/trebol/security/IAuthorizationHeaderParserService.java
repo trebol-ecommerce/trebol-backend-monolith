@@ -20,13 +20,11 @@ public interface IAuthorizationHeaderParserService<T> {
    * @return The value for the Authorization header, or null if not found
    */
   @Nullable
-  public String extractAuthorizationHeader(HttpHeaders httpHeaders);
+  String extractAuthorizationHeader(HttpHeaders httpHeaders);
 
   /**
-   * Parse a full Authorization header into the expected token body class
-   *
-   * @param authorizationHeader
-   * @return
+   * @param authorizationHeader The Authorization header value
+   * @return The expected token class
    */
-  public T parseToken(String authorizationHeader);
+  T parseToken(String authorizationHeader) throws IllegalStateException;
 }

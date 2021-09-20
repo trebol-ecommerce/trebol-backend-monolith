@@ -14,7 +14,7 @@ import org.trebol.exceptions.CorsMappingParseException;
 
 @Validated
 @Configuration
-@ConfigurationProperties(prefix = "application.cors")
+@ConfigurationProperties(prefix = "trebol.cors")
 public class CorsProperties {
 
   @NotBlank
@@ -71,7 +71,7 @@ public class CorsProperties {
   public Map<String, String> getMappingsAsMap() throws CorsMappingParseException {
     Map<String, String> map = new HashMap<>();
 
-    for (String m : Arrays.asList(mappings.split(listDelimiter))) {
+    for (String m : mappings.split(listDelimiter)) {
       String[] mapping = m.split(" ");
       try {
         String method = mapping[0] + ",HEAD,OPTIONS";

@@ -15,5 +15,5 @@ import org.trebol.jpa.IJpaRepository;
 public interface ISellStatusesJpaRepository
   extends IJpaRepository<SellStatus> {
 
-  public Optional<SellStatus> findByName(String name);
+  Optional<SellStatus> findByName(String name);
 }

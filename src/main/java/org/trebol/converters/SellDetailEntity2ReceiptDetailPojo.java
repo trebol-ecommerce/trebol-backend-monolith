@@ -3,7 +3,7 @@ package org.trebol.converters;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import org.trebol.api.pojo.ReceiptDetailPojo;
+import org.trebol.pojo.ReceiptDetailPojo;
 import org.trebol.jpa.entities.SellDetail;
 
 /**

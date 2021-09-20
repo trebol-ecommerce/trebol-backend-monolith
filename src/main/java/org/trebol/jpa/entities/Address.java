@@ -54,19 +54,26 @@ public class Address
   @Size(max = 100)
   @Column(name = "address_first_line")
   private String firstLine;
-  @Basic(optional = true)
   @Size(max = 50)
   @Column(name = "address_second_line")
   private String secondLine;
-  @Basic(optional = true)
   @Column(name = "address_postal_code")
   private String postalCode;
-  @Basic(optional = true)
   @Size(max = 50)
   @Column(name = "address_notes")
   private String notes;
 
   public Address() { }
+
+  public Address(Address source) {
+    this.id = source.id;
+    this.city = source.city;
+    this.municipality = source.municipality;
+    this.firstLine = source.firstLine;
+    this.secondLine = source.secondLine;
+    this.postalCode = source.postalCode;
+    this.notes = source.notes;
+  }
 
   public Long getId() {
     return id;
@@ -163,10 +170,7 @@ public class Address
     if (!Objects.equals(this.postalCode, other.postalCode)) {
       return false;
     }
-    if (!Objects.equals(this.notes, other.notes)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.notes, other.notes);
   }
 
   @Override

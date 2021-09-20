@@ -75,10 +75,7 @@ public class Shipper
       return false;
     }
     final Shipper other = (Shipper)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    return true;
+    return Objects.equals(this.name, other.name);
   }
 
   @Override

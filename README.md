@@ -3,16 +3,21 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-This application is the main backend to the virtual web store app Trébol. 
-It's meant to implement the 
-[Trébol API](https://github.com/trebol-ecommerce/trebol-api).
-Written using Java 8, Maven and current libraries and frameworks:
-* Spring Boot
-* Spring Web MVC
-* Spring Data JPA w/ QueryDSL
-* Spring Security
-* JJWT
-* Transbank/Webpay Plus SDK
+This application powers a complete implemented backend for the eCommerce project Trébol.
+
+## Features:
+* A [REST API designed accordingly to the OpenAPI 3 standard](https://github.com/trebol-ecommerce/trebol-api).
+* Compatibility with any JDBC driver supported by Spring Data JDBC. Default bundle comes with H2 and MariaDB dependencies.
+* Supports managing information about billing/shipping addresses, customers, products, images, categories, sales, salespeople, shippers, users, user roles.
+* Stateless session authentication/autorization, pairing JWT with a entity-relationship model of users, roles, and permissions.
+* Passwords are encoded using BCrypt.
+* Supports registering new user accounts and requesting checkout-only temporary guest sessions.
+* Currently only allows payment using Webpay Plus (service that accepts chilean credit and debit cards).
+* And all other Spring Boot/Data JPA/Security goodness!
+
+## Roadmap
+
+Please see the issues section.
 
 ## Requirements
 
@@ -21,11 +26,11 @@ Written using Java 8, Maven and current libraries and frameworks:
 
 ## Configuration & Execution
 
-Base settings are set in the default configuration profile, which is located 
+Base settings are set in the default configuration profile, which is located
 at `/src/main/resources/application.properties`.
-You can "just" run the application out-of-the-box with these, though you'll 
+You can "just" run the application out-of-the-box with these, though you'll
 probably want to change the database driver and URL, between other things.
-The aforementioned file also has instructions to set things up and running, so 
+The aforementioned file also has instructions to set things up and running, so
 go ahead and read it if you're curious.
 
 ## Contributors ✨
