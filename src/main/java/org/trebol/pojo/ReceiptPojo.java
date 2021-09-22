@@ -1,5 +1,6 @@
 package org.trebol.pojo;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ public class ReceiptPojo {
   private long buyOrder;
   private int amount;
   private Collection<ReceiptDetailPojo> details;
-  private String date;
+  private Instant date;
   private String status;
 
   public long getBuyOrder() {
@@ -41,11 +42,11 @@ public class ReceiptPojo {
     this.details = details;
   }
 
-  public String getDate() {
+  public Instant getDate() {
     return date;
   }
 
-  public void setDate(String date) {
+  public void setDate(Instant date) {
     this.date = date;
   }
 

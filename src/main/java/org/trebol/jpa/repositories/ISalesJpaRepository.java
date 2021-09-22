@@ -20,6 +20,8 @@ import org.trebol.jpa.IJpaRepository;
 public interface ISalesJpaRepository
   extends IJpaRepository<Sell> {
 
+  Optional<Sell> findByTransactionToken(String token);
+
   @Query(value = "SELECT s FROM Sell s "
       + "JOIN FETCH s.details "
       + "WHERE s.id = :id")

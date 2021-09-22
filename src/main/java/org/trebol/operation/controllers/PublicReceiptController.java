@@ -30,12 +30,12 @@ public class PublicReceiptController {
     this.receiptService = receiptService;
   }
 
-  @GetMapping({"/{id}", "/{id}/"})
-  public ReceiptPojo fetchReceiptById(@PathVariable("id") Integer id)
+  @GetMapping({"/{token}", "/{token}/"})
+  public ReceiptPojo fetchReceiptById(@PathVariable("token") String token)
     throws NotFoundException {
-    if (id == null) {
-      throw new RuntimeException("An incorrect receipt id was provided");
+    if (token == null) {
+      throw new RuntimeException("An incorrect receipt token was provided");
     }
-    return this.receiptService.fetchReceiptById(id);
+    return this.receiptService.fetchReceiptByTransactionToken(token);
   }
 }

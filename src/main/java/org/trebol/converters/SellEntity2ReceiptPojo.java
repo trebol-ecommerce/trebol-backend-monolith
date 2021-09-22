@@ -21,7 +21,7 @@ public class SellEntity2ReceiptPojo
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMdd");
     ReceiptPojo target = new ReceiptPojo();
     target.setBuyOrder(source.getId());
-    target.setDate(dateFormat.format(source.getDate()));
+    target.setDate(source.getDate());
     target.setAmount(source.getTotalValue());
     return target;
   }
