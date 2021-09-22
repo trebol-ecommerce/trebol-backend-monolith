@@ -13,7 +13,7 @@
   <groupId>org.trebol</groupId>
   <artifactId>spring-boot-backend</artifactId>
   <packaging>war</packaging>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 
   <name>Trébol Spring Boot Backend</name>
 

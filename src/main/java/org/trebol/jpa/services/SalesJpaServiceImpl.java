@@ -217,7 +217,12 @@ public class SalesJpaServiceImpl
           case "date":
             predicate.and(qSell.date.eq(Instant.parse(stringValue)));
             break;
-          // TODO add more filters
+          case "statusName":
+            predicate.and(qSell.status.name.eq(stringValue));
+            break;
+          case "token":
+            predicate.and(qSell.transactionToken.eq(stringValue));
+            break;
           default:
             break;
         }
