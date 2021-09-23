@@ -2,6 +2,14 @@
  * Author:  Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 
+INSERT INTO `app_params`
+(`param_id`, `param_category`, `param_name`, `param_value`)
+VALUES
+(01, 'company', 'name', 'Trébol Demo'),
+(02, 'company', 'description', 'This is a demostration of integrated eCommerce system Trébol'),
+(03, 'company', 'bannerImageURL', 'https://fakeimg.pl/400x150'),
+(04, 'company', 'logoImageURL', 'https://fakeimg.pl/250');
+
 INSERT INTO `sales_statuses`
 (`sell_status_id`, `sell_status_code`, `sell_status_name`)
 VALUES
