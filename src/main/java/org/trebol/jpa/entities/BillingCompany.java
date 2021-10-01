@@ -24,26 +24,20 @@ import javax.validation.constraints.Size;
 @Table(
   name = "billing_companies",
   uniqueConstraints = @UniqueConstraint(columnNames = {"billing_company_id_number"}))
-@NamedQueries({ @NamedQuery(name = "BillingCompany.findAll", query = "SELECT p FROM BillingCompany p") })
 public class BillingCompany
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "billing_company_id")
+  @Column(name = "billing_company_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 100)
-  @Column(name = "billing_company_name")
+  @Column(name = "billing_company_name", nullable = false)
   private String name;
-  @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 20)
-  @Column(name = "billing_company_id_number")
+  @Column(name = "billing_company_id_number", nullable = false)
   private String idNumber;
 
   public BillingCompany() { }

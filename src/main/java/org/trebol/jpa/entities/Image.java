@@ -20,28 +20,23 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "images")
-@NamedQueries({ @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i") })
 public class Image
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 5L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "image_id")
+  @Column(name = "image_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
   @Size(min = 1, max = 50)
-  @Column(name = "image_code")
+  @Column(name = "image_code", nullable = false)
   private String code;
-  @Basic(optional = false)
   @Size(min = 1, max = 100)
-  @Column(name = "image_filename")
+  @Column(name = "image_filename", nullable = false)
   private String filename;
-  @Basic(optional = false)
   @Size(min = 1, max = 500)
-  @Column(name = "image_url")
+  @Column(name = "image_url", nullable = false)
   private String url;
 
   public Image() { }

@@ -23,19 +23,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "customers")
-@NamedQueries({ @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c") })
 public class Customer
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 4L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "customer_id")
+  @Column(name = "customer_id", nullable = false)
   private Long id;
   @JoinColumn(name = "person_id", referencedColumnName = "person_id")
-  @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToOne(optional = false, cascade = CascadeType.ALL)
   private Person person;
 
   public Customer() { }

@@ -22,17 +22,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "products_images")
-@NamedQueries({
-    @NamedQuery(name = "ProductImage.findAll", query = "SELECT p FROM ProductImage p")})
 public class ProductImage
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 12L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "product_image_id")
+  @Column(name = "product_image_id", nullable = false)
   private Long id;
   @JoinColumn(name = "image_id", referencedColumnName = "image_id", updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)

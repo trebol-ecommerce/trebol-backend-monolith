@@ -20,28 +20,23 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "app_params")
-@NamedQueries({ @NamedQuery(name = "Param.findAll", query = "SELECT p FROM Param p") })
 public class Param
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 6L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "param_id")
+  @Column(name = "param_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
   @Size(min = 1, max = 25)
-  @Column(name = "param_category")
+  @Column(name = "param_category", nullable = false)
   private String category;
-  @Basic(optional = false)
   @Size(min = 1, max = 50)
-  @Column(name = "param_name")
+  @Column(name = "param_name", nullable = false)
   private String name;
-  @Basic(optional = false)
   @Size(min = 1, max = 500)
-  @Column(name = "param_value")
+  @Column(name = "param_value", nullable = false)
   private String value;
 
   public Param() { }
