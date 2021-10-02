@@ -20,20 +20,17 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "app_permissions")
-@NamedQueries({ @NamedQuery(name = "Permission.findAll", query = "SELECT p FROM Permission p") })
 public class Permission
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 8L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "permission_id")
+  @Column(name = "permission_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
   @Size(min = 1, max = 25)
-  @Column(name = "permission_code")
+  @Column(name = "permission_code", nullable = false)
   private String code;
   @Size(max = 100)
   @Column(name = "permission_description")

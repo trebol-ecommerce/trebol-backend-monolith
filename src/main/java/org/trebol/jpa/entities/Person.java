@@ -28,34 +28,27 @@ import javax.validation.constraints.Size;
     @Index(columnList = "person_email")
   },
   uniqueConstraints = @UniqueConstraint(columnNames = {"person_id_number"}))
-@NamedQueries({ @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p") })
 public class Person
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 9L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "person_id")
+  @Column(name = "person_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
   @Size(min = 1, max = 200)
-  @Column(name = "person_name")
+  @Column(name = "person_name", nullable = false)
   private String name;
-  @Basic(optional = false)
   @Size(min = 1, max = 20)
-  @Column(name = "person_id_number")
+  @Column(name = "person_id_number", nullable = false)
   private String idNumber;
-  @Basic(optional = false)
   @Size(min = 5, max = 100)
-  @Column(name = "person_email")
+  @Column(name = "person_email", nullable = false)
   private String email;
-  @Basic(optional = false)
-  @Column(name = "person_phone1")
+  @Column(name = "person_phone1", nullable = false)
   private String phone1 = "";
-  @Basic(optional = false)
-  @Column(name = "person_phone2")
+  @Column(name = "person_phone2", nullable = false)
   private String phone2 = "";
 
   public Person() { }

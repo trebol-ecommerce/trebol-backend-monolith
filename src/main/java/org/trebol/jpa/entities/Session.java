@@ -23,20 +23,17 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "app_sessions")
-@NamedQueries({ @NamedQuery(name = "Session.findAll", query = "SELECT s FROM Session s") })
 public class Session
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 17L;
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "session_id")
+  @Column(name = "session_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
   @Size(min = 32, max = 500)
-  @Column(name = "session_token")
+  @Column(name = "session_token", nullable = false)
   private String token;
   @JoinColumn(name = "user_id", referencedColumnName = "user_id", updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)

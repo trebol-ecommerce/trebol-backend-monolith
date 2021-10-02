@@ -20,20 +20,17 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "billing_types")
-@NamedQueries({ @NamedQuery(name = "BillingType.findAll", query = "SELECT b FROM BillingType b") })
 public class BillingType
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 3L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "billing_type_id")
+  @Column(name = "billing_type_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
   @Size(min = 1, max = 100)
-  @Column(name = "billing_type_name")
+  @Column(name = "billing_type_name", nullable = false)
   private String name;
 
   public BillingType() { }

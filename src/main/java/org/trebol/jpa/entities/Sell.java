@@ -29,35 +29,27 @@ import org.hibernate.annotations.CreationTimestamp;
  */
 @Entity
 @Table(name = "sales")
-@NamedQueries({ @NamedQuery(name = "Sell.findAll", query = "SELECT s FROM Sell s") })
 public class Sell
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 14L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "sell_id")
+  @Column(name = "sell_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
-  @Column(name = "sell_date")
+  @Column(name = "sell_date", nullable = false)
   @CreationTimestamp
   private Instant date;
-  @Basic(optional = false)
-  @Column(name = "sell_total_items")
+  @Column(name = "sell_total_items", nullable = false)
   private int totalItems;
-  @Basic(optional = false)
-  @Column(name = "sell_net_value")
+  @Column(name = "sell_net_value", nullable = false)
   private int netValue;
-  @Basic(optional = false)
-  @Column(name = "sell_transport_value")
+  @Column(name = "sell_transport_value", nullable = false)
   private int transportValue;
-  @Basic(optional = false)
-  @Column(name = "sell_taxes_value")
+  @Column(name = "sell_taxes_value", nullable = false)
   private int taxesValue;
-  @Basic(optional = false)
-  @Column(name = "sell_total_value")
+  @Column(name = "sell_total_value", nullable = false)
   private int totalValue;
   @Size(min = 64, max = 64)
   @Column(name = "sell_transaction_token")

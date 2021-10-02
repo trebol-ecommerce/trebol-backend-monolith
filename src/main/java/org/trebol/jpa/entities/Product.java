@@ -23,20 +23,17 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "products")
-@NamedQueries({ @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p") })
 public class Product
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 10L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "product_id")
+  @Column(name = "product_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
   @Size(min = 1, max = 200)
-  @Column(name = "product_name")
+  @Column(name = "product_name", nullable = false)
   private String name;
   @Size(max = 50)
   @Column(name = "product_code")
@@ -44,14 +41,11 @@ public class Product
   @Size(max = 1000)
   @Column(name = "product_description")
   private String description;
-  @Basic(optional = false)
-  @Column(name = "product_price")
+  @Column(name = "product_price", nullable = false)
   private int price;
-  @Basic(optional = false)
-  @Column(name = "product_stock_current")
+  @Column(name = "product_stock_current", nullable = false)
   private int stockCurrent;
-  @Basic(optional = false)
-  @Column(name = "product_stock_critical")
+  @Column(name = "product_stock_critical", nullable = false)
   private int stockCritical;
   @JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id")
   @ManyToOne(fetch = FetchType.LAZY)

@@ -28,24 +28,20 @@ import javax.validation.constraints.Size;
   name = "app_users",
   indexes = @Index(columnList = "user_name"),
   uniqueConstraints = @UniqueConstraint(columnNames = {"user_name"}))
-@NamedQueries({ @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u") })
 public class User
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 19L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "user_id")
+  @Column(name = "user_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
   @Size(min = 1, max = 50)
-  @Column(name = "user_name")
+  @Column(name = "user_name", nullable = false)
   private String name;
-  @Basic(optional = false)
   @Size(min = 1, max = 100)
-  @Column(name = "user_password")
+  @Column(name = "user_password", nullable = false)
   private String password;
   @JoinColumn(name = "person_id", referencedColumnName = "person_id")
   @ManyToOne(fetch = FetchType.LAZY)

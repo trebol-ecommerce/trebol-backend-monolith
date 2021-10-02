@@ -20,23 +20,19 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "sales_statuses")
-@NamedQueries({ @NamedQuery(name = "SellStatus.findAll", query = "SELECT s FROM SellStatus s") })
 public class SellStatus
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 16L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "sell_status_id")
+  @Column(name = "sell_status_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
-  @Column(name = "sell_status_code")
+  @Column(name = "sell_status_code", nullable = false)
   private Integer code;
-  @Basic(optional = false)
   @Size(min = 1, max = 100)
-  @Column(name = "sell_status_name")
+  @Column(name = "sell_status_name", nullable = false)
   private String name;
 
   public SellStatus() { }

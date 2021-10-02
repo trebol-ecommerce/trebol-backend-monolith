@@ -31,7 +31,6 @@ import javax.validation.constraints.Size;
   uniqueConstraints = @UniqueConstraint(columnNames = {
     "address_city", "address_municipality", "address_first_line",
     "address_second_line", "address_postal_code", "address_notes"}))
-@NamedQueries({ @NamedQuery(name = "Address.findAll", query = "SELECT a FROM Address a") })
 public class Address
   implements Serializable {
 
@@ -39,20 +38,16 @@ public class Address
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "address_id")
+  @Column(name = "address_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
   @Size(max = 50)
-  @Column(name = "address_city")
+  @Column(name = "address_city", nullable = false)
   private String city;
-  @Basic(optional = false)
   @Size(max = 50)
-  @Column(name = "address_municipality")
+  @Column(name = "address_municipality", nullable = false)
   private String municipality;
-  @Basic(optional = false)
   @Size(max = 100)
-  @Column(name = "address_first_line")
+  @Column(name = "address_first_line", nullable = false)
   private String firstLine;
   @Size(max = 50)
   @Column(name = "address_second_line")

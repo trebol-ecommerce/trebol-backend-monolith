@@ -25,20 +25,17 @@ import javax.validation.constraints.Size;
   name = "app_users_roles",
   indexes = @Index(columnList = "user_role_name"),
   uniqueConstraints = @UniqueConstraint(columnNames = {"user_role_name"}))
-@NamedQueries({ @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u") })
 public class UserRole
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 20L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "user_role_id")
+  @Column(name = "user_role_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
   @Size(min = 1, max = 50)
-  @Column(name = "user_role_name")
+  @Column(name = "user_role_name", nullable = false)
   private String name;
 
   public UserRole(UserRole source) {

@@ -22,19 +22,16 @@ import javax.persistence.UniqueConstraint;
 @Table(
   name = "shippers",
   uniqueConstraints = @UniqueConstraint(columnNames = {"shipper_name"}))
-@NamedQueries({ @NamedQuery(name = "Shipper.findAll", query = "SELECT s FROM Shipper s") })
 public class Shipper
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 18L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "shipper_id")
+  @Column(name = "shipper_id", nullable = false)
   private Long id;
-  @Basic(optional = false)
-  @Column(name = "shipper_name")
+  @Column(name = "shipper_name", nullable = false)
   private String name;
 
   public Shipper() { }

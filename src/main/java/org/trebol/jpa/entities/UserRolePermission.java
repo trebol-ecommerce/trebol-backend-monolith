@@ -22,16 +22,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "app_users_roles_permissions")
-@NamedQueries({ @NamedQuery(name = "UserRolePermission.findAll", query = "SELECT u FROM UserRolePermission u") })
 public class UserRolePermission
   implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 21L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Basic(optional = false)
-  @Column(name = "user_role_permission_id")
+  @Column(name = "user_role_permission_id", nullable = false)
   private Long id;
   @JoinColumn(name = "permission_id", referencedColumnName = "permission_id", updatable = false)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
