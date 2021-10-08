@@ -93,6 +93,6 @@ public class DataUsersController
     if(principal.getName().equals(name)){
       throw new BadInputException("A user should not be able to delete their own account");
     }
-    delete(name);
+    this.delete(name);
   }
 }
