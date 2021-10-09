@@ -23,10 +23,19 @@
         "code",
         "design"
       ]
+    },
+    {
+      "login": "trangntt-016",
+      "name": "Trang Nguyen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/60552188?v=4",
+      "profile": "https://github.com/trangntt-016",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "projectName": "trebol-jee",
+  "projectName": "spring-boot-backend",
   "projectOwner": "trebol-ecommerce",
   "repoType": "github",
   "repoHost": "https://github.com",
