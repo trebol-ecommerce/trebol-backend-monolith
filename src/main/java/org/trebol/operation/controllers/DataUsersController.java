@@ -1,5 +1,6 @@
 package org.trebol.operation.controllers;
 
+import java.security.Principal;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -80,10 +81,18 @@ public class DataUsersController
   }
 
   @Override
-  @DeleteMapping({"/{name}", "/{name}/"})
-  @PreAuthorize("hasAuthority('users:delete')")
   public void delete(@PathVariable String name) throws NotFoundException {
     Long userId = this.readOne(name).getId();
     crudService.delete(userId);
+  }
+
+
+  @DeleteMapping({"/{name}", "/{name}/"})
+  @PreAuthorize("hasAuthority('users:delete')")
+  public void delete(Principal principal, @PathVariable String name) throws NotFoundException, BadInputException {
+    if(principal.getName().equals(name)){
+      throw new BadInputException("A user should not be able to delete their own account");
+    }
+    this.delete(name);
   }
 }
