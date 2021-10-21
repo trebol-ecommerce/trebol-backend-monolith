@@ -5,7 +5,9 @@
 
 This application powers a complete implemented backend for the eCommerce project Trébol.
 
+
 ## Features:
+
 * A [REST API designed accordingly to the OpenAPI 3 standard](https://github.com/trebol-ecommerce/trebol-api).
 * Compatibility with any JDBC driver supported by Spring Data JDBC. Default bundle comes with H2 and MariaDB dependencies.
 * Supports managing information about billing/shipping addresses, customers, products, images, categories, sales, salespeople, shippers, users, user roles.
@@ -14,6 +16,7 @@ This application powers a complete implemented backend for the eCommerce project
 * Supports registering new user accounts and requesting checkout-only temporary guest sessions.
 * Currently only allows payment using [Webpay Plus by Transbank](https://transbankdevelopers.cl/producto/webpay) (chilean service that accepts credit and debit cards).
 * And all other Spring Boot/Data JPA/Security goodness!
+
 
 ## Status / Roadmap
 
@@ -44,6 +47,11 @@ You can "just" run the application out-of-the-box with these, though you'll
 probably want to change the database driver and URL, between other things.
 The aforementioned file also has instructions to set things up and running, so
 go ahead and read it if you're curious.
+
+
+## Contributing to this repository
+
+Please review the [contributing guidelines](https://github.com/trebol-ecommerce/spring-boot-backend/blob/main/CONTRIBUTING.md) before proceeding.
 
 
 ## Contributors ✨
