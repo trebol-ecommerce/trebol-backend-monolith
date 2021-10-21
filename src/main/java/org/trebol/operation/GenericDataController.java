@@ -53,24 +53,22 @@ public abstract class GenericDataController<P, E>
   }
 
   private int determineRequestedPageIndex(Integer requestPageIndex, Map<String, String> allRequestParams)
-          throws NumberFormatException {
-    int pageIndex = 0;
-    if (requestPageIndex != null && requestPageIndex > 0) {
-      pageIndex = requestPageIndex - 1;
-    } else if (allRequestParams != null && allRequestParams.containsKey("pageIndex")) {
-      pageIndex = Integer.parseInt(allRequestParams.get("pageIndex"));
+      throws NumberFormatException {
+    if (allRequestParams != null && allRequestParams.containsKey("pageIndex")) {
+      return Integer.parseInt(allRequestParams.get("pageIndex"));
+    } else if (requestPageIndex != null && requestPageIndex > 0) {
+      return requestPageIndex;
     }
-    return pageIndex;
+    return 0;
   }
 
   private int determineRequestedPageSize(Integer requestPageSize, Map<String, String> allRequestParams)
-          throws NumberFormatException {
-    int pageSize = operationProperties.getItemsPerPage();
-    if (requestPageSize != null && requestPageSize > 0) {
-      pageSize = requestPageSize;
-    } else if (allRequestParams != null && allRequestParams.containsKey("pageSize")) {
-      pageSize = Integer.parseInt(allRequestParams.get("pageSize"));
+      throws NumberFormatException {
+    if (allRequestParams != null && allRequestParams.containsKey("pageSize")) {
+      return Integer.parseInt(allRequestParams.get("pageSize"));
+    } else if (requestPageSize != null && requestPageSize > 0) {
+      return requestPageSize;
     }
-    return pageSize;
+    return operationProperties.getItemsPerPage();
   }
 }
