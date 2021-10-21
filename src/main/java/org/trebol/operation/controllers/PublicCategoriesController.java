@@ -27,14 +27,24 @@ public class PublicCategoriesController {
   public PublicCategoriesController(GenericJpaService<ProductCategoryPojo, ProductCategory> crudService) {
     this.service = crudService;
   }
-
+  
+  /**
+   * @deprecated
+   * This method is no longer acceptable to get the product categories.
+   */
+  @Deprecated
   @GetMapping({"", "/"})
   public Collection<ProductCategoryPojo> getRootcategories() {
     Map<String, String> parentMatcher = Maps.of("parent", (String)null).build();
     Predicate filters = service.parsePredicate(parentMatcher);
     return service.readMany(Integer.MAX_VALUE, 0, filters).getItems();
   }
-
+  
+  /**
+   * @deprecated
+   * This method is no longer acceptable to get the product categories by id.
+   */
+  @Deprecated
   @GetMapping({"/{code}", "/{code}/"})
   public Collection<ProductCategoryPojo> getCategories(@PathVariable Long code) {
     Map<String, String> parentMatcher = (code == null) ?
