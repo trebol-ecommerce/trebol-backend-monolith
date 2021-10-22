@@ -96,8 +96,6 @@ public class SecurityConfig
               "/data/images/*",
               "/data/people",
               "/data/people/*",
-              "/data/product_categories",
-              "/data/product_categories/*",
               "/data/products",
               "/data/products/*",
               "/data/sales",

@@ -37,13 +37,11 @@ public class DataProductCategoriesController
   }
 
   @GetMapping({"", "/"})
-  @PreAuthorize("hasAuthority('product_categories:read')")
   public DataPagePojo<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
 
   @GetMapping({"/{parentId}", "/{parentId}/"})
-  @PreAuthorize("hasAuthority('product_categories:read')")
   public DataPagePojo<ProductCategoryPojo> readChildren(@PathVariable Long parentId) {
     Map<String, String> queryParamsMap = Maps.of("parentId", String.valueOf(parentId)).build();
     return super.readMany(null, null, queryParamsMap);
