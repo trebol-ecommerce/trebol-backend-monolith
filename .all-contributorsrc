@@ -41,6 +41,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mutasDev",
+      "name": "Markus Mutas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25075900?v=4",
+      "profile": "https://markus.mutas.dev",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
