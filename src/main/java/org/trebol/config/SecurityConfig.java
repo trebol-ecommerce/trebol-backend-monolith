@@ -87,6 +87,7 @@ public class SecurityConfig
               "/public/products/*",
               "/public/receipt/*",
               "/public/checkout",
+              "/data/product_categories",
               "/public/checkout/validate")
                 .permitAll()
             .antMatchers(
@@ -96,8 +97,6 @@ public class SecurityConfig
               "/data/images/*",
               "/data/people",
               "/data/people/*",
-              "/data/product_categories",
-              "/data/product_categories/*",
               "/data/products",
               "/data/products/*",
               "/data/sales",
