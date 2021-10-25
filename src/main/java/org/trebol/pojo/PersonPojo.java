@@ -19,7 +19,9 @@ public class PersonPojo {
   @JsonIgnore
   private Long id;
   @NotBlank
-  private String name;
+  private String firstName;
+  @NotBlank
+  private String lastName;
   @NotBlank
   private String idNumber;
   @NotBlank
@@ -37,12 +39,20 @@ public class PersonPojo {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
   public String getIdNumber() {
@@ -81,7 +91,8 @@ public class PersonPojo {
   public int hashCode() {
     int hash = 3;
     hash = 79 * hash + Objects.hashCode(this.id);
-    hash = 79 * hash + Objects.hashCode(this.name);
+    hash = 79 * hash + Objects.hashCode(this.firstName);
+    hash = 79 * hash + Objects.hashCode(this.lastName);
     hash = 79 * hash + Objects.hashCode(this.idNumber);
     hash = 79 * hash + Objects.hashCode(this.email);
     hash = 79 * hash + Objects.hashCode(this.phone1);
@@ -101,7 +112,10 @@ public class PersonPojo {
       return false;
     }
     final PersonPojo other = (PersonPojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
+    if (!Objects.equals(this.firstName, other.firstName)) {
+      return false;
+    }
+    if (!Objects.equals(this.lastName, other.lastName)) {
       return false;
     }
     if (!Objects.equals(this.idNumber, other.idNumber)) {
@@ -122,7 +136,8 @@ public class PersonPojo {
   @Override
   public String toString() {
     return "PersonPojo{id=" + id +
-        ", name=" + name +
+        ", firstName=" + firstName +
+        ", lastName=" + lastName +
         ", idNumber=" + idNumber +
         ", email=" + email +
         ", phone1=" + phone1 +

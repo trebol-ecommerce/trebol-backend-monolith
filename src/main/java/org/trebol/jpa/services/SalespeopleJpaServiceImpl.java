@@ -86,7 +86,10 @@ public class SalespeopleJpaServiceImpl
           case "id":
             return predicate.and(qSalesperson.id.eq(Long.valueOf(stringValue))); // id matching is final
           case "name":
-            predicate.and(qSalesperson.person.name.eq(stringValue));
+            predicate.and(qSalesperson.person.firstName.eq(stringValue));
+            break;
+          case "lastName":
+            predicate.and(qSalesperson.person.lastName.eq(stringValue));
             break;
           case "idNumber":
             predicate.and(qSalesperson.person.idNumber.eq(stringValue));
@@ -95,7 +98,10 @@ public class SalespeopleJpaServiceImpl
             predicate.and(qSalesperson.person.email.eq(stringValue));
             break;
           case "nameLike":
-            predicate.and(qSalesperson.person.name.likeIgnoreCase("%" + stringValue + "%"));
+            predicate.and(qSalesperson.person.firstName.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "lastNameLike":
+            predicate.and(qSalesperson.person.lastName.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "idNumberLike":
             predicate.and(qSalesperson.person.idNumber.likeIgnoreCase("%" + stringValue + "%"));

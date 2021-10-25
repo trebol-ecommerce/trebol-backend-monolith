@@ -19,7 +19,8 @@ public class Person2Pojo
     PersonPojo target = new PersonPojo();
     target.setId(source.getId());
     target.setIdNumber(source.getIdNumber());
-    target.setName(source.getName());
+    target.setFirstName(source.getFirstName());
+    target.setLastName(source.getLastName());
     target.setEmail(source.getEmail());
     if (source.getPhone1() != null) {
       target.setPhone1(source.getPhone1());

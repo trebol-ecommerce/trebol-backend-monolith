@@ -64,9 +64,14 @@ public class PeopleJpaServiceImpl
   public Person applyChangesToExistingEntity(PersonPojo source, Person existing) throws BadInputException {
     Person target = new Person(existing);
 
-    String name = source.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
+    String firstName = source.getFirstName();
+    if (firstName != null && !firstName.isBlank() && !target.getFirstName().equals(firstName)) {
+      target.setFirstName(firstName);
+    }
+
+    String lastName = source.getLastName();
+    if (lastName != null && !lastName.isBlank() && !target.getLastName().equals(lastName)) {
+      target.setLastName(lastName);
     }
 
     String email = source.getEmail();
@@ -103,7 +108,10 @@ public class PeopleJpaServiceImpl
           case "id":
             return predicate.and(qPerson.id.eq(Long.valueOf(stringValue))); // id matching is final
           case "nameLike":
-            predicate.and(qPerson.name.likeIgnoreCase("%" + stringValue + "%"));
+            predicate.and(qPerson.firstName.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "lastNameLike":
+            predicate.and(qPerson.lastName.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "idNumberLike":
             predicate.and(qPerson.idNumber.likeIgnoreCase("%" + stringValue + "%"));
