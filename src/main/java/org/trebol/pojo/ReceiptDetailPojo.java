@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class ReceiptDetailPojo {
   private ProductPojo product;
   private int units;
+  private int unitPrice=product.getPrice();
 
   public ProductPojo getProduct() {
     return product;
@@ -24,6 +25,8 @@ public class ReceiptDetailPojo {
   public int getUnits() {
     return units;
   }
+
+  public int getUnitPrice() { return unitPrice; }
 
   public void setUnits(int units) {
     this.units = units;
@@ -57,7 +60,7 @@ public class ReceiptDetailPojo {
 
   @Override
   public String toString() {
-    return "ReceiptDetailPojo{" + "product=" + product + ", units=" + units + '}';
+    return "ReceiptDetailPojo{" + "product=" + product + ", units=" + units + ", unitPrice=" + unitPrice + + '}';
   }
 
 }
