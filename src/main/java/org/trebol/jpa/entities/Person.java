@@ -38,8 +38,11 @@ public class Person
   @Column(name = "person_id", nullable = false)
   private Long id;
   @Size(min = 1, max = 200)
-  @Column(name = "person_name", nullable = false)
-  private String name;
+  @Column(name = "person_first_name", nullable = false)
+  private String firstName;
+  @Size(min = 1, max = 200)
+  @Column(name = "person_last_name", nullable = false)
+  private String lastName;
   @Size(min = 1, max = 20)
   @Column(name = "person_id_number", nullable = false)
   private String idNumber;
@@ -55,7 +58,8 @@ public class Person
 
   public Person(Person source) {
     this.id = source.id;
-    this.name = source.name;
+    this.firstName = source.firstName;
+    this.lastName = source.lastName;
     this.idNumber = source.idNumber;
     this.email = source.email;
     this.phone1 = source.phone1;
@@ -70,12 +74,20 @@ public class Person
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
   public String getIdNumber() {
@@ -114,7 +126,8 @@ public class Person
   public int hashCode() {
     int hash = 5;
     hash = 71 * hash + Objects.hashCode(this.id);
-    hash = 71 * hash + Objects.hashCode(this.name);
+    hash = 71 * hash + Objects.hashCode(this.firstName);
+    hash = 71 * hash + Objects.hashCode(this.lastName);
     hash = 71 * hash + Objects.hashCode(this.idNumber);
     hash = 71 * hash + Objects.hashCode(this.email);
     hash = 71 * hash + Objects.hashCode(this.phone1);
@@ -134,7 +147,10 @@ public class Person
       return false;
     }
     final Person other = (Person)obj;
-    if (!Objects.equals(this.name, other.name)) {
+    if (!Objects.equals(this.firstName, other.firstName)) {
+      return false;
+    }
+    if (!Objects.equals(this.lastName, other.lastName)) {
       return false;
     }
     if (!Objects.equals(this.idNumber, other.idNumber)) {
@@ -155,7 +171,8 @@ public class Person
   @Override
   public String toString() {
     return "Person{id=" + id +
-        ", name=" + name +
+        ", firstName=" + firstName +
+        ", lastName=" + lastName +
         ", idNumber=" + idNumber +
         ", email=" + email +
         ", phone1=" + phone1 +
