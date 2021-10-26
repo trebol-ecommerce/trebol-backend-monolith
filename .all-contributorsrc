@@ -32,6 +32,24 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ParundeepSingh",
+      "name": "Parundeep Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52928589?v=4",
+      "profile": "https://github.com/ParundeepSingh",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "mutasDev",
+      "name": "Markus Mutas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25075900?v=4",
+      "profile": "https://markus.mutas.dev",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
