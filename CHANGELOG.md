@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Using [SonarCloud](https://sonarcloud.io) to automate project building and code analyzing.
+
 ### Changed
 - Removed request authentication for remapped paths in `/data/product_categories/*` to make them publicly available to anonymous users
 - Updated `Person` schema by splitting `name` property into two properties `firstName` and `lastName`
