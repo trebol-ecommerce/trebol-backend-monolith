@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Using [SonarCloud](https://sonarcloud.io) to automate project building and code analyzing.
+- Using [SonarCloud](https://sonarcloud.io) to automate project building and code analyzing
 
 ### Changed
 - Removed request authentication for remapped paths in `/data/product_categories/*` to make them publicly available to anonymous users
