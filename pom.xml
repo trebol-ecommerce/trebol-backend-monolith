@@ -25,8 +25,8 @@
     <querydsl.generated.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.generated.dir>
     <querydsl.generated.version>4.2.2</querydsl.generated.version>
     <jjwt.version>0.11.2</jjwt.version>
-	<sonar.organization>trebol-ecommerce</sonar.organization>
-	<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.organization>trebol-ecommerce</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
   
   <repositories>
