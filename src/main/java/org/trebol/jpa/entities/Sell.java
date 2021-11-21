@@ -253,105 +253,48 @@ public class Sell
   }
 
   @Override
-  public int hashCode() {
-    int hash = 5;
-    hash = 67 * hash + Objects.hashCode(this.id);
-    hash = 67 * hash + Objects.hashCode(this.date);
-    hash = 67 * hash + this.totalItems;
-    hash = 67 * hash + this.netValue;
-    hash = 67 * hash + this.transportValue;
-    hash = 67 * hash + this.taxesValue;
-    hash = 67 * hash + this.totalValue;
-    hash = 67 * hash + Objects.hashCode(this.transactionToken);
-    hash = 67 * hash + Objects.hashCode(this.customer);
-    hash = 67 * hash + Objects.hashCode(this.paymentType);
-    hash = 67 * hash + Objects.hashCode(this.status);
-    hash = 67 * hash + Objects.hashCode(this.billingType);
-    hash = 67 * hash + Objects.hashCode(this.billingCompany);
-    hash = 67 * hash + Objects.hashCode(this.billingAddress);
-    hash = 67 * hash + Objects.hashCode(this.shipper);
-    hash = 67 * hash + Objects.hashCode(this.shippingAddress);
-    hash = 67 * hash + Objects.hashCode(this.salesperson);
-    hash = 67 * hash + Objects.hashCode(this.details);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Sell sell = (Sell) o;
+    return totalItems == sell.totalItems &&
+        netValue == sell.netValue &&
+        transportValue == sell.transportValue &&
+        taxesValue == sell.taxesValue &&
+        totalValue == sell.totalValue &&
+        Objects.equals(id, sell.id) &&
+        Objects.equals(date, sell.date) &&
+        Objects.equals(transactionToken, sell.transactionToken) &&
+        Objects.equals(customer, sell.customer) &&
+        Objects.equals(paymentType, sell.paymentType) &&
+        Objects.equals(status, sell.status) &&
+        Objects.equals(billingType, sell.billingType) &&
+        Objects.equals(billingCompany, sell.billingCompany) &&
+        Objects.equals(billingAddress, sell.billingAddress) &&
+        Objects.equals(shipper, sell.shipper) &&
+        Objects.equals(shippingAddress, sell.shippingAddress) &&
+        Objects.equals(salesperson, sell.salesperson) &&
+        Objects.equals(details, sell.details);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Sell other = (Sell)obj;
-    if (this.totalItems != other.totalItems) {
-      return false;
-    }
-    if (this.netValue != other.netValue) {
-      return false;
-    }
-    if (this.transportValue != other.transportValue) {
-      return false;
-    }
-    if (this.taxesValue != other.taxesValue) {
-      return false;
-    }
-    if (this.totalValue != other.totalValue) {
-      return false;
-    }
-    if (!Objects.equals(this.transactionToken, other.transactionToken)) {
-      return false;
-    }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    if (!Objects.equals(this.date, other.date)) {
-      return false;
-    }
-    if (!Objects.equals(this.customer, other.customer)) {
-      return false;
-    }
-    if (!Objects.equals(this.paymentType, other.paymentType)) {
-      return false;
-    }
-    if (!Objects.equals(this.status, other.status)) {
-      return false;
-    }
-    if (!Objects.equals(this.billingType, other.billingType)) {
-      return false;
-    }
-    if (!Objects.equals(this.billingCompany, other.billingCompany)) {
-      return false;
-    }
-    if (!Objects.equals(this.billingAddress, other.billingAddress)) {
-      return false;
-    }
-    if (!Objects.equals(this.shipper, other.shipper)) {
-      return false;
-    }
-    if (!Objects.equals(this.shippingAddress, other.shippingAddress)) {
-      return false;
-    }
-    if (!Objects.equals(this.salesperson, other.salesperson)) {
-      return false;
-    }
-    return Objects.equals(this.details, other.details);
+  public int hashCode() {
+    return Objects.hash(id, date, totalItems, netValue, transportValue, taxesValue, totalValue, transactionToken,
+        customer, paymentType, status, billingType, billingCompany, billingAddress, shipper, shippingAddress,
+        salesperson, details);
   }
 
   @Override
   public String toString() {
-    return "Sell{id=" + id +
+    return "Sell{" +
+        "id=" + id +
         ", date=" + date +
         ", totalItems=" + totalItems +
         ", netValue=" + netValue +
         ", transportValue=" + transportValue +
         ", taxesValue=" + taxesValue +
         ", totalValue=" + totalValue +
-        ", transactionToken=" + transactionToken +
+        ", transactionToken='" + transactionToken + '\'' +
         ", customer=" + customer +
         ", paymentType=" + paymentType +
         ", status=" + status +
@@ -361,9 +304,7 @@ public class Sell
         ", shipper=" + shipper +
         ", shippingAddress=" + shippingAddress +
         ", salesperson=" + salesperson +
-        ", details=" + details + '}';
+        ", details=" + details +
+        '}';
   }
-
-
-
 }

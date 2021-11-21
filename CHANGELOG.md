@@ -12,9 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Removed request authentication for remapped paths in `/data/product_categories/*` to make them publicly available to anonymous users
 - Updated `Person` schema by splitting `name` property into two properties `firstName` and `lastName`
+- Updated `Sell`  schema by adding properties `taxValue`, `transportValue`, `totalValue` and `totalItems`
+- Updated `Receipt` schema by adding properties `token`, `taxValue`, `transportValue`, `totalValue` and `totalItems`
+- Updated `SellDetail` and `ReceiptDetail` schemas by adding property `unitValue` in both
 
 ### Deprecated
 - Path `/public/categories` and `/public/categories/{parentId}`, mapped under `PublicCategoriesController` - Thanks @ParundeepSingh
+- Property `amount` of `Sell` and their getters; must use `totalValue` instead
 
 ## [1.0.4] - 2021-10-21
 
