@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `Sell`  schema by adding properties `taxValue`, `transportValue`, `totalValue` and `totalItems`
 - Updated `Receipt` schema by adding properties `token`, `taxValue`, `transportValue`, `totalValue` and `totalItems`
 - Updated `SellDetail` and `ReceiptDetail` schemas by adding property `unitValue` in both
+- Updated `ProductCategory` schema by changing data type of `code` from `integer` to `string`
 
 ### Deprecated
 - Path `/public/categories` and `/public/categories/{parentId}`, mapped under `PublicCategoriesController` - Thanks @ParundeepSingh
