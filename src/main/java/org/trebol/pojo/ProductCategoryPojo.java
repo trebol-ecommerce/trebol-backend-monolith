@@ -14,17 +14,17 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  */
 @JsonInclude
 public class ProductCategoryPojo {
-  private Long code;
+  private String code;
   @NotBlank
   private String name;
   @JsonInclude(NON_NULL)
   private ProductCategoryPojo parent;
 
-  public Long getCode() {
+  public String getCode() {
     return code;
   }
 
-  public void setCode(Long code) {
+  public void setCode(String code) {
     this.code = code;
   }
 
@@ -45,39 +45,23 @@ public class ProductCategoryPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 23 * hash + Objects.hashCode(this.code);
-    hash = 23 * hash + Objects.hashCode(this.name);
-    hash = 23 * hash + Objects.hashCode(this.parent);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ProductCategoryPojo that = (ProductCategoryPojo) o;
+    return Objects.equals(code, that.code) && Objects.equals(name, that.name) && Objects.equals(parent, that.parent);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final ProductCategoryPojo other = (ProductCategoryPojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.code, other.code)) {
-      return false;
-    }
-    return Objects.equals(this.parent, other.parent);
+  public int hashCode() {
+    return Objects.hash(code, name, parent);
   }
 
   @Override
   public String toString() {
-    return "ProductCategoryPojo{id=" + code +
-        ", name=" + name +
-        ", parent=" + parent + '}';
+    return "ProductCategoryPojo{" +
+        "code='" + code + '\'' +
+        ", name='" + name + '\'' +
+        '}';
   }
 }

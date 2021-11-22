@@ -17,7 +17,7 @@ public class ProductCategory2Pojo
   @Override
   public ProductCategoryPojo convert(ProductCategory source) {
     ProductCategoryPojo target = new ProductCategoryPojo();
-    target.setCode(source.getId());
+    target.setCode(source.getCode());
     target.setName(source.getName());
     return target;
   }

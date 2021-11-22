@@ -67,9 +67,7 @@ public class ProductCategoriesJpaServiceImpl
   @Override
   public ProductCategory convertToNewEntity(ProductCategoryPojo source) {
     ProductCategory target = new ProductCategory();
-    if (source.getCode() != null) {
-      target.setId(source.getCode());
-    }
+    target.setCode(source.getCode());
     target.setName(source.getName());
     this.applyParent(source, target);
     return target;
@@ -99,7 +97,9 @@ public class ProductCategoriesJpaServiceImpl
       try {
         switch (paramName) {
           case "id":
-            return predicate.and(qProductCategory.id.eq(Long.valueOf(stringValue))); // match por id es único
+            return qProductCategory.id.eq(Long.valueOf(stringValue)); // must be unique match
+          case "code":
+            return qProductCategory.code.eq(stringValue); // must be unique match
           case "name":
             predicate.and(qProductCategory.name.eq(stringValue));
             break;
@@ -131,23 +131,23 @@ public class ProductCategoriesJpaServiceImpl
 
   @Override
   public Optional<ProductCategory> getExisting(ProductCategoryPojo input) throws BadInputException {
-    String name = input.getName();
-    if (name == null || name.isBlank()) {
-      throw new BadInputException("Invalid category name");
+    String code = input.getCode();
+    if (code == null || code.isBlank()) {
+      throw new BadInputException("Invalid category code");
     } else {
-      return this.categoriesRepository.findByName(name);
+      return this.categoriesRepository.findByCode(code);
     }
   }
 
   private void applyParent(ProductCategoryPojo source, ProductCategory target) {
     ProductCategoryPojo parent = source.getParent();
     if (parent != null) {
-      Long parentCode = parent.getCode();
+      String parentCode = parent.getCode();
       ProductCategory previousParent = target.getParent();
       if (parentCode == null) {
         this.applyNewParent(target, parent);
-      } else if (previousParent == null || !previousParent.getId().equals(parentCode)) {
-        Optional<ProductCategory> parentMatch = categoriesRepository.findById(parentCode);
+      } else if (previousParent == null || !previousParent.getCode().equals(parentCode)) {
+        Optional<ProductCategory> parentMatch = categoriesRepository.findByCode(parentCode);
         if (parentMatch.isPresent()) {
           target.setParent(parentMatch.get());
         } else {

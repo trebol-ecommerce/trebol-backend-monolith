@@ -216,12 +216,12 @@ public class ProductsJpaServiceImpl
   private void applyCategory(ProductPojo source, Product target) throws BadInputException {
     ProductCategoryPojo category = source.getCategory();
     if (category != null) {
-      Long categoryCode = category.getCode();
+      String categoryCode = category.getCode();
       ProductCategory previousCategory = target.getProductCategory();
       if (categoryCode == null) {
         this.applyNewCategory(target, category);
       } else if (previousCategory == null || !previousCategory.getId().equals(categoryCode)) {
-        Optional<ProductCategory> categoryCodeMatch = categoriesRepository.findById(categoryCode);
+        Optional<ProductCategory> categoryCodeMatch = categoriesRepository.findByCode(categoryCode);
         if (categoryCodeMatch.isPresent()) {
           target.setProductCategory(categoryCodeMatch.get());
         } else {

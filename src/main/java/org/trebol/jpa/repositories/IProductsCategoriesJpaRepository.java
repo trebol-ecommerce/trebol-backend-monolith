@@ -17,7 +17,9 @@ import org.trebol.jpa.IJpaRepository;
 public interface IProductsCategoriesJpaRepository
   extends IJpaRepository<ProductCategory> {
 
-  Optional<ProductCategory> findByName(String name);
+  Optional<ProductCategory> findByCode(String code);
+
+  List<ProductCategory> findByName(String code);
 
   List<ProductCategory> findByParent(ProductCategory parent);
 }
