@@ -4,20 +4,23 @@ import java.util.Map;
 
 import io.jsonwebtoken.lang.Maps;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.operation.GenericDataController;
+import org.trebol.operation.IDataCrudController;
 import org.trebol.pojo.DataPagePojo;
+import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.GenericJpaService;
+
+import javax.validation.Valid;
 
 /**
  * API point of entry for ProductCategory entities
@@ -27,12 +30,12 @@ import org.trebol.jpa.GenericJpaService;
 @RestController
 @RequestMapping("/data/product_categories")
 public class DataProductCategoriesController
-  extends GenericDataController<ProductCategoryPojo, ProductCategory> {
+  extends GenericDataController<ProductCategoryPojo, ProductCategory>
+  implements IDataCrudController<ProductCategoryPojo, Long> {
 
   @Autowired
-  public DataProductCategoriesController(
-    OperationProperties globals,
-    GenericJpaService<ProductCategoryPojo, ProductCategory> crudService) {
+  public DataProductCategoriesController(OperationProperties globals,
+                                         GenericJpaService<ProductCategoryPojo, ProductCategory> crudService) {
     super(globals, crudService);
   }
 
@@ -42,6 +45,27 @@ public class DataProductCategoriesController
       allRequestParams.put("parentId", null);
     }
     return super.readMany(null, null, allRequestParams);
+  }
+
+  @Override
+  @PostMapping({"", "/"})
+  public void create(@Valid @RequestBody ProductCategoryPojo input) throws BadInputException, EntityAlreadyExistsException {
+    crudService.create(input);
+  }
+
+  @Override
+  public ProductCategoryPojo readOne(Long id) throws NotFoundException {
+    return crudService.readOne(id);
+  }
+
+  @Override
+  public void update(@RequestBody ProductCategoryPojo input, Long id) throws BadInputException, NotFoundException {
+    crudService.update(input, id);
+  }
+
+  @Override
+  public void delete(Long id) throws NotFoundException {
+    crudService.delete(id);
   }
 
   @Deprecated
