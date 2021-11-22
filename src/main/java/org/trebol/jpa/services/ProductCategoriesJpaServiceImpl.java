@@ -46,7 +46,7 @@ public class ProductCategoriesJpaServiceImpl
   @Override
   public void delete(Long id) throws NotFoundException {
     Optional<ProductCategory> matchingCategory = categoriesRepository.findById(id);
-    if (!matchingCategory.isPresent()) {
+    if (matchingCategory.isEmpty()) {
       throw new NotFoundException("The requested category does not exist");
     } else {
       ProductCategory parent = matchingCategory.get();
@@ -112,7 +112,7 @@ public class ProductCategoriesJpaServiceImpl
             }
             break;
           case "parentId":
-            if (stringValue == null) {
+            if (stringValue == null || stringValue.isEmpty()) {
               predicate.and(qProductCategory.parent.isNull());
             } else {
               predicate.and(qProductCategory.parent.id.eq(Long.valueOf(stringValue)));
