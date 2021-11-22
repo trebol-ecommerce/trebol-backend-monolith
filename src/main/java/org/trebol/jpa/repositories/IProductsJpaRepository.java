@@ -35,6 +35,6 @@ public interface IProductsJpaRepository
 
   @Modifying
   @Transactional
-  @Query("UPDATE Product p SET p.category = null WHERE p.category IN (:categories)")
+  @Query("UPDATE Product p SET p.productCategory = null WHERE p.productCategory IN (:categories)")
   void orphanizeByCategories(@Param("categories") Collection<ProductCategory> categories);
 }
