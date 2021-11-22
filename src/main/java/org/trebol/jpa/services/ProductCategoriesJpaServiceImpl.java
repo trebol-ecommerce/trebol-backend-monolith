@@ -81,8 +81,16 @@ public class ProductCategoriesJpaServiceImpl
         switch (paramName) {
           case "id":
             return predicate.and(qProductCategory.id.eq(Long.valueOf(stringValue))); // match por id es único
+          case "name":
+            predicate.and(qProductCategory.name.eq(stringValue));
+            break;
           case "nameLike":
             predicate.and(qProductCategory.name.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "parentCode":
+            if (stringValue != null && !stringValue.isEmpty()) {
+              predicate.and(qProductCategory.parent.code.eq(stringValue));
+            }
             break;
           case "parentId":
             if (stringValue == null) {
