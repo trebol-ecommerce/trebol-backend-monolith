@@ -1,9 +1,8 @@
 package org.trebol.jpa.services;
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
-import org.slf4j.Logger;
+import javassist.NotFoundException;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -13,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import org.trebol.jpa.repositories.IProductsJpaRepository;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
@@ -30,14 +30,33 @@ public class ProductCategoriesJpaServiceImpl
   extends GenericJpaService<ProductCategoryPojo, ProductCategory> {
 
   private final IProductsCategoriesJpaRepository categoriesRepository;
+  private final IProductsJpaRepository productsRepository;
   private final ConversionService conversion;
 
   @Autowired
   public ProductCategoriesJpaServiceImpl(IProductsCategoriesJpaRepository repository,
+                                         IProductsJpaRepository productsRepository,
                                          ConversionService conversion) {
     super(repository, LoggerFactory.getLogger(ProductCategoriesJpaServiceImpl.class));
     this.categoriesRepository = repository;
+    this.productsRepository = productsRepository;
     this.conversion = conversion;
+  }
+
+  @Override
+  public void delete(Long id) throws NotFoundException {
+    Optional<ProductCategory> matchingCategory = categoriesRepository.findById(id);
+    if (!matchingCategory.isPresent()) {
+      throw new NotFoundException("The requested category does not exist");
+    } else {
+      ProductCategory parent = matchingCategory.get();
+      Set<ProductCategory> categories = new HashSet<>();
+      categories.add(parent);
+      categories.addAll(this.recursivelyFetchDescendants(parent));
+      productsRepository.orphanizeByCategories(categories);
+      categoriesRepository.deleteAll(categories);
+      categoriesRepository.flush();
+    }
   }
 
   @Override
@@ -142,5 +161,18 @@ public class ProductCategoriesJpaServiceImpl
     ProductCategory newParentEntity = this.convertToNewEntity(parent);
     newParentEntity = categoriesRepository.save(newParentEntity);
     target.setParent(newParentEntity);
+  }
+
+  private Set<ProductCategory> recursivelyFetchDescendants(ProductCategory parent) {
+    Set<ProductCategory> categories = new HashSet<>();
+    List<ProductCategory> children = categoriesRepository.findByParent(parent);
+    if (children != null && !children.isEmpty()) {
+      categories.addAll(children);
+      for (ProductCategory c : children) {
+        Collection<ProductCategory> grandChildren = this.recursivelyFetchDescendants(c);
+        categories.addAll(grandChildren);
+      }
+    }
+    return categories;
   }
 }
