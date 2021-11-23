@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -14,12 +15,22 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  */
 @JsonInclude
 public class ProductCategoryPojo {
+  @JsonIgnore
+  private Long id;
   @NotBlank
   private String code;
   @NotBlank
   private String name;
   @JsonInclude(NON_NULL)
   private ProductCategoryPojo parent;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public String getCode() {
     return code;
@@ -50,19 +61,24 @@ public class ProductCategoryPojo {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ProductCategoryPojo that = (ProductCategoryPojo) o;
-    return Objects.equals(code, that.code) && Objects.equals(name, that.name) && Objects.equals(parent, that.parent);
+    return Objects.equals(id, that.id) &&
+        Objects.equals(code, that.code) &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(parent, that.parent);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, name, parent);
+    return Objects.hash(id, code, name, parent);
   }
 
   @Override
   public String toString() {
     return "ProductCategoryPojo{" +
-        "code='" + code + '\'' +
+        "id=" + id +
+        ", code='" + code + '\'' +
         ", name='" + name + '\'' +
+        ", parent=" + parent +
         '}';
   }
 }
