@@ -14,6 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  */
 @JsonInclude
 public class ProductCategoryPojo {
+  @NotBlank
   private String code;
   @NotBlank
   private String name;
