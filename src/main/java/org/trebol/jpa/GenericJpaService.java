@@ -27,7 +27,7 @@ import javassist.NotFoundException;
  * @param <E> The entity class
  */
 public abstract class GenericJpaService<P, E>
-  implements IJpaCrudService<P, Long, Predicate>, IJpaConverterService<P, E> {
+  implements IJpaCrudService<P, Long>, IJpaConverterService<P, E> {
 
   protected final IJpaRepository<E> repository;
   protected final Logger logger;

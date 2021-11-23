@@ -1,5 +1,6 @@
 package org.trebol.jpa;
 
+import com.querydsl.core.types.Predicate;
 import org.springframework.lang.Nullable;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
@@ -14,9 +15,8 @@ import javassist.NotFoundException;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * @param <T> The items type class.
  * @param <I> The identifier type class.
- * @param <F> The filter type class.
  */
-public interface IJpaCrudService<T, I, F>
+public interface IJpaCrudService<T, I>
   extends IQueryDslPredicateParserService {
 
   /**
@@ -40,7 +40,7 @@ public interface IJpaCrudService<T, I, F>
    *
    * @return The requested collection of items. May be zero-sized.
    */
-  DataPagePojo<T> readMany(int pageSize, int pageIndex, @Nullable F filters);
+  DataPagePojo<T> readMany(int pageSize, int pageIndex, @Nullable Predicate filters);
 
   /**
    * Retrieves the first item that matches a certain filter.
@@ -50,7 +50,7 @@ public interface IJpaCrudService<T, I, F>
    * @return The requested item
    * @throws javassist.NotFoundException When no item matches the filter.
    */
-  T readOne(F filters) throws NotFoundException;
+  T readOne(Predicate filters) throws NotFoundException;
 
   /**
    * Retrieves an item by its ID.
