@@ -67,10 +67,20 @@ public interface IJpaCrudService<T, I>
    *
    * @param dto The item to be updated. Its identifying field may or may not be
    *            present, and can be different from the second method param.
-   * @param id  The unique identifier of the item.
    *
-   * @return The saved item, with updated properties, or null if the item was not
-   *         found.
+   * @return The saved item, with updated properties
+   * @throws javassist.NotFoundException When no item matches the given item
+   * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
+   */
+  T update(T dto) throws NotFoundException, BadInputException;
+
+  /**
+   * Updates an existing item using its database identifier.
+   *
+   * @param dto The item with upcoming data.
+   * @param id  The database identifier of the item.
+   *
+   * @return The saved item, with updated properties
    * @throws javassist.NotFoundException When no item matches the identifier.
    * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
    */
@@ -84,4 +94,13 @@ public interface IJpaCrudService<T, I>
    * @throws javassist.NotFoundException When no item matches the identifier.
    */
   void delete(I id) throws NotFoundException;
+
+  /**
+   * Deletes all items matching given filtering conditions.
+   *
+   * @param filters Filtering conditions
+   *
+   * @throws javassist.NotFoundException When no item matches the identifier.
+   */
+  void delete(Predicate filters) throws NotFoundException;
 }

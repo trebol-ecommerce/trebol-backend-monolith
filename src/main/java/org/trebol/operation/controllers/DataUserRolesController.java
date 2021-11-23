@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.operation.GenericDataController;
+import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.UserRolePojo;
 import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.UserRole;
@@ -62,6 +63,28 @@ public class DataUserRolesController
   }
 
   @Override
+  @PutMapping({"", "/"})
+  @PreAuthorize("hasAuthority('user_roles:update')")
+  public void update(@RequestBody UserRolePojo input, @RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    if (!requestParams.isEmpty()) {
+      Predicate predicate = crudService.parsePredicate(requestParams);
+      UserRolePojo existing = crudService.readOne(predicate);
+      crudService.update(input, existing.getId());
+    } else {
+      crudService.update(input);
+    }
+  }
+
+  @Override
+  @DeleteMapping({"", "/"})
+  @PreAuthorize("hasAuthority('user_roles:delete')")
+  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+    Predicate predicate = crudService.parsePredicate(requestParams);
+    crudService.delete(predicate);
+  }
+
+  @Deprecated
   @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:read')")
   public UserRolePojo readOne(@PathVariable String code) throws NotFoundException {
@@ -70,7 +93,7 @@ public class DataUserRolesController
     return crudService.readOne(matchesCode);
   }
 
-  @Override
+  @Deprecated
   @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:update')")
   public void update(@RequestBody UserRolePojo input, @PathVariable String code)
@@ -79,7 +102,7 @@ public class DataUserRolesController
     crudService.update(input, userRoleId);
   }
 
-  @Override
+  @Deprecated
   @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:delete')")
   public void delete(@PathVariable String code) throws NotFoundException {

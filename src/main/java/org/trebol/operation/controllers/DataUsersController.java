@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.operation.GenericDataController;
+import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.UserPojo;
 import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.User;
@@ -63,6 +64,36 @@ public class DataUsersController
   }
 
   @Override
+  @PutMapping({"", "/"})
+  @PreAuthorize("hasAuthority('users:update')")
+  public void update(@RequestBody UserPojo input, @RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    if (!requestParams.isEmpty()) {
+      Predicate predicate = crudService.parsePredicate(requestParams);
+      UserPojo existing = crudService.readOne(predicate);
+      crudService.update(input, existing.getId());
+    } else {
+      crudService.update(input);
+    }
+  }
+
+  @DeleteMapping({"", "/"})
+  @PreAuthorize("hasAuthority('users:delete')")
+  public void delete(Principal principal, @RequestParam Map<String, String> requestParams) throws NotFoundException, BadInputException {
+    if (requestParams.containsKey("name") && requestParams.get("name").equals(principal.getName())) {
+      throw new BadInputException("A user should not be able to delete their own account");
+    }
+    this.delete(requestParams);
+  }
+
+
+  @Override
+  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+    Predicate predicate = crudService.parsePredicate(requestParams);
+    crudService.delete(predicate);
+  }
+
+  @Deprecated
   @GetMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:read')")
   public UserPojo readOne(@PathVariable String name) throws NotFoundException {
@@ -71,7 +102,7 @@ public class DataUsersController
     return crudService.readOne(matchesName);
   }
 
-  @Override
+  @Deprecated
   @PutMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:update')")
   public void update(@RequestBody UserPojo input, @PathVariable String name)
@@ -80,19 +111,14 @@ public class DataUsersController
     crudService.update(input, userId);
   }
 
-  @Override
-  public void delete(@PathVariable String name) throws NotFoundException {
-    Long userId = this.readOne(name).getId();
-    crudService.delete(userId);
-  }
-
-
+  @Deprecated
   @DeleteMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:delete')")
   public void delete(Principal principal, @PathVariable String name) throws NotFoundException, BadInputException {
-    if(principal.getName().equals(name)){
+    if (principal.getName().equals(name)){
       throw new BadInputException("A user should not be able to delete their own account");
     }
-    this.delete(name);
+    Long userId = this.readOne(name).getId();
+    crudService.delete(userId);
   }
 }

@@ -32,6 +32,7 @@ import org.trebol.operation.IDataCrudController;
 import org.trebol.exceptions.BadInputException;
 
 import javassist.NotFoundException;
+import org.trebol.pojo.ProductCategoryPojo;
 
 /**
  * API point of entry for Customer entities
@@ -63,6 +64,28 @@ public class DataCustomersController
   }
 
   @Override
+  @PutMapping({"", "/"})
+  @PreAuthorize("hasAuthority('customers:update')")
+  public void update(@RequestBody CustomerPojo input, @RequestParam Map<String, String> requestParams)
+      throws NotFoundException, BadInputException {
+    if (!requestParams.isEmpty()) {
+      Predicate predicate = crudService.parsePredicate(requestParams);
+      CustomerPojo match = crudService.readOne(predicate);
+      crudService.update(input, match.getId());
+    } else {
+      crudService.update(input);
+    }
+  }
+
+  @Override
+  @DeleteMapping({"", "/"})
+  @PreAuthorize("hasAuthority('customers:delete')")
+  public void delete(Map<String, String> requestParams) throws NotFoundException {
+    Predicate predicate = crudService.parsePredicate(requestParams);
+    crudService.delete(predicate);
+  }
+
+  @Deprecated
   @GetMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('customers:read')")
   public CustomerPojo readOne(@PathVariable String idNumber) throws NotFoundException {
@@ -71,17 +94,16 @@ public class DataCustomersController
     return crudService.readOne(filters);
   }
 
-  @Override
+  @Deprecated
   @PutMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('customers:update')")
   public void update(@RequestBody CustomerPojo input, @PathVariable String idNumber)
     throws NotFoundException, BadInputException {
-    // TODO improve this implementation; the same customer will be fetched twice
     Long customerId = this.readOne(idNumber).getId();
     crudService.update(input, customerId);
   }
 
-  @Override
+  @Deprecated
   @DeleteMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('customers:delete')")
   public void delete(@PathVariable String idNumber) throws NotFoundException {

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.operation.GenericDataController;
+import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.Product;
@@ -62,6 +63,28 @@ public class DataProductsController
   }
 
   @Override
+  @PutMapping({"", "/"})
+  @PreAuthorize("hasAuthority('products:update')")
+  public void update(@RequestBody ProductPojo input, @RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    if (!requestParams.isEmpty()) {
+      Predicate predicate = crudService.parsePredicate(requestParams);
+      ProductPojo existing = crudService.readOne(predicate);
+      crudService.update(input, existing.getId());
+    } else {
+      crudService.update(input);
+    }
+  }
+
+  @Override
+  @DeleteMapping({"", "/"})
+  @PreAuthorize("hasAuthority('products:delete')")
+  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+    Predicate predicate = crudService.parsePredicate(requestParams);
+    crudService.delete(predicate);
+  }
+
+  @Deprecated
   @GetMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:read')")
   public ProductPojo readOne(@PathVariable String barcode) throws NotFoundException {
@@ -70,7 +93,7 @@ public class DataProductsController
     return crudService.readOne(matchesCode);
   }
 
-  @Override
+  @Deprecated
   @PutMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:update')")
   public void update(@RequestBody ProductPojo input, @PathVariable String barcode)
@@ -79,7 +102,7 @@ public class DataProductsController
     crudService.update(input, productId);
   }
 
-  @Override
+  @Deprecated
   @DeleteMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:delete')")
   public void delete(@PathVariable String barcode) throws NotFoundException {

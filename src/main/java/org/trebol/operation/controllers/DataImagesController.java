@@ -63,6 +63,28 @@ public class DataImagesController
   }
 
   @Override
+  @PutMapping({"", "/"})
+  @PreAuthorize("hasAuthority('images:update')")
+  public void update(@RequestBody ImagePojo input, @RequestParam Map<String, String> requestParams)
+      throws NotFoundException, BadInputException {
+    if (!requestParams.isEmpty()) {
+      Predicate predicate = crudService.parsePredicate(requestParams);
+      ImagePojo existing = crudService.readOne(predicate);
+      crudService.update(input, existing.getId());
+    } else {
+      crudService.update(input);
+    }
+  }
+
+  @Override
+  @DeleteMapping({"", "/"})
+  @PreAuthorize("hasAuthority('images:delete')")
+  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+    Predicate predicate = crudService.parsePredicate(requestParams);
+    crudService.delete(predicate);
+  }
+
+  @Deprecated
   @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('images:read')")
   public ImagePojo readOne(@PathVariable String code) throws NotFoundException {
@@ -71,7 +93,7 @@ public class DataImagesController
     return crudService.readOne(filters);
   }
 
-  @Override
+  @Deprecated
   @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('images:update')")
   public void update(@RequestBody ImagePojo input, @PathVariable String code)
@@ -81,7 +103,7 @@ public class DataImagesController
     crudService.update(input, imageId);
   }
 
-  @Override
+  @Deprecated
   @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('images:delete')")
   public void delete(@PathVariable String code) throws NotFoundException {

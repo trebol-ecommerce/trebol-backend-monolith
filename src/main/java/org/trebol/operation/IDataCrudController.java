@@ -5,6 +5,8 @@ import org.trebol.exceptions.EntityAlreadyExistsException;
 
 import javassist.NotFoundException;
 
+import java.util.Map;
+
 /**
  * Interface for API controllers that handle CRUD requests involving unique identifiers.
  *
@@ -17,9 +19,7 @@ public interface IDataCrudController<P, I>
 
   void create(P input) throws BadInputException, EntityAlreadyExistsException;
 
-  P readOne(I id) throws NotFoundException;
+  void update(P input, Map<String, String> requestParams) throws BadInputException, NotFoundException;
 
-  void update(P input, I id) throws BadInputException, NotFoundException;
-
-  void delete(I id) throws NotFoundException;
+  void delete(Map<String, String> requestParams) throws NotFoundException;
 }

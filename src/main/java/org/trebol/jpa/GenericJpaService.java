@@ -107,12 +107,17 @@ public abstract class GenericJpaService<P, E>
     return new DataPagePojo<>(pojoList, pageIndex, totalCount, pageSize);
   }
 
-  /**
-   * Look up the entity, save it if exists and differs from existing, convert back
-   * to pojo and return.If it does not differ, return as-is.
-   * @param input The Pojo instance.
-   * @param id The database-backed id of the entity.
-   */
+  @Transactional
+  @Override
+  public P update(P input) throws NotFoundException, BadInputException {
+    Optional<E> match = this.getExisting(input);
+    if (match.isEmpty()) {
+      throw new NotFoundException("The requested item does not exist");
+    } else {
+      return this.doUpdate(input, match.get());
+    }
+  }
+
   @Transactional
   @Override
   public P update(P input, Long id) throws NotFoundException, BadInputException {
@@ -120,14 +125,7 @@ public abstract class GenericJpaService<P, E>
     if (itemById.isEmpty()) {
       throw new NotFoundException("The requested item does not exist");
     } else {
-      E existingEntity = itemById.get();
-      E updatedEntity = this.applyChangesToExistingEntity(input, existingEntity);
-      if (existingEntity.equals(updatedEntity)) {
-        return input;
-      } else {
-        E output = repository.saveAndFlush(updatedEntity);
-        return this.convertToPojo(output);
-      }
+      return this.doUpdate(input, itemById.get());
     }
   }
 
@@ -138,6 +136,16 @@ public abstract class GenericJpaService<P, E>
     } else {
       repository.deleteById(id);
       repository.flush();
+    }
+  }
+
+  @Override
+  public void delete(Predicate filters) throws NotFoundException {
+    long count = repository.count(filters);
+    if (count == 0) {
+      throw new NotFoundException("The requested item(s) does not exist");
+    } else {
+      repository.deleteAll(repository.findAll(filters));
     }
   }
 
@@ -160,6 +168,23 @@ public abstract class GenericJpaService<P, E>
     } else {
       E found = entity.get();
       return this.convertToPojo(found);
+    }
+  }
+
+  /**
+   * Applies changes, and flushes. If no changes are detected, return input as-is
+   * @param input A Pojo class instance with the data that is being submitted
+   * @param existingEntity An existing entity class instance that will be updated
+   * @return The resulting Pojo class instance
+   * @throws BadInputException If data in Pojo is insufficient, incorrect, malformed, etc
+   */
+  protected P doUpdate(P input, E existingEntity) throws BadInputException {
+    E updatedEntity = this.applyChangesToExistingEntity(input, existingEntity);
+    if (existingEntity.equals(updatedEntity)) {
+      return input;
+    } else {
+      E output = repository.saveAndFlush(updatedEntity);
+      return this.convertToPojo(output);
     }
   }
 }

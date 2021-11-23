@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.operation.GenericDataController;
+import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SalespersonPojo;
 import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.Salesperson;
@@ -64,6 +65,28 @@ public class DataSalespeopleController
   }
 
   @Override
+  @PutMapping({"", "/"})
+  @PreAuthorize("hasAuthority('salespeople:update')")
+  public void update(@RequestBody SalespersonPojo input, @RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    if (!requestParams.isEmpty()) {
+      Predicate predicate = crudService.parsePredicate(requestParams);
+      SalespersonPojo existing = crudService.readOne(predicate);
+      crudService.update(input, existing.getId());
+    } else {
+      crudService.update(input);
+    }
+  }
+
+  @Override
+  @DeleteMapping({"", "/"})
+  @PreAuthorize("hasAuthority('salespeople:delete')")
+  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+    Predicate predicate = crudService.parsePredicate(requestParams);
+    crudService.delete(predicate);
+  }
+
+  @Deprecated
   @GetMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:read')")
   public SalespersonPojo readOne(@PathVariable String idNumber) throws NotFoundException {
@@ -72,7 +95,7 @@ public class DataSalespeopleController
     return crudService.readOne(filters);
   }
 
-  @Override
+  @Deprecated
   @PutMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:update')")
   public void update(@RequestBody SalespersonPojo input, @PathVariable String idNumber)
@@ -82,7 +105,7 @@ public class DataSalespeopleController
     crudService.update(input, salespersonId);
   }
 
-  @Override
+  @Deprecated
   @DeleteMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:delete')")
   public void delete(@PathVariable String idNumber) throws NotFoundException {

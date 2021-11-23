@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.DataPagePojo;
+import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellPojo;
 import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.Sell;
@@ -59,13 +61,35 @@ public class DataSalesController
   }
 
   @Override
+  @PutMapping({"", "/"})
+  @PreAuthorize("hasAuthority('sales:update')")
+  public void update(@RequestBody SellPojo input, @RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    if (!requestParams.isEmpty()) {
+      Predicate predicate = crudService.parsePredicate(requestParams);
+      SellPojo existing = crudService.readOne(predicate);
+      crudService.update(input, existing.getBuyOrder());
+    } else {
+      crudService.update(input);
+    }
+  }
+
+  @Override
+  @DeleteMapping({"", "/"})
+  @PreAuthorize("hasAuthority('sales:delete')")
+  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+    Predicate predicate = crudService.parsePredicate(requestParams);
+    crudService.delete(predicate);
+  }
+
+  @Deprecated
   @GetMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:read')")
   public SellPojo readOne(@PathVariable Long buyOrder) throws NotFoundException {
     return crudService.readOne(buyOrder);
   }
 
-  @Override
+  @Deprecated
   @PutMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:update')")
   public void update(@RequestBody SellPojo input, @PathVariable Long buyOrder)
@@ -73,7 +97,7 @@ public class DataSalesController
     crudService.update(input, buyOrder);
   }
 
-  @Override
+  @Deprecated
   @DeleteMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:delete')")
   public void delete(@PathVariable Long buyOrder) throws NotFoundException {

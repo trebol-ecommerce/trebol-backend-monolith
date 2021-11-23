@@ -1,7 +1,9 @@
 package org.trebol.operation.controllers;
 
 import java.util.Map;
+import java.util.Optional;
 
+import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
 
 import javassist.NotFoundException;
@@ -54,18 +56,23 @@ public class DataProductCategoriesController
   }
 
   @Override
-  public ProductCategoryPojo readOne(Long id) throws NotFoundException {
-    return crudService.readOne(id);
+  @PutMapping({"", "/"})
+  public void update(@Valid @RequestBody ProductCategoryPojo input, @RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    if (!requestParams.isEmpty()) {
+      Predicate predicate = crudService.parsePredicate(requestParams);
+      ProductCategoryPojo match = crudService.readOne(predicate);
+      crudService.update(input, match.getId());
+    } else {
+      crudService.update(input);
+    }
   }
 
   @Override
-  public void update(@RequestBody ProductCategoryPojo input, Long id) throws BadInputException, NotFoundException {
-    crudService.update(input, id);
-  }
-
-  @Override
-  public void delete(Long id) throws NotFoundException {
-    crudService.delete(id);
+  @DeleteMapping({"", "/"})
+  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+    Predicate predicate = crudService.parsePredicate(requestParams);
+    crudService.delete(predicate);
   }
 
   @Deprecated
