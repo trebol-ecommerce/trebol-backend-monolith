@@ -36,6 +36,11 @@ public class Shipper
 
   public Shipper() { }
 
+  public Shipper(Shipper source) {
+    this.id = source.id;
+    this.name = source.name;
+  }
+
   public Long getId() {
     return id;
   }
