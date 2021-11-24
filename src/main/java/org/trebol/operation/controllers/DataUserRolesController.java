@@ -34,12 +34,13 @@ import com.querydsl.core.types.Predicate;
 import javassist.NotFoundException;
 
 /**
- * API point of entry for UserRole entities
+ * Controller that maps API resources for CRUD operations on UserRoles
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/user_roles")
+@PreAuthorize("isAuthenticated()")
 public class DataUserRolesController
   extends GenericDataController<UserRolePojo, UserRole>
   implements IDataCrudController<UserRolePojo, String> {

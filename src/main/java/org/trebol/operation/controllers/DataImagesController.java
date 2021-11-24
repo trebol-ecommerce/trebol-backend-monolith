@@ -34,12 +34,13 @@ import org.trebol.exceptions.BadInputException;
 import javassist.NotFoundException;
 
 /**
- * API point of entry for Image entities
+ * Controller that maps API resources for CRUD operations on Images
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/images")
+@PreAuthorize("isAuthenticated()")
 public class DataImagesController
   extends GenericDataController<ImagePojo, Image>
   implements IDataCrudController<ImagePojo, String> {

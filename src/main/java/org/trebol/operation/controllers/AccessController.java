@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +26,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
 @RequestMapping("/access")
+@PreAuthorize("isAuthenticated()")
 public class AccessController {
 
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;

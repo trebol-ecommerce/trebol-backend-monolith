@@ -35,12 +35,13 @@ import javassist.NotFoundException;
 import org.trebol.pojo.ProductCategoryPojo;
 
 /**
- * API point of entry for Customer entities
+ * Controller that maps API resources for CRUD operations on Customers
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/customers")
+@PreAuthorize("isAuthenticated()")
 public class DataCustomersController
   extends GenericDataController<CustomerPojo, Customer>
   implements IDataCrudController<CustomerPojo, String> {

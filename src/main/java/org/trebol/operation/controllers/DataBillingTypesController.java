@@ -16,7 +16,7 @@ import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.BillingType;
 
 /**
- * API point of entry for ProductCategory entities
+ * Controller that maps API resource to read existing BillingTypes
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */

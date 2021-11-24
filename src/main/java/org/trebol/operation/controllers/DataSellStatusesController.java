@@ -17,12 +17,13 @@ import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.GenericJpaService;
 
 /**
- * API point of entry for SellStatus entities
+ * Controller that maps API resource to read existing SellStatuses
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/sell_statuses")
+@PreAuthorize("isAuthenticated()")
 public class DataSellStatusesController
   extends GenericDataController<SellStatusPojo, SellStatus> {
 

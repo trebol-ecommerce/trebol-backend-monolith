@@ -32,12 +32,13 @@ import org.trebol.operation.IDataCrudController;
 import org.trebol.exceptions.BadInputException;
 
 /**
- * API point of entry for Sell entities
+ * Controller that maps API resources for CRUD operations on Sales
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/sales")
+@PreAuthorize("isAuthenticated()")
 public class DataSalesController
   extends GenericDataController<SellPojo, Sell>
   implements IDataCrudController<SellPojo, Long> {

@@ -17,12 +17,13 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.GenericJpaService;
 
 /**
- * API point of entry for Person entities
+ * Controller that maps API resource to read existing People
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/people")
+@PreAuthorize("isAuthenticated()")
 public class DataPeopleController
   extends GenericDataController<PersonPojo, Person> {
 

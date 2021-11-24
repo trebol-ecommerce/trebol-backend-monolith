@@ -74,43 +74,7 @@ public class SecurityConfig
             JwtLoginAuthenticationFilter.class)
         .addFilterAfter(
             new JwtTokenVerifierFilter(jwtClaimsParserService),
-            JwtGuestAuthenticationFilter.class)
-        .authorizeRequests()
-            .antMatchers(
-              "/",
-              "/public/login",
-              "/public/register",
-              "/public/about",
-              "/public/categories",
-              "/public/categories/*",
-              "/public/products",
-              "/public/products/*",
-              "/public/receipt/*",
-              "/public/checkout",
-              "/data/product_categories",
-              "/public/checkout/validate")
-                .permitAll()
-            .antMatchers(
-              "/data/customers",
-              "/data/customers/*",
-              "/data/images",
-              "/data/images/*",
-              "/data/people",
-              "/data/people/*",
-              "/data/products",
-              "/data/products/*",
-              "/data/sales",
-              "/data/sales/*",
-              "/data/salespeople",
-              "/data/salespeople/*",
-              "/data/sell_statuses",
-              "/data/user_roles",
-              "/data/users",
-              "/data/users/*",
-              "/access",
-              "/access/*",
-              "/account/profile")
-                .authenticated();
+            JwtGuestAuthenticationFilter.class);
   }
 
   @Override

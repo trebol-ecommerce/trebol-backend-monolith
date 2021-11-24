@@ -34,12 +34,13 @@ import com.querydsl.core.types.Predicate;
 import javassist.NotFoundException;
 
 /**
- * API point of entry for Product entities
+ * Controller that maps API resources for CRUD operations on Products
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/products")
+@PreAuthorize("isAuthenticated()")
 public class DataProductsController
   extends GenericDataController<ProductPojo, Product>
   implements IDataCrudController<ProductPojo, String> {

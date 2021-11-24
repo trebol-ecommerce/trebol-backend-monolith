@@ -35,12 +35,13 @@ import com.querydsl.core.types.Predicate;
 import javassist.NotFoundException;
 
 /**
- * API point of entry for User entities
+ * Controller that maps API resources for CRUD operations on Users
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/users")
+@PreAuthorize("isAuthenticated()")
 public class DataUsersController
   extends GenericDataController<UserPojo, User>
   implements IDataCrudController<UserPojo, String> {

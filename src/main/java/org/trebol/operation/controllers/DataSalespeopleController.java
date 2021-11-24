@@ -35,12 +35,13 @@ import org.trebol.exceptions.BadInputException;
 import javassist.NotFoundException;
 
 /**
- * API point of entry for Salesperson entities
+ * Controller that maps API resources for CRUD operations on Salespeople
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/salespeople")
+@PreAuthorize("isAuthenticated()")
 public class DataSalespeopleController
   extends GenericDataController<SalespersonPojo, Salesperson>
   implements IDataCrudController<SalespersonPojo, String> {

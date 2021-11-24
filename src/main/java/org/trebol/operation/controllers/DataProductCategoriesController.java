@@ -25,7 +25,7 @@ import org.trebol.jpa.GenericJpaService;
 import javax.validation.Valid;
 
 /**
- * API point of entry for ProductCategory entities
+ * Controller that maps API resources for CRUD operations on ProductCategories
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
@@ -51,12 +51,14 @@ public class DataProductCategoriesController
 
   @Override
   @PostMapping({"", "/"})
+  @PreAuthorize("hasAuthority('product_categories:create')")
   public void create(@Valid @RequestBody ProductCategoryPojo input) throws BadInputException, EntityAlreadyExistsException {
     crudService.create(input);
   }
 
   @Override
   @PutMapping({"", "/"})
+  @PreAuthorize("hasAuthority('product_categories:update')")
   public void update(@Valid @RequestBody ProductCategoryPojo input, @RequestParam Map<String, String> requestParams)
       throws BadInputException, NotFoundException {
     if (!requestParams.isEmpty()) {
@@ -70,6 +72,7 @@ public class DataProductCategoriesController
 
   @Override
   @DeleteMapping({"", "/"})
+  @PreAuthorize("hasAuthority('product_categories:delete')")
   public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
     Predicate predicate = crudService.parsePredicate(requestParams);
     crudService.delete(predicate);
