@@ -5,20 +5,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,7 +15,12 @@ import org.hibernate.annotations.CreationTimestamp;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "sales")
+@Table(
+  name = "sales",
+  indexes = {
+    @Index(columnList = "sell_date"),
+    @Index(columnList = "sell_transaction_token"),
+  })
 public class Sell
   implements Serializable {
 

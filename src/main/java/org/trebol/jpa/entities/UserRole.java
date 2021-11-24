@@ -23,8 +23,9 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(
   name = "app_users_roles",
-  indexes = @Index(columnList = "user_role_name"),
-  uniqueConstraints = @UniqueConstraint(columnNames = {"user_role_name"}))
+  indexes = {
+    @Index(columnList = "user_role_name")
+  })
 public class UserRole
   implements Serializable {
 
@@ -35,7 +36,7 @@ public class UserRole
   @Column(name = "user_role_id", nullable = false)
   private Long id;
   @Size(min = 1, max = 50)
-  @Column(name = "user_role_name", nullable = false)
+  @Column(name = "user_role_name", nullable = false, unique = true)
   private String name;
 
   public UserRole(UserRole source) {
@@ -62,35 +63,24 @@ public class UserRole
   }
 
   @Override
-  public int hashCode() {
-    int hash = 3;
-    hash = 29 * hash + Objects.hashCode(this.id);
-    hash = 29 * hash + Objects.hashCode(this.name);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    UserRole userRole = (UserRole) o;
+    return Objects.equals(id, userRole.id) &&
+        Objects.equals(name, userRole.name);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final UserRole other = (UserRole)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    return Objects.equals(this.id, other.id);
+  public int hashCode() {
+    return Objects.hash(id, name);
   }
 
   @Override
   public String toString() {
-    return "UserRole{id=" + id +
-        ", name=" + name + '}';
+    return "UserRole{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        '}';
   }
-
 }

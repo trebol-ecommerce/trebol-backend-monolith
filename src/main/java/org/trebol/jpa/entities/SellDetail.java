@@ -39,13 +39,13 @@ public class SellDetail
   @ManyToOne(optional = false)
   private Product product;
 
+  public SellDetail() { }
+
   public SellDetail(SellDetail source) {
     this.id = source.id;
     this.units = source.units;
     this.product = source.product;
   }
-
-  public SellDetail() { }
 
   public Long getId() {
     return id;
@@ -84,7 +84,10 @@ public class SellDetail
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     SellDetail that = (SellDetail) o;
-    return units == that.units && Objects.equals(id, that.id) && Objects.equals(unitValue, that.unitValue) && Objects.equals(product, that.product);
+    return units == that.units &&
+        Objects.equals(id, that.id) &&
+        Objects.equals(unitValue, that.unitValue) &&
+        Objects.equals(product, that.product);
   }
 
   @Override

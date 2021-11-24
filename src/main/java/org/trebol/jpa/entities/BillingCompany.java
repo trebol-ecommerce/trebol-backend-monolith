@@ -21,9 +21,7 @@ import javax.validation.constraints.Size;
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(
-  name = "billing_companies",
-  uniqueConstraints = @UniqueConstraint(columnNames = {"billing_company_id_number"}))
+@Table(name = "billing_companies")
 public class BillingCompany
   implements Serializable {
 
@@ -34,10 +32,10 @@ public class BillingCompany
   @Column(name = "billing_company_id", nullable = false)
   private Long id;
   @Size(min = 1, max = 100)
-  @Column(name = "billing_company_name", nullable = false)
+  @Column(name = "billing_company_name", nullable = false, unique = true)
   private String name;
   @Size(min = 1, max = 20)
-  @Column(name = "billing_company_id_number", nullable = false)
+  @Column(name = "billing_company_id_number", nullable = false, unique = true)
   private String idNumber;
 
   public BillingCompany() { }
@@ -73,40 +71,26 @@ public class BillingCompany
   }
 
   @Override
-  public int hashCode() {
-    int hash = 3;
-    hash = 31 * hash + Objects.hashCode(this.id);
-    hash = 31 * hash + Objects.hashCode(this.name);
-    hash = 31 * hash + Objects.hashCode(this.idNumber);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BillingCompany that = (BillingCompany) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(idNumber, that.idNumber);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final BillingCompany other = (BillingCompany)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.idNumber, other.idNumber)) {
-      return false;
-    }
-    return Objects.equals(this.id, other.id);
+  public int hashCode() {
+    return Objects.hash(id, name, idNumber);
   }
 
   @Override
   public String toString() {
-    return "BillingCompany{id=" + id +
-        ", name=" + name +
-        ", idNumber=" + idNumber + '}';
+    return "BillingCompany{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", idNumber='" + idNumber + '\'' +
+        '}';
   }
-
 }

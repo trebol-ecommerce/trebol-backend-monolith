@@ -26,8 +26,9 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(
   name = "app_users",
-  indexes = @Index(columnList = "user_name"),
-  uniqueConstraints = @UniqueConstraint(columnNames = {"user_name"}))
+  indexes = {
+    @Index(columnList = "user_name")
+  })
 public class User
   implements Serializable {
 
@@ -38,7 +39,7 @@ public class User
   @Column(name = "user_id", nullable = false)
   private Long id;
   @Size(min = 1, max = 50)
-  @Column(name = "user_name", nullable = false)
+  @Column(name = "user_name", nullable = false, unique = true)
   private String name;
   @Size(min = 1, max = 100)
   @Column(name = "user_password", nullable = false)
@@ -101,50 +102,30 @@ public class User
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 13 * hash + Objects.hashCode(this.id);
-    hash = 13 * hash + Objects.hashCode(this.name);
-    hash = 13 * hash + Objects.hashCode(this.password);
-    hash = 13 * hash + Objects.hashCode(this.person);
-    hash = 13 * hash + Objects.hashCode(this.userRole);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    User user = (User) o;
+    return Objects.equals(id, user.id) &&
+        Objects.equals(name, user.name) &&
+        Objects.equals(password, user.password) &&
+        Objects.equals(person, user.person) &&
+        Objects.equals(userRole, user.userRole);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final User other = (User)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.password, other.password)) {
-      return false;
-    }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    if (!Objects.equals(this.person, other.person)) {
-      return false;
-    }
-    return Objects.equals(this.userRole, other.userRole);
+  public int hashCode() {
+    return Objects.hash(id, name, password, person, userRole);
   }
 
   @Override
   public String toString() {
-    return "User{id=" + id +
-        ", name=" + name +
-        ", password=" + password +
+    return "User{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", password='" + password + '\'' +
         ", person=" + person +
-        ", userRole=" + userRole + '}';
+        ", userRole=" + userRole +
+        '}';
   }
-
 }

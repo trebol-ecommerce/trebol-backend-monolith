@@ -12,12 +12,10 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(
-    name = "products_categories",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"product_category_code"}),
-        @UniqueConstraint(columnNames = {"parent_product_category_id", "product_category_name"})
-    }
-)
+  name = "products_categories",
+  uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"parent_product_category_id", "product_category_name"})
+  })
 public class ProductCategory
   implements Serializable {
 
@@ -27,7 +25,7 @@ public class ProductCategory
   @Column(name = "product_category_id", nullable = false)
   private Long id;
   @Size(min = 1, max = 50)
-  @Column(name = "product_category_code", nullable = false)
+  @Column(name = "product_category_code", nullable = false, unique = true)
   private String code;
   @Size(min = 1, max = 100)
   @Column(name = "product_category_name", nullable = false)
@@ -82,7 +80,10 @@ public class ProductCategory
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ProductCategory that = (ProductCategory) o;
-    return Objects.equals(id, that.id) && Objects.equals(code, that.code) && Objects.equals(name, that.name) && Objects.equals(parent, that.parent);
+    return Objects.equals(id, that.id) &&
+        Objects.equals(code, that.code) &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(parent, that.parent);
   }
 
   @Override

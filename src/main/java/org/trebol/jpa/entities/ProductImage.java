@@ -71,40 +71,26 @@ public class ProductImage
   }
 
   @Override
-  public int hashCode() {
-    int hash = 3;
-    hash = 53 * hash + Objects.hashCode(this.id);
-    hash = 53 * hash + Objects.hashCode(this.image);
-    hash = 53 * hash + Objects.hashCode(this.product);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ProductImage that = (ProductImage) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(image, that.image) &&
+        Objects.equals(product, that.product);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final ProductImage other = (ProductImage)obj;
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    if (!Objects.equals(this.image, other.image)) {
-      return false;
-    }
-    return Objects.equals(this.product, other.product);
+  public int hashCode() {
+    return Objects.hash(id, image, product);
   }
 
   @Override
   public String toString() {
-    return "ProductImage{id=" + id +
+    return "ProductImage{" +
+        "id=" + id +
         ", image=" + image +
-        ", product=" + product + '}';
+        ", product=" + product +
+        '}';
   }
-
 }

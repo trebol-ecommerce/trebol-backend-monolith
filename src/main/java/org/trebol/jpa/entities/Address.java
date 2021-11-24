@@ -28,9 +28,12 @@ import javax.validation.constraints.Size;
     @Index(columnList = "address_second_line"),
     @Index(columnList = "address_postal_code")
   },
-  uniqueConstraints = @UniqueConstraint(columnNames = {
-    "address_city", "address_municipality", "address_first_line",
-    "address_second_line", "address_postal_code", "address_notes"}))
+  uniqueConstraints = {
+    @UniqueConstraint(columnNames = {
+      "address_city", "address_municipality", "address_first_line",
+      "address_second_line", "address_postal_code", "address_notes"
+    })
+  })
 public class Address
   implements Serializable {
 
@@ -127,55 +130,34 @@ public class Address
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 71 * hash + Objects.hashCode(this.city);
-    hash = 71 * hash + Objects.hashCode(this.municipality);
-    hash = 71 * hash + Objects.hashCode(this.firstLine);
-    hash = 71 * hash + Objects.hashCode(this.secondLine);
-    hash = 71 * hash + Objects.hashCode(this.postalCode);
-    hash = 71 * hash + Objects.hashCode(this.notes);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Address address = (Address) o;
+    return Objects.equals(id, address.id) &&
+        Objects.equals(city, address.city) &&
+        Objects.equals(municipality, address.municipality) &&
+        Objects.equals(firstLine, address.firstLine) &&
+        Objects.equals(secondLine, address.secondLine) &&
+        Objects.equals(postalCode, address.postalCode) &&
+        Objects.equals(notes, address.notes);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Address other = (Address)obj;
-    if (!Objects.equals(this.city, other.city)) {
-      return false;
-    }
-    if (!Objects.equals(this.municipality, other.municipality)) {
-      return false;
-    }
-    if (!Objects.equals(this.firstLine, other.firstLine)) {
-      return false;
-    }
-    if (!Objects.equals(this.secondLine, other.secondLine)) {
-      return false;
-    }
-    if (!Objects.equals(this.postalCode, other.postalCode)) {
-      return false;
-    }
-    return Objects.equals(this.notes, other.notes);
+  public int hashCode() {
+    return Objects.hash(id, city, municipality, firstLine, secondLine, postalCode, notes);
   }
 
   @Override
   public String toString() {
-    return "Address{id=" + id +
-        ", city=" + city +
-        ", municipality=" + municipality +
-        ", firstLine=" + firstLine +
-        ", secondLine=" + secondLine +
-        ", postalCode=" + postalCode +
-        ", notes=" + notes + '}';
+    return "Address{" +
+        "id=" + id +
+        ", city='" + city + '\'' +
+        ", municipality='" + municipality + '\'' +
+        ", firstLine='" + firstLine + '\'' +
+        ", secondLine='" + secondLine + '\'' +
+        ", postalCode='" + postalCode + '\'' +
+        ", notes='" + notes + '\'' +
+        '}';
   }
 }

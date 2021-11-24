@@ -65,40 +65,26 @@ public class UserRolePermission
   }
 
   @Override
-  public int hashCode() {
-    int hash = 5;
-    hash = 31 * hash + Objects.hashCode(this.id);
-    hash = 31 * hash + Objects.hashCode(this.permission);
-    hash = 31 * hash + Objects.hashCode(this.userRole);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    UserRolePermission that = (UserRolePermission) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(permission, that.permission) &&
+        Objects.equals(userRole, that.userRole);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final UserRolePermission other = (UserRolePermission)obj;
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    if (!Objects.equals(this.permission, other.permission)) {
-      return false;
-    }
-    return Objects.equals(this.userRole, other.userRole);
+  public int hashCode() {
+    return Objects.hash(id, permission, userRole);
   }
 
   @Override
   public String toString() {
-    return "UserRolePermission{id=" + id +
+    return "UserRolePermission{" +
+        "id=" + id +
         ", permission=" + permission +
-        ", userRole=" + userRole + '}';
+        ", userRole=" + userRole +
+        '}';
   }
-
 }

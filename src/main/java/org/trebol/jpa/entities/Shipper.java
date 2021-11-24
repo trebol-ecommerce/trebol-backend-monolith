@@ -19,9 +19,7 @@ import javax.persistence.UniqueConstraint;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @Entity
-@Table(
-  name = "shippers",
-  uniqueConstraints = @UniqueConstraint(columnNames = {"shipper_name"}))
+@Table(name = "shippers")
 public class Shipper
   implements Serializable {
 
@@ -31,7 +29,7 @@ public class Shipper
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "shipper_id", nullable = false)
   private Long id;
-  @Column(name = "shipper_name", nullable = false)
+  @Column(name = "shipper_name", nullable = false, unique = true)
   private String name;
 
   public Shipper() { }
@@ -58,32 +56,24 @@ public class Shipper
   }
 
   @Override
-  public int hashCode() {
-    int hash = 5;
-    hash = 37 * hash + Objects.hashCode(this.id);
-    hash = 37 * hash + Objects.hashCode(this.name);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Shipper shipper = (Shipper) o;
+    return Objects.equals(id, shipper.id) &&
+        Objects.equals(name, shipper.name);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Shipper other = (Shipper)obj;
-    return Objects.equals(this.name, other.name);
+  public int hashCode() {
+    return Objects.hash(id, name);
   }
 
   @Override
   public String toString() {
-    return "Shipper{id=" + id +
-        ", name=" + name + '}';
+    return "Shipper{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        '}';
   }
-
 }

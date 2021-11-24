@@ -3,15 +3,7 @@ package org.trebol.jpa.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
@@ -30,13 +22,13 @@ public class Image
   @Column(name = "image_id", nullable = false)
   private Long id;
   @Size(min = 1, max = 50)
-  @Column(name = "image_code", nullable = false)
+  @Column(name = "image_code", nullable = false, unique = true)
   private String code;
   @Size(min = 1, max = 100)
-  @Column(name = "image_filename", nullable = false)
+  @Column(name = "image_filename", nullable = false, unique = true)
   private String filename;
   @Size(min = 1, max = 500)
-  @Column(name = "image_url", nullable = false)
+  @Column(name = "image_url", nullable = false, unique = true)
   private String url;
 
   public Image() { }
@@ -81,45 +73,28 @@ public class Image
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 89 * hash + Objects.hashCode(this.id);
-    hash = 89 * hash + Objects.hashCode(this.code);
-    hash = 89 * hash + Objects.hashCode(this.filename);
-    hash = 89 * hash + Objects.hashCode(this.url);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Image image = (Image) o;
+    return Objects.equals(id, image.id) &&
+        Objects.equals(code, image.code) &&
+        Objects.equals(filename, image.filename) &&
+        Objects.equals(url, image.url);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Image other = (Image)obj;
-    if (!Objects.equals(this.code, other.code)) {
-      return false;
-    }
-    if (!Objects.equals(this.filename, other.filename)) {
-      return false;
-    }
-    if (!Objects.equals(this.url, other.url)) {
-      return false;
-    }
-    return Objects.equals(this.id, other.id);
+  public int hashCode() {
+    return Objects.hash(id, code, filename, url);
   }
 
   @Override
   public String toString() {
-    return "Image{id=" + id +
-        ", code=" + code +
-        ", filename=" + filename +
-        ", url=" + url + '}';
+    return "Image{" +
+        "id=" + id +
+        ", code='" + code + '\'' +
+        ", filename='" + filename + '\'' +
+        ", url='" + url + '\'' +
+        '}';
   }
-
 }

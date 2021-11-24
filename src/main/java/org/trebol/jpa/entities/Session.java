@@ -66,40 +66,26 @@ public class Session
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 97 * hash + Objects.hashCode(this.id);
-    hash = 97 * hash + Objects.hashCode(this.token);
-    hash = 97 * hash + Objects.hashCode(this.user);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Session session = (Session) o;
+    return Objects.equals(id, session.id) &&
+        Objects.equals(token, session.token) &&
+        Objects.equals(user, session.user);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Session other = (Session)obj;
-    if (!Objects.equals(this.token, other.token)) {
-      return false;
-    }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return Objects.equals(this.user, other.user);
+  public int hashCode() {
+    return Objects.hash(id, token, user);
   }
 
   @Override
   public String toString() {
-    return "Session{id=" + id +
-        ", token=" + token +
-        ", user=" + user + '}';
+    return "Session{" +
+        "id=" + id +
+        ", token='" + token + '\'' +
+        ", user=" + user +
+        '}';
   }
-
 }
