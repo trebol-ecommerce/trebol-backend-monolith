@@ -2,6 +2,7 @@ package org.trebol.pojo;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
@@ -12,8 +13,18 @@ import javax.validation.constraints.NotBlank;
  */
 @JsonInclude
 public class ShipperPojo {
+  @JsonIgnore
+  private Long id;
   @NotBlank
   private String name;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public String getName() {
     return name;
@@ -24,30 +35,23 @@ public class ShipperPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 67 * hash + Objects.hashCode(this.name);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ShipperPojo that = (ShipperPojo) o;
+    return Objects.equals(id, that.id) && Objects.equals(name, that.name);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final ShipperPojo other = (ShipperPojo)obj;
-    return Objects.equals(this.name, other.name);
+  public int hashCode() {
+    return Objects.hash(id, name);
   }
 
   @Override
   public String toString() {
-    return "ShipperPojo{name=" + name + '}';
+    return "ShipperPojo{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        '}';
   }
-
 }
