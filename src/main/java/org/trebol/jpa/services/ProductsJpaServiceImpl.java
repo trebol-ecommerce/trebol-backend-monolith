@@ -220,7 +220,7 @@ public class ProductsJpaServiceImpl
       ProductCategory previousCategory = target.getProductCategory();
       if (categoryCode == null) {
         this.applyNewCategory(target, category);
-      } else if (previousCategory == null || !previousCategory.getId().equals(categoryCode)) {
+      } else if (previousCategory == null || !previousCategory.getCode().equals(categoryCode)) {
         Optional<ProductCategory> categoryCodeMatch = categoriesRepository.findByCode(categoryCode);
         if (categoryCodeMatch.isPresent()) {
           target.setProductCategory(categoryCodeMatch.get());
