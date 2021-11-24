@@ -439,6 +439,7 @@ public class SalesJpaServiceImpl
           Product targetProduct = productByBarcode.get();
           targetDetail.setProduct(targetProduct);
           targetDetail.setUnits(d.getUnits());
+          targetDetail.setUnitValue(targetProduct.getPrice());
         }
         details.add(targetDetail);
         int units = targetDetail.getUnits();
