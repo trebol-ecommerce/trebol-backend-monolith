@@ -19,6 +19,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `SellDetail` and `ReceiptDetail` schemas by adding property `unitValue` in both
 - Updated `ProductCategory` schema by changing data type of `code` from `integer` to `string`
 - Delegate API authorized access requirements to each REST controller method, instead of using HttpSecurity-centric configuration
+- Improvements on JPA entities
+  - `BillingCompany` - added unique constraint on `name`
+  - `BillingType` - added unique constraint on `name`
+  - `Image` - added unique constraint on `code`, `filename` and `url`
+  - `Param` - added unique constraint that uses both `category` and `name`
+  - `PaymentType` - added unique constraint on `name`
+  - `Permission` - added unique constraint on `code`
+  - `Person` - added index to `firstName` and `lastName`
+  - `Product` - added index to `name`
+  - `Sell` - added index to `date` and `transactionToken`
+  - `SellStatus` - added unique constraint on `code` and `name`
 
 ### Deprecated
 - Path `/public/categories` and `/public/categories/{parentId}`, mapped under `PublicCategoriesController` - Thanks @ParundeepSingh
