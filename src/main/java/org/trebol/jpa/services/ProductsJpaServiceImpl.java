@@ -173,13 +173,11 @@ public class ProductsJpaServiceImpl
       try {
         switch (paramName) {
           case "id":
-            return predicate.and(qProduct.id.eq(Long.valueOf(stringValue))); // match por id es único
+            return qProduct.id.eq(Long.valueOf(stringValue));
           case "barcode":
-            predicate.and(qProduct.barcode.eq(stringValue));
-            break;
+            return qProduct.barcode.eq(stringValue);
           case "name":
-            predicate.and(qProduct.name.eq(stringValue));
-            break;
+            return qProduct.name.eq(stringValue);
           case "barcodeLike":
             predicate.and(qProduct.barcode.likeIgnoreCase("%" + stringValue + "%"));
             break;

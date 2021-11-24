@@ -106,7 +106,9 @@ public class PeopleJpaServiceImpl
       try {
         switch (paramName) {
           case "id":
-            return predicate.and(qPerson.id.eq(Long.valueOf(stringValue))); // id matching is final
+            return qPerson.id.eq(Long.valueOf(stringValue));
+          case "idNumber":
+            return qPerson.idNumber.eq(stringValue);
           case "nameLike":
             predicate.and(qPerson.firstName.likeIgnoreCase("%" + stringValue + "%")
                     .or(qPerson.lastName.likeIgnoreCase("%" + stringValue + "%")));

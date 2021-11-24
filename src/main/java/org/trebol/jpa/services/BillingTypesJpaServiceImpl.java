@@ -81,7 +81,7 @@ public class BillingTypesJpaServiceImpl
       try {
         switch (paramName) {
           case "id":
-            return predicate.and(qBillingType.id.eq(Long.valueOf(stringValue))); // id matching is final
+            return qBillingType.id.eq(Long.valueOf(stringValue));
           case "name":
             predicate.and(qBillingType.name.eq(stringValue));
             break;

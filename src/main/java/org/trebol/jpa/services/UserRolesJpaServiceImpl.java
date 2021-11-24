@@ -69,11 +69,12 @@ public class UserRolesJpaServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qUserRole.id.eq(longValue)); // match por id es único
+            return qUserRole.id.eq(Long.valueOf(stringValue));
           case "name":
+            return qUserRole.name.eq(stringValue);
+          case "nameLike":
             predicate.and(qUserRole.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:

@@ -84,7 +84,9 @@ public class SalespeopleJpaServiceImpl
       try {
         switch (paramName) {
           case "id":
-            return predicate.and(qSalesperson.id.eq(Long.valueOf(stringValue))); // id matching is final
+            return qSalesperson.id.eq(Long.valueOf(stringValue));
+          case "idNumber":
+            return qSalesperson.person.idNumber.eq(stringValue);
           case "name":
             predicate.and(qSalesperson.person.firstName.eq(stringValue)
                     .or(qSalesperson.person.lastName.eq(stringValue)));
@@ -94,9 +96,6 @@ public class SalespeopleJpaServiceImpl
             break;
           case "lastName":
             predicate.and(qSalesperson.person.lastName.eq(stringValue));
-            break;
-          case "idNumber":
-            predicate.and(qSalesperson.person.idNumber.eq(stringValue));
             break;
           case "email":
             predicate.and(qSalesperson.person.email.eq(stringValue));

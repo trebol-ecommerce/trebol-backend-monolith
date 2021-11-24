@@ -77,11 +77,12 @@ public class SellStatusesJpaServiceImpl
     for (String paramName : queryParamsMap.keySet()) {
       String stringValue = queryParamsMap.get(paramName);
       try {
-        Long longValue = Long.valueOf(stringValue);
         switch (paramName) {
           case "id":
-            return predicate.and(qSellStatus.id.eq(longValue)); // match por id es único
+            return qSellStatus.id.eq(Long.valueOf(stringValue));
           case "name":
+            return qSellStatus.name.eq(stringValue);
+          case "nameLike":
             predicate.and(qSellStatus.name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:

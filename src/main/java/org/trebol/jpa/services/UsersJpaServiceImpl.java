@@ -162,9 +162,11 @@ public class UsersJpaServiceImpl
       try {
         switch (paramName) {
           case "id":
-            return predicate.and(qUser.id.eq(Long.valueOf(stringValue))); // id matching is final
+            return qUser.id.eq(Long.valueOf(stringValue));
           case "name":
-            predicate.and(qUser.name.eq(stringValue));
+            return qUser.name.eq(stringValue);
+          case "email":
+            predicate.and(qUser.person.email.eq(stringValue));
             break;
           case "nameLike":
             predicate.and(qUser.name.likeIgnoreCase("%" + stringValue + "%"));

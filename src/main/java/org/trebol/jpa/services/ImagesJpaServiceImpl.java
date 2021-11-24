@@ -89,11 +89,13 @@ public class ImagesJpaServiceImpl
       try {
         switch (paramName) {
           case "id":
-            return predicate.and(qImage.id.eq(Long.valueOf(stringValue))); // id matching is final
+            return qImage.id.eq(Long.valueOf(stringValue));
           case "code":
-            return predicate.and(qImage.code.eq(stringValue)); // code matching is final
+            return qImage.code.eq(stringValue);
           case "filename":
-            predicate.and(qImage.filename.eq(stringValue));
+            return qImage.filename.eq(stringValue);
+          case "codeLike":
+            predicate.and(qImage.code.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "filenameLike":
             predicate.and(qImage.filename.likeIgnoreCase("%" + stringValue + "%"));

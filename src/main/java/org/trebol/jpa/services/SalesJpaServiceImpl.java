@@ -213,7 +213,8 @@ public class SalesJpaServiceImpl
       try {
         switch (paramName) {
           case "id":
-            return predicate.and(qSell.id.eq(Long.valueOf(stringValue))); // match por id es único
+          case "buyOrder":
+            return qSell.id.eq(Long.valueOf(stringValue));
           case "date":
             predicate.and(qSell.date.eq(Instant.parse(stringValue)));
             break;

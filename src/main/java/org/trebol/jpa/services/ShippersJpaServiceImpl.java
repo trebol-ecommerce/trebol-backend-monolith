@@ -77,10 +77,9 @@ public class ShippersJpaServiceImpl
       try {
         switch (paramName) {
           case "id":
-            return qShipper.id.eq(Long.valueOf(stringValue)); // id matching is final
+            return qShipper.id.eq(Long.valueOf(stringValue));
           case "name":
-            predicate.and(qShipper.name.eq(stringValue));
-            break;
+            return qShipper.name.eq(stringValue);
           case "nameLike":
             predicate.and(qShipper.name.likeIgnoreCase("%" + stringValue + "%"));
             break;

@@ -97,9 +97,9 @@ public class ProductCategoriesJpaServiceImpl
       try {
         switch (paramName) {
           case "id":
-            return qProductCategory.id.eq(Long.valueOf(stringValue)); // must be unique match
+            return qProductCategory.id.eq(Long.valueOf(stringValue));
           case "code":
-            return qProductCategory.code.eq(stringValue); // must be unique match
+            return qProductCategory.code.eq(stringValue);
           case "name":
             predicate.and(qProductCategory.name.eq(stringValue));
             break;
