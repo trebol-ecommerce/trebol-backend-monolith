@@ -25,6 +25,8 @@
     <querydsl.generated.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.generated.dir>
     <querydsl.generated.version>4.2.2</querydsl.generated.version>
     <jjwt.version>0.11.2</jjwt.version>
+    <rest-assured.version>4.4.0</rest-assured.version>
+    <groovy.version>3.0.7</groovy.version>
     <sonar.organization>trebol-ecommerce</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
@@ -39,13 +41,6 @@
   </repositories>
 
   <dependencies>
-
-    <!-- Jackson -->
-    <dependency>
-      <groupId>com.jayway.jsonpath</groupId>
-      <artifactId>json-path</artifactId>
-      <scope>test</scope>
-    </dependency>
     
     <!-- Spring Boot -->
     <dependency>
@@ -120,6 +115,14 @@
       <groupId>com.github.transbankdevelopers</groupId>
       <artifactId>transbank-sdk-java</artifactId>
       <version>1.9.0</version>
+    </dependency>
+
+    <!-- REST Assured -->
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>spring-mock-mvc</artifactId>
+      <version>${rest-assured.version}</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
