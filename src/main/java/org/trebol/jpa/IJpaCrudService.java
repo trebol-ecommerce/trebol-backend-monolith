@@ -87,6 +87,18 @@ public interface IJpaCrudService<T, I>
   T update(T dto, I id) throws NotFoundException, BadInputException;
 
   /**
+   * Updates an existing item matching given filtering conditions
+   *
+   * @param dto The item with upcoming data.
+   * @param filters Filtering conditions
+   *
+   * @return The saved item, with updated properties
+   * @throws javassist.NotFoundException When no item matches given filters.
+   * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
+   */
+  T update(T dto, Predicate filters) throws NotFoundException, BadInputException;
+
+  /**
    * Finds an item by its ID and deletes it.
    *
    * @param id Its unique identifier.
@@ -100,7 +112,7 @@ public interface IJpaCrudService<T, I>
    *
    * @param filters Filtering conditions
    *
-   * @throws javassist.NotFoundException When no item matches the identifier.
+   * @throws javassist.NotFoundException When no item matches given filters.
    */
   void delete(Predicate filters) throws NotFoundException;
 }

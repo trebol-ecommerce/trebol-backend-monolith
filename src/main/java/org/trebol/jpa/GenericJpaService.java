@@ -129,6 +129,17 @@ public abstract class GenericJpaService<P, E>
     }
   }
 
+  @Transactional
+  @Override
+  public P update(P input, Predicate filters) throws NotFoundException, BadInputException {
+    Optional<E> firstMatch = repository.findOne(filters);
+    if (firstMatch.isEmpty()) {
+      throw new NotFoundException("The requested item does not exist");
+    } else {
+      return this.doUpdate(input, firstMatch.get());
+    }
+  }
+
   @Override
   public void delete(Long id) throws NotFoundException {
     if (!repository.existsById(id)) {
