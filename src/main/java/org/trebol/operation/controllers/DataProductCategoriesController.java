@@ -71,7 +71,7 @@ public class DataProductCategoriesController
     super.delete(requestParams);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{parentId}", "/{parentId}/"})
   public DataPagePojo<ProductCategoryPojo> readChildren(@PathVariable Long parentId) {
     Map<String, String> queryParamsMap = Maps.of("parentId", String.valueOf(parentId)).build();

@@ -79,7 +79,7 @@ public class DataImagesController
     super.delete(requestParams);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('images:read')")
   public ImagePojo readOne(@PathVariable String code) throws NotFoundException {
@@ -88,7 +88,7 @@ public class DataImagesController
     return crudService.readOne(filters);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('images:update')")
   public void update(@RequestBody ImagePojo input, @PathVariable String code)
@@ -98,7 +98,7 @@ public class DataImagesController
     crudService.update(input, imageId);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('images:delete')")
   public void delete(@PathVariable String code) throws NotFoundException {

@@ -79,7 +79,7 @@ public class DataUserRolesController
     super.delete(requestParams);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:read')")
   public UserRolePojo readOne(@PathVariable String code) throws NotFoundException {
@@ -88,7 +88,7 @@ public class DataUserRolesController
     return crudService.readOne(matchesCode);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @PutMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:update')")
   public void update(@RequestBody UserRolePojo input, @PathVariable String code)
@@ -97,7 +97,7 @@ public class DataUserRolesController
     crudService.update(input, userRoleId);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @DeleteMapping({"/{code}", "/{code}/"})
   @PreAuthorize("hasAuthority('user_roles:delete')")
   public void delete(@PathVariable String code) throws NotFoundException {

@@ -32,7 +32,7 @@ public class PublicCategoriesController {
    * @deprecated
    * This method is no longer acceptable to get the product categories.
    */
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @GetMapping({"", "/"})
   public Collection<ProductCategoryPojo> getRootcategories() {
     Map<String, String> parentMatcher = Maps.of("parent", (String)null).build();
@@ -44,7 +44,7 @@ public class PublicCategoriesController {
    * @deprecated
    * This method is no longer acceptable to get the product categories by id.
    */
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{code}", "/{code}/"})
   public Collection<ProductCategoryPojo> getCategories(@PathVariable Long code) {
     Map<String, String> parentMatcher = (code == null) ?

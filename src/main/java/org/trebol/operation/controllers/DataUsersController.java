@@ -87,7 +87,7 @@ public class DataUsersController
     super.delete(requestParams);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:read')")
   public UserPojo readOne(@PathVariable String name) throws NotFoundException {
@@ -96,7 +96,7 @@ public class DataUsersController
     return crudService.readOne(matchesName);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @PutMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:update')")
   public void update(@RequestBody UserPojo input, @PathVariable String name)
@@ -105,7 +105,7 @@ public class DataUsersController
     crudService.update(input, userId);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @DeleteMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:delete')")
   public void delete(Principal principal, @PathVariable String name) throws NotFoundException, BadInputException {

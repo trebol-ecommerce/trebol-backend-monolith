@@ -80,7 +80,7 @@ public class DataSalespeopleController
     super.delete(requestParams);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:read')")
   public SalespersonPojo readOne(@PathVariable String idNumber) throws NotFoundException {
@@ -89,7 +89,7 @@ public class DataSalespeopleController
     return crudService.readOne(filters);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @PutMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:update')")
   public void update(@RequestBody SalespersonPojo input, @PathVariable String idNumber)
@@ -99,7 +99,7 @@ public class DataSalespeopleController
     crudService.update(input, salespersonId);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @DeleteMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:delete')")
   public void delete(@PathVariable String idNumber) throws NotFoundException {

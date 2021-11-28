@@ -79,7 +79,7 @@ public class DataProductsController
     super.delete(requestParams);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:read')")
   public ProductPojo readOne(@PathVariable String barcode) throws NotFoundException {
@@ -88,7 +88,7 @@ public class DataProductsController
     return crudService.readOne(matchesCode);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @PutMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:update')")
   public void update(@RequestBody ProductPojo input, @PathVariable String barcode)
@@ -97,7 +97,7 @@ public class DataProductsController
     crudService.update(input, productId);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @DeleteMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:delete')")
   public void delete(@PathVariable String barcode) throws NotFoundException {

@@ -77,14 +77,14 @@ public class DataSalesController
     super.delete(requestParams);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:read')")
   public SellPojo readOne(@PathVariable Long buyOrder) throws NotFoundException {
     return crudService.readOne(buyOrder);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @PutMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:update')")
   public void update(@RequestBody SellPojo input, @PathVariable Long buyOrder)
@@ -92,7 +92,7 @@ public class DataSalesController
     crudService.update(input, buyOrder);
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @DeleteMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:delete')")
   public void delete(@PathVariable Long buyOrder) throws NotFoundException {
