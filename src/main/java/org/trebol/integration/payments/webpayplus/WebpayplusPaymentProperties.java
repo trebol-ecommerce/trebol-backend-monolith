@@ -25,9 +25,6 @@ public class WebpayplusPaymentProperties {
   @NotBlank
   private String browserRedirectionUrl;
 
-  public WebpayplusPaymentProperties() {
-  }
-
   public Boolean isProduction() {
     return production;
   }

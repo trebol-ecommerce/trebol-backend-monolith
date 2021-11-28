@@ -26,8 +26,6 @@ public class CorsProperties {
   @NotBlank
   private String listDelimiter;
 
-  public CorsProperties() { }
-
   public String getAllowedHeaders() {
     return allowedHeaders;
   }

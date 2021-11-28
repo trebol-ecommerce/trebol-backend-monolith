@@ -13,9 +13,6 @@ import org.springframework.context.annotation.Configuration;
 public class OperationProperties {
   private Integer itemsPerPage;
 
-  public OperationProperties() {
-  }
-
   public Integer getItemsPerPage() {
     return itemsPerPage;
   }
