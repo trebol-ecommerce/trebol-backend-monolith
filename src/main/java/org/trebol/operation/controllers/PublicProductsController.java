@@ -37,7 +37,8 @@ public class PublicProductsController {
 
   @GetMapping({"", "/"})
   public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    Integer requestPageSize = operationProperties.getItemsPerPage();
+    // TODO copied from GenericDataController, must refactor into a separate service
+    int requestPageSize = this.determineRequestedPageSize(allRequestParams);
     Predicate filters = crudService.parsePredicate(allRequestParams);
     return crudService.readMany(requestPageSize, 0, filters);
   }
@@ -47,5 +48,16 @@ public class PublicProductsController {
     Map<String, String> barcodeMatcher = Maps.of("barcode", barcode).build();
     Predicate matchesBarcode = crudService.parsePredicate(barcodeMatcher);
     return crudService.readOne(matchesBarcode);
+  }
+
+  private int determineRequestedPageSize(Map<String, String> allRequestParams)
+      throws NumberFormatException {
+    if (allRequestParams != null && allRequestParams.containsKey("pageSize")) {
+      int pageSize = Integer.parseInt(allRequestParams.get("pageSize"));
+      if (pageSize > 0) {
+        return pageSize;
+      }
+    }
+    return operationProperties.getItemsPerPage();
   }
 }

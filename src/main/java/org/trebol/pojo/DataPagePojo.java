@@ -1,5 +1,6 @@
 package org.trebol.pojo;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -17,7 +18,11 @@ public class DataPagePojo<T> {
   private long totalCount;
   private int pageSize;
 
-  public DataPagePojo() { }
+  public DataPagePojo(int pageIndex, int pageSize) {
+    this.items = new ArrayList<>();
+    this.pageIndex = pageIndex;
+    this.pageSize = pageSize;
+  }
 
   public DataPagePojo(
     Collection<T> items,
