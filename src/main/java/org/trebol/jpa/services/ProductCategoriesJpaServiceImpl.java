@@ -92,8 +92,9 @@ public class ProductCategoriesJpaServiceImpl
   public Predicate parsePredicate(Map<String, String> queryParamsMap) {
     QProductCategory qProductCategory = QProductCategory.productCategory;
     BooleanBuilder predicate = new BooleanBuilder();
-    for (String paramName : queryParamsMap.keySet()) {
-      String stringValue = queryParamsMap.get(paramName);
+    for (Map.Entry<String, String> entry : queryParamsMap.entrySet()) {
+      String paramName = entry.getKey();
+      String stringValue = entry.getValue();
       try {
         switch (paramName) {
           case "id":

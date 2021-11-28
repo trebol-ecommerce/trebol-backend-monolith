@@ -157,8 +157,9 @@ public class UsersJpaServiceImpl
   public Predicate parsePredicate(Map<String, String> queryParamsMap) {
     QUser qUser = QUser.user;
     BooleanBuilder predicate = new BooleanBuilder();
-    for (String paramName : queryParamsMap.keySet()) {
-      String stringValue = queryParamsMap.get(paramName);
+    for (Map.Entry<String, String> entry : queryParamsMap.entrySet()) {
+      String paramName = entry.getKey();
+      String stringValue = entry.getValue();
       try {
         switch (paramName) {
           case "id":

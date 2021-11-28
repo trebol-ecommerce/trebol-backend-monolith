@@ -75,8 +75,9 @@ public class BillingCompaniesJpaServiceImpl
   public Predicate parsePredicate(Map<String, String> queryParamsMap) {
     QBillingCompany qBillingCompany = QBillingCompany.billingCompany;
     BooleanBuilder predicate = new BooleanBuilder();
-    for (String paramName : queryParamsMap.keySet()) {
-      String stringValue = queryParamsMap.get(paramName);
+    for (Map.Entry<String, String> entry : queryParamsMap.entrySet()) {
+      String paramName = entry.getKey();
+      String stringValue = entry.getValue();
       try {
         switch (paramName) {
           case "id":
