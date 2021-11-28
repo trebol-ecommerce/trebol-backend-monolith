@@ -54,6 +54,7 @@ public class PublicProductsControllerTest {
     when().
         get("/public/products").
     then().
+        assertThat().
         status(HttpStatus.OK).
         body("items", equalTo(Lists.emptyList())).
         body("pageIndex", equalTo(pageIndex)).

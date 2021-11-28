@@ -16,11 +16,12 @@ public class RootControllerTest {
   @Test
   public void return_200OK() {
     given().
-      standaloneSetup(new RootController()).
+        standaloneSetup(new RootController()).
     when().
-      get("/").
+        get("/").
     then().
-      status(HttpStatus.OK);
+        assertThat().
+        status(HttpStatus.OK);
   }
 
 }
