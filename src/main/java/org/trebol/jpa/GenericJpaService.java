@@ -29,6 +29,7 @@ import javassist.NotFoundException;
 public abstract class GenericJpaService<P, E>
   implements IJpaCrudService<P, Long>, IJpaConverterService<P, E> {
 
+  protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   protected final IJpaRepository<E> repository;
   protected final Logger logger;
 
@@ -80,7 +81,7 @@ public abstract class GenericJpaService<P, E>
   @Override
   public P create(P inputPojo) throws BadInputException, EntityAlreadyExistsException {
     if (this.itemExists(inputPojo)) {
-      throw new EntityAlreadyExistsException("The item to be created already exists");
+      throw new EntityAlreadyExistsException(ITEM_NOT_FOUND);
     } else {
       E input = this.convertToNewEntity(inputPojo);
       E output = repository.saveAndFlush(input);
@@ -112,7 +113,7 @@ public abstract class GenericJpaService<P, E>
   public P update(P input) throws NotFoundException, BadInputException {
     Optional<E> match = this.getExisting(input);
     if (match.isEmpty()) {
-      throw new NotFoundException("The requested item does not exist");
+      throw new NotFoundException(ITEM_NOT_FOUND);
     } else {
       return this.doUpdate(input, match.get());
     }
@@ -123,7 +124,7 @@ public abstract class GenericJpaService<P, E>
   public P update(P input, Long id) throws NotFoundException, BadInputException {
     Optional<E> itemById = repository.findById(id);
     if (itemById.isEmpty()) {
-      throw new NotFoundException("The requested item does not exist");
+      throw new NotFoundException(ITEM_NOT_FOUND);
     } else {
       return this.doUpdate(input, itemById.get());
     }
@@ -134,7 +135,7 @@ public abstract class GenericJpaService<P, E>
   public P update(P input, Predicate filters) throws NotFoundException, BadInputException {
     Optional<E> firstMatch = repository.findOne(filters);
     if (firstMatch.isEmpty()) {
-      throw new NotFoundException("The requested item does not exist");
+      throw new NotFoundException(ITEM_NOT_FOUND);
     } else {
       return this.doUpdate(input, firstMatch.get());
     }
@@ -143,7 +144,7 @@ public abstract class GenericJpaService<P, E>
   @Override
   public void delete(Long id) throws NotFoundException {
     if (!repository.existsById(id)) {
-      throw new NotFoundException("The requested item does not exist");
+      throw new NotFoundException(ITEM_NOT_FOUND);
     } else {
       repository.deleteById(id);
       repository.flush();
@@ -154,7 +155,7 @@ public abstract class GenericJpaService<P, E>
   public void delete(Predicate filters) throws NotFoundException {
     long count = repository.count(filters);
     if (count == 0) {
-      throw new NotFoundException("The requested item(s) does not exist");
+      throw new NotFoundException(ITEM_NOT_FOUND);
     } else {
       repository.deleteAll(repository.findAll(filters));
     }
@@ -164,7 +165,7 @@ public abstract class GenericJpaService<P, E>
   public P readOne(Long id) throws NotFoundException {
     Optional<E> entityById = repository.findById(id);
     if (entityById.isEmpty()) {
-      throw new NotFoundException("The requested item does not exist");
+      throw new NotFoundException(ITEM_NOT_FOUND);
     } else {
       E found = entityById.get();
       return this.convertToPojo(found);
@@ -175,7 +176,7 @@ public abstract class GenericJpaService<P, E>
   public P readOne(Predicate filters) throws NotFoundException {
     Optional<E> entity = repository.findOne(filters);
     if (entity.isEmpty()) {
-      throw new NotFoundException("The requested item does not exist");
+      throw new NotFoundException(ITEM_NOT_FOUND);
     } else {
       E found = entity.get();
       return this.convertToPojo(found);

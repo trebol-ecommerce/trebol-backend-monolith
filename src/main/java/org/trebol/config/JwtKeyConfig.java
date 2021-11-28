@@ -10,11 +10,9 @@ import io.jsonwebtoken.security.Keys;
 
 @Configuration
 public class JwtKeyConfig {
-  @Autowired
-  private SecurityProperties jwtProperties;
 
   @Bean
-  public SecretKey secretKey() {
+  public SecretKey secretKey(SecurityProperties jwtProperties) {
     return Keys.hmacShaKeyFor(jwtProperties.getJwtSecretKey().getBytes());
   }
 }

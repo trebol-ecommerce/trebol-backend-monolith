@@ -72,7 +72,7 @@ public class AccessController {
   public AuthorizedAccessPojo getApiResourceAccess(
       @RequestHeader HttpHeaders requestHeaders,
       @PathVariable String apiRoute)
-    throws UsernameNotFoundException, IllegalStateException {
+    throws IllegalStateException {
     UserDetails userDetails = this.getUserDetails(requestHeaders);
     if (userDetails == null) {
       return null;
@@ -85,11 +85,12 @@ public class AccessController {
   }
 
   @ResponseStatus(UNAUTHORIZED)
-  @ExceptionHandler(UsernameNotFoundException.class)
-  public void handleException(UsernameNotFoundException ex) { }
-
-  @ResponseStatus(UNAUTHORIZED)
-  @ExceptionHandler(IllegalStateException.class)
-  public void handleException(IllegalStateException ex) { }
+  @ExceptionHandler({UsernameNotFoundException.class, IllegalStateException.class})
+  public void handleException(Exception ex) {
+    /*
+      bad credentials method. whatever provided data is in token, didn't match with existing records of users.
+      the consumer sent an invalid token. don't return an explanation of this. the status code should suffice.
+      */
+  }
   
 }

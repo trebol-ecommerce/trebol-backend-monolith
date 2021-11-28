@@ -300,7 +300,7 @@ public class SalesJpaServiceImpl
   }
 
   @Transactional
-  private void setSellStatusByName(Long sellId, String statusName) throws NotFoundException {
+  public void setSellStatusByName(Long sellId, String statusName) throws NotFoundException {
     if (!salesRepository.existsById(sellId)) {
       throw new NotFoundException("The specified sell does not exist");
     } else {
