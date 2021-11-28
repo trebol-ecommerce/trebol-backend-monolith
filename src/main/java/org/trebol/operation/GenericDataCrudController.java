@@ -14,8 +14,8 @@ public abstract class GenericDataCrudController<P, E>
   extends GenericDataController<P, E>
   implements IDataCrudController<P> {
 
-  public GenericDataCrudController(OperationProperties operationProperties,
-                                   GenericJpaService<P, E> crudService) {
+  protected GenericDataCrudController(OperationProperties operationProperties,
+                                      GenericJpaService<P, E> crudService) {
     super(operationProperties, crudService);
   }
 
