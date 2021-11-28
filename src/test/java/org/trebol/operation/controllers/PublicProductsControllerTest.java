@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.trebol.config.OperationProperties;
-import org.trebol.jpa.services.ProductsJpaServiceImpl;
+import org.trebol.jpa.GenericJpaService;
+import org.trebol.jpa.entities.Product;
 import org.trebol.pojo.DataPagePojo;
+import org.trebol.pojo.ProductPojo;
 
 import java.util.Map;
 
@@ -23,7 +25,7 @@ import static org.hamcrest.Matchers.*;
 public class PublicProductsControllerTest {
 
   @Mock
-  ProductsJpaServiceImpl productCrudService;
+  GenericJpaService<ProductPojo, Product> productCrudService;
 
   @Mock
   OperationProperties operationProperties;
