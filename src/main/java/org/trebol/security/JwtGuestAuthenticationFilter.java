@@ -25,7 +25,7 @@ import java.io.IOException;
 public class JwtGuestAuthenticationFilter
   extends GenericJwtAuthenticationFilter {
 
-  private final Logger logger = LoggerFactory.getLogger(JwtGuestAuthenticationFilter.class);
+  private final Logger myLogger = LoggerFactory.getLogger(JwtGuestAuthenticationFilter.class);
   private final AuthenticationManager authenticationManager;
   private final GenericJpaService<CustomerPojo, Customer> customersService;
 
@@ -61,7 +61,7 @@ public class JwtGuestAuthenticationFilter
       targetCustomer.setPerson(guestData);
       customersService.create(targetCustomer);
     } catch (EntityAlreadyExistsException e) {
-      logger.info("Guest with idNumber={} is already registered in the database", guestData.getIdNumber());
+      myLogger.info("Guest with idNumber={} is already registered in the database", guestData.getIdNumber());
     }
   }
 }
