@@ -44,7 +44,7 @@ import org.trebol.pojo.ProductCategoryPojo;
 @PreAuthorize("isAuthenticated()")
 public class DataCustomersController
   extends GenericDataController<CustomerPojo, Customer>
-  implements IDataCrudController<CustomerPojo, String> {
+  implements IDataCrudController<CustomerPojo> {
 
   @Autowired
   public DataCustomersController(OperationProperties globals, GenericJpaService<CustomerPojo, Customer> crudService) {

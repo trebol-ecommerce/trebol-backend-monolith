@@ -12,9 +12,8 @@ import java.util.Map;
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * @param <P> The Pojo class
- * @param <I> The Identifier class
  */
-public interface IDataCrudController<P, I>
+public interface IDataCrudController<P>
   extends IDataController<P> {
 
   void create(P input) throws BadInputException, EntityAlreadyExistsException;

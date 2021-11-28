@@ -33,7 +33,7 @@ import javax.validation.Valid;
 @RequestMapping("/data/product_categories")
 public class DataProductCategoriesController
   extends GenericDataController<ProductCategoryPojo, ProductCategory>
-  implements IDataCrudController<ProductCategoryPojo, Long> {
+  implements IDataCrudController<ProductCategoryPojo> {
 
   @Autowired
   public DataProductCategoriesController(OperationProperties globals,

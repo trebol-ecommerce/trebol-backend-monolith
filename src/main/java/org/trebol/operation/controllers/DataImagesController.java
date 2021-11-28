@@ -43,7 +43,7 @@ import javassist.NotFoundException;
 @PreAuthorize("isAuthenticated()")
 public class DataImagesController
   extends GenericDataController<ImagePojo, Image>
-  implements IDataCrudController<ImagePojo, String> {
+  implements IDataCrudController<ImagePojo> {
 
   @Autowired
   public DataImagesController(OperationProperties globals, GenericJpaService<ImagePojo, Image> crudService) {

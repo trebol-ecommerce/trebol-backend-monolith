@@ -44,7 +44,7 @@ import javassist.NotFoundException;
 @PreAuthorize("isAuthenticated()")
 public class DataSalespeopleController
   extends GenericDataController<SalespersonPojo, Salesperson>
-  implements IDataCrudController<SalespersonPojo, String> {
+  implements IDataCrudController<SalespersonPojo> {
 
   @Autowired
   public DataSalespeopleController(OperationProperties globals,

@@ -28,7 +28,7 @@ import java.util.Map;
 @RequestMapping("/data/shippers")
 public class DataShippersController
   extends GenericDataController<ShipperPojo, Shipper>
-  implements IDataCrudController<ShipperPojo, String> {
+  implements IDataCrudController<ShipperPojo> {
 
   @Autowired
   public DataShippersController(OperationProperties globals, GenericJpaService<ShipperPojo, Shipper> crudService) {

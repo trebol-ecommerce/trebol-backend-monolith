@@ -41,7 +41,7 @@ import org.trebol.exceptions.BadInputException;
 @PreAuthorize("isAuthenticated()")
 public class DataSalesController
   extends GenericDataController<SellPojo, Sell>
-  implements IDataCrudController<SellPojo, Long> {
+  implements IDataCrudController<SellPojo> {
 
   @Autowired
   public DataSalesController(OperationProperties globals, GenericJpaService<SellPojo, Sell> crudService) {

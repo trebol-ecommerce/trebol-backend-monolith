@@ -43,7 +43,7 @@ import javassist.NotFoundException;
 @PreAuthorize("isAuthenticated()")
 public class DataProductsController
   extends GenericDataController<ProductPojo, Product>
-  implements IDataCrudController<ProductPojo, String> {
+  implements IDataCrudController<ProductPojo> {
 
   @Autowired
   public DataProductsController(OperationProperties globals, GenericJpaService<ProductPojo, Product> crudService) {

@@ -43,7 +43,7 @@ import javassist.NotFoundException;
 @PreAuthorize("isAuthenticated()")
 public class DataUserRolesController
   extends GenericDataController<UserRolePojo, UserRole>
-  implements IDataCrudController<UserRolePojo, String> {
+  implements IDataCrudController<UserRolePojo> {
 
   @Autowired
   public DataUserRolesController(OperationProperties globals, GenericJpaService<UserRolePojo, UserRole> crudService) {
