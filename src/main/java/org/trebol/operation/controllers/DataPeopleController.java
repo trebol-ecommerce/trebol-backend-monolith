@@ -28,7 +28,8 @@ public class DataPeopleController
   extends GenericDataController<PersonPojo, Person> {
 
   @Autowired
-  public DataPeopleController(OperationProperties globals, GenericJpaService<PersonPojo, Person> crudService) {
+  public DataPeopleController(OperationProperties globals,
+                              GenericJpaService<PersonPojo, Person> crudService) {
     super(globals, crudService);
   }
 

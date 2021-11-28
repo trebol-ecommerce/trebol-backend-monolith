@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.ProductPojo;
@@ -43,8 +44,7 @@ import javassist.NotFoundException;
 @RequestMapping("/data/salespeople")
 @PreAuthorize("isAuthenticated()")
 public class DataSalespeopleController
-  extends GenericDataController<SalespersonPojo, Salesperson>
-  implements IDataCrudController<SalespersonPojo> {
+  extends GenericDataCrudController<SalespersonPojo, Salesperson> {
 
   @Autowired
   public DataSalespeopleController(OperationProperties globals,
@@ -62,7 +62,7 @@ public class DataSalespeopleController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:create')")
   public void create(@Valid @RequestBody SalespersonPojo input) throws BadInputException, EntityAlreadyExistsException {
-    crudService.create(input);
+    super.create(input);
   }
 
   @Override
@@ -70,21 +70,14 @@ public class DataSalespeopleController
   @PreAuthorize("hasAuthority('salespeople:update')")
   public void update(@RequestBody SalespersonPojo input, @RequestParam Map<String, String> requestParams)
       throws BadInputException, NotFoundException {
-    if (!requestParams.isEmpty()) {
-      Predicate predicate = crudService.parsePredicate(requestParams);
-      SalespersonPojo existing = crudService.readOne(predicate);
-      crudService.update(input, existing.getId());
-    } else {
-      crudService.update(input);
-    }
+    super.update(input, requestParams);
   }
 
   @Override
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:delete')")
   public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
-    Predicate predicate = crudService.parsePredicate(requestParams);
-    crudService.delete(predicate);
+    super.delete(requestParams);
   }
 
   @Deprecated

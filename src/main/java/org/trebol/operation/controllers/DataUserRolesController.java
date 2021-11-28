@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.operation.GenericDataController;
 import org.trebol.pojo.ProductPojo;
@@ -42,11 +43,11 @@ import javassist.NotFoundException;
 @RequestMapping("/data/user_roles")
 @PreAuthorize("isAuthenticated()")
 public class DataUserRolesController
-  extends GenericDataController<UserRolePojo, UserRole>
-  implements IDataCrudController<UserRolePojo> {
+  extends GenericDataCrudController<UserRolePojo, UserRole> {
 
   @Autowired
-  public DataUserRolesController(OperationProperties globals, GenericJpaService<UserRolePojo, UserRole> crudService) {
+  public DataUserRolesController(OperationProperties globals,
+                                 GenericJpaService<UserRolePojo, UserRole> crudService) {
     super(globals, crudService);
   }
 
@@ -60,7 +61,7 @@ public class DataUserRolesController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:create')")
   public void create(@Valid @RequestBody UserRolePojo input) throws BadInputException, EntityAlreadyExistsException {
-    crudService.create(input);
+    super.create(input);
   }
 
   @Override
@@ -68,21 +69,14 @@ public class DataUserRolesController
   @PreAuthorize("hasAuthority('user_roles:update')")
   public void update(@RequestBody UserRolePojo input, @RequestParam Map<String, String> requestParams)
       throws BadInputException, NotFoundException {
-    if (!requestParams.isEmpty()) {
-      Predicate predicate = crudService.parsePredicate(requestParams);
-      UserRolePojo existing = crudService.readOne(predicate);
-      crudService.update(input, existing.getId());
-    } else {
-      crudService.update(input);
-    }
+    super.update(input, requestParams);
   }
 
   @Override
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:delete')")
   public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
-    Predicate predicate = crudService.parsePredicate(requestParams);
-    crudService.delete(predicate);
+    super.delete(requestParams);
   }
 
   @Deprecated

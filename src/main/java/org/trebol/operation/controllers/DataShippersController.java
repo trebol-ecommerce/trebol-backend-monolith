@@ -12,6 +12,7 @@ import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.operation.GenericDataController;
+import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.IDataCrudController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ShipperPojo;
@@ -27,11 +28,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/data/shippers")
 public class DataShippersController
-  extends GenericDataController<ShipperPojo, Shipper>
-  implements IDataCrudController<ShipperPojo> {
+  extends GenericDataCrudController<ShipperPojo, Shipper> {
 
   @Autowired
-  public DataShippersController(OperationProperties globals, GenericJpaService<ShipperPojo, Shipper> crudService) {
+  public DataShippersController(OperationProperties globals,
+                                GenericJpaService<ShipperPojo, Shipper> crudService) {
     super(globals, crudService);
   }
 
@@ -44,7 +45,7 @@ public class DataShippersController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('shippers:create')")
   public void create(@Valid @RequestBody ShipperPojo input) throws BadInputException, EntityAlreadyExistsException {
-    crudService.create(input);
+    super.create(input);
   }
 
   @Override
@@ -52,20 +53,13 @@ public class DataShippersController
   @PreAuthorize("hasAuthority('shippers:update')")
   public void update(@RequestBody ShipperPojo input, @RequestParam Map<String, String> requestParams)
       throws BadInputException, NotFoundException {
-    if (!requestParams.isEmpty()) {
-      Predicate predicate = crudService.parsePredicate(requestParams);
-      ShipperPojo existing = crudService.readOne(predicate);
-      crudService.update(input, existing.getId());
-    } else {
-      crudService.update(input);
-    }
+    super.update(input, requestParams);
   }
 
   @Override
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('shippers:delete')")
   public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
-    Predicate predicate = crudService.parsePredicate(requestParams);
-    crudService.delete(predicate);
+    super.delete(requestParams);
   }
 }
