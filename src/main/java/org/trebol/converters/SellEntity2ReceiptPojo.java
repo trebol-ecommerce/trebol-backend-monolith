@@ -1,12 +1,9 @@
 package org.trebol.converters;
 
-import java.text.SimpleDateFormat;
-
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-
-import org.trebol.pojo.ReceiptPojo;
 import org.trebol.jpa.entities.Sell;
+import org.trebol.pojo.ReceiptPojo;
 
 /**
  *
@@ -18,10 +15,14 @@ public class SellEntity2ReceiptPojo
 
   @Override
   public ReceiptPojo convert(Sell source) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMdd");
     ReceiptPojo target = new ReceiptPojo();
     target.setBuyOrder(source.getId());
     target.setDate(source.getDate());
+    target.setTransportValue(source.getTransportValue());
+    target.setTaxValue(source.getTaxesValue());
+    target.setTotalItems(source.getTotalItems());
+    target.setTotalValue(source.getTotalValue());
+    target.setToken(source.getTransactionToken());
     target.setAmount(source.getTotalValue());
     return target;
   }
