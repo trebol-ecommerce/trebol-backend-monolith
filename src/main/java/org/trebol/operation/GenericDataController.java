@@ -1,14 +1,13 @@
 package org.trebol.operation;
 
-import java.util.Map;
+import com.querydsl.core.types.Predicate;
+import org.trebol.config.OperationProperties;
+import org.trebol.jpa.services.ICrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.pojo.DataPagePojo;
 
 import javax.validation.constraints.NotNull;
-
-import com.querydsl.core.types.Predicate;
-
-import org.trebol.config.OperationProperties;
-import org.trebol.jpa.GenericJpaService;
-import org.trebol.pojo.DataPagePojo;
+import java.util.Map;
 
 /**
  * RestController that implements IDataController with a GenericJpaService.
@@ -21,11 +20,15 @@ public abstract class GenericDataController<P, E>
   implements IDataController<P> {
 
   protected final OperationProperties operationProperties;
-  protected final GenericJpaService<P, E> crudService;
+  protected final ICrudJpaService<P, Long> crudService;
+  protected final IPredicateJpaService<E> predicateService;
 
-  public GenericDataController(OperationProperties operationProperties, GenericJpaService<P, E> crudService) {
+  public GenericDataController(OperationProperties operationProperties,
+                               ICrudJpaService<P, Long> crudService,
+                               IPredicateJpaService<E> predicateService) {
     this.operationProperties = operationProperties;
     this.crudService = crudService;
+    this.predicateService = predicateService;
   }
 
   /**
@@ -46,7 +49,7 @@ public abstract class GenericDataController<P, E>
 
     Predicate filters = null;
     if (requestParams != null && !requestParams.isEmpty()) {
-      filters = crudService.parsePredicate(requestParams);
+      filters = predicateService.parseMap(requestParams);
     }
 
     return crudService.readMany(pageSize, pageIndex, filters);

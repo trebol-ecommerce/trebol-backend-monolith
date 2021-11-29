@@ -1,17 +1,18 @@
-package org.trebol.jpa;
+package org.trebol.jpa.services;
 
 import org.trebol.exceptions.BadInputException;
 
+import javax.annotation.Nullable;
+
 /**
- * Interface to ensure type-safety for services that require converting from
- * Entities to Pojos and viceversa.
+ * Type-safe interface for direct interaction between Entities and Pojos
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  *
  * @param <P> The Pojo class
  * @param <E> The Entity class
  */
-public interface IJpaConverterService<P, E> {
+public interface ITwoWayConverterJpaService<P, E> {
 
   /**
    * Straightly converts a Pojo to a new entity, assuming that the Pojo is already @Valid.
@@ -36,5 +37,6 @@ public interface IJpaConverterService<P, E> {
    * @param source The source entity.
    * @return The resulting Pojo.
    */
+  @Nullable
   P convertToPojo(E source);
 }

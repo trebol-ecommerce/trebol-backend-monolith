@@ -1,38 +1,25 @@
 package org.trebol.operation.services;
 
+import com.querydsl.core.types.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.querydsl.core.types.Predicate;
-
-import org.trebol.pojo.RegistrationPojo;
-import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.entities.Person;
-
-import org.trebol.jpa.entities.QPerson;
-import org.trebol.jpa.entities.QUser;
-
-import org.trebol.jpa.entities.User;
-import org.trebol.jpa.entities.UserRole;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.ICustomersJpaRepository;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.pojo.PersonPojo;
-import org.trebol.exceptions.BadInputException;
 import org.trebol.operation.IRegistrationService;
+import org.trebol.pojo.PersonPojo;
+import org.trebol.pojo.RegistrationPojo;
 
 import java.util.Optional;
 
-/**
- *
- * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
- */
 @Service
 public class RegistrationServiceImpl
   implements IRegistrationService {

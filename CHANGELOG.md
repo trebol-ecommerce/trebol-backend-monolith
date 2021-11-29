@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Product` - added index to `name`
   - `Sell` - added index to `date` and `transactionToken`
   - `SellStatus` - added unique constraint on `code` and `name`
+- Refactored services in `org.trebol.jpa` package for better separation of concerns 
 
 ### Deprecated
 - Path `/public/categories` and `/public/categories/{parentId}`, mapped under `PublicCategoriesController` - Thanks @ParundeepSingh

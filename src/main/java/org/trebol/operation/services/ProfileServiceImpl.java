@@ -1,37 +1,40 @@
 package org.trebol.operation.services;
 
-import java.util.Optional;
-
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
-import org.trebol.pojo.PersonPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.PersonNotFoundException;
 import org.trebol.exceptions.UserNotFoundException;
-import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.operation.IProfileService;
+import org.trebol.pojo.PersonPojo;
+
+import java.util.Optional;
 
 @Service
 public class ProfileServiceImpl
     implements IProfileService {
 
   private final IUsersJpaRepository usersRepository;
-  private final GenericJpaService<PersonPojo, Person> peopleService;
+  private final GenericCrudJpaService<PersonPojo, Person> peopleService;
+  private final ITwoWayConverterJpaService<PersonPojo, Person> peopleConverter;
   private final IPeopleJpaRepository peopleRepository;
 
   @Autowired
   public ProfileServiceImpl(IUsersJpaRepository usersRepository,
-                            GenericJpaService<PersonPojo, Person> peopleService,
+                            GenericCrudJpaService<PersonPojo, Person> peopleService,
+                            ITwoWayConverterJpaService<PersonPojo, Person> peopleConverter,
                             IPeopleJpaRepository peopleRepository) {
     this.usersRepository = usersRepository;
     this.peopleService = peopleService;
+    this.peopleConverter = peopleConverter;
     this.peopleRepository = peopleRepository;
   }
 
@@ -42,7 +45,7 @@ public class ProfileServiceImpl
     if (person == null) {
       throw new PersonNotFoundException("The account does not have an associated profile");
     } else {
-      return peopleService.convertToPojo(person);
+      return peopleConverter.convertToPojo(person);
     }
   }
 
@@ -64,13 +67,13 @@ public class ProfileServiceImpl
           usersRepository.saveAndFlush(targetUser);
         }
       } else {
-        Person newProfile = peopleService.convertToNewEntity(profile);
+        Person newProfile = peopleConverter.convertToNewEntity(profile);
         newProfile = peopleRepository.saveAndFlush(newProfile);
         targetUser.setPerson(newProfile);
         usersRepository.saveAndFlush(targetUser);
       }
     } else {
-      target = peopleService.applyChangesToExistingEntity(profile, target);
+      target = peopleConverter.applyChangesToExistingEntity(profile, target);
       peopleRepository.saveAndFlush(target);
     }
   }

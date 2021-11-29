@@ -5,18 +5,19 @@ import javassist.NotFoundException;
 import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaService;
-import org.trebol.pojo.ImagePojo;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
 
 import java.util.Map;
 
-public abstract class GenericDataCrudController<P, E>
+public class GenericDataCrudController<P, E>
   extends GenericDataController<P, E>
   implements IDataCrudController<P> {
 
   protected GenericDataCrudController(OperationProperties operationProperties,
-                                      GenericJpaService<P, E> crudService) {
-    super(operationProperties, crudService);
+                                      GenericCrudJpaService<P, E> crudService,
+                                      IPredicateJpaService<E> predicateService) {
+    super(operationProperties, crudService, predicateService);
   }
 
   @Override
@@ -27,7 +28,7 @@ public abstract class GenericDataCrudController<P, E>
   @Override
   public void update(P input, Map<String, String> requestParams) throws BadInputException, NotFoundException {
     if (!requestParams.isEmpty()) {
-      Predicate predicate = crudService.parsePredicate(requestParams);
+      Predicate predicate = predicateService.parseMap(requestParams);
       crudService.update(input, predicate);
     } else {
       crudService.update(input);
@@ -36,7 +37,7 @@ public abstract class GenericDataCrudController<P, E>
 
   @Override
   public void delete(Map<String, String> requestParams) throws NotFoundException {
-    Predicate predicate = crudService.parsePredicate(requestParams);
+    Predicate predicate = predicateService.parseMap(requestParams);
     crudService.delete(predicate);
   }
 }

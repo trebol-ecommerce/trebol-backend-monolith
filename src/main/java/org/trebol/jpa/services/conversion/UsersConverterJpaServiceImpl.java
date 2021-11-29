@@ -1,32 +1,25 @@
-package org.trebol.jpa.services;
+package org.trebol.jpa.services.conversion;
 
-import java.util.Map;
-import java.util.Optional;
-
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
-
-import org.trebol.jpa.entities.QUser;
-
-import org.trebol.pojo.PersonPojo;
-import org.trebol.pojo.UserPojo;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
+import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.pojo.PersonPojo;
+import org.trebol.pojo.UserPojo;
 
-import javassist.NotFoundException;
+import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  *
@@ -34,24 +27,24 @@ import javassist.NotFoundException;
  */
 @Transactional
 @Service
-public class UsersJpaServiceImpl
-  extends GenericJpaService<UserPojo, User> {
+public class UsersConverterJpaServiceImpl
+  implements ITwoWayConverterJpaService<UserPojo, User> {
 
+  private final Logger logger = LoggerFactory.getLogger(UsersConverterJpaServiceImpl.class);
   private final IUsersJpaRepository userRepository;
   private final IUserRolesJpaRepository rolesRepository;
-  private final GenericJpaService<PersonPojo, Person> peopleService;
+  private final ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
   private final IPeopleJpaRepository peopleRepository;
   private final ConversionService conversion;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UsersJpaServiceImpl(IUsersJpaRepository repository,
-                             IUserRolesJpaRepository rolesRepository,
-                             GenericJpaService<PersonPojo, Person> peopleService,
-                             IPeopleJpaRepository peopleRepository,
-                             ConversionService conversion,
-                             PasswordEncoder passwordEncoder) {
-    super(repository, LoggerFactory.getLogger(UsersJpaServiceImpl.class));
+  public UsersConverterJpaServiceImpl(IUsersJpaRepository repository,
+                                      IUserRolesJpaRepository rolesRepository,
+                                      ITwoWayConverterJpaService<PersonPojo, Person> peopleService,
+                                      IPeopleJpaRepository peopleRepository,
+                                      ConversionService conversion,
+                                      PasswordEncoder passwordEncoder) {
     this.userRepository = repository;
     this.rolesRepository = rolesRepository;
     this.peopleService = peopleService;
@@ -61,6 +54,7 @@ public class UsersJpaServiceImpl
   }
 
   @Override
+  @Nullable
   public UserPojo convertToPojo(User source) {
     UserPojo target = new UserPojo();
     target.setId(source.getId());
@@ -151,66 +145,5 @@ public class UsersJpaServiceImpl
     }
 
     return target;
-  }
-
-  @Override
-  public Predicate parsePredicate(Map<String, String> queryParamsMap) {
-    QUser qUser = QUser.user;
-    BooleanBuilder predicate = new BooleanBuilder();
-    for (Map.Entry<String, String> entry : queryParamsMap.entrySet()) {
-      String paramName = entry.getKey();
-      String stringValue = entry.getValue();
-      try {
-        switch (paramName) {
-          case "id":
-            return qUser.id.eq(Long.valueOf(stringValue));
-          case "name":
-            return qUser.name.eq(stringValue);
-          case "email":
-            predicate.and(qUser.person.email.eq(stringValue));
-            break;
-          case "nameLike":
-            predicate.and(qUser.name.likeIgnoreCase("%" + stringValue + "%"));
-            break;
-          case "emailLike":
-            predicate.and(qUser.person.email.likeIgnoreCase("%" + stringValue + "%"));
-            break;
-          default:
-            break;
-        }
-      } catch (NumberFormatException exc) {
-        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
-      }
-    }
-
-    return predicate;
-  }
-
-  @Override
-  public UserPojo readOne(Long id) throws NotFoundException {
-    Optional<User> userById = userRepository.findByIdWithProfile(id);
-    if (userById.isEmpty()) {
-      throw new NotFoundException("The requested user does not exist");
-    } else {
-      User found = userById.get();
-      UserPojo foundPojo = this.convertToPojo(found);
-      if (foundPojo != null && found.getPerson() != null) {
-        PersonPojo person = conversion.convert(found.getPerson(), PersonPojo.class);
-        if (person != null) {
-          foundPojo.setPerson(person);
-        }
-      }
-      return foundPojo;
-    }
-  }
-
-  @Override
-  public Optional<User> getExisting(UserPojo input) throws BadInputException {
-    String name = input.getName();
-    if (name == null || name.isBlank()) {
-      throw new BadInputException("Invalid user name");
-    } else {
-      return userRepository.findByName(name);
-    }
   }
 }

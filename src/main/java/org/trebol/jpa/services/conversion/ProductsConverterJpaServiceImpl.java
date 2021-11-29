@@ -1,43 +1,25 @@
-package org.trebol.jpa.services;
+package org.trebol.jpa.services.conversion;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.Validator;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
-
-import org.trebol.pojo.ImagePojo;
-import org.trebol.pojo.ProductCategoryPojo;
-import org.trebol.jpa.entities.QProduct;
-
-import org.trebol.pojo.ProductPojo;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.entities.Product;
-import org.trebol.jpa.entities.ProductImage;
-import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Image;
+import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.repositories.IImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
-import org.trebol.jpa.repositories.IProductsJpaRepository;
+import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.pojo.ImagePojo;
+import org.trebol.pojo.ProductCategoryPojo;
+import org.trebol.pojo.ProductPojo;
 
-import javassist.NotFoundException;
+import javax.annotation.Nullable;
+import javax.validation.Validator;
+import java.util.*;
 
 /**
  *
@@ -45,26 +27,23 @@ import javassist.NotFoundException;
  */
 @Transactional
 @Service
-public class ProductsJpaServiceImpl
-  extends GenericJpaService<ProductPojo, Product> {
+public class ProductsConverterJpaServiceImpl
+  implements ITwoWayConverterJpaService<ProductPojo, Product> {
 
-  private final IProductsJpaRepository productsRepository;
   private final IImagesJpaRepository imagesRepository;
   private final IProductImagesJpaRepository productImagesRepository;
   private final IProductsCategoriesJpaRepository categoriesRepository;
-  private final GenericJpaService<ProductCategoryPojo, ProductCategory> categoriesService;
+  private final ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesService;
   private final ConversionService conversion;
   private final Validator validator;
 
   @Autowired
-  public ProductsJpaServiceImpl(IProductsJpaRepository repository, IImagesJpaRepository imagesRepository,
-                                IProductImagesJpaRepository productImagesRepository,
-                                IProductsCategoriesJpaRepository categoriesRepository,
-                                GenericJpaService<ProductCategoryPojo, ProductCategory> categoriesService,
-                                ConversionService conversion,
-                                Validator validator) {
-    super(repository, LoggerFactory.getLogger(ProductsJpaServiceImpl.class));
-    this.productsRepository = repository;
+  public ProductsConverterJpaServiceImpl(IImagesJpaRepository imagesRepository,
+                                         IProductImagesJpaRepository productImagesRepository,
+                                         IProductsCategoriesJpaRepository categoriesRepository,
+                                         ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesService,
+                                         ConversionService conversion,
+                                         Validator validator) {
     this.imagesRepository = imagesRepository;
     this.productImagesRepository = productImagesRepository;
     this.categoriesRepository = categoriesRepository;
@@ -73,32 +52,8 @@ public class ProductsJpaServiceImpl
     this.validator = validator;
   }
 
-  @Transactional
   @Override
-  public ProductPojo create(ProductPojo inputPojo) throws BadInputException, EntityAlreadyExistsException {
-    if (this.itemExists(inputPojo)) {
-      throw new EntityAlreadyExistsException("The item to be created already exists");
-    } else {
-      Product input = this.convertToNewEntity(inputPojo);
-      Product output = repository.saveAndFlush(input);
-      ProductPojo result = this.convertToPojo(output);
-      this.applyImages(inputPojo, output);
-      return result;
-    }
-  }
-
-  @Override
-  public void delete(Long id) throws NotFoundException {
-    if (!repository.existsById(id)) {
-      throw new NotFoundException("The requested item does not exist");
-    } else {
-      productImagesRepository.deleteByProductId(id);
-      repository.deleteById(id);
-      repository.flush();
-    }
-  }
-
-  @Override
+  @Nullable
   public ProductPojo convertToPojo(Product source) {
     ProductPojo target = conversion.convert(source, ProductPojo.class);
     if (target != null) {
@@ -162,54 +117,6 @@ public class ProductsJpaServiceImpl
     this.applyImages(source, target);
 
     return target;
-  }
-
-  @Override
-  public Predicate parsePredicate(Map<String, String> queryParamsMap) {
-    QProduct qProduct = QProduct.product;
-    BooleanBuilder predicate = new BooleanBuilder();
-    for (Map.Entry<String, String> entry : queryParamsMap.entrySet()) {
-      String paramName = entry.getKey();
-      String stringValue = entry.getValue();
-      try {
-        switch (paramName) {
-          case "id":
-            return qProduct.id.eq(Long.valueOf(stringValue));
-          case "barcode":
-            return qProduct.barcode.eq(stringValue);
-          case "name":
-            return qProduct.name.eq(stringValue);
-          case "barcodeLike":
-            predicate.and(qProduct.barcode.likeIgnoreCase("%" + stringValue + "%"));
-            break;
-          case "nameLike":
-            predicate.and(qProduct.name.likeIgnoreCase("%" + stringValue + "%"));
-            break;
-          case "productCategory":
-            predicate.and(qProduct.productCategory.name.eq(stringValue));
-            break;
-          case "productCategoryLike":
-            predicate.and(qProduct.productCategory.name.likeIgnoreCase("%" + stringValue + "%"));
-            break;
-          default:
-            break;
-        }
-      } catch (NumberFormatException exc) {
-        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
-      }
-    }
-
-    return predicate;
-  }
-
-  @Override
-  public Optional<Product> getExisting(ProductPojo input) throws BadInputException {
-    String barcode = input.getBarcode();
-    if (barcode == null || barcode.isEmpty()) {
-      throw new BadInputException("Invalid product barcode");
-    } else {
-      return this.productsRepository.findByBarcode(barcode);
-    }
   }
 
   private void applyCategory(ProductPojo source, Product target) throws BadInputException {

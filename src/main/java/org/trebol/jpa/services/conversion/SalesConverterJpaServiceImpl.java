@@ -1,37 +1,21 @@
-package org.trebol.jpa.services;
+package org.trebol.jpa.services.conversion;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
-
-import javassist.NotFoundException;
-
-import java.time.Instant;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.regex.Pattern;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.*;
-import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.GenericJpaService;
-import org.trebol.jpa.ISalesJpaService;
+
+import javax.annotation.Nullable;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -39,38 +23,39 @@ import org.trebol.jpa.ISalesJpaService;
  */
 @Transactional
 @Service
-public class SalesJpaServiceImpl
-  extends GenericJpaService<SellPojo, Sell>
-  implements ISalesJpaService {
+public class SalesConverterJpaServiceImpl
+  implements ITwoWayConverterJpaService<SellPojo, Sell> {
 
-  private final ISalesJpaRepository salesRepository;
   private final ISellStatusesJpaRepository statusesRepository;
   private final IBillingTypesJpaRepository billingTypesRepository;
   private final IPaymentTypesJpaRepository paymentTypesRepository;
   private final IBillingCompaniesJpaRepository billingCompaniesRepository;
   private final IShippersJpaRepository shippersRepository;
   private final IAddressesJpaRepository addressesRepository;
-  private final GenericJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesService;
-  private final GenericJpaService<CustomerPojo, Customer> customersService;
-  private final GenericJpaService<SalespersonPojo, Salesperson> salespeopleService;
+  private final ITwoWayConverterJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesConverter;
+  private final ITwoWayConverterJpaService<CustomerPojo, Customer> customersConverter;
+  private final GenericCrudJpaService<CustomerPojo, Customer> customersService;
+  private final ITwoWayConverterJpaService<SalespersonPojo, Salesperson> salespeopleConverter;
   private final ICustomersJpaRepository customersRepository;
   private final IProductsJpaRepository productsRepository;
   private final ConversionService conversion;
   private final Validator validator;
 
   @Autowired
-  public SalesJpaServiceImpl(ISalesJpaRepository repository, ConversionService conversion,
-                             ISellStatusesJpaRepository statusesRepository, IBillingTypesJpaRepository billingTypesRepository,
-                             IBillingCompaniesJpaRepository billingCompaniesRepository, IPaymentTypesJpaRepository paymentTypesRepository,
-                             IAddressesJpaRepository addressesRepository,
-                             IShippersJpaRepository shippersRepository,
-                             GenericJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesService,
-                             GenericJpaService<CustomerPojo, Customer> customersService,
-                             GenericJpaService<SalespersonPojo, Salesperson> salespeopleService,
-                             ICustomersJpaRepository customersRepository, IProductsJpaRepository productsRepository,
-                             Validator validator) {
-    super(repository, LoggerFactory.getLogger(SalesJpaServiceImpl.class));
-    this.salesRepository = repository;
+  public SalesConverterJpaServiceImpl(ConversionService conversion,
+                                      ISellStatusesJpaRepository statusesRepository,
+                                      IBillingTypesJpaRepository billingTypesRepository,
+                                      IBillingCompaniesJpaRepository billingCompaniesRepository,
+                                      IPaymentTypesJpaRepository paymentTypesRepository,
+                                      IAddressesJpaRepository addressesRepository,
+                                      IShippersJpaRepository shippersRepository,
+                                      ITwoWayConverterJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesConverter,
+                                      ITwoWayConverterJpaService<CustomerPojo, Customer> customersConverter,
+                                      GenericCrudJpaService<CustomerPojo, Customer> customersService,
+                                      ITwoWayConverterJpaService<SalespersonPojo, Salesperson> salespeopleConverter,
+                                      ICustomersJpaRepository customersRepository,
+                                      IProductsJpaRepository productsRepository,
+                                      Validator validator) {
     this.conversion = conversion;
     this.statusesRepository = statusesRepository;
     this.billingTypesRepository = billingTypesRepository;
@@ -78,23 +63,17 @@ public class SalesJpaServiceImpl
     this.paymentTypesRepository = paymentTypesRepository;
     this.addressesRepository = addressesRepository;
     this.shippersRepository = shippersRepository;
-    this.billingCompaniesService = billingCompaniesService;
+    this.billingCompaniesConverter = billingCompaniesConverter;
+    this.customersConverter = customersConverter;
     this.customersService = customersService;
-    this.salespeopleService = salespeopleService;
+    this.salespeopleConverter = salespeopleConverter;
     this.customersRepository = customersRepository;
     this.productsRepository = productsRepository;
     this.validator = validator;
   }
 
-  @Transactional
   @Override
-  public SellPojo create(SellPojo inputPojo) throws BadInputException, EntityAlreadyExistsException {
-    Sell input = this.convertToNewEntity(inputPojo);
-    Sell output = repository.saveAndFlush(input);
-    return this.convertToPojo(output);
-  }
-
-  @Override
+  @Nullable
   public SellPojo convertToPojo(Sell source) {
     // TODO can lesser null checks be used ?
     SellPojo target = conversion.convert(source, SellPojo.class);
@@ -122,11 +101,11 @@ public class SalesJpaServiceImpl
         target.setShippingAddress(shippingAddress);
       }
 
-      CustomerPojo customer = customersService.convertToPojo(source.getCustomer());
+      CustomerPojo customer = customersConverter.convertToPojo(source.getCustomer());
       target.setCustomer(customer);
 
       if (source.getSalesperson() != null) {
-        SalespersonPojo salesperson = salespeopleService.convertToPojo(source.getSalesperson());
+        SalespersonPojo salesperson = salespeopleConverter.convertToPojo(source.getSalesperson());
         target.setSalesperson(salesperson);
       }
     }
@@ -148,8 +127,7 @@ public class SalesJpaServiceImpl
     this.applyCustomer(source, target);
     this.applyBillingAddress(source, target);
     this.applyShippingAddress(source, target);
-    // TODO uncomment when shipper API is included
-    // this.applyShipper(source, target);
+    this.applyShipper(source, target);
     this.applyDetails(source, target);
 
     return target;
@@ -192,128 +170,6 @@ public class SalesJpaServiceImpl
     }
 
     return target;
-  }
-
-  @Override
-  public Optional<Sell> getExisting(SellPojo input) throws BadInputException {
-    Long buyOrder = input.getBuyOrder();
-    if (buyOrder == null) {
-      throw new BadInputException("Invalid buy order.");
-    } else {
-      return this.salesRepository.findById(buyOrder);
-    }
-  }
-
-  @Override
-  public Predicate parsePredicate(Map<String, String> queryParamsMap) {
-    QSell qSell = QSell.sell;
-    BooleanBuilder predicate = new BooleanBuilder();
-    for (Map.Entry<String, String> entry : queryParamsMap.entrySet()) {
-      String paramName = entry.getKey();
-      String stringValue = entry.getValue();
-      try {
-        switch (paramName) {
-          case "id":
-          case "buyOrder":
-            return qSell.id.eq(Long.valueOf(stringValue));
-          case "date":
-            predicate.and(qSell.date.eq(Instant.parse(stringValue)));
-            break;
-          case "statusName":
-            predicate.and(qSell.status.name.eq(stringValue));
-            break;
-          case "token":
-            predicate.and(qSell.transactionToken.eq(stringValue));
-            break;
-          default:
-            break;
-        }
-      } catch (NumberFormatException exc) {
-        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
-      } catch (DateTimeParseException exc) {
-        logger.warn("Param '{}' couldn't be parsed as date (value: '{}')", paramName, stringValue, exc);
-      }
-    }
-
-    return predicate;
-  }
-
-  @Override
-  public SellPojo readOne(Long id) throws NotFoundException {
-    Optional<Sell> matchingSell = salesRepository.findById(id);
-    if (matchingSell.isPresent()) {
-      Sell found = matchingSell.get();
-      SellPojo foundPojo = this.convertToPojo(found);
-      this.applyDetails(found, foundPojo);
-      return foundPojo;
-    } else {
-      throw new NotFoundException("No sell matches that buy order");
-    }
-  }
-
-  @Override
-  public SellPojo readOne(Predicate conditions) throws NotFoundException {
-    Optional<Sell> matchingSell = salesRepository.findOne(conditions);
-    if (matchingSell.isPresent()) {
-      Sell found = matchingSell.get();
-      SellPojo foundPojo = this.convertToPojo(found);
-      this.applyDetails(found, foundPojo);
-      return foundPojo;
-    } else {
-      throw new NotFoundException("No sell matches the filtering conditions");
-    }
-  }
-
-  @Override
-  public void setSellStatusToPaymentStartedWithToken(Long id, String token) throws NotFoundException {
-    this.setSellStatusByName(id, "Payment Started");
-    salesRepository.setTransactionToken(id, token);
-  }
-
-  @Override
-  public void setSellStatusToPaymentAborted(Long id) throws NotFoundException {
-    this.setSellStatusByName(id, "Payment Cancelled");
-  }
-
-  @Override
-  public void setSellStatusToPaymentFailed(Long id) throws NotFoundException {
-    this.setSellStatusByName(id, "Payment Failed");
-  }
-
-  @Override
-  public void setSellStatusToPaidUnconfirmed(Long id) throws NotFoundException {
-    this.setSellStatusByName(id, "Paid, Unconfirmed");
-  }
-
-  @Override
-  public void setSellStatusToPaidConfirmed(Long id) throws NotFoundException {
-    this.setSellStatusByName(id, "Paid, Confirmed");
-  }
-
-  @Override
-  public void setSellStatusToRejected(Long id) throws NotFoundException {
-    this.setSellStatusByName(id, "Rejected");
-  }
-
-  @Override
-  public void setSellStatusToCompleted(Long id) throws NotFoundException {
-    this.setSellStatusByName(id, "Delivery Complete");
-  }
-
-  @Transactional
-  public void setSellStatusByName(Long sellId, String statusName) throws NotFoundException {
-    if (!salesRepository.existsById(sellId)) {
-      throw new NotFoundException("The specified sell does not exist");
-    } else {
-      Optional<SellStatus> statusEntityByName = statusesRepository.findByName(statusName);
-      if (statusEntityByName.isPresent()) {
-        SellStatus statusEntity = statusEntityByName.get();
-        Integer statusChangeResponse = salesRepository.setStatus(sellId, statusEntity);
-        logger.debug("statusChangeResponse={}", statusChangeResponse);
-      } else {
-        logger.error("No sell status exists by the name '{}'", statusName);
-      }
-    }
   }
 
   private void applyStatus(SellPojo source, Sell target) throws BadInputException {
@@ -374,14 +230,13 @@ public class SalesJpaServiceImpl
       throw new BadInputException("Customer must posess valid personal information");
     } else {
       Optional<Customer> existing = customersService.getExisting(sourceCustomer);
-      Customer targetCustomer;
       if (existing.isPresent()) {
-        targetCustomer = existing.get();
+        target.setCustomer(existing.get());
       } else {
-        targetCustomer = customersService.convertToNewEntity(sourceCustomer);
+        Customer targetCustomer = customersConverter.convertToNewEntity(sourceCustomer);
         targetCustomer = customersRepository.saveAndFlush(targetCustomer);
+        target.setCustomer(targetCustomer);
       }
-      target.setCustomer(targetCustomer);
     }
   }
 
@@ -483,26 +338,10 @@ public class SalesJpaServiceImpl
       if (matchByIdNumber.isPresent()) {
         return matchByIdNumber.get();
       } else {
-        BillingCompany billingCompany = billingCompaniesService.convertToNewEntity(sourceBillingCompany);
+        BillingCompany billingCompany = billingCompaniesConverter.convertToNewEntity(sourceBillingCompany);
         billingCompany = billingCompaniesRepository.saveAndFlush(billingCompany);
         return billingCompany;
       }
-    }
-  }
-
-  private void applyDetails(Sell source, SellPojo target) {
-    Collection<SellDetail> details = source.getDetails();
-    if (details != null && !details.isEmpty()) {
-      List<SellDetailPojo> sellDetails = new ArrayList<>();
-      for (SellDetail sourceSellDetail : details) {
-        ProductPojo product = conversion.convert(sourceSellDetail.getProduct(), ProductPojo.class);
-        SellDetailPojo targetSellDetail = conversion.convert(sourceSellDetail, SellDetailPojo.class);
-        if (product != null && targetSellDetail != null) {
-          targetSellDetail.setProduct(product);
-          sellDetails.add(targetSellDetail);
-        }
-      }
-      target.setDetails(sellDetails);
     }
   }
 }

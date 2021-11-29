@@ -1,7 +1,5 @@
 package org.trebol.operation.controllers;
 
-import com.querydsl.core.types.Predicate;
-import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,11 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.operation.GenericDataController;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.operation.GenericDataCrudController;
-import org.trebol.operation.IDataCrudController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ShipperPojo;
 
@@ -32,8 +29,9 @@ public class DataShippersController
 
   @Autowired
   public DataShippersController(OperationProperties globals,
-                                GenericJpaService<ShipperPojo, Shipper> crudService) {
-    super(globals, crudService);
+                                GenericCrudJpaService<ShipperPojo, Shipper> crudService,
+                                IPredicateJpaService<Shipper> predicateService) {
+    super(globals, crudService, predicateService);
   }
 
   @GetMapping({"", "/"})

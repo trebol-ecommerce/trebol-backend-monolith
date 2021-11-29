@@ -1,18 +1,11 @@
-package org.trebol.jpa;
-
-import org.trebol.pojo.SellPojo;
-
-import com.querydsl.core.types.Predicate;
+package org.trebol.jpa.services;
 
 import javassist.NotFoundException;
 
 /**
- *
- * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
+ * Defines methods to progress through transaction stages (like series of steps).
  */
-public interface ISalesJpaService
-  extends IJpaCrudService<SellPojo, Long> {
-
+public interface ISellStepperJpaService {
   void setSellStatusToPaymentStartedWithToken(Long id, String token) throws NotFoundException;
   void setSellStatusToPaymentAborted(Long id) throws NotFoundException;
   void setSellStatusToPaymentFailed(Long id) throws NotFoundException;

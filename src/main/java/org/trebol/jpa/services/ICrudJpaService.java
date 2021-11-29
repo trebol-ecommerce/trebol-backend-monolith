@@ -1,23 +1,21 @@
-package org.trebol.jpa;
+package org.trebol.jpa.services;
 
 import com.querydsl.core.types.Predicate;
+import javassist.NotFoundException;
 import org.springframework.lang.Nullable;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.pojo.DataPagePojo;
 
-import javassist.NotFoundException;
-
 
 /**
- * Interface for implementing the basic CRUD service operations.
+ * Interface for wrapping basic CRUD service operations by using Pojo classes
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
- * @param <T> The items type class.
- * @param <I> The identifier type class.
+ * @param <P> The pojo type class
+ * @param <I> The identifier type class
  */
-public interface IJpaCrudService<T, I>
-  extends IQueryDslPredicateParserService {
+public interface ICrudJpaService<P, I> {
 
   /**
    * Inserts and persists an item.
@@ -29,7 +27,7 @@ public interface IJpaCrudService<T, I>
    * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid or is insufficient.
    * @throws org.trebol.exceptions.EntityAlreadyExistsException When the data collides with an existing registry.
    */
-  T create(T dto) throws BadInputException, EntityAlreadyExistsException;
+  P create(P dto) throws BadInputException, EntityAlreadyExistsException;
 
   /**
    * Queries a paged collection of items.
@@ -40,7 +38,7 @@ public interface IJpaCrudService<T, I>
    *
    * @return The requested collection of items. May be zero-sized.
    */
-  DataPagePojo<T> readMany(int pageSize, int pageIndex, @Nullable Predicate filters);
+  DataPagePojo<P> readMany(int pageSize, int pageIndex, @Nullable Predicate filters);
 
   /**
    * Retrieves the first item that matches a certain filter.
@@ -50,17 +48,7 @@ public interface IJpaCrudService<T, I>
    * @return The requested item
    * @throws javassist.NotFoundException When no item matches the filter.
    */
-  T readOne(Predicate filters) throws NotFoundException;
-
-  /**
-   * Retrieves an item by its ID.
-   *
-   * @param id The unique identifier of the item.
-   *
-   * @return The requested item.
-   * @throws javassist.NotFoundException When there are no item matches for the identifier.
-   */
-  T readOne(Long id) throws NotFoundException;
+  P readOne(Predicate filters) throws NotFoundException;
 
   /**
    * Updates an existing item.
@@ -72,19 +60,7 @@ public interface IJpaCrudService<T, I>
    * @throws javassist.NotFoundException When no item matches the given item
    * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
    */
-  T update(T dto) throws NotFoundException, BadInputException;
-
-  /**
-   * Updates an existing item using its database identifier.
-   *
-   * @param dto The item with upcoming data.
-   * @param id  The database identifier of the item.
-   *
-   * @return The saved item, with updated properties
-   * @throws javassist.NotFoundException When no item matches the identifier.
-   * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
-   */
-  T update(T dto, I id) throws NotFoundException, BadInputException;
+  P update(P dto) throws NotFoundException, BadInputException;
 
   /**
    * Updates an existing item matching given filtering conditions
@@ -96,16 +72,7 @@ public interface IJpaCrudService<T, I>
    * @throws javassist.NotFoundException When no item matches given filters.
    * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
    */
-  T update(T dto, Predicate filters) throws NotFoundException, BadInputException;
-
-  /**
-   * Finds an item by its ID and deletes it.
-   *
-   * @param id Its unique identifier.
-   *
-   * @throws javassist.NotFoundException When no item matches the identifier.
-   */
-  void delete(I id) throws NotFoundException;
+  P update(P dto, Predicate filters) throws NotFoundException, BadInputException;
 
   /**
    * Deletes all items matching given filtering conditions.

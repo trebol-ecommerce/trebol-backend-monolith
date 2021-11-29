@@ -9,23 +9,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.trebol.config.OperationProperties;
-import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Product;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
 
 import java.util.Map;
 
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
-import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
 public class PublicProductsControllerTest {
 
   @Mock
-  GenericJpaService<ProductPojo, Product> productCrudService;
+  GenericCrudJpaService<ProductPojo, Product> productCrudService;
+
+  @Mock
+  IPredicateJpaService<Product> predicateService;
 
   @Mock
   OperationProperties operationProperties;
@@ -42,13 +46,13 @@ public class PublicProductsControllerTest {
 
     when(operationProperties.getItemsPerPage()).
         thenReturn(defaultPageSize);
-    when(productCrudService.parsePredicate(any())).
+    when(predicateService.parseMap(any())).
         thenReturn(filters);
     when(productCrudService.readMany(eq(pageSize), eq(pageIndex), any())).
         thenReturn(new DataPagePojo<>(pageIndex, pageSize));
 
     given().
-        standaloneSetup(new PublicProductsController(productCrudService, operationProperties)).
+        standaloneSetup(new PublicProductsController(productCrudService, predicateService, operationProperties)).
         queryParam("pageIndex", String.valueOf(pageIndex)).
         queryParam("pageSize", String.valueOf(pageSize)).
     when().
@@ -60,7 +64,7 @@ public class PublicProductsControllerTest {
         body("pageIndex", equalTo(pageIndex)).
         body("pageSize", equalTo(pageSize));
 
-    verify(productCrudService).parsePredicate(queryParamsMap);
+    verify(predicateService).parseMap(queryParamsMap);
     verify(productCrudService).readMany(pageSize, pageIndex, filters);
   }
 

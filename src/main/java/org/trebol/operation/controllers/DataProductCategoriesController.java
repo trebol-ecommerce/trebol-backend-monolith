@@ -1,29 +1,22 @@
 package org.trebol.operation.controllers;
 
-import java.util.Map;
-import java.util.Optional;
-
-import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
-
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.operation.GenericDataController;
-import org.trebol.operation.GenericDataCrudController;
-import org.trebol.operation.IDataCrudController;
-import org.trebol.pojo.DataPagePojo;
-import org.trebol.pojo.ImagePojo;
-import org.trebol.pojo.ProductCategoryPojo;
-import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.GenericJpaService;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.operation.GenericDataCrudController;
+import org.trebol.pojo.DataPagePojo;
+import org.trebol.pojo.ProductCategoryPojo;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * Controller that maps API resources for CRUD operations on ProductCategories
@@ -37,8 +30,9 @@ public class DataProductCategoriesController
 
   @Autowired
   public DataProductCategoriesController(OperationProperties globals,
-                                         GenericJpaService<ProductCategoryPojo, ProductCategory> crudService) {
-    super(globals, crudService);
+                                         GenericCrudJpaService<ProductCategoryPojo, ProductCategory> crudService,
+                                         IPredicateJpaService<ProductCategory> predicateService) {
+    super(globals, crudService, predicateService);
   }
 
   @GetMapping({"", "/"})
@@ -74,7 +68,7 @@ public class DataProductCategoriesController
   @Deprecated(forRemoval = true)
   @GetMapping({"/{parentId}", "/{parentId}/"})
   public DataPagePojo<ProductCategoryPojo> readChildren(@PathVariable Long parentId) {
-    Map<String, String> queryParamsMap = Maps.of("parentId", String.valueOf(parentId)).build();
-    return super.readMany(null, null, queryParamsMap);
+    Map<String, String> parentIdMatcher = Maps.of("parentId", String.valueOf(parentId)).build();
+    return super.readMany(null, null, parentIdMatcher);
   }
 }

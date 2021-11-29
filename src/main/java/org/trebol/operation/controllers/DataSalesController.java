@@ -1,36 +1,23 @@
 package org.trebol.operation.controllers;
 
-import java.util.Map;
-
-import javax.validation.Valid;
-
 import com.querydsl.core.types.Predicate;
+import io.jsonwebtoken.lang.Maps;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import org.trebol.operation.GenericDataController;
+import org.springframework.web.bind.annotation.*;
+import org.trebol.config.OperationProperties;
+import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
-import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellPojo;
-import org.trebol.config.OperationProperties;
-import org.trebol.jpa.entities.Sell;
-import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaService;
 
-import javassist.NotFoundException;
-
-import org.trebol.operation.IDataCrudController;
-import org.trebol.exceptions.BadInputException;
+import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * Controller that maps API resources for CRUD operations on Sales
@@ -45,8 +32,9 @@ public class DataSalesController
 
   @Autowired
   public DataSalesController(OperationProperties globals,
-                             GenericJpaService<SellPojo, Sell> crudService) {
-    super(globals, crudService);
+                             GenericCrudJpaService<SellPojo, Sell> crudService,
+                             IPredicateJpaService<Sell> predicateService) {
+    super(globals, crudService, predicateService);
   }
 
   @GetMapping({"", "/"})
@@ -81,7 +69,7 @@ public class DataSalesController
   @GetMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:read')")
   public SellPojo readOne(@PathVariable Long buyOrder) throws NotFoundException {
-    return crudService.readOne(buyOrder);
+    return crudService.readOne(whereBuyOrderIs(buyOrder));
   }
 
   @Deprecated(forRemoval = true)
@@ -89,13 +77,18 @@ public class DataSalesController
   @PreAuthorize("hasAuthority('sales:update')")
   public void update(@RequestBody SellPojo input, @PathVariable Long buyOrder)
     throws BadInputException, NotFoundException {
-    crudService.update(input, buyOrder);
+    crudService.update(input, whereBuyOrderIs(buyOrder));
   }
 
   @Deprecated(forRemoval = true)
   @DeleteMapping({"/{buyOrder}", "/{buyOrder}/"})
   @PreAuthorize("hasAuthority('sales:delete')")
   public void delete(@PathVariable Long buyOrder) throws NotFoundException {
-    crudService.delete(buyOrder);
+    crudService.delete(whereBuyOrderIs(buyOrder));
+  }
+
+  private Predicate whereBuyOrderIs(Long buyOrder) {
+    Map<String, String> buyOrderMatcher = Maps.of("buyOrder", String.valueOf(buyOrder)).build();
+    return predicateService.parseMap(buyOrderMatcher);
   }
 }

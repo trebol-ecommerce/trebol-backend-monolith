@@ -1,46 +1,48 @@
 package org.trebol.operation.services;
 
+import com.querydsl.core.types.Predicate;
+import io.jsonwebtoken.lang.Maps;
+import javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.integration.IPaymentsIntegrationService;
+import org.trebol.integration.exceptions.PaymentServiceException;
+import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.ISellStepperJpaService;
+import org.trebol.operation.ICheckoutService;
+import org.trebol.pojo.PaymentRedirectionDetailsPojo;
+import org.trebol.pojo.SellPojo;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Map;
 
-import io.jsonwebtoken.lang.Maps;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.querydsl.core.types.Predicate;
-
-import org.trebol.pojo.SellPojo;
-import org.trebol.pojo.PaymentRedirectionDetailsPojo;
-import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.integration.exceptions.PaymentServiceException;
-
-import javassist.NotFoundException;
-
-import org.trebol.integration.IPaymentsIntegrationService;
-import org.trebol.jpa.ISalesJpaService;
-import org.trebol.operation.ICheckoutService;
-
-/**
- *
- * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
- */
 @Service
 public class CheckoutServiceImpl
     implements ICheckoutService {
 
-  private static final Logger logger = LoggerFactory.getLogger(CheckoutServiceImpl.class);
-  private final ISalesJpaService salesCrudService;
+  private final Logger logger = LoggerFactory.getLogger(CheckoutServiceImpl.class);
+  private final GenericCrudJpaService<SellPojo, Sell> salesCrudService;
+  private final ISellStepperJpaService sellStepperService;
+  private final IPredicateJpaService<Sell> salesPredicateService;
   private final IPaymentsIntegrationService paymentIntegrationService;
 
   @Autowired
-  public CheckoutServiceImpl(ISalesJpaService salesCrudService, IPaymentsIntegrationService paymentIntegrationService) {
+  public CheckoutServiceImpl(GenericCrudJpaService<SellPojo, Sell> salesCrudService,
+                             ISellStepperJpaService sellStepperService,
+                             IPredicateJpaService<Sell> salesPredicateService,
+                             IPaymentsIntegrationService paymentIntegrationService) {
     this.salesCrudService = salesCrudService;
+    this.sellStepperService = sellStepperService;
+    this.salesPredicateService = salesPredicateService;
     this.paymentIntegrationService = paymentIntegrationService;
   }
 
@@ -63,7 +65,7 @@ public class CheckoutServiceImpl
   public PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException {
     PaymentRedirectionDetailsPojo response = paymentIntegrationService.requestNewPaymentPageDetails(transaction);
     try {
-      salesCrudService.setSellStatusToPaymentStartedWithToken(transaction.getBuyOrder(), response.getToken());
+      sellStepperService.setSellStatusToPaymentStartedWithToken(transaction.getBuyOrder(), response.getToken());
       return response;
     } catch (NotFoundException exc) {
       logger.error("A sell that was just created could not be found", exc);
@@ -77,7 +79,7 @@ public class CheckoutServiceImpl
       if (wasAborted) {
         SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
         Long sellId = sellByToken.getBuyOrder();
-        salesCrudService.setSellStatusToPaymentAborted(sellId);
+        sellStepperService.setSellStatusToPaymentAborted(sellId);
       } else {
         this.processSellStatus(transactionToken);
       }
@@ -91,10 +93,9 @@ public class CheckoutServiceImpl
 
   @Override
   public SellPojo getResultingTransaction(String transactionToken) throws NotFoundException {
-    Predicate startedWithMatchingToken = salesCrudService.parsePredicate(
-        Maps.of("token", transactionToken).build()
-    );
-    return salesCrudService.readOne(startedWithMatchingToken);
+    Map<String, String> tokenMatcher = Maps.of("token", transactionToken).build();
+    Predicate withMatchingToken = salesPredicateService.parseMap(tokenMatcher);
+    return salesCrudService.readOne(withMatchingToken);
   }
 
   /**
@@ -113,18 +114,18 @@ public class CheckoutServiceImpl
     logger.debug("Transaction found; updating sell status for id={}...", sellId);
     if (statusCode != 0) {
       logger.trace("Status code for transaction={}, means 'failed'", statusCode);
-      salesCrudService.setSellStatusToPaymentFailed(sellId);
+      sellStepperService.setSellStatusToPaymentFailed(sellId);
     } else {
       logger.trace("Status code for transaction={}, means 'success'", statusCode);
-      salesCrudService.setSellStatusToPaidUnconfirmed(sellId);
+      sellStepperService.setSellStatusToPaidUnconfirmed(sellId);
     }
     logger.trace("Updating sell status: Done");
   }
 
   private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws NotFoundException {
-    Predicate startedTransactionWithMatchingToken = salesCrudService.parsePredicate(
-        Maps.of("statusName", "Payment Started").and("token", transactionToken).build()
-    );
+    Map<String, String> startedWithTokenMatcher = Maps.of("statusName", "Payment Started").
+                                                       and("token", transactionToken).build();
+    Predicate startedTransactionWithMatchingToken = salesPredicateService.parseMap(startedWithTokenMatcher);
     return salesCrudService.readOne(startedTransactionWithMatchingToken);
   }
 

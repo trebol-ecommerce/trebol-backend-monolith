@@ -1,38 +1,23 @@
 package org.trebol.operation.controllers;
 
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
-
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import org.trebol.config.OperationProperties;
+import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.entities.Product;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
-import org.trebol.operation.GenericDataController;
-import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductPojo;
-import org.trebol.config.OperationProperties;
-import org.trebol.jpa.entities.Product;
-import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaService;
-import org.trebol.operation.IDataCrudController;
-import org.trebol.exceptions.BadInputException;
 
-import com.querydsl.core.types.Predicate;
-
-import javassist.NotFoundException;
+import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * Controller that maps API resources for CRUD operations on Products
@@ -47,8 +32,9 @@ public class DataProductsController
 
   @Autowired
   public DataProductsController(OperationProperties globals,
-                                GenericJpaService<ProductPojo, Product> crudService) {
-    super(globals, crudService);
+                                GenericCrudJpaService<ProductPojo, Product> crudService,
+                                IPredicateJpaService<Product> predicateService) {
+    super(globals, crudService, predicateService);
   }
 
   @GetMapping({"", "/"})
@@ -83,9 +69,7 @@ public class DataProductsController
   @GetMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:read')")
   public ProductPojo readOne(@PathVariable String barcode) throws NotFoundException {
-    Map<String, String> codeMatcher = Maps.of("barcode", barcode).build();
-    Predicate matchesCode = crudService.parsePredicate(codeMatcher);
-    return crudService.readOne(matchesCode);
+    return crudService.readOne(whereBarcodeIs(barcode));
   }
 
   @Deprecated(forRemoval = true)
@@ -93,15 +77,18 @@ public class DataProductsController
   @PreAuthorize("hasAuthority('products:update')")
   public void update(@RequestBody ProductPojo input, @PathVariable String barcode)
     throws BadInputException, NotFoundException {
-    Long productId = this.readOne(barcode).getId();
-    crudService.update(input, productId);
+    crudService.update(input, whereBarcodeIs(barcode));
   }
 
   @Deprecated(forRemoval = true)
   @DeleteMapping({"/{barcode}", "/{barcode}/"})
   @PreAuthorize("hasAuthority('products:delete')")
   public void delete(@PathVariable String barcode) throws NotFoundException {
-    Long productId = this.readOne(barcode).getId();
-    crudService.delete(productId);
+    crudService.delete(whereBarcodeIs(barcode));
+  }
+
+  private Predicate whereBarcodeIs(String barcode) {
+    Map<String, String> barcodeMatcher = Maps.of("barcode", barcode).build();
+    return predicateService.parseMap(barcodeMatcher);
   }
 }

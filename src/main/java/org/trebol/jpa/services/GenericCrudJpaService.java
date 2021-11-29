@@ -1,22 +1,20 @@
-package org.trebol.jpa;
+package org.trebol.jpa.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.querydsl.core.types.Predicate;
+import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import org.trebol.pojo.DataPagePojo;
 import org.trebol.exceptions.BadInputException;
-
-import com.querydsl.core.types.Predicate;
-
 import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.IJpaRepository;
+import org.trebol.pojo.DataPagePojo;
 
-import javassist.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Base abstraction for JPA-based CRUD services that communicate with Pojos, keeping entity classes out of scope.
@@ -26,22 +24,27 @@ import javassist.NotFoundException;
  * @param <P> The pojo class
  * @param <E> The entity class
  */
-public abstract class GenericJpaService<P, E>
-  implements IJpaCrudService<P, Long>, IJpaConverterService<P, E> {
+@Transactional
+public abstract class GenericCrudJpaService<P, E>
+  implements ICrudJpaService<P, Long> {
 
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   protected final IJpaRepository<E> repository;
+  protected final ITwoWayConverterJpaService<P, E> converter;
   protected final Logger logger;
 
-  public GenericJpaService(IJpaRepository<E> repository, Logger logger) {
+  public GenericCrudJpaService(IJpaRepository<E> repository,
+                               ITwoWayConverterJpaService<P, E> converter,
+                               Logger logger) {
     this.repository = repository;
+    this.converter = converter;
     this.logger = logger;
   }
 
   /**
-   * Attempts to match the given example input's identification to an existing entity in the persistence context.
+   * Attempts to match the given pojo class instance to an existing entity in the persistence context.
    * @param example The pojo class instance that should hold a valid identifying property
-   * @return An optional holding
+   * @return A possible entity match
    * @throws BadInputException When the pojo doesn't have its identifying property.
    */
   public abstract Optional<E> getExisting(P example) throws BadInputException;
@@ -77,15 +80,14 @@ public abstract class GenericJpaService<P, E>
    * it.
    * @param inputPojo The Pojo instance to be converted and inserted.
    */
-  @Transactional
   @Override
   public P create(P inputPojo) throws BadInputException, EntityAlreadyExistsException {
     if (this.itemExists(inputPojo)) {
       throw new EntityAlreadyExistsException(ITEM_NOT_FOUND);
     } else {
-      E input = this.convertToNewEntity(inputPojo);
+      E input = converter.convertToNewEntity(inputPojo);
       E output = repository.saveAndFlush(input);
-      return this.convertToPojo(output);
+      return converter.convertToPojo(output);
     }
   }
 
@@ -101,14 +103,13 @@ public abstract class GenericJpaService<P, E>
 
     List<P> pojoList = new ArrayList<>();
     for (E item : iterable) {
-      P outputItem = this.convertToPojo(item);
+      P outputItem = converter.convertToPojo(item);
       pojoList.add(outputItem);
     }
 
     return new DataPagePojo<>(pojoList, pageIndex, totalCount, pageSize);
   }
 
-  @Transactional
   @Override
   public P update(P input) throws NotFoundException, BadInputException {
     Optional<E> match = this.getExisting(input);
@@ -119,18 +120,6 @@ public abstract class GenericJpaService<P, E>
     }
   }
 
-  @Transactional
-  @Override
-  public P update(P input, Long id) throws NotFoundException, BadInputException {
-    Optional<E> itemById = repository.findById(id);
-    if (itemById.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
-    } else {
-      return this.doUpdate(input, itemById.get());
-    }
-  }
-
-  @Transactional
   @Override
   public P update(P input, Predicate filters) throws NotFoundException, BadInputException {
     Optional<E> firstMatch = repository.findOne(filters);
@@ -138,16 +127,6 @@ public abstract class GenericJpaService<P, E>
       throw new NotFoundException(ITEM_NOT_FOUND);
     } else {
       return this.doUpdate(input, firstMatch.get());
-    }
-  }
-
-  @Override
-  public void delete(Long id) throws NotFoundException {
-    if (!repository.existsById(id)) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
-    } else {
-      repository.deleteById(id);
-      repository.flush();
     }
   }
 
@@ -162,24 +141,13 @@ public abstract class GenericJpaService<P, E>
   }
 
   @Override
-  public P readOne(Long id) throws NotFoundException {
-    Optional<E> entityById = repository.findById(id);
-    if (entityById.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
-    } else {
-      E found = entityById.get();
-      return this.convertToPojo(found);
-    }
-  }
-
-  @Override
   public P readOne(Predicate filters) throws NotFoundException {
     Optional<E> entity = repository.findOne(filters);
     if (entity.isEmpty()) {
       throw new NotFoundException(ITEM_NOT_FOUND);
     } else {
       E found = entity.get();
-      return this.convertToPojo(found);
+      return converter.convertToPojo(found);
     }
   }
 
@@ -191,12 +159,12 @@ public abstract class GenericJpaService<P, E>
    * @throws BadInputException If data in Pojo is insufficient, incorrect, malformed, etc
    */
   protected P doUpdate(P input, E existingEntity) throws BadInputException {
-    E updatedEntity = this.applyChangesToExistingEntity(input, existingEntity);
+    E updatedEntity = converter.applyChangesToExistingEntity(input, existingEntity);
     if (existingEntity.equals(updatedEntity)) {
       return input;
     } else {
       E output = repository.saveAndFlush(updatedEntity);
-      return this.convertToPojo(output);
+      return converter.convertToPojo(output);
     }
   }
 }

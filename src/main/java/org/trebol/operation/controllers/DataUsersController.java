@@ -1,39 +1,24 @@
 package org.trebol.operation.controllers;
 
-import java.security.Principal;
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
-
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import org.trebol.config.OperationProperties;
+import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.entities.User;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
-import org.trebol.operation.GenericDataController;
-import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.UserPojo;
-import org.trebol.config.OperationProperties;
-import org.trebol.jpa.entities.User;
-import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaService;
-import org.trebol.operation.IDataCrudController;
-import org.trebol.exceptions.BadInputException;
 
-import com.querydsl.core.types.Predicate;
-
-import javassist.NotFoundException;
+import javax.validation.Valid;
+import java.security.Principal;
+import java.util.Map;
 
 /**
  * Controller that maps API resources for CRUD operations on Users
@@ -48,8 +33,9 @@ public class DataUsersController
 
   @Autowired
   public DataUsersController(OperationProperties globals,
-                             GenericJpaService<UserPojo, User> crudService) {
-    super(globals, crudService);
+                             GenericCrudJpaService<UserPojo, User> crudService,
+                             IPredicateJpaService<User> predicateService) {
+    super(globals, crudService, predicateService);
   }
 
   @GetMapping({"", "/"})
@@ -79,11 +65,6 @@ public class DataUsersController
     if (requestParams.containsKey("name") && requestParams.get("name").equals(principal.getName())) {
       throw new BadInputException("A user should not be able to delete their own account");
     }
-    this.delete(requestParams);
-  }
-
-  @Override
-  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
     super.delete(requestParams);
   }
 
@@ -91,9 +72,7 @@ public class DataUsersController
   @GetMapping({"/{name}", "/{name}/"})
   @PreAuthorize("hasAuthority('users:read')")
   public UserPojo readOne(@PathVariable String name) throws NotFoundException {
-    Map<String, String> nameMatcher = Maps.of("name", name).build();
-    Predicate matchesName = crudService.parsePredicate(nameMatcher);
-    return crudService.readOne(matchesName);
+    return crudService.readOne(whereNameIs(name));
   }
 
   @Deprecated(forRemoval = true)
@@ -101,8 +80,7 @@ public class DataUsersController
   @PreAuthorize("hasAuthority('users:update')")
   public void update(@RequestBody UserPojo input, @PathVariable String name)
     throws BadInputException, NotFoundException {
-    Long userId = this.readOne(name).getId();
-    crudService.update(input, userId);
+    crudService.update(input, whereNameIs(name));
   }
 
   @Deprecated(forRemoval = true)
@@ -112,7 +90,11 @@ public class DataUsersController
     if (principal.getName().equals(name)){
       throw new BadInputException("A user should not be able to delete their own account");
     }
-    Long userId = this.readOne(name).getId();
-    crudService.delete(userId);
+    crudService.delete(whereNameIs(name));
+  }
+
+  private Predicate whereNameIs(String name) {
+    Map<String, String> nameMatcher = Maps.of("name", name).build();
+    return predicateService.parseMap(nameMatcher);
   }
 }
