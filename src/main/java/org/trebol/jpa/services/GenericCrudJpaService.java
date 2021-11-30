@@ -28,8 +28,10 @@ import java.util.Optional;
 public abstract class GenericCrudJpaService<P, E>
   implements ICrudJpaService<P, Long> {
 
+  // avoid shadowing this field; as implementations should always refer to their specific repositories
+  private final IJpaRepository<E> repository;
+
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
-  protected final IJpaRepository<E> repository;
   protected final ITwoWayConverterJpaService<P, E> converter;
   protected final Logger logger;
 
@@ -50,39 +52,13 @@ public abstract class GenericCrudJpaService<P, E>
   public abstract Optional<E> getExisting(P example) throws BadInputException;
 
   /**
-   * Swiftly check that a matching entity exists. Uses getExisting().
-   * @param input The pojo class instance
-   * @return true if the item exists in the database, false otherwise
-   * @throws BadInputException When the pojo doesn't have its identifying property.
-   */
-  public boolean itemExists(P input) throws BadInputException {
-    return this.getExisting(input).isPresent();
-  }
-
-  /**
-   * Query all entities for the type class. Override this method if you need
-   * custom queries. Remember to declare the correct repository interface first.
-   *
-   * @param page Paging parameters (size/index).
-   * @param filters Object used for filtering.
-   * @return A page of entities.
-   */
-  public Page<E> getAllEntities(Pageable page, Predicate filters) {
-    if (filters == null) {
-      return repository.findAll(page);
-    } else {
-      return repository.findAll(filters, page);
-    }
-  }
-
-  /**
    * Convert a pojo to an entity, save it, convert it back to a pojo and return
    * it.
    * @param inputPojo The Pojo instance to be converted and inserted.
    */
   @Override
   public P create(P inputPojo) throws BadInputException, EntityAlreadyExistsException {
-    if (this.itemExists(inputPojo)) {
+    if (this.getExisting(inputPojo).isPresent()) {
       throw new EntityAlreadyExistsException(ITEM_NOT_FOUND);
     } else {
       E input = converter.convertToNewEntity(inputPojo);
@@ -165,6 +141,22 @@ public abstract class GenericCrudJpaService<P, E>
     } else {
       E output = repository.saveAndFlush(updatedEntity);
       return converter.convertToPojo(output);
+    }
+  }
+
+  /**
+   * Query all entities for the type class. Override this method if you need
+   * custom queries. Remember to declare the correct repository interface first.
+   *
+   * @param page Paging parameters (size/index).
+   * @param filters Object used for filtering.
+   * @return A page of entities.
+   */
+  protected Page<E> getAllEntities(Pageable page, Predicate filters) {
+    if (filters == null) {
+      return repository.findAll(page);
+    } else {
+      return repository.findAll(filters, page);
     }
   }
 }
