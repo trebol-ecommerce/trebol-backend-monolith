@@ -49,7 +49,7 @@ public class SalesJpaCrudServiceImpl
   @Override
   public SellPojo create(SellPojo inputPojo) throws BadInputException, EntityAlreadyExistsException {
     Sell input = converter.convertToNewEntity(inputPojo);
-    Sell output = repository.saveAndFlush(input);
+    Sell output = salesRepository.saveAndFlush(input);
     return converter.convertToPojo(output);
   }
 
