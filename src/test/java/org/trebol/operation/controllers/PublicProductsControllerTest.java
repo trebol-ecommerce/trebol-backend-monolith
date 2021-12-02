@@ -5,9 +5,8 @@ import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.services.GenericCrudJpaService;
@@ -21,8 +20,7 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
-@WebAppConfiguration
+@RunWith(MockitoJUnitRunner.class)
 public class PublicProductsControllerTest {
 
   @Mock
@@ -36,7 +34,6 @@ public class PublicProductsControllerTest {
 
   @Test
   public void return_dataPage() {
-    int defaultPageSize = 8;
     int pageSize = 10;
     int pageIndex = 0;
     Map<String, String> queryParamsMap = Map.of(
@@ -44,8 +41,6 @@ public class PublicProductsControllerTest {
         "pageSize", String.valueOf(pageSize));
     Predicate filters = null;
 
-    when(operationProperties.getItemsPerPage()).
-        thenReturn(defaultPageSize);
     when(predicateService.parseMap(any())).
         thenReturn(filters);
     when(productCrudService.readMany(eq(pageSize), eq(pageIndex), any())).
