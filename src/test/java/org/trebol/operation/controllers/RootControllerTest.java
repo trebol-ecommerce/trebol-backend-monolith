@@ -1,16 +1,10 @@
 package org.trebol.operation.controllers;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 
-@RunWith(SpringRunner.class)
-@WebAppConfiguration
 public class RootControllerTest {
 
   @Test
