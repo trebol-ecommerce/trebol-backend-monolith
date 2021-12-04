@@ -22,7 +22,7 @@ import java.util.Optional;
 public class ShippersJpaCrudServiceImpl
   extends GenericCrudJpaService<ShipperPojo, Shipper> {
 
-  private final IShippersJpaRepository billingTypesRepository;
+  private final IShippersJpaRepository shippersRepository;
 
   @Autowired
   public ShippersJpaCrudServiceImpl(IShippersJpaRepository repository,
@@ -30,7 +30,7 @@ public class ShippersJpaCrudServiceImpl
     super(repository,
           converter,
           LoggerFactory.getLogger(ShippersJpaCrudServiceImpl.class));
-    this.billingTypesRepository = repository;
+    this.shippersRepository = repository;
   }
 
   @Override
@@ -39,7 +39,7 @@ public class ShippersJpaCrudServiceImpl
     if (name == null || name.isBlank()) {
       throw new BadInputException("Billing type has no name");
     } else {
-      return billingTypesRepository.findByName(name);
+      return shippersRepository.findByName(name);
     }
   }
 }

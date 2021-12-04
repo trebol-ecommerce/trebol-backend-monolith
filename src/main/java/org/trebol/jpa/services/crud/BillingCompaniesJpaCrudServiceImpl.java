@@ -22,7 +22,7 @@ import java.util.Optional;
 public class BillingCompaniesJpaCrudServiceImpl
   extends GenericCrudJpaService<BillingCompanyPojo, BillingCompany> {
 
-  private final IBillingCompaniesJpaRepository billingTypesRepository;
+  private final IBillingCompaniesJpaRepository billingCompaniesRepository;
 
   @Autowired
   public BillingCompaniesJpaCrudServiceImpl(IBillingCompaniesJpaRepository repository,
@@ -30,7 +30,7 @@ public class BillingCompaniesJpaCrudServiceImpl
     super(repository,
           converter,
           LoggerFactory.getLogger(BillingCompaniesJpaCrudServiceImpl.class));
-    this.billingTypesRepository = repository;
+    this.billingCompaniesRepository = repository;
   }
 
   @Override
@@ -39,7 +39,7 @@ public class BillingCompaniesJpaCrudServiceImpl
     if (idNumber == null || idNumber.isBlank()) {
       throw new BadInputException("Billing company has no id number");
     } else {
-      return billingTypesRepository.findByIdNumber(idNumber);
+      return billingCompaniesRepository.findByIdNumber(idNumber);
     }
   }
 }
