@@ -1,9 +1,8 @@
 package org.trebol.jpa.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.*;
 
 /**
  *
@@ -29,6 +28,10 @@ public class Customer
   public Customer(Customer source) {
     this.id = source.id;
     this.person = source.person;
+  }
+
+  public Customer(String idNumber) {
+    this.person = new Person(idNumber);
   }
 
   public Long getId() {

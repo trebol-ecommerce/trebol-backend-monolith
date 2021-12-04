@@ -30,6 +30,12 @@ public class PersonPojo {
   @Pattern(regexp = "^(((\\(\\+?[0-9]{3}\\))|(\\+?[0-9]{3})) ?)?[0-9]{3,4}[ -]?[0-9]{4}$")
   private String phone2;
 
+  public PersonPojo() { }
+
+  public PersonPojo(String idNumber) {
+    this.idNumber = idNumber;
+  }
+
   public Long getId() {
     return id;
   }

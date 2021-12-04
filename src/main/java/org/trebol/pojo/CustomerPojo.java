@@ -19,6 +19,12 @@ public class CustomerPojo {
   @Valid
   private PersonPojo person;
 
+  public CustomerPojo() { }
+
+  public CustomerPojo(String idNumber) {
+    this.person = new PersonPojo(idNumber);
+  }
+
   public Long getId() {
     return id;
   }
