@@ -13,6 +13,18 @@ public class BillingCompanyPojo {
   private String idNumber;
   private String name;
 
+  public BillingCompanyPojo() {
+  }
+
+  public BillingCompanyPojo(String idNumber) {
+    this.idNumber = idNumber;
+  }
+
+  public BillingCompanyPojo(String idNumber, String name) {
+    this.idNumber = idNumber;
+    this.name = name;
+  }
+
   public String getIdNumber() {
     return idNumber;
   }

@@ -2,15 +2,21 @@ package org.trebol.jpa.services.crud;
 
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.repositories.IBillingCompaniesJpaRepository;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.BillingCompanyPojo;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BillingCompaniesJpaCrudServiceTest {
 
   @Mock IBillingCompaniesJpaRepository billingCompaniesRepositoryMock;
@@ -18,11 +24,31 @@ public class BillingCompaniesJpaCrudServiceTest {
 
   @Test
   public void sanity_check() {
-    BillingCompaniesJpaCrudServiceImpl service = new BillingCompaniesJpaCrudServiceImpl(
+    BillingCompaniesJpaCrudServiceImpl service = instantiate();
+    assertNotNull(service);
+  }
+
+  @Test
+  public void finds_by_name() throws BadInputException {
+    Long companyId = 1L;
+    String companyName = "test company";
+    String companyIdNumber = "11111111";
+    BillingCompanyPojo example = new BillingCompanyPojo(companyIdNumber);
+    BillingCompany persistedEntity = new BillingCompany(companyId, companyName, companyIdNumber);
+    when(billingCompaniesRepositoryMock.findByIdNumber(companyIdNumber)).thenReturn(Optional.of(persistedEntity));
+
+    BillingCompaniesJpaCrudServiceImpl service = instantiate();
+    Optional<BillingCompany> match = service.getExisting(example);
+
+    assertTrue(match.isPresent());
+    assertEquals(match.get(), persistedEntity);
+  }
+
+  private BillingCompaniesJpaCrudServiceImpl instantiate() {
+    return new BillingCompaniesJpaCrudServiceImpl(
         billingCompaniesRepositoryMock,
         billingCompaniesConverterMock
     );
-    assertNotNull(service);
   }
 
 }

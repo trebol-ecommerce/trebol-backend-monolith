@@ -35,6 +35,12 @@ public class BillingCompany
     this.name = source.name;
   }
 
+  public BillingCompany(Long id, String idNumber, String name) {
+    this.id = id;
+    this.idNumber = idNumber;
+    this.name = name;
+  }
+
   public Long getId() {
     return id;
   }
