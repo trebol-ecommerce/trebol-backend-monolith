@@ -1,10 +1,9 @@
 package org.trebol.jpa.entities;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -30,6 +29,11 @@ public class BillingType
   public BillingType(BillingType source) {
     this.id = source.id;
     this.name = source.name;
+  }
+
+  public BillingType(Long id, String name) {
+    this.id = id;
+    this.name = name;
   }
 
   public Long getId() {
