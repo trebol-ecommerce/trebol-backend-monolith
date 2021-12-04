@@ -29,7 +29,7 @@ public class BillingCompaniesJpaCrudServiceTest {
   }
 
   @Test
-  public void finds_by_name() throws BadInputException {
+  public void finds_by_id_number() throws BadInputException {
     Long companyId = 1L;
     String companyName = "test company";
     String companyIdNumber = "11111111";
