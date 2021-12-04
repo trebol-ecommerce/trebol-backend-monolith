@@ -1,5 +1,6 @@
 package org.trebol.jpa.services;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import javassist.NotFoundException;
 import org.junit.Test;
@@ -71,7 +72,7 @@ public class GenericJpaCrudServiceTest {
 
   @Test
   public void reads_plural_data_with_items() {
-    Predicate filters = null;
+    Predicate filters = new BooleanBuilder();
     DataPagePojo<GenericPojo> expectedResult = new DataPagePojo<>(persistedPojoList, 0, 1, 10);
 
     when(genericRepositoryMock.count(filters)).thenReturn(1L);
@@ -90,7 +91,7 @@ public class GenericJpaCrudServiceTest {
 
   @Test
   public void reads_singular_data() throws NotFoundException {
-    Predicate filters = null;
+    Predicate filters = new BooleanBuilder();
     Optional<GenericEntity> result = Optional.of(persistedEntity);
     when(genericRepositoryMock.findOne(filters)).thenReturn(result);
     when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
@@ -123,7 +124,7 @@ public class GenericJpaCrudServiceTest {
 
   @Test
   public void updates_data_using_filters() throws BadInputException, NotFoundException {
-    Predicate filters = null;
+    Predicate filters = new BooleanBuilder();
     GenericPojo updatingPojo = new GenericPojo(1L, "test2");
     GenericEntity updatedEntity = new GenericEntity(1L, "test2");
     when(genericRepositoryMock.findOne(filters)).thenReturn(Optional.of(persistedEntity));
@@ -144,7 +145,7 @@ public class GenericJpaCrudServiceTest {
   @Test
   public void deletes_data() throws NotFoundException {
     PageImpl<GenericEntity> persistedEntityPage = new PageImpl<>(persistedEntityList);
-    Predicate filters = null;
+    Predicate filters = new BooleanBuilder();
     when(genericRepositoryMock.count(filters)).thenReturn(1L);
     when(genericRepositoryMock.findAll(filters)).thenReturn(persistedEntityPage);
 
@@ -157,17 +158,18 @@ public class GenericJpaCrudServiceTest {
 
   @Test
   public void errors_when_reads_singular_data_but_is_unable_to_find_it() {
+    Predicate filters = new BooleanBuilder();
     Optional<GenericEntity> emptyResult = Optional.empty();
-    when(genericRepositoryMock.findOne((Predicate) null)).thenReturn(emptyResult);
+    when(genericRepositoryMock.findOne(filters)).thenReturn(emptyResult);
 
     GenericCrudJpaService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
     GenericPojo genericPojo = null;
 
     try {
-      genericPojo = service.readOne(null);
+      genericPojo = service.readOne(filters);
     } catch (NotFoundException ex) {
       assertNull(genericPojo);
-      verify(genericRepositoryMock).findOne((Predicate) null);
+      verify(genericRepositoryMock).findOne(filters);
     }
   }
 
