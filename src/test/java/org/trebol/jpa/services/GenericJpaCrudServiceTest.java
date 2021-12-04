@@ -41,6 +41,15 @@ public class GenericJpaCrudServiceTest {
   private final PageRequest simplePageRequest = PageRequest.of(0, 10);
 
   @Test
+  public void sanity_checks() {
+    GenericCrudJpaService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
+    assertNotNull(service);
+
+    GenericCrudJpaService<GenericPojo, GenericEntity> service2 = this.instantiate_with_existing_entity();
+    assertNotNull(service2);
+  }
+
+  @Test
   public void creates_data() throws BadInputException, EntityAlreadyExistsException {
     when(genericConverterMock.convertToNewEntity(newPojo)).thenReturn(newEntity);
     when(genericRepositoryMock.saveAndFlush(newEntity)).thenReturn(persistedEntity);
@@ -76,7 +85,7 @@ public class GenericJpaCrudServiceTest {
     DataPagePojo<GenericPojo> expectedResult = new DataPagePojo<>(persistedPojoList, 0, 1, 10);
 
     when(genericRepositoryMock.count(filters)).thenReturn(1L);
-    when(genericRepositoryMock.findAll(simplePageRequest)).thenReturn(new PageImpl<>(persistedEntityList));
+    when(genericRepositoryMock.findAll(filters, simplePageRequest)).thenReturn(new PageImpl<>(persistedEntityList));
     when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
     GenericCrudJpaService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
 
@@ -84,7 +93,7 @@ public class GenericJpaCrudServiceTest {
 
     assertEquals(expectedResult, result);
     verify(genericRepositoryMock).count(filters);
-    verify(genericRepositoryMock).findAll(simplePageRequest);
+    verify(genericRepositoryMock).findAll(filters, simplePageRequest);
     verify(genericConverterMock).convertToPojo(persistedEntity);
   }
 
@@ -97,7 +106,7 @@ public class GenericJpaCrudServiceTest {
     when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
     GenericCrudJpaService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
 
-    GenericPojo foundPojo = service.readOne(null);
+    GenericPojo foundPojo = service.readOne(filters);
 
     assertEquals(persistedPojo, foundPojo);
     verify(genericRepositoryMock).findOne(filters);
