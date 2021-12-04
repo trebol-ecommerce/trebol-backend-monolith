@@ -30,34 +30,23 @@ public class LoginPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 3;
-    hash = 97 * hash + Objects.hashCode(this.name);
-    hash = 97 * hash + Objects.hashCode(this.password);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    LoginPojo loginPojo = (LoginPojo) o;
+    return Objects.equals(name, loginPojo.name) && Objects.equals(password, loginPojo.password);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final LoginPojo other = (LoginPojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    return Objects.equals(this.password, other.password);
+  public int hashCode() {
+    return Objects.hash(name, password);
   }
 
   @Override
   public String toString() {
-    return "LoginPojo{name=" + name +
-        ", password=" + password + '}';
+    return "LoginPojo{" +
+        "name='" + name + '\'' +
+        ", password='" + password + '\'' +
+        '}';
   }
 }

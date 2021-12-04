@@ -1,11 +1,10 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
-
-import javax.validation.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -59,45 +58,28 @@ public class ImagePojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 97 * hash + Objects.hashCode(this.id);
-    hash = 97 * hash + Objects.hashCode(this.code);
-    hash = 97 * hash + Objects.hashCode(this.filename);
-    hash = 97 * hash + Objects.hashCode(this.url);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ImagePojo imagePojo = (ImagePojo) o;
+    return Objects.equals(id, imagePojo.id) &&
+        Objects.equals(code, imagePojo.code) &&
+        Objects.equals(filename, imagePojo.filename) &&
+        Objects.equals(url, imagePojo.url);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final ImagePojo other = (ImagePojo)obj;
-    if (!Objects.equals(this.code, other.code)) {
-      return false;
-    }
-    if (!Objects.equals(this.filename, other.filename)) {
-      return false;
-    }
-    if (!Objects.equals(this.url, other.url)) {
-      return false;
-    }
-    return Objects.equals(this.id, other.id);
+  public int hashCode() {
+    return Objects.hash(id, code, filename, url);
   }
 
   @Override
   public String toString() {
-    return "ImagePojo{id=" + id +
-        ", code=" + code + 
-        ", filename=" + filename +
-        ", url=" + url + '}';
+    return "ImagePojo{" +
+        "id=" + id +
+        ", code='" + code + '\'' +
+        ", filename='" + filename + '\'' +
+        ", url='" + url + '\'' +
+        '}';
   }
-
 }

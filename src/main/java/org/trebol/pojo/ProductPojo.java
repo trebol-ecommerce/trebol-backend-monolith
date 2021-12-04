@@ -1,16 +1,15 @@
 package org.trebol.pojo;
 
-import java.util.Collection;
-import java.util.Objects;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 /**
  *
@@ -108,70 +107,38 @@ public class ProductPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 29 * hash + Objects.hashCode(this.id);
-    hash = 29 * hash + Objects.hashCode(this.name);
-    hash = 29 * hash + Objects.hashCode(this.barcode);
-    hash = 29 * hash + Objects.hashCode(this.price);
-    hash = 29 * hash + Objects.hashCode(this.category);
-    hash = 29 * hash + Objects.hashCode(this.description);
-    hash = 29 * hash + Objects.hashCode(this.currentStock);
-    hash = 29 * hash + Objects.hashCode(this.criticalStock);
-    hash = 29 * hash + Objects.hashCode(this.images);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ProductPojo that = (ProductPojo) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(barcode, that.barcode) &&
+        Objects.equals(price, that.price) &&
+        Objects.equals(category, that.category) &&
+        Objects.equals(description, that.description) &&
+        Objects.equals(currentStock, that.currentStock) &&
+        Objects.equals(criticalStock, that.criticalStock) &&
+        Objects.equals(images, that.images);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final ProductPojo other = (ProductPojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.barcode, other.barcode)) {
-      return false;
-    }
-    if (!Objects.equals(this.description, other.description)) {
-      return false;
-    }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    if (!Objects.equals(this.price, other.price)) {
-      return false;
-    }
-    if (!Objects.equals(this.category, other.category)) {
-      return false;
-    }
-    if (!Objects.equals(this.currentStock, other.currentStock)) {
-      return false;
-    }
-    if (!Objects.equals(this.criticalStock, other.criticalStock)) {
-      return false;
-    }
-    return Objects.equals(this.images, other.images);
+  public int hashCode() {
+    return Objects.hash(id, name, barcode, price, category, description, currentStock, criticalStock, images);
   }
 
   @Override
   public String toString() {
-    return "ProductPojo{id=" + id +
-            ", name=" + name +
-            ", barcode=" + barcode +
-            ", price=" + price +
-            ", category=" + category +
-            ", description=" + description +
-            ", currentStock=" + currentStock +
-            ", criticalStock=" + criticalStock +
-            ", images=" + images + '}';
+    return "ProductPojo{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", barcode='" + barcode + '\'' +
+        ", price=" + price +
+        ", category=" + category +
+        ", description='" + description + '\'' +
+        ", currentStock=" + currentStock +
+        ", criticalStock=" + criticalStock +
+        ", images=" + images +
+        '}';
   }
-
 }

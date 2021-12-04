@@ -1,11 +1,10 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 /**
  *
@@ -39,7 +38,8 @@ public class ShipperPojo {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ShipperPojo that = (ShipperPojo) o;
-    return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+    return Objects.equals(id, that.id) &&
+        Objects.equals(name, that.name);
   }
 
   @Override

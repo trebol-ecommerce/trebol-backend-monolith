@@ -1,8 +1,8 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.Objects;
 
 /**
  *
@@ -43,7 +43,9 @@ public class ReceiptDetailPojo {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ReceiptDetailPojo that = (ReceiptDetailPojo) o;
-    return units == that.units && product.equals(that.product) && unitValue.equals(that.unitValue);
+    return units == that.units &&
+        Objects.equals(product, that.product) &&
+        Objects.equals(unitValue, that.unitValue);
   }
 
   @Override

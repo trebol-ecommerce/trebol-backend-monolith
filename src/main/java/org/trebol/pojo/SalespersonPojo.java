@@ -1,12 +1,11 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Objects;
 
 /**
  *
@@ -37,34 +36,24 @@ public class SalespersonPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 71 * hash + Objects.hashCode(this.id);
-    hash = 71 * hash + Objects.hashCode(this.person);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SalespersonPojo that = (SalespersonPojo) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(person, that.person);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final SalespersonPojo other = (SalespersonPojo)obj;
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return Objects.equals(this.person, other.person);
+  public int hashCode() {
+    return Objects.hash(id, person);
   }
 
   @Override
   public String toString() {
-    return "SalespersonPojo{" + "id=" + id + ", person=" + person + '}';
+    return "SalespersonPojo{" +
+        "id=" + id +
+        ", person=" + person +
+        '}';
   }
-
 }

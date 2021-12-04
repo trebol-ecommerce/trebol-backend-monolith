@@ -1,13 +1,11 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  *
@@ -60,7 +58,10 @@ public class SellDetailPojo {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     SellDetailPojo that = (SellDetailPojo) o;
-    return units == that.units && unitValue == that.unitValue && Objects.equals(id, that.id) && Objects.equals(product, that.product);
+    return units == that.units &&
+        unitValue == that.unitValue &&
+        Objects.equals(id, that.id) &&
+        Objects.equals(product, that.product);
   }
 
   @Override
