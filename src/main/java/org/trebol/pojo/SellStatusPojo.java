@@ -19,6 +19,12 @@ public class SellStatusPojo {
   @NotBlank
   private String name;
 
+  public SellStatusPojo() { }
+
+  public SellStatusPojo(String name) {
+    this.name = name;
+  }
+
   public Integer getCode() {
     return code;
   }

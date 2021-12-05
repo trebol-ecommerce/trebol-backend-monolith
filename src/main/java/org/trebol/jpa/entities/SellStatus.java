@@ -1,10 +1,9 @@
 package org.trebol.jpa.entities;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -33,6 +32,12 @@ public class SellStatus
     this.id = source.id;
     this.code = source.code;
     this.name = source.name;
+  }
+
+  public SellStatus(Long id, Integer code, String name) {
+    this.id = id;
+    this.code = code;
+    this.name = name;
   }
 
   public Long getId() {
