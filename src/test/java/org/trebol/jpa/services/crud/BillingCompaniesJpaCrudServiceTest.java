@@ -34,7 +34,7 @@ public class BillingCompaniesJpaCrudServiceTest {
     String companyIdNumber = "11111111";
     String companyName = "test company";
     BillingCompanyPojo example = new BillingCompanyPojo(companyIdNumber);
-    BillingCompany persistedEntity = new BillingCompany(companyId, companyName, companyIdNumber);
+    BillingCompany persistedEntity = new BillingCompany(companyId, companyIdNumber, companyName);
     when(billingCompaniesRepositoryMock.findByIdNumber(companyIdNumber)).thenReturn(Optional.of(persistedEntity));
 
     BillingCompaniesJpaCrudServiceImpl service = instantiate();
