@@ -31,8 +31,8 @@ public class BillingCompaniesJpaCrudServiceTest {
   @Test
   public void finds_by_id_number() throws BadInputException {
     Long companyId = 1L;
-    String companyName = "test company";
     String companyIdNumber = "11111111";
+    String companyName = "test company";
     BillingCompanyPojo example = new BillingCompanyPojo(companyIdNumber);
     BillingCompany persistedEntity = new BillingCompany(companyId, companyName, companyIdNumber);
     when(billingCompaniesRepositoryMock.findByIdNumber(companyIdNumber)).thenReturn(Optional.of(persistedEntity));
@@ -41,7 +41,9 @@ public class BillingCompaniesJpaCrudServiceTest {
     Optional<BillingCompany> match = service.getExisting(example);
 
     assertTrue(match.isPresent());
-    assertEquals(match.get(), persistedEntity);
+    assertEquals(match.get().getId(), companyId);
+    assertEquals(match.get().getIdNumber(), companyIdNumber);
+    assertEquals(match.get().getName(), companyName);
   }
 
   private BillingCompaniesJpaCrudServiceImpl instantiate() {

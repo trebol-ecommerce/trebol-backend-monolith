@@ -40,7 +40,8 @@ public class BillingTypesJpaCrudServiceTest {
     Optional<BillingType> match = service.getExisting(example);
 
     assertTrue(match.isPresent());
-    assertEquals(match.get(), persistedEntity);
+    assertEquals(match.get().getId(), billingTypeId);
+    assertEquals(match.get().getName(), billingTypeName);
   }
 
   private BillingTypesJpaCrudServiceImpl instantiate() {
