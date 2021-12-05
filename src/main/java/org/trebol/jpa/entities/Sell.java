@@ -1,14 +1,13 @@
 package org.trebol.jpa.entities;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
-
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.CreationTimestamp;
 
 /**
  *
@@ -98,6 +97,44 @@ public class Sell
     this.shippingAddress = source.shippingAddress;
     this.salesperson = source.salesperson;
     this.details = source.details;
+  }
+
+  public Sell(Long id,
+              Instant date,
+              int totalItems,
+              int netValue,
+              int transportValue,
+              int taxesValue,
+              int totalValue,
+              String transactionToken,
+              Customer customer,
+              PaymentType paymentType,
+              SellStatus status,
+              BillingType billingType,
+              BillingCompany billingCompany,
+              Address billingAddress,
+              Shipper shipper,
+              Address shippingAddress,
+              Salesperson salesperson,
+              Collection<SellDetail> details) {
+    this.id = id;
+    this.date = date;
+    this.totalItems = totalItems;
+    this.netValue = netValue;
+    this.transportValue = transportValue;
+    this.taxesValue = taxesValue;
+    this.totalValue = totalValue;
+    this.transactionToken = transactionToken;
+    this.customer = customer;
+    this.paymentType = paymentType;
+    this.status = status;
+    this.billingType = billingType;
+    this.billingCompany = billingCompany;
+    this.billingAddress = billingAddress;
+    this.shipper = shipper;
+    this.shippingAddress = shippingAddress;
+    this.salesperson = salesperson;
+    this.details = details;
   }
 
   public Long getId() {

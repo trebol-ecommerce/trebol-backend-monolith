@@ -1,16 +1,15 @@
 package org.trebol.pojo;
 
-import java.time.Instant;
-import java.util.Collection;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -48,6 +47,10 @@ public class SellPojo {
   private AddressPojo shippingAddress;
 
   public SellPojo() { }
+
+  public SellPojo(Long buyOrder) {
+    this.buyOrder = buyOrder;
+  }
 
   public Long getBuyOrder() {
     return buyOrder;
