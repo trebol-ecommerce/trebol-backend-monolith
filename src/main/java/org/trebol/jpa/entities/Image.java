@@ -1,10 +1,9 @@
 package org.trebol.jpa.entities;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -38,6 +37,13 @@ public class Image
     this.code = source.code;
     this.filename = source.filename;
     this.url = source.url;
+  }
+
+  public Image(Long id, String code, String filename, String url) {
+    this.id = id;
+    this.code = code;
+    this.filename = filename;
+    this.url = url;
   }
 
   public Long getId() {
