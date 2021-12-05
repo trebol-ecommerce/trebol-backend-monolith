@@ -17,6 +17,12 @@ public class ShipperPojo {
   @NotBlank
   private String name;
 
+  public ShipperPojo() { }
+
+  public ShipperPojo(String name) {
+    this.name = name;
+  }
+
   public Long getId() {
     return id;
   }
