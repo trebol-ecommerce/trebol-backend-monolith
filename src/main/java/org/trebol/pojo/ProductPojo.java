@@ -34,6 +34,12 @@ public class ProductPojo {
   private Integer criticalStock;
   private Collection<ImagePojo> images;
 
+  public ProductPojo() { }
+
+  public ProductPojo(String barcode) {
+    this.barcode = barcode;
+  }
+
   public Long getId() {
     return id;
   }

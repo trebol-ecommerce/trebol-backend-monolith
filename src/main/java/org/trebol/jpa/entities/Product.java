@@ -1,10 +1,9 @@
 package org.trebol.jpa.entities;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -55,6 +54,24 @@ public class Product
     this.stockCurrent = source.stockCurrent;
     this.stockCritical = source.stockCritical;
     this.productCategory = source.productCategory;
+  }
+
+  public Product(Long id,
+                 String name,
+                 String barcode,
+                 String description,
+                 int price,
+                 int stockCurrent,
+                 int stockCritical,
+                 ProductCategory productCategory) {
+    this.id = id;
+    this.name = name;
+    this.barcode = barcode;
+    this.description = description;
+    this.price = price;
+    this.stockCurrent = stockCurrent;
+    this.stockCritical = stockCritical;
+    this.productCategory = productCategory;
   }
 
   public Long getId() {
