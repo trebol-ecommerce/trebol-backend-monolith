@@ -1,10 +1,9 @@
 package org.trebol.jpa.entities;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -41,6 +40,13 @@ public class ProductCategory
     this.code = source.code;
     this.name = source.name;
     this.parent = source.parent;
+  }
+
+  public ProductCategory(Long id, String code, String name, ProductCategory parent) {
+    this.id = id;
+    this.code = code;
+    this.name = name;
+    this.parent = parent;
   }
 
   public Long getId() {

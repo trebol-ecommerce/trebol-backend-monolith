@@ -1,11 +1,10 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
-
-import javax.validation.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -23,6 +22,19 @@ public class ProductCategoryPojo {
   private String name;
   @JsonInclude(NON_NULL)
   private ProductCategoryPojo parent;
+
+  public ProductCategoryPojo() { }
+
+  public ProductCategoryPojo(String code) {
+    this.code = code;
+  }
+
+  public ProductCategoryPojo(Long id, String code, String name, ProductCategoryPojo parent) {
+    this.id = id;
+    this.code = code;
+    this.name = name;
+    this.parent = parent;
+  }
 
   public Long getId() {
     return id;
