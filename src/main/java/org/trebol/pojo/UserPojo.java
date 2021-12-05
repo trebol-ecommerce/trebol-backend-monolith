@@ -24,6 +24,12 @@ public class UserPojo {
   private PersonPojo person;
   private String role;
 
+  public UserPojo() { }
+
+  public UserPojo(String name) {
+    this.name = name;
+  }
+
   public Long getId() {
     return id;
   }

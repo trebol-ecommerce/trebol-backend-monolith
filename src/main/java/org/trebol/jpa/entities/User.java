@@ -1,23 +1,9 @@
 package org.trebol.jpa.entities;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -59,6 +45,14 @@ public class User
     this.password = source.password;
     this.person = source.person;
     this.userRole = source.userRole;
+  }
+
+  public User(Long id, String name, String password, Person person, UserRole userRole) {
+    this.id = id;
+    this.name = name;
+    this.password = password;
+    this.person = person;
+    this.userRole = userRole;
   }
 
   public Long getId() {

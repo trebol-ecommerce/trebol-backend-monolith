@@ -1,20 +1,9 @@
 package org.trebol.jpa.entities;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -39,12 +28,17 @@ public class UserRole
   @Column(name = "user_role_name", nullable = false, unique = true)
   private String name;
 
+  public UserRole() { }
+
   public UserRole(UserRole source) {
     this.id = source.id;
     this.name = source.name;
   }
 
-  public UserRole() { }
+  public UserRole(Long id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 
   public Long getId() {
     return id;
