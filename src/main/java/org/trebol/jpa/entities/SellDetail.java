@@ -1,20 +1,8 @@
 package org.trebol.jpa.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 /**
  *
@@ -44,7 +32,20 @@ public class SellDetail
   public SellDetail(SellDetail source) {
     this.id = source.id;
     this.units = source.units;
+    this.unitValue = source.unitValue;
     this.product = source.product;
+  }
+
+  public SellDetail(int units, Product product) {
+    this.units = units;
+    this.product = product;
+  }
+
+  public SellDetail(Long id, int units, Integer unitValue, Product product) {
+    this.id = id;
+    this.units = units;
+    this.unitValue = unitValue;
+    this.product = product;
   }
 
   public Long getId() {

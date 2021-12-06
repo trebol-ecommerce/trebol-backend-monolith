@@ -52,6 +52,51 @@ public class SellPojo {
     this.buyOrder = buyOrder;
   }
 
+  public SellPojo(Collection<SellDetailPojo> details, String billingType, String paymentType, CustomerPojo customer) {
+    this.details = details;
+    this.billingType = billingType;
+    this.paymentType = paymentType;
+    this.customer = customer;
+  }
+
+  public SellPojo(Long buyOrder,
+                  String token,
+                  Instant date,
+                  Collection<SellDetailPojo> details,
+                  int netValue,
+                  int taxValue,
+                  int transportValue,
+                  int totalValue,
+                  int totalItems,
+                  String status,
+                  String billingType,
+                  String paymentType,
+                  CustomerPojo customer,
+                  SalespersonPojo salesperson,
+                  ShipperPojo shipper,
+                  BillingCompanyPojo billingCompany,
+                  AddressPojo billingAddress,
+                  AddressPojo shippingAddress) {
+    this.buyOrder = buyOrder;
+    this.token = token;
+    this.date = date;
+    this.details = details;
+    this.netValue = netValue;
+    this.taxValue = taxValue;
+    this.transportValue = transportValue;
+    this.totalValue = totalValue;
+    this.totalItems = totalItems;
+    this.status = status;
+    this.billingType = billingType;
+    this.paymentType = paymentType;
+    this.customer = customer;
+    this.salesperson = salesperson;
+    this.shipper = shipper;
+    this.billingCompany = billingCompany;
+    this.billingAddress = billingAddress;
+    this.shippingAddress = shippingAddress;
+  }
+
   public Long getBuyOrder() {
     return buyOrder;
   }

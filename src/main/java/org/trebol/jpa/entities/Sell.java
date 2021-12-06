@@ -99,6 +99,13 @@ public class Sell
     this.details = source.details;
   }
 
+  public Sell(Customer customer, PaymentType paymentType, BillingType billingType, Collection<SellDetail> details) {
+    this.customer = customer;
+    this.paymentType = paymentType;
+    this.billingType = billingType;
+    this.details = details;
+  }
+
   public Sell(Long id,
               Instant date,
               int totalItems,

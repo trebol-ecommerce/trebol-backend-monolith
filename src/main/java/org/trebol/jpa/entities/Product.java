@@ -74,6 +74,10 @@ public class Product
     this.productCategory = productCategory;
   }
 
+  public Product(String barcode) {
+    this.barcode = barcode;
+  }
+
   public Product(String name,
                  String barcode,
                  String description,

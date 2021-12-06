@@ -21,6 +21,20 @@ public class SellDetailPojo {
   @NotNull
   private ProductPojo product;
 
+  public SellDetailPojo() { }
+
+  public SellDetailPojo(int units, ProductPojo product) {
+    this.units = units;
+    this.product = product;
+  }
+
+  public SellDetailPojo(Long id, int units, int unitValue, ProductPojo product) {
+    this.id = id;
+    this.units = units;
+    this.unitValue = unitValue;
+    this.product = product;
+  }
+
   public Long getId() {
     return id;
   }
