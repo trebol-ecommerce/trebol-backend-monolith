@@ -74,6 +74,20 @@ public class Product
     this.productCategory = productCategory;
   }
 
+  public Product(String name,
+                 String barcode,
+                 String description,
+                 int price,
+                 int stockCurrent,
+                 int stockCritical) {
+    this.name = name;
+    this.barcode = barcode;
+    this.description = description;
+    this.price = price;
+    this.stockCurrent = stockCurrent;
+    this.stockCritical = stockCritical;
+  }
+
   public Long getId() {
     return id;
   }

@@ -40,6 +40,31 @@ public class ProductPojo {
     this.barcode = barcode;
   }
 
+  public ProductPojo(Long id, String name, String barcode, Integer price, ProductCategoryPojo category,
+                     String description, Integer currentStock, Integer criticalStock, Collection<ImagePojo> images) {
+    this.id = id;
+    this.name = name;
+    this.barcode = barcode;
+    this.price = price;
+    this.category = category;
+    this.description = description;
+    this.currentStock = currentStock;
+    this.criticalStock = criticalStock;
+    this.images = images;
+  }
+
+  public ProductPojo(String name, String barcode, Integer price, ProductCategoryPojo category, String description,
+                     Integer currentStock, Integer criticalStock, Collection<ImagePojo> images) {
+    this.name = name;
+    this.barcode = barcode;
+    this.price = price;
+    this.category = category;
+    this.description = description;
+    this.currentStock = currentStock;
+    this.criticalStock = criticalStock;
+    this.images = images;
+  }
+
   public Long getId() {
     return id;
   }

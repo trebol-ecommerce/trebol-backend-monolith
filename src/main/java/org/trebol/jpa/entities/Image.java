@@ -39,6 +39,12 @@ public class Image
     this.url = source.url;
   }
 
+  public Image(String code, String filename, String url) {
+    this.code = code;
+    this.filename = filename;
+    this.url = url;
+  }
+
   public Image(Long id, String code, String filename, String url) {
     this.id = id;
     this.code = code;

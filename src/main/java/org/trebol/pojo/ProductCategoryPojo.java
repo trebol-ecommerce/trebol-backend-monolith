@@ -29,6 +29,12 @@ public class ProductCategoryPojo {
     this.code = code;
   }
 
+  public ProductCategoryPojo(String code, String name, ProductCategoryPojo parent) {
+    this.code = code;
+    this.name = name;
+    this.parent = parent;
+  }
+
   public ProductCategoryPojo(Long id, String code, String name, ProductCategoryPojo parent) {
     this.id = id;
     this.code = code;

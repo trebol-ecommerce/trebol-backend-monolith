@@ -29,6 +29,12 @@ public class ImagePojo {
     this.filename = filename;
   }
 
+  public ImagePojo(String code, String filename, String url) {
+    this.code = code;
+    this.filename = filename;
+    this.url = url;
+  }
+
   public ImagePojo(Long id, String code, String filename, String url) {
     this.id = id;
     this.code = code;

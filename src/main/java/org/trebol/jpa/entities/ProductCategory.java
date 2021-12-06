@@ -42,6 +42,12 @@ public class ProductCategory
     this.parent = source.parent;
   }
 
+  public ProductCategory(String code, String name, ProductCategory parent) {
+    this.code = code;
+    this.name = name;
+    this.parent = parent;
+  }
+
   public ProductCategory(Long id, String code, String name, ProductCategory parent) {
     this.id = id;
     this.code = code;
