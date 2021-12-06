@@ -32,12 +32,11 @@ public class ShippersJpaCrudServiceTest {
   public void finds_by_name() throws BadInputException {
     Long shipperId = 1L;
     String shipperName = "test-one";
-
     ShipperPojo example = new ShipperPojo(shipperName);
     Shipper persistedEntity = new Shipper(shipperId, shipperName);
     when(shippersRepositoryMock.findByName(shipperName)).thenReturn(Optional.of(persistedEntity));
-
     ShippersJpaCrudServiceImpl service = instantiate();
+
     Optional<Shipper> match = service.getExisting(example);
 
     assertTrue(match.isPresent());

@@ -43,8 +43,8 @@ public class UsersJpaCrudServiceTest {
     UserPojo example = new UserPojo(userName);
     User persistedEntity = new User(userId, userName, userPassword, person, role);
     when(usersRepositoryMock.findByName(userName)).thenReturn(Optional.of(persistedEntity));
-
     UsersJpaCrudServiceImpl service = instantiate();
+
     Optional<User> match = service.getExisting(example);
 
     assertTrue(match.isPresent());

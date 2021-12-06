@@ -34,14 +34,13 @@ public class SalespeopleJpaCrudServiceTest {
     String salespersonIdNumber = "11111111";
     String salespersonFirstName = "test first name";
     String salespersonLastName = "test last name";
-
     SalespersonPojo example = new SalespersonPojo(salespersonIdNumber);
     Salesperson persistedEntity = new Salesperson(salespersonIdNumber);
     persistedEntity.getPerson().setFirstName(salespersonFirstName);
     persistedEntity.getPerson().setLastName(salespersonLastName);
     when(salespeopleRepositoryMock.findByPersonIdNumber(salespersonIdNumber)).thenReturn(Optional.of(persistedEntity));
-
     SalespeopleJpaCrudServiceImpl service = instantiate();
+
     Optional<Salesperson> match = service.getExisting(example);
 
     assertTrue(match.isPresent());

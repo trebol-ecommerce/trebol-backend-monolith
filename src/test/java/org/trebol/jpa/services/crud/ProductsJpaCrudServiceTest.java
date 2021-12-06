@@ -56,8 +56,8 @@ public class ProductsJpaCrudServiceTest {
     Product persistedEntity = new Product(productId, productName, productBarcode, productDescription, productPrice,
         productStock, productStockCritical, productCategory);
     when(productsRepositoryMock.findByBarcode(productBarcode)).thenReturn(Optional.of(persistedEntity));
-
     ProductsJpaCrudServiceImpl service = instantiate();
+
     Optional<Product> match = service.getExisting(example);
 
     assertTrue(match.isPresent());

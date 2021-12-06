@@ -58,8 +58,8 @@ public class SalesJpaCrudServiceTest {
       transactionToken, customer, paymentType, status, billingType, billingCompany, billingAddress, shipper,
       shippingAddress, salesperson, details);
     when(salesRepositoryMock.findById(sellId)).thenReturn(Optional.of(persistedEntity));
-
     SalesJpaCrudServiceImpl service = instantiate();
+
     Optional<Sell> match = service.getExisting(example);
 
     assertTrue(match.isPresent());

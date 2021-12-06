@@ -34,12 +34,11 @@ public class ImagesJpaCrudServiceTest {
     String imageCode = "test-one";
     String imageFilename = "test-one.jpg";
     String imageUrl = "test last name";
-
     ImagePojo example = new ImagePojo(imageFilename);
     Image persistedEntity = new Image(imageId, imageCode, imageFilename, imageUrl);
     when(imagesRepositoryMock.findByFilename(imageFilename)).thenReturn(Optional.of(persistedEntity));
-
     ImagesJpaCrudServiceImpl service = instantiate();
+
     Optional<Image> match = service.getExisting(example);
 
     assertTrue(match.isPresent());

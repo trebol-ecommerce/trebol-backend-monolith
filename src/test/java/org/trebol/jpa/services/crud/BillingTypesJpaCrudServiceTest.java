@@ -35,8 +35,8 @@ public class BillingTypesJpaCrudServiceTest {
     BillingTypePojo example = new BillingTypePojo(billingTypeName);
     BillingType persistedEntity = new BillingType(billingTypeId, billingTypeName);
     when(billingTypesRepositoryMock.findByName(billingTypeName)).thenReturn(Optional.of(persistedEntity));
-
     BillingTypesJpaCrudServiceImpl service = instantiate();
+
     Optional<BillingType> match = service.getExisting(example);
 
     assertTrue(match.isPresent());

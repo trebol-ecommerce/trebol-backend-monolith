@@ -34,14 +34,13 @@ public class CustomersJpaCrudServiceTest {
     String customerIdNumber = "11111111";
     String customerFirstName = "test first name";
     String customerLastName = "test last name";
-
     CustomerPojo example = new CustomerPojo(customerIdNumber);
     Customer persistedEntity = new Customer(customerIdNumber);
     persistedEntity.getPerson().setFirstName(customerFirstName);
     persistedEntity.getPerson().setLastName(customerLastName);
     when(customersRepositoryMock.findByPersonIdNumber(customerIdNumber)).thenReturn(Optional.of(persistedEntity));
-
     CustomersJpaCrudServiceImpl service = instantiate();
+
     Optional<Customer> match = service.getExisting(example);
 
     assertTrue(match.isPresent());

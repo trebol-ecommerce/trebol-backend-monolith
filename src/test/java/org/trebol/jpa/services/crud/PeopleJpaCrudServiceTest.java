@@ -33,12 +33,11 @@ public class PeopleJpaCrudServiceTest {
     String personIdNumber = "11111111";
     String personFirstName = "test first name";
     String personLastName = "test last name";
-
     PersonPojo example = new PersonPojo(personIdNumber);
     Person persistedEntity = new Person(personFirstName, personLastName, personIdNumber);
     when(peopleRepositoryMock.findByIdNumber(personIdNumber)).thenReturn(Optional.of(persistedEntity));
-
     PeopleJpaCrudServiceImpl service = instantiate();
+
     Optional<Person> match = service.getExisting(example);
 
     assertTrue(match.isPresent());

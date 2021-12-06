@@ -37,8 +37,8 @@ public class ProductCategoriesJpaCrudServiceTest {
     ProductCategoryPojo example = new ProductCategoryPojo(categoryCode);
     ProductCategory persistedEntity = new ProductCategory(categoryId, categoryCode, categoryName, parentEntity);
     when(categoriesRepositoryMock.findByCode(categoryCode)).thenReturn(Optional.of(persistedEntity));
-
     ProductCategoriesJpaCrudServiceImpl service = instantiate();
+
     Optional<ProductCategory> match = service.getExisting(example);
 
     assertTrue(match.isPresent());
