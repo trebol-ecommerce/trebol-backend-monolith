@@ -1,28 +1,20 @@
 package org.trebol.jpa.entities;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "products_categories")
+@Table(
+  name = "products_categories",
+  uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"parent_product_category_id", "product_category_name"})
+  })
 public class ProductCategory
   implements Serializable {
 
@@ -31,6 +23,9 @@ public class ProductCategory
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "product_category_id", nullable = false)
   private Long id;
+  @Size(min = 1, max = 50)
+  @Column(name = "product_category_code", nullable = false, unique = true)
+  private String code;
   @Size(min = 1, max = 100)
   @Column(name = "product_category_name", nullable = false)
   private String name;
@@ -42,8 +37,22 @@ public class ProductCategory
 
   public ProductCategory(ProductCategory source) {
     this.id = source.id;
+    this.code = source.code;
     this.name = source.name;
     this.parent = source.parent;
+  }
+
+  public ProductCategory(String code, String name, ProductCategory parent) {
+    this.code = code;
+    this.name = name;
+    this.parent = parent;
+  }
+
+  public ProductCategory(Long id, String code, String name, ProductCategory parent) {
+    this.id = id;
+    this.code = code;
+    this.name = name;
+    this.parent = parent;
   }
 
   public Long getId() {
@@ -52,6 +61,14 @@ public class ProductCategory
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
   }
 
   public String getName() {
@@ -71,40 +88,28 @@ public class ProductCategory
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 97 * hash + Objects.hashCode(this.id);
-    hash = 97 * hash + Objects.hashCode(this.name);
-    hash = 97 * hash + Objects.hashCode(this.parent);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ProductCategory that = (ProductCategory) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(code, that.code) &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(parent, that.parent);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final ProductCategory other = (ProductCategory)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return Objects.equals(this.parent, other.parent);
+  public int hashCode() {
+    return Objects.hash(id, code, name, parent);
   }
 
   @Override
   public String toString() {
-    return "ProductCategory{id=" + id +
-        ", name=" + name +
-        ", parent=" + parent + '}';
+    return "ProductCategory{" +
+        "id=" + id +
+        ", code='" + code + '\'' +
+        ", name='" + name + '\'' +
+        ", parent=" + parent +
+        '}';
   }
-
 }

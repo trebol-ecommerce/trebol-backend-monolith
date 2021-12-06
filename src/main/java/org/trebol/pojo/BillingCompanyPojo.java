@@ -1,8 +1,8 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.Objects;
 
 /**
  *
@@ -12,6 +12,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class BillingCompanyPojo {
   private String idNumber;
   private String name;
+
+  public BillingCompanyPojo() { }
+
+  public BillingCompanyPojo(String idNumber) {
+    this.idNumber = idNumber;
+  }
 
   public String getIdNumber() {
     return idNumber;
@@ -30,35 +36,24 @@ public class BillingCompanyPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 67 * hash + Objects.hashCode(this.idNumber);
-    hash = 67 * hash + Objects.hashCode(this.name);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BillingCompanyPojo that = (BillingCompanyPojo) o;
+    return Objects.equals(idNumber, that.idNumber) &&
+        Objects.equals(name, that.name);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final BillingCompanyPojo other = (BillingCompanyPojo)obj;
-    if (!Objects.equals(this.idNumber, other.idNumber)) {
-      return false;
-    }
-    return Objects.equals(this.name, other.name);
+  public int hashCode() {
+    return Objects.hash(idNumber, name);
   }
 
   @Override
   public String toString() {
-    return "BillingCompanyPojo{idNumber=" + idNumber +
-        ", name=" + name + '}';
+    return "BillingCompanyPojo{" +
+        "idNumber='" + idNumber + '\'' +
+        ", name='" + name + '\'' +
+        '}';
   }
-
 }

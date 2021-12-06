@@ -5,6 +5,7 @@ import java.security.Principal;
 import javassist.NotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.trebol.exceptions.BadInputException;
 
 @RestController
 @RequestMapping("/account/profile")
+@PreAuthorize("isAuthenticated()")
 public class AccountProfileController {
 
   private final IProfileService userProfileService;

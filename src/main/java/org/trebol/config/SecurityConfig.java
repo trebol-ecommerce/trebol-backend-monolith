@@ -1,9 +1,6 @@
 package org.trebol.config;
 
-import javax.crypto.SecretKey;
-
 import io.jsonwebtoken.Claims;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,33 +16,37 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.trebol.pojo.CustomerPojo;
 import org.trebol.exceptions.CorsMappingParseException;
-
-import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Customer;
-import org.trebol.security.JwtGuestAuthenticationFilter;
-import org.trebol.security.JwtTokenVerifierFilter;
-import org.trebol.security.JwtLoginAuthenticationFilter;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.pojo.CustomerPojo;
 import org.trebol.security.IAuthorizationHeaderParserService;
+import org.trebol.security.JwtGuestAuthenticationFilter;
+import org.trebol.security.JwtLoginAuthenticationFilter;
+import org.trebol.security.JwtTokenVerifierFilter;
+
+import javax.crypto.SecretKey;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig
-    extends WebSecurityConfigurerAdapter {
+  extends WebSecurityConfigurerAdapter {
 
   private final UserDetailsService userDetailsService;
   private final SecretKey secretKey;
   private final SecurityProperties securityProperties;
   private final CorsProperties corsProperties;
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
-  private final GenericJpaService<CustomerPojo, Customer> customersService;
+  private final GenericCrudJpaService<CustomerPojo, Customer> customersService;
 
   @Autowired
-  public SecurityConfig(UserDetailsService userDetailsService, SecretKey secretKey,
-    SecurityProperties securityProperties, IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-    CorsProperties corsProperties, GenericJpaService<CustomerPojo, Customer> customersService) {
+  public SecurityConfig(UserDetailsService userDetailsService,
+                        SecretKey secretKey,
+                        SecurityProperties securityProperties,
+                        IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+                        CorsProperties corsProperties,
+                        GenericCrudJpaService<CustomerPojo, Customer> customersService) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.securityProperties = securityProperties;
@@ -74,43 +75,7 @@ public class SecurityConfig
             JwtLoginAuthenticationFilter.class)
         .addFilterAfter(
             new JwtTokenVerifierFilter(jwtClaimsParserService),
-            JwtGuestAuthenticationFilter.class)
-        .authorizeRequests()
-            .antMatchers(
-              "/",
-              "/public/login",
-              "/public/register",
-              "/public/about",
-              "/public/categories",
-              "/public/categories/*",
-              "/public/products",
-              "/public/products/*",
-              "/public/receipt/*",
-              "/public/checkout",
-              "/data/product_categories",
-              "/public/checkout/validate")
-                .permitAll()
-            .antMatchers(
-              "/data/customers",
-              "/data/customers/*",
-              "/data/images",
-              "/data/images/*",
-              "/data/people",
-              "/data/people/*",
-              "/data/products",
-              "/data/products/*",
-              "/data/sales",
-              "/data/sales/*",
-              "/data/salespeople",
-              "/data/salespeople/*",
-              "/data/sell_statuses",
-              "/data/user_roles",
-              "/data/users",
-              "/data/users/*",
-              "/access",
-              "/access/*",
-              "/account/profile")
-                .authenticated();
+            JwtGuestAuthenticationFilter.class);
   }
 
   @Override

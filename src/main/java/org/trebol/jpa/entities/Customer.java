@@ -1,21 +1,8 @@
 package org.trebol.jpa.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 /**
  *
@@ -43,6 +30,10 @@ public class Customer
     this.person = source.person;
   }
 
+  public Customer(String idNumber) {
+    this.person = new Person(idNumber);
+  }
+
   public Long getId() {
     return id;
   }
@@ -60,35 +51,24 @@ public class Customer
   }
 
   @Override
-  public int hashCode() {
-    int hash = 5;
-    hash = 97 * hash + Objects.hashCode(this.id);
-    hash = 97 * hash + Objects.hashCode(this.person);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Customer customer = (Customer) o;
+    return Objects.equals(id, customer.id) &&
+        Objects.equals(person, customer.person);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Customer other = (Customer)obj;
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return Objects.equals(this.person, other.person);
+  public int hashCode() {
+    return Objects.hash(id, person);
   }
 
   @Override
   public String toString() {
-    return "Customer{id=" + id +
-        ", person=" + person + '}';
+    return "Customer{" +
+        "id=" + id +
+        ", person=" + person +
+        '}';
   }
-
 }

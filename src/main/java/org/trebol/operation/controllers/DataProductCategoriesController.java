@@ -1,49 +1,74 @@
 package org.trebol.operation.controllers;
 
-import java.util.Map;
-
 import io.jsonwebtoken.lang.Maps;
-
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import org.trebol.operation.GenericDataController;
+import org.springframework.web.bind.annotation.*;
+import org.trebol.config.OperationProperties;
+import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
-import org.trebol.config.OperationProperties;
-import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.GenericJpaService;
+
+import javax.validation.Valid;
+import java.util.Map;
 
 /**
- * API point of entry for ProductCategory entities
+ * Controller that maps API resources for CRUD operations on ProductCategories
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/product_categories")
 public class DataProductCategoriesController
-  extends GenericDataController<ProductCategoryPojo, ProductCategory> {
+  extends GenericDataCrudController<ProductCategoryPojo, ProductCategory> {
 
   @Autowired
-  public DataProductCategoriesController(
-    OperationProperties globals,
-    GenericJpaService<ProductCategoryPojo, ProductCategory> crudService) {
-    super(globals, crudService);
+  public DataProductCategoriesController(OperationProperties globals,
+                                         GenericCrudJpaService<ProductCategoryPojo, ProductCategory> crudService,
+                                         IPredicateJpaService<ProductCategory> predicateService) {
+    super(globals, crudService, predicateService);
   }
 
   @GetMapping({"", "/"})
   public DataPagePojo<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    if (allRequestParams.isEmpty()) {
+      allRequestParams.put("parentId", null);
+    }
     return super.readMany(null, null, allRequestParams);
   }
 
+  @Override
+  @PostMapping({"", "/"})
+  @PreAuthorize("hasAuthority('product_categories:create')")
+  public void create(@Valid @RequestBody ProductCategoryPojo input) throws BadInputException, EntityAlreadyExistsException {
+    super.create(input);
+  }
+
+  @Override
+  @PutMapping({"", "/"})
+  @PreAuthorize("hasAuthority('product_categories:update')")
+  public void update(@Valid @RequestBody ProductCategoryPojo input, @RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    super.update(input, requestParams);
+  }
+
+  @Override
+  @DeleteMapping({"", "/"})
+  @PreAuthorize("hasAuthority('product_categories:delete')")
+  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+    super.delete(requestParams);
+  }
+
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{parentId}", "/{parentId}/"})
   public DataPagePojo<ProductCategoryPojo> readChildren(@PathVariable Long parentId) {
-    Map<String, String> queryParamsMap = Maps.of("parentId", String.valueOf(parentId)).build();
-    return super.readMany(null, null, queryParamsMap);
+    Map<String, String> parentIdMatcher = Maps.of("parentId", String.valueOf(parentId)).build();
+    return super.readMany(null, null, parentIdMatcher);
   }
 }

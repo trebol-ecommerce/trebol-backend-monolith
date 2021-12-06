@@ -1,18 +1,9 @@
 package org.trebol.jpa.entities;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -30,10 +21,15 @@ public class PaymentType
   @Column(name = "payment_type_id", nullable = false)
   private Long id;
   @Size(min = 1, max = 100)
-  @Column(name = "payment_type_name", nullable = false)
+  @Column(name = "payment_type_name", nullable = false, unique = true)
   private String name;
 
   public PaymentType() { }
+
+  public PaymentType(Long id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 
   public Long getId() {
     return id;
@@ -52,35 +48,24 @@ public class PaymentType
   }
 
   @Override
-  public int hashCode() {
-    int hash = 3;
-    hash = 13 * hash + Objects.hashCode(this.id);
-    hash = 13 * hash + Objects.hashCode(this.name);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    PaymentType that = (PaymentType) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(name, that.name);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final PaymentType other = (PaymentType)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    return Objects.equals(this.id, other.id);
+  public int hashCode() {
+    return Objects.hash(id, name);
   }
 
   @Override
   public String toString() {
-    return "PaymentType{id=" + id +
-        ", name=" + name + '}';
+    return "PaymentType{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        '}';
   }
-
 }

@@ -8,7 +8,6 @@
     <class>org.trebol.jpa.entities.Salesperson</class>
     <class>org.trebol.jpa.entities.ProductFamily</class>
     <class>org.trebol.jpa.entities.UserRole</class>
-    <class>org.trebol.jpa.entities.Session</class>
     <class>org.trebol.jpa.entities.Image</class>
     <class>org.trebol.jpa.entities.SellStatus</class>
     <class>org.trebol.jpa.entities.ProductImage</class>

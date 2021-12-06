@@ -1,5 +1,6 @@
 package org.trebol.jpa.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -16,5 +17,9 @@ import org.trebol.jpa.IJpaRepository;
 public interface IProductsCategoriesJpaRepository
   extends IJpaRepository<ProductCategory> {
 
-  Optional<ProductCategory> findByName(String name);
+  Optional<ProductCategory> findByCode(String code);
+
+  List<ProductCategory> findByName(String code);
+
+  List<ProductCategory> findByParent(ProductCategory parent);
 }

@@ -24,8 +24,6 @@ public class SecurityProperties {
   @Min(6)
   private int bcryptEncoderStrength;
 
-  public SecurityProperties() { }
-
   public String getJwtSecretKey() {
     return jwtSecretKey;
   }

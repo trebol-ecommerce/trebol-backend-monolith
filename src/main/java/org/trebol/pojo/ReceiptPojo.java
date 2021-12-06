@@ -13,10 +13,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude
 public class ReceiptPojo {
   private long buyOrder;
+  @Deprecated(forRemoval = true)
   private int amount;
   private Collection<ReceiptDetailPojo> details;
   private Instant date;
   private String status;
+  private String token;
+  private int totalValue;
+  private int taxValue;
+  private int transportValue;
+  private int totalItems;
 
   public long getBuyOrder() {
     return buyOrder;
@@ -26,10 +32,12 @@ public class ReceiptPojo {
     this.buyOrder = buyOrder;
   }
 
+  @Deprecated(forRemoval = true, since = "1.1.0")
   public int getAmount() {
     return amount;
   }
 
+  @Deprecated(forRemoval = true, since = "1.1.0")
   public void setAmount(int amount) {
     this.amount = amount;
   }
@@ -58,46 +66,81 @@ public class ReceiptPojo {
     this.status = status;
   }
 
-  @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 53 * hash + (int)(this.buyOrder ^ (this.buyOrder >>> 32));
-    hash = 53 * hash + this.amount;
-    hash = 53 * hash + Objects.hashCode(this.details);
-    hash = 53 * hash + Objects.hashCode(this.date);
-    hash = 53 * hash + Objects.hashCode(this.status);
-    return hash;
+  public String getToken() {
+    return token;
+  }
+
+  public void setToken(String token) {
+    this.token = token;
+  }
+
+  public int getTotalValue() {
+    return totalValue;
+  }
+
+  public void setTotalValue(int totalValue) {
+    this.totalValue = totalValue;
+  }
+
+  public int getTaxValue() {
+    return taxValue;
+  }
+
+  public void setTaxValue(int taxValue) {
+    this.taxValue = taxValue;
+  }
+
+  public int getTransportValue() {
+    return transportValue;
+  }
+
+  public void setTransportValue(int transportValue) {
+    this.transportValue = transportValue;
+  }
+
+  public int getTotalItems() {
+    return totalItems;
+  }
+
+  public void setTotalItems(int totalItems) {
+    this.totalItems = totalItems;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final ReceiptPojo other = (ReceiptPojo)obj;
-    if (this.buyOrder != other.buyOrder) {
-      return false;
-    }
-    if (this.amount != other.amount) {
-      return false;
-    }
-    if (!Objects.equals(this.date, other.date)) {
-      return false;
-    }
-    if (!Objects.equals(this.status, other.status)) {
-      return false;
-    }
-    return Objects.equals(this.details, other.details);
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ReceiptPojo that = (ReceiptPojo) o;
+    return buyOrder == that.buyOrder &&
+        amount == that.amount &&
+        totalValue == that.totalValue &&
+        taxValue == that.taxValue &&
+        transportValue == that.transportValue &&
+        totalItems == that.totalItems &&
+        Objects.equals(details, that.details) &&
+        Objects.equals(date, that.date) &&
+        Objects.equals(status, that.status) &&
+        Objects.equals(token, that.token);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(buyOrder, amount, details, date, status, token, totalValue, taxValue, transportValue, totalItems);
   }
 
   @Override
   public String toString() {
-    return "ReceiptPojo{" + "buyOrder=" + buyOrder + ", amount=" + amount + ", details=" + details + ", date=" + date + ", status=" + status + '}';
+    return "ReceiptPojo{" +
+        "buyOrder=" + buyOrder +
+        ", amount=" + amount +
+        ", details=" + details +
+        ", date=" + date +
+        ", status='" + status + '\'' +
+        ", token='" + token + '\'' +
+        ", totalValue=" + totalValue +
+        ", taxValue=" + taxValue +
+        ", transportValue=" + transportValue +
+        ", totalItems=" + totalItems +
+        '}';
   }
 }

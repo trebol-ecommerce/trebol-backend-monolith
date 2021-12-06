@@ -1,28 +1,22 @@
 package org.trebol.operation.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
-
-import org.trebol.pojo.ProductPojo;
-import org.trebol.pojo.ReceiptDetailPojo;
-import org.trebol.pojo.ReceiptPojo;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
-
-import javassist.NotFoundException;
 import org.trebol.operation.IReceiptService;
+import org.trebol.pojo.ProductPojo;
+import org.trebol.pojo.ReceiptDetailPojo;
+import org.trebol.pojo.ReceiptPojo;
 
-/**
- *
- * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ReceiptServiceImpl
   implements IReceiptService {

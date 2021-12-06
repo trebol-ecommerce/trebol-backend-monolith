@@ -11,5 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RootController {
 
   @GetMapping({"", "/"})
-  public void defaultMapping() { }
+  public void defaultMapping() {
+    /* ping-like method. return success status without message body */
+  }
 }

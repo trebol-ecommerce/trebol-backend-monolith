@@ -1,10 +1,9 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 /**
  *
@@ -24,30 +23,22 @@ public class PaymentTypePojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 67 * hash + Objects.hashCode(this.name);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    PaymentTypePojo that = (PaymentTypePojo) o;
+    return Objects.equals(name, that.name);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final PaymentTypePojo other = (PaymentTypePojo)obj;
-    return Objects.equals(this.name, other.name);
+  public int hashCode() {
+    return Objects.hash(name);
   }
 
   @Override
   public String toString() {
-    return "PaymentTypePojo{name=" + name + '}';
+    return "PaymentTypePojo{" +
+        "name='" + name + '\'' +
+        '}';
   }
-
 }

@@ -1,10 +1,10 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -14,17 +14,47 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  */
 @JsonInclude
 public class ProductCategoryPojo {
-  private Long code;
+  @JsonIgnore
+  private Long id;
+  @NotBlank
+  private String code;
   @NotBlank
   private String name;
   @JsonInclude(NON_NULL)
   private ProductCategoryPojo parent;
 
-  public Long getCode() {
+  public ProductCategoryPojo() { }
+
+  public ProductCategoryPojo(String code) {
+    this.code = code;
+  }
+
+  public ProductCategoryPojo(String code, String name, ProductCategoryPojo parent) {
+    this.code = code;
+    this.name = name;
+    this.parent = parent;
+  }
+
+  public ProductCategoryPojo(Long id, String code, String name, ProductCategoryPojo parent) {
+    this.id = id;
+    this.code = code;
+    this.name = name;
+    this.parent = parent;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getCode() {
     return code;
   }
 
-  public void setCode(Long code) {
+  public void setCode(String code) {
     this.code = code;
   }
 
@@ -45,39 +75,28 @@ public class ProductCategoryPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 23 * hash + Objects.hashCode(this.code);
-    hash = 23 * hash + Objects.hashCode(this.name);
-    hash = 23 * hash + Objects.hashCode(this.parent);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ProductCategoryPojo that = (ProductCategoryPojo) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(code, that.code) &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(parent, that.parent);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final ProductCategoryPojo other = (ProductCategoryPojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.code, other.code)) {
-      return false;
-    }
-    return Objects.equals(this.parent, other.parent);
+  public int hashCode() {
+    return Objects.hash(id, code, name, parent);
   }
 
   @Override
   public String toString() {
-    return "ProductCategoryPojo{id=" + code +
-        ", name=" + name +
-        ", parent=" + parent + '}';
+    return "ProductCategoryPojo{" +
+        "id=" + id +
+        ", code='" + code + '\'' +
+        ", name='" + name + '\'' +
+        ", parent=" + parent +
+        '}';
   }
 }

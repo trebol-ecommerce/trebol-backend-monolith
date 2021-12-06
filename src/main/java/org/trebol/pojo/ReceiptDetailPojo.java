@@ -1,8 +1,8 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.Objects;
 
 /**
  *
@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class ReceiptDetailPojo {
   private ProductPojo product;
   private int units;
+  private Integer unitValue;
 
   public ProductPojo getProduct() {
     return product;
@@ -29,35 +30,35 @@ public class ReceiptDetailPojo {
     this.units = units;
   }
 
-  @Override
-  public int hashCode() {
-    int hash = 5;
-    hash = 11 * hash + Objects.hashCode(this.product);
-    hash = 11 * hash + this.units;
-    return hash;
+  public Integer getUnitValue() {
+    return unitValue;
+  }
+
+  public void setUnitValue(Integer unitValue) {
+    this.unitValue = unitValue;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final ReceiptDetailPojo other = (ReceiptDetailPojo)obj;
-    if (this.units != other.units) {
-      return false;
-    }
-    return Objects.equals(this.product, other.product);
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ReceiptDetailPojo that = (ReceiptDetailPojo) o;
+    return units == that.units &&
+        Objects.equals(product, that.product) &&
+        Objects.equals(unitValue, that.unitValue);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(product, units, unitValue);
   }
 
   @Override
   public String toString() {
-    return "ReceiptDetailPojo{" + "product=" + product + ", units=" + units + '}';
+    return "ReceiptDetailPojo{" +
+        "product=" + product +
+        ", units=" + units +
+        ", unitValue=" + unitValue +
+        '}';
   }
-
 }

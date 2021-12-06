@@ -1,9 +1,9 @@
 package org.trebol.pojo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Collection;
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -33,34 +33,23 @@ public class AuthorizedAccessPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 67 * hash + Objects.hashCode(this.routes);
-    hash = 67 * hash + Objects.hashCode(this.permissions);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    AuthorizedAccessPojo that = (AuthorizedAccessPojo) o;
+    return Objects.equals(routes, that.routes) && Objects.equals(permissions, that.permissions);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final AuthorizedAccessPojo other = (AuthorizedAccessPojo)obj;
-    if (!Objects.equals(this.routes, other.routes)) {
-      return false;
-    }
-    return Objects.equals(this.permissions, other.permissions);
+  public int hashCode() {
+    return Objects.hash(routes, permissions);
   }
 
   @Override
   public String toString() {
-    return "AuthorizedAccessPojo{routes=" + routes +
-        ", permissions=" + permissions + '}';
+    return "AuthorizedAccessPojo{" +
+        "routes=" + routes +
+        ", permissions=" + permissions +
+        '}';
   }
 }

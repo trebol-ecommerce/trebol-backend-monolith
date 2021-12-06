@@ -1,11 +1,10 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Objects;
 
 /**
  *
@@ -45,39 +44,24 @@ public class RegistrationPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 3;
-    hash = 67 * hash + Objects.hashCode(this.name);
-    hash = 67 * hash + Objects.hashCode(this.password);
-    hash = 67 * hash + Objects.hashCode(this.profile);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    RegistrationPojo that = (RegistrationPojo) o;
+    return Objects.equals(name, that.name) && Objects.equals(password, that.password) && Objects.equals(profile, that.profile);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final RegistrationPojo other = (RegistrationPojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.password, other.password)) {
-      return false;
-    }
-    return Objects.equals(this.profile, other.profile);
+  public int hashCode() {
+    return Objects.hash(name, password, profile);
   }
 
   @Override
   public String toString() {
-    return "RegistrationPojo{name=" + name +
-        ", password=" + password +
-        ", profile=" + profile + '}';
+    return "RegistrationPojo{" +
+        "name='" + name + '\'' +
+        ", password='" + password + '\'' +
+        ", profile=" + profile +
+        '}';
   }
 }

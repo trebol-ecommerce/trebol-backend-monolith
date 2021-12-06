@@ -1,10 +1,9 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -19,6 +18,12 @@ public class SellStatusPojo {
   @JsonInclude(NON_EMPTY)
   @NotBlank
   private String name;
+
+  public SellStatusPojo() { }
+
+  public SellStatusPojo(String name) {
+    this.name = name;
+  }
 
   public Integer getCode() {
     return code;
@@ -37,34 +42,24 @@ public class SellStatusPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 5;
-    hash = 79 * hash + Objects.hashCode(this.code);
-    hash = 79 * hash + Objects.hashCode(this.name);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SellStatusPojo that = (SellStatusPojo) o;
+    return Objects.equals(code, that.code) &&
+        Objects.equals(name, that.name);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final SellStatusPojo other = (SellStatusPojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    return Objects.equals(this.code, other.code);
+  public int hashCode() {
+    return Objects.hash(code, name);
   }
 
   @Override
   public String toString() {
-    return "SellStatusPojo{code=" + code + ", name=" + name + '}';
+    return "SellStatusPojo{" +
+        "code=" + code +
+        ", name='" + name + '\'' +
+        '}';
   }
-
 }

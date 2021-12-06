@@ -1,10 +1,10 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.*;
+import java.util.Objects;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
 
 /**
  *
@@ -50,42 +50,28 @@ public class CompanyDetailsPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 5;
-    hash = 97 * hash + Objects.hashCode(this.name);
-    hash = 97 * hash + Objects.hashCode(this.description);
-    hash = 97 * hash + Objects.hashCode(this.bannerImageURL);
-    hash = 97 * hash + Objects.hashCode(this.logoImageURL);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    CompanyDetailsPojo that = (CompanyDetailsPojo) o;
+    return Objects.equals(name, that.name) &&
+        Objects.equals(description, that.description) &&
+        Objects.equals(bannerImageURL, that.bannerImageURL) &&
+        Objects.equals(logoImageURL, that.logoImageURL);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final CompanyDetailsPojo other = (CompanyDetailsPojo)obj;
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.description, other.description)) {
-      return false;
-    }
-    if (!Objects.equals(this.bannerImageURL, other.bannerImageURL)) {
-      return false;
-    }
-    return Objects.equals(this.logoImageURL, other.logoImageURL);
+  public int hashCode() {
+    return Objects.hash(name, description, bannerImageURL, logoImageURL);
   }
 
   @Override
   public String toString() {
-    return "CompanyDetailsPojo{" + "name=" + name + ", description=" + description + ", bannerImageURL=" + bannerImageURL + ", logoImageURL=" + logoImageURL + '}';
+    return "CompanyDetailsPojo{" +
+        "name='" + name + '\'' +
+        ", description='" + description + '\'' +
+        ", bannerImageURL='" + bannerImageURL + '\'' +
+        ", logoImageURL='" + logoImageURL + '\'' +
+        '}';
   }
-
 }

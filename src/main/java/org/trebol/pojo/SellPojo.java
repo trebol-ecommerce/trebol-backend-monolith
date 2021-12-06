@@ -1,16 +1,15 @@
 package org.trebol.pojo;
 
-import java.time.Instant;
-import java.util.Collection;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -31,6 +30,10 @@ public class SellPojo {
   @JsonInclude(NON_EMPTY)
   private Collection<SellDetailPojo> details;
   private int netValue;
+  private int taxValue;
+  private int transportValue;
+  private int totalValue;
+  private int totalItems;
   private String status;
   private String billingType;
   @NotBlank
@@ -44,6 +47,55 @@ public class SellPojo {
   private AddressPojo shippingAddress;
 
   public SellPojo() { }
+
+  public SellPojo(Long buyOrder) {
+    this.buyOrder = buyOrder;
+  }
+
+  public SellPojo(Collection<SellDetailPojo> details, String billingType, String paymentType, CustomerPojo customer) {
+    this.details = details;
+    this.billingType = billingType;
+    this.paymentType = paymentType;
+    this.customer = customer;
+  }
+
+  public SellPojo(Long buyOrder,
+                  String token,
+                  Instant date,
+                  Collection<SellDetailPojo> details,
+                  int netValue,
+                  int taxValue,
+                  int transportValue,
+                  int totalValue,
+                  int totalItems,
+                  String status,
+                  String billingType,
+                  String paymentType,
+                  CustomerPojo customer,
+                  SalespersonPojo salesperson,
+                  ShipperPojo shipper,
+                  BillingCompanyPojo billingCompany,
+                  AddressPojo billingAddress,
+                  AddressPojo shippingAddress) {
+    this.buyOrder = buyOrder;
+    this.token = token;
+    this.date = date;
+    this.details = details;
+    this.netValue = netValue;
+    this.taxValue = taxValue;
+    this.transportValue = transportValue;
+    this.totalValue = totalValue;
+    this.totalItems = totalItems;
+    this.status = status;
+    this.billingType = billingType;
+    this.paymentType = paymentType;
+    this.customer = customer;
+    this.salesperson = salesperson;
+    this.shipper = shipper;
+    this.billingCompany = billingCompany;
+    this.billingAddress = billingAddress;
+    this.shippingAddress = shippingAddress;
+  }
 
   public Long getBuyOrder() {
     return buyOrder;
@@ -83,6 +135,38 @@ public class SellPojo {
 
   public void setNetValue(int netValue) {
     this.netValue = netValue;
+  }
+
+  public int getTaxValue() {
+    return taxValue;
+  }
+
+  public void setTaxValue(int taxValue) {
+    this.taxValue = taxValue;
+  }
+
+  public int getTransportValue() {
+    return transportValue;
+  }
+
+  public void setTransportValue(int transportValue) {
+    this.transportValue = transportValue;
+  }
+
+  public int getTotalValue() {
+    return totalValue;
+  }
+
+  public void setTotalValue(int totalValue) {
+    this.totalValue = totalValue;
+  }
+
+  public int getTotalItems() {
+    return totalItems;
+  }
+
+  public void setTotalItems(int totalItems) {
+    this.totalItems = totalItems;
   }
 
   public String getStatus() {
@@ -158,95 +242,58 @@ public class SellPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 71 * hash + Objects.hashCode(this.buyOrder);
-    hash = 71 * hash + Objects.hashCode(this.token);
-    hash = 71 * hash + Objects.hashCode(this.date);
-    hash = 71 * hash + Objects.hashCode(this.details);
-    hash = 71 * hash + this.netValue;
-    hash = 71 * hash + Objects.hashCode(this.status);
-    hash = 71 * hash + Objects.hashCode(this.billingType);
-    hash = 71 * hash + Objects.hashCode(this.paymentType);
-    hash = 71 * hash + Objects.hashCode(this.customer);
-    hash = 71 * hash + Objects.hashCode(this.salesperson);
-    hash = 71 * hash + Objects.hashCode(this.shipper);
-    hash = 71 * hash + Objects.hashCode(this.billingCompany);
-    hash = 71 * hash + Objects.hashCode(this.billingAddress);
-    hash = 71 * hash + Objects.hashCode(this.shippingAddress);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SellPojo sellPojo = (SellPojo) o;
+    return netValue == sellPojo.netValue &&
+        taxValue == sellPojo.taxValue &&
+        transportValue == sellPojo.transportValue &&
+        totalValue == sellPojo.totalValue &&
+        totalItems == sellPojo.totalItems &&
+        Objects.equals(buyOrder, sellPojo.buyOrder) &&
+        Objects.equals(token, sellPojo.token) &&
+        Objects.equals(date, sellPojo.date) &&
+        Objects.equals(details, sellPojo.details) &&
+        Objects.equals(status, sellPojo.status) &&
+        Objects.equals(billingType, sellPojo.billingType) &&
+        Objects.equals(paymentType, sellPojo.paymentType) &&
+        Objects.equals(customer, sellPojo.customer) &&
+        Objects.equals(salesperson, sellPojo.salesperson) &&
+        Objects.equals(shipper, sellPojo.shipper) &&
+        Objects.equals(billingCompany, sellPojo.billingCompany) &&
+        Objects.equals(billingAddress, sellPojo.billingAddress) &&
+        Objects.equals(shippingAddress, sellPojo.shippingAddress);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final SellPojo other = (SellPojo)obj;
-    if (this.netValue != other.netValue) {
-      return false;
-    }
-    if (!Objects.equals(this.token, other.token)) {
-      return false;
-    }
-    if (!Objects.equals(this.status, other.status)) {
-      return false;
-    }
-    if (!Objects.equals(this.billingType, other.billingType)) {
-      return false;
-    }
-    if (!Objects.equals(this.paymentType, other.paymentType)) {
-      return false;
-    }
-    if (!Objects.equals(this.buyOrder, other.buyOrder)) {
-      return false;
-    }
-    if (!Objects.equals(this.date, other.date)) {
-      return false;
-    }
-    if (!Objects.equals(this.details, other.details)) {
-      return false;
-    }
-    if (!Objects.equals(this.customer, other.customer)) {
-      return false;
-    }
-    if (!Objects.equals(this.salesperson, other.salesperson)) {
-      return false;
-    }
-    if (!Objects.equals(this.shipper, other.shipper)) {
-      return false;
-    }
-    if (!Objects.equals(this.billingCompany, other.billingCompany)) {
-      return false;
-    }
-    if (!Objects.equals(this.billingAddress, other.billingAddress)) {
-      return false;
-    }
-    return Objects.equals(this.shippingAddress, other.shippingAddress);
+  public int hashCode() {
+    return Objects.hash(buyOrder, token, date, details, netValue, taxValue, transportValue, totalValue, totalItems,
+        status, billingType, paymentType, customer, salesperson, shipper, billingCompany, billingAddress,
+        shippingAddress);
   }
 
   @Override
   public String toString() {
-    return "SellPojo{id=" + buyOrder +
-        ", token=" + token +
+    return "SellPojo{" +
+        "buyOrder=" + buyOrder +
+        ", token='" + token + '\'' +
         ", date=" + date +
         ", details=" + details +
         ", netValue=" + netValue +
-        ", status=" + status +
-        ", billingType=" + billingType +
-        ", paymentType=" + paymentType +
+        ", taxValue=" + taxValue +
+        ", transportValue=" + transportValue +
+        ", totalValue=" + totalValue +
+        ", totalItems=" + totalItems +
+        ", status='" + status + '\'' +
+        ", billingType='" + billingType + '\'' +
+        ", paymentType='" + paymentType + '\'' +
         ", customer=" + customer +
         ", salesperson=" + salesperson +
         ", shipper=" + shipper +
         ", billingCompany=" + billingCompany +
         ", billingAddress=" + billingAddress +
-        ", shippingAddress=" + shippingAddress + '}';
+        ", shippingAddress=" + shippingAddress +
+        '}';
   }
-
 }

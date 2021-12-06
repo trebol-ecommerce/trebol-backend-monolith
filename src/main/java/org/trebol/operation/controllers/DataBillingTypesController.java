@@ -1,22 +1,22 @@
 package org.trebol.operation.controllers;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.trebol.operation.GenericDataController;
-import org.trebol.pojo.DataPagePojo;
-import org.trebol.pojo.BillingTypePojo;
 import org.trebol.config.OperationProperties;
-import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.BillingType;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.operation.GenericDataController;
+import org.trebol.pojo.BillingTypePojo;
+import org.trebol.pojo.DataPagePojo;
+
+import java.util.Map;
 
 /**
- * API point of entry for ProductCategory entities
+ * Controller that maps API resource to read existing BillingTypes
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
@@ -27,8 +27,9 @@ public class DataBillingTypesController
 
   @Autowired
   public DataBillingTypesController(OperationProperties globals,
-                                    GenericJpaService<BillingTypePojo, BillingType> crudService) {
-    super(globals, crudService);
+                                    GenericCrudJpaService<BillingTypePojo, BillingType> crudService,
+                                    IPredicateJpaService<BillingType> predicateService) {
+    super(globals, crudService, predicateService);
   }
 
   @GetMapping({"", "/"})

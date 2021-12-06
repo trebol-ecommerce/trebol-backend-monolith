@@ -1,9 +1,10 @@
 package org.trebol.pojo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  *
@@ -17,7 +18,11 @@ public class DataPagePojo<T> {
   private long totalCount;
   private int pageSize;
 
-  public DataPagePojo() { }
+  public DataPagePojo(int pageIndex, int pageSize) {
+    this.items = new ArrayList<>();
+    this.pageIndex = pageIndex;
+    this.pageSize = pageSize;
+  }
 
   public DataPagePojo(
     Collection<T> items,
@@ -64,44 +69,28 @@ public class DataPagePojo<T> {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 37 * hash + Objects.hashCode(this.items);
-    hash = 37 * hash + this.pageIndex;
-    hash = 37 * hash + (int)(this.totalCount ^ (this.totalCount >>> 32));
-    hash = 37 * hash + this.pageSize;
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    DataPagePojo<?> that = (DataPagePojo<?>) o;
+    return pageIndex == that.pageIndex &&
+        totalCount == that.totalCount &&
+        pageSize == that.pageSize &&
+        Objects.equals(items, that.items);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final DataPagePojo<?> other = (DataPagePojo<?>)obj;
-    if (this.pageIndex != other.pageIndex) {
-      return false;
-    }
-    if (this.totalCount != other.totalCount) {
-      return false;
-    }
-    if (this.pageSize != other.pageSize) {
-      return false;
-    }
-    return Objects.equals(this.items, other.items);
+  public int hashCode() {
+    return Objects.hash(items, pageIndex, totalCount, pageSize);
   }
 
   @Override
   public String toString() {
-    return "DataPage{items=" + items
-        + ", pageIndex=" + pageIndex
-        + ", totalCount=" + totalCount
-        + ", pageSize=" + pageSize + '}';
+    return "DataPagePojo{" +
+        "items=" + items +
+        ", pageIndex=" + pageIndex +
+        ", totalCount=" + totalCount +
+        ", pageSize=" + pageSize +
+        '}';
   }
 }

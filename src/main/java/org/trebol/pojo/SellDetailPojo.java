@@ -1,13 +1,11 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  *
@@ -19,8 +17,23 @@ public class SellDetailPojo {
   private Long id;
   @Min(1)
   private int units;
+  private int unitValue;
   @NotNull
   private ProductPojo product;
+
+  public SellDetailPojo() { }
+
+  public SellDetailPojo(int units, ProductPojo product) {
+    this.units = units;
+    this.product = product;
+  }
+
+  public SellDetailPojo(Long id, int units, int unitValue, ProductPojo product) {
+    this.id = id;
+    this.units = units;
+    this.unitValue = unitValue;
+    this.product = product;
+  }
 
   public Long getId() {
     return id;
@@ -46,39 +59,37 @@ public class SellDetailPojo {
     this.product = product;
   }
 
-  @Override
-  public int hashCode() {
-    int hash = 3;
-    hash = 29 * hash + Objects.hashCode(this.id);
-    hash = 29 * hash + this.units;
-    hash = 29 * hash + Objects.hashCode(this.product);
-    return hash;
+  public int getUnitValue() {
+    return unitValue;
+  }
+
+  public void setUnitValue(int unitValue) {
+    this.unitValue = unitValue;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final SellDetailPojo other = (SellDetailPojo)obj;
-    if (this.units != other.units) {
-      return false;
-    }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return Objects.equals(this.product, other.product);
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SellDetailPojo that = (SellDetailPojo) o;
+    return units == that.units &&
+        unitValue == that.unitValue &&
+        Objects.equals(id, that.id) &&
+        Objects.equals(product, that.product);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, units, product, unitValue);
   }
 
   @Override
   public String toString() {
-    return "SellDetailPojo{" + "id=" + id + ", units=" + units + ", product=" + product + '}';
+    return "SellDetailPojo{" +
+        "id=" + id +
+        ", units=" + units +
+        ", product=" + product +
+        ", unitValue=" + unitValue +
+        '}';
   }
-
 }

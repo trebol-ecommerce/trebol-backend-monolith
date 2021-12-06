@@ -3,15 +3,7 @@ package org.trebol.jpa.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
@@ -30,7 +22,7 @@ public class Permission
   @Column(name = "permission_id", nullable = false)
   private Long id;
   @Size(min = 1, max = 25)
-  @Column(name = "permission_code", nullable = false)
+  @Column(name = "permission_code", nullable = false, unique = true)
   private String code;
   @Size(max = 100)
   @Column(name = "permission_description")
@@ -63,40 +55,26 @@ public class Permission
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 17 * hash + Objects.hashCode(this.id);
-    hash = 17 * hash + Objects.hashCode(this.code);
-    hash = 17 * hash + Objects.hashCode(this.description);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Permission that = (Permission) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(code, that.code) &&
+        Objects.equals(description, that.description);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Permission other = (Permission)obj;
-    if (!Objects.equals(this.code, other.code)) {
-      return false;
-    }
-    if (!Objects.equals(this.description, other.description)) {
-      return false;
-    }
-    return Objects.equals(this.id, other.id);
+  public int hashCode() {
+    return Objects.hash(id, code, description);
   }
 
   @Override
   public String toString() {
-    return "Permission{id=" + id +
-        ", code=" + code +
-        ", description=" + description + '}';
+    return "Permission{" +
+        "id=" + id +
+        ", code='" + code + '\'' +
+        ", description='" + description + '\'' +
+        '}';
   }
-
 }

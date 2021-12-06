@@ -1,20 +1,9 @@
 package org.trebol.jpa.entities;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -25,9 +14,10 @@ import javax.validation.constraints.Size;
   name = "people",
   indexes = {
     @Index(columnList = "person_id_number"),
+    @Index(columnList = "person_first_name"),
+    @Index(columnList = "person_last_name"),
     @Index(columnList = "person_email")
-  },
-  uniqueConstraints = @UniqueConstraint(columnNames = {"person_id_number"}))
+  })
 public class Person
   implements Serializable {
 
@@ -44,7 +34,7 @@ public class Person
   @Column(name = "person_last_name", nullable = false)
   private String lastName;
   @Size(min = 1, max = 20)
-  @Column(name = "person_id_number", nullable = false)
+  @Column(name = "person_id_number", nullable = false, unique = true)
   private String idNumber;
   @Size(min = 5, max = 100)
   @Column(name = "person_email", nullable = false)
@@ -64,6 +54,16 @@ public class Person
     this.email = source.email;
     this.phone1 = source.phone1;
     this.phone2 = source.phone2;
+  }
+
+  public Person(String idNumber) {
+    this.idNumber = idNumber;
+  }
+
+  public Person(String firstName, String lastName, String idNumber) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.idNumber = idNumber;
   }
 
   public Long getId() {
@@ -123,60 +123,34 @@ public class Person
   }
 
   @Override
-  public int hashCode() {
-    int hash = 5;
-    hash = 71 * hash + Objects.hashCode(this.id);
-    hash = 71 * hash + Objects.hashCode(this.firstName);
-    hash = 71 * hash + Objects.hashCode(this.lastName);
-    hash = 71 * hash + Objects.hashCode(this.idNumber);
-    hash = 71 * hash + Objects.hashCode(this.email);
-    hash = 71 * hash + Objects.hashCode(this.phone1);
-    hash = 71 * hash + Objects.hashCode(this.phone2);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Person person = (Person) o;
+    return Objects.equals(id, person.id) &&
+        Objects.equals(firstName, person.firstName) &&
+        Objects.equals(lastName, person.lastName) &&
+        Objects.equals(idNumber, person.idNumber) &&
+        Objects.equals(email, person.email) &&
+        Objects.equals(phone1, person.phone1) &&
+        Objects.equals(phone2, person.phone2);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Person other = (Person)obj;
-    if (!Objects.equals(this.firstName, other.firstName)) {
-      return false;
-    }
-    if (!Objects.equals(this.lastName, other.lastName)) {
-      return false;
-    }
-    if (!Objects.equals(this.idNumber, other.idNumber)) {
-      return false;
-    }
-    if (!Objects.equals(this.email, other.email)) {
-      return false;
-    }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    if (!Objects.equals(this.phone1, other.phone1)) {
-      return false;
-    }
-    return Objects.equals(this.phone2, other.phone2);
+  public int hashCode() {
+    return Objects.hash(id, firstName, lastName, idNumber, email, phone1, phone2);
   }
 
   @Override
   public String toString() {
-    return "Person{id=" + id +
-        ", firstName=" + firstName +
-        ", lastName=" + lastName +
-        ", idNumber=" + idNumber +
-        ", email=" + email +
-        ", phone1=" + phone1 +
-        ", phone2=" + phone2 + '}';
+    return "Person{" +
+        "id=" + id +
+        ", firstName='" + firstName + '\'' +
+        ", lastName='" + lastName + '\'' +
+        ", idNumber='" + idNumber + '\'' +
+        ", email='" + email + '\'' +
+        ", phone1='" + phone1 + '\'' +
+        ", phone2='" + phone2 + '\'' +
+        '}';
   }
-
 }

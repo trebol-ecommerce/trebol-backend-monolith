@@ -9,13 +9,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.trebol.pojo.CustomerPojo;
-import org.trebol.pojo.PersonPojo;
 import org.trebol.config.SecurityProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaService;
 import org.trebol.jpa.entities.Customer;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.pojo.CustomerPojo;
+import org.trebol.pojo.PersonPojo;
 
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
@@ -25,12 +25,14 @@ import java.io.IOException;
 public class JwtGuestAuthenticationFilter
   extends GenericJwtAuthenticationFilter {
 
-  private final Logger logger = LoggerFactory.getLogger(JwtGuestAuthenticationFilter.class);
+  private final Logger myLogger = LoggerFactory.getLogger(JwtGuestAuthenticationFilter.class);
   private final AuthenticationManager authenticationManager;
-  private final GenericJpaService<CustomerPojo, Customer> customersService;
+  private final GenericCrudJpaService<CustomerPojo, Customer> customersService;
 
-  public JwtGuestAuthenticationFilter(SecurityProperties jwtProperties, SecretKey secretKey,
-                                      AuthenticationManager authenticationManager, GenericJpaService<CustomerPojo, Customer> customersService) {
+  public JwtGuestAuthenticationFilter(SecurityProperties jwtProperties,
+                                      SecretKey secretKey,
+                                      AuthenticationManager authenticationManager,
+                                      GenericCrudJpaService<CustomerPojo, Customer> customersService) {
     super(jwtProperties, secretKey);
     this.authenticationManager = authenticationManager;
     this.customersService = customersService;
@@ -61,7 +63,7 @@ public class JwtGuestAuthenticationFilter
       targetCustomer.setPerson(guestData);
       customersService.create(targetCustomer);
     } catch (EntityAlreadyExistsException e) {
-      logger.info("Guest with idNumber={} is already registered in the database", guestData.getIdNumber());
+      myLogger.info("Guest with idNumber={} is already registered in the database", guestData.getIdNumber());
     }
   }
 }

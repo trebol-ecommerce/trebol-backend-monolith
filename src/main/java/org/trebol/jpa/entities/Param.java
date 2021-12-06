@@ -3,15 +3,7 @@ package org.trebol.jpa.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
@@ -19,7 +11,11 @@ import javax.validation.constraints.Size;
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 @Entity
-@Table(name = "app_params")
+@Table(
+  name = "app_params",
+  uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"param_category", "param_name"})
+  })
 public class Param
   implements Serializable {
 
@@ -74,45 +70,28 @@ public class Param
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 67 * hash + Objects.hashCode(this.id);
-    hash = 67 * hash + Objects.hashCode(this.category);
-    hash = 67 * hash + Objects.hashCode(this.name);
-    hash = 67 * hash + Objects.hashCode(this.value);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Param param = (Param) o;
+    return Objects.equals(id, param.id) &&
+        Objects.equals(category, param.category) &&
+        Objects.equals(name, param.name) &&
+        Objects.equals(value, param.value);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Param other = (Param)obj;
-    if (!Objects.equals(this.category, other.category)) {
-      return false;
-    }
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.value, other.value)) {
-      return false;
-    }
-    return Objects.equals(this.id, other.id);
+  public int hashCode() {
+    return Objects.hash(id, category, name, value);
   }
 
   @Override
   public String toString() {
-    return "Param{id=" + id +
-        ", category=" + category +
-        ", name=" + name +
-        ", value=" + value + '}';
+    return "Param{" +
+        "id=" + id +
+        ", category='" + category + '\'' +
+        ", name='" + name + '\'' +
+        ", value='" + value + '\'' +
+        '}';
   }
-
 }

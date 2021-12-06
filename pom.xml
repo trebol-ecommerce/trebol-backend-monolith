@@ -13,7 +13,7 @@
   <groupId>org.trebol</groupId>
   <artifactId>spring-boot-backend</artifactId>
   <packaging>war</packaging>
-  <version>1.0.4</version>
+  <version>1.1.0</version>
 
   <name>Trébol Spring Boot Backend</name>
 
@@ -25,6 +25,8 @@
     <querydsl.generated.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.generated.dir>
     <querydsl.generated.version>4.2.2</querydsl.generated.version>
     <jjwt.version>0.11.2</jjwt.version>
+    <rest-assured.version>4.4.0</rest-assured.version>
+    <groovy.version>3.0.7</groovy.version>
     <sonar.organization>trebol-ecommerce</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
@@ -39,13 +41,6 @@
   </repositories>
 
   <dependencies>
-
-    <!-- Jackson -->
-    <dependency>
-      <groupId>com.jayway.jsonpath</groupId>
-      <artifactId>json-path</artifactId>
-      <scope>test</scope>
-    </dependency>
     
     <!-- Spring Boot -->
     <dependency>
@@ -119,7 +114,15 @@
     <dependency>
       <groupId>com.github.transbankdevelopers</groupId>
       <artifactId>transbank-sdk-java</artifactId>
-      <version>1.9.0</version>
+      <version>2.0.0</version>
+    </dependency>
+
+    <!-- REST Assured -->
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>spring-mock-mvc</artifactId>
+      <version>${rest-assured.version}</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
@@ -197,6 +200,61 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.5</version>
+        <executions>
+          <execution>
+            <id>default-prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-report</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>COMPLEXITY</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.20</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

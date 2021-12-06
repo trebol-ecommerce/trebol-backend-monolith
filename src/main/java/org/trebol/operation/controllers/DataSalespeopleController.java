@@ -1,53 +1,40 @@
 package org.trebol.operation.controllers;
 
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
-
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import org.trebol.pojo.DataPagePojo;
-import org.trebol.operation.GenericDataController;
-import org.trebol.pojo.SalespersonPojo;
+import org.springframework.web.bind.annotation.*;
 import org.trebol.config.OperationProperties;
-import org.trebol.jpa.entities.Salesperson;
-import org.trebol.exceptions.EntityAlreadyExistsException;
-import org.trebol.jpa.GenericJpaService;
-
-import com.querydsl.core.types.Predicate;
-
-import org.trebol.operation.IDataCrudController;
 import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.EntityAlreadyExistsException;
+import org.trebol.jpa.entities.Salesperson;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.operation.GenericDataCrudController;
+import org.trebol.pojo.DataPagePojo;
+import org.trebol.pojo.SalespersonPojo;
 
-import javassist.NotFoundException;
+import javax.validation.Valid;
+import java.util.Map;
 
 /**
- * API point of entry for Salesperson entities
+ * Controller that maps API resources for CRUD operations on Salespeople
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @RestController
 @RequestMapping("/data/salespeople")
+@PreAuthorize("isAuthenticated()")
 public class DataSalespeopleController
-  extends GenericDataController<SalespersonPojo, Salesperson>
-  implements IDataCrudController<SalespersonPojo, String> {
+  extends GenericDataCrudController<SalespersonPojo, Salesperson> {
 
   @Autowired
   public DataSalespeopleController(OperationProperties globals,
-                                   GenericJpaService<SalespersonPojo, Salesperson> crudService) {
-    super(globals, crudService);
+                                   GenericCrudJpaService<SalespersonPojo, Salesperson> crudService,
+                                   IPredicateJpaService<Salesperson> predicateService) {
+    super(globals, crudService, predicateService);
   }
 
   @GetMapping({"", "/"})
@@ -60,33 +47,48 @@ public class DataSalespeopleController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:create')")
   public void create(@Valid @RequestBody SalespersonPojo input) throws BadInputException, EntityAlreadyExistsException {
-    crudService.create(input);
+    super.create(input);
   }
 
   @Override
+  @PutMapping({"", "/"})
+  @PreAuthorize("hasAuthority('salespeople:update')")
+  public void update(@RequestBody SalespersonPojo input, @RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    super.update(input, requestParams);
+  }
+
+  @Override
+  @DeleteMapping({"", "/"})
+  @PreAuthorize("hasAuthority('salespeople:delete')")
+  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+    super.delete(requestParams);
+  }
+
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:read')")
   public SalespersonPojo readOne(@PathVariable String idNumber) throws NotFoundException {
-    Map<String, String> idNumberMatchMap = Maps.of("idnumber", idNumber).build();
-    Predicate filters = crudService.parsePredicate(idNumberMatchMap);
-    return crudService.readOne(filters);
+    return crudService.readOne(whereIdNumberIs(idNumber));
   }
 
-  @Override
+  @Deprecated(forRemoval = true)
   @PutMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:update')")
   public void update(@RequestBody SalespersonPojo input, @PathVariable String idNumber)
     throws BadInputException, NotFoundException {
-     // TODO improve this implementation; the same salesperson will be fetched twice
-    Long salespersonId = this.readOne(idNumber).getId();
-    crudService.update(input, salespersonId);
+    crudService.update(input, whereIdNumberIs(idNumber));
   }
 
-  @Override
+  @Deprecated(forRemoval = true)
   @DeleteMapping({"/{idNumber}", "/{idNumber}/"})
   @PreAuthorize("hasAuthority('salespeople:delete')")
   public void delete(@PathVariable String idNumber) throws NotFoundException {
-    Long salespersonId = this.readOne(idNumber).getId();
-    crudService.delete(salespersonId);
+    crudService.delete(whereIdNumberIs(idNumber));
+  }
+
+  private Predicate whereIdNumberIs(String idNumber) {
+    Map<String, String> idNumberMatcher = Maps.of("idnumber", idNumber).build();
+    return predicateService.parseMap(idNumberMatcher);
   }
 }

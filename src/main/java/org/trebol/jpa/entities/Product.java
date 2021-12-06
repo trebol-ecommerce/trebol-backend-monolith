@@ -1,28 +1,20 @@
 package org.trebol.jpa.entities;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  */
 @Entity
-@Table(name = "products")
+@Table(
+  name = "products",
+  indexes = {
+    @Index(columnList = "product_name")
+  })
 public class Product
   implements Serializable {
 
@@ -32,13 +24,13 @@ public class Product
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "product_id", nullable = false)
   private Long id;
-  @Size(min = 1, max = 200)
-  @Column(name = "product_name", nullable = false)
+  @Size(max = 200)
+  @Column(name = "product_name", nullable = false, unique = true)
   private String name;
   @Size(max = 50)
-  @Column(name = "product_code")
+  @Column(name = "product_code", nullable = false, unique = true)
   private String barcode;
-  @Size(max = 1000)
+  @Size(max = 4000)
   @Column(name = "product_description")
   private String description;
   @Column(name = "product_price", nullable = false)
@@ -62,6 +54,42 @@ public class Product
     this.stockCurrent = source.stockCurrent;
     this.stockCritical = source.stockCritical;
     this.productCategory = source.productCategory;
+  }
+
+  public Product(Long id,
+                 String name,
+                 String barcode,
+                 String description,
+                 int price,
+                 int stockCurrent,
+                 int stockCritical,
+                 ProductCategory productCategory) {
+    this.id = id;
+    this.name = name;
+    this.barcode = barcode;
+    this.description = description;
+    this.price = price;
+    this.stockCurrent = stockCurrent;
+    this.stockCritical = stockCritical;
+    this.productCategory = productCategory;
+  }
+
+  public Product(String barcode) {
+    this.barcode = barcode;
+  }
+
+  public Product(String name,
+                 String barcode,
+                 String description,
+                 int price,
+                 int stockCurrent,
+                 int stockCritical) {
+    this.name = name;
+    this.barcode = barcode;
+    this.description = description;
+    this.price = price;
+    this.stockCurrent = stockCurrent;
+    this.stockCritical = stockCritical;
   }
 
   public Long getId() {
@@ -129,65 +157,36 @@ public class Product
   }
 
   @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = 79 * hash + Objects.hashCode(this.id);
-    hash = 79 * hash + Objects.hashCode(this.name);
-    hash = 79 * hash + Objects.hashCode(this.barcode);
-    hash = 79 * hash + Objects.hashCode(this.description);
-    hash = 79 * hash + this.price;
-    hash = 79 * hash + this.stockCurrent;
-    hash = 79 * hash + this.stockCritical;
-    hash = 79 * hash + Objects.hashCode(this.productCategory);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Product product = (Product) o;
+    return price == product.price &&
+        stockCurrent == product.stockCurrent &&
+        stockCritical == product.stockCritical &&
+        Objects.equals(id, product.id) &&
+        Objects.equals(name, product.name) &&
+        Objects.equals(barcode, product.barcode) &&
+        Objects.equals(description, product.description) &&
+        Objects.equals(productCategory, product.productCategory);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Product other = (Product)obj;
-    if (this.price != other.price) {
-      return false;
-    }
-    if (this.stockCurrent != other.stockCurrent) {
-      return false;
-    }
-    if (this.stockCritical != other.stockCritical) {
-      return false;
-    }
-    if (!Objects.equals(this.name, other.name)) {
-      return false;
-    }
-    if (!Objects.equals(this.barcode, other.barcode)) {
-      return false;
-    }
-    if (!Objects.equals(this.description, other.description)) {
-      return false;
-    }
-    if (!Objects.equals(this.id, other.id)) {
-      return false;
-    }
-    return Objects.equals(this.productCategory, other.productCategory);
+  public int hashCode() {
+    return Objects.hash(id, name, barcode, description, price, stockCurrent, stockCritical, productCategory);
   }
 
   @Override
   public String toString() {
-    return "Product{id=" + id +
-        ", name=" + name +
-        ", barcode=" + barcode +
-        ", description=" + description +
+    return "Product{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", barcode='" + barcode + '\'' +
+        ", description='" + description + '\'' +
         ", price=" + price +
         ", stockCurrent=" + stockCurrent +
         ", stockCritical=" + stockCritical +
-        ", productCategory=" + productCategory + '}';
+        ", productCategory=" + productCategory +
+        '}';
   }
-
 }

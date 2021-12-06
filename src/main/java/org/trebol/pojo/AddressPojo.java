@@ -1,10 +1,9 @@
 package org.trebol.pojo;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotBlank;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
@@ -75,70 +74,32 @@ public class AddressPojo {
   }
 
   @Override
-  public int hashCode() {
-    int hash = 5;
-    hash = 19 * hash + Objects.hashCode(this.firstLine);
-    hash = 19 * hash + Objects.hashCode(this.secondLine);
-    hash = 19 * hash + Objects.hashCode(this.municipality);
-    hash = 19 * hash + Objects.hashCode(this.city);
-    hash = 19 * hash + Objects.hashCode(this.postalCode);
-    hash = 19 * hash + Objects.hashCode(this.notes);
-    return hash;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    AddressPojo that = (AddressPojo) o;
+    return Objects.equals(firstLine, that.firstLine) &&
+        Objects.equals(secondLine, that.secondLine) &&
+        Objects.equals(municipality, that.municipality) &&
+        Objects.equals(city, that.city) &&
+        Objects.equals(postalCode, that.postalCode) &&
+        Objects.equals(notes, that.notes);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final AddressPojo other = (AddressPojo)obj;
-    if (!Objects.equals(this.firstLine, other.firstLine)) {
-      return false;
-    }
-    if (!Objects.equals(this.secondLine, other.secondLine)) {
-      return false;
-    }
-    if (!Objects.equals(this.municipality, other.municipality)) {
-      return false;
-    }
-    if (!Objects.equals(this.city, other.city)) {
-      return false;
-    }
-    if (!Objects.equals(this.postalCode, other.postalCode)) {
-      return false;
-    }
-    return Objects.equals(this.notes, other.notes);
+  public int hashCode() {
+    return Objects.hash(firstLine, secondLine, municipality, city, postalCode, notes);
   }
 
   @Override
   public String toString() {
-    return "AddressPojo{firstLine=" + firstLine +
-        ", secondLine=" + secondLine +
-        ", municipality=" + municipality +
-        ", city=" + city +
-        ", postalCode=" + postalCode +
-        ", notes=" + notes + '}';
-  }
-
-  public String toFormattedString() {
-    StringBuilder sb = new StringBuilder();
-    if (postalCode != null && !postalCode.isBlank()) {
-      sb.append(postalCode).append(" ");
-    }
-    sb.append(firstLine);
-    if (secondLine != null && !secondLine.isBlank()) {
-      sb.append(", ").append(secondLine);
-    }
-    sb.append(", ").append(municipality).append(", ").append(city);
-    if (notes != null && !notes.isBlank()) {
-      sb.append(" (Comentario: ").append(notes).append(")");
-    }
-    return sb.toString();
+    return "AddressPojo{" +
+        "firstLine='" + firstLine + '\'' +
+        ", secondLine='" + secondLine + '\'' +
+        ", municipality='" + municipality + '\'' +
+        ", city='" + city + '\'' +
+        ", postalCode='" + postalCode + '\'' +
+        ", notes='" + notes + '\'' +
+        '}';
   }
 }
