@@ -72,7 +72,7 @@ public class ProductsJpaCrudServiceImpl
     ProductPojo outputPojo = super.create(inputPojo);
 
     Collection<ImagePojo> pojoImages = inputPojo.getImages();
-    if (pojoImages != null) {
+    if (pojoImages != null && !pojoImages.isEmpty()) {
       Product target = productsRepository.getOne(outputPojo.getId());
       this.saveProductImagesAndReturnAsPojos(target, pojoImages);
     }
