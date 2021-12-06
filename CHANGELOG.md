@@ -44,6 +44,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/data/salespeople/{idNumber}` replaced by `/data/salespeople?idNumber={}`
   - `/data/users/{name}` replaced by `/data/users?name={}`
 
+### Removed
+- Entity class `Session`, not used in the codebase
+
 ## [1.0.4] - 2021-10-21
 
 ### Changed
