@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
@@ -12,6 +13,7 @@ import org.trebol.jpa.services.ISellStepperJpaService;
 
 import java.util.Optional;
 
+@Transactional
 @Service
 public class SellStatusManagerServiceImpl
   implements ISellStepperJpaService {
