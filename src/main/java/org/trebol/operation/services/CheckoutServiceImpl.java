@@ -48,11 +48,6 @@ public class CheckoutServiceImpl
 
   @Override
   public SellPojo saveCartAsPendingTransaction(SellPojo transaction) throws BadInputException {
-    /*String hash = String.valueOf(transaction.hashCode());
-    transaction.setStatus("Pending");
-    if (transaction.getType() == null) {
-      transaction.setType("Bill");
-    }*/
     try {
       return salesCrudService.create(transaction);
     } catch (EntityAlreadyExistsException exc) {
