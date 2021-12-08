@@ -1,31 +1,20 @@
 package org.trebol.operation.controllers;
 
-import java.net.URI;
-import java.util.Map;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
-import org.trebol.pojo.PaymentRedirectionDetailsPojo;
-import org.trebol.pojo.SellPojo;
+import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.operation.ICheckoutService;
+import org.trebol.pojo.PaymentRedirectionDetailsPojo;
+import org.trebol.pojo.SellPojo;
 
-import javassist.NotFoundException;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import java.net.URI;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.SEE_OTHER;
@@ -40,6 +29,8 @@ import static org.springframework.http.HttpStatus.SEE_OTHER;
 public class PublicCheckoutController {
 
   private final ICheckoutService service;
+  private static final String WEBPAY_SUCCESS_TOKEN_HEADER_NAME = "token_ws";
+  private static final String WEBPAY_ABORTION_TOKEN_HEADER_NAME = "TBK_TOKEN";
 
   @Autowired
   public PublicCheckoutController(ICheckoutService service) {
@@ -64,31 +55,46 @@ public class PublicCheckoutController {
   }
 
   /**
-   * Validate which token HTTP header was sent from WebPay Plus, then update the status of the pending transaction
-   * matching said token.
+   * Validate token sent from WebPay Plus after a succesful transaction.
    *
    * @param transactionData The HTTP headers
    * @return A 303 SEE OTHER response
-   * @throws org.trebol.exceptions.BadInputException If no token resides in the expected HTTP headers.
-   * @throws javassist.NotFoundException If the token matches no stored, "pending" transaction
-   * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during the payment
-   *                                                                   integration process
+   * @throws org.trebol.exceptions.BadInputException If the expected token is not present in the request
+   * @throws javassist.NotFoundException If the token does not match that of any "pending" transaction
+   * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during internal API calls
    */
-  @PostMapping({"/validate", "/validate/"})
-  public ResponseEntity<Void> validateTransaction(@RequestParam Map<String, String> transactionData)
-    throws BadInputException, NotFoundException, PaymentServiceException {
-
-    String token;
-    boolean wasAborted = false;
-    if (transactionData.containsKey("token_ws")) { // success
-      token = transactionData.get("token_ws");
-    } else if (transactionData.containsKey("TBK_TOKEN")) { // aborted
-      token = transactionData.get("TBK_TOKEN");
-      wasAborted = true;
-    } else {
+  @GetMapping({"/validate", "/validate/"})
+  public ResponseEntity<Void> validateSuccesfulTransaction(@RequestParam Map<String, String> transactionData)
+      throws BadInputException, NotFoundException, PaymentServiceException {
+    if (!transactionData.containsKey(WEBPAY_SUCCESS_TOKEN_HEADER_NAME)) { // success
       throw new BadInputException("No transaction token was provided");
     }
-    URI transactionUri = service.confirmTransaction(token, wasAborted);
+    String token = transactionData.get(WEBPAY_SUCCESS_TOKEN_HEADER_NAME);
+    URI transactionUri = service.confirmTransaction(token, false);
+    return ResponseEntity
+        .status(SEE_OTHER)
+        .location(transactionUri)
+        .build();
+  }
+
+  /**
+   * Validate token sent from WebPay Plus after a transaction was aborted.
+   *
+   * @param transactionData The HTTP headers
+   * @return A 303 SEE OTHER response
+   * @throws org.trebol.exceptions.BadInputException If the expected token is not present in the request
+   * @throws javassist.NotFoundException If the token does not match that of any "pending" transaction
+   * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during internal API calls
+   */
+  @PostMapping({"/validate", "/validate/"})
+  public ResponseEntity<Void> validateAbortedTransaction(@RequestParam Map<String, String> transactionData)
+    throws BadInputException, NotFoundException, PaymentServiceException {
+
+    if (!transactionData.containsKey(WEBPAY_ABORTION_TOKEN_HEADER_NAME)) { // aborted
+      throw new BadInputException("No transaction token was provided");
+    }
+    String token = transactionData.get(WEBPAY_ABORTION_TOKEN_HEADER_NAME);
+    URI transactionUri = service.confirmTransaction(token, true);
     return ResponseEntity
         .status(SEE_OTHER)
         .location(transactionUri)
