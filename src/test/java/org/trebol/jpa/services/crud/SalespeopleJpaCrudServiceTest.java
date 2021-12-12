@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static org.trebol.jpa.testhelpers.SalespeopleJpaCrudServiceTestHelper.*;
+import static org.trebol.testhelpers.SalespeopleTestHelper.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SalespeopleJpaCrudServiceTest {

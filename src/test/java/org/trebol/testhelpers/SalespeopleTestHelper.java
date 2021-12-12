@@ -1,11 +1,11 @@
-package org.trebol.jpa.testhelpers;
+package org.trebol.testhelpers;
 
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.SalespersonPojo;
 
-public class SalespeopleJpaCrudServiceTestHelper {
+public class SalespeopleTestHelper {
 
   public static final long GENERIC_ID = 1L;
   public static final String SALESPERSON_ID_NUMBER = "333333333";

@@ -1,4 +1,4 @@
-package org.trebol.jpa.testhelpers;
+package org.trebol.testhelpers;
 
 import org.trebol.jpa.entities.*;
 import org.trebol.pojo.SellDetailPojo;
@@ -7,10 +7,10 @@ import org.trebol.pojo.SellPojo;
 import java.time.Instant;
 import java.util.List;
 
-import static org.trebol.jpa.testhelpers.CustomersJpaCrudServiceTestHelper.*;
-import static org.trebol.jpa.testhelpers.ProductsJpaCrudServiceTestHelper.*;
+import static org.trebol.testhelpers.CustomersTestHelper.*;
+import static org.trebol.testhelpers.ProductsTestHelper.*;
 
-public class SalesJpaCrudServiceTestHelper {
+public class SalesTestHelper {
 
   public static final long GENERIC_ID = 1L;
   public static final Instant GENERIC_DATE = Instant.now();

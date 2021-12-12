@@ -1,11 +1,11 @@
-package org.trebol.jpa.testhelpers;
+package org.trebol.testhelpers;
 
 import org.trebol.jpa.entities.Product;
 import org.trebol.pojo.ProductPojo;
 
 import java.util.List;
 
-public class ProductsJpaCrudServiceTestHelper {
+public class ProductsTestHelper {
 
   public static final long PRODUCT_ID = 1L;
   public static final String PRODUCT_NAME = "test product name";

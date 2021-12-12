@@ -16,7 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.jpa.testhelpers.ImagesJpaCrudServiceTestHelper.*;
+import static org.trebol.testhelpers.ImagesTestHelper.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ImagesJpaCrudServiceTest {

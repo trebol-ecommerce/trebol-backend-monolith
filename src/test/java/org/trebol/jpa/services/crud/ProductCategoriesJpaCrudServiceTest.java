@@ -16,7 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.jpa.testhelpers.ProductCategoriesJpaCrudServiceTestHelper.*;
+import static org.trebol.testhelpers.ProductCategoriesTestHelper.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductCategoriesJpaCrudServiceTest {

@@ -1,9 +1,9 @@
-package org.trebol.jpa.testhelpers;
+package org.trebol.testhelpers;
 
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.pojo.ProductCategoryPojo;
 
-public class ProductCategoriesJpaCrudServiceTestHelper {
+public class ProductCategoriesTestHelper {
 
   public static final long PRODUCT_ID = 1L;
   public static final String CATEGORY_NAME = "test product name";

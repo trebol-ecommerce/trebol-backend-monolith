@@ -1,9 +1,9 @@
-package org.trebol.jpa.testhelpers;
+package org.trebol.testhelpers;
 
 import org.trebol.jpa.entities.Person;
 import org.trebol.pojo.PersonPojo;
 
-public class PeopleJpaCrudServiceTestHelper {
+public class PeopleTestHelper {
 
   public static final long GENERIC_ID = 1L;
   public static final String PERSON_ID_NUMBER = "111111111";

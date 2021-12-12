@@ -24,8 +24,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.jpa.testhelpers.ProductsJpaCrudServiceTestHelper.*;
-import static org.trebol.jpa.testhelpers.SalesJpaCrudServiceTestHelper.*;
+import static org.trebol.testhelpers.ProductsTestHelper.*;
+import static org.trebol.testhelpers.SalesTestHelper.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SalesJpaCrudServiceTest {

@@ -27,10 +27,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.jpa.testhelpers.ImagesJpaCrudServiceTestHelper.*;
-import static org.trebol.jpa.testhelpers.ProductCategoriesJpaCrudServiceTestHelper.productCategoryPojoAfterCreation;
-import static org.trebol.jpa.testhelpers.ProductCategoriesJpaCrudServiceTestHelper.productCategoryPojoBeforeCreation;
-import static org.trebol.jpa.testhelpers.ProductsJpaCrudServiceTestHelper.*;
+import static org.trebol.testhelpers.ImagesTestHelper.*;
+import static org.trebol.testhelpers.ProductCategoriesTestHelper.productCategoryPojoAfterCreation;
+import static org.trebol.testhelpers.ProductCategoriesTestHelper.productCategoryPojoBeforeCreation;
+import static org.trebol.testhelpers.ProductsTestHelper.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductsJpaCrudServiceTest {

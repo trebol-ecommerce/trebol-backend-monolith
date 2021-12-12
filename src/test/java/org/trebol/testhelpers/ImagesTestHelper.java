@@ -1,9 +1,9 @@
-package org.trebol.jpa.testhelpers;
+package org.trebol.testhelpers;
 
 import org.trebol.jpa.entities.Image;
 import org.trebol.pojo.ImagePojo;
 
-public class ImagesJpaCrudServiceTestHelper {
+public class ImagesTestHelper {
 
   public static long IMAGE_ID = 1L;
   public static String IMAGE_CODE = "test-img";
