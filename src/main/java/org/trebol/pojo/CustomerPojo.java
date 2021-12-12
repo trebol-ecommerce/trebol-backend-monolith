@@ -25,6 +25,10 @@ public class CustomerPojo {
     this.person = new PersonPojo(idNumber);
   }
 
+  public CustomerPojo(PersonPojo person) {
+    this.person = person;
+  }
+
   public Long getId() {
     return id;
   }

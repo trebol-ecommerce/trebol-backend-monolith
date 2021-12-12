@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+import static org.trebol.jpa.testhelpers.SalespeopleJpaCrudServiceTestHelper.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SalespeopleJpaCrudServiceTest {
@@ -31,23 +32,18 @@ public class SalespeopleJpaCrudServiceTest {
 
   @Test
   public void finds_by_id_number() throws BadInputException {
-    String salespersonIdNumber = "11111111";
-    String salespersonFirstName = "test first name";
-    String salespersonLastName = "test last name";
-    SalespersonPojo example = new SalespersonPojo(salespersonIdNumber);
-    Salesperson persistedEntity = new Salesperson(salespersonIdNumber);
-    persistedEntity.getPerson().setFirstName(salespersonFirstName);
-    persistedEntity.getPerson().setLastName(salespersonLastName);
-    when(salespeopleRepositoryMock.findByPersonIdNumber(salespersonIdNumber)).thenReturn(Optional.of(persistedEntity));
+    resetSalespeople();
+    when(salespeopleRepositoryMock.findByPersonIdNumber(salespersonPojoForFetch().getPerson().getIdNumber())).thenReturn(Optional.of(salespersonEntityAfterCreation()));
     SalespeopleJpaCrudServiceImpl service = instantiate();
 
-    Optional<Salesperson> match = service.getExisting(example);
+    Optional<Salesperson> match = service.getExisting(salespersonPojoForFetch());
 
     assertTrue(match.isPresent());
     Person person = match.get().getPerson();
-    assertEquals(person.getIdNumber(), salespersonIdNumber);
-    assertEquals(person.getFirstName(), salespersonFirstName);
-    assertEquals(person.getLastName(), salespersonLastName);
+    assertEquals(person.getIdNumber(), salespersonEntityAfterCreation().getPerson().getIdNumber());
+    assertEquals(person.getFirstName(), salespersonEntityAfterCreation().getPerson().getFirstName());
+    assertEquals(person.getLastName(), salespersonEntityAfterCreation().getPerson().getLastName());
+    assertEquals(person.getEmail(), salespersonEntityAfterCreation().getPerson().getEmail());
   }
 
   private SalespeopleJpaCrudServiceImpl instantiate() {

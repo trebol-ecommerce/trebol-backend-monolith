@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+import static org.trebol.jpa.testhelpers.PeopleJpaCrudServiceTestHelper.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PeopleJpaCrudServiceTest {
@@ -30,20 +31,17 @@ public class PeopleJpaCrudServiceTest {
 
   @Test
   public void finds_by_id_number() throws BadInputException {
-    String personIdNumber = "11111111";
-    String personFirstName = "test first name";
-    String personLastName = "test last name";
-    PersonPojo example = new PersonPojo(personIdNumber);
-    Person persistedEntity = new Person(personFirstName, personLastName, personIdNumber);
-    when(peopleRepositoryMock.findByIdNumber(personIdNumber)).thenReturn(Optional.of(persistedEntity));
+    resetPeople();
+    when(peopleRepositoryMock.findByIdNumber(personPojoForFetch().getIdNumber())).thenReturn(Optional.of(personEntityAfterCreation()));
     PeopleJpaCrudServiceImpl service = instantiate();
 
-    Optional<Person> match = service.getExisting(example);
+    Optional<Person> match = service.getExisting(personPojoForFetch());
 
     assertTrue(match.isPresent());
-    assertEquals(match.get().getIdNumber(), personIdNumber);
-    assertEquals(match.get().getFirstName(), personFirstName);
-    assertEquals(match.get().getLastName(), personLastName);
+    assertEquals(match.get().getIdNumber(), personEntityAfterCreation().getIdNumber());
+    assertEquals(match.get().getFirstName(), personEntityAfterCreation().getFirstName());
+    assertEquals(match.get().getLastName(), personEntityAfterCreation().getLastName());
+    assertEquals(match.get().getEmail(), personEntityAfterCreation().getEmail());
   }
 
   private PeopleJpaCrudServiceImpl instantiate() {

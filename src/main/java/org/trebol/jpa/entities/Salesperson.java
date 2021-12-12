@@ -34,6 +34,10 @@ public class Salesperson
     this.person = new Person(idNumber);
   }
 
+  public Salesperson(Person person) {
+    this.person = person;
+  }
+
   public Long getId() {
     return id;
   }

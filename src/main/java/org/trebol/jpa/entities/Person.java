@@ -60,10 +60,27 @@ public class Person
     this.idNumber = idNumber;
   }
 
-  public Person(String firstName, String lastName, String idNumber) {
+  public Person(String firstName, String lastName, String idNumber, String email) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.idNumber = idNumber;
+    this.email = email;
+  }
+
+  public Person(Long id,
+                String firstName,
+                String lastName,
+                String idNumber,
+                String email,
+                String phone1,
+                String phone2) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.idNumber = idNumber;
+    this.email = email;
+    this.phone1 = phone1;
+    this.phone2 = phone2;
   }
 
   public Long getId() {
