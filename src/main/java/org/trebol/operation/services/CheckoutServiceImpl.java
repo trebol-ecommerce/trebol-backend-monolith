@@ -52,7 +52,7 @@ public class CheckoutServiceImpl
       return response;
     } catch (NotFoundException exc) {
       logger.error("A sell that was just created could not be found", exc);
-      throw new RuntimeException("The server had a problem requesting the transaction");
+      throw new IllegalStateException("The server had a problem requesting the transaction");
     }
   }
 
@@ -71,7 +71,7 @@ public class CheckoutServiceImpl
       return resultPageUrl.toURI();
     } catch (MalformedURLException | URISyntaxException ex) {
       logger.error("Malformed final URL for payment method; make sure this property is correctly configured.", ex);
-      throw new RuntimeException("Transaction was confirmed, but server had an unexpected malfunction");
+      throw new IllegalStateException("Transaction was confirmed, but server had an unexpected malfunction");
     }
   }
 
