@@ -1,28 +1,17 @@
 package org.trebol.operation;
 
-import java.net.URI;
-
+import javassist.NotFoundException;
+import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
-import org.trebol.exceptions.BadInputException;
-import org.trebol.integration.exceptions.PaymentServiceException;
 
-import javassist.NotFoundException;
+import java.net.URI;
 
 /**
  *
  * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
  */
 public interface ICheckoutService {
-
-  /**
-   * Analyze provided transaction, generate data for a transaction, mark it as "acknowledged" and save it
-   * @param transaction The "requested" transaction
-   * @return The "acknowledged" transaction
-   * @throws org.trebol.exceptions.BadInputException If the transaction data is not valid; unexisting products,
-   *                                                incorrect values, among other reasons
-   */
-  SellPojo saveCartAsPendingTransaction(SellPojo transaction) throws BadInputException;
 
   /**
    * Fetch details to redirect the requester to the payment page.Also mark transaction as "started"
@@ -43,12 +32,4 @@ public interface ICheckoutService {
    * @throws PaymentServiceException On unexpected failures
    */
   URI confirmTransaction(String token, boolean wasAborted) throws NotFoundException, PaymentServiceException;
-
-  /**
-   * Obtain all saved metadata for a transaction previously confirmed
-   * @param token Previously emitted by the payment service
-   * @return The "completed/cancelled/failed" transaction
-   * @throws javassist.NotFoundException When no transaction matches the provided hash
-   */
-  SellPojo getResultingTransaction(String token) throws NotFoundException;
 }

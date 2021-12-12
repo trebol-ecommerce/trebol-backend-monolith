@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
@@ -47,16 +45,6 @@ public class CheckoutServiceImpl
   }
 
   @Override
-  public SellPojo saveCartAsPendingTransaction(SellPojo transaction) throws BadInputException {
-    try {
-      return salesCrudService.create(transaction);
-    } catch (EntityAlreadyExistsException exc) {
-      logger.error("Could not create a new sell", exc);
-      throw new RuntimeException("The server had a problem requesting the transaction");
-    }
-  }
-
-  @Override
   public PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException {
     PaymentRedirectionDetailsPojo response = paymentIntegrationService.requestNewPaymentPageDetails(transaction);
     try {
@@ -84,13 +72,6 @@ public class CheckoutServiceImpl
       logger.error("Malformed final URL for payment method; make sure this property is correctly configured.", ex);
       throw new RuntimeException("Transaction was confirmed, but server had an unexpected malfunction");
     }
-  }
-
-  @Override
-  public SellPojo getResultingTransaction(String transactionToken) throws NotFoundException {
-    Map<String, String> tokenMatcher = Maps.of("token", transactionToken).build();
-    Predicate withMatchingToken = salesPredicateService.parseMap(tokenMatcher);
-    return salesCrudService.readOne(withMatchingToken);
   }
 
   /**

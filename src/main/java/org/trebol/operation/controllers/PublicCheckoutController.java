@@ -1,12 +1,18 @@
 package org.trebol.operation.controllers;
 
+import com.querydsl.core.types.Predicate;
+import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
+import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.integration.exceptions.PaymentServiceException;
+import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.operation.ICheckoutService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
@@ -29,12 +35,18 @@ import static org.springframework.http.HttpStatus.SEE_OTHER;
 public class PublicCheckoutController {
 
   private final ICheckoutService service;
+  private final GenericCrudJpaService<SellPojo, Sell> salesCrudService;
+  private final IPredicateJpaService<Sell> salesPredicateService;
   private static final String WEBPAY_SUCCESS_TOKEN_HEADER_NAME = "token_ws";
   private static final String WEBPAY_ABORTION_TOKEN_HEADER_NAME = "TBK_TOKEN";
 
   @Autowired
-  public PublicCheckoutController(ICheckoutService service) {
+  public PublicCheckoutController(ICheckoutService service,
+                                  GenericCrudJpaService<SellPojo, Sell> salesCrudService,
+                                  IPredicateJpaService<Sell> salesPredicateService) {
     this.service = service;
+    this.salesCrudService = salesCrudService;
+    this.salesPredicateService = salesPredicateService;
   }
 
   /**
@@ -49,8 +61,8 @@ public class PublicCheckoutController {
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('checkout')")
   public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody SellPojo transactionRequest)
-    throws BadInputException, PaymentServiceException {
-    SellPojo createdTransaction = service.saveCartAsPendingTransaction(transactionRequest);
+      throws BadInputException, PaymentServiceException, EntityAlreadyExistsException {
+    SellPojo createdTransaction = salesCrudService.create(transactionRequest);
     return service.requestTransactionStart(createdTransaction);
   }
 
@@ -103,7 +115,9 @@ public class PublicCheckoutController {
 
   @GetMapping({"/result/{token}", "/result/{token}/"})
   public SellPojo getTransactionResultFor(@NotBlank @PathVariable String token) throws NotFoundException {
-    return service.getResultingTransaction(token);
+    Map<String, String> tokenMatcher = Maps.of("token", token).build();
+    Predicate withMatchingToken = salesPredicateService.parseMap(tokenMatcher);
+    return salesCrudService.readOne(withMatchingToken);
   }
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
