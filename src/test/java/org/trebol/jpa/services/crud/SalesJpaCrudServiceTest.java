@@ -1,6 +1,9 @@
 package org.trebol.jpa.services.crud;
 
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+import javassist.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -14,11 +17,14 @@ import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellPojo;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.trebol.jpa.testhelpers.ProductsJpaCrudServiceTestHelper.*;
 import static org.trebol.jpa.testhelpers.SalesJpaCrudServiceTestHelper.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -48,6 +54,24 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
+  public void finds_using_predicates() throws NotFoundException {
+    resetProducts();
+    resetSales();
+    Predicate filters = new BooleanBuilder();
+    when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.of(sellEntityAfterCreation()));
+    when(salesConverterMock.convertToPojo(sellEntityAfterCreation())).thenReturn(sellPojoAfterCreation());
+    when(productsConverterMock.convertToPojo(productEntityAfterCreation())).thenReturn(productPojoAfterCreation());
+    SalesJpaCrudServiceImpl service = instantiate();
+
+    SellPojo result = service.readOne(filters);
+
+    assertNotNull(result);
+    verify(salesRepositoryMock).findOne(filters);
+    assertEquals(result.getBuyOrder(), sellPojoAfterCreation().getBuyOrder());
+    assertEquals(result.getDate(), sellPojoAfterCreation().getDate());
+  }
+
+  @Test
   public void creates_sell() throws BadInputException, EntityAlreadyExistsException {
     resetSales();
     when(salesConverterMock.convertToNewEntity(sellPojoBeforeCreation())).thenReturn(sellEntityBeforeCreation());
@@ -68,6 +92,65 @@ public class SalesJpaCrudServiceTest {
     assertEquals(result.getTotalValue(), sellPojoAfterCreation().getTotalValue());
     assertEquals(result.getTotalItems(), sellPojoAfterCreation().getTotalItems());
     assertEquals(result.getCustomer().getId(), sellPojoAfterCreation().getCustomer().getId());
+  }
+
+  @Test
+  public void updates_sell() throws BadInputException, NotFoundException {
+    resetSales();
+    Instant updatedDate = Instant.now().minus(Duration.ofHours(1L));
+    SellPojo sellPojoWithUpdates = new SellPojo(sellPojoAfterCreation());
+    sellPojoWithUpdates.setDate(updatedDate);
+    Sell sellEntityWithUpdates = new Sell(sellEntityAfterCreation());
+    sellEntityWithUpdates.setDate(updatedDate);
+    Predicate filters = new BooleanBuilder();
+    when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.of(sellEntityAfterCreation()));
+    when(salesConverterMock.applyChangesToExistingEntity(sellPojoWithUpdates, sellEntityAfterCreation())).thenReturn(sellEntityWithUpdates);
+    when(salesRepositoryMock.saveAndFlush(sellEntityWithUpdates)).thenReturn(sellEntityWithUpdates);
+    when(salesConverterMock.convertToPojo(sellEntityWithUpdates)).thenReturn(sellPojoWithUpdates);
+    SalesJpaCrudServiceImpl service = this.instantiate();
+
+    SellPojo result = service.update(sellPojoWithUpdates, filters);
+
+    assertNotNull(result);
+    verify(salesRepositoryMock).findOne(filters);
+    verify(salesConverterMock).applyChangesToExistingEntity(sellPojoWithUpdates, sellEntityAfterCreation());
+    verify(salesRepositoryMock).saveAndFlush(sellEntityWithUpdates);
+    verify(salesConverterMock).convertToPojo(sellEntityWithUpdates);
+    assertEquals(result.getBuyOrder(), sellPojoWithUpdates.getBuyOrder());
+    assertEquals(result.getDate(), sellPojoWithUpdates.getDate());
+  }
+
+  @Test
+  public void returns_same_when_no_update_is_made() throws BadInputException, NotFoundException {
+    resetSales();
+    SellPojo copy = new SellPojo(sellPojoAfterCreation());
+    Predicate filters = new BooleanBuilder();
+    when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.of(sellEntityAfterCreation()));
+    when(salesConverterMock.applyChangesToExistingEntity(copy, sellEntityAfterCreation())).thenReturn(sellEntityAfterCreation());
+    SalesJpaCrudServiceImpl service = this.instantiate();
+
+    SellPojo result = service.update(copy, filters);
+
+    assertEquals(result, copy);
+    verify(salesRepositoryMock).findOne(filters);
+    verify(salesConverterMock).applyChangesToExistingEntity(copy, sellEntityAfterCreation());
+  }
+
+  @Test
+  public void throws_exception_when_not_found_using_predicates() {
+    Predicate filters = new BooleanBuilder();
+    when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.empty());
+    SalesJpaCrudServiceImpl service = instantiate();
+
+    SellPojo result = null;
+    try {
+      result = service.readOne(filters);
+    } catch (NotFoundException e) {
+      e.printStackTrace();
+    }
+
+    assertNull(result);
+    verify(salesRepositoryMock).findOne(filters);
   }
 
   private SalesJpaCrudServiceImpl instantiate() {

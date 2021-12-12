@@ -48,6 +48,27 @@ public class SellPojo {
 
   public SellPojo() { }
 
+  public SellPojo(SellPojo source) {
+    this.buyOrder = source.buyOrder;
+    this.token = source.token;
+    this.date = source.date;
+    this.details = source.details;
+    this.netValue = source.netValue;
+    this.taxValue = source.taxValue;
+    this.transportValue = source.transportValue;
+    this.totalValue = source.totalValue;
+    this.totalItems = source.totalItems;
+    this.status = source.status;
+    this.billingType = source.billingType;
+    this.paymentType = source.paymentType;
+    this.customer = source.customer;
+    this.salesperson = source.salesperson;
+    this.shipper = source.shipper;
+    this.billingCompany = source.billingCompany;
+    this.billingAddress = source.billingAddress;
+    this.shippingAddress = source.shippingAddress;
+  }
+
   public SellPojo(Long buyOrder) {
     this.buyOrder = buyOrder;
   }
