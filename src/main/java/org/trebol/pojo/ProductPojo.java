@@ -23,15 +23,15 @@ public class ProductPojo {
   private String name;
   @NotBlank
   private String barcode;
-  @NotNull
-  private Integer price;
-  private ProductCategoryPojo category;
   @JsonInclude(NON_EMPTY)
   private String description;
+  @NotNull
+  private Integer price;
   @JsonIgnore
   private Integer currentStock;
   @JsonIgnore
   private Integer criticalStock;
+  private ProductCategoryPojo category;
   private Collection<ImagePojo> images;
 
   public ProductPojo() { }
@@ -40,28 +40,41 @@ public class ProductPojo {
     this.barcode = barcode;
   }
 
-  public ProductPojo(Long id, String name, String barcode, Integer price, ProductCategoryPojo category,
-                     String description, Integer currentStock, Integer criticalStock, Collection<ImagePojo> images) {
+  public ProductPojo(Long id,
+                     String name,
+                     String barcode,
+                     String description,
+                     Integer price,
+                     Integer currentStock,
+                     Integer criticalStock,
+                     ProductCategoryPojo category,
+                     Collection<ImagePojo> images) {
     this.id = id;
     this.name = name;
     this.barcode = barcode;
-    this.price = price;
-    this.category = category;
     this.description = description;
+    this.price = price;
     this.currentStock = currentStock;
     this.criticalStock = criticalStock;
+    this.category = category;
     this.images = images;
   }
 
-  public ProductPojo(String name, String barcode, Integer price, ProductCategoryPojo category, String description,
-                     Integer currentStock, Integer criticalStock, Collection<ImagePojo> images) {
+  public ProductPojo(String name,
+                     String barcode,
+                     String description,
+                     Integer price,
+                     Integer currentStock,
+                     Integer criticalStock,
+                     ProductCategoryPojo category,
+                     Collection<ImagePojo> images) {
     this.name = name;
     this.barcode = barcode;
-    this.price = price;
-    this.category = category;
     this.description = description;
+    this.price = price;
     this.currentStock = currentStock;
     this.criticalStock = criticalStock;
+    this.category = category;
     this.images = images;
   }
 
@@ -89,28 +102,20 @@ public class ProductPojo {
     this.barcode = barcode;
   }
 
-  public Integer getPrice() {
-    return price;
-  }
-
-  public void setPrice(Integer price) {
-    this.price = price;
-  }
-
-  public ProductCategoryPojo getCategory() {
-    return category;
-  }
-
-  public void setCategory(ProductCategoryPojo category) {
-    this.category = category;
-  }
-
   public String getDescription() {
     return description;
   }
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public Integer getPrice() {
+    return price;
+  }
+
+  public void setPrice(Integer price) {
+    this.price = price;
   }
 
   public Integer getCurrentStock() {
@@ -129,6 +134,14 @@ public class ProductPojo {
     this.criticalStock = criticalStock;
   }
 
+  public ProductCategoryPojo getCategory() {
+    return category;
+  }
+
+  public void setCategory(ProductCategoryPojo category) {
+    this.category = category;
+  }
+
   public Collection<ImagePojo> getImages() {
     return images;
   }
@@ -145,17 +158,17 @@ public class ProductPojo {
     return Objects.equals(id, that.id) &&
         Objects.equals(name, that.name) &&
         Objects.equals(barcode, that.barcode) &&
-        Objects.equals(price, that.price) &&
-        Objects.equals(category, that.category) &&
         Objects.equals(description, that.description) &&
+        Objects.equals(price, that.price) &&
         Objects.equals(currentStock, that.currentStock) &&
         Objects.equals(criticalStock, that.criticalStock) &&
+        Objects.equals(category, that.category) &&
         Objects.equals(images, that.images);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, barcode, price, category, description, currentStock, criticalStock, images);
+    return Objects.hash(id, name, barcode, description, price, currentStock, criticalStock, category, images);
   }
 
   @Override
@@ -164,11 +177,11 @@ public class ProductPojo {
         "id=" + id +
         ", name='" + name + '\'' +
         ", barcode='" + barcode + '\'' +
-        ", price=" + price +
-        ", category=" + category +
         ", description='" + description + '\'' +
+        ", price=" + price +
         ", currentStock=" + currentStock +
         ", criticalStock=" + criticalStock +
+        ", category=" + category +
         ", images=" + images +
         '}';
   }

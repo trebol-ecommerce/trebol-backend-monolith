@@ -56,6 +56,10 @@ public class Product
     this.productCategory = source.productCategory;
   }
 
+  public Product(String barcode) {
+    this.barcode = barcode;
+  }
+
   public Product(Long id,
                  String name,
                  String barcode,
@@ -72,10 +76,6 @@ public class Product
     this.stockCurrent = stockCurrent;
     this.stockCritical = stockCritical;
     this.productCategory = productCategory;
-  }
-
-  public Product(String barcode) {
-    this.barcode = barcode;
   }
 
   public Product(String name,

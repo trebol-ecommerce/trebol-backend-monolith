@@ -128,7 +128,9 @@ public class SalesConverterJpaServiceImpl
     this.applyBillingAddress(source, target);
     this.applyShippingAddress(source, target);
     this.applyShipper(source, target);
-    this.applyDetails(source, target);
+
+    List<SellDetail> entityDetails = this.convertDetails(source.getDetails());
+    target.setDetails(entityDetails);
 
     return target;
   }
@@ -160,13 +162,14 @@ public class SalesConverterJpaServiceImpl
       this.applyShippingAddress(source, target);
     }
 
-    /*
-    // TODO add shipper API
     if (source.getShipper() != null) {
       this.applyShipper(source, target);
-    } */
-    if (source.getDetails() != null) {
-      this.applyDetails(source, target);
+    }
+
+    Collection<SellDetailPojo> details = source.getDetails();
+    if (details != null && !details.isEmpty()) {
+      List<SellDetail> entityDetails = this.convertDetails(details);
+      target.setDetails(entityDetails);
     }
 
     return target;
@@ -281,33 +284,23 @@ public class SalesConverterJpaServiceImpl
     }
   }
 
-  private void applyDetails(SellPojo source, Sell target) throws BadInputException {
-    Collection<SellDetailPojo> sourceDetails = source.getDetails();
-    if (sourceDetails != null && !sourceDetails.isEmpty()) {
-      List<SellDetail> details = new ArrayList<>();
-      int netValue = 0, totalItems = 0;
-      for (SellDetailPojo d : source.getDetails()) {
-        SellDetail targetDetail = new SellDetail();
-        String barcode = d.getProduct().getBarcode();
-        Optional<Product> productByBarcode = productsRepository.findByBarcode(barcode);
-        if (productByBarcode.isEmpty()) {
-          throw new BadInputException("Unexisting product in sell details");
-        } else {
-          Product targetProduct = productByBarcode.get();
-          targetDetail.setProduct(targetProduct);
-          targetDetail.setUnits(d.getUnits());
-          targetDetail.setUnitValue(targetProduct.getPrice());
-        }
-        details.add(targetDetail);
-        int units = targetDetail.getUnits();
-        netValue += (targetDetail.getProduct().getPrice() * units);
-        totalItems += units;
+  private List<SellDetail> convertDetails(Collection<SellDetailPojo> sourceDetails) throws BadInputException {
+    List<SellDetail> details = new ArrayList<>();
+    for (SellDetailPojo d : sourceDetails) {
+      String barcode = d.getProduct().getBarcode();
+      if (barcode == null || barcode.isBlank()) {
+        throw new BadInputException("Product barcode must be valid");
       }
-      target.setDetails(details);
-      target.setNetValue(netValue);
-      target.setTotalItems(totalItems);
-      // TODO note where to add total value, transport value...?
+      Optional<Product> productByBarcode = productsRepository.findByBarcode(barcode);
+      if (productByBarcode.isEmpty()) {
+        throw new BadInputException("Unexisting product in sell details");
+      }
+      Product product = productByBarcode.get();
+      SellDetail targetDetail = new SellDetail(d.getUnits(), product);
+      targetDetail.setUnitValue(product.getPrice());
+      details.add(targetDetail);
     }
+    return details;
   }
 
   private Address fetchOrConvertAddress(AddressPojo source) throws BadInputException {

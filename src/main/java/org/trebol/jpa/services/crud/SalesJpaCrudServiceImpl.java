@@ -34,6 +34,8 @@ public class SalesJpaCrudServiceImpl
 
   private final ISalesJpaRepository salesRepository;
   private final ITwoWayConverterJpaService<ProductPojo, Product> productConverter;
+  private static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
+  private static final boolean CAN_EDIT_AFTER_PROCESS = true; // TODO refactor as part of application properties
 
   @Autowired
   public SalesJpaCrudServiceImpl(ISalesJpaRepository repository,
@@ -49,6 +51,7 @@ public class SalesJpaCrudServiceImpl
   @Override
   public SellPojo create(SellPojo inputPojo) throws BadInputException, EntityAlreadyExistsException {
     Sell input = converter.convertToNewEntity(inputPojo);
+    this.updateTotals(input);
     Sell output = salesRepository.saveAndFlush(input);
     return converter.convertToPojo(output);
   }
@@ -76,6 +79,37 @@ public class SalesJpaCrudServiceImpl
     }
   }
 
+  protected SellPojo doUpdate(SellPojo input, Sell existingEntity) throws BadInputException {
+    Integer statusCode = existingEntity.getStatus().getCode();
+    if ((statusCode >= 3 || statusCode < 0) && !CAN_EDIT_AFTER_PROCESS) {
+      throw new BadInputException("The requested transaction cannot be modified");
+    }
+    Sell updatedEntity = converter.applyChangesToExistingEntity(input, existingEntity);
+    this.updateTotals(updatedEntity);
+    if (existingEntity.equals(updatedEntity)) {
+      return input;
+    } else {
+      Sell output = salesRepository.saveAndFlush(updatedEntity);
+      return converter.convertToPojo(output);
+    }
+  }
+
+  private void updateTotals(Sell input) {
+    int netValue = 0, taxesValue = 0, totalUnits = 0;
+    for (SellDetail sd : input.getDetails()) {
+      int unitValue = sd.getUnitValue();
+      double unitTaxValue = unitValue * TAX_PERCENT;
+      double unitNetValue = unitValue - unitTaxValue;
+      taxesValue += unitTaxValue;
+      netValue += unitNetValue;
+      totalUnits += sd.getUnits();
+    }
+    input.setTaxesValue(taxesValue);
+    input.setNetValue(netValue);
+    input.setTotalValue(taxesValue + netValue);
+    input.setTotalItems(totalUnits);
+  }
+
   private void applyDetails(Sell source, SellPojo target) {
     Collection<SellDetail> details = source.getDetails();
     if (details != null && !details.isEmpty()) {
@@ -87,9 +121,7 @@ public class SalesJpaCrudServiceImpl
         targetSellDetail.setUnitValue(sourceSellDetail.getUnitValue());
         targetSellDetail.setUnits(sourceSellDetail.getUnits());
         targetSellDetail.setProduct(product);
-        if (product != null) {
-          sellDetails.add(targetSellDetail);
-        }
+        sellDetails.add(targetSellDetail);
       }
       target.setDetails(sellDetails);
     }

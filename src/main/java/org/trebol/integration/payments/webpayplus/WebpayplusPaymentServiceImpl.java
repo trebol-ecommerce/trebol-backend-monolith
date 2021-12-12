@@ -1,25 +1,20 @@
 package org.trebol.integration.payments.webpayplus;
 
-import java.io.IOException;
-
+import cl.transbank.common.IntegrationType;
+import cl.transbank.webpay.exception.TransactionCommitException;
+import cl.transbank.webpay.exception.TransactionCreateException;
+import cl.transbank.webpay.webpayplus.WebpayPlus;
+import cl.transbank.webpay.webpayplus.model.WebpayPlusTransactionCreateResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.trebol.pojo.SellPojo;
-import org.trebol.pojo.PaymentRedirectionDetailsPojo;
-import org.trebol.integration.exceptions.PaymentServiceException;
-
-import cl.transbank.common.IntegrationType;
-import cl.transbank.webpay.exception.TransactionCommitException;
-import cl.transbank.webpay.webpayplus.WebpayPlus;
-import cl.transbank.webpay.webpayplus.model.WebpayPlusTransactionCommitResponse;
-import cl.transbank.webpay.webpayplus.model.WebpayPlusTransactionCreateResponse;
-
-
-import cl.transbank.webpay.exception.TransactionCreateException;
-
 import org.trebol.integration.IPaymentsIntegrationService;
+import org.trebol.integration.exceptions.PaymentServiceException;
+import org.trebol.pojo.PaymentRedirectionDetailsPojo;
+import org.trebol.pojo.SellPojo;
+
+import java.io.IOException;
 
 /**
  *
@@ -61,7 +56,7 @@ public class WebpayplusPaymentServiceImpl
       return response;
     } catch (TransactionCreateException | IOException exc) {
       logger.error("Exception raised while creating transaction: ", exc);
-      throw new PaymentServiceException("Webpay could not create a new transaction", exc);
+      throw new PaymentServiceException("Webpay could not create a new transaction");
     }
   }
 
@@ -73,7 +68,7 @@ public class WebpayplusPaymentServiceImpl
       return 1;
     } catch (IOException exc) {
       logger.error("Exception raised while requesting transaction result: ", exc);
-      throw new PaymentServiceException("Webpay service failed when confirming the transaction", exc);
+      throw new PaymentServiceException("Webpay failed to confirm the transaction");
     }
   }
 

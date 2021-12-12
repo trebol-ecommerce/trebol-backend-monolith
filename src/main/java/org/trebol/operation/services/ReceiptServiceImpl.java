@@ -49,12 +49,13 @@ public class ReceiptServiceImpl
           ProductPojo targetDetailProduct = new ProductPojo();
           targetDetailProduct.setName(pd.getName());
           targetDetailProduct.setBarcode(pd.getBarcode());
-          targetDetailProduct.setPrice(pd.getPrice());
           targetDetail.setProduct(targetDetailProduct);
+          targetDetail.setUnitValue(d.getUnitValue());
           targetDetails.add(targetDetail);
         }
       }
       target.setDetails(targetDetails);
+      target.setStatus(foundMatch.getStatus().getName());
     }
 
     return target;

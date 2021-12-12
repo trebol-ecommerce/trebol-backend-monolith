@@ -34,6 +34,10 @@ public class Customer
     this.person = new Person(idNumber);
   }
 
+  public Customer(Person person) {
+    this.person = person;
+  }
+
   public Long getId() {
     return id;
   }

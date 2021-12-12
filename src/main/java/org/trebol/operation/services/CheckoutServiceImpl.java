@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
@@ -47,21 +45,6 @@ public class CheckoutServiceImpl
   }
 
   @Override
-  public SellPojo saveCartAsPendingTransaction(SellPojo transaction) throws BadInputException {
-    /*String hash = String.valueOf(transaction.hashCode());
-    transaction.setStatus("Pending");
-    if (transaction.getType() == null) {
-      transaction.setType("Bill");
-    }*/
-    try {
-      return salesCrudService.create(transaction);
-    } catch (EntityAlreadyExistsException exc) {
-      logger.error("Could not create a new sell", exc);
-      throw new RuntimeException("The server had a problem requesting the transaction");
-    }
-  }
-
-  @Override
   public PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException {
     PaymentRedirectionDetailsPojo response = paymentIntegrationService.requestNewPaymentPageDetails(transaction);
     try {
@@ -69,12 +52,13 @@ public class CheckoutServiceImpl
       return response;
     } catch (NotFoundException exc) {
       logger.error("A sell that was just created could not be found", exc);
-      throw new RuntimeException("The server had a problem requesting the transaction");
+      throw new IllegalStateException("The server had a problem requesting the transaction");
     }
   }
 
   @Override
-  public URI confirmTransaction(String transactionToken, boolean wasAborted) throws NotFoundException, PaymentServiceException {
+  public URI confirmTransaction(String transactionToken, boolean wasAborted)
+      throws NotFoundException, PaymentServiceException {
     try {
       if (wasAborted) {
         SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
@@ -87,15 +71,8 @@ public class CheckoutServiceImpl
       return resultPageUrl.toURI();
     } catch (MalformedURLException | URISyntaxException ex) {
       logger.error("Malformed final URL for payment method; make sure this property is correctly configured.", ex);
-      throw new RuntimeException("Transaction was confirmed, but server had an unexpected malfunction");
+      throw new IllegalStateException("Transaction was confirmed, but server had an unexpected malfunction");
     }
-  }
-
-  @Override
-  public SellPojo getResultingTransaction(String transactionToken) throws NotFoundException {
-    Map<String, String> tokenMatcher = Maps.of("token", transactionToken).build();
-    Predicate withMatchingToken = salesPredicateService.parseMap(tokenMatcher);
-    return salesCrudService.readOne(withMatchingToken);
   }
 
   /**
@@ -104,22 +81,16 @@ public class CheckoutServiceImpl
    * @throws NotFoundException If no transaction has a matching token.
    * @throws PaymentServiceException As raised at integration level.
    */
-  private void processSellStatus(
-    String transactionToken
-  ) throws NotFoundException, PaymentServiceException {
-    logger.trace("Looking up transaction with token={}...", transactionToken);
+  private void processSellStatus(String transactionToken)
+      throws NotFoundException, PaymentServiceException {
     SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
     int statusCode = paymentIntegrationService.requestPaymentResult(transactionToken);
     Long sellId = sellByToken.getBuyOrder();
-    logger.debug("Transaction found; updating sell status for id={}...", sellId);
     if (statusCode != 0) {
-      logger.trace("Status code for transaction={}, means 'failed'", statusCode);
       sellStepperService.setSellStatusToPaymentFailed(sellId);
     } else {
-      logger.trace("Status code for transaction={}, means 'success'", statusCode);
       sellStepperService.setSellStatusToPaidUnconfirmed(sellId);
     }
-    logger.trace("Updating sell status: Done");
   }
 
   private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws NotFoundException {

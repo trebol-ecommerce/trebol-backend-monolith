@@ -14,7 +14,9 @@ import org.trebol.pojo.ProductCategoryPojo;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.trebol.testhelpers.ProductCategoriesTestHelper.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductCategoriesJpaCrudServiceTest {
@@ -30,22 +32,18 @@ public class ProductCategoriesJpaCrudServiceTest {
 
   @Test
   public void finds_by_code() throws BadInputException {
-    Long categoryId = 1L;
-    String categoryCode = "test-one";
-    String categoryName = "test-one.jpg";
-    ProductCategory parentEntity = null;
-    ProductCategoryPojo example = new ProductCategoryPojo(categoryCode);
-    ProductCategory persistedEntity = new ProductCategory(categoryId, categoryCode, categoryName, parentEntity);
-    when(categoriesRepositoryMock.findByCode(categoryCode)).thenReturn(Optional.of(persistedEntity));
+    resetProductCategories();
+    when(categoriesRepositoryMock.findByCode(
+        productCategoryPojoForFetch().getCode())).thenReturn(Optional.of(productCategoryEntityAfterCreation()));
     ProductCategoriesJpaCrudServiceImpl service = instantiate();
 
-    Optional<ProductCategory> match = service.getExisting(example);
+    Optional<ProductCategory> match = service.getExisting(productCategoryPojoForFetch());
 
     assertTrue(match.isPresent());
-    assertEquals(match.get().getId(), categoryId);
-    assertEquals(match.get().getCode(), categoryCode);
-    assertEquals(match.get().getName(), categoryName);
-    assertEquals(match.get().getParent(), parentEntity);
+    verify(categoriesRepositoryMock).findByCode(productCategoryPojoForFetch().getCode());
+    assertEquals(match.get().getId(), productCategoryEntityAfterCreation().getId());
+    assertEquals(match.get().getCode(), productCategoryEntityAfterCreation().getCode());
+    assertEquals(match.get().getName(), productCategoryEntityAfterCreation().getName());
   }
 
   private ProductCategoriesJpaCrudServiceImpl instantiate() {
