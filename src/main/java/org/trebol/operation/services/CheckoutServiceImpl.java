@@ -57,7 +57,8 @@ public class CheckoutServiceImpl
   }
 
   @Override
-  public URI confirmTransaction(String transactionToken, boolean wasAborted) throws NotFoundException, PaymentServiceException {
+  public URI confirmTransaction(String transactionToken, boolean wasAborted)
+      throws NotFoundException, PaymentServiceException {
     try {
       if (wasAborted) {
         SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
@@ -80,22 +81,16 @@ public class CheckoutServiceImpl
    * @throws NotFoundException If no transaction has a matching token.
    * @throws PaymentServiceException As raised at integration level.
    */
-  private void processSellStatus(
-    String transactionToken
-  ) throws NotFoundException, PaymentServiceException {
-    logger.trace("Looking up transaction with token={}...", transactionToken);
+  private void processSellStatus(String transactionToken)
+      throws NotFoundException, PaymentServiceException {
     SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
     int statusCode = paymentIntegrationService.requestPaymentResult(transactionToken);
     Long sellId = sellByToken.getBuyOrder();
-    logger.debug("Transaction found; updating sell status for id={}...", sellId);
     if (statusCode != 0) {
-      logger.trace("Status code for transaction={}, means 'failed'", statusCode);
       sellStepperService.setSellStatusToPaymentFailed(sellId);
     } else {
-      logger.trace("Status code for transaction={}, means 'success'", statusCode);
       sellStepperService.setSellStatusToPaidUnconfirmed(sellId);
     }
-    logger.trace("Updating sell status: Done");
   }
 
   private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws NotFoundException {
