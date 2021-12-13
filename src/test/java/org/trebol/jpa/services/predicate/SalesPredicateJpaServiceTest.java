@@ -7,7 +7,10 @@ import org.junit.Test;
 import org.trebol.jpa.services.predicates.SalesPredicateJpaServiceImpl;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,27 +20,14 @@ public class SalesPredicateJpaServiceTest {
   public void parses_map() {
     Predicate emptyPredicate = new BooleanBuilder();
     SalesPredicateJpaServiceImpl service = instantiate();
-    Predicate whereIdIs = service.parseMap(Maps.of("id", "1").build());
-    Predicate whereBuyOrderIs = service.parseMap(Maps.of("buyOrder", "1").build());
-    Predicate whereDateIs = service.parseMap(Maps.of("date", Instant.now().toString()).build());
-    Predicate whereStatusNameIs = service.parseMap(Maps.of("statusName", "test").build());
-    Predicate whereTokenIs = service.parseMap(Maps.of("token", "test").build());
-
-    assertNotNull(whereIdIs);
-    assertNotNull(whereBuyOrderIs);
-    assertNotNull(whereDateIs);
-    assertNotNull(whereStatusNameIs);
-    assertNotNull(whereTokenIs);
-    assertNotEquals(whereIdIs, emptyPredicate);
-    assertNotEquals(whereBuyOrderIs, emptyPredicate);
-    assertNotEquals(whereDateIs, emptyPredicate);
-    assertNotEquals(whereStatusNameIs, emptyPredicate);
-    assertNotEquals(whereTokenIs, emptyPredicate);
-
-    assertEquals(whereIdIs, whereBuyOrderIs);
-    assertNotEquals(whereIdIs, whereDateIs);
-    assertNotEquals(whereIdIs, whereStatusNameIs);
-    assertNotEquals(whereIdIs, whereTokenIs);
+    List<Predicate> predicates = List.of(emptyPredicate,
+                                         service.parseMap(Maps.of("id", "1").build()),
+                                         service.parseMap(Maps.of("buyOrder", "1").build()), // same as id
+                                         service.parseMap(Maps.of("date", Instant.now().toString()).build()),
+                                         service.parseMap(Maps.of("statusName", "test").build()),
+                                         service.parseMap(Maps.of("token", "test").build()));
+    Set<Predicate> distinctPredicates = new HashSet<>(predicates);
+    assertEquals(predicates.size(), distinctPredicates.size() + 1);
   }
 
   @Test

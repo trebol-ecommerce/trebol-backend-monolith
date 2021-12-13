@@ -4,44 +4,31 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
 import org.junit.Test;
-import org.trebol.jpa.services.predicates.SalesPredicateJpaServiceImpl;
+import org.trebol.jpa.services.predicates.UsersJpaPredicateServiceImpl;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UsersPredicateJpaServiceTest {
 
   @Test
   public void parses_map() {
     Predicate emptyPredicate = new BooleanBuilder();
-    SalesPredicateJpaServiceImpl service = instantiate();
-    Predicate whereIdIs = service.parseMap(Maps.of("id", "1").build());
-    Predicate whereNameIs = service.parseMap(Maps.of("name", "test").build());
-    Predicate whereEmailIs = service.parseMap(Maps.of("email", "test").build());
-    Predicate whereNameIsLike = service.parseMap(Maps.of("nameLike", "name portion").build());
-    Predicate whereEmailIsLike = service.parseMap(Maps.of("emailLike", "email portion").build());
-
-    assertNotNull(whereIdIs);
-    assertNotNull(whereNameIs);
-    assertNotNull(whereEmailIs);
-    assertNotNull(whereNameIsLike);
-    assertNotNull(whereEmailIsLike);
-    assertNotEquals(whereIdIs, emptyPredicate);
-    assertNotEquals(whereNameIs, emptyPredicate);
-    assertNotEquals(whereEmailIs, emptyPredicate);
-    assertNotEquals(whereNameIsLike, emptyPredicate);
-    assertNotEquals(whereEmailIsLike, emptyPredicate);
-
-    assertNotEquals(whereIdIs, whereNameIs);
-    assertNotEquals(whereIdIs, whereEmailIs);
-    assertNotEquals(whereIdIs, whereNameIsLike);
-    assertNotEquals(whereIdIs, whereEmailIsLike);
-    assertNotEquals(whereNameIs, whereEmailIs);
-    assertNotEquals(whereNameIs, whereNameIsLike);
-    assertNotEquals(whereEmailIs, whereEmailIsLike);
+    UsersJpaPredicateServiceImpl service = instantiate();
+    List<Predicate> predicates = List.of(emptyPredicate,
+                                         service.parseMap(Maps.of("id", "1").build()),
+                                         service.parseMap(Maps.of("name", "test").build()),
+                                         service.parseMap(Maps.of("email", "test").build()),
+                                         service.parseMap(Maps.of("nameLike", "name portion").build()),
+                                         service.parseMap(Maps.of("emailLike", "email portion").build()));
+    Set<Predicate> distinctPredicates = new HashSet<>(predicates);
+    assertEquals(predicates.size(), distinctPredicates.size());
   }
 
-  private SalesPredicateJpaServiceImpl instantiate() {
-    return new SalesPredicateJpaServiceImpl();
+  private UsersJpaPredicateServiceImpl instantiate() {
+    return new UsersJpaPredicateServiceImpl();
   }
 }
