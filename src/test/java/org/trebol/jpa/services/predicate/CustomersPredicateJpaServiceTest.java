@@ -30,8 +30,8 @@ public class CustomersPredicateJpaServiceTest {
                                          service.parseMap(Maps.of("lastNameLike", "last name portion").build()),
                                          service.parseMap(Maps.of("idNumberLike", "id portion").build()),
                                          service.parseMap(Maps.of("emailLike", "email portion").build()));
-    Set<Predicate> predicateSet = new HashSet<>(predicates);
-    assertEquals(predicates.size(), predicateSet.size());
+    Set<Predicate> distinctPredicates = new HashSet<>(predicates);
+    assertEquals(predicates.size(), distinctPredicates.size());
   }
 
   private CustomersPredicateJpaServiceImpl instantiate() {
