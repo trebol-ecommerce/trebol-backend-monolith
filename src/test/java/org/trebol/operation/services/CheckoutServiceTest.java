@@ -2,7 +2,6 @@ package org.trebol.operation.services;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,8 +59,9 @@ public class CheckoutServiceTest {
 
   @Test
   public void acknowledges_successful_transaction() throws PaymentServiceException, NotFoundException {
-    Map<String, String> matcherMap = Maps.of("statusName", "Payment Started").
-                                          and("token", SELL_TRANSACTION_TOKEN).build();
+    Map<String, String> matcherMap = Map.of(
+        "statusName", "Payment Started",
+        "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
     when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(0);
@@ -80,8 +80,9 @@ public class CheckoutServiceTest {
 
   @Test
   public void acknowledges_aborted_transaction() throws PaymentServiceException, NotFoundException {
-    Map<String, String> matcherMap = Maps.of("statusName", "Payment Started").
-                                          and("token", SELL_TRANSACTION_TOKEN).build();
+    Map<String, String> matcherMap = Map.of(
+        "statusName", "Payment Started",
+        "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
     when(paymentIntegrationService.getPaymentResultPageUrl()).thenReturn(RECEIPT_BASE_URL);
@@ -121,8 +122,9 @@ public class CheckoutServiceTest {
 
   @Test
   public void throws_exceptions_at_invalid_transactions_before_confirming() throws PaymentServiceException, NotFoundException {
-    Map<String, String> matcherMap = Maps.of("statusName", "Payment Started").
-        and("token", SELL_TRANSACTION_TOKEN).build();
+    Map<String, String> matcherMap = Map.of(
+        "statusName", "Payment Started",
+        "token", SELL_TRANSACTION_TOKEN);
     String exceptionMessage = "No match";
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenThrow(new NotFoundException(exceptionMessage));

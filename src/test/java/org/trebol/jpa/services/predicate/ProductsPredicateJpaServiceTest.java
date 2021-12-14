@@ -2,12 +2,12 @@ package org.trebol.jpa.services.predicate;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import io.jsonwebtoken.lang.Maps;
 import org.junit.Test;
 import org.trebol.jpa.services.predicates.ProductsPredicateJpaServiceImpl;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,13 +19,13 @@ public class ProductsPredicateJpaServiceTest {
     Predicate emptyPredicate = new BooleanBuilder();
     ProductsPredicateJpaServiceImpl service = instantiate();
     List<Predicate> predicates = List.of(emptyPredicate,
-                                         service.parseMap(Maps.of("id", "1").build()),
-                                         service.parseMap(Maps.of("barcode", "barcode test").build()),
-                                         service.parseMap(Maps.of("name", "name test").build()),
-                                         service.parseMap(Maps.of("barcodeLike", "barcode portion").build()),
-                                         service.parseMap(Maps.of("nameLike", "name portion").build()),
-                                         service.parseMap(Maps.of("productCategory", "category name").build()),
-                                         service.parseMap(Maps.of("productCategoryLike", "category name portion").build()));
+                                         service.parseMap(Map.of("id", "1")),
+                                         service.parseMap(Map.of("barcode", "barcode test")),
+                                         service.parseMap(Map.of("name", "name test")),
+                                         service.parseMap(Map.of("barcodeLike", "barcode portion")),
+                                         service.parseMap(Map.of("nameLike", "name portion")),
+                                         service.parseMap(Map.of("productCategory", "category name")),
+                                         service.parseMap(Map.of("productCategoryLike", "category name portion")));
     Set<Predicate> distinctPredicates = new HashSet<>(predicates);
     assertEquals(predicates.size(), distinctPredicates.size());
   }

@@ -175,9 +175,10 @@ public class GenericJpaCrudServiceTest {
     try {
       genericPojo = service.readOne(filters);
     } catch (NotFoundException ex) {
-      assertNull(genericPojo);
       verify(genericRepositoryMock).findOne(filters);
     }
+
+    assertNull(genericPojo);
   }
 
   private GenericCrudJpaService<GenericPojo, GenericEntity> instantiate_without_existing_entity() {
