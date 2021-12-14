@@ -25,11 +25,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class GenericJpaCrudServiceTest {
 
-  @Mock
-  IJpaRepository<GenericEntity> genericRepositoryMock;
+  @Mock IJpaRepository<GenericEntity> genericRepositoryMock;
 
-  @Mock
-  ITwoWayConverterJpaService<GenericPojo, GenericEntity> genericConverterMock;
+  @Mock ITwoWayConverterJpaService<GenericPojo, GenericEntity> genericConverterMock;
 
   private final GenericPojo newPojo = new GenericPojo(null, "test");
   private final GenericEntity newEntity = new GenericEntity(null, "test");
@@ -72,7 +70,7 @@ public class GenericJpaCrudServiceTest {
     when(genericRepositoryMock.findAll(simplePageRequest)).thenReturn(new PageImpl<>(emptyEntityList));
 
     GenericCrudJpaService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
-    DataPagePojo<GenericPojo> result = service.readMany(10, 0, null);
+    DataPagePojo<GenericPojo> result = service.readMany(0, 10, null, null);
 
     assertNotNull(result);
     assertEquals(expectedResult, result);
@@ -89,7 +87,7 @@ public class GenericJpaCrudServiceTest {
     when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
     GenericCrudJpaService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
 
-    DataPagePojo<GenericPojo> result = service.readMany(10, 0, filters);
+    DataPagePojo<GenericPojo> result = service.readMany(0, 10, null, filters);
 
     assertEquals(expectedResult, result);
     verify(genericRepositoryMock).count(filters);

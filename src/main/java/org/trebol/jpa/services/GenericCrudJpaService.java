@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
@@ -71,11 +73,17 @@ public abstract class GenericCrudJpaService<P, E>
    * Read entities, convert them to pojos and return the collection.
    */
   @Override
-  public DataPagePojo<P> readMany(int pageSize, int pageIndex, Predicate filters) {
+  public DataPagePojo<P> readMany(int pageIndex, int pageSize, @Nullable Sort order, @Nullable Predicate filters) {
     // TODO figure out sort order parameter
-    Pageable paged = PageRequest.of(pageIndex, pageSize);
-    Page<E> iterable = this.getAllEntities(paged, filters);
-    long totalCount = repository.count(filters);
+    Pageable pagination = ((order == null) ?
+        PageRequest.of(pageIndex, pageSize) :
+        PageRequest.of(pageIndex, pageSize, order));
+    long totalCount = ((filters == null) ?
+        repository.count() :
+        repository.count(filters));
+    Page<E> iterable = ((filters == null) ?
+        repository.findAll(pagination) :
+        repository.findAll(filters, pagination));
 
     List<P> pojoList = new ArrayList<>();
     for (E item : iterable) {
@@ -141,22 +149,6 @@ public abstract class GenericCrudJpaService<P, E>
     } else {
       E output = repository.saveAndFlush(updatedEntity);
       return converter.convertToPojo(output);
-    }
-  }
-
-  /**
-   * Query all entities for the type class. Override this method if you need
-   * custom queries. Remember to declare the correct repository interface first.
-   *
-   * @param page Paging parameters (size/index).
-   * @param filters Object used for filtering.
-   * @return A page of entities.
-   */
-  protected Page<E> getAllEntities(Pageable page, Predicate filters) {
-    if (filters == null) {
-      return repository.findAll(page);
-    } else {
-      return repository.findAll(filters, page);
     }
   }
 }

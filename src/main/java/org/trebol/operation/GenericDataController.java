@@ -42,17 +42,17 @@ public abstract class GenericDataController<P, E>
    * @return A paged collection of Pojos.
    */
   @Override
-  public DataPagePojo<P> readMany(Integer requestPageSize, Integer requestPageIndex, @NotNull Map<String, String> requestParams) {
+  public DataPagePojo<P> readMany(Integer requestPageIndex, Integer requestPageSize, @NotNull Map<String, String> requestParams) {
 
-    int pageSize = this.determineRequestedPageSize(requestPageSize, requestParams);
     int pageIndex = this.determineRequestedPageIndex(requestPageIndex, requestParams);
+    int pageSize = this.determineRequestedPageSize(requestPageSize, requestParams);
 
     Predicate filters = null;
     if (requestParams != null && !requestParams.isEmpty()) {
       filters = predicateService.parseMap(requestParams);
     }
 
-    return crudService.readMany(pageSize, pageIndex, filters);
+    return crudService.readMany(pageIndex, pageSize, null, filters);
   }
 
   private int determineRequestedPageIndex(Integer requestPageIndex, Map<String, String> allRequestParams)

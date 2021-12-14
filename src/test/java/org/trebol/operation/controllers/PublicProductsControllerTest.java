@@ -25,17 +25,15 @@ public class PublicProductsControllerTest {
 
   @Mock
   GenericCrudJpaService<ProductPojo, Product> productCrudService;
-
   @Mock
   IPredicateJpaService<Product> predicateService;
-
   @Mock
   OperationProperties operationProperties;
 
   @Test
   public void return_dataPage() {
-    int pageSize = 10;
     int pageIndex = 0;
+    int pageSize = 10;
     Map<String, String> queryParamsMap = Map.of(
         "pageIndex", String.valueOf(pageIndex),
         "pageSize", String.valueOf(pageSize));
@@ -43,7 +41,7 @@ public class PublicProductsControllerTest {
 
     when(predicateService.parseMap(any())).
         thenReturn(filters);
-    when(productCrudService.readMany(eq(pageSize), eq(pageIndex), any())).
+    when(productCrudService.readMany(eq(pageIndex), eq(pageSize), null, filters)).
         thenReturn(new DataPagePojo<>(pageIndex, pageSize));
 
     given().
@@ -60,7 +58,7 @@ public class PublicProductsControllerTest {
         body("pageSize", equalTo(pageSize));
 
     verify(predicateService).parseMap(queryParamsMap);
-    verify(productCrudService).readMany(pageSize, pageIndex, filters);
+    verify(productCrudService).readMany(pageIndex, pageSize, null, filters);
   }
 
 }
