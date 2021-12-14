@@ -1,26 +1,18 @@
 package org.trebol.operation.controllers;
 
-import java.util.Collection;
-
 import io.jsonwebtoken.Claims;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import org.trebol.pojo.AuthorizedAccessPojo;
-import org.trebol.security.IAuthorizedApiService;
 import org.trebol.security.IAuthorizationHeaderParserService;
+import org.trebol.security.IAuthorizedApiService;
+
+import java.util.Collection;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -31,14 +23,15 @@ public class AccessController {
 
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final UserDetailsService userDetailsService;
-  private final IAuthorizedApiService routeService;
+  private final IAuthorizedApiService authorizedApiService;
 
   @Autowired
   public AccessController(IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-    UserDetailsService userDetailsService, IAuthorizedApiService routeService) {
+                          UserDetailsService userDetailsService,
+                          IAuthorizedApiService authorizedApiService) {
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.userDetailsService = userDetailsService;
-    this.routeService = routeService;
+    this.authorizedApiService = authorizedApiService;
   }
 
   private UserDetails getUserDetails(HttpHeaders requestHeaders)
@@ -61,7 +54,7 @@ public class AccessController {
     if (userDetails == null) {
       return null;
     } else {
-      Collection<String> routes = routeService.getAuthorizedApiRoutes(userDetails);
+      Collection<String> routes = authorizedApiService.getAuthorizedApiRoutes(userDetails);
       AuthorizedAccessPojo target = new AuthorizedAccessPojo();
       target.setRoutes(routes);
       return target;
@@ -77,7 +70,7 @@ public class AccessController {
     if (userDetails == null) {
       return null;
     } else {
-      Collection<String> permissions = routeService.getAuthorizedApiRouteAccess(userDetails, apiRoute);
+      Collection<String> permissions = authorizedApiService.getAuthorizedApiRouteAccess(userDetails, apiRoute);
       AuthorizedAccessPojo target = new AuthorizedAccessPojo();
       target.setPermissions(permissions);
       return target;
