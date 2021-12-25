@@ -86,7 +86,7 @@ public class ProductsConverterJpaServiceImpl
     }
 
     String description = source.getDescription();
-    if (description != null && !description.isBlank() && !target.getDescription().equals(description)) {
+    if (description != null) {
       target.setDescription(description);
     }
 
