@@ -4,6 +4,7 @@ import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.config.OperationProperties;
@@ -12,6 +13,7 @@ import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.ISortJpaService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.SalespersonPojo;
@@ -30,11 +32,15 @@ import java.util.Map;
 public class DataSalespeopleController
   extends GenericDataCrudController<SalespersonPojo, Salesperson> {
 
+  private final ISortJpaService<Salesperson> sortService;
+
   @Autowired
   public DataSalespeopleController(OperationProperties globals,
                                    GenericCrudJpaService<SalespersonPojo, Salesperson> crudService,
-                                   IPredicateJpaService<Salesperson> predicateService) {
+                                   IPredicateJpaService<Salesperson> predicateService,
+                                   ISortJpaService<Salesperson> sortService) {
     super(globals, crudService, predicateService);
+    this.sortService = sortService;
   }
 
   @GetMapping({"", "/"})
@@ -90,5 +96,10 @@ public class DataSalespeopleController
   private Predicate whereIdNumberIs(String idNumber) {
     Map<String, String> idNumberMatcher = Maps.of("idnumber", idNumber).build();
     return predicateService.parseMap(idNumberMatcher);
+  }
+
+  @Override
+  protected Sort determineSortOrder(Map<String, String> requestParams) {
+    return this.sortService.parseMap(requestParams);
   }
 }

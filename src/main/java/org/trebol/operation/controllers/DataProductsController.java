@@ -4,6 +4,7 @@ import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.config.OperationProperties;
@@ -12,6 +13,7 @@ import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.ISortJpaService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
@@ -30,11 +32,15 @@ import java.util.Map;
 public class DataProductsController
   extends GenericDataCrudController<ProductPojo, Product> {
 
+  private final ISortJpaService<Product> sortService;
+
   @Autowired
   public DataProductsController(OperationProperties globals,
                                 GenericCrudJpaService<ProductPojo, Product> crudService,
-                                IPredicateJpaService<Product> predicateService) {
+                                IPredicateJpaService<Product> predicateService,
+                                ISortJpaService<Product> sortService) {
     super(globals, crudService, predicateService);
+    this.sortService = sortService;
   }
 
   @GetMapping({"", "/"})
@@ -90,5 +96,10 @@ public class DataProductsController
   private Predicate whereBarcodeIs(String barcode) {
     Map<String, String> barcodeMatcher = Maps.of("barcode", barcode).build();
     return predicateService.parseMap(barcodeMatcher);
+  }
+
+  @Override
+  protected Sort determineSortOrder(Map<String, String> requestParams) {
+    return sortService.parseMap(requestParams);
   }
 }

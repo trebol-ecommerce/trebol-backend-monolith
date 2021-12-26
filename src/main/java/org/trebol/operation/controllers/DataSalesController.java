@@ -4,6 +4,7 @@ import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.config.OperationProperties;
@@ -12,6 +13,7 @@ import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.ISortJpaService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.SellPojo;
@@ -30,11 +32,15 @@ import java.util.Map;
 public class DataSalesController
   extends GenericDataCrudController<SellPojo, Sell> {
 
+  private final ISortJpaService<Sell> sortService;
+
   @Autowired
   public DataSalesController(OperationProperties globals,
                              GenericCrudJpaService<SellPojo, Sell> crudService,
-                             IPredicateJpaService<Sell> predicateService) {
+                             IPredicateJpaService<Sell> predicateService,
+                             ISortJpaService<Sell> sortService) {
     super(globals, crudService, predicateService);
+    this.sortService = sortService;
   }
 
   @GetMapping({"", "/"})
@@ -90,5 +96,10 @@ public class DataSalesController
   private Predicate whereBuyOrderIs(Long buyOrder) {
     Map<String, String> buyOrderMatcher = Maps.of("buyOrder", String.valueOf(buyOrder)).build();
     return predicateService.parseMap(buyOrderMatcher);
+  }
+
+  @Override
+  protected Sort determineSortOrder(Map<String, String> requestParams) {
+    return sortService.parseMap(requestParams);
   }
 }
