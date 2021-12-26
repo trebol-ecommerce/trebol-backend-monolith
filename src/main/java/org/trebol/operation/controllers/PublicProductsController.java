@@ -36,7 +36,7 @@ public class PublicProductsController {
     // TODO copied from GenericDataController, must refactor into a separate service
     int requestPageSize = this.determineRequestedPageSize(allRequestParams);
     Predicate filters = predicateService.parseMap(allRequestParams);
-    return crudService.readMany(requestPageSize, 0, filters);
+    return crudService.readMany(0, requestPageSize, null, filters);
   }
 
   @GetMapping({"/{barcode}", "/{barcode}/"})

@@ -2,6 +2,7 @@ package org.trebol.jpa.services;
 
 import com.querydsl.core.types.Predicate;
 import javassist.NotFoundException;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
@@ -38,7 +39,7 @@ public interface ICrudJpaService<P, I> {
    *
    * @return The requested collection of items. May be zero-sized.
    */
-  DataPagePojo<P> readMany(int pageSize, int pageIndex, @Nullable Predicate filters);
+  DataPagePojo<P> readMany(int pageIndex, int pageSize, @Nullable Sort order, @Nullable Predicate filters);
 
   /**
    * Retrieves the first item that matches a certain filter.

@@ -38,6 +38,19 @@ public class PeoplePredicateJpaServiceImpl
             return getBasePath().id.eq(Long.valueOf(stringValue));
           case "idNumber":
             return getBasePath().idNumber.eq(stringValue);
+          case "name":
+            predicate.and(getBasePath().firstName.eq(stringValue)
+                    .or(getBasePath().lastName.eq(stringValue)));
+            break;
+          case "firstName":
+            predicate.and(getBasePath().firstName.eq(stringValue));
+            break;
+          case "lastName":
+            predicate.and(getBasePath().lastName.eq(stringValue));
+            break;
+          case "email":
+            predicate.and(getBasePath().email.eq(stringValue));
+            break;
           case "nameLike":
             predicate.and(getBasePath().firstName.likeIgnoreCase("%" + stringValue + "%")
                     .or(getBasePath().lastName.likeIgnoreCase("%" + stringValue + "%")));

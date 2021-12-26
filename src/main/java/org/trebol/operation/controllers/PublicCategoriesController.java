@@ -37,7 +37,7 @@ public class PublicCategoriesController {
   @Deprecated(forRemoval = true)
   @GetMapping({"", "/"})
   public Collection<ProductCategoryPojo> getRootcategories() {
-    DataPagePojo<ProductCategoryPojo> page = service.readMany(Integer.MAX_VALUE, 0, whereNoParentExists());
+    DataPagePojo<ProductCategoryPojo> page = service.readMany(0, Integer.MAX_VALUE, null, whereNoParentExists());
     return page.getItems();
   }
 
@@ -48,7 +48,7 @@ public class PublicCategoriesController {
   @Deprecated(forRemoval = true)
   @GetMapping({"/{code}", "/{code}/"})
   public Collection<ProductCategoryPojo> getCategories(@PathVariable String code) {
-    DataPagePojo<ProductCategoryPojo> page = service.readMany(Integer.MAX_VALUE, 0, whereParentCodeIs(code));
+    DataPagePojo<ProductCategoryPojo> page = service.readMany(0, Integer.MAX_VALUE, null, whereParentCodeIs(code));
     return page.getItems();
   }
 
