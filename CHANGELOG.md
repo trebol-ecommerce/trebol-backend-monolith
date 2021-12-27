@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.1.1] - 2021-12-08
+## [v1.1.2] - 2021-12-27
+
+### Added
+- Support for sorting data through query parameters
+
+### Fixed
+- Unable to update products due to possible null pointer in description
+- CORS mappings for `/access` API
+
+### Tests
+- Added unit tests for predicate services (responsible for parsing query params to filtering conditions)
+- Improved quality of some unit tests
+
+## [v1.1.1.1] - 2021-12-08
 
 ### Fixed
 - Issues during checkout:
@@ -12,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - JPA transactions failing between service calls
   - Data missing in receipt after checkout is complete
 
-## [1.1.1] - 2021-12-06
+## [v1.1.1] - 2021-12-06
 
 ### Added
 - Using [SonarCloud](https://sonarcloud.io) to automate project building and code analyzing
@@ -56,7 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Entity class `Session`, not used in the codebase
 
-## [1.0.4] - 2021-10-21
+## [v1.0.4] - 2021-10-21
 
 ### Changed
 - Clean up entities and remove redundant annotation values - Thanks to @trangntt-016
@@ -68,7 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Restrict users from deleting their own account - Thanks to @trangntt-016
 
 
-## [1.0.3] - 2021-09-23
+## [v1.0.3] - 2021-09-23
 
 ### Changed
 - `/public/receipt/{id}` updated with `id` parameter now called `token` and referencing sell payment token
@@ -82,6 +95,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ReceiptPojo` now uses `Instant` to represent dates, just like `Sell` and `SellPojo`
 
 
-## [1.0.0] - 2021-09-20
+## [v1.0.0] - 2021-09-20
 
 First public version.
