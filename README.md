@@ -13,26 +13,32 @@ This application powers a complete implemented backend for the eCommerce project
 ## Features:
 
 * Exposes a [REST API designed accordingly to the OpenAPI 3 standard](https://github.com/trebol-ecommerce/trebol-api)
-* Fully annotated JPA classes; these include constraints and indexes; you can generate a sane default database schema out-of-the-box
-  * Bundles drivers for H2 and MariaDB, but can virtually connect to any JDBC-compatible database with the correct driver
-  * [An outlook to the DB schema is available here](https://github.com/trebol-ecommerce/spring-boot-backend/blob/main/schema.png)
-* Stateless session authentication/autorization with JWT
-  * Paired with `Users/Roles/Permissions` database tables. See `/src/main/resources/data.sql`
-* Currently only allows payment using [Webpay Plus by Transbank](https://transbankdevelopers.cl/producto/webpay) (chilean service, accepts credit and debit cards)
-  * On due time, I expect to integrate more popular payment services such as Paypal and Stripe
-* Supports registering new user accounts and requesting checkout-only temporary guest sessions
+  * Supports all CRUD operations where applicable
+  * Supports pagination and sorting of data
+  * Supports filtering through query params
+  * Supports login, registration and guest accounts (for requesting checkout)
+* Uses Spring Data JPA
+  * Fully annotated JPA classes; these include constraints and indexes where applicable
+    * Bundles drivers for H2 and MariaDB, but can virtually connect to any JDBC-compatible database with the correct driver
+    * [An outlook to the DB schema is available here](https://github.com/trebol-ecommerce/spring-boot-backend/blob/main/schema.png)
+* Uses Spring Security 
+  * Stateless session authentication/autorization with JWT
+    * Paired with `users`, `roles`, and `permissions` database tables (see `/src/main/resources/data.sql` for an example setup with 4 roles and users)
+    * Do note that Authorities required in some controllers are hard-coded. These must match entries in the `permissions` table
   * Passwords are encoded using BCrypt
+* Currently only allows checking out with [Webpay Plus by Transbank](https://transbankdevelopers.cl/producto/webpay) (chilean service, accepts credit and debit cards)
+  * On due time, it may be possible to integrate more popular payment services such as Paypal and Stripe
 * Human-friendly sample properties files for configuring mission-critical parameters such as:
   * CORS mappings
   * JWT secret key and duration
   * BCrypt algorithm strength
   * Webpay integration endpoints
-* And all other Spring Boot/Data JPA/Security goodness!
+* And all other Spring Boot goodness!
 
 
 ## Status
 
-In active development. Support for [API v1.1.1](https://github.com/trebol-ecommerce/api/releases/tag/v1.1.1) is now complete!
+Support for [API v1.1.2](https://github.com/trebol-ecommerce/api/releases/tag/v1.1.2) is now complete!
 
 I keep sort-of-a roadmap in [this project](https://github.com/trebol-ecommerce/spring-boot-backend/projects/1)
 

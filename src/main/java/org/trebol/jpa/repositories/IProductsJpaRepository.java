@@ -33,7 +33,7 @@ public interface IProductsJpaRepository
 
   @Modifying
   @Transactional
-  @Query("UPDATE Product p SET p.productCategory = :categoryId WHERE p.id = :id")
+  @Query("UPDATE Product p SET p.productCategory.id = :categoryId WHERE p.id = :id")
   void setProductCategoryById(@Param("id") Long productId, @Param("categoryId") Long categoryId);
 
   @Modifying
