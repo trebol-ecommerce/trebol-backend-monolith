@@ -1,6 +1,5 @@
 package org.trebol.operation.controllers;
 
-import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -63,12 +62,5 @@ public class DataProductCategoriesController
   @PreAuthorize("hasAuthority('product_categories:delete')")
   public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
     super.delete(requestParams);
-  }
-
-  @Deprecated(forRemoval = true)
-  @GetMapping({"/{parentId}", "/{parentId}/"})
-  public DataPagePojo<ProductCategoryPojo> readChildren(@PathVariable Long parentId) {
-    Map<String, String> parentIdMatcher = Maps.of("parentId", String.valueOf(parentId)).build();
-    return super.readMany(null, null, parentIdMatcher);
   }
 }
