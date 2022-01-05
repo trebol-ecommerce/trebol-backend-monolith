@@ -42,7 +42,6 @@ public class DataProductsController
   }
 
   @GetMapping({"", "/"})
-  @PreAuthorize("hasAuthority('products:read')")
   public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
