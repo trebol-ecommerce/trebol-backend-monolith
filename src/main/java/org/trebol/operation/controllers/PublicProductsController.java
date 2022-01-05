@@ -34,7 +34,6 @@ public class PublicProductsController {
   @Deprecated(forRemoval = true)
   @GetMapping({"", "/"})
   public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    // TODO copied from GenericDataController, must refactor into a separate service
     int requestPageSize = this.determineRequestedPageSize(allRequestParams);
     Predicate filters = predicateService.parseMap(allRequestParams);
     return crudService.readMany(0, requestPageSize, null, filters);
