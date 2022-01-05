@@ -3,7 +3,6 @@ package org.trebol.jpa.entities;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -20,11 +19,11 @@ public class ProductList
   @Size(min = 2, max = 50)
   @Column(name = "product_list_name", nullable = false)
   private String name;
+  @Size(min = 2, max = 25)
+  @Column(name = "product_list_code", nullable = false)
+  private String code;
   @Column(name = "product_list_disabled", nullable = false)
   private boolean disabled;
-  @JoinColumn(name = "product_list_id")
-  @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-  private Collection<ProductListItem> items;
 
   public ProductList() {
     this.disabled = true;
@@ -33,8 +32,8 @@ public class ProductList
   public ProductList(ProductList source) {
     this.id = source.id;
     this.name = source.name;
+    this.code = source.code;
     this.disabled = source.disabled;
-    this.items = source.items;
   }
 
   public Long getId() {
@@ -53,6 +52,14 @@ public class ProductList
     this.name = name;
   }
 
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
+
   public boolean isDisabled() {
     return disabled;
   }
@@ -61,36 +68,29 @@ public class ProductList
     this.disabled = disabled;
   }
 
-  public Collection<ProductListItem> getItems() {
-    return items;
-  }
-
-  public void setItems(Collection<ProductListItem> items) {
-    this.items = items;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ProductList that = (ProductList) o;
-    return Objects.equals(id, that.id) &&
-        name.equals(that.name) &&
-        disabled == that.disabled &&
-        items.equals(that.items);
+    return disabled == that.disabled &&
+        Objects.equals(id, that.id) &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(code, that.code);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, disabled, items);
+    return Objects.hash(id, name, code, disabled);
   }
 
   @Override
   public String toString() {
-    return "ProductList{id=" + id +
+    return "ProductList{" +
+        "id=" + id +
         ", name='" + name + '\'' +
+        ", code='" + code + '\'' +
         ", disabled=" + disabled +
-        ", items=" + items +
         '}';
   }
 }
