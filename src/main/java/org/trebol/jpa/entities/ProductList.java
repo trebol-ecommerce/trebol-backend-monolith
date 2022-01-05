@@ -7,7 +7,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "product_lists",
-  uniqueConstraints = @UniqueConstraint(columnNames = {"product_list_name"}))
+  uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"product_list_name"}),
+    @UniqueConstraint(columnNames = {"product_list_code"}),
+  })
 public class ProductList
   implements Serializable {
 
