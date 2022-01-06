@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- CRUD operations support for `Product List`
+
 ### Changed
 - Updated security rule for `GET /data/products` to: do not require any authority
 
