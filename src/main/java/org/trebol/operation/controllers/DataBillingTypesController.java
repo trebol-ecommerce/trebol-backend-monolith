@@ -34,6 +34,6 @@ public class DataBillingTypesController
 
   @GetMapping({"", "/"})
   public DataPagePojo<BillingTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
+    return super.readMany(allRequestParams);
   }
 }

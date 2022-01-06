@@ -37,6 +37,6 @@ public class DataSellStatusesController
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('sell_statuses:read')")
   public DataPagePojo<SellStatusPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
+    return super.readMany(allRequestParams);
   }
 }

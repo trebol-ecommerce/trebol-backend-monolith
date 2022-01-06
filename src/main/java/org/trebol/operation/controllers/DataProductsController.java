@@ -42,7 +42,7 @@ public class DataProductsController
 
   @GetMapping({"", "/"})
   public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
+    return super.readMany(allRequestParams);
   }
 
   @Override

@@ -38,7 +38,7 @@ public class DataUserRolesController
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:read')")
   public DataPagePojo<UserRolePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
+    return super.readMany(allRequestParams);
   }
 
   @Override

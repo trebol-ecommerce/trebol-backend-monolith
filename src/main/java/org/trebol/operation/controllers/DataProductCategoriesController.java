@@ -39,7 +39,7 @@ public class DataProductCategoriesController
     if (allRequestParams.isEmpty()) {
       allRequestParams.put("parentId", null);
     }
-    return super.readMany(null, null, allRequestParams);
+    return super.readMany(allRequestParams);
   }
 
   @Override

@@ -36,17 +36,15 @@ public abstract class GenericDataController<P, E>
    * Retrieve a page of items with a fixed size and offset index.
    * An optional Map (like query string parameters) can be provided for filtering criteria.
    *
-   * @param requestPageSize Item count in page. If left null, its value will be overriden.
-   * @param requestPageIndex Page offset, 0-based. If left null, its value will be overriden.
    * @param requestParams May contain filtering conditions and/or page size & page index parameters.
    * @see Predicate
    * @return A paged collection of Pojos.
    */
   @Override
-  public DataPagePojo<P> readMany(Integer requestPageIndex, Integer requestPageSize, @NotNull Map<String, String> requestParams) {
+  public DataPagePojo<P> readMany(@NotNull Map<String, String> requestParams) {
 
-    int pageIndex = this.determineRequestedPageIndex(requestPageIndex, requestParams);
-    int pageSize = this.determineRequestedPageSize(requestPageSize, requestParams);
+    int pageIndex = this.determineRequestedPageIndex(requestParams);
+    int pageSize = this.determineRequestedPageSize(requestParams);
 
     Sort order = null;
     if (requestParams != null && requestParams.containsKey("sortBy")) {
@@ -75,22 +73,18 @@ public abstract class GenericDataController<P, E>
     }
   }
 
-  private int determineRequestedPageIndex(Integer requestPageIndex, Map<String, String> allRequestParams)
+  private int determineRequestedPageIndex(Map<String, String> allRequestParams)
       throws NumberFormatException {
     if (allRequestParams != null && allRequestParams.containsKey("pageIndex")) {
       return Integer.parseInt(allRequestParams.get("pageIndex"));
-    } else if (requestPageIndex != null && requestPageIndex > 0) {
-      return requestPageIndex;
     }
     return 0;
   }
 
-  private int determineRequestedPageSize(Integer requestPageSize, Map<String, String> allRequestParams)
+  private int determineRequestedPageSize(Map<String, String> allRequestParams)
       throws NumberFormatException {
     if (allRequestParams != null && allRequestParams.containsKey("pageSize")) {
       return Integer.parseInt(allRequestParams.get("pageSize"));
-    } else if (requestPageSize != null && requestPageSize > 0) {
-      return requestPageSize;
     }
     return operationProperties.getItemsPerPage();
   }
