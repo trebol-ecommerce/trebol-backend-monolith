@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Updated security rule for `GET /data/products` to: do not require any authority
+
+### Removed
+- Clean up deprecated resources
+  - `/data/customers/{idNumber}`
+  - `/data/images/{code}`
+  - `/data/product_categories/{parentCode}`
+  - `/data/products/{barcode}`
+  - `/data/sales/{buyOrder}`
+  - `/data/salespeople/{idNumber}`
+  - `/data/users/{name}`
+  - `/public/categories/{parentId}`
+
+### Deprecated
+- Paths to be superseded
+  - `/public/products`
+  - `/public/products/{barcode}`
+
 ## [v1.1.2] - 2021-12-27
 
 ### Added
