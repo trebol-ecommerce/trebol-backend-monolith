@@ -26,7 +26,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/data/products")
-@PreAuthorize("isAuthenticated()")
 public class DataProductsController
   extends GenericDataCrudController<ProductPojo, Product> {
 
