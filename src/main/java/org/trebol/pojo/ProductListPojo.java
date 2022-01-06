@@ -1,5 +1,6 @@
 package org.trebol.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotEmpty;
@@ -10,6 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @JsonInclude(NON_NULL)
 public class ProductListPojo {
+  @JsonIgnore
   private Long id;
   private String name;
   @NotEmpty
@@ -21,6 +23,13 @@ public class ProductListPojo {
 
   public ProductListPojo(String code) {
     this.code = code;
+  }
+
+  public ProductListPojo(Long id, String name, String code, long totalCount) {
+    this.id = id;
+    this.name = name;
+    this.code = code;
+    this.totalCount = totalCount;
   }
 
   public Long getId() {

@@ -39,6 +39,15 @@ public class ProductList
     this.disabled = source.disabled;
   }
 
+  public ProductList(String code) {
+    this.code = code;
+  }
+
+  public ProductList(String name, String code) {
+    this.name = name;
+    this.code = code;
+  }
+
   public Long getId() {
     return id;
   }
