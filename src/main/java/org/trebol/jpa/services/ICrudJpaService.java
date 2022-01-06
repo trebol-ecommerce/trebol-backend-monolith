@@ -35,9 +35,10 @@ public interface ICrudJpaService<P, I> {
    *
    * @param pageSize  Number of items per page.
    * @param pageIndex Page index (0-based).
+   * @param order     Sorting order specification
    * @param filters   Filtering conditions
    *
-   * @return The requested collection of items. May be zero-sized.
+   * @return The requested page of items along some metadata
    */
   DataPagePojo<P> readMany(int pageIndex, int pageSize, @Nullable Sort order, @Nullable Predicate filters);
 
