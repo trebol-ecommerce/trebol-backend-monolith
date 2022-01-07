@@ -53,37 +53,32 @@ public class DataProductListContentsController
   @GetMapping({"", "/"})
   public DataPagePojo<ProductPojo> readContents(@RequestParam Map<String, String> requestParams)
       throws BadInputException, NotFoundException {
-    String listCode = requestParams.get("listCode");
-    if (listCode == null || listCode.isBlank()) {
-      throw new BadInputException("listCode query param is required");
-    } else {
-      Optional<ProductList> match = listsRepository.findOne(QProductList.productList.code.eq(listCode));
-      if (match.isEmpty()) {
-        throw new NotFoundException(ITEM_NOT_FOUND);
-      } else {
-        int pageIndex = super.determineRequestedPageIndex(requestParams);
-        int pageSize = super.determineRequestedPageSize(requestParams);
-
-        Pageable pagination;
-        if (requestParams.containsKey("sortBy")) {
-          Sort order = super.determineSortOrder(requestParams);
-          pagination = PageRequest.of(pageIndex, pageSize, order);
-        } else {
-          pagination = PageRequest.of(pageIndex, pageSize);
-        }
-
-        Predicate predicate = listItemsPredicateService.parseMap(requestParams);
-        Page<ProductListItem> listItems = listItemsRepository.findAll(predicate, pagination);
-        List<ProductPojo> products = new ArrayList<>();
-        for (ProductListItem item : listItems) {
-          ProductPojo productPojo = itemConverterService.convertToPojo(item);
-          products.add(productPojo);
-        }
-        long totalCount = listItemsRepository.count(QProductListItem.productListItem.list.id.eq(match.get().getId()));
-
-        return new DataPagePojo<>(products, pageIndex, totalCount, pageSize);
-      }
+    Optional<ProductList> match = this.fetchProductListByCode(requestParams);
+    if (match.isEmpty()) {
+      throw new NotFoundException(ITEM_NOT_FOUND);
     }
+
+    int pageIndex = super.determineRequestedPageIndex(requestParams);
+    int pageSize = super.determineRequestedPageSize(requestParams);
+
+    Pageable pagination;
+    if (requestParams.containsKey("sortBy")) {
+      Sort order = super.determineSortOrder(requestParams);
+      pagination = PageRequest.of(pageIndex, pageSize, order);
+    } else {
+      pagination = PageRequest.of(pageIndex, pageSize);
+    }
+
+    Predicate predicate = listItemsPredicateService.parseMap(requestParams);
+    Page<ProductListItem> listItems = listItemsRepository.findAll(predicate, pagination);
+    List<ProductPojo> products = new ArrayList<>();
+    for (ProductListItem item : listItems) {
+      ProductPojo productPojo = itemConverterService.convertToPojo(item);
+      products.add(productPojo);
+    }
+    long totalCount = listItemsRepository.count(QProductListItem.productListItem.list.id.eq(match.get().getId()));
+
+    return new DataPagePojo<>(products, pageIndex, totalCount, pageSize);
   }
 
   @PostMapping({"", "/"})
@@ -91,22 +86,17 @@ public class DataProductListContentsController
   public void addToContents(@Valid @RequestBody Collection<ProductPojo> input,
                             @RequestParam Map<String, String> requestParams)
       throws BadInputException, NotFoundException {
-    String listCode = requestParams.get("listCode");
-    if (listCode == null || listCode.isBlank()) {
-      throw new BadInputException("listCode query param is required");
-    } else {
-      Optional<ProductList> listMatch = listsRepository.findOne(QProductList.productList.code.eq(listCode));
-      if (listMatch.isEmpty()) {
-        throw new NotFoundException(ITEM_NOT_FOUND);
-      } else {
-        for (ProductPojo p : input) {
-          Optional<Product> productMatch = productCrudService.getExisting(p);
-          if (productMatch.isPresent()) {
-            ProductListItem listItem = new ProductListItem(listMatch.get(), productMatch.get());
-            if (!listItemsRepository.exists(Example.of(listItem))) {
-              listItemsRepository.save(listItem);
-            }
-          }
+    Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
+    if (listMatch.isEmpty()) {
+      throw new NotFoundException(ITEM_NOT_FOUND);
+    }
+
+    for (ProductPojo p : input) {
+      Optional<Product> productMatch = productCrudService.getExisting(p);
+      if (productMatch.isPresent()) {
+        ProductListItem listItem = new ProductListItem(listMatch.get(), productMatch.get());
+        if (!listItemsRepository.exists(Example.of(listItem))) {
+          listItemsRepository.save(listItem);
         }
       }
     }
@@ -123,5 +113,13 @@ public class DataProductListContentsController
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void deleteFromContents(@RequestParam Map<String, String> requestParams) {
     throw new UnsupportedOperationException("Not implemented");
+  }
+
+  private Optional<ProductList> fetchProductListByCode(Map<String, String> requestParams) throws BadInputException {
+    String listCode = requestParams.get("listCode");
+    if (listCode == null || listCode.isBlank()) {
+      throw new BadInputException("listCode query param is required");
+    }
+    return listsRepository.findOne(QProductList.productList.code.eq(listCode));
   }
 }
