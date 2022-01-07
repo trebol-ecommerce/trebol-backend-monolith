@@ -7,21 +7,20 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 
-This application powers a complete implemented backend for the eCommerce project Trébol.
+This application powers a complete implemented backend for the eCommerce project Trébol using Spring Boot v2.3.
 
 
 ## Features:
 
 * Exposes a [REST API designed accordingly to the OpenAPI 3 standard](https://github.com/trebol-ecommerce/trebol-api)
-  * Supports all CRUD operations where applicable
-  * Supports pagination and sorting of data
-  * Supports filtering through query params
-  * Supports login, registration and guest accounts (for requesting checkout)
+  * Supports all operations as described by the document
+  * Filtering, sorting and pagination of data is implemented through query params
+  * Login, registration and guest accounts (for doing one-time checkout)
 * Uses Spring Data JPA
-  * Fully annotated JPA classes; these include constraints and indexes where applicable
+  * Annotated entity classes; including constraints and indexes where they are most needed at scale
     * Bundles drivers for H2 and MariaDB, but can virtually connect to any JDBC-compatible database with the correct driver
-    * [An outlook to the DB schema is available here](https://github.com/trebol-ecommerce/spring-boot-backend/blob/main/schema.png)
-* Uses Spring Security 
+    * [Simple DB schema diagram](https://github.com/trebol-ecommerce/spring-boot-backend/blob/main/schema.png)
+* Uses Spring Security
   * Stateless session authentication/autorization with JWT
     * Paired with `users`, `roles`, and `permissions` database tables (see `/src/main/resources/data.sql` for an example setup with 4 roles and users)
     * Do note that Authorities required in some controllers are hard-coded. These must match entries in the `permissions` table
@@ -38,9 +37,7 @@ This application powers a complete implemented backend for the eCommerce project
 
 ## Status
 
-Support for [API v1.1.2](https://github.com/trebol-ecommerce/api/releases/tag/v1.1.2) is now complete!
-
-I keep sort-of-a roadmap in [this project](https://github.com/trebol-ecommerce/spring-boot-backend/projects/1)
+Supporting [API v1.2.0](https://github.com/trebol-ecommerce/api/releases/tag/v1.2.0).
 
 
 ## Requirements
