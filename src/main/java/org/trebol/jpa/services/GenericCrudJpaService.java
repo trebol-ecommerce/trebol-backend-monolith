@@ -34,6 +34,7 @@ public abstract class GenericCrudJpaService<P, E>
   private final IJpaRepository<E> repository;
 
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
+  protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
   protected final ITwoWayConverterJpaService<P, E> converter;
   protected final Logger logger;
 
@@ -61,7 +62,7 @@ public abstract class GenericCrudJpaService<P, E>
   @Override
   public P create(P inputPojo) throws BadInputException, EntityAlreadyExistsException {
     if (this.getExisting(inputPojo).isPresent()) {
-      throw new EntityAlreadyExistsException(ITEM_NOT_FOUND);
+      throw new EntityAlreadyExistsException(ITEM_ALREADY_EXISTS);
     } else {
       E input = converter.convertToNewEntity(inputPojo);
       E output = repository.saveAndFlush(input);
@@ -74,7 +75,6 @@ public abstract class GenericCrudJpaService<P, E>
    */
   @Override
   public DataPagePojo<P> readMany(int pageIndex, int pageSize, @Nullable Sort order, @Nullable Predicate filters) {
-    // TODO figure out sort order parameter
     Pageable pagination = ((order == null) ?
         PageRequest.of(pageIndex, pageSize) :
         PageRequest.of(pageIndex, pageSize, order));

@@ -36,7 +36,7 @@ public class DataShippersController
 
   @GetMapping({"", "/"})
   public DataPagePojo<ShipperPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
+    return super.readMany(allRequestParams);
   }
 
   @Override

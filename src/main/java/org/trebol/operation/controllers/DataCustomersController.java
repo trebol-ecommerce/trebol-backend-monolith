@@ -44,7 +44,7 @@ public class DataCustomersController
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:read')")
   public DataPagePojo<CustomerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
+    return super.readMany(allRequestParams);
   }
 
   @Override

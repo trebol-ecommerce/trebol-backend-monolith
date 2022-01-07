@@ -44,7 +44,7 @@ public class DataSalespeopleController
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:read')")
   public DataPagePojo<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(null, null, allRequestParams);
+    return super.readMany(allRequestParams);
   }
 
   @Override

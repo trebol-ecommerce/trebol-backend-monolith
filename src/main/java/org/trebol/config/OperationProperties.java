@@ -12,6 +12,15 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "trebol.operation")
 public class OperationProperties {
   private Integer itemsPerPage;
+  private Integer maxAllowedPageSize;
+
+  public Integer getMaxAllowedPageSize() {
+    return maxAllowedPageSize;
+  }
+
+  public void setMaxAllowedPageSize(Integer maxAllowedPageSize) {
+    this.maxAllowedPageSize = maxAllowedPageSize;
+  }
 
   public Integer getItemsPerPage() {
     return itemsPerPage;
