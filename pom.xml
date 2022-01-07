@@ -16,6 +16,7 @@
   <version>1.2.0</version>
 
   <name>Trébol Spring Boot Backend</name>
+  <description>eCommerce RESTful Service.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
