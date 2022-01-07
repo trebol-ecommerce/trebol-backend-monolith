@@ -3,20 +3,15 @@ package org.trebol.operation.controllers;
 import com.querydsl.core.types.Predicate;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.entities.ProductListItem;
-import org.trebol.jpa.entities.QProductList;
-import org.trebol.jpa.entities.QProductListItem;
+import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
 import org.trebol.jpa.repositories.IProductListsJpaRepository;
+import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.operation.GenericPaginationController;
@@ -36,6 +31,7 @@ public class DataProductListContentsController
   private final IProductListItemsJpaRepository listItemsRepository;
   private final IProductListsJpaRepository listsRepository;
   private final IPredicateJpaService<ProductListItem> listItemsPredicateService;
+  private final GenericCrudJpaService<ProductPojo, Product> productCrudService;
   private final ITwoWayConverterJpaService<ProductPojo, ProductListItem> itemConverterService;
 
   @Autowired
@@ -43,12 +39,14 @@ public class DataProductListContentsController
                                            IProductListItemsJpaRepository listItemsRepository,
                                            IProductListsJpaRepository listsRepository,
                                            IPredicateJpaService<ProductListItem> listItemsPredicateService,
+                                           GenericCrudJpaService<ProductPojo, Product> productCrudService,
                                            ITwoWayConverterJpaService<ProductPojo,
                                            ProductListItem> itemConverterService) {
     super(globals);
     this.listItemsRepository = listItemsRepository;
     this.listsRepository = listsRepository;
     this.listItemsPredicateService = listItemsPredicateService;
+    this.productCrudService = productCrudService;
     this.itemConverterService = itemConverterService;
   }
 
@@ -91,8 +89,27 @@ public class DataProductListContentsController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void addToContents(@Valid @RequestBody Collection<ProductPojo> input,
-                            @RequestParam Map<String, String> requestParams) {
-    throw new UnsupportedOperationException("Not implemented");
+                            @RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    String listCode = requestParams.get("listCode");
+    if (listCode == null || listCode.isBlank()) {
+      throw new BadInputException("listCode query param is required");
+    } else {
+      Optional<ProductList> listMatch = listsRepository.findOne(QProductList.productList.code.eq(listCode));
+      if (listMatch.isEmpty()) {
+        throw new NotFoundException(ITEM_NOT_FOUND);
+      } else {
+        for (ProductPojo p : input) {
+          Optional<Product> productMatch = productCrudService.getExisting(p);
+          if (productMatch.isPresent()) {
+            ProductListItem listItem = new ProductListItem(listMatch.get(), productMatch.get());
+            if (!listItemsRepository.exists(Example.of(listItem))) {
+              listItemsRepository.save(listItem);
+            }
+          }
+        }
+      }
+    }
   }
 
   @PutMapping({"", "/"})

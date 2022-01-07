@@ -23,6 +23,17 @@ public class ProductListItem
 
   public ProductListItem() { }
 
+  public ProductListItem(ProductListItem source) {
+    this.id = source.id;
+    this.list = source.list;
+    this.product = source.product;
+  }
+
+  public ProductListItem(ProductList list, Product product) {
+    this.list = list;
+    this.product = product;
+  }
+
   public Long getId() {
     return id;
   }
