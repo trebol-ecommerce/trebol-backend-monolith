@@ -13,21 +13,20 @@ import java.util.Map;
 /**
  * RestController that implements IDataController with a GenericJpaService.
  *
- * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * @param <P> The Pojo class
  * @param <E> The Entity class
  */
 public abstract class GenericDataController<P, E>
+  extends GenericPaginationController
   implements IDataController<P> {
 
-  protected final OperationProperties operationProperties;
   protected final ICrudJpaService<P, Long> crudService;
   protected final IPredicateJpaService<E> predicateService;
 
   public GenericDataController(OperationProperties operationProperties,
                                ICrudJpaService<P, Long> crudService,
                                IPredicateJpaService<E> predicateService) {
-    this.operationProperties = operationProperties;
+    super(operationProperties);
     this.crudService = crudService;
     this.predicateService = predicateService;
   }
@@ -57,35 +56,5 @@ public abstract class GenericDataController<P, E>
     }
 
     return crudService.readMany(pageIndex, pageSize, order, filters);
-  }
-
-  /**
-   * Handle simple sort order cases where the property resides directly in the target entity e.g. a product's barcode.
-   * @param requestParams The query params map extracted from the request
-   * @return A sort order
-   */
-  protected Sort determineSortOrder(Map<String, String> requestParams) {
-    Sort sortBy = Sort.by(requestParams.get("sortBy"));
-    switch (requestParams.get("order")) {
-      case "asc": return sortBy.ascending();
-      case "desc": return sortBy.descending();
-      default: return sortBy;
-    }
-  }
-
-  private int determineRequestedPageIndex(Map<String, String> allRequestParams)
-      throws NumberFormatException {
-    if (allRequestParams != null && allRequestParams.containsKey("pageIndex")) {
-      return Integer.parseInt(allRequestParams.get("pageIndex"));
-    }
-    return 0;
-  }
-
-  private int determineRequestedPageSize(Map<String, String> allRequestParams)
-      throws NumberFormatException {
-    if (allRequestParams != null && allRequestParams.containsKey("pageSize")) {
-      return Integer.parseInt(allRequestParams.get("pageSize"));
-    }
-    return operationProperties.getItemsPerPage();
   }
 }
