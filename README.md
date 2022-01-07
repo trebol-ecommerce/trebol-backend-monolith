@@ -37,7 +37,7 @@ This application powers a complete implemented backend for the eCommerce project
 
 ## Status
 
-Supporting [API v1.2.1](https://github.com/trebol-ecommerce/api/releases/tag/v1.2.1).
+Supporting [API v1.2.2](https://github.com/trebol-ecommerce/api/releases/tag/v1.2.2).
 
 
 ## Requirements
