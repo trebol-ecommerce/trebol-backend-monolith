@@ -75,7 +75,6 @@ public abstract class GenericCrudJpaService<P, E>
    */
   @Override
   public DataPagePojo<P> readMany(int pageIndex, int pageSize, @Nullable Sort order, @Nullable Predicate filters) {
-    // TODO figure out sort order parameter
     Pageable pagination = ((order == null) ?
         PageRequest.of(pageIndex, pageSize) :
         PageRequest.of(pageIndex, pageSize, order));
