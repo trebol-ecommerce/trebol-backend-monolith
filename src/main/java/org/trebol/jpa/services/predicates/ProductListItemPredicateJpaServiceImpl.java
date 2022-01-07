@@ -40,13 +40,13 @@ public class ProductListItemPredicateJpaServiceImpl
             case "productName":
               predicate.and(getBasePath().product.name.eq(value));
               break;
-            case "productBarcode":
+            case "productCode":
               predicate.and(getBasePath().product.barcode.eq(value));
               break;
             case "productNameLike":
               predicate.and(getBasePath().product.name.likeIgnoreCase("%" + value + "%"));
               break;
-            case "productBarcodeLike":
+            case "productCodeLike":
               predicate.and(getBasePath().product.barcode.likeIgnoreCase("%" + value + "%"));
               break;
             default:
