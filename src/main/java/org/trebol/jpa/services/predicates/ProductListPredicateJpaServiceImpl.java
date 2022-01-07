@@ -2,7 +2,6 @@ package org.trebol.jpa.services.predicates;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.EntityPathBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,26 +21,27 @@ public class ProductListPredicateJpaServiceImpl
 
 
   @Override
-  public EntityPathBase<ProductList> getBasePath() { return QProductList.productList; }
+  public QProductList getBasePath() { return QProductList.productList; }
 
   @Override
   public Predicate parseMap(Map<String, String> queryParamsMap) {
     BooleanBuilder predicate = new BooleanBuilder();
     if (queryParamsMap != null) {
-      QProductList qProductList = QProductList.productList;
       for (String paramName : queryParamsMap.keySet()) {
         String value = queryParamsMap.get(paramName);
         try {
           switch (paramName) {
             case "name":
-              return predicate.and(qProductList.name.eq(value));
+            case "listName":
+              return predicate.and(getBasePath().name.eq(value));
             case "code":
-              return predicate.and(qProductList.code.eq(value));
+            case "listCode":
+              return predicate.and(getBasePath().code.eq(value));
             case "nameLike":
-              predicate.and(qProductList.name.likeIgnoreCase("%" + value + "%"));
+              predicate.and(getBasePath().name.likeIgnoreCase("%" + value + "%"));
               break;
             case "codeLike":
-              predicate.and(qProductList.code.likeIgnoreCase("%" + value + "%"));
+              predicate.and(getBasePath().code.likeIgnoreCase("%" + value + "%"));
               break;
             default:
               break;
