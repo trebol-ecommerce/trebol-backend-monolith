@@ -83,7 +83,7 @@ public class DataProductListContentsController
 
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_lists:contents')")
-  public void addToContents(@Valid @RequestBody Collection<ProductPojo> input,
+  public void addToContents(@Valid @RequestBody ProductPojo input,
                             @RequestParam Map<String, String> requestParams)
       throws BadInputException, NotFoundException {
     Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
@@ -91,13 +91,11 @@ public class DataProductListContentsController
       throw new NotFoundException(ITEM_NOT_FOUND);
     }
 
-    for (ProductPojo p : input) {
-      Optional<Product> productMatch = productCrudService.getExisting(p);
-      if (productMatch.isPresent()) {
-        ProductListItem listItem = new ProductListItem(listMatch.get(), productMatch.get());
-        if (!listItemsRepository.exists(Example.of(listItem))) {
-          listItemsRepository.save(listItem);
-        }
+    Optional<Product> productMatch = productCrudService.getExisting(input);
+    if (productMatch.isPresent()) {
+      ProductListItem listItem = new ProductListItem(listMatch.get(), productMatch.get());
+      if (!listItemsRepository.exists(Example.of(listItem))) {
+        listItemsRepository.save(listItem);
       }
     }
   }
