@@ -8,9 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - CRUD operations support for `Product List`
+  - Also for managing contents of individual lists, as described by resource `/data/product_list_contents` in the API
+- Schema SQL script for MariaDB
 
 ### Changed
 - Updated security rule for `GET /data/products` to: do not require any authority
+- Simplified method signature for `readMany` method in `IDataController`
+- Updated BD schema diagram `schema.png` 
 
 ### Removed
 - Clean up deprecated resources
