@@ -25,7 +25,7 @@ This application powers a complete implemented backend for the eCommerce project
     * Paired with `users`, `roles`, and `permissions` database tables (see `/src/main/resources/data.sql` for an example setup with 4 roles and users)
     * Do note that Authorities required in some controllers are hard-coded. These must match entries in the `permissions` table
   * Passwords are encoded using BCrypt
-* Currently only allows checking out with [Webpay Plus by Transbank](https://transbankdevelopers.cl/producto/webpay) (chilean service, accepts credit and debit cards)
+* Integrates payments with [Webpay Plus](https://transbankdevelopers.cl/producto/webpay) by Transbank ([Java SDK repo](https://github.com/TransbankDevelopers/transbank-sdk-java)) 
   * On due time, it may be possible to integrate more popular payment services such as Paypal and Stripe
 * Human-friendly sample properties files for configuring mission-critical parameters such as:
   * CORS mappings
