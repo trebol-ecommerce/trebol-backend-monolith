@@ -105,14 +105,36 @@ public class DataProductListContentsController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void updateContents(@RequestBody Collection<ProductPojo> input,
-                             @RequestParam Map<String, String> requestParams) {
-    throw new UnsupportedOperationException("Not implemented");
+                             @RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
+    if (listMatch.isEmpty()) {
+      throw new NotFoundException(ITEM_NOT_FOUND);
+    }
+
+    listItemsRepository.deleteByListId(listMatch.get().getId());
+    for (ProductPojo p : input) {
+      Optional<Product> productMatch = productCrudService.getExisting(p);
+      if (productMatch.isPresent()) {
+        ProductListItem listItem = new ProductListItem(listMatch.get(), productMatch.get());
+        if (!listItemsRepository.exists(Example.of(listItem))) {
+          listItemsRepository.save(listItem);
+        }
+      }
+    }
   }
 
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_lists:contents')")
-  public void deleteFromContents(@RequestParam Map<String, String> requestParams) {
-    throw new UnsupportedOperationException("Not implemented");
+  public void deleteFromContents(@RequestParam Map<String, String> requestParams)
+      throws BadInputException, NotFoundException {
+    Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
+    if (listMatch.isEmpty()) {
+      throw new NotFoundException(ITEM_NOT_FOUND);
+    }
+
+    Predicate predicate = listItemsPredicateService.parseMap(requestParams);
+    listItemsRepository.deleteAll(listItemsRepository.findAll(predicate));
   }
 
   private Optional<ProductList> fetchProductListByCode(Map<String, String> requestParams) throws BadInputException {
