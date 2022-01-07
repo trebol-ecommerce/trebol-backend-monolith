@@ -41,7 +41,11 @@ public abstract class GenericPaginationController {
   protected int determineRequestedPageSize(Map<String, String> requestParams)
       throws NumberFormatException {
     if (requestParams != null && requestParams.containsKey("pageSize")) {
-      return Integer.parseInt(requestParams.get("pageSize"));
+      int pageSize = Integer.parseInt(requestParams.get("pageSize"));
+      Integer maxAllowedPageSize = operationProperties.getMaxAllowedPageSize();
+      return (pageSize < maxAllowedPageSize) ?
+          pageSize :
+          maxAllowedPageSize;
     }
     return operationProperties.getItemsPerPage();
   }

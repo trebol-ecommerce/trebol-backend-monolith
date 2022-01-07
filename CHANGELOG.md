@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CRUD operations support for `Product List`
   - Also for managing contents of individual lists, as described by resource `/data/product_list_contents` in the API
 - Schema SQL script for MariaDB
+- Maximum page size limit, parametrizable through `properties` files
 
 ### Changed
 - Updated security rule for `GET /data/products` to: do not require any authority
