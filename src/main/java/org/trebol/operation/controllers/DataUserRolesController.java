@@ -1,7 +1,5 @@
 package org.trebol.operation.controllers;
 
-import com.querydsl.core.types.Predicate;
-import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -63,32 +61,5 @@ public class DataUserRolesController
   @PreAuthorize("hasAuthority('user_roles:delete')")
   public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
     super.delete(requestParams);
-  }
-
-  @Deprecated(forRemoval = true)
-  @GetMapping({"/{code}", "/{code}/"})
-  @PreAuthorize("hasAuthority('user_roles:read')")
-  public UserRolePojo readOne(@PathVariable String code) throws NotFoundException {
-    return crudService.readOne(whereCodeIs(code));
-  }
-
-  @Deprecated(forRemoval = true)
-  @PutMapping({"/{code}", "/{code}/"})
-  @PreAuthorize("hasAuthority('user_roles:update')")
-  public void update(@RequestBody UserRolePojo input, @PathVariable String code)
-    throws BadInputException, NotFoundException {
-    crudService.update(input, whereCodeIs(code));
-  }
-
-  @Deprecated(forRemoval = true)
-  @DeleteMapping({"/{code}", "/{code}/"})
-  @PreAuthorize("hasAuthority('user_roles:delete')")
-  public void delete(@PathVariable String code) throws NotFoundException {
-    crudService.delete(whereCodeIs(code));
-  }
-
-  private Predicate whereCodeIs(String code) {
-    Map<String, String> codeMatcher = Maps.of("code", code).build();
-    return predicateService.parseMap(codeMatcher);
   }
 }

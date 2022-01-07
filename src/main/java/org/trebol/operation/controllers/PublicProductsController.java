@@ -31,14 +31,15 @@ public class PublicProductsController {
     this.operationProperties = operationProperties;
   }
 
+  @Deprecated(forRemoval = true)
   @GetMapping({"", "/"})
   public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    // TODO copied from GenericDataController, must refactor into a separate service
     int requestPageSize = this.determineRequestedPageSize(allRequestParams);
     Predicate filters = predicateService.parseMap(allRequestParams);
     return crudService.readMany(0, requestPageSize, null, filters);
   }
 
+  @Deprecated(forRemoval = true)
   @GetMapping({"/{barcode}", "/{barcode}/"})
   public ProductPojo readOne(@PathVariable String barcode) throws NotFoundException {
     Map<String, String> barcodeMatcher = Maps.of("barcode", barcode).build();

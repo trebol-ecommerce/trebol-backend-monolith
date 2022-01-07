@@ -1,7 +1,5 @@
 package org.trebol.operation.controllers;
 
-import com.querydsl.core.types.Predicate;
-import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -72,36 +70,6 @@ public class DataUsersController
       throw new BadInputException("A user should not be able to delete their own account");
     }
     super.delete(requestParams);
-  }
-
-  @Deprecated(forRemoval = true)
-  @GetMapping({"/{name}", "/{name}/"})
-  @PreAuthorize("hasAuthority('users:read')")
-  public UserPojo readOne(@PathVariable String name) throws NotFoundException {
-    return crudService.readOne(whereNameIs(name));
-  }
-
-  @Deprecated(forRemoval = true)
-  @PutMapping({"/{name}", "/{name}/"})
-  @PreAuthorize("hasAuthority('users:update')")
-  public void update(@RequestBody UserPojo input, @PathVariable String name)
-    throws BadInputException, NotFoundException {
-    crudService.update(input, whereNameIs(name));
-  }
-
-  @Deprecated(forRemoval = true)
-  @DeleteMapping({"/{name}", "/{name}/"})
-  @PreAuthorize("hasAuthority('users:delete')")
-  public void delete(Principal principal, @PathVariable String name) throws NotFoundException, BadInputException {
-    if (principal.getName().equals(name)){
-      throw new BadInputException("A user should not be able to delete their own account");
-    }
-    crudService.delete(whereNameIs(name));
-  }
-
-  private Predicate whereNameIs(String name) {
-    Map<String, String> nameMatcher = Maps.of("name", name).build();
-    return predicateService.parseMap(nameMatcher);
   }
 
   @Override

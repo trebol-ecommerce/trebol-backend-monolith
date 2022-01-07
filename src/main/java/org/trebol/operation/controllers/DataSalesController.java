@@ -1,7 +1,5 @@
 package org.trebol.operation.controllers;
 
-import com.querydsl.core.types.Predicate;
-import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -69,33 +67,6 @@ public class DataSalesController
   @PreAuthorize("hasAuthority('sales:delete')")
   public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
     super.delete(requestParams);
-  }
-
-  @Deprecated(forRemoval = true)
-  @GetMapping({"/{buyOrder}", "/{buyOrder}/"})
-  @PreAuthorize("hasAuthority('sales:read')")
-  public SellPojo readOne(@PathVariable Long buyOrder) throws NotFoundException {
-    return crudService.readOne(whereBuyOrderIs(buyOrder));
-  }
-
-  @Deprecated(forRemoval = true)
-  @PutMapping({"/{buyOrder}", "/{buyOrder}/"})
-  @PreAuthorize("hasAuthority('sales:update')")
-  public void update(@RequestBody SellPojo input, @PathVariable Long buyOrder)
-    throws BadInputException, NotFoundException {
-    crudService.update(input, whereBuyOrderIs(buyOrder));
-  }
-
-  @Deprecated(forRemoval = true)
-  @DeleteMapping({"/{buyOrder}", "/{buyOrder}/"})
-  @PreAuthorize("hasAuthority('sales:delete')")
-  public void delete(@PathVariable Long buyOrder) throws NotFoundException {
-    crudService.delete(whereBuyOrderIs(buyOrder));
-  }
-
-  private Predicate whereBuyOrderIs(Long buyOrder) {
-    Map<String, String> buyOrderMatcher = Maps.of("buyOrder", String.valueOf(buyOrder)).build();
-    return predicateService.parseMap(buyOrderMatcher);
   }
 
   @Override

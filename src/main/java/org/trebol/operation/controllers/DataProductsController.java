@@ -1,7 +1,5 @@
 package org.trebol.operation.controllers;
 
-import com.querydsl.core.types.Predicate;
-import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -28,7 +26,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/data/products")
-@PreAuthorize("isAuthenticated()")
 public class DataProductsController
   extends GenericDataCrudController<ProductPojo, Product> {
 
@@ -44,7 +41,6 @@ public class DataProductsController
   }
 
   @GetMapping({"", "/"})
-  @PreAuthorize("hasAuthority('products:read')")
   public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(null, null, allRequestParams);
   }
@@ -69,33 +65,6 @@ public class DataProductsController
   @PreAuthorize("hasAuthority('products:delete')")
   public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
     super.delete(requestParams);
-  }
-
-  @Deprecated(forRemoval = true)
-  @GetMapping({"/{barcode}", "/{barcode}/"})
-  @PreAuthorize("hasAuthority('products:read')")
-  public ProductPojo readOne(@PathVariable String barcode) throws NotFoundException {
-    return crudService.readOne(whereBarcodeIs(barcode));
-  }
-
-  @Deprecated(forRemoval = true)
-  @PutMapping({"/{barcode}", "/{barcode}/"})
-  @PreAuthorize("hasAuthority('products:update')")
-  public void update(@RequestBody ProductPojo input, @PathVariable String barcode)
-    throws BadInputException, NotFoundException {
-    crudService.update(input, whereBarcodeIs(barcode));
-  }
-
-  @Deprecated(forRemoval = true)
-  @DeleteMapping({"/{barcode}", "/{barcode}/"})
-  @PreAuthorize("hasAuthority('products:delete')")
-  public void delete(@PathVariable String barcode) throws NotFoundException {
-    crudService.delete(whereBarcodeIs(barcode));
-  }
-
-  private Predicate whereBarcodeIs(String barcode) {
-    Map<String, String> barcodeMatcher = Maps.of("barcode", barcode).build();
-    return predicateService.parseMap(barcodeMatcher);
   }
 
   @Override

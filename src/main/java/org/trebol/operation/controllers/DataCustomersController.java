@@ -1,7 +1,5 @@
 package org.trebol.operation.controllers;
 
-import com.querydsl.core.types.Predicate;
-import io.jsonwebtoken.lang.Maps;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -69,33 +67,6 @@ public class DataCustomersController
   @PreAuthorize("hasAuthority('customers:delete')")
   public void delete(Map<String, String> requestParams) throws NotFoundException {
     super.delete(requestParams);
-  }
-
-  @Deprecated(forRemoval = true)
-  @GetMapping({"/{idNumber}", "/{idNumber}/"})
-  @PreAuthorize("hasAuthority('customers:read')")
-  public CustomerPojo readOne(@PathVariable String idNumber) throws NotFoundException {
-    return crudService.readOne(whereIdNumberIs(idNumber));
-  }
-
-  @Deprecated(forRemoval = true)
-  @PutMapping({"/{idNumber}", "/{idNumber}/"})
-  @PreAuthorize("hasAuthority('customers:update')")
-  public void update(@RequestBody CustomerPojo input, @PathVariable String idNumber)
-    throws NotFoundException, BadInputException {
-    crudService.update(input, whereIdNumberIs(idNumber));
-  }
-
-  @Deprecated(forRemoval = true)
-  @DeleteMapping({"/{idNumber}", "/{idNumber}/"})
-  @PreAuthorize("hasAuthority('customers:delete')")
-  public void delete(@PathVariable String idNumber) throws NotFoundException {
-    crudService.delete(whereIdNumberIs(idNumber));
-  }
-
-  private Predicate whereIdNumberIs(String idNumber) {
-    Map<String, String> idNumberMatcher = Maps.of("idNumber", idNumber).build();
-    return predicateService.parseMap(idNumberMatcher);
   }
 
   @Override
