@@ -100,7 +100,8 @@ VALUES
 (50, 'product_lists:delete'),
 (51, 'product_lists:create'),
 (52, 'product_lists:update'),
-(53, 'product_lists:read');
+(53, 'product_lists:read'),
+(54, 'product_lists:contents');
 
 INSERT INTO `app_users_roles_permissions`
 (`permission_id`, `user_role_id`)
@@ -157,7 +158,8 @@ VALUES
 (50, 01),
 (51, 01),
 (52, 01),
-(53, 01);
+(53, 01),
+(54, 01);
 
 INSERT INTO `app_users_roles_permissions`
 (`permission_id`, `user_role_id`)
@@ -191,7 +193,8 @@ VALUES
 (50, 02),
 (51, 02),
 (52, 02),
-(53, 02);
+(53, 02),
+(54, 02);
 
 INSERT INTO `app_users_roles_permissions`
 (`permission_id`, `user_role_id`)
