@@ -20,6 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Remove old `Oracle Java EE endorsed API` artifacts
     - In reality, these have been replaced by Jakarta EE endorsed API
 
+### Removed
+- Clean up deprecated resources
+  - `/public/categories`
+  - `/public/products`
+  - `/public/products/{barcode}`
+
 ## [v1.2.0] - 2022-01-07
 
 ### Added
