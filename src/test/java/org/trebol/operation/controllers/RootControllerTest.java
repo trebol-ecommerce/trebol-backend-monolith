@@ -1,6 +1,6 @@
 package org.trebol.operation.controllers;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;

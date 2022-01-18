@@ -1,10 +1,10 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.PeopleTestHelper.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PeopleJpaCrudServiceTest {
 
   @Mock IPeopleJpaRepository peopleRepositoryMock;

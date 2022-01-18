@@ -2,7 +2,7 @@ package org.trebol.jpa.services.predicate;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.trebol.jpa.services.predicates.PeoplePredicateJpaServiceImpl;
 
 import java.util.HashSet;

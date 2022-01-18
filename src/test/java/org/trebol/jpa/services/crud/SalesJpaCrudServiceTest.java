@@ -4,10 +4,10 @@ package org.trebol.jpa.services.crud;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import javassist.NotFoundException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Product;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.ProductsTestHelper.*;
 import static org.trebol.testhelpers.SalesTestHelper.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SalesJpaCrudServiceTest {
 
   @Mock ISalesJpaRepository salesRepositoryMock;
