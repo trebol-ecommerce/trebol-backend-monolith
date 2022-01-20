@@ -7,7 +7,7 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 
-This application powers a complete implemented backend for the eCommerce project Trébol using Spring Boot v2.3.
+This application powers a complete implemented backend for the eCommerce project Trébol using Spring Boot v2.6.
 
 
 ## Features:
@@ -38,6 +38,10 @@ This application powers a complete implemented backend for the eCommerce project
 ## Status
 
 Supporting [API v1.2.2](https://github.com/trebol-ecommerce/api/releases/tag/v1.2.2).
+Recently bumped version number up to v2.0 because the base Spring Boot starter project was migrated to a newer version, which is not compatible with some settings in all previous versions of the `application.properties` file.
+If you have issues when starting up the application, please [review the changes that were made here](https://github.com/trebol-ecommerce/spring-boot-backend/commits/main/src/main/resources/application.properties) and apply them to your `.properties` files. 
+
+While this build isn't exactly production-ready, but for most purposes it should work just fine (in accordance with the aforementioned API).
 
 
 ## Requirements
@@ -50,16 +54,17 @@ Supporting [API v1.2.2](https://github.com/trebol-ecommerce/api/releases/tag/v1.
 
 After cloning the repository, I recommend to run `mvn verify`, grab a drink and wait a little. That command will download/install dependencies, compile the project, generate the WAR package file, install it to your local maven repo, run unit tests and check code coverage.
 
-__The important step here is to compile the project first__, because some classes are not versioned and instead must be generated through a Maven plugin that is provided in the project dependencies
+__The important step here is to compile the project first__, because some classes are not versioned and instead must be generated through a Maven plugin that is provided in the project dependencies.
+
+If for any reason you fail to compile, please run `mvn generate-sources` and try it again.
 
 Once you're done with the above, you can quickly run the application with `mvn spring-boot:run`
 
 
 ### Configuration
 
-The default configuration profile, which is located at `/src/main/resources/application.properties` contains sane default settings. You can "just" run the application out-of-the-box with these, though you'll probably want to change the database driver and URL, between other things.
-
-The aforementioned file also has written instructions to set things up and running, please read it
+The default configuration profile, which is located at `/src/main/resources/application.properties` contains sane default settings.
+You "can" run the application out-of-the-box with these, though you'll need to change several options if you're to install it on production.
 
 
 ## Contributing to this repository
