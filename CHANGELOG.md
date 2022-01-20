@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/public/categories`
   - `/public/products`
   - `/public/products/{barcode}`
+- Remove any reference to the depreacted `amount` property in the Receipt entity 
 
 ## [v1.2.0] - 2022-01-07
 
