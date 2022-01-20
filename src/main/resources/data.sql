@@ -1,7 +1,3 @@
-/**
- * Author:  Benjamin La Madrid <bg.lamadrid at gmail.com>
- */
-
 INSERT INTO `app_params`
 (`param_id`, `param_category`, `param_name`, `param_value`)
 VALUES

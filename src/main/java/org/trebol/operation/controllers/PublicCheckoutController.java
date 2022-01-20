@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2022 The Trebol eCommerce Project
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package org.trebol.operation.controllers;
 
 import com.querydsl.core.types.Predicate;
@@ -25,11 +45,6 @@ import java.util.Map;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.SEE_OTHER;
 
-
-/**
- *
- * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
- */
 @RestController
 @RequestMapping("/public/checkout")
 public class PublicCheckoutController {
@@ -51,7 +66,6 @@ public class PublicCheckoutController {
 
   /**
    * Save a new transaction, forward request to checkout server, and save the generated token for later validation
-   *
    * @param transactionRequest The checkout details
    * @return An object wrapping the URL and token to redirect the user with, towards their payment page.
    * @throws org.trebol.exceptions.BadInputException If the input pojo class contains invalid data
@@ -67,8 +81,7 @@ public class PublicCheckoutController {
   }
 
   /**
-   * Validate token sent from WebPay Plus after a succesful transaction.
-   *
+   * Validate token sent from WebPay Plus after a succesful transaction
    * @param transactionData The HTTP headers
    * @return A 303 SEE OTHER response
    * @throws org.trebol.exceptions.BadInputException If the expected token is not present in the request
@@ -90,8 +103,7 @@ public class PublicCheckoutController {
   }
 
   /**
-   * Validate token sent from WebPay Plus after a transaction was aborted.
-   *
+   * Validate token sent from WebPay Plus after a transaction was aborted
    * @param transactionData The HTTP headers
    * @return A 303 SEE OTHER response
    * @throws org.trebol.exceptions.BadInputException If the expected token is not present in the request
@@ -113,6 +125,12 @@ public class PublicCheckoutController {
         .build();
   }
 
+  /**
+   * Fetch result of transaction after it has been confirmed and validated
+   * @param token The token used during the transaction
+   * @return An object with all available data about the transaction
+   * @throws NotFoundException when no transaction matched the provided token
+   */
   @GetMapping({"/result/{token}", "/result/{token}/"})
   public SellPojo getTransactionResultFor(@NotBlank @PathVariable String token) throws NotFoundException {
     Map<String, String> tokenMatcher = Maps.of("token", token).build();

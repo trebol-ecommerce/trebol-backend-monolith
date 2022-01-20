@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2022 The Trebol eCommerce Project
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package org.trebol.operation;
 
 import javassist.NotFoundException;
@@ -7,15 +27,11 @@ import org.trebol.pojo.SellPojo;
 
 import java.net.URI;
 
-/**
- *
- * @author Benjamin La Madrid <bg.lamadrid@gmail.com>
- */
 public interface ICheckoutService {
 
   /**
-   * Fetch details to redirect the requester to the payment page.Also mark transaction as "started"
- and save metadata required for confirmation
+   * Fetch details to redirect the requester to the payment page; mark transaction as "started";
+   * save metadata required for later confirmation
    * @param transaction The "acknowledged" transaction
    * @return Details used by the requester to navigate to the payment page
    * @throws PaymentServiceException On unexpected failures
@@ -23,8 +39,9 @@ public interface ICheckoutService {
   PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException;
 
   /**
-   * Confirm existence of a "started" transaction, then fetch its result to update saved metadata of that
-   * transaction, and notify both to salespeople and the client by e-mail
+   * From a given token, assert existence of a transaction marked as "started"; fetch result of said transaction;
+   * update saved metadata of that transaction<br/><br/>
+   * Usually, after this the client and the salesmanager are notified by some contact means, such as e-mail
    * @param token Previously emitted by the payment service
    * @param wasAborted Whether the transaction was aborted by the user doing the payment.
    * @return The "completed/failed" URI for requesting it later on
