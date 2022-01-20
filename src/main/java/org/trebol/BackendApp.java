@@ -24,13 +24,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class BackendApp {
+public class BackendApp {
   /**
    * Application starting point
    *
    * @param args Command-line arguments
    */
-  static void main(String[] args) {
+  public static void main(String[] args) {
     SpringApplication.run(BackendApp.class, args);
   }
 
