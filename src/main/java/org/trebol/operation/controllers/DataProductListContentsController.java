@@ -1,7 +1,26 @@
+/*
+ * Copyright (c) 2022 The Trebol eCommerce Project
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package org.trebol.operation.controllers;
 
 import com.querydsl.core.types.Predicate;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +37,7 @@ import org.trebol.operation.GenericPaginationController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -52,10 +72,10 @@ public class DataProductListContentsController
 
   @GetMapping({"", "/"})
   public DataPagePojo<ProductPojo> readContents(@RequestParam Map<String, String> requestParams)
-      throws BadInputException, NotFoundException {
+      throws BadInputException, EntityNotFoundException {
     Optional<ProductList> match = this.fetchProductListByCode(requestParams);
     if (match.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
 
     int pageIndex = super.determineRequestedPageIndex(requestParams);
@@ -85,10 +105,10 @@ public class DataProductListContentsController
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void addToContents(@Valid @RequestBody ProductPojo input,
                             @RequestParam Map<String, String> requestParams)
-      throws BadInputException, NotFoundException {
+      throws BadInputException, EntityNotFoundException {
     Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
     if (listMatch.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
 
     Optional<Product> productMatch = productCrudService.getExisting(input);
@@ -104,10 +124,10 @@ public class DataProductListContentsController
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void updateContents(@RequestBody Collection<ProductPojo> input,
                              @RequestParam Map<String, String> requestParams)
-      throws BadInputException, NotFoundException {
+      throws BadInputException, EntityNotFoundException {
     Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
     if (listMatch.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
 
     listItemsRepository.deleteByListId(listMatch.get().getId());
@@ -125,10 +145,10 @@ public class DataProductListContentsController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void deleteFromContents(@RequestParam Map<String, String> requestParams)
-      throws BadInputException, NotFoundException {
+      throws BadInputException, EntityNotFoundException {
     Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
     if (listMatch.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
 
     Predicate predicate = listItemsPredicateService.parseMap(requestParams);

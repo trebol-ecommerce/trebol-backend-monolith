@@ -1,20 +1,34 @@
+/*
+ * Copyright (c) 2022 The Trebol eCommerce Project
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package org.trebol.pojo;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-/**
- *
- * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
- */
 @JsonInclude
 public class ReceiptPojo {
   private long buyOrder;
-  @Deprecated(forRemoval = true)
-  private int amount;
   private Collection<ReceiptDetailPojo> details;
   private Instant date;
   private String status;
@@ -30,16 +44,6 @@ public class ReceiptPojo {
 
   public void setBuyOrder(long buyOrder) {
     this.buyOrder = buyOrder;
-  }
-
-  @Deprecated(forRemoval = true, since = "1.1.0")
-  public int getAmount() {
-    return amount;
-  }
-
-  @Deprecated(forRemoval = true, since = "1.1.0")
-  public void setAmount(int amount) {
-    this.amount = amount;
   }
 
   public Collection<ReceiptDetailPojo> getDetails() {
@@ -112,7 +116,6 @@ public class ReceiptPojo {
     if (o == null || getClass() != o.getClass()) return false;
     ReceiptPojo that = (ReceiptPojo) o;
     return buyOrder == that.buyOrder &&
-        amount == that.amount &&
         totalValue == that.totalValue &&
         taxValue == that.taxValue &&
         transportValue == that.transportValue &&
@@ -125,14 +128,13 @@ public class ReceiptPojo {
 
   @Override
   public int hashCode() {
-    return Objects.hash(buyOrder, amount, details, date, status, token, totalValue, taxValue, transportValue, totalItems);
+    return Objects.hash(buyOrder, details, date, status, token, totalValue, taxValue, transportValue, totalItems);
   }
 
   @Override
   public String toString() {
     return "ReceiptPojo{" +
         "buyOrder=" + buyOrder +
-        ", amount=" + amount +
         ", details=" + details +
         ", date=" + date +
         ", status='" + status + '\'' +

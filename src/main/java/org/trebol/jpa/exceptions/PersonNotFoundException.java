@@ -18,30 +18,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.converters.toentity;
+package org.trebol.jpa.exceptions;
 
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
-import org.trebol.jpa.entities.Person;
-import org.trebol.pojo.PersonPojo;
+import javax.persistence.EntityNotFoundException;
 
-@Component
-public class Person2Entity
-    implements Converter<PersonPojo, Person> {
+public class PersonNotFoundException
+    extends EntityNotFoundException {
 
-  @Override
-  public Person convert(PersonPojo source) {
-    Person target = new Person();
-    target.setFirstName(source.getFirstName());
-    target.setLastName(source.getLastName());
-    target.setIdNumber(source.getIdNumber());
-    target.setEmail(source.getEmail());
-    if (source.getPhone1() != null) {
-      target.setPhone1(source.getPhone1());
-    }
-    if (source.getPhone2() != null) {
-      target.setPhone2(source.getPhone2());
-    }
-    return target;
+  public PersonNotFoundException() { }
+
+  public PersonNotFoundException(String message) {
+    super(message);
   }
 }

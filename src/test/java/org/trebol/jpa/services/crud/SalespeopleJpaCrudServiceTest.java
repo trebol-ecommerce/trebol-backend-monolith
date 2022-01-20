@@ -1,10 +1,10 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
@@ -18,20 +18,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.SalespeopleTestHelper.*;
 
-@RunWith(MockitoJUnitRunner.class)
-public class SalespeopleJpaCrudServiceTest {
+@ExtendWith(MockitoExtension.class)
+class SalespeopleJpaCrudServiceTest {
 
   @Mock ISalespeopleJpaRepository salespeopleRepositoryMock;
   @Mock ITwoWayConverterJpaService<SalespersonPojo, Salesperson> salespeopleConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     SalespeopleJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_id_number() throws BadInputException {
+  void finds_by_id_number() throws BadInputException {
     resetSalespeople();
     when(salespeopleRepositoryMock.findByPersonIdNumber(salespersonPojoForFetch().getPerson().getIdNumber())).thenReturn(Optional.of(salespersonEntityAfterCreation()));
     SalespeopleJpaCrudServiceImpl service = instantiate();

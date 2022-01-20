@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2022 The Trebol eCommerce Project
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package org.trebol.operation.services;
 
 import com.querydsl.core.types.Predicate;
@@ -8,7 +28,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.ICustomersJpaRepository;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
@@ -18,6 +37,7 @@ import org.trebol.operation.IRegistrationService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.RegistrationPojo;
 
+import javax.persistence.EntityExistsException;
 import java.util.Optional;
 
 @Service
@@ -46,11 +66,12 @@ public class RegistrationServiceImpl
   }
 
   @Override
-  public void register(RegistrationPojo registration) throws BadInputException, EntityAlreadyExistsException {
+  public void register(RegistrationPojo registration)
+      throws BadInputException, EntityExistsException {
     String username = registration.getName();
     Predicate userWithSameName = QUser.user.name.eq(username);
     if (usersRepository.exists(userWithSameName)) {
-      throw new EntityAlreadyExistsException("That username is taken.");
+      throw new EntityExistsException("That username is taken.");
     }
 
     PersonPojo sourcePerson = registration.getProfile();
@@ -61,7 +82,7 @@ public class RegistrationServiceImpl
 
     Predicate sameProfileData = QPerson.person.idNumber.eq(newPerson.getIdNumber());
     if (peopleRepository.exists(sameProfileData)) {
-      throw new EntityAlreadyExistsException("That ID number is already registered and associated to an account.");
+      throw new EntityExistsException("That ID number is already registered and associated to an account.");
     } else {
       newPerson = peopleRepository.saveAndFlush(newPerson);
     }

@@ -1,10 +1,10 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
@@ -18,20 +18,20 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class UsersJpaCrudServiceTest {
+@ExtendWith(MockitoExtension.class)
+class UsersJpaCrudServiceTest {
 
   @Mock IUsersJpaRepository usersRepositoryMock;
   @Mock ITwoWayConverterJpaService<UserPojo, User> usersConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     UsersJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_name() throws BadInputException {
+  void finds_by_name() throws BadInputException {
     Long userId = 1L;
     String userName = "test-user";
     String userPassword = "test-password";

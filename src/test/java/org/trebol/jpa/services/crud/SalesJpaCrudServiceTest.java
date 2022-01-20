@@ -3,13 +3,11 @@ package org.trebol.jpa.services.crud;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import javassist.NotFoundException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
@@ -17,6 +15,8 @@ import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellPojo;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
@@ -27,21 +27,22 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.ProductsTestHelper.*;
 import static org.trebol.testhelpers.SalesTestHelper.*;
 
-@RunWith(MockitoJUnitRunner.class)
-public class SalesJpaCrudServiceTest {
+@ExtendWith(MockitoExtension.class)
+class SalesJpaCrudServiceTest {
 
   @Mock ISalesJpaRepository salesRepositoryMock;
   @Mock ITwoWayConverterJpaService<SellPojo, Sell> salesConverterMock;
   @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     SalesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_id_aka_buy_order() throws BadInputException {
+  void finds_by_id_aka_buy_order()
+      throws BadInputException {
     resetSales();
     when(salesRepositoryMock.findById(sellPojoForFetch().getBuyOrder())).thenReturn(Optional.of(sellEntityAfterCreation()));
     SalesJpaCrudServiceImpl service = instantiate();
@@ -54,7 +55,8 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
-  public void finds_using_predicates() throws NotFoundException {
+  void finds_using_predicates()
+      throws EntityNotFoundException {
     resetProducts();
     resetSales();
     Predicate filters = new BooleanBuilder();
@@ -72,7 +74,8 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_sell() throws BadInputException, EntityAlreadyExistsException {
+  void creates_sell()
+      throws BadInputException, EntityExistsException {
     resetSales();
     when(salesConverterMock.convertToNewEntity(sellPojoBeforeCreation())).thenReturn(sellEntityBeforeCreation());
     when(salesRepositoryMock.saveAndFlush(sellEntityBeforeCreation())).thenReturn(sellEntityAfterCreation());
@@ -95,7 +98,8 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
-  public void updates_sell() throws BadInputException, NotFoundException {
+  void updates_sell()
+      throws BadInputException, EntityNotFoundException {
     resetSales();
     Instant updatedDate = Instant.now().minus(Duration.ofHours(1L));
     SellPojo sellPojoWithUpdates = new SellPojo(sellPojoAfterCreation());
@@ -121,7 +125,8 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
-  public void returns_same_when_no_update_is_made() throws BadInputException, NotFoundException {
+  void returns_same_when_no_update_is_made()
+      throws BadInputException, EntityNotFoundException {
     resetSales();
     SellPojo copy = new SellPojo(sellPojoAfterCreation());
     Predicate filters = new BooleanBuilder();
@@ -137,7 +142,7 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
-  public void throws_exception_when_not_found_using_predicates() {
+  void throws_exception_when_not_found_using_predicates() {
     Predicate filters = new BooleanBuilder();
     when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.empty());
     SalesJpaCrudServiceImpl service = instantiate();
@@ -145,7 +150,7 @@ public class SalesJpaCrudServiceTest {
     SellPojo result = null;
     try {
       result = service.readOne(filters);
-    } catch (NotFoundException e) {
+    } catch (EntityNotFoundException e) {
       e.printStackTrace();
     }
 

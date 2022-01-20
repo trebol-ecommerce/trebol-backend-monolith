@@ -1,10 +1,10 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
@@ -16,20 +16,20 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class UserRolesJpaCrudServiceTest {
+@ExtendWith(MockitoExtension.class)
+class UserRolesJpaCrudServiceTest {
 
   @Mock IUserRolesJpaRepository userRolesRepositoryMock;
   @Mock ITwoWayConverterJpaService<UserRolePojo, UserRole> userRolesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     UserRolesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_name() throws BadInputException {
+  void finds_by_name() throws BadInputException {
     Long roleId = 1L;
     String roleName = "test-role";
     UserRolePojo example = new UserRolePojo(roleName);

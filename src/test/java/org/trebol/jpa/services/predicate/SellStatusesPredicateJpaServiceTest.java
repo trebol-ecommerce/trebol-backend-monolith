@@ -2,7 +2,7 @@ package org.trebol.jpa.services.predicate;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.trebol.jpa.services.predicates.SellStatusesPredicateJpaServiceImpl;
 
 import java.util.HashSet;
@@ -12,10 +12,10 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SellStatusesPredicateJpaServiceTest {
+class SellStatusesPredicateJpaServiceTest {
 
   @Test
-  public void parses_map() {
+  void parses_map() {
     Predicate emptyPredicate = new BooleanBuilder();
     SellStatusesPredicateJpaServiceImpl service = instantiate();
     List<Predicate> predicates = List.of(emptyPredicate,

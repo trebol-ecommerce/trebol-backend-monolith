@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.0.0] - 2022-01-20
+
+### Changed
+- Reformat `pom.xml` file
+  - Add comments
+  - Update properties
+    - Add keys for code coverage ratio
+    - Add keys to version of all dependencies and plugins (except those inferred from parent)
+    - Rename some properties
+  - Remove unused `jcenter` repository
+  - Bump plugins
+    - `maven-compiler-plugin` - from `3.1` to `3.9.0`
+    - `maven-war-plugin` - from `3.3.1` to `3.3.2`
+  - Remove old `Oracle Java EE endorsed API` artifacts
+    - In reality, these have been replaced by Jakarta EE endorsed API
+- **Bump Spring Boot Starter POM to v2.6.2 [BREAKING CHANGE]**
+  - Deprecated/unsupported properties; update configuration described in `application.properties`
+- Update license file; add headers to all source files
+- Creating products through a `POST /data/products` call does not cascade creation of other entities
+
+### Removed
+- Clean up deprecated API resources
+  - `/public/categories`
+  - `/public/products`
+  - `/public/products/{barcode}`
+- Remove any reference to the depreacted `amount` property in the Receipt entity 
+
 ## [v1.2.0] - 2022-01-07
 
 ### Added

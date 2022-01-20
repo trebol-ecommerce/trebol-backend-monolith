@@ -2,7 +2,7 @@ package org.trebol.jpa.services.predicate;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.trebol.jpa.services.predicates.SalesPredicateJpaServiceImpl;
 
 import java.time.Instant;
@@ -13,10 +13,10 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SalesPredicateJpaServiceTest {
+class SalesPredicateJpaServiceTest {
 
   @Test
-  public void parses_map() {
+  void parses_map() {
     Predicate emptyPredicate = new BooleanBuilder();
     SalesPredicateJpaServiceImpl service = instantiate();
     List<Predicate> predicates = List.of(emptyPredicate,
@@ -30,7 +30,7 @@ public class SalesPredicateJpaServiceTest {
   }
 
   @Test
-  public void only_accepts_correct_dates() {
+  void only_accepts_correct_dates() {
     Predicate emptyPredicate = new BooleanBuilder();
     SalesPredicateJpaServiceImpl service = instantiate();
     Predicate whereDateIs = service.parseMap(Map.of("date", Instant.now().toString()));

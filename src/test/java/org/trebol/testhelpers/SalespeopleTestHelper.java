@@ -5,6 +5,9 @@ import org.trebol.jpa.entities.Salesperson;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.SalespersonPojo;
 
+/**
+ * Builds & caches reusable instances of Salesperson and SalespersonPojo
+ */
 public class SalespeopleTestHelper {
 
   public static final long GENERIC_ID = 1L;

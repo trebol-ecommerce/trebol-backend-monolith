@@ -1,10 +1,10 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.repositories.IShippersJpaRepository;
@@ -16,20 +16,20 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ShippersJpaCrudServiceTest {
+@ExtendWith(MockitoExtension.class)
+class ShippersJpaCrudServiceTest {
 
   @Mock IShippersJpaRepository shippersRepositoryMock;
   @Mock ITwoWayConverterJpaService<ShipperPojo, Shipper> shippersConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     ShippersJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_name() throws BadInputException {
+  void finds_by_name() throws BadInputException {
     Long shipperId = 1L;
     String shipperName = "test-one";
     ShipperPojo example = new ShipperPojo(shipperName);

@@ -3,6 +3,9 @@ package org.trebol.testhelpers;
 import org.trebol.jpa.entities.Person;
 import org.trebol.pojo.PersonPojo;
 
+/**
+ * Builds & caches reusable instances of Person and PersonPojo
+ */
 public class PeopleTestHelper {
 
   public static final long GENERIC_ID = 1L;

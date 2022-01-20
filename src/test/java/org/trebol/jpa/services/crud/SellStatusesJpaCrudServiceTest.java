@@ -1,10 +1,10 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
@@ -16,20 +16,20 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class SellStatusesJpaCrudServiceTest {
+@ExtendWith(MockitoExtension.class)
+class SellStatusesJpaCrudServiceTest {
 
   @Mock ISellStatusesJpaRepository sellStatusesRepositoryMock;
   @Mock ITwoWayConverterJpaService<SellStatusPojo, SellStatus> sellStatusesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     SellStatusesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_name() throws BadInputException {
+  void finds_by_name() throws BadInputException {
     Long statusId = 1L;
     Integer statusCode = 0;
     String statusName = "example sell status name";

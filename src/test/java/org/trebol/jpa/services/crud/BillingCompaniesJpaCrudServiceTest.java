@@ -1,10 +1,10 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.repositories.IBillingCompaniesJpaRepository;
@@ -16,20 +16,20 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BillingCompaniesJpaCrudServiceTest {
+@ExtendWith(MockitoExtension.class)
+class BillingCompaniesJpaCrudServiceTest {
 
   @Mock IBillingCompaniesJpaRepository billingCompaniesRepositoryMock;
   @Mock ITwoWayConverterJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     BillingCompaniesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_id_number() throws BadInputException {
+  void finds_by_id_number() throws BadInputException {
     Long companyId = 1L;
     String companyIdNumber = "11111111";
     String companyName = "test company";

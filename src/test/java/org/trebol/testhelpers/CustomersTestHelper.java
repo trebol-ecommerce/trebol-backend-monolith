@@ -5,6 +5,9 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.PersonPojo;
 
+/**
+ * Builds & caches reusable instances of Customer and CustomerPojo
+ */
 public class CustomersTestHelper {
 
   public static final long GENERIC_ID = 1L;

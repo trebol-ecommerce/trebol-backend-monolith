@@ -2,11 +2,10 @@ package org.trebol.operation.services;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import javassist.NotFoundException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
@@ -16,6 +15,7 @@ import org.trebol.jpa.services.ISellStepperJpaService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
 
+import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.util.Map;
 
@@ -23,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.trebol.testhelpers.SalesTestHelper.*;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CheckoutServiceTest {
+@ExtendWith(MockitoExtension.class)
+class CheckoutServiceTest {
 
   @Mock GenericCrudJpaService<SellPojo, Sell> salesCrudService;
   @Mock ISellStepperJpaService sellStepperService;
@@ -36,13 +36,14 @@ public class CheckoutServiceTest {
   private static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     CheckoutServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void requests_transaction_start() throws PaymentServiceException, NotFoundException {
+  void requests_transaction_start()
+      throws PaymentServiceException, EntityNotFoundException {
     PaymentRedirectionDetailsPojo payload = new PaymentRedirectionDetailsPojo(PAYMENT_URL, SELL_TRANSACTION_TOKEN);
     resetSales();
     when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
@@ -58,7 +59,8 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void acknowledges_successful_transaction() throws PaymentServiceException, NotFoundException {
+  void acknowledges_successful_transaction()
+      throws PaymentServiceException, EntityNotFoundException {
     Map<String, String> matcherMap = Map.of(
         "statusName", "Payment Started",
         "token", SELL_TRANSACTION_TOKEN);
@@ -79,7 +81,8 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void acknowledges_aborted_transaction() throws PaymentServiceException, NotFoundException {
+  void acknowledges_aborted_transaction()
+      throws PaymentServiceException, EntityNotFoundException {
     Map<String, String> matcherMap = Map.of(
         "statusName", "Payment Started",
         "token", SELL_TRANSACTION_TOKEN);
@@ -98,12 +101,13 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void throws_exceptions_at_unexisting_transactions_before_requesting_payments() throws PaymentServiceException, NotFoundException {
+  void throws_exceptions_at_unexisting_transactions_before_requesting_payments()
+      throws PaymentServiceException, EntityNotFoundException {
     PaymentRedirectionDetailsPojo payload = new PaymentRedirectionDetailsPojo(PAYMENT_URL, SELL_TRANSACTION_TOKEN);
     String exceptionMessage = "No match";
     resetSales();
     when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
-    doThrow(new NotFoundException(exceptionMessage)).
+    doThrow(new EntityNotFoundException(exceptionMessage)).
         when(sellStepperService).setSellStatusToPaymentStartedWithToken(sellPojoAfterCreation().getBuyOrder(),
                                                                         SELL_TRANSACTION_TOKEN);
     CheckoutServiceImpl service = instantiate();
@@ -121,19 +125,20 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void throws_exceptions_at_invalid_transactions_before_confirming() throws PaymentServiceException, NotFoundException {
+  void throws_exceptions_at_invalid_transactions_before_confirming()
+      throws PaymentServiceException, EntityNotFoundException {
     Map<String, String> matcherMap = Map.of(
         "statusName", "Payment Started",
         "token", SELL_TRANSACTION_TOKEN);
     String exceptionMessage = "No match";
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenThrow(new NotFoundException(exceptionMessage));
+    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenThrow(new EntityNotFoundException(exceptionMessage));
     CheckoutServiceImpl service = instantiate();
 
     URI result = null;
     try {
       result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, true);
-    } catch (NotFoundException e) {
+    } catch (EntityNotFoundException e) {
       assertEquals(e.getMessage(), exceptionMessage);
     }
 

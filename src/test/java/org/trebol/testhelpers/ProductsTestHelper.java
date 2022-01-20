@@ -5,6 +5,9 @@ import org.trebol.pojo.ProductPojo;
 
 import java.util.List;
 
+/**
+ * Builds & caches reusable instances of Product and ProductPojo
+ */
 public class ProductsTestHelper {
 
   public static final long PRODUCT_ID = 1L;

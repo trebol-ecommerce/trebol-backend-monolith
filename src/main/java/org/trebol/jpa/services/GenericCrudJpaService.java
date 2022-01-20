@@ -1,7 +1,26 @@
+/*
+ * Copyright (c) 2022 The Trebol eCommerce Project
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package org.trebol.jpa.services;
 
 import com.querydsl.core.types.Predicate;
-import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,19 +29,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.IJpaRepository;
 import org.trebol.pojo.DataPagePojo;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Base abstraction for JPA-based CRUD services that communicate with Pojos, keeping entity classes out of scope.
- *
- * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
- *
+ * Base abstraction for JPA-based CRUD services that communicate with Pojos, keeping entity classes out of scope
  * @param <P> The pojo class
  * @param <E> The entity class
  */
@@ -60,9 +77,10 @@ public abstract class GenericCrudJpaService<P, E>
    * @param inputPojo The Pojo instance to be converted and inserted.
    */
   @Override
-  public P create(P inputPojo) throws BadInputException, EntityAlreadyExistsException {
+  public P create(P inputPojo)
+      throws BadInputException, EntityExistsException {
     if (this.getExisting(inputPojo).isPresent()) {
-      throw new EntityAlreadyExistsException(ITEM_ALREADY_EXISTS);
+      throw new EntityExistsException(ITEM_ALREADY_EXISTS);
     } else {
       E input = converter.convertToNewEntity(inputPojo);
       E output = repository.saveAndFlush(input);
@@ -95,40 +113,44 @@ public abstract class GenericCrudJpaService<P, E>
   }
 
   @Override
-  public P update(P input) throws NotFoundException, BadInputException {
+  public P update(P input)
+      throws EntityNotFoundException, BadInputException {
     Optional<E> match = this.getExisting(input);
     if (match.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     } else {
       return this.doUpdate(input, match.get());
     }
   }
 
   @Override
-  public P update(P input, Predicate filters) throws NotFoundException, BadInputException {
+  public P update(P input, Predicate filters)
+      throws EntityNotFoundException, BadInputException {
     Optional<E> firstMatch = repository.findOne(filters);
     if (firstMatch.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     } else {
       return this.doUpdate(input, firstMatch.get());
     }
   }
 
   @Override
-  public void delete(Predicate filters) throws NotFoundException {
+  public void delete(Predicate filters)
+      throws EntityNotFoundException {
     long count = repository.count(filters);
     if (count == 0) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     } else {
       repository.deleteAll(repository.findAll(filters));
     }
   }
 
   @Override
-  public P readOne(Predicate filters) throws NotFoundException {
+  public P readOne(Predicate filters)
+      throws EntityNotFoundException {
     Optional<E> entity = repository.findOne(filters);
     if (entity.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     } else {
       E found = entity.get();
       return converter.convertToPojo(found);
@@ -142,7 +164,8 @@ public abstract class GenericCrudJpaService<P, E>
    * @return The resulting Pojo class instance
    * @throws BadInputException If data in Pojo is insufficient, incorrect, malformed, etc
    */
-  protected P doUpdate(P input, E existingEntity) throws BadInputException {
+  protected P doUpdate(P input, E existingEntity)
+      throws BadInputException {
     E updatedEntity = converter.applyChangesToExistingEntity(input, existingEntity);
     if (existingEntity.equals(updatedEntity)) {
       return input;

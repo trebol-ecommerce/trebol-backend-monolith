@@ -1,18 +1,37 @@
+/*
+ * Copyright (c) 2022 The Trebol eCommerce Project
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package org.trebol.jpa.services;
 
 import com.querydsl.core.types.Predicate;
-import javassist.NotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.pojo.DataPagePojo;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 
 
 /**
  * Interface for wrapping basic CRUD service operations by using Pojo classes
- *
- * @author Benjamin La Madrid <bg.lamadrid at gmail.com>
  * @param <P> The pojo type class
  * @param <I> The identifier type class
  */
@@ -26,9 +45,9 @@ public interface ICrudJpaService<P, I> {
    * @return The created item, with updated properties (most importantly its ID),
    *         or null if the item could not be created.
    * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid or is insufficient.
-   * @throws org.trebol.exceptions.EntityAlreadyExistsException When the data collides with an existing registry.
+   * @throws EntityExistsException When the data collides with an existing registry.
    */
-  P create(P dto) throws BadInputException, EntityAlreadyExistsException;
+  P create(P dto) throws BadInputException, EntityExistsException;
 
   /**
    * Queries a paged collection of items.
@@ -48,9 +67,9 @@ public interface ICrudJpaService<P, I> {
    * @param filters   Filtering conditions
    *
    * @return The requested item
-   * @throws javassist.NotFoundException When no item matches the filter.
+   * @throws EntityNotFoundException When no item matches the filter.
    */
-  P readOne(Predicate filters) throws NotFoundException;
+  P readOne(Predicate filters) throws EntityNotFoundException;
 
   /**
    * Updates an existing item.
@@ -59,10 +78,10 @@ public interface ICrudJpaService<P, I> {
    *            present, and can be different from the second method param.
    *
    * @return The saved item, with updated properties
-   * @throws javassist.NotFoundException When no item matches the given item
+   * @throws EntityNotFoundException When no item matches the given item
    * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
    */
-  P update(P dto) throws NotFoundException, BadInputException;
+  P update(P dto) throws EntityNotFoundException, BadInputException;
 
   /**
    * Updates an existing item matching given filtering conditions
@@ -71,17 +90,17 @@ public interface ICrudJpaService<P, I> {
    * @param filters Filtering conditions
    *
    * @return The saved item, with updated properties
-   * @throws javassist.NotFoundException When no item matches given filters.
+   * @throws EntityNotFoundException When no item matches given filters.
    * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
    */
-  P update(P dto, Predicate filters) throws NotFoundException, BadInputException;
+  P update(P dto, Predicate filters) throws EntityNotFoundException, BadInputException;
 
   /**
    * Deletes all items matching given filtering conditions.
    *
    * @param filters Filtering conditions
    *
-   * @throws javassist.NotFoundException When no item matches given filters.
+   * @throws EntityNotFoundException When no item matches given filters.
    */
-  void delete(Predicate filters) throws NotFoundException;
+  void delete(Predicate filters) throws EntityNotFoundException;
 }
