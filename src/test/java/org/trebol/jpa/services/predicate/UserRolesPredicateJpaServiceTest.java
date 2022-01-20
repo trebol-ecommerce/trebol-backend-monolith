@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserRolesPredicateJpaServiceTest {
+class UserRolesPredicateJpaServiceTest {
 
   @Test
   void parses_map() {

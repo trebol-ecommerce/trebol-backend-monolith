@@ -20,14 +20,15 @@
 
 package org.trebol.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-;
+@JsonInclude
 public class UserRolePojo {
-  @JsonInclude
+  @JsonIgnore
   private Long id;
   @NotNull
   private String name;

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.ImagesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ImagesJpaCrudServiceTest {
+class ImagesJpaCrudServiceTest {
 
   @Mock IImagesJpaRepository imagesRepositoryMock;
   @Mock ITwoWayConverterJpaService<ImagePojo, Image> imagesConverterMock;

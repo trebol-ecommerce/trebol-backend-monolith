@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 import static org.trebol.testhelpers.SalesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-public class CheckoutServiceTest {
+class CheckoutServiceTest {
 
   @Mock GenericCrudJpaService<SellPojo, Sell> salesCrudService;
   @Mock ISellStepperJpaService sellStepperService;

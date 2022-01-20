@@ -13,7 +13,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SalesPredicateJpaServiceTest {
+class SalesPredicateJpaServiceTest {
 
   @Test
   void parses_map() {

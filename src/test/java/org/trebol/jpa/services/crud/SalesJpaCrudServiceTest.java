@@ -28,7 +28,7 @@ import static org.trebol.testhelpers.ProductsTestHelper.*;
 import static org.trebol.testhelpers.SalesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-public class SalesJpaCrudServiceTest {
+class SalesJpaCrudServiceTest {
 
   @Mock ISalesJpaRepository salesRepositoryMock;
   @Mock ITwoWayConverterJpaService<SellPojo, Sell> salesConverterMock;

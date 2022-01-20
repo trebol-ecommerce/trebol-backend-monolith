@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.ProductCategoriesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductCategoriesJpaCrudServiceTest {
+class ProductCategoriesJpaCrudServiceTest {
 
   @Mock IProductsCategoriesJpaRepository categoriesRepositoryMock;
   @Mock ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverterMock;

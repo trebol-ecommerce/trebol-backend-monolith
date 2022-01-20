@@ -29,7 +29,7 @@ import static org.trebol.testhelpers.ProductCategoriesTestHelper.*;
 import static org.trebol.testhelpers.ProductsTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductsJpaCrudServiceTest {
+class ProductsJpaCrudServiceTest {
 
   @Mock
   IProductsJpaRepository productsRepositoryMock;

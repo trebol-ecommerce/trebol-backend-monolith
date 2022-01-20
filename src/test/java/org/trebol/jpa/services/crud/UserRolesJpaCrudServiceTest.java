@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserRolesJpaCrudServiceTest {
+class UserRolesJpaCrudServiceTest {
 
   @Mock IUserRolesJpaRepository userRolesRepositoryMock;
   @Mock ITwoWayConverterJpaService<UserRolePojo, UserRole> userRolesConverterMock;

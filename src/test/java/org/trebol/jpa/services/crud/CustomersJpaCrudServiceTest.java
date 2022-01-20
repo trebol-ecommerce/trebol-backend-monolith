@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.CustomersTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-public class CustomersJpaCrudServiceTest {
+class CustomersJpaCrudServiceTest {
 
   @Mock ICustomersJpaRepository customersRepositoryMock;
   @Mock ITwoWayConverterJpaService<CustomerPojo, Customer> billingTypesConverterMock;

@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.PeopleTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PeopleJpaCrudServiceTest {
+class PeopleJpaCrudServiceTest {
 
   @Mock IPeopleJpaRepository peopleRepositoryMock;
   @Mock ITwoWayConverterJpaService<PersonPojo, Person> peopleConverterMock;

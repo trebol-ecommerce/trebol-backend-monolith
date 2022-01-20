@@ -98,6 +98,7 @@ public class SalesJpaCrudServiceImpl
     }
   }
 
+  @Override
   protected SellPojo doUpdate(SellPojo input, Sell existingEntity)
       throws BadInputException {
     Integer statusCode = existingEntity.getStatus().getCode();

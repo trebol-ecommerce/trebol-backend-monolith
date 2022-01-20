@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class BillingCompaniesJpaCrudServiceTest {
+class BillingCompaniesJpaCrudServiceTest {
 
   @Mock IBillingCompaniesJpaRepository billingCompaniesRepositoryMock;
   @Mock ITwoWayConverterJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesConverterMock;
