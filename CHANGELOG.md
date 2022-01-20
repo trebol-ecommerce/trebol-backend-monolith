@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Bump Spring Boot Starter POM to v2.6.2 [BREAKING CHANGE]**
   - Deprecated/unsupported properties; update configuration described in `application.properties`
 - Update license file; add headers to all source files
+- Creating products through a `POST /data/products` call does not cascade creation of other entities
 
 ### Removed
 - Clean up deprecated API resources

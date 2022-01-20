@@ -44,6 +44,11 @@ public class ProductImage
 
   public ProductImage() { }
 
+  public ProductImage(Product product, Image image) {
+    this.product = product;
+    this.image = image;
+  }
+
   public ProductImage(ProductImage source) {
     this.id = source.id;
     this.image = source.image;

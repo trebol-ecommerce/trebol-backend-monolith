@@ -29,7 +29,6 @@ import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.ProductImage;
-import org.trebol.jpa.repositories.IImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
@@ -39,7 +38,6 @@ import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.pojo.ProductPojo;
 
 import javax.persistence.EntityExistsException;
-import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,35 +49,29 @@ public class ProductsJpaCrudServiceImpl
   extends GenericCrudJpaService<ProductPojo, Product> {
 
   private final IProductsJpaRepository productsRepository;
-  private final IImagesJpaRepository imagesRepository;
   private final IProductImagesJpaRepository productImagesRepository;
   private final GenericCrudJpaService<ImagePojo, Image> imagesCrudService;
   private final GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesCrudService;
   private final ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverter;
   private final ITwoWayConverterJpaService<ImagePojo, Image> imageConverter;
-  private final Validator validator;
 
   @Autowired
   public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository,
                                     ITwoWayConverterJpaService<ProductPojo, Product> converter,
-                                    IImagesJpaRepository imagesRepository,
                                     IProductImagesJpaRepository productImagesRepository,
                                     GenericCrudJpaService<ImagePojo, Image> imagesCrudService,
                                     GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesService,
                                     ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverter,
-                                    ITwoWayConverterJpaService<ImagePojo, Image> imageConverter,
-                                    Validator validator) {
+                                    ITwoWayConverterJpaService<ImagePojo, Image> imageConverter) {
     super(repository,
           converter,
           LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class));
     this.productsRepository = repository;
     this.imagesCrudService = imagesCrudService;
     this.categoriesConverter = categoriesConverter;
-    this.imagesRepository = imagesRepository;
     this.productImagesRepository = productImagesRepository;
     this.categoriesCrudService = categoriesService;
     this.imageConverter = imageConverter;
-    this.validator = validator;
   }
 
   @Transactional
@@ -87,18 +79,28 @@ public class ProductsJpaCrudServiceImpl
   public ProductPojo create(ProductPojo inputPojo)
       throws BadInputException, EntityExistsException {
     ProductPojo outputPojo = super.create(inputPojo);
+    Product persistent = productsRepository.getById(outputPojo.getId());
 
-    Collection<ImagePojo> pojoImages = inputPojo.getImages();
-    if (pojoImages != null && !pojoImages.isEmpty()) {
-      Product target = productsRepository.getOne(outputPojo.getId());
-      this.saveProductImagesAndReturnAsPojos(target, pojoImages);
+    // one-Product-to-many-Images
+    Collection<ImagePojo> inputPojoImages = inputPojo.getImages();
+    if (inputPojoImages != null) {
+      List<ProductImage> resultImages = this.makeTransientProductImages(persistent, inputPojoImages);
+      productImagesRepository.saveAll(resultImages);
+      this.addImagesToPojo(resultImages, outputPojo);
     }
 
+    // one-Product-to-one-ProductCategory
     ProductCategoryPojo inputCategory = inputPojo.getCategory();
-    if (inputCategory != null && validator.validate(inputCategory).isEmpty()) {
-      ProductCategoryPojo outputCategory = this.saveCategory(outputPojo.getId(), inputCategory);
-      outputPojo.setCategory(outputCategory);
+    if (inputCategory != null) {
+      Optional<ProductCategory> match = categoriesCrudService.getExisting(inputCategory);
+      if (match.isPresent()) {
+        ProductCategory existingCategory = match.get();
+        persistent.setProductCategory(existingCategory);
+        ProductCategoryPojo outputCategory = categoriesConverter.convertToPojo(existingCategory);
+        outputPojo.setCategory(outputCategory);
+      }
     }
+    productsRepository.save(persistent);
 
     return outputPojo;
   }
@@ -117,89 +119,72 @@ public class ProductsJpaCrudServiceImpl
   @Override
   protected ProductPojo doUpdate(ProductPojo inputPojo, Product existingEntity)
       throws BadInputException {
-    Product updatedEntity = converter.applyChangesToExistingEntity(inputPojo, existingEntity);
-    updatedEntity.setProductCategory(null);
-    updatedEntity = productsRepository.saveAndFlush(updatedEntity);
-    ProductPojo outputPojo = converter.convertToPojo(updatedEntity);
-    assert outputPojo != null; // because entity has just been saved and flushed
-
-    productImagesRepository.deleteByProductId(updatedEntity.getId());
-    Collection<ImagePojo> pojoImages = inputPojo.getImages();
-    if (pojoImages != null) {
-      List<ImagePojo> imagePojos = this.saveProductImagesAndReturnAsPojos(updatedEntity, pojoImages);
-      outputPojo.setImages(imagePojos);
+    Product localChanges = converter.applyChangesToExistingEntity(inputPojo, existingEntity);
+    Product persistent = productsRepository.saveAndFlush(localChanges);
+    ProductPojo outputPojo = converter.convertToPojo(persistent);
+    if (outputPojo == null) {
+      logger.warn("A persistent Product with [id={}] caused an exception", persistent.getId());
+      throw new IllegalStateException("Conversion service returned null when requested to convert one " +
+                                          "persisted Product to a ProductPojo");
     }
 
+    // one-Product-to-many-Images
+    productImagesRepository.deleteByProductId(persistent.getId());
+    Collection<ImagePojo> inputPojoImages = inputPojo.getImages();
+    if (inputPojoImages != null) {
+      List<ProductImage> resultImages = this.makeTransientProductImages(persistent, inputPojoImages);
+      productImagesRepository.saveAll(resultImages);
+      this.addImagesToPojo(resultImages, outputPojo);
+    }
+
+    // one-Product-to-one-ProductCategory
+    persistent.setProductCategory(null);
     ProductCategoryPojo inputCategory = inputPojo.getCategory();
-    if (inputCategory != null && validator.validate(inputCategory).isEmpty()) {
-      ProductCategoryPojo categoryPojo = this.saveCategory(updatedEntity.getId(), inputCategory);
-      outputPojo.setCategory(categoryPojo);
+    if (inputCategory != null) {
+      Optional<ProductCategory> match = categoriesCrudService.getExisting(inputCategory);
+      if (match.isPresent()) {
+        ProductCategory existingCategory = match.get();
+        persistent.setProductCategory(existingCategory);
+        ProductCategoryPojo outputCategory = categoriesConverter.convertToPojo(existingCategory);
+        outputPojo.setCategory(outputCategory);
+      }
     }
+    productsRepository.save(persistent);
 
     return outputPojo;
   }
 
-  /**
-   * Saves a product's relationship to a category (and if the category doesn't exist, creates it beforehand)
-   * @param entityId The entity ID of the target product
-   * @param inputCategory The Pojo for the category to associate
-   * @return The resulting category's Pojo equivalent
-   * @throws BadInputException If any BadInputException is subsequently thrown
-   */
-  private ProductCategoryPojo saveCategory(Long entityId, ProductCategoryPojo inputCategory)
-      throws BadInputException {
-    ProductCategoryPojo outputCategory;
-    try {
-      outputCategory = categoriesCrudService.create(inputCategory);
-    } catch (EntityExistsException ex) {
-      Optional<ProductCategory> existing = categoriesCrudService.getExisting(inputCategory);
-      if (existing.isPresent()) {
-        outputCategory = categoriesConverter.convertToPojo(existing.get());
-        assert outputCategory != null; // because an entity was actually found
-      } else {
-        throw new RuntimeException("Persistence context mismatch - Existing category couldn't be found");
-      }
+  private void addImagesToPojo(List<ProductImage> resultImages, ProductPojo outputPojo) {
+    Collection<ImagePojo> outputImages = new ArrayList<>();
+    for (ProductImage productImage : resultImages) {
+      ImagePojo imagePojo = imageConverter.convertToPojo(productImage.getImage());
+      outputImages.add(imagePojo);
     }
-    productsRepository.setProductCategoryById(entityId, outputCategory.getId());
-    return outputCategory;
+    outputPojo.setImages(outputImages);
   }
 
-  private List<ImagePojo> saveProductImagesAndReturnAsPojos(Product updatedEntity, Collection<ImagePojo> inputImages)
-      throws BadInputException {
-    List<ImagePojo> outputImages = new ArrayList<>();
-    List<ProductImage> targetImages = new ArrayList<>();
+  /**
+   * Creates transient instances of the ProductImages entity (for the one-to-many relationship).
+   * It does NOT persist these instances.
+   * @param existingProduct The persisted entity
+   * @param inputImages The list of images to link to the aforementioned Product
+   * @return The list of ImagePojos with normalized metadata.
+   */
+  private List<ProductImage> makeTransientProductImages(Product existingProduct,
+                                                        Collection<ImagePojo> inputImages) {
+    List<ProductImage> allRelationships = new ArrayList<>();
     for (ImagePojo img : inputImages) {
-      if (img != null && validator.validate(img).isEmpty()) {
-        ImagePojo outputPojo = this.saveImage(img);
-        outputImages.add(outputPojo);
-        ProductImage targetImage = new ProductImage();
-        targetImage.setImage(imagesRepository.getOne(outputPojo.getId()));
-        targetImage.setProduct(updatedEntity);
-        targetImages.add(targetImage);
+      try {
+        Optional<Image> match = imagesCrudService.getExisting(img);
+        if (match.isPresent()) {
+          Image existingImage = match.get();
+          ProductImage relationship = new ProductImage(existingProduct, existingImage);
+          allRelationships.add(relationship);
+        }
+      } catch (BadInputException ex) {
+        logger.debug("An image was not linked to product with barcode '{}'", existingProduct.getBarcode());
       }
     }
-    productImagesRepository.saveAll(targetImages);
-    return outputImages;
-  }
-
-  /**
-   * Forcefully saves and returns an image.
-   * Here 'forcefully' means that it will always try to create the image, and if it fails, to fetch it.
-   * @param inputPojo The Pojo for the image to associate
-   * @return The resulting image's Pojo equivalent
-   * @throws BadInputException If any BadInputException is subsequently thrown
-   */
-  private ImagePojo saveImage(ImagePojo inputPojo)
-      throws BadInputException {
-    try {
-      return imagesCrudService.create(inputPojo);
-    } catch (EntityExistsException ex) {
-      Optional<Image> existing = imagesCrudService.getExisting(inputPojo);
-      if (existing.isPresent()) {
-        return imageConverter.convertToPojo(existing.get());
-      } else {
-        throw new RuntimeException("Persistence context is in a wrong state - Existing image couldn't be found");
-      }
-    }
+    return allRelationships;
   }
 }
