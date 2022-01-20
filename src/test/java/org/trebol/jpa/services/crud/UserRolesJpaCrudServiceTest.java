@@ -23,13 +23,13 @@ public class UserRolesJpaCrudServiceTest {
   @Mock ITwoWayConverterJpaService<UserRolePojo, UserRole> userRolesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     UserRolesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_name() throws BadInputException {
+  void finds_by_name() throws BadInputException {
     Long roleId = 1L;
     String roleName = "test-role";
     UserRolePojo example = new UserRolePojo(roleName);

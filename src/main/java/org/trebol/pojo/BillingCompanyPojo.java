@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Objects;
 
-;
 @JsonInclude
 public class BillingCompanyPojo {
   private String idNumber;

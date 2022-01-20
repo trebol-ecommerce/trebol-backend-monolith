@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ImagesPredicateJpaServiceTest {
 
   @Test
-  public void parses_map() {
+  void parses_map() {
     Predicate emptyPredicate = new BooleanBuilder();
     ImagesPredicateJpaServiceImpl service = instantiate();
     List<Predicate> predicates = List.of(emptyPredicate,

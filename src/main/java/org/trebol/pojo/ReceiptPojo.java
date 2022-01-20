@@ -26,12 +26,9 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
 
-;
 @JsonInclude
 public class ReceiptPojo {
   private long buyOrder;
-  @Deprecated(forRemoval = true)
-  private int amount;
   private Collection<ReceiptDetailPojo> details;
   private Instant date;
   private String status;
@@ -47,16 +44,6 @@ public class ReceiptPojo {
 
   public void setBuyOrder(long buyOrder) {
     this.buyOrder = buyOrder;
-  }
-
-  @Deprecated(forRemoval = true, since = "1.1.0")
-  public int getAmount() {
-    return amount;
-  }
-
-  @Deprecated(forRemoval = true, since = "1.1.0")
-  public void setAmount(int amount) {
-    this.amount = amount;
   }
 
   public Collection<ReceiptDetailPojo> getDetails() {
@@ -129,7 +116,6 @@ public class ReceiptPojo {
     if (o == null || getClass() != o.getClass()) return false;
     ReceiptPojo that = (ReceiptPojo) o;
     return buyOrder == that.buyOrder &&
-        amount == that.amount &&
         totalValue == that.totalValue &&
         taxValue == that.taxValue &&
         transportValue == that.transportValue &&
@@ -142,14 +128,13 @@ public class ReceiptPojo {
 
   @Override
   public int hashCode() {
-    return Objects.hash(buyOrder, amount, details, date, status, token, totalValue, taxValue, transportValue, totalItems);
+    return Objects.hash(buyOrder, details, date, status, token, totalValue, taxValue, transportValue, totalItems);
   }
 
   @Override
   public String toString() {
     return "ReceiptPojo{" +
         "buyOrder=" + buyOrder +
-        ", amount=" + amount +
         ", details=" + details +
         ", date=" + date +
         ", status='" + status + '\'' +

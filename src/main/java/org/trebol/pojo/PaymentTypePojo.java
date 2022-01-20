@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
-;
 @JsonInclude
 public class PaymentTypePojo {
   @NotBlank

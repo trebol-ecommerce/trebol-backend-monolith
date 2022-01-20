@@ -33,7 +33,6 @@ import org.trebol.pojo.BillingCompanyPojo;
 
 import java.util.Optional;
 
-;
 @Transactional
 @Service
 public class BillingCompaniesJpaCrudServiceImpl

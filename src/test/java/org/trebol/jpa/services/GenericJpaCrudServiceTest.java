@@ -39,7 +39,7 @@ public class GenericJpaCrudServiceTest {
   private final PageRequest simplePageRequest = PageRequest.of(0, 10);
 
   @Test
-  public void sanity_checks() {
+  void sanity_checks() {
     GenericCrudJpaService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
     assertNotNull(service);
 
@@ -48,7 +48,7 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_data()
+  void creates_data()
       throws BadInputException, EntityExistsException {
     when(genericConverterMock.convertToNewEntity(newPojo)).thenReturn(newEntity);
     when(genericRepositoryMock.saveAndFlush(newEntity)).thenReturn(persistedEntity);
@@ -65,7 +65,7 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void reads_plural_data_without_items() {
+  void reads_plural_data_without_items() {
     DataPagePojo<GenericPojo> expectedResult = new DataPagePojo<>(0, 10);
 
     when(genericRepositoryMock.findAll(simplePageRequest)).thenReturn(new PageImpl<>(emptyEntityList));
@@ -79,7 +79,7 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void reads_plural_data_with_items() {
+  void reads_plural_data_with_items() {
     Predicate filters = new BooleanBuilder();
     DataPagePojo<GenericPojo> expectedResult = new DataPagePojo<>(persistedPojoList, 0, 1, 10);
 
@@ -98,7 +98,7 @@ public class GenericJpaCrudServiceTest {
 
 
   @Test
-  public void reads_singular_data()
+  void reads_singular_data()
       throws EntityNotFoundException {
     Predicate filters = new BooleanBuilder();
     Optional<GenericEntity> result = Optional.of(persistedEntity);
@@ -114,7 +114,7 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void updates_data()
+  void updates_data()
       throws BadInputException, EntityNotFoundException {
     GenericPojo updatingPojo = new GenericPojo(1L, "test2");
     GenericEntity updatedEntity = new GenericEntity(1L, "test2");
@@ -133,7 +133,7 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void updates_data_using_filters()
+  void updates_data_using_filters()
       throws BadInputException, EntityNotFoundException {
     Predicate filters = new BooleanBuilder();
     GenericPojo updatingPojo = new GenericPojo(1L, "test2");
@@ -154,7 +154,7 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void deletes_data()
+  void deletes_data()
       throws EntityNotFoundException {
     PageImpl<GenericEntity> persistedEntityPage = new PageImpl<>(persistedEntityList);
     Predicate filters = new BooleanBuilder();
@@ -169,7 +169,7 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void errors_when_reads_singular_data_but_is_unable_to_find_it() {
+  void errors_when_reads_singular_data_but_is_unable_to_find_it() {
     Predicate filters = new BooleanBuilder();
     Optional<GenericEntity> emptyResult = Optional.empty();
     when(genericRepositoryMock.findOne(filters)).thenReturn(emptyResult);

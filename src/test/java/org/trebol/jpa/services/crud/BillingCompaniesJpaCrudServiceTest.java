@@ -23,13 +23,13 @@ public class BillingCompaniesJpaCrudServiceTest {
   @Mock ITwoWayConverterJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     BillingCompaniesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_id_number() throws BadInputException {
+  void finds_by_id_number() throws BadInputException {
     Long companyId = 1L;
     String companyIdNumber = "11111111";
     String companyName = "test company";

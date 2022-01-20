@@ -33,7 +33,6 @@ import org.trebol.pojo.UserPojo;
 
 import java.util.Optional;
 
-;
 @Transactional
 @Service
 public class UsersJpaCrudServiceImpl

@@ -39,7 +39,6 @@ public class SellEntity2ReceiptPojo
     target.setTotalItems(source.getTotalItems());
     target.setTotalValue(source.getTotalValue());
     target.setToken(source.getTransactionToken());
-    target.setAmount(source.getTotalValue());
     return target;
   }
 }

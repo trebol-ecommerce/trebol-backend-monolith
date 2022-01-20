@@ -24,13 +24,13 @@ public class CustomersJpaCrudServiceTest {
   @Mock ITwoWayConverterJpaService<CustomerPojo, Customer> billingTypesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     CustomersJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_id_number() throws BadInputException {
+  void finds_by_id_number() throws BadInputException {
     resetCustomers();
     when(customersRepositoryMock.findByPersonIdNumber(customerPojoForFetch().getPerson().getIdNumber())).thenReturn(Optional.of(customerEntityAfterCreation()));
     CustomersJpaCrudServiceImpl service = instantiate();

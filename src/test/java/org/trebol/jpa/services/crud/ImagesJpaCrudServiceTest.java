@@ -25,13 +25,13 @@ public class ImagesJpaCrudServiceTest {
   @Mock ITwoWayConverterJpaService<ImagePojo, Image> imagesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     ImagesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_filename() throws BadInputException {
+  void finds_by_filename() throws BadInputException {
     resetImages();
     when(imagesRepositoryMock.findByFilename(imagePojoForFetch().getFilename())).thenReturn(Optional.of(imageEntityAfterCreation()));
     ImagesJpaCrudServiceImpl service = instantiate();

@@ -33,7 +33,6 @@ import org.trebol.pojo.ShipperPojo;
 
 import java.util.Optional;
 
-;
 @Transactional
 @Service
 public class ShippersJpaCrudServiceImpl

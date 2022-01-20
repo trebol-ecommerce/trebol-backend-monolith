@@ -33,7 +33,6 @@ import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.Map;
 
-;
 @Service
 public class SalesPredicateJpaServiceImpl
   implements IPredicateJpaService<Sell> {

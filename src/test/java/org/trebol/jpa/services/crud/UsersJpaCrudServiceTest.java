@@ -25,13 +25,13 @@ public class UsersJpaCrudServiceTest {
   @Mock ITwoWayConverterJpaService<UserPojo, User> usersConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     UsersJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_name() throws BadInputException {
+  void finds_by_name() throws BadInputException {
     Long userId = 1L;
     String userName = "test-user";
     String userPassword = "test-password";

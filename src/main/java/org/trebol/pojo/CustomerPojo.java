@@ -27,7 +27,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-;
 @JsonInclude
 public class CustomerPojo {
   @JsonIgnore

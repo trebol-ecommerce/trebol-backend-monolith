@@ -23,13 +23,13 @@ public class SellStatusesJpaCrudServiceTest {
   @Mock ITwoWayConverterJpaService<SellStatusPojo, SellStatus> sellStatusesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     SellStatusesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_name() throws BadInputException {
+  void finds_by_name() throws BadInputException {
     Long statusId = 1L;
     Integer statusCode = 0;
     String statusName = "example sell status name";

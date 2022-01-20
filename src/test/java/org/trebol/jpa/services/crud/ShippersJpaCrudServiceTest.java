@@ -23,13 +23,13 @@ public class ShippersJpaCrudServiceTest {
   @Mock ITwoWayConverterJpaService<ShipperPojo, Shipper> shippersConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     ShippersJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_name() throws BadInputException {
+  void finds_by_name() throws BadInputException {
     Long shipperId = 1L;
     String shipperName = "test-one";
     ShipperPojo example = new ShipperPojo(shipperName);

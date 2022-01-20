@@ -27,7 +27,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-;
 @JsonInclude
 public class SellDetailPojo {
   @JsonIgnore

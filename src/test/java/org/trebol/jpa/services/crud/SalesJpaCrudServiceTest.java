@@ -35,13 +35,13 @@ public class SalesJpaCrudServiceTest {
   @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     SalesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_id_aka_buy_order()
+  void finds_by_id_aka_buy_order()
       throws BadInputException {
     resetSales();
     when(salesRepositoryMock.findById(sellPojoForFetch().getBuyOrder())).thenReturn(Optional.of(sellEntityAfterCreation()));
@@ -55,7 +55,7 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
-  public void finds_using_predicates()
+  void finds_using_predicates()
       throws EntityNotFoundException {
     resetProducts();
     resetSales();
@@ -74,7 +74,7 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_sell()
+  void creates_sell()
       throws BadInputException, EntityExistsException {
     resetSales();
     when(salesConverterMock.convertToNewEntity(sellPojoBeforeCreation())).thenReturn(sellEntityBeforeCreation());
@@ -98,7 +98,7 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
-  public void updates_sell()
+  void updates_sell()
       throws BadInputException, EntityNotFoundException {
     resetSales();
     Instant updatedDate = Instant.now().minus(Duration.ofHours(1L));
@@ -125,7 +125,7 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
-  public void returns_same_when_no_update_is_made()
+  void returns_same_when_no_update_is_made()
       throws BadInputException, EntityNotFoundException {
     resetSales();
     SellPojo copy = new SellPojo(sellPojoAfterCreation());
@@ -142,7 +142,7 @@ public class SalesJpaCrudServiceTest {
   }
 
   @Test
-  public void throws_exception_when_not_found_using_predicates() {
+  void throws_exception_when_not_found_using_predicates() {
     Predicate filters = new BooleanBuilder();
     when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.empty());
     SalesJpaCrudServiceImpl service = instantiate();

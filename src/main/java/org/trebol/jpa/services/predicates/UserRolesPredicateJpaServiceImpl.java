@@ -31,7 +31,6 @@ import org.trebol.jpa.services.IPredicateJpaService;
 
 import java.util.Map;
 
-;
 @Service
 public class UserRolesPredicateJpaServiceImpl
   implements IPredicateJpaService<UserRole> {

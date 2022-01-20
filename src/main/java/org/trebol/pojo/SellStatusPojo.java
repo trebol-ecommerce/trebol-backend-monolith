@@ -27,7 +27,6 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
-;
 @JsonInclude
 public class SellStatusPojo {
   @NotBlank

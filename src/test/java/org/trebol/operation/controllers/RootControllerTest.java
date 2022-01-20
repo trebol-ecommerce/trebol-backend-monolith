@@ -8,7 +8,7 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 public class RootControllerTest {
 
   @Test
-  public void return_200OK() {
+  void return_200OK() {
     given().
         standaloneSetup(new RootController()).
     when().

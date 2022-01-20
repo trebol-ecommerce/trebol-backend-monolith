@@ -33,7 +33,6 @@ import org.trebol.pojo.SellStatusPojo;
 
 import java.util.Optional;
 
-;
 @Transactional
 @Service
 public class SellStatusesJpaCrudServiceImpl

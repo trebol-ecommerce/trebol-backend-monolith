@@ -34,7 +34,6 @@ import org.trebol.pojo.SalespersonPojo;
 
 import java.util.Optional;
 
-;
 @Transactional
 @Service
 public class SalespeopleJpaCrudServiceImpl

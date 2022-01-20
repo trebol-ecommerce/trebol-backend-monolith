@@ -36,13 +36,13 @@ public class CheckoutServiceTest {
   private static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     CheckoutServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void requests_transaction_start()
+  void requests_transaction_start()
       throws PaymentServiceException, EntityNotFoundException {
     PaymentRedirectionDetailsPojo payload = new PaymentRedirectionDetailsPojo(PAYMENT_URL, SELL_TRANSACTION_TOKEN);
     resetSales();
@@ -59,7 +59,7 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void acknowledges_successful_transaction()
+  void acknowledges_successful_transaction()
       throws PaymentServiceException, EntityNotFoundException {
     Map<String, String> matcherMap = Map.of(
         "statusName", "Payment Started",
@@ -81,7 +81,7 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void acknowledges_aborted_transaction()
+  void acknowledges_aborted_transaction()
       throws PaymentServiceException, EntityNotFoundException {
     Map<String, String> matcherMap = Map.of(
         "statusName", "Payment Started",
@@ -101,7 +101,7 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void throws_exceptions_at_unexisting_transactions_before_requesting_payments()
+  void throws_exceptions_at_unexisting_transactions_before_requesting_payments()
       throws PaymentServiceException, EntityNotFoundException {
     PaymentRedirectionDetailsPojo payload = new PaymentRedirectionDetailsPojo(PAYMENT_URL, SELL_TRANSACTION_TOKEN);
     String exceptionMessage = "No match";
@@ -125,7 +125,7 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void throws_exceptions_at_invalid_transactions_before_confirming()
+  void throws_exceptions_at_invalid_transactions_before_confirming()
       throws PaymentServiceException, EntityNotFoundException {
     Map<String, String> matcherMap = Map.of(
         "statusName", "Payment Started",

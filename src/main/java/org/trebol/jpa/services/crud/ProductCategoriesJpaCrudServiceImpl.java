@@ -33,7 +33,6 @@ import org.trebol.pojo.ProductCategoryPojo;
 
 import java.util.Optional;
 
-;
 @Transactional
 @Service
 public class ProductCategoriesJpaCrudServiceImpl

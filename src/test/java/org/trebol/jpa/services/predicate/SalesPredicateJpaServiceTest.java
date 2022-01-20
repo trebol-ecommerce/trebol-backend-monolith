@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SalesPredicateJpaServiceTest {
 
   @Test
-  public void parses_map() {
+  void parses_map() {
     Predicate emptyPredicate = new BooleanBuilder();
     SalesPredicateJpaServiceImpl service = instantiate();
     List<Predicate> predicates = List.of(emptyPredicate,
@@ -30,7 +30,7 @@ public class SalesPredicateJpaServiceTest {
   }
 
   @Test
-  public void only_accepts_correct_dates() {
+  void only_accepts_correct_dates() {
     Predicate emptyPredicate = new BooleanBuilder();
     SalesPredicateJpaServiceImpl service = instantiate();
     Predicate whereDateIs = service.parseMap(Map.of("date", Instant.now().toString()));

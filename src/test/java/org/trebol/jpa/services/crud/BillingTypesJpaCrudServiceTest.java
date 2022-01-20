@@ -23,13 +23,13 @@ public class BillingTypesJpaCrudServiceTest {
   @Mock ITwoWayConverterJpaService<BillingTypePojo, BillingType> billingTypesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     BillingTypesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_name() throws BadInputException {
+  void finds_by_name() throws BadInputException {
     Long billingTypeId = 1L;
     String billingTypeName = "test company";
     BillingTypePojo example = new BillingTypePojo(billingTypeName);

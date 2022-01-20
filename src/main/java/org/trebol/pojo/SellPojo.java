@@ -34,7 +34,6 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
-;
 @JsonInclude
 public class SellPojo {
   private Long buyOrder;

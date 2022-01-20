@@ -47,13 +47,13 @@ public class ProductsJpaCrudServiceTest {
   ITwoWayConverterJpaService<ImagePojo, Image> imagesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     ProductsJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_barcode()
+  void finds_by_barcode()
       throws BadInputException {
     resetProducts();
     when(productsRepositoryMock.findByBarcode(productPojoForFetch().getBarcode())).thenReturn(
@@ -75,7 +75,7 @@ public class ProductsJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_product()
+  void creates_product()
       throws BadInputException, EntityExistsException {
     resetProducts();
 
@@ -105,7 +105,7 @@ public class ProductsJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_product_with_nonexistent_image()
+  void creates_product_with_nonexistent_image()
       throws BadInputException {
     resetProducts();
     resetImages();
@@ -130,7 +130,7 @@ public class ProductsJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_product_with_existing_image()
+  void creates_product_with_existing_image()
       throws BadInputException {
     resetProducts();
     resetImages();
@@ -159,7 +159,7 @@ public class ProductsJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_product_with_nonexistent_category()
+  void creates_product_with_nonexistent_category()
       throws BadInputException {
     resetProducts();
     resetProductCategories();
@@ -181,7 +181,7 @@ public class ProductsJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_product_with_existing_category()
+  void creates_product_with_existing_category()
       throws BadInputException {
     resetProducts();
     resetProductCategories();

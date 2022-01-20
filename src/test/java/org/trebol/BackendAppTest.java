@@ -13,7 +13,7 @@ public class BackendAppTest {
   @Autowired RootController rootController;
 
   @Test
-  public void contextLoads() {
+  void contextLoads() {
     assertThat(rootController).isNotNull();
   }
 }

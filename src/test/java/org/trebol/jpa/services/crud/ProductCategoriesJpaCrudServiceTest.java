@@ -25,13 +25,13 @@ public class ProductCategoriesJpaCrudServiceTest {
   @Mock ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverterMock;
 
   @Test
-  public void sanity_check() {
+  void sanity_check() {
     ProductCategoriesJpaCrudServiceImpl service = instantiate();
     assertNotNull(service);
   }
 
   @Test
-  public void finds_by_code() throws BadInputException {
+  void finds_by_code() throws BadInputException {
     resetProductCategories();
     when(categoriesRepositoryMock.findByCode(
         productCategoryPojoForFetch().getCode())).thenReturn(Optional.of(productCategoryEntityAfterCreation()));

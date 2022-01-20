@@ -32,7 +32,6 @@ import org.trebol.jpa.services.IPredicateJpaService;
 
 import java.util.Map;
 
-;
 @Service
 public class CustomersPredicateJpaServiceImpl
   implements IPredicateJpaService<Customer> {

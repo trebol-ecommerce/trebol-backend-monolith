@@ -33,7 +33,6 @@ import org.trebol.pojo.ImagePojo;
 
 import java.util.Optional;
 
-;
 @Transactional
 @Service
 public class ImagesJpaCrudServiceImpl
