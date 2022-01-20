@@ -1,7 +1,10 @@
-# Binaries and generated sources
+# Binaries
 target/
 bin/
+
+# Generated files
 /src/main/setup/
+/src/main/webapp/
 
 # Editor files and folders
 .classpath
