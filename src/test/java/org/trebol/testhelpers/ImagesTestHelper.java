@@ -3,6 +3,9 @@ package org.trebol.testhelpers;
 import org.trebol.jpa.entities.Image;
 import org.trebol.pojo.ImagePojo;
 
+/**
+ * Builds & caches reusable instances of Image and ImagePojo
+ */
 public class ImagesTestHelper {
 
   public static long IMAGE_ID = 1L;

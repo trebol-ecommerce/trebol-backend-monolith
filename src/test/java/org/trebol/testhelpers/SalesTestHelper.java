@@ -10,6 +10,9 @@ import java.util.List;
 import static org.trebol.testhelpers.CustomersTestHelper.*;
 import static org.trebol.testhelpers.ProductsTestHelper.*;
 
+/**
+ * Builds & caches reusable instances of Sell and SellPojo
+ */
 public class SalesTestHelper {
 
   public static final long GENERIC_ID = 1L;

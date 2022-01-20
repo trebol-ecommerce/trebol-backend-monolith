@@ -3,6 +3,9 @@ package org.trebol.testhelpers;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.pojo.ProductCategoryPojo;
 
+/**
+ * Builds & caches reusable instances of ProductCategory and ProductCategoryPojo
+ */
 public class ProductCategoriesTestHelper {
 
   public static final long PRODUCT_ID = 1L;
