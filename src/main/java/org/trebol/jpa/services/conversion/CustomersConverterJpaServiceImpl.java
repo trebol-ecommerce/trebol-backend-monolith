@@ -21,6 +21,7 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
@@ -28,8 +29,6 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.PersonPojo;
-
-import javax.annotation.Nullable;
 
 @Service
 public class CustomersConverterJpaServiceImpl

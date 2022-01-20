@@ -20,7 +20,6 @@
 
 package org.trebol.operation.controllers;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +27,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.operation.IProfileService;
 import org.trebol.pojo.PersonPojo;
 
+import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 
 @RestController
@@ -43,14 +43,15 @@ public class AccountProfileController {
   }
 
   @GetMapping({"", "/"})
-  public PersonPojo getProfile(Principal principal) throws NotFoundException {
+  public PersonPojo getProfile(Principal principal)
+      throws EntityNotFoundException {
     String username = principal.getName();
     return userProfileService.getProfileFromUserName(username);
   }
 
   @PutMapping({"", "/"})
   public void updateProfile(Principal principal, @RequestBody PersonPojo newProfile)
-          throws NotFoundException, BadInputException {
+      throws EntityNotFoundException, BadInputException {
     String username = principal.getName();
     userProfileService.updateProfileForUserWithName(principal.getName(), newProfile);
   }

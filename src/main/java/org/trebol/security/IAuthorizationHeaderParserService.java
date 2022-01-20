@@ -21,8 +21,7 @@
 package org.trebol.security;
 
 import org.springframework.http.HttpHeaders;
-
-import javax.annotation.Nullable;
+import org.springframework.lang.Nullable;
 
 /**
  * Interface for parsing Authorization headers into tokens

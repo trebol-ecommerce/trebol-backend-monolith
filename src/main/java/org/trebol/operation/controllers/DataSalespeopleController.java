@@ -20,14 +20,12 @@
 
 package org.trebol.operation.controllers;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
@@ -36,6 +34,8 @@ import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.SalespersonPojo;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -65,7 +65,8 @@ public class DataSalespeopleController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:create')")
-  public void create(@Valid @RequestBody SalespersonPojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody SalespersonPojo input)
+      throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -73,14 +74,15 @@ public class DataSalespeopleController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:update')")
   public void update(@RequestBody SalespersonPojo input, @RequestParam Map<String, String> requestParams)
-      throws BadInputException, NotFoundException {
+      throws BadInputException, EntityNotFoundException {
     super.update(input, requestParams);
   }
 
   @Override
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:delete')")
-  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+  public void delete(@RequestParam Map<String, String> requestParams)
+      throws EntityNotFoundException {
     super.delete(requestParams);
   }
 

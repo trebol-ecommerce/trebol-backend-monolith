@@ -22,15 +22,13 @@ package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.UserRolePojo;
 
-import javax.annotation.Nullable;
-
-;
 @Service
 public class UserRolesConverterJpaServiceImpl
   implements ITwoWayConverterJpaService<UserRolePojo, UserRole> {

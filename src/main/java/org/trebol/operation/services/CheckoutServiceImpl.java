@@ -22,7 +22,6 @@ package org.trebol.operation.services;
 
 import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
-import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +36,7 @@ import org.trebol.operation.ICheckoutService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
 
+import javax.persistence.EntityNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -70,7 +70,7 @@ public class CheckoutServiceImpl
     try {
       sellStepperService.setSellStatusToPaymentStartedWithToken(transaction.getBuyOrder(), response.getToken());
       return response;
-    } catch (NotFoundException exc) {
+    } catch (EntityNotFoundException exc) {
       logger.error("A sell that was just created could not be found", exc);
       throw new IllegalStateException("The server had a problem requesting the transaction");
     }
@@ -78,7 +78,7 @@ public class CheckoutServiceImpl
 
   @Override
   public URI confirmTransaction(String transactionToken, boolean wasAborted)
-      throws NotFoundException, PaymentServiceException {
+      throws EntityNotFoundException, PaymentServiceException {
     try {
       if (wasAborted) {
         SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
@@ -98,11 +98,11 @@ public class CheckoutServiceImpl
   /**
    * Finds a transaction by its token, fetches the result of its payment and updates it in the database.
    * @param transactionToken A token provided by the payment integration service.
-   * @throws NotFoundException If no transaction has a matching token.
+   * @throws EntityNotFoundException If no transaction has a matching token.
    * @throws PaymentServiceException As raised at integration level.
    */
   private void processSellStatus(String transactionToken)
-      throws NotFoundException, PaymentServiceException {
+      throws EntityNotFoundException, PaymentServiceException {
     SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
     int statusCode = paymentIntegrationService.requestPaymentResult(transactionToken);
     Long sellId = sellByToken.getBuyOrder();
@@ -113,7 +113,7 @@ public class CheckoutServiceImpl
     }
   }
 
-  private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws NotFoundException {
+  private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws EntityNotFoundException {
     Map<String, String> startedWithTokenMatcher = Maps.of("statusName", "Payment Started").
                                                        and("token", transactionToken).build();
     Predicate startedTransactionWithMatchingToken = salesPredicateService.parseMap(startedWithTokenMatcher);

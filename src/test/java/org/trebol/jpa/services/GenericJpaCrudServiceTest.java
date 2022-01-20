@@ -2,7 +2,6 @@ package org.trebol.jpa.services;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import javassist.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -11,10 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.IJpaRepository;
 import org.trebol.pojo.DataPagePojo;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +48,8 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_data() throws BadInputException, EntityAlreadyExistsException {
+  public void creates_data()
+      throws BadInputException, EntityExistsException {
     when(genericConverterMock.convertToNewEntity(newPojo)).thenReturn(newEntity);
     when(genericRepositoryMock.saveAndFlush(newEntity)).thenReturn(persistedEntity);
     when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
@@ -97,7 +98,8 @@ public class GenericJpaCrudServiceTest {
 
 
   @Test
-  public void reads_singular_data() throws NotFoundException {
+  public void reads_singular_data()
+      throws EntityNotFoundException {
     Predicate filters = new BooleanBuilder();
     Optional<GenericEntity> result = Optional.of(persistedEntity);
     when(genericRepositoryMock.findOne(filters)).thenReturn(result);
@@ -112,7 +114,8 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void updates_data() throws BadInputException, NotFoundException {
+  public void updates_data()
+      throws BadInputException, EntityNotFoundException {
     GenericPojo updatingPojo = new GenericPojo(1L, "test2");
     GenericEntity updatedEntity = new GenericEntity(1L, "test2");
     when(genericConverterMock.applyChangesToExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
@@ -130,7 +133,8 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void updates_data_using_filters() throws BadInputException, NotFoundException {
+  public void updates_data_using_filters()
+      throws BadInputException, EntityNotFoundException {
     Predicate filters = new BooleanBuilder();
     GenericPojo updatingPojo = new GenericPojo(1L, "test2");
     GenericEntity updatedEntity = new GenericEntity(1L, "test2");
@@ -150,7 +154,8 @@ public class GenericJpaCrudServiceTest {
   }
 
   @Test
-  public void deletes_data() throws NotFoundException {
+  public void deletes_data()
+      throws EntityNotFoundException {
     PageImpl<GenericEntity> persistedEntityPage = new PageImpl<>(persistedEntityList);
     Predicate filters = new BooleanBuilder();
     when(genericRepositoryMock.count(filters)).thenReturn(1L);
@@ -174,7 +179,7 @@ public class GenericJpaCrudServiceTest {
 
     try {
       genericPojo = service.readOne(filters);
-    } catch (NotFoundException ex) {
+    } catch (EntityNotFoundException ex) {
       verify(genericRepositoryMock).findOne(filters);
     }
 

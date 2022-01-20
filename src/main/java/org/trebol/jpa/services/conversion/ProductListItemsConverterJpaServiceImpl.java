@@ -22,6 +22,7 @@ package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
@@ -32,7 +33,6 @@ import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductPojo;
 
-import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 

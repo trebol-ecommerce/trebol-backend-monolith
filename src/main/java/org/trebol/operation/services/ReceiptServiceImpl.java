@@ -20,7 +20,6 @@
 
 package org.trebol.operation.services;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
@@ -33,6 +32,7 @@ import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.ReceiptDetailPojo;
 import org.trebol.pojo.ReceiptPojo;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,10 +51,11 @@ public class ReceiptServiceImpl
   }
 
   @Override
-  public ReceiptPojo fetchReceiptByTransactionToken(String token) throws NotFoundException {
+  public ReceiptPojo fetchReceiptByTransactionToken(String token)
+      throws EntityNotFoundException {
     Optional<Sell> match = salesRepository.findByTransactionToken(token);
     if (match.isEmpty()) {
-      throw new NotFoundException("The transaction could not be found, no receipt can be created");
+      throw new EntityNotFoundException("The transaction could not be found, no receipt can be created");
     }
     Sell foundMatch = match.get();
 

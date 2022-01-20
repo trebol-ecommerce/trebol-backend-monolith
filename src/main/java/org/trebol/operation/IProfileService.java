@@ -20,14 +20,15 @@
 
 package org.trebol.operation;
 
-import javassist.NotFoundException;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.UserNotFoundException;
+import org.trebol.jpa.exceptions.UserNotFoundException;
 import org.trebol.pojo.PersonPojo;
+
+import javax.persistence.EntityNotFoundException;
 
 public interface IProfileService {
 
-  PersonPojo getProfileFromUserName(String userName) throws NotFoundException;
+  PersonPojo getProfileFromUserName(String userName) throws EntityNotFoundException;
 
   void updateProfileForUserWithName(String userName, PersonPojo profile) throws BadInputException, UserNotFoundException;
 }

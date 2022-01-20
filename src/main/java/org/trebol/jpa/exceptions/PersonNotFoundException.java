@@ -18,17 +18,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.exceptions;
+package org.trebol.jpa.exceptions;
 
-import javassist.NotFoundException;
+import javax.persistence.EntityNotFoundException;
 
-public class PersonNotFoundException extends NotFoundException {
+public class PersonNotFoundException
+    extends EntityNotFoundException {
 
-    public PersonNotFoundException(String msg) {
-        super(msg);
-    }
+  public PersonNotFoundException() { }
 
-    public PersonNotFoundException(String msg, Exception e) {
-        super(msg, e);
-    }
+  public PersonNotFoundException(String message) {
+    super(message);
+  }
 }

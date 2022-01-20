@@ -22,13 +22,11 @@ package org.trebol.operation.controllers;
 
 import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.GenericCrudJpaService;
@@ -37,6 +35,8 @@ import org.trebol.operation.ICheckoutService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.net.URI;
@@ -75,7 +75,7 @@ public class PublicCheckoutController {
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('checkout')")
   public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody SellPojo transactionRequest)
-      throws BadInputException, PaymentServiceException, EntityAlreadyExistsException {
+      throws BadInputException, PaymentServiceException, EntityExistsException {
     SellPojo createdTransaction = salesCrudService.create(transactionRequest);
     return service.requestTransactionStart(createdTransaction);
   }
@@ -85,12 +85,12 @@ public class PublicCheckoutController {
    * @param transactionData The HTTP headers
    * @return A 303 SEE OTHER response
    * @throws org.trebol.exceptions.BadInputException If the expected token is not present in the request
-   * @throws javassist.NotFoundException If the token does not match that of any "pending" transaction
+   * @throws EntityNotFoundException If the token does not match that of any "pending" transaction
    * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during internal API calls
    */
   @GetMapping({"/validate", "/validate/"})
   public ResponseEntity<Void> validateSuccesfulTransaction(@RequestParam Map<String, String> transactionData)
-      throws BadInputException, NotFoundException, PaymentServiceException {
+      throws BadInputException, EntityNotFoundException, PaymentServiceException {
     if (!transactionData.containsKey(WEBPAY_SUCCESS_TOKEN_HEADER_NAME)) { // success
       throw new BadInputException("No transaction token was provided");
     }
@@ -107,12 +107,12 @@ public class PublicCheckoutController {
    * @param transactionData The HTTP headers
    * @return A 303 SEE OTHER response
    * @throws org.trebol.exceptions.BadInputException If the expected token is not present in the request
-   * @throws javassist.NotFoundException If the token does not match that of any "pending" transaction
+   * @throws EntityNotFoundException If the token does not match that of any "pending" transaction
    * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during internal API calls
    */
   @PostMapping({"/validate", "/validate/"})
   public ResponseEntity<Void> validateAbortedTransaction(@RequestParam Map<String, String> transactionData)
-    throws BadInputException, NotFoundException, PaymentServiceException {
+      throws BadInputException, EntityNotFoundException, PaymentServiceException {
 
     if (!transactionData.containsKey(WEBPAY_ABORTION_TOKEN_HEADER_NAME)) { // aborted
       throw new BadInputException("No transaction token was provided");
@@ -129,10 +129,11 @@ public class PublicCheckoutController {
    * Fetch result of transaction after it has been confirmed and validated
    * @param token The token used during the transaction
    * @return An object with all available data about the transaction
-   * @throws NotFoundException when no transaction matched the provided token
+   * @throws EntityNotFoundException when no transaction matched the provided token
    */
   @GetMapping({"/result/{token}", "/result/{token}/"})
-  public SellPojo getTransactionResultFor(@NotBlank @PathVariable String token) throws NotFoundException {
+  public SellPojo getTransactionResultFor(@NotBlank @PathVariable String token)
+      throws EntityNotFoundException {
     Map<String, String> tokenMatcher = Maps.of("token", token).build();
     Predicate withMatchingToken = salesPredicateService.parseMap(tokenMatcher);
     return salesCrudService.readOne(withMatchingToken);

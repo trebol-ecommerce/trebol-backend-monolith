@@ -26,10 +26,10 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.security.IAuthorizationHeaderParserService;
 
-import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 @Service

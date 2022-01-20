@@ -21,7 +21,6 @@
 package org.trebol.jpa.services.crud;
 
 import com.querydsl.core.types.Predicate;
-import javassist.NotFoundException;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +32,7 @@ import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductListPojo;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
@@ -55,10 +55,11 @@ public class ProductListJpaCrudServiceImpl
   }
 
   @Override
-  public void delete(Predicate filters) throws NotFoundException {
+  public void delete(Predicate filters)
+      throws EntityNotFoundException {
     long count = productListRepository.count(filters);
     if (count == 0) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     } else {
       for (ProductList list : productListRepository.findAll(filters)) {
         productListItemRepository.deleteByListId(list.getId());

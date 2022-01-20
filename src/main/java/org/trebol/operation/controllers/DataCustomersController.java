@@ -20,14 +20,12 @@
 
 package org.trebol.operation.controllers;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
@@ -36,6 +34,8 @@ import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.DataPagePojo;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -65,7 +65,8 @@ public class DataCustomersController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:create')")
-  public void create(@Valid @RequestBody CustomerPojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody CustomerPojo input)
+      throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -73,14 +74,15 @@ public class DataCustomersController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:update')")
   public void update(@RequestBody CustomerPojo input, @RequestParam Map<String, String> requestParams)
-      throws NotFoundException, BadInputException {
+      throws EntityNotFoundException, BadInputException {
     super.update(input, requestParams);
   }
 
   @Override
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:delete')")
-  public void delete(Map<String, String> requestParams) throws NotFoundException {
+  public void delete(Map<String, String> requestParams)
+      throws EntityNotFoundException {
     super.delete(requestParams);
   }
 

@@ -28,7 +28,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.ICustomersJpaRepository;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
@@ -38,6 +37,7 @@ import org.trebol.operation.IRegistrationService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.RegistrationPojo;
 
+import javax.persistence.EntityExistsException;
 import java.util.Optional;
 
 @Service
@@ -66,11 +66,12 @@ public class RegistrationServiceImpl
   }
 
   @Override
-  public void register(RegistrationPojo registration) throws BadInputException, EntityAlreadyExistsException {
+  public void register(RegistrationPojo registration)
+      throws BadInputException, EntityExistsException {
     String username = registration.getName();
     Predicate userWithSameName = QUser.user.name.eq(username);
     if (usersRepository.exists(userWithSameName)) {
-      throw new EntityAlreadyExistsException("That username is taken.");
+      throw new EntityExistsException("That username is taken.");
     }
 
     PersonPojo sourcePerson = registration.getProfile();
@@ -81,7 +82,7 @@ public class RegistrationServiceImpl
 
     Predicate sameProfileData = QPerson.person.idNumber.eq(newPerson.getIdNumber());
     if (peopleRepository.exists(sameProfileData)) {
-      throw new EntityAlreadyExistsException("That ID number is already registered and associated to an account.");
+      throw new EntityExistsException("That ID number is already registered and associated to an account.");
     } else {
       newPerson = peopleRepository.saveAndFlush(newPerson);
     }

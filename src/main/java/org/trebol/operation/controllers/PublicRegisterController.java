@@ -26,10 +26,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.operation.IRegistrationService;
 import org.trebol.pojo.RegistrationPojo;
 
+import javax.persistence.EntityExistsException;
 import javax.validation.Valid;
 
 @RestController
@@ -45,7 +45,7 @@ public class PublicRegisterController {
 
   @PostMapping({"", "/"})
   public void register(@Valid @RequestBody RegistrationPojo userProfile)
-    throws BadInputException, EntityAlreadyExistsException {
+      throws BadInputException, EntityExistsException {
     this.registrationService.register(userProfile);
   }
 }

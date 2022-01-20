@@ -18,23 +18,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.exceptions;
+package org.trebol.jpa.exceptions;
 
-public class EntityAlreadyExistsException
-  extends Exception {
+import javax.persistence.EntityNotFoundException;
 
-  public EntityAlreadyExistsException() {
-  }
+public class UserNotFoundException
+    extends EntityNotFoundException {
 
-  public EntityAlreadyExistsException(String string) {
-    super(string);
-  }
+  public UserNotFoundException() { }
 
-  public EntityAlreadyExistsException(String string, Throwable thrwbl) {
-    super(string, thrwbl);
-  }
-
-  public EntityAlreadyExistsException(Throwable thrwbl) {
-    super(thrwbl);
+  public UserNotFoundException(String message) {
+    super(message);
   }
 }

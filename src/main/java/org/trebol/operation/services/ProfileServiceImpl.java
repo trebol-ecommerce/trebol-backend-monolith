@@ -20,15 +20,14 @@
 
 package org.trebol.operation.services;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.PersonNotFoundException;
-import org.trebol.exceptions.UserNotFoundException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
+import org.trebol.jpa.exceptions.PersonNotFoundException;
+import org.trebol.jpa.exceptions.UserNotFoundException;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
@@ -36,6 +35,7 @@ import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.operation.IProfileService;
 import org.trebol.pojo.PersonPojo;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -59,7 +59,8 @@ public class ProfileServiceImpl
   }
 
   @Override
-  public PersonPojo getProfileFromUserName(String userName) throws NotFoundException {
+  public PersonPojo getProfileFromUserName(String userName)
+      throws EntityNotFoundException {
     User user = this.getUserFromName(userName);
     Person person = user.getPerson();
     if (person == null) {
@@ -72,7 +73,7 @@ public class ProfileServiceImpl
   @Transactional
   @Override
   public void updateProfileForUserWithName(String userName, PersonPojo profile)
-          throws BadInputException, UserNotFoundException {
+      throws BadInputException, UserNotFoundException {
     User targetUser = this.getUserFromName(userName);
     Person target = targetUser.getPerson();
     if (target == null) {
@@ -98,7 +99,8 @@ public class ProfileServiceImpl
     }
   }
 
-  private User getUserFromName(String userName) throws UserNotFoundException {
+  private User getUserFromName(String userName)
+      throws UserNotFoundException {
     Optional<User> userByName = usersRepository.findByName(userName);
     if (userByName.isEmpty()) {
       throw new UserNotFoundException("There is no account with the specified username");

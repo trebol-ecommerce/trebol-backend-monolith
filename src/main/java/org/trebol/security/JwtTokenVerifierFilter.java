@@ -30,11 +30,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.annotation.Nonnull;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.HashSet;
@@ -66,7 +66,9 @@ public class JwtTokenVerifierFilter
   }
 
   @Override
-  protected void doFilterInternal(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull FilterChain filterChain)
+  protected void doFilterInternal(@NotNull HttpServletRequest request,
+                                  @NotNull HttpServletResponse response,
+                                  @NotNull FilterChain filterChain)
       throws ServletException, IOException, IllegalStateException {
 
     String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -91,7 +93,10 @@ public class JwtTokenVerifierFilter
         }
         filterChain.doFilter(request, response);
       } catch (NullPointerException | IllegalStateException exc) {
-        myLogger.info("Access denied: '{}' '{}' used an invalid token '{}'", request.getMethod(), request.getRequestURI(), jwt);
+        myLogger.info("Access denied: '{}' '{}' used an invalid token '{}'",
+                      request.getMethod(),
+                      request.getRequestURI(),
+                      jwt);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       }
     }

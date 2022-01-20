@@ -21,13 +21,13 @@
 package org.trebol.operation;
 
 import com.querydsl.core.types.Predicate;
-import javassist.NotFoundException;
 import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.Map;
 
 public class GenericDataCrudController<P, E>
@@ -41,12 +41,14 @@ public class GenericDataCrudController<P, E>
   }
 
   @Override
-  public void create(P input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(P input)
+      throws BadInputException, EntityExistsException {
     crudService.create(input);
   }
 
   @Override
-  public void update(P input, Map<String, String> requestParams) throws BadInputException, NotFoundException {
+  public void update(P input, Map<String, String> requestParams) 
+      throws BadInputException, EntityNotFoundException {
     if (!requestParams.isEmpty()) {
       Predicate predicate = predicateService.parseMap(requestParams);
       crudService.update(input, predicate);
@@ -56,7 +58,8 @@ public class GenericDataCrudController<P, E>
   }
 
   @Override
-  public void delete(Map<String, String> requestParams) throws NotFoundException {
+  public void delete(Map<String, String> requestParams) 
+      throws EntityNotFoundException {
     Predicate predicate = predicateService.parseMap(requestParams);
     crudService.delete(predicate);
   }

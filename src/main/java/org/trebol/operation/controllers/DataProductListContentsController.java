@@ -21,7 +21,6 @@
 package org.trebol.operation.controllers;
 
 import com.querydsl.core.types.Predicate;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +37,7 @@ import org.trebol.operation.GenericPaginationController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -72,10 +72,10 @@ public class DataProductListContentsController
 
   @GetMapping({"", "/"})
   public DataPagePojo<ProductPojo> readContents(@RequestParam Map<String, String> requestParams)
-      throws BadInputException, NotFoundException {
+      throws BadInputException, EntityNotFoundException {
     Optional<ProductList> match = this.fetchProductListByCode(requestParams);
     if (match.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
 
     int pageIndex = super.determineRequestedPageIndex(requestParams);
@@ -105,10 +105,10 @@ public class DataProductListContentsController
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void addToContents(@Valid @RequestBody ProductPojo input,
                             @RequestParam Map<String, String> requestParams)
-      throws BadInputException, NotFoundException {
+      throws BadInputException, EntityNotFoundException {
     Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
     if (listMatch.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
 
     Optional<Product> productMatch = productCrudService.getExisting(input);
@@ -124,10 +124,10 @@ public class DataProductListContentsController
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void updateContents(@RequestBody Collection<ProductPojo> input,
                              @RequestParam Map<String, String> requestParams)
-      throws BadInputException, NotFoundException {
+      throws BadInputException, EntityNotFoundException {
     Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
     if (listMatch.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
 
     listItemsRepository.deleteByListId(listMatch.get().getId());
@@ -145,10 +145,10 @@ public class DataProductListContentsController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void deleteFromContents(@RequestParam Map<String, String> requestParams)
-      throws BadInputException, NotFoundException {
+      throws BadInputException, EntityNotFoundException {
     Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
     if (listMatch.isEmpty()) {
-      throw new NotFoundException(ITEM_NOT_FOUND);
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
 
     Predicate predicate = listItemsPredicateService.parseMap(requestParams);

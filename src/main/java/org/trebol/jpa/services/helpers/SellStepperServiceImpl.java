@@ -20,7 +20,6 @@
 
 package org.trebol.jpa.services.helpers;
 
-import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,7 @@ import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
 import org.trebol.jpa.services.ISellStepperJpaService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
@@ -49,38 +49,46 @@ public class SellStepperServiceImpl
     this.statusesRepository = statusesRepository;
   }
 
-  public void setSellStatusToPaymentStartedWithToken(Long id, String token) throws NotFoundException {
+  public void setSellStatusToPaymentStartedWithToken(Long id, String token)
+      throws EntityNotFoundException {
     this.setSellStatusByName(id, "Payment Started");
     salesRepository.setTransactionToken(id, token);
   }
 
-  public void setSellStatusToPaymentAborted(Long id) throws NotFoundException {
+  public void setSellStatusToPaymentAborted(Long id)
+      throws EntityNotFoundException {
     this.setSellStatusByName(id, "Payment Cancelled");
   }
 
-  public void setSellStatusToPaymentFailed(Long id) throws NotFoundException {
+  public void setSellStatusToPaymentFailed(Long id)
+      throws EntityNotFoundException {
     this.setSellStatusByName(id, "Payment Failed");
   }
 
-  public void setSellStatusToPaidUnconfirmed(Long id) throws NotFoundException {
+  public void setSellStatusToPaidUnconfirmed(Long id)
+      throws EntityNotFoundException {
     this.setSellStatusByName(id, "Paid, Unconfirmed");
   }
 
-  public void setSellStatusToPaidConfirmed(Long id) throws NotFoundException {
+  public void setSellStatusToPaidConfirmed(Long id)
+      throws EntityNotFoundException {
     this.setSellStatusByName(id, "Paid, Confirmed");
   }
 
-  public void setSellStatusToRejected(Long id) throws NotFoundException {
+  public void setSellStatusToRejected(Long id)
+      throws EntityNotFoundException {
     this.setSellStatusByName(id, "Rejected");
   }
 
-  public void setSellStatusToCompleted(Long id) throws NotFoundException {
+  public void setSellStatusToCompleted(Long id)
+      throws EntityNotFoundException {
     this.setSellStatusByName(id, "Delivery Complete");
   }
 
-  private void setSellStatusByName(Long sellId, String statusName) throws NotFoundException {
+  private void setSellStatusByName(Long sellId, String statusName)
+      throws EntityNotFoundException {
     if (!salesRepository.existsById(sellId)) {
-      throw new NotFoundException("The specified sell does not exist");
+      throw new EntityNotFoundException("The specified sell does not exist");
     } else {
       Optional<SellStatus> statusEntityByName = statusesRepository.findByName(statusName);
       if (statusEntityByName.isPresent()) {

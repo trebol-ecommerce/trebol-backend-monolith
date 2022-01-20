@@ -20,13 +20,11 @@
 
 package org.trebol.operation.controllers;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
@@ -34,6 +32,8 @@ import org.trebol.operation.GenericDataCrudController;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.UserRolePojo;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -59,7 +59,8 @@ public class DataUserRolesController
   @Override
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:create')")
-  public void create(@Valid @RequestBody UserRolePojo input) throws BadInputException, EntityAlreadyExistsException {
+  public void create(@Valid @RequestBody UserRolePojo input)
+      throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -67,14 +68,15 @@ public class DataUserRolesController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:update')")
   public void update(@RequestBody UserRolePojo input, @RequestParam Map<String, String> requestParams)
-      throws BadInputException, NotFoundException {
+      throws BadInputException, EntityNotFoundException {
     super.update(input, requestParams);
   }
 
   @Override
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:delete')")
-  public void delete(@RequestParam Map<String, String> requestParams) throws NotFoundException {
+  public void delete(@RequestParam Map<String, String> requestParams)
+      throws EntityNotFoundException {
     super.delete(requestParams);
   }
 }

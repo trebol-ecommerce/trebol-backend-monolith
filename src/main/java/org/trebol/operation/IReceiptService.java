@@ -20,10 +20,10 @@
 
 package org.trebol.operation;
 
-import javassist.NotFoundException;
 import org.trebol.pojo.ReceiptPojo;
 
-;
+import javax.persistence.EntityNotFoundException;
+
 public interface IReceiptService {
-  ReceiptPojo fetchReceiptByTransactionToken(String token) throws NotFoundException;
+  ReceiptPojo fetchReceiptByTransactionToken(String token) throws EntityNotFoundException;
 }

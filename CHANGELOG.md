@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `maven-war-plugin` - from `3.3.1` to `3.3.2`
   - Remove old `Oracle Java EE endorsed API` artifacts
     - In reality, these have been replaced by Jakarta EE endorsed API
-- **Bump Spring Boot Starter POM to v2.5.8 [BREAKING CHANGE]**
+- **Bump Spring Boot Starter POM to v2.6.2 [BREAKING CHANGE]**
   - Deprecated/unsupported properties; update configuration described in `application.properties`
 - Update license file; add headers to all source files
 

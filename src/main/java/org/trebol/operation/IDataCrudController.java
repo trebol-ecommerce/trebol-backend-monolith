@@ -20,10 +20,10 @@
 
 package org.trebol.operation;
 
-import javassist.NotFoundException;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.Map;
 
 /**
@@ -33,9 +33,9 @@ import java.util.Map;
 public interface IDataCrudController<P>
   extends IDataController<P> {
 
-  void create(P input) throws BadInputException, EntityAlreadyExistsException;
+  void create(P input) throws BadInputException, EntityExistsException;
 
-  void update(P input, Map<String, String> requestParams) throws BadInputException, NotFoundException;
+  void update(P input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException;
 
-  void delete(Map<String, String> requestParams) throws NotFoundException;
+  void delete(Map<String, String> requestParams) throws EntityNotFoundException;
 }

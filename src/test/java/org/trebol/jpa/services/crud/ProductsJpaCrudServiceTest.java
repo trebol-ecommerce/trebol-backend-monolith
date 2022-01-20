@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
@@ -18,6 +17,7 @@ import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.pojo.ProductPojo;
 
+import javax.persistence.EntityExistsException;
 import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +52,8 @@ public class ProductsJpaCrudServiceTest {
   }
 
   @Test
-  public void finds_by_barcode() throws BadInputException {
+  public void finds_by_barcode()
+      throws BadInputException {
     resetProducts();
     when(productsRepositoryMock.findByBarcode(productPojoForFetch().getBarcode())).thenReturn(Optional.of(productEntityAfterCreation()));
     ProductsJpaCrudServiceImpl service = instantiate();
@@ -72,7 +73,8 @@ public class ProductsJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_product() throws BadInputException, EntityAlreadyExistsException {
+  public void creates_product()
+      throws BadInputException, EntityExistsException {
     resetProducts();
     when(productsConverterMock.convertToNewEntity(productPojoBeforeCreation())).thenReturn(productEntityBeforeCreation());
     when(productsRepositoryMock.saveAndFlush(productEntityBeforeCreation())).thenReturn(productEntityAfterCreation());
@@ -97,7 +99,8 @@ public class ProductsJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_product_with_image() throws BadInputException, EntityAlreadyExistsException {
+  public void creates_product_with_image()
+      throws BadInputException, EntityExistsException {
     resetProducts();
     productPojoBeforeCreation().setImages(List.of(imagePojoBeforeCreation()));
     productPojoAfterCreation().setImages(List.of(imagePojoAfterCreation()));
@@ -127,7 +130,8 @@ public class ProductsJpaCrudServiceTest {
   }
 
   @Test
-  public void creates_product_with_category() throws BadInputException, EntityAlreadyExistsException {
+  public void creates_product_with_category()
+      throws BadInputException, EntityExistsException {
     resetProducts();
     productPojoBeforeCreation().setCategory(productCategoryPojoBeforeCreation());
     productPojoAfterCreation().setCategory(productCategoryPojoAfterCreation());

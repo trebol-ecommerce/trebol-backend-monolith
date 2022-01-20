@@ -20,9 +20,8 @@
 
 package org.trebol.jpa.services;
 
+import org.springframework.lang.Nullable;
 import org.trebol.exceptions.BadInputException;
-
-import javax.annotation.Nullable;
 
 /**
  * Type-safe interface for direct interaction between Entities and Pojos

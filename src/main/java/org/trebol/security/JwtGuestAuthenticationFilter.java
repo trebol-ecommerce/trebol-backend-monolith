@@ -31,13 +31,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.trebol.config.SecurityProperties;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.PersonPojo;
 
 import javax.crypto.SecretKey;
+import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -82,7 +82,7 @@ public class JwtGuestAuthenticationFilter
       CustomerPojo targetCustomer = new CustomerPojo();
       targetCustomer.setPerson(guestData);
       customersService.create(targetCustomer);
-    } catch (EntityAlreadyExistsException e) {
+    } catch (EntityExistsException e) {
       myLogger.info("Guest with idNumber={} is already registered in the database", guestData.getIdNumber());
     }
   }

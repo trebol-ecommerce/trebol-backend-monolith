@@ -21,13 +21,11 @@
 package org.trebol.jpa.services.crud;
 
 import com.querydsl.core.types.Predicate;
-import javassist.NotFoundException;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
@@ -38,12 +36,13 @@ import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
 import org.trebol.pojo.SellPojo;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-;
 @Transactional
 @Service
 public class SalesJpaCrudServiceImpl
@@ -66,7 +65,8 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  public SellPojo create(SellPojo inputPojo) throws BadInputException, EntityAlreadyExistsException {
+  public SellPojo create(SellPojo inputPojo)
+      throws BadInputException, EntityExistsException {
     Sell input = converter.convertToNewEntity(inputPojo);
     this.updateTotals(input);
     Sell output = salesRepository.saveAndFlush(input);
@@ -74,7 +74,8 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  public Optional<Sell> getExisting(SellPojo input) throws BadInputException {
+  public Optional<Sell> getExisting(SellPojo input)
+      throws BadInputException {
     Long buyOrder = input.getBuyOrder();
     if (buyOrder == null) {
       throw new BadInputException("Invalid buy order.");
@@ -84,7 +85,8 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  public SellPojo readOne(Predicate conditions) throws NotFoundException {
+  public SellPojo readOne(Predicate conditions)
+      throws EntityNotFoundException {
     Optional<Sell> matchingSell = salesRepository.findOne(conditions);
     if (matchingSell.isPresent()) {
       Sell found = matchingSell.get();
@@ -92,11 +94,12 @@ public class SalesJpaCrudServiceImpl
       this.applyDetails(found, foundPojo);
       return foundPojo;
     } else {
-      throw new NotFoundException("No sell matches the filtering conditions");
+      throw new EntityNotFoundException("No sell matches the filtering conditions");
     }
   }
 
-  protected SellPojo doUpdate(SellPojo input, Sell existingEntity) throws BadInputException {
+  protected SellPojo doUpdate(SellPojo input, Sell existingEntity)
+      throws BadInputException {
     Integer statusCode = existingEntity.getStatus().getCode();
     if ((statusCode >= 3 || statusCode < 0) && !CAN_EDIT_AFTER_PROCESS) {
       throw new BadInputException("The requested transaction cannot be modified");

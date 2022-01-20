@@ -21,9 +21,10 @@
 package org.trebol.operation;
 
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.pojo.RegistrationPojo;
 
+import javax.persistence.EntityExistsException;
+
 public interface IRegistrationService {
-  void register(RegistrationPojo registration) throws BadInputException, EntityAlreadyExistsException;
+  void register(RegistrationPojo registration) throws BadInputException, EntityExistsException;
 }

@@ -20,7 +20,6 @@
 
 package org.trebol.operation;
 
-import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,8 +27,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,14 +40,14 @@ import java.util.Map;
 public class ExceptionsControllerAdvice {
 
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  @ExceptionHandler(NotFoundException.class)
-  public String handleException(NotFoundException ex) {
+  @ExceptionHandler(EntityNotFoundException.class)
+  public String handleException(EntityNotFoundException ex) {
     return ex.getMessage();
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(EntityAlreadyExistsException.class)
-  public String handleException(EntityAlreadyExistsException ex) {
+  @ExceptionHandler(EntityExistsException.class)
+  public String handleException(EntityExistsException ex) {
     return ex.getMessage();
   }
 

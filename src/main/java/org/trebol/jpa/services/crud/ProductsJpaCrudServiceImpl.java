@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.exceptions.EntityAlreadyExistsException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
@@ -39,13 +38,13 @@ import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.pojo.ProductPojo;
 
+import javax.persistence.EntityExistsException;
 import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-;
 @Transactional
 @Service
 public class ProductsJpaCrudServiceImpl
@@ -85,7 +84,8 @@ public class ProductsJpaCrudServiceImpl
 
   @Transactional
   @Override
-  public ProductPojo create(ProductPojo inputPojo) throws BadInputException, EntityAlreadyExistsException {
+  public ProductPojo create(ProductPojo inputPojo)
+      throws BadInputException, EntityExistsException {
     ProductPojo outputPojo = super.create(inputPojo);
 
     Collection<ImagePojo> pojoImages = inputPojo.getImages();
@@ -104,7 +104,8 @@ public class ProductsJpaCrudServiceImpl
   }
 
   @Override
-  public Optional<Product> getExisting(ProductPojo input) throws BadInputException {
+  public Optional<Product> getExisting(ProductPojo input)
+      throws BadInputException {
     String barcode = input.getBarcode();
     if (barcode == null || barcode.isEmpty()) {
       throw new BadInputException("Invalid product barcode");
@@ -114,7 +115,8 @@ public class ProductsJpaCrudServiceImpl
   }
 
   @Override
-  protected ProductPojo doUpdate(ProductPojo inputPojo, Product existingEntity) throws BadInputException {
+  protected ProductPojo doUpdate(ProductPojo inputPojo, Product existingEntity)
+      throws BadInputException {
     Product updatedEntity = converter.applyChangesToExistingEntity(inputPojo, existingEntity);
     updatedEntity.setProductCategory(null);
     updatedEntity = productsRepository.saveAndFlush(updatedEntity);
@@ -144,11 +146,12 @@ public class ProductsJpaCrudServiceImpl
    * @return The resulting category's Pojo equivalent
    * @throws BadInputException If any BadInputException is subsequently thrown
    */
-  private ProductCategoryPojo saveCategory(Long entityId, ProductCategoryPojo inputCategory) throws BadInputException {
+  private ProductCategoryPojo saveCategory(Long entityId, ProductCategoryPojo inputCategory)
+      throws BadInputException {
     ProductCategoryPojo outputCategory;
     try {
       outputCategory = categoriesCrudService.create(inputCategory);
-    } catch (EntityAlreadyExistsException ex) {
+    } catch (EntityExistsException ex) {
       Optional<ProductCategory> existing = categoriesCrudService.getExisting(inputCategory);
       if (existing.isPresent()) {
         outputCategory = categoriesConverter.convertToPojo(existing.get());
@@ -186,10 +189,11 @@ public class ProductsJpaCrudServiceImpl
    * @return The resulting image's Pojo equivalent
    * @throws BadInputException If any BadInputException is subsequently thrown
    */
-  private ImagePojo saveImage(ImagePojo inputPojo) throws BadInputException {
+  private ImagePojo saveImage(ImagePojo inputPojo)
+      throws BadInputException {
     try {
       return imagesCrudService.create(inputPojo);
-    } catch (EntityAlreadyExistsException ex) {
+    } catch (EntityExistsException ex) {
       Optional<Image> existing = imagesCrudService.getExisting(inputPojo);
       if (existing.isPresent()) {
         return imageConverter.convertToPojo(existing.get());
