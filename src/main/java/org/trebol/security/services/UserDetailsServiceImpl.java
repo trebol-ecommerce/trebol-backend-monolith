@@ -21,7 +21,6 @@
 package org.trebol.security.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -44,16 +43,12 @@ import java.util.Optional;
 public class UserDetailsServiceImpl
     implements UserDetailsService {
 
-  private final ConversionService conversionService;
   private final IUsersJpaRepository usersRepository;
   private final IUserPermissionsService userPermissionsService;
 
   @Autowired
-  public UserDetailsServiceImpl(
-      ConversionService conversionService,
-      IUsersJpaRepository usersRepository,
-      IUserPermissionsService userPermissionsService) {
-    this.conversionService = conversionService;
+  public UserDetailsServiceImpl(IUsersJpaRepository usersRepository,
+                                IUserPermissionsService userPermissionsService) {
     this.usersRepository = usersRepository;
     this.userPermissionsService = userPermissionsService;
   }
@@ -61,7 +56,7 @@ public class UserDetailsServiceImpl
   private List<SimpleGrantedAuthority> convertPermissionList(Iterable<Permission> sourceList) {
     List<SimpleGrantedAuthority> targetList = new ArrayList<>();
     for (Permission source : sourceList) {
-      SimpleGrantedAuthority target = conversionService.convert(source, SimpleGrantedAuthority.class);
+      SimpleGrantedAuthority target = new SimpleGrantedAuthority(source.getCode());
       targetList.add(target);
     }
     return targetList;
