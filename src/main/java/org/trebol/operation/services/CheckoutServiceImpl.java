@@ -87,7 +87,8 @@ public class CheckoutServiceImpl
       } else {
         this.processSellStatus(transactionToken);
       }
-      URL resultPageUrl = new URL(paymentIntegrationService.getPaymentResultPageUrl() + "/" + transactionToken);
+      // TODO add a switch to either use path params or query params
+      URL resultPageUrl = new URL(paymentIntegrationService.getPaymentResultPageUrl() + "?token=" + transactionToken);
       return resultPageUrl.toURI();
     } catch (MalformedURLException | URISyntaxException ex) {
       logger.error("Malformed final URL for payment method; make sure this property is correctly configured.", ex);
