@@ -62,11 +62,11 @@ public class ProductsPredicateJpaServiceImpl
           case "nameLike":
             predicate.and(getBasePath().name.likeIgnoreCase("%" + stringValue + "%"));
             break;
-          case "productCategory":
-            predicate.and(getBasePath().productCategory.name.eq(stringValue));
+          case "categoryCode":
+            predicate.and(getBasePath().productCategory.code.eq(stringValue));
             break;
-          case "productCategoryLike":
-            predicate.and(getBasePath().productCategory.name.likeIgnoreCase("%" + stringValue + "%"));
+          case "categoryCodeLike":
+            predicate.and(getBasePath().productCategory.code.likeIgnoreCase("%" + stringValue + "%"));
             break;
           default:
             break;

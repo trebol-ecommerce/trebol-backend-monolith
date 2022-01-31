@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Incorrect protocol for MariaDB JDBC URL
 - Webpay Plus was unable to redirect users to the callback URL; added `null` in list of allowed CORS origins
+- Incongruent binding of query parameters to data search filters for products
 
 ## [v2.0.0] - 2022-01-20
 
