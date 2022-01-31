@@ -28,6 +28,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.Permission;
 import org.trebol.jpa.entities.User;
+import org.trebol.jpa.entities.UserRolePermission;
+import org.trebol.jpa.repositories.IUserRolePermissionsJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.pojo.UserDetailsPojo;
 import org.trebol.security.IUserPermissionsService;
@@ -44,12 +46,15 @@ public class UserDetailsServiceImpl
     implements UserDetailsService {
 
   private final IUsersJpaRepository usersRepository;
+  private final IUserRolePermissionsJpaRepository rolePermissionsRepository;
   private final IUserPermissionsService userPermissionsService;
 
   @Autowired
   public UserDetailsServiceImpl(IUsersJpaRepository usersRepository,
+                                IUserRolePermissionsJpaRepository rolePermissionsRepository,
                                 IUserPermissionsService userPermissionsService) {
     this.usersRepository = usersRepository;
+    this.rolePermissionsRepository = rolePermissionsRepository;
     this.userPermissionsService = userPermissionsService;
   }
 
@@ -64,6 +69,17 @@ public class UserDetailsServiceImpl
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    if (username.equals("guest")) {
+      // TODO parameterize role ID
+      Iterable<UserRolePermission> rawPermissions = rolePermissionsRepository.deepFindPermissionsByUserRoleId(4L);
+      List<Permission> permissions = new ArrayList<>();
+      for (UserRolePermission rp : rawPermissions) {
+        permissions.add(rp.getPermission());
+      }
+      List<SimpleGrantedAuthority> authorities = convertPermissionList(permissions);
+      return new UserDetailsPojo(authorities, username, "",
+                                 true, true, true, true);
+    }
     Optional<User> foundUser = usersRepository.findByNameWithRole(username);
     if (foundUser.isPresent()) {
       User user = foundUser.get();
