@@ -23,6 +23,7 @@ package org.trebol.jpa.entities;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -47,6 +48,8 @@ public class ProductList
   private String code;
   @Column(name = "product_list_disabled", nullable = false)
   private boolean disabled;
+  @OneToMany(mappedBy = "list")
+  private List<ProductListItem> items;
 
   public ProductList() {
     this.disabled = true;
@@ -57,6 +60,7 @@ public class ProductList
     this.name = source.name;
     this.code = source.code;
     this.disabled = source.disabled;
+    this.items = source.items;
   }
 
   public ProductList(String code) {
@@ -98,6 +102,14 @@ public class ProductList
 
   public void setDisabled(boolean disabled) {
     this.disabled = disabled;
+  }
+
+  public List<ProductListItem> getItems() {
+    return items;
+  }
+
+  public void setItems(List<ProductListItem> items) {
+    this.items = items;
   }
 
   @Override

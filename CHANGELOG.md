@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Service interface for confirming, rejecting and marking sales as completed
+- Support sorting product lists by item count (the amount of products held on each)
 
 ### Fixed
 - Incorrect protocol for MariaDB JDBC URL
