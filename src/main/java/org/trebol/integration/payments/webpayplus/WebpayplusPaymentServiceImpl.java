@@ -97,7 +97,7 @@ public class WebpayplusPaymentServiceImpl
   private WebpayPlus.Transaction createWebpayTransaction() {
     String commerceCode = IntegrationCommerceCodes.WEBPAY_PLUS;
     String apiKey = IntegrationApiKeys.WEBPAY;
-    IntegrationType integrationType = IntegrationType.MOCK;
+    IntegrationType integrationType = IntegrationType.TEST;
     if (properties.isProduction()) {
       commerceCode = properties.getCommerceCode();
       apiKey = properties.getApiKey();

@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Incorrect protocol for MariaDB JDBC URL
 - Webpay Plus was unable to redirect users to the callback URL; added `null` in list of allowed CORS origins
 - Incongruent binding of query parameters to data search filters for products
+- Change integration type for payments with Webpay Plus when production mode is not enabled
+  - Now uses `TEST` as recommended by `@TransbankDevelopers`
+  - Was using `MOCK` which is not very well documented
 
 ## [v2.0.0] - 2022-01-20
 
