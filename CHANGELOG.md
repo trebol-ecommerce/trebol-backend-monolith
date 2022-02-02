@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `trebol.security.guestUserName` - Any non-blank string; also acts as its password
 - `SellDetail` entity now has a `description` field, which is meant to summarize its metadata in a human-readable string and remove dependency to the `Product` entity 
   - *NOTE*: This will affect normal operation, check the next tagged release for a migration script named `migrate-to-mariadb-schema-v2.3.5.sql`
+- When fetching data, filters by category may include descendant of lower level categories
+  - For example, assumming that category A includes subcategories AB and AC, filtering 'by category A' may include children from subcategories AB and AC as well 
+  - This applies for filtering categories and products
+  - Behavior before was to fetch only direct descendants of a given category
 
 ### Changed
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param

@@ -24,11 +24,14 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.QProductCategory;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.IProductCategoryTreeResolver;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,6 +39,12 @@ public class ProductCategoriesPredicateJpaServiceImpl
   implements IPredicateJpaService<ProductCategory> {
 
   private final Logger logger = LoggerFactory.getLogger(ProductCategoriesPredicateJpaServiceImpl.class);
+  private final IProductCategoryTreeResolver treeResolver;
+
+  @Autowired
+  public ProductCategoriesPredicateJpaServiceImpl(IProductCategoryTreeResolver treeResolver) {
+    this.treeResolver = treeResolver;
+  }
 
   @Override
   public QProductCategory getBasePath() {
@@ -70,6 +79,20 @@ public class ProductCategoriesPredicateJpaServiceImpl
               predicate.and(getBasePath().parent.isNull());
             } else {
               predicate.and(getBasePath().parent.id.eq(Long.valueOf(stringValue)));
+            }
+            break;
+          case "rootId":
+            if (stringValue != null && !stringValue.isEmpty()) {
+              List<Long> branchParentIds = treeResolver.getBranchIdsFromRootId(Long.valueOf(stringValue));
+              predicate.and(getBasePath().parent.id.in(branchParentIds));
+            }
+            break;
+          case "rootCode":
+            if (stringValue != null && !stringValue.isEmpty()) {
+              List<Long> branchParentIds = treeResolver.getBranchIdsFromRootCode(stringValue);
+              if (!branchParentIds.isEmpty()) {
+                predicate.and(getBasePath().parent.id.in(branchParentIds));
+              }
             }
             break;
           default:
