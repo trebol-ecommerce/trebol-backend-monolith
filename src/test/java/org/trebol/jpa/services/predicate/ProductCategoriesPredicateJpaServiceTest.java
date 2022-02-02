@@ -3,7 +3,9 @@ package org.trebol.jpa.services.predicate;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.services.IProductCategoryTreeResolver;
 import org.trebol.jpa.services.predicates.ProductCategoriesPredicateJpaServiceImpl;
 
@@ -14,6 +16,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockitoExtension.class)
 class ProductCategoriesPredicateJpaServiceTest {
   @Mock
   IProductCategoryTreeResolver treeResolver;
