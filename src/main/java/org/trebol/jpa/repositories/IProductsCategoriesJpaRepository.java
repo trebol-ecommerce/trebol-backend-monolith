@@ -20,6 +20,8 @@
 
 package org.trebol.jpa.repositories;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.trebol.jpa.IJpaRepository;
 import org.trebol.jpa.entities.ProductCategory;
@@ -36,4 +38,7 @@ public interface IProductsCategoriesJpaRepository
   List<ProductCategory> findByName(String code);
 
   List<ProductCategory> findByParent(ProductCategory parent);
+
+  @Query("SELECT r.id FROM ProductCategory r WHERE r.parent.id = :parentId")
+  List<Long> findIdsByParentId(@Param("parentId") Long parentId);
 }

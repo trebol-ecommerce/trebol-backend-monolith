@@ -24,11 +24,14 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.QProduct;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.IProductCategoryTreeResolver;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,6 +39,12 @@ public class ProductsPredicateJpaServiceImpl
   implements IPredicateJpaService<Product> {
 
   private final Logger logger = LoggerFactory.getLogger(ProductsPredicateJpaServiceImpl.class);
+  private final IProductCategoryTreeResolver categoryTreeResolver;
+
+  @Autowired
+  public ProductsPredicateJpaServiceImpl(IProductCategoryTreeResolver categoryTreeResolver) {
+    this.categoryTreeResolver = categoryTreeResolver;
+  }
 
   @Override
   public QProduct getBasePath() {
@@ -63,7 +72,9 @@ public class ProductsPredicateJpaServiceImpl
             predicate.and(getBasePath().name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "categoryCode":
-            predicate.and(getBasePath().productCategory.code.eq(stringValue));
+            List<Long> branchIds = categoryTreeResolver.getBranchIdsFromRootCode(stringValue);
+            predicate.and(getBasePath().productCategory.code.eq(stringValue)
+                              .or(getBasePath().productCategory.id.in(branchIds)));
             break;
           case "categoryCodeLike":
             predicate.and(getBasePath().productCategory.code.likeIgnoreCase("%" + stringValue + "%"));
