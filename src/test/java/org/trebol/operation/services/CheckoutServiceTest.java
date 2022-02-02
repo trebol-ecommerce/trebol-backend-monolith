@@ -32,7 +32,7 @@ class CheckoutServiceTest {
   @Mock IPaymentsIntegrationService paymentIntegrationService;
   private static final String PAYMENT_URL = "https://example.com/pay";
   private static final String RECEIPT_BASE_URL = "https://example2.com/callback";
-  private static final String RECEIPT_URL = RECEIPT_BASE_URL + "/" + SELL_TRANSACTION_TOKEN;
+  private static final String RECEIPT_URL = RECEIPT_BASE_URL + "?token=" + SELL_TRANSACTION_TOKEN;
   private static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
 
   @Test
