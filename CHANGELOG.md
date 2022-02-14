@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
 
 ### Fixed
+- Incorrect amount value given to Webpay (net value instead of total value)
 - Incorrect protocol for MariaDB JDBC URL
 - Webpay Plus was unable to redirect users to the callback URL; added `null` in list of allowed CORS origins
 - Incongruent binding of query parameters to data search filters for products

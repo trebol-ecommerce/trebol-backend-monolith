@@ -57,7 +57,7 @@ public class WebpayplusPaymentServiceImpl
 
     String buyOrder = transaction.getBuyOrder().toString();
     String sessionId = String.valueOf(transaction.hashCode());
-    double amount = transaction.getNetValue();
+    double amount = transaction.getTotalValue();
     String returnUrl = properties.getCallbackUrl();
 
     WebpayPlus.Transaction webpayTransaction = this.createWebpayTransaction();
