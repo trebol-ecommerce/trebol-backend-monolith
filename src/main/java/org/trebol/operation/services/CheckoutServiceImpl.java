@@ -70,6 +70,7 @@ public class CheckoutServiceImpl
   public PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException {
     PaymentRedirectionDetailsPojo response = paymentIntegrationService.requestNewPaymentPageDetails(transaction);
     try {
+      transaction.setToken(response.getToken());
       salesProcessService.markAsStarted(transaction);
       return response;
     } catch (EntityNotFoundException | BadInputException exc) {
@@ -82,7 +83,6 @@ public class CheckoutServiceImpl
       throws EntityNotFoundException, PaymentServiceException {
     SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
     try {
-      SellPojo sellPojo;
       if (wasAborted) {
         return salesProcessService.markAsAborted(sellByToken);
       } else {
