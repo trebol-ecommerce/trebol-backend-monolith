@@ -26,6 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.trebol.config.SecurityProperties;
 import org.trebol.jpa.entities.Permission;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRolePermission;
@@ -48,14 +49,17 @@ public class UserDetailsServiceImpl
   private final IUsersJpaRepository usersRepository;
   private final IUserRolePermissionsJpaRepository rolePermissionsRepository;
   private final IUserPermissionsService userPermissionsService;
+  private final SecurityProperties securityProperties;
 
   @Autowired
   public UserDetailsServiceImpl(IUsersJpaRepository usersRepository,
                                 IUserRolePermissionsJpaRepository rolePermissionsRepository,
-                                IUserPermissionsService userPermissionsService) {
+                                IUserPermissionsService userPermissionsService,
+                                SecurityProperties securityProperties) {
     this.usersRepository = usersRepository;
     this.rolePermissionsRepository = rolePermissionsRepository;
     this.userPermissionsService = userPermissionsService;
+    this.securityProperties = securityProperties;
   }
 
   private List<SimpleGrantedAuthority> convertPermissionList(Iterable<Permission> sourceList) {
@@ -69,7 +73,8 @@ public class UserDetailsServiceImpl
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    if (username.equals("guest")) {
+    if (securityProperties.isGuestUserEnabled() &&
+        username.equals(securityProperties.getGuestUserName())) {
       // TODO parameterize role ID
       Iterable<UserRolePermission> rawPermissions = rolePermissionsRepository.deepFindPermissionsByUserRoleId(4L);
       List<Permission> permissions = new ArrayList<>();
