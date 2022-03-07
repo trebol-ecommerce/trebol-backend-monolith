@@ -43,6 +43,8 @@ public class SecurityProperties {
   private int jwtExpirationAfterDays;
   @Min(6)
   private int bcryptEncoderStrength;
+  private boolean guestUserEnabled;
+  private String guestUserName;
 
   public String getJwtSecretKey() {
     return jwtSecretKey;
@@ -82,5 +84,21 @@ public class SecurityProperties {
 
   public void setBcryptEncoderStrength(int bcryptEncoderStrength) {
     this.bcryptEncoderStrength = bcryptEncoderStrength;
+  }
+
+  public boolean isGuestUserEnabled() {
+    return guestUserEnabled;
+  }
+
+  public void setGuestUserEnabled(boolean guestUserEnabled) {
+    this.guestUserEnabled = guestUserEnabled;
+  }
+
+  public String getGuestUserName() {
+    return guestUserName;
+  }
+
+  public void setGuestUserName(String guestUserName) {
+    this.guestUserName = guestUserName;
   }
 }

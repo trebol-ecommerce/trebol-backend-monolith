@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Service interface for confirming, rejecting and marking sales as completed
 - Support sorting product lists by item count (the amount of products held on each)
+- Properties to configure the guest user (a public account only enabled for checking out)
+  - `trebol.security.guestUserEnabled` - Can be true or false
+  - `trebol.security.guestUserName` - Any non-blank string; also acts as its password
 
 ### Fixed
 - Incorrect protocol for MariaDB JDBC URL

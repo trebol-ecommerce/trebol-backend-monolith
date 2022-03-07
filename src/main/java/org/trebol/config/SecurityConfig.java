@@ -101,10 +101,14 @@ public class SecurityConfig
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.authenticationProvider(daoAuthenticationProvider());
-    auth.inMemoryAuthentication()
-            .withUser("guest")
-            .password(passwordEncoder().encode("guest"))
-            .authorities("checkout");
+    if (securityProperties.isGuestUserEnabled() &&
+        !securityProperties.getGuestUserName().isBlank()) {
+      String credential = securityProperties.getGuestUserName();
+      auth.inMemoryAuthentication()
+          .withUser(credential)
+          .password(passwordEncoder().encode(credential))
+          .authorities("checkout");
+    }
   }
 
   @Bean
