@@ -34,6 +34,7 @@ public class SellDetailPojo {
   @Min(1)
   private int units;
   private int unitValue;
+  private String description;
   @NotNull
   private ProductPojo product;
 
@@ -67,6 +68,14 @@ public class SellDetailPojo {
     this.units = units;
   }
 
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   public ProductPojo getProduct() {
     return product;
   }
@@ -91,12 +100,13 @@ public class SellDetailPojo {
     return units == that.units &&
         unitValue == that.unitValue &&
         Objects.equals(id, that.id) &&
-        Objects.equals(product, that.product);
+        Objects.equals(product, that.product) &&
+        Objects.equals(description, that.description);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, units, product, unitValue);
+    return Objects.hash(id, units, product, unitValue, description);
   }
 
   @Override
@@ -106,6 +116,7 @@ public class SellDetailPojo {
         ", units=" + units +
         ", product=" + product +
         ", unitValue=" + unitValue +
+        ", description=" + description +
         '}';
   }
 }

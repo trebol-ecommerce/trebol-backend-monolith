@@ -43,7 +43,8 @@ public class SellDetail
   @Column(name = "sell_detail_description", nullable = false)
   @Size(max = 260)
   private String description;
-  @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false)
+  @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false,
+      foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
   @ManyToOne(optional = false)
   private Product product;
   @JoinColumn(name = "sell_id", referencedColumnName = "sell_id", insertable = false, updatable = false,
@@ -65,6 +66,9 @@ public class SellDetail
   public SellDetail(int units, Product product) {
     this.units = units;
     this.product = product;
+    this.unitValue = product.getPrice();
+    this.description = String.format("%o x %s [%s] | Unit Val: %d",
+                                     units, product.getName(), product.getBarcode(), product.getPrice());
   }
 
   public SellDetail(Long id, int units, Integer unitValue, Product product) {
@@ -72,7 +76,8 @@ public class SellDetail
     this.units = units;
     this.unitValue = unitValue;
     this.product = product;
-    this.description = product.getName() + "[" + product.getBarcode()  + "]";
+    this.description = String.format("%o x %s [%s] | Unit Val: %d",
+                                     units, product.getName(), product.getBarcode(), product.getPrice());
   }
 
   public Long getId() {

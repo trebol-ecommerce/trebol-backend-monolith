@@ -250,7 +250,7 @@ CREATE TABLE `product_list_items` (
   `product_id` bigint(20) NOT NULL,
   PRIMARY KEY (`product_list_item_id`),
   CONSTRAINT `FK_PLIST_ITEM_PARENT_ID` FOREIGN KEY (`product_list_id`) REFERENCES `product_lists` (`product_list_id`),
-  CONSTRAINT `FK_PLIST_ITEM_PROD_ID` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
+  CONSTRAINT `FK_PLIST_ITEM_PROD_ID` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -294,10 +294,10 @@ CREATE TABLE `sell_details` (
   `sell_detail_unit_value` int(11) NOT NULL,
   `sell_detail_units` int(11) NOT NULL,
   `sell_detail_description` varchar(260) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `product_id` bigint(20) NOT NULL,
+  `product_id` bigint(20) NULL,
   `sell_id` bigint(20) NOT NULL,
   PRIMARY KEY (`sell_detail_id`),
-  CONSTRAINT `FK_SELL_DETAIL_PROD_ID` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
+  CONSTRAINT `FK_SELL_DETAIL_PROD_ID` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE SET NULL,
   CONSTRAINT `FK_SELL_DETAIL_PARENT_ID` FOREIGN KEY (`sell_id`) REFERENCES `sales` (`sell_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
