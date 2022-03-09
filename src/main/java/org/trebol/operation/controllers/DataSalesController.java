@@ -27,6 +27,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
+import org.trebol.integration.IMailingIntegrationService;
+import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
@@ -50,16 +52,19 @@ public class DataSalesController
 
   private final ISortJpaService<Sell> sortService;
   private final ISalesProcessService processService;
+  private final IMailingIntegrationService mailingIntegrationService;
 
   @Autowired
   public DataSalesController(OperationProperties globals,
                              GenericCrudJpaService<SellPojo, Sell> crudService,
                              IPredicateJpaService<Sell> predicateService,
                              ISortJpaService<Sell> sortService,
-                             ISalesProcessService processService) {
+                             ISalesProcessService processService,
+                             IMailingIntegrationService mailingIntegrationService) {
     super(globals, crudService, predicateService);
     this.sortService = sortService;
     this.processService = processService;
+    this.mailingIntegrationService = mailingIntegrationService;
   }
 
   @GetMapping({"", "/"})
@@ -104,22 +109,26 @@ public class DataSalesController
   @PostMapping({"/confirmation", "/confirmation/"})
   @PreAuthorize("hasAuthority('sales:update')")
   public void confirmSell(@RequestBody SellPojo sell)
-      throws BadInputException {
-    processService.markAsConfirmed(sell);
+      throws BadInputException, MailingServiceException {
+    SellPojo updatedSell = processService.markAsConfirmed(sell);
+    // mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
+    // mailingIntegrationService.notifyOrderStatusToOwners(updatedSell);
   }
 
   @PostMapping({"/rejection", "/rejection/"})
   @PreAuthorize("hasAuthority('sales:update')")
   public void rejectSell(@RequestBody SellPojo sell)
-      throws BadInputException {
-    processService.markAsRejected(sell);
+      throws BadInputException, MailingServiceException {
+    SellPojo updatedSell = processService.markAsRejected(sell);
+    // mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
   }
 
   @PostMapping({"/completion", "/completion/"})
   @PreAuthorize("hasAuthority('sales:update')")
   public void completeSell(@RequestBody SellPojo sell)
-      throws BadInputException {
-    processService.markAsCompleted(sell);
+      throws BadInputException, MailingServiceException {
+    SellPojo updatedSell = processService.markAsCompleted(sell);
+    // mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
   }
 
   @Override
