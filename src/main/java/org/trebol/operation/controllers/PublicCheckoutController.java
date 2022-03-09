@@ -22,11 +22,15 @@ package org.trebol.operation.controllers;
 
 import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
+import org.trebol.integration.IMailingIntegrationService;
+import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.GenericCrudJpaService;
@@ -49,19 +53,23 @@ import static org.springframework.http.HttpStatus.SEE_OTHER;
 @RequestMapping("/public/checkout")
 public class PublicCheckoutController {
 
+  private final Logger logger = LoggerFactory.getLogger(PublicCheckoutController.class);
   private final ICheckoutService service;
   private final GenericCrudJpaService<SellPojo, Sell> salesCrudService;
   private final IPredicateJpaService<Sell> salesPredicateService;
+  private final IMailingIntegrationService mailingIntegrationService;
   private static final String WEBPAY_SUCCESS_TOKEN_HEADER_NAME = "token_ws";
   private static final String WEBPAY_ABORTION_TOKEN_HEADER_NAME = "TBK_TOKEN";
 
   @Autowired
   public PublicCheckoutController(ICheckoutService service,
                                   GenericCrudJpaService<SellPojo, Sell> salesCrudService,
-                                  IPredicateJpaService<Sell> salesPredicateService) {
+                                  IPredicateJpaService<Sell> salesPredicateService,
+                                  IMailingIntegrationService mailingIntegrationService) {
     this.service = service;
     this.salesCrudService = salesCrudService;
     this.salesPredicateService = salesPredicateService;
+    this.mailingIntegrationService = mailingIntegrationService;
   }
 
   /**
@@ -95,7 +103,12 @@ public class PublicCheckoutController {
       throw new BadInputException("No transaction token was provided");
     }
     String token = transactionData.get(WEBPAY_SUCCESS_TOKEN_HEADER_NAME);
-    service.confirmTransaction(token, false);
+    SellPojo sellPojo = service.confirmTransaction(token, false);
+    try {
+      mailingIntegrationService.notifyOrderStatusToClient(sellPojo);
+    } catch (MailingServiceException ex) {
+      logger.error("Could not send email to client for buy order #{}, raised exception was:", sellPojo.getBuyOrder(), ex);
+    }
     URI transactionUri = service.generateResultPageUrl(token);
     return ResponseEntity
         .status(SEE_OTHER)
