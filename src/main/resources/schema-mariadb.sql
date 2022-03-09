@@ -293,6 +293,7 @@ CREATE TABLE `sell_details` (
   `sell_detail_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `sell_detail_unit_value` int(11) NOT NULL,
   `sell_detail_units` int(11) NOT NULL,
+  `sell_detail_description` varchar(260) COLLATE utf8mb4_unicode_ci NOT NULL,
   `product_id` bigint(20) NOT NULL,
   `sell_id` bigint(20) NOT NULL,
   PRIMARY KEY (`sell_detail_id`),

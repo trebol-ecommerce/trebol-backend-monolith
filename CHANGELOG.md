@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Properties to configure the guest user (a public account only enabled for checking out)
   - `trebol.security.guestUserEnabled` - Can be true or false
   - `trebol.security.guestUserName` - Any non-blank string; also acts as its password
+- `SellDetail` entity now has a `description` field, which is meant to summarize its metadata in a human-readable string
+  - This affects the SQL schema
+  - For existing MariaDB instances *that don't use strict mode*, the following statement should suffice to migrate:
+    - `ALTER TABLE sell_details ADD COLUMN sell_detail_description varchar(260) NOT NULL;`
 
 ### Changed
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
