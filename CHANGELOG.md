@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
 - Default `GET /data/sales` sort order is by descending `buyOrder`
+- (Temporary) Disable regex pattern validation for phones
 
 ### Fixed
 - Incorrect amount value given to Webpay (net value instead of total value)
