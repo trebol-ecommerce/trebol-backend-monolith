@@ -95,7 +95,8 @@ public class PublicCheckoutController {
       throw new BadInputException("No transaction token was provided");
     }
     String token = transactionData.get(WEBPAY_SUCCESS_TOKEN_HEADER_NAME);
-    URI transactionUri = service.confirmTransaction(token, false);
+    service.confirmTransaction(token, false);
+    URI transactionUri = service.generateResultPageUrl(token);
     return ResponseEntity
         .status(SEE_OTHER)
         .location(transactionUri)
@@ -118,10 +119,11 @@ public class PublicCheckoutController {
       throw new BadInputException("No transaction token was provided");
     }
     String token = transactionData.get(WEBPAY_ABORTION_TOKEN_HEADER_NAME);
-    URI transactionUri = service.confirmTransaction(token, true);
+    service.confirmTransaction(token, true);
+    URI resultPageUrl = service.generateResultPageUrl(token);
     return ResponseEntity
         .status(SEE_OTHER)
-        .location(transactionUri)
+        .location(resultPageUrl)
         .build();
   }
 

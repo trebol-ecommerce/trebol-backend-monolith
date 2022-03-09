@@ -20,6 +20,7 @@
 
 package org.trebol.operation;
 
+import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
@@ -40,13 +41,21 @@ public interface ICheckoutService {
 
   /**
    * From a given token, assert existence of a transaction marked as "started"; fetch result of said transaction;
-   * update saved metadata of that transaction<br/><br/>
+   * update saved metadata of that transaction<br/>
    * Usually, after this the client and the salesmanager are notified by some contact means, such as e-mail
    * @param token Previously emitted by the payment service
    * @param wasAborted Whether the transaction was aborted by the user doing the payment.
    * @return The "completed/failed" URI for requesting it later on
+   * @throws BadInputException When the transaction is not in a valid state
    * @throws EntityNotFoundException When no transaction matches the provided hash
    * @throws PaymentServiceException On unexpected failures
    */
-  URI confirmTransaction(String token, boolean wasAborted) throws EntityNotFoundException, PaymentServiceException;
+  SellPojo confirmTransaction(String token, boolean wasAborted) throws BadInputException, EntityNotFoundException, PaymentServiceException;
+
+  /**
+   * From a given token, generate a corresponding URL to redirect users to view their receipt
+   * @param transactionToken Previously emitted by the payment service
+   * @return The "completed/failed" URI to redirect consumer to
+   */
+  URI generateResultPageUrl(String transactionToken);
 }

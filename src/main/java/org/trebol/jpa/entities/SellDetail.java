@@ -42,6 +42,10 @@ public class SellDetail
   @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false)
   @ManyToOne(optional = false)
   private Product product;
+  @JoinColumn(name = "sell_id", referencedColumnName = "sell_id", insertable = false, updatable = false,
+      foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  private Sell sell;
 
   public SellDetail() { }
 
@@ -50,6 +54,7 @@ public class SellDetail
     this.units = source.units;
     this.unitValue = source.unitValue;
     this.product = source.product;
+    this.sell = source.sell;
   }
 
   public SellDetail(int units, Product product) {
@@ -94,6 +99,14 @@ public class SellDetail
 
   public void setProduct(Product product) {
     this.product = product;
+  }
+
+  public Sell getSell() {
+    return sell;
+  }
+
+  public void setSell(Sell sell) {
+    this.sell = sell;
   }
 
   @Override
