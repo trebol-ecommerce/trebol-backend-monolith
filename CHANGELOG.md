@@ -13,10 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `trebol.security.guestUserEnabled` - Can be true or false
   - `trebol.security.guestUserName` - Any non-blank string; also acts as its password
 
+### Changed
+- The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
+
 ### Fixed
 - Incorrect protocol for MariaDB JDBC URL
 - Webpay Plus was unable to redirect users to the callback URL; added `null` in list of allowed CORS origins
 - Incongruent binding of query parameters to data search filters for products
+- Guest can call the `/access` API and be returned a `200 OK` response
 - Change integration type for payments with Webpay Plus when production mode is not enabled
   - Now uses `TEST` as recommended by `@TransbankDevelopers`
   - Was using `MOCK` which is not very well documented
