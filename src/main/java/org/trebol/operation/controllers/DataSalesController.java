@@ -31,6 +31,7 @@ import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortJpaService;
 import org.trebol.operation.GenericDataCrudController;
+import org.trebol.operation.ISalesProcessService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.SellPojo;
 
@@ -46,14 +47,17 @@ public class DataSalesController
   extends GenericDataCrudController<SellPojo, Sell> {
 
   private final ISortJpaService<Sell> sortService;
+  private final ISalesProcessService processService;
 
   @Autowired
   public DataSalesController(OperationProperties globals,
                              GenericCrudJpaService<SellPojo, Sell> crudService,
                              IPredicateJpaService<Sell> predicateService,
-                             ISortJpaService<Sell> sortService) {
+                             ISortJpaService<Sell> sortService,
+                             ISalesProcessService processService) {
     super(globals, crudService, predicateService);
     this.sortService = sortService;
+    this.processService = processService;
   }
 
   @GetMapping({"", "/"})
@@ -84,6 +88,27 @@ public class DataSalesController
   public void delete(@RequestParam Map<String, String> requestParams)
       throws EntityNotFoundException {
     super.delete(requestParams);
+  }
+
+  @PostMapping({"/confirmation", "/confirmation/"})
+  @PreAuthorize("hasAuthority('sales:update')")
+  public void confirmSell(@RequestBody SellPojo sell)
+      throws BadInputException {
+    processService.markAsConfirmed(sell);
+  }
+
+  @PostMapping({"/rejection", "/rejection/"})
+  @PreAuthorize("hasAuthority('sales:update')")
+  public void rejectSell(@RequestBody SellPojo sell)
+      throws BadInputException {
+    processService.markAsRejected(sell);
+  }
+
+  @PostMapping({"/completion", "/completion/"})
+  @PreAuthorize("hasAuthority('sales:update')")
+  public void completeSell(@RequestBody SellPojo sell)
+      throws BadInputException {
+    processService.markAsCompleted(sell);
   }
 
   @Override

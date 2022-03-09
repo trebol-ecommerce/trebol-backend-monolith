@@ -23,7 +23,7 @@
   <groupId>org.trebol</groupId>
   <artifactId>spring-boot-backend</artifactId>
   <packaging>war</packaging>
-  <version>2.4.1</version>
+  <version>2.5.0</version>
 
   <name>Trébol Spring Boot Backend</name>
   <description>eCommerce RESTful Service.</description>
