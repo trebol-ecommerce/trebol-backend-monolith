@@ -18,19 +18,18 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services;
-
-import javax.persistence.EntityNotFoundException;
+package org.trebol.config;
 
 /**
- * Defines methods to progress through transaction stages (like series of steps).
+ * A temporary helper class to hold on to some name keys
  */
-public interface ISellStepperJpaService {
-  void setSellStatusToPaymentStartedWithToken(Long id, String token) throws EntityNotFoundException;
-  void setSellStatusToPaymentAborted(Long id) throws EntityNotFoundException;
-  void setSellStatusToPaymentFailed(Long id) throws EntityNotFoundException;
-  void setSellStatusToPaidUnconfirmed(Long id) throws EntityNotFoundException;
-  void setSellStatusToPaidConfirmed(Long id) throws EntityNotFoundException;
-  void setSellStatusToRejected(Long id) throws EntityNotFoundException;
-  void setSellStatusToCompleted(Long id) throws EntityNotFoundException;
+public class Constants {
+  public static final String SELL_STATUS_PENDING = "Pending";
+  public static final String SELL_STATUS_PAYMENT_STARTED = "Payment Started";
+  public static final String SELL_STATUS_PAYMENT_CANCELLED = "Payment Cancelled";
+  public static final String SELL_STATUS_PAYMENT_FAILED = "Payment Failed";
+  public static final String SELL_STATUS_PAID_UNCONFIRMED = "Paid, Unconfirmed";
+  public static final String SELL_STATUS_PAID_CONFIRMED = "Paid, Confirmed";
+  public static final String SELL_STATUS_REJECTED = "Rejected";
+  public static final String SELL_STATUS_COMPLETED = "Delivery Complete";
 }
