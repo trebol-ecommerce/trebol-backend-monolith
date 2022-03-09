@@ -36,6 +36,10 @@ public class Sell2Pojo
     target.setBuyOrder(source.getId());
     target.setDate(source.getDate());
     target.setNetValue(source.getNetValue());
+    target.setTaxValue(source.getTaxesValue());
+    target.setTotalValue(source.getTotalValue());
+    target.setTotalItems(source.getTotalItems());
+    target.setTransportValue(source.getTransportValue());
     target.setToken(source.getTransactionToken());
 
     return target;
