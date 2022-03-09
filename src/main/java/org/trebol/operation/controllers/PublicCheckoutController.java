@@ -65,7 +65,7 @@ public class PublicCheckoutController {
   public PublicCheckoutController(ICheckoutService service,
                                   GenericCrudJpaService<SellPojo, Sell> salesCrudService,
                                   IPredicateJpaService<Sell> salesPredicateService,
-                                  IMailingIntegrationService mailingIntegrationService) {
+                                  @Autowired(required = false) IMailingIntegrationService mailingIntegrationService) {
     this.service = service;
     this.salesCrudService = salesCrudService;
     this.salesPredicateService = salesPredicateService;
@@ -98,16 +98,14 @@ public class PublicCheckoutController {
    */
   @GetMapping({"/validate", "/validate/"})
   public ResponseEntity<Void> validateSuccesfulTransaction(@RequestParam Map<String, String> transactionData)
-      throws BadInputException, EntityNotFoundException, PaymentServiceException {
+      throws BadInputException, EntityNotFoundException, PaymentServiceException, MailingServiceException {
     if (!transactionData.containsKey(WEBPAY_SUCCESS_TOKEN_HEADER_NAME)) { // success
       throw new BadInputException("No transaction token was provided");
     }
     String token = transactionData.get(WEBPAY_SUCCESS_TOKEN_HEADER_NAME);
     SellPojo sellPojo = service.confirmTransaction(token, false);
-    try {
+    if (this.mailingIntegrationService != null) {
       mailingIntegrationService.notifyOrderStatusToClient(sellPojo);
-    } catch (MailingServiceException ex) {
-      logger.error("Could not send email to client for buy order #{}, raised exception was:", sellPojo.getBuyOrder(), ex);
     }
     URI transactionUri = service.generateResultPageUrl(token);
     return ResponseEntity

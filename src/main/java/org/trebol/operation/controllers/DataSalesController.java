@@ -60,7 +60,7 @@ public class DataSalesController
                              IPredicateJpaService<Sell> predicateService,
                              ISortJpaService<Sell> sortService,
                              ISalesProcessService processService,
-                             IMailingIntegrationService mailingIntegrationService) {
+                             @Autowired(required = false) IMailingIntegrationService mailingIntegrationService) {
     super(globals, crudService, predicateService);
     this.sortService = sortService;
     this.processService = processService;
@@ -111,8 +111,10 @@ public class DataSalesController
   public void confirmSell(@RequestBody SellPojo sell)
       throws BadInputException, MailingServiceException {
     SellPojo updatedSell = processService.markAsConfirmed(sell);
-    // mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
-    // mailingIntegrationService.notifyOrderStatusToOwners(updatedSell);
+    if (this.mailingIntegrationService != null) {
+      mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
+      mailingIntegrationService.notifyOrderStatusToOwners(updatedSell);
+    }
   }
 
   @PostMapping({"/rejection", "/rejection/"})
@@ -120,7 +122,9 @@ public class DataSalesController
   public void rejectSell(@RequestBody SellPojo sell)
       throws BadInputException, MailingServiceException {
     SellPojo updatedSell = processService.markAsRejected(sell);
-    // mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
+    if (this.mailingIntegrationService != null) {
+      mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
+    }
   }
 
   @PostMapping({"/completion", "/completion/"})
@@ -128,7 +132,9 @@ public class DataSalesController
   public void completeSell(@RequestBody SellPojo sell)
       throws BadInputException, MailingServiceException {
     SellPojo updatedSell = processService.markAsCompleted(sell);
-    // mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
+    if (this.mailingIntegrationService != null) {
+      mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
+    }
   }
 
   @Override
