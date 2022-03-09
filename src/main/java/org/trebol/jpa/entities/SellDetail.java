@@ -21,6 +21,7 @@
 package org.trebol.jpa.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -39,6 +40,9 @@ public class SellDetail
   private int units;
   @Column(name = "sell_detail_unit_value", nullable = false)
   private Integer unitValue;
+  @Column(name = "sell_detail_description", nullable = false)
+  @Size(max = 260)
+  private String description;
   @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false)
   @ManyToOne(optional = false)
   private Product product;
@@ -53,6 +57,7 @@ public class SellDetail
     this.id = source.id;
     this.units = source.units;
     this.unitValue = source.unitValue;
+    this.description = source.description;
     this.product = source.product;
     this.sell = source.sell;
   }
@@ -67,6 +72,7 @@ public class SellDetail
     this.units = units;
     this.unitValue = unitValue;
     this.product = product;
+    this.description = product.getName() + "[" + product.getBarcode()  + "]";
   }
 
   public Long getId() {
@@ -93,6 +99,14 @@ public class SellDetail
     this.unitValue = unitValue;
   }
 
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   public Product getProduct() {
     return product;
   }
@@ -117,12 +131,13 @@ public class SellDetail
     return units == that.units &&
         Objects.equals(id, that.id) &&
         Objects.equals(unitValue, that.unitValue) &&
-        Objects.equals(product, that.product);
+        Objects.equals(product, that.product) &&
+        Objects.equals(description, that.description);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, units, unitValue, product);
+    return Objects.hash(id, units, unitValue, product, description);
   }
 
   @Override
@@ -132,6 +147,7 @@ public class SellDetail
         ", units=" + units +
         ", unitValue=" + unitValue +
         ", product=" + product +
+        ", description=" + description +
         '}';
   }
 }
