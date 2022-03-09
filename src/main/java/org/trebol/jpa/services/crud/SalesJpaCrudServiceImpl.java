@@ -121,8 +121,8 @@ public class SalesJpaCrudServiceImpl
       int unitValue = sd.getUnitValue();
       double unitTaxValue = unitValue * TAX_PERCENT;
       double unitNetValue = unitValue - unitTaxValue;
-      taxesValue += unitTaxValue;
-      netValue += unitNetValue;
+      taxesValue += (unitTaxValue * sd.getUnits());
+      netValue += (unitNetValue * sd.getUnits());
       totalUnits += sd.getUnits();
     }
     input.setTaxesValue(taxesValue);
