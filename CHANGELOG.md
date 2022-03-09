@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Properties to configure the guest user (a public account only enabled for checking out)
   - `trebol.security.guestUserEnabled` - Can be true or false
   - `trebol.security.guestUserName` - Any non-blank string; also acts as its password
+- `SellDetail` entity now has a `description` field, which is meant to summarize its metadata in a human-readable string and remove dependency to the `Product` entity 
+  - *NOTE*: This will affect normal operation, check the next tagged release for a migration script named `migrate-to-mariadb-schema-v2.3.5.sql`
 
 ### Changed
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param

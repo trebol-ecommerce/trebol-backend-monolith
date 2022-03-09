@@ -34,6 +34,7 @@ public class SellDetail2Pojo
     SellDetailPojo target = new SellDetailPojo();
     target.setId(source.getId());
     target.setUnits(source.getUnits());
+    target.setDescription(source.getDescription());
     return target;
   }
 }
