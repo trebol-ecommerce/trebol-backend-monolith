@@ -70,6 +70,10 @@ public class DataSalesController
       SellPojo sellPojo = crudService.readOne(predicate);
       return new DataPagePojo<>(List.of(sellPojo), 0, 1, 1);
     }
+    if (!allRequestParams.containsKey("sortBy") && !allRequestParams.containsKey("order")) {
+      allRequestParams.put("sortBy", "buyOrder");
+      allRequestParams.put("order", "desc");
+    }
     return super.readMany(allRequestParams);
   }
 
