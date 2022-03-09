@@ -20,6 +20,7 @@
 
 package org.trebol.operation.controllers;
 
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +39,7 @@ import org.trebol.pojo.SellPojo;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -63,6 +65,11 @@ public class DataSalesController
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:read')")
   public DataPagePojo<SellPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    if (allRequestParams.containsKey("buyOrder")) {
+      Predicate predicate = predicateService.parseMap(allRequestParams);
+      SellPojo sellPojo = crudService.readOne(predicate);
+      return new DataPagePojo<>(List.of(sellPojo), 0, 1, 1);
+    }
     return super.readMany(allRequestParams);
   }
 

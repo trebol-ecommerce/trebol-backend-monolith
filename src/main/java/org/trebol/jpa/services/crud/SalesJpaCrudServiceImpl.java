@@ -142,6 +142,7 @@ public class SalesJpaCrudServiceImpl
         targetSellDetail.setUnitValue(sourceSellDetail.getUnitValue());
         targetSellDetail.setUnits(sourceSellDetail.getUnits());
         targetSellDetail.setProduct(product);
+        targetSellDetail.setDescription(sourceSellDetail.getDescription());
         sellDetails.add(targetSellDetail);
       }
       target.setDetails(sellDetails);
