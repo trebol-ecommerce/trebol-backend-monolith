@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - For example, assumming that category A includes subcategories AB and AC, filtering 'by category A' may include children from subcategories AB and AC as well 
   - This applies for filtering categories and products
   - Behavior before was to fetch only direct descendants of a given category
+- Implement three API resources to interact with sales after a checkout process from the customer
+  - `/data/sales/confirmation` - To confirm the sell (when logistics is good to go)
+  - `/data/sales/rejection` - To reject the sell (for cases such as, when no stock is available)
+  - `/data/sales/completion` - To complete the sell, or otherwise mark it as delivered
 
 ### Changed
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
