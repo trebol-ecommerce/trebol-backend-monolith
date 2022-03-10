@@ -24,6 +24,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
+/**
+ * General, implementation-agnostic properties for mailing services
+ */
 @Validated
 @Configuration
 @ConfigurationProperties(prefix = "trebol.integration.mailing")
