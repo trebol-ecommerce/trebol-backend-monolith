@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/data/sales/confirmation` - To confirm the sell (when logistics is good to go)
   - `/data/sales/rejection` - To reject the sell (for cases such as, when no stock is available)
   - `/data/sales/completion` - To complete the sell, or otherwise mark it as delivered
-- Introduce a service interface foor sending notification mails to customers and owners alike
+- Introduce a service interface for sending notification mails to customers and owners alike during checkout steps
   - Include Mailgun HTTP API implementation
     - To use it, `mailgun` must be included in `spring.profiles.active` env var
     - An empty configuration file is provided

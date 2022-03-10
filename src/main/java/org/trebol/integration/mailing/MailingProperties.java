@@ -28,15 +28,34 @@ import org.springframework.validation.annotation.Validated;
 @Configuration
 @ConfigurationProperties(prefix = "trebol.integration.mailing")
 public class MailingProperties {
+  private String dateFormat;
+  private String dateTimezone;
   private String ownerName;
   private String ownerEmail;
   private String senderEmail;
+  private String customerOrderPaymentSubject;
   private String customerOrderConfirmationSubject;
   private String customerOrderRejectionSubject;
   private String customerOrderCompletionSubject;
   private String ownerOrderConfirmationSubject;
   private String ownerOrderRejectionSubject;
   private String ownerOrderCompletionSubject;
+
+  public String getDateFormat() {
+    return dateFormat;
+  }
+
+  public void setDateFormat(String dateFormat) {
+    this.dateFormat = dateFormat;
+  }
+
+  public String getDateTimezone() {
+    return dateTimezone;
+  }
+
+  public void setDateTimezone(String dateTimezone) {
+    this.dateTimezone = dateTimezone;
+  }
 
   public String getOwnerName() {
     return ownerName;
@@ -60,6 +79,14 @@ public class MailingProperties {
 
   public void setSenderEmail(String senderEmail) {
     this.senderEmail = senderEmail;
+  }
+
+  public String getCustomerOrderPaymentSubject() {
+    return customerOrderPaymentSubject;
+  }
+
+  public void setCustomerOrderPaymentSubject(String customerOrderPaymentSubject) {
+    this.customerOrderPaymentSubject = customerOrderPaymentSubject;
   }
 
   public String getCustomerOrderConfirmationSubject() {
