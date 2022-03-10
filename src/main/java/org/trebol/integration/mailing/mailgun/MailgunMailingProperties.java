@@ -32,6 +32,7 @@ import org.springframework.validation.annotation.Validated;
 public class MailgunMailingProperties {
   private String apiKey;
   private String domain;
+  private String customerOrderPaymentTemplate;
   private String customerOrderConfirmationTemplate;
   private String customerOrderRejectionTemplate;
   private String customerOrderCompletionTemplate;
@@ -53,6 +54,14 @@ public class MailgunMailingProperties {
 
   public void setDomain(String domain) {
     this.domain = domain;
+  }
+
+  public String getCustomerOrderPaymentTemplate() {
+    return customerOrderPaymentTemplate;
+  }
+
+  public void setCustomerOrderPaymentTemplate(String customerOrderPaymentTemplate) {
+    this.customerOrderPaymentTemplate = customerOrderPaymentTemplate;
   }
 
   public String getCustomerOrderConfirmationTemplate() {
@@ -101,5 +110,4 @@ public class MailgunMailingProperties {
 
   public void setOwnerOrderCompletionTemplate(String ownerOrderCompletionTemplate) {
     this.ownerOrderCompletionTemplate = ownerOrderCompletionTemplate;
-  }
-}
+  }}
