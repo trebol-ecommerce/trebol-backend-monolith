@@ -7,15 +7,16 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 
-This application powers a complete implemented backend for the eCommerce project Trébol using Spring Boot v2.6.
+This application powers a complete, `Spring Boot v2.6`-based backend for the eCommerce project Trébol.
 
 
 ## Features:
 
-* Exposes a [REST API designed accordingly to the OpenAPI 3 standard](https://github.com/trebol-ecommerce/trebol-api)
+* Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api)
   * Supports all operations as described by the document
-  * Filtering, sorting and pagination of data is implemented through query params
-  * Login, registration and guest accounts (for doing one-time checkout)
+  * Filtering, sorting and pagination of data are implemented through query params
+  * Login, registration and guest accounts
+  * Checking out with user or guest accounts
 * Uses Spring Data JPA
   * Annotated entity classes; including constraints and indexes where they are most needed at scale
     * Bundles drivers for H2 and MariaDB, but can virtually connect to any JDBC-compatible database with the correct driver
@@ -27,21 +28,22 @@ This application powers a complete implemented backend for the eCommerce project
   * Passwords are encoded using BCrypt
 * Integrates payments with [Webpay Plus](https://transbankdevelopers.cl/producto/webpay) by Transbank ([Java SDK repo](https://github.com/TransbankDevelopers/transbank-sdk-java)) 
   * On due time, it may be possible to integrate more popular payment services such as Paypal and Stripe
+* Integrates mail notifications with [Mailgun](https://mailgun.com) (an account is required)
 * Human-friendly sample properties files for configuring mission-critical parameters such as:
   * CORS mappings
   * JWT secret key and duration
   * BCrypt algorithm strength
   * Webpay integration endpoints
+  * Mailgun & general mail properties
 * And all other Spring Boot goodness!
 
 
 ## Status
 
-Supporting [API v1.2.2](https://github.com/trebol-ecommerce/api/releases/tag/v1.2.2).
-Recently bumped version number up to v2.0 because the base Spring Boot starter project was migrated to a newer version, which is not compatible with some settings in all previous versions of the `application.properties` file.
-If you have issues when starting up the application, please [review the changes that were made here](https://github.com/trebol-ecommerce/spring-boot-backend/commits/main/src/main/resources/application.properties) and apply them to your `.properties` files. 
+Supporting unreleased [API v1.4.0](https://github.com/trebol-ecommerce/api/blob/bglamadrid/main/trebol-api.json).
+Recently the underlying data model has suffered a few changes, please view the `CHANGELOG.md` for details. 
 
-While this build isn't exactly production-ready, but for most purposes it should work just fine (in accordance with the aforementioned API).
+This build isn't yet production-ready, for most purposes it works just fine (in accordance with the aforementioned API).
 
 
 ## Requirements
@@ -59,6 +61,8 @@ __The important step here is to compile the project first__, because some classe
 If for any reason you fail to compile, please run `mvn generate-sources` and try it again.
 
 Once you're done with the above, you can quickly run the application with `mvn spring-boot:run`
+
+Mailgun integration will only be available if the `mailgun` profile is active. Please read the `application-mailgun.empty.properties` file and [this bit of the Spring Boot documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.profiles) to know how to proceed with that.
 
 
 ### Configuration
