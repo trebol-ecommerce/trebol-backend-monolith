@@ -86,7 +86,7 @@ public class CheckoutServiceImpl
       if (wasAborted) {
         return salesProcessService.markAsAborted(sellByToken);
       } else {
-        return this.processSellPaymentStatus(transactionToken);
+        return this.processSellPaymentStatus(sellByToken);
       }
     } catch (BadInputException e) {
       logger.error("Incorrect state of sell, was: {}", sellByToken.getStatus());
@@ -107,15 +107,13 @@ public class CheckoutServiceImpl
   }
 
   /**
-   * Finds a transaction by its token, fetches the result of its payment and updates it in the database.
-   * @param transactionToken A token provided by the payment integration service.
+   * Fetches the result of a transaction from the payment integration service and updates it in the database.
    * @throws EntityNotFoundException If no transaction has a matching token.
    * @throws PaymentServiceException As raised at integration level.
    */
-  private SellPojo processSellPaymentStatus(String transactionToken)
+  private SellPojo processSellPaymentStatus(SellPojo sellByToken)
       throws EntityNotFoundException, PaymentServiceException {
-    SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
-    int statusCode = paymentIntegrationService.requestPaymentResult(transactionToken);
+    int statusCode = paymentIntegrationService.requestPaymentResult(sellByToken.getToken());
     try {
       if (statusCode != 0) {
         return salesProcessService.markAsFailed(sellByToken);
