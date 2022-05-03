@@ -147,15 +147,7 @@ class SalesJpaCrudServiceTest {
     when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.empty());
     SalesJpaCrudServiceImpl service = instantiate();
 
-    SellPojo result = null;
-    try {
-      result = service.readOne(filters);
-    } catch (EntityNotFoundException e) {
-      e.printStackTrace();
-    }
-
-    assertNull(result);
-    verify(salesRepositoryMock).findOne(filters);
+    assertThrows(EntityNotFoundException.class, () -> service.readOne(filters));
   }
 
   private SalesJpaCrudServiceImpl instantiate() {

@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
 import static org.trebol.testhelpers.SalesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,12 +62,12 @@ class CheckoutServiceTest {
   void acknowledges_successful_transaction()
       throws PaymentServiceException, EntityNotFoundException, BadInputException {
     Map<String, String> matcherMap = Map.of(
-        "statusName", "Payment Started",
+        "statusCode", SELL_STATUS_PAYMENT_STARTED,
         "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
     when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(0);
-    when(paymentIntegrationService.getPaymentResultPageUrl()).thenReturn(RECEIPT_BASE_URL);
+    when(salesProcessService.markAsPaid(sellPojoAfterCreation())).thenReturn(null);
     CheckoutServiceImpl service = instantiate();
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, false);
@@ -75,19 +76,18 @@ class CheckoutServiceTest {
     verify(salesCrudService).readOne(MATCHER_PREDICATE);
     verify(paymentIntegrationService).requestPaymentResult(SELL_TRANSACTION_TOKEN);
     verify(salesProcessService).markAsPaid(sellPojoAfterCreation());
-    verify(paymentIntegrationService).getPaymentResultPageUrl();
-    //assertEquals(result.toString(), RECEIPT_URL);
+    assertNull(result);
   }
 
   @Test
   void acknowledges_aborted_transaction()
       throws PaymentServiceException, EntityNotFoundException, BadInputException {
     Map<String, String> matcherMap = Map.of(
-        "statusName", "Payment Started",
+        "statusCode", SELL_STATUS_PAYMENT_STARTED,
         "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
-    when(paymentIntegrationService.getPaymentResultPageUrl()).thenReturn(RECEIPT_BASE_URL);
+    when(salesProcessService.markAsAborted(sellPojoAfterCreation())).thenReturn(null);
     CheckoutServiceImpl service = instantiate();
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, true);
@@ -95,8 +95,7 @@ class CheckoutServiceTest {
     verify(salesPredicateService).parseMap(matcherMap);
     verify(salesCrudService).readOne(MATCHER_PREDICATE);
     verify(salesProcessService).markAsAborted(sellPojoAfterCreation());
-    verify(paymentIntegrationService).getPaymentResultPageUrl();
-    //assertEquals(result.toString(), RECEIPT_URL);
+    assertNull(result);
   }
 
   @Test
@@ -125,7 +124,7 @@ class CheckoutServiceTest {
   void throws_exceptions_at_invalid_transactions_before_confirming()
       throws PaymentServiceException, EntityNotFoundException {
     Map<String, String> matcherMap = Map.of(
-        "statusName", "Payment Started",
+        "statusCode", SELL_STATUS_PAYMENT_STARTED,
         "token", SELL_TRANSACTION_TOKEN);
     String exceptionMessage = "No match";
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
