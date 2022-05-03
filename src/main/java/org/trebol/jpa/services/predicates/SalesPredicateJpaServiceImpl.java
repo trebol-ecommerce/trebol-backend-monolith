@@ -70,7 +70,7 @@ public class SalesPredicateJpaServiceImpl
       } catch (NumberFormatException exc) {
         logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       } catch (DateTimeParseException exc) {
-        logger.warn("Param '{}' couldn't be parsed as date (value: '{}')", paramName, stringValue, exc);
+        logger.warn("Param '{}' couldn't be parsed as date (value: '{}')", paramName, stringValue);
       }
     }
 
