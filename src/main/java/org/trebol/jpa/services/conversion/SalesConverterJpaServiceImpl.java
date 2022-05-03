@@ -25,6 +25,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.config.ValidationProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
@@ -56,6 +57,7 @@ public class SalesConverterJpaServiceImpl
   private final IProductsJpaRepository productsRepository;
   private final ConversionService conversion;
   private final Validator validator;
+  private final Pattern companyIdNumberPattern;
 
   @Autowired
   public SalesConverterJpaServiceImpl(ConversionService conversion,
@@ -71,7 +73,8 @@ public class SalesConverterJpaServiceImpl
                                       ITwoWayConverterJpaService<SalespersonPojo, Salesperson> salespeopleConverter,
                                       ICustomersJpaRepository customersRepository,
                                       IProductsJpaRepository productsRepository,
-                                      Validator validator) {
+                                      Validator validator,
+                                      ValidationProperties validationProperties) {
     this.conversion = conversion;
     this.statusesRepository = statusesRepository;
     this.billingTypesRepository = billingTypesRepository;
@@ -86,6 +89,7 @@ public class SalesConverterJpaServiceImpl
     this.customersRepository = customersRepository;
     this.productsRepository = productsRepository;
     this.validator = validator;
+    this.companyIdNumberPattern = Pattern.compile(validationProperties.getIdNumberRegexp());
   }
 
   @Override
@@ -340,17 +344,19 @@ public class SalesConverterJpaServiceImpl
     String idNumber = sourceBillingCompany.getIdNumber();
     if (idNumber == null || idNumber.isBlank() ) {
       throw new BadInputException("Billing company must have an id number");
-    } else if (Pattern.compile("^\\d{7,9}[\\dk]$").matcher(idNumber).matches()) { // TODO parameterize regex
+    }
+
+    if (this.companyIdNumberPattern.matcher(idNumber).matches()) {
       throw new BadInputException("Billing company must have a correct id number");
+    }
+
+    Optional<BillingCompany> matchByIdNumber = billingCompaniesRepository.findByIdNumber(idNumber);
+    if (matchByIdNumber.isPresent()) {
+      return matchByIdNumber.get();
     } else {
-      Optional<BillingCompany> matchByIdNumber = billingCompaniesRepository.findByIdNumber(idNumber);
-      if (matchByIdNumber.isPresent()) {
-        return matchByIdNumber.get();
-      } else {
-        BillingCompany billingCompany = billingCompaniesConverter.convertToNewEntity(sourceBillingCompany);
-        billingCompany = billingCompaniesRepository.saveAndFlush(billingCompany);
-        return billingCompany;
-      }
+      BillingCompany billingCompany = billingCompaniesConverter.convertToNewEntity(sourceBillingCompany);
+      billingCompany = billingCompaniesRepository.saveAndFlush(billingCompany);
+      return billingCompany;
     }
   }
 }
