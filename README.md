@@ -7,7 +7,7 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 
-This application powers a complete, `Spring Boot v2.6`-based backend for the eCommerce project Trébol.
+This application is a complete, monolithic, Spring Boot-based backend for the eCommerce project Trébol.
 
 
 ## Features:
@@ -20,7 +20,7 @@ This application powers a complete, `Spring Boot v2.6`-based backend for the eCo
 * Uses Spring Data JPA
   * Annotated entity classes; including constraints and indexes where they are most needed at scale
     * Bundles drivers for H2 and MariaDB, but can virtually connect to any JDBC-compatible database with the correct driver
-    * [Simple DB schema diagram](https://github.com/trebol-ecommerce/spring-boot-backend/blob/main/schema.png)
+    * [Bare-bones DB schema](https://github.com/trebol-ecommerce/spring-boot-backend/blob/main/schema.png)
 * Uses Spring Security
   * Stateless session authentication/autorization with JWT
     * Paired with `users`, `roles`, and `permissions` database tables (see `/src/main/resources/data.sql` for an example setup with 4 roles and users)
@@ -40,10 +40,8 @@ This application powers a complete, `Spring Boot v2.6`-based backend for the eCo
 
 ## Status
 
-Supporting unreleased [API v1.4.0](https://github.com/trebol-ecommerce/api/blob/bglamadrid/main/trebol-api.json).
-Recently the underlying data model has suffered a few changes, please view the `CHANGELOG.md` for details. 
-
-This build isn't yet production-ready, for most purposes it works just fine (in accordance with the aforementioned API).
+Supporting [API v1.5.0](https://github.com/trebol-ecommerce/api/blob/bglamadrid/main/trebol-api.json).
+Recently the underlying data model has suffered a few changes, please view the `CHANGELOG.md` file for details.
 
 
 ## Requirements
