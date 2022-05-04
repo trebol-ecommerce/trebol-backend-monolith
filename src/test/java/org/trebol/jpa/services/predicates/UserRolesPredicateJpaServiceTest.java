@@ -1,9 +1,8 @@
-package org.trebol.jpa.services.predicate;
+package org.trebol.jpa.services.predicates;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.Test;
-import org.trebol.jpa.services.predicates.BillingTypesPredicateJpaServiceImpl;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,12 +11,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class BillingTypesPredicateJpaServiceTest {
+class UserRolesPredicateJpaServiceTest {
 
   @Test
   void parses_map() {
     Predicate emptyPredicate = new BooleanBuilder();
-    BillingTypesPredicateJpaServiceImpl service = instantiate();
+    UserRolesPredicateJpaServiceImpl service = instantiate();
     List<Predicate> predicates = List.of(emptyPredicate,
                                          service.parseMap(Map.of("id", "1")),
                                          service.parseMap(Map.of("name", "name test")),
@@ -26,7 +25,7 @@ class BillingTypesPredicateJpaServiceTest {
     assertEquals(predicates.size(), distinctPredicates.size());
   }
 
-  private BillingTypesPredicateJpaServiceImpl instantiate() {
-    return new BillingTypesPredicateJpaServiceImpl();
+  private UserRolesPredicateJpaServiceImpl instantiate() {
+    return new UserRolesPredicateJpaServiceImpl();
   }
 }

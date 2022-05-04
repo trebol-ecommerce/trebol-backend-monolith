@@ -1,4 +1,4 @@
-package org.trebol.jpa.services.predicate;
+package org.trebol.jpa.services.predicates;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.services.IProductCategoryTreeResolver;
-import org.trebol.jpa.services.predicates.ProductCategoriesPredicateJpaServiceImpl;
 
 import java.util.HashSet;
 import java.util.List;

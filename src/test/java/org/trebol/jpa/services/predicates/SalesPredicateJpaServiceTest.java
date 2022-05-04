@@ -1,9 +1,8 @@
-package org.trebol.jpa.services.predicate;
+package org.trebol.jpa.services.predicates;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.Test;
-import org.trebol.jpa.services.predicates.SalesPredicateJpaServiceImpl;
 
 import java.time.Instant;
 import java.util.HashSet;
