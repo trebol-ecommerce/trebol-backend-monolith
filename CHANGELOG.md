@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Service interface for confirming, rejecting and marking sales as completed
 - Support sorting product lists by item count (the amount of products held on each)
 - Properties to configure the guest user (a public account only enabled for checking out)
   - `trebol.security.guestUserEnabled` - Can be true or false
@@ -24,14 +23,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/data/sales/completion` - To complete the sell, or otherwise mark it as delivered
 - Introduce a service interface for sending notification mails to customers and owners alike during checkout steps
   - Include Mailgun HTTP API implementation
-    - To use it, `mailgun` must be included in `spring.profiles.active` env var
+    - To use it, the `mailgun` spring profile should be active
     - An empty configuration file is provided
+- Property to configure the guest user (a public account only enabled for checking out)
 
 ### Changed
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
 - Default `GET /data/sales` sort order is by descending `buyOrder`
-- (Temporary) Disable regex pattern validation for phones
-- Bump `rest-assured` from `4.4.0` to `4.5.1`
+- (Temporary) Disable regex pattern validation for phone numbers
+- Bump dependencies
+  - `spring-boot-starter-parent` from `2.6.2` to `2.6.4`
+  - `h2database` from `inherited` to `2.1.212`
+- Bump plugins
+  - `jacoco-maven-plugin` from `0.8.5` to `0.8.8`
 
 ### Fixed
 - Incorrect amount value given to Webpay (net value instead of total value)
