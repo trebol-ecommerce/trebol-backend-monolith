@@ -25,15 +25,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
 import org.trebol.jpa.repositories.IProductListsJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.ISortJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
-import org.trebol.operation.GenericPaginationController;
+import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
 
@@ -43,11 +43,12 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/data/product_list_contents")
-public class DataProductListContentsController
-  extends GenericPaginationController {
+public class DataProductListContentsController {
 
   private static final String ITEM_NOT_FOUND = "Requested item(s) not found";
 
+  private final PaginationService paginationService;
+  private final ISortJpaService<ProductListItem> sortService;
   private final IProductListItemsJpaRepository listItemsRepository;
   private final IProductListsJpaRepository listsRepository;
   private final IPredicateJpaService<ProductListItem> listItemsPredicateService;
@@ -55,14 +56,16 @@ public class DataProductListContentsController
   private final ITwoWayConverterJpaService<ProductPojo, ProductListItem> itemConverterService;
 
   @Autowired
-  public DataProductListContentsController(OperationProperties globals,
+  public DataProductListContentsController(PaginationService paginationService,
+                                           ISortJpaService<ProductListItem> sortService,
                                            IProductListItemsJpaRepository listItemsRepository,
                                            IProductListsJpaRepository listsRepository,
                                            IPredicateJpaService<ProductListItem> listItemsPredicateService,
                                            GenericCrudJpaService<ProductPojo, Product> productCrudService,
                                            ITwoWayConverterJpaService<ProductPojo,
                                            ProductListItem> itemConverterService) {
-    super(globals);
+    this.paginationService = paginationService;
+    this.sortService = sortService;
     this.listItemsRepository = listItemsRepository;
     this.listsRepository = listsRepository;
     this.listItemsPredicateService = listItemsPredicateService;
@@ -78,12 +81,12 @@ public class DataProductListContentsController
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
 
-    int pageIndex = super.determineRequestedPageIndex(requestParams);
-    int pageSize = super.determineRequestedPageSize(requestParams);
+    int pageIndex = paginationService.determineRequestedPageIndex(requestParams);
+    int pageSize = paginationService.determineRequestedPageSize(requestParams);
 
     Pageable pagination;
     if (requestParams.containsKey("sortBy")) {
-      Sort order = super.determineSortOrder(requestParams);
+      Sort order = sortService.parseMap(requestParams);
       pagination = PageRequest.of(pageIndex, pageSize, order);
     } else {
       pagination = PageRequest.of(pageIndex, pageSize);

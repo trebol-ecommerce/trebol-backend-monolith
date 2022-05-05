@@ -22,9 +22,9 @@ package org.trebol.operation;
 
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
-import org.trebol.config.OperationProperties;
 import org.trebol.jpa.services.ICrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.ISortJpaService;
 import org.trebol.pojo.DataPagePojo;
 
 import javax.validation.constraints.NotNull;
@@ -36,16 +36,19 @@ import java.util.Map;
  * @param <E> The Entity class
  */
 public abstract class GenericDataController<P, E>
-  extends GenericPaginationController
   implements IDataController<P> {
 
+  protected PaginationService paginationService;
+  protected ISortJpaService<E> sortService;
   protected final ICrudJpaService<P, Long> crudService;
   protected final IPredicateJpaService<E> predicateService;
 
-  public GenericDataController(OperationProperties operationProperties,
+  public GenericDataController(PaginationService paginationService,
+                               ISortJpaService<E> sortService,
                                ICrudJpaService<P, Long> crudService,
                                IPredicateJpaService<E> predicateService) {
-    super(operationProperties);
+    this.paginationService = paginationService;
+    this.sortService = sortService;
     this.crudService = crudService;
     this.predicateService = predicateService;
   }
@@ -54,18 +57,17 @@ public abstract class GenericDataController<P, E>
    * Retrieve a page of items with a fixed size and offset index.
    * An optional Map (like query string parameters) can be provided for filtering criteria
    * @param requestParams May contain filtering conditions and/or page size & page index parameters.
-   * @see Predicate
    * @return A paged collection of Pojos.
    */
   @Override
   public DataPagePojo<P> readMany(@NotNull Map<String, String> requestParams) {
 
-    int pageIndex = this.determineRequestedPageIndex(requestParams);
-    int pageSize = this.determineRequestedPageSize(requestParams);
+    int pageIndex = paginationService.determineRequestedPageIndex(requestParams);
+    int pageSize = paginationService.determineRequestedPageSize(requestParams);
 
     Sort order = null;
-    if (requestParams != null && requestParams.containsKey("sortBy")) {
-      order = this.determineSortOrder(requestParams);
+    if (requestParams != null && !requestParams.isEmpty()) {
+      order = sortService.parseMap(requestParams);
     }
 
     Predicate filters = null;

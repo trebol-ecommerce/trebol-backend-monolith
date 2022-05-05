@@ -18,29 +18,23 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services;
+package org.trebol.jpa.services.sortspecs;
 
-import com.querydsl.core.types.dsl.EntityPathBase;
-import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.trebol.jpa.entities.BillingType;
+import org.trebol.jpa.entities.QBillingType;
+import org.trebol.jpa.services.GenericSortSpecJpaService;
 
 import java.util.Map;
 
-/**
- * An interface for supporting custom algorithms to parse Sort orders for use in JPA queries.
- * This should only be implemented and used in cases not covered by the GenericDataController
- * @param <E> The target Entity class
- */
-public interface ISortJpaService<E> {
+@Service
+public class BillingTypesSortSpecJpaServiceImpl
+  extends GenericSortSpecJpaService<BillingType> {
 
-  /**
-   * Get base QueryDSL type for building OrderSpecifiers
-   */
-  EntityPathBase<E> getBasePath();
+  public BillingTypesSortSpecJpaServiceImpl() {
+    super(Map.of("name",  QBillingType.billingType.name.asc()));
+  }
 
-  /**
-   * Reads Map and creates sort order in accordance to its data
-   * @param queryParamsMap A map of keys and values
-   * @return A Sort order as parsed from the input map. May be null if the input is invalid
-   */
-  Sort parseMap(Map<String, String> queryParamsMap);
+  @Override
+  public QBillingType getBasePath() { return QBillingType.billingType; }
 }

@@ -25,11 +25,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.ISortJpaService;
 import org.trebol.operation.GenericDataController;
+import org.trebol.operation.PaginationService;
 import org.trebol.pojo.BillingTypePojo;
 import org.trebol.pojo.DataPagePojo;
 
@@ -41,10 +42,11 @@ public class DataBillingTypesController
   extends GenericDataController<BillingTypePojo, BillingType> {
 
   @Autowired
-  public DataBillingTypesController(OperationProperties globals,
+  public DataBillingTypesController(PaginationService paginationService,
+                                    ISortJpaService<BillingType> sortService,
                                     GenericCrudJpaService<BillingTypePojo, BillingType> crudService,
                                     IPredicateJpaService<BillingType> predicateService) {
-    super(globals, crudService, predicateService);
+    super(paginationService, sortService, crudService, predicateService);
   }
 
   @GetMapping({"", "/"})

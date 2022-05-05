@@ -21,10 +21,10 @@
 package org.trebol.operation;
 
 import com.querydsl.core.types.Predicate;
-import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.ISortJpaService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -34,10 +34,11 @@ public class GenericDataCrudController<P, E>
   extends GenericDataController<P, E>
   implements IDataCrudController<P> {
 
-  protected GenericDataCrudController(OperationProperties operationProperties,
+  protected GenericDataCrudController(PaginationService paginationService,
+                                      ISortJpaService<E> sortService,
                                       GenericCrudJpaService<P, E> crudService,
                                       IPredicateJpaService<E> predicateService) {
-    super(operationProperties, crudService, predicateService);
+    super(paginationService, sortService, crudService, predicateService);
   }
 
   @Override

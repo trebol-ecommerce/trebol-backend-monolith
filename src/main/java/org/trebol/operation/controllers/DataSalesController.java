@@ -22,10 +22,8 @@ package org.trebol.operation.controllers;
 
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.integration.exceptions.MailingServiceException;
@@ -35,6 +33,7 @@ import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortJpaService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.ISalesProcessService;
+import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.SellPojo;
 
@@ -50,19 +49,17 @@ import java.util.Map;
 public class DataSalesController
   extends GenericDataCrudController<SellPojo, Sell> {
 
-  private final ISortJpaService<Sell> sortService;
   private final ISalesProcessService processService;
   private final IMailingIntegrationService mailingIntegrationService;
 
   @Autowired
-  public DataSalesController(OperationProperties globals,
+  public DataSalesController(PaginationService paginationService,
+                             ISortJpaService<Sell> sortService,
                              GenericCrudJpaService<SellPojo, Sell> crudService,
                              IPredicateJpaService<Sell> predicateService,
-                             ISortJpaService<Sell> sortService,
                              ISalesProcessService processService,
                              @Autowired(required = false) IMailingIntegrationService mailingIntegrationService) {
-    super(globals, crudService, predicateService);
-    this.sortService = sortService;
+    super(paginationService, sortService, crudService, predicateService);
     this.processService = processService;
     this.mailingIntegrationService = mailingIntegrationService;
   }
@@ -135,10 +132,5 @@ public class DataSalesController
     if (this.mailingIntegrationService != null) {
       mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
     }
-  }
-
-  @Override
-  protected Sort determineSortOrder(Map<String, String> requestParams) {
-    return sortService.parseMap(requestParams);
   }
 }
