@@ -26,9 +26,8 @@ import org.springframework.data.domain.Sort;
 import java.util.Map;
 
 /**
- * An interface for supporting custom algorithms to parse Sort orders for use in JPA queries.
- * This should only be implemented and used in cases not covered by the GenericDataController
- * @param <E> The target Entity class
+ * An interface to support parsing of Maps into sort order clauses to be used in queries at the persistence layer.
+ * @param <E> The target @Entity class
  */
 public interface ISortSpecJpaService<E> {
 
@@ -38,7 +37,7 @@ public interface ISortSpecJpaService<E> {
   EntityPathBase<E> getBasePath();
 
   /**
-   * Reads Map and creates sort order in accordance to its data
+   * Reads a Map and generates sort order constraints for a specific entity
    * @param queryParamsMap A map of keys and values
    * @return A Sort order as parsed from the input map. May be null if the input is invalid
    */
