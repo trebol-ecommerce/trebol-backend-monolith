@@ -20,6 +20,7 @@
 
 package org.trebol.jpa.services.sortspecs;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.QSalesperson;
 import org.trebol.jpa.entities.Salesperson;
@@ -31,16 +32,21 @@ import java.util.Map;
 public class SalespeopleSortSpecJpaServiceImpl
   extends GenericSortSpecJpaService<Salesperson> {
 
-  public SalespeopleSortSpecJpaServiceImpl() {
-    super(Map.of("idNumber",  QSalesperson.salesperson.person.idNumber.asc(),
-                 "firstName", QSalesperson.salesperson.person.firstName.asc(),
-                 "email",     QSalesperson.salesperson.person.email.asc(),
-                 "phone1",    QSalesperson.salesperson.person.phone1.asc(),
-                 "phone2",    QSalesperson.salesperson.person.phone2.asc(),
-                 "name",      QSalesperson.salesperson.person.lastName.asc(),
-                 "lastName",  QSalesperson.salesperson.person.lastName.asc()));
+  @Override
+  public QSalesperson getBasePath() {
+    return QSalesperson.salesperson;
   }
 
   @Override
-  public QSalesperson getBasePath() { return QSalesperson.salesperson; }
+  protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
+    return Map.of(
+            "idNumber",  getBasePath().person.idNumber.asc(),
+            "firstName", getBasePath().person.firstName.asc(),
+            "email",     getBasePath().person.email.asc(),
+            "phone1",    getBasePath().person.phone1.asc(),
+            "phone2",    getBasePath().person.phone2.asc(),
+            "name",      getBasePath().person.lastName.asc(),
+            "lastName",  getBasePath().person.lastName.asc()
+    );
+  }
 }

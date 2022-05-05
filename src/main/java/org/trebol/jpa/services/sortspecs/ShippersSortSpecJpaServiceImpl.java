@@ -20,6 +20,7 @@
 
 package org.trebol.jpa.services.sortspecs;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.QShipper;
 import org.trebol.jpa.entities.Shipper;
@@ -31,10 +32,16 @@ import java.util.Map;
 public class ShippersSortSpecJpaServiceImpl
   extends GenericSortSpecJpaService<Shipper> {
 
-  public ShippersSortSpecJpaServiceImpl() {
-    super(Map.of("name",  QShipper.shipper.name.asc()));
+  @Override
+  public QShipper getBasePath() {
+    return QShipper.shipper;
   }
 
   @Override
-  public QShipper getBasePath() { return QShipper.shipper; }
+  protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
+    return Map.of(
+            "name",  QShipper.shipper.name.asc()
+    );
+  }
+
 }

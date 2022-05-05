@@ -20,10 +20,9 @@
 
 package org.trebol.jpa.services.sortspecs;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Service;
-import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.entities.QProduct;
 import org.trebol.jpa.entities.QProductList;
 import org.trebol.jpa.services.GenericSortSpecJpaService;
 
@@ -33,12 +32,17 @@ import java.util.Map;
 public class ProductListsSpecJpaServiceImpl
   extends GenericSortSpecJpaService<ProductList> {
 
-  public ProductListsSpecJpaServiceImpl() {
-    super(Map.of("name", QProductList.productList.name.asc(),
-                 "code", QProductList.productList.code.asc(),
-                 "totalCount", QProductList.productList.items.size().asc()));
+  @Override
+  public QProductList getBasePath() {
+    return QProductList.productList;
   }
 
   @Override
-  public QProductList getBasePath() { return QProductList.productList; }
+  protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
+    return Map.of(
+            "name",       getBasePath().name.asc(),
+            "code",       getBasePath().code.asc(),
+            "totalCount", getBasePath().items.size().asc()
+    );
+  }
 }

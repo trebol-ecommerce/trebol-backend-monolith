@@ -31,9 +31,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
 - Default `GET /data/sales` sort order is by descending `buyOrder`
 - (Temporary) Disable regex pattern validation for phone numbers
+- Further divide logic for sorting/pagination/filtering into different services
 - Bump dependencies
   - `spring-boot-starter-parent` from `2.6.2` to `2.6.4`
   - `h2database` from `inherited` to `2.1.212`
+
 - Bump plugins
   - `jacoco-maven-plugin` from `0.8.5` to `0.8.8`
 

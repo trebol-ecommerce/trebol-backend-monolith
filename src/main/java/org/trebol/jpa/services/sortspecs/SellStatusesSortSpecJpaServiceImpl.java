@@ -20,6 +20,7 @@
 
 package org.trebol.jpa.services.sortspecs;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.QSellStatus;
 import org.trebol.jpa.entities.SellStatus;
@@ -31,10 +32,15 @@ import java.util.Map;
 public class SellStatusesSortSpecJpaServiceImpl
   extends GenericSortSpecJpaService<SellStatus> {
 
-  public SellStatusesSortSpecJpaServiceImpl() {
-    super(Map.of("name",  QSellStatus.sellStatus.name.asc()));
+  @Override
+  public QSellStatus getBasePath() {
+    return QSellStatus.sellStatus;
   }
 
   @Override
-  public QSellStatus getBasePath() { return QSellStatus.sellStatus; }
+  protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
+    return Map.of(
+            "name",  getBasePath().name.asc()
+    );
+  }
 }

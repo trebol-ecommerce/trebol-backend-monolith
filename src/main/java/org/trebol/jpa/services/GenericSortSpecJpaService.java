@@ -29,16 +29,14 @@ import java.util.Map;
 public abstract class GenericSortSpecJpaService<E>
   implements ISortSpecJpaService<E> {
 
-  protected final Map<String, OrderSpecifier<?>> orderSpecifierMap;
+  private Map<String, OrderSpecifier<?>> orderSpecMap;
 
-  public GenericSortSpecJpaService(Map<String, OrderSpecifier<?>> orderSpecifierMap) {
-    this.orderSpecifierMap = orderSpecifierMap;
-  }
+  protected abstract Map<String, OrderSpecifier<?>> createOrderSpecMap();
 
   @Override
   public Sort parseMap(Map<String, String> queryParamsMap) {
     String propertyName = queryParamsMap.get("sortBy");
-    OrderSpecifier<?> orderSpecifier = this.orderSpecifierMap.get(propertyName);
+    OrderSpecifier<?> orderSpecifier = this.getOrderSpecMap().get(propertyName);
     Sort sortBy = QSort.by(orderSpecifier);
     switch (queryParamsMap.get("order")) {
       case "asc":
@@ -48,5 +46,12 @@ public abstract class GenericSortSpecJpaService<E>
       default:
         return sortBy;
     }
+  }
+
+  private Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    if (this.orderSpecMap == null) {
+      this.orderSpecMap = this.createOrderSpecMap();
+    }
+    return this.orderSpecMap;
   }
 }
