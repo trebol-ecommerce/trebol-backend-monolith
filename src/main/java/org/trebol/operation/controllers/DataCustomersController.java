@@ -21,16 +21,15 @@
 package org.trebol.operation.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortJpaService;
 import org.trebol.operation.GenericDataCrudController;
+import org.trebol.operation.PaginationService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.DataPagePojo;
 
@@ -45,14 +44,12 @@ import java.util.Map;
 public class DataCustomersController
   extends GenericDataCrudController<CustomerPojo, Customer> {
 
-  private final ISortJpaService<Customer> sortService;
-
   @Autowired
-  public DataCustomersController(OperationProperties globals,
+  public DataCustomersController(PaginationService paginationService,
+                                 ISortJpaService<Customer> sortService,
                                  GenericCrudJpaService<CustomerPojo, Customer> crudService,
-                                 IPredicateJpaService<Customer> predicateService,
-                                 ISortJpaService<Customer> sortService) {
-    super(globals, crudService, predicateService);
+                                 IPredicateJpaService<Customer> predicateService) {
+    super(paginationService, sortService, crudService, predicateService);
     this.sortService = sortService;
   }
 
@@ -84,10 +81,5 @@ public class DataCustomersController
   public void delete(Map<String, String> requestParams)
       throws EntityNotFoundException {
     super.delete(requestParams);
-  }
-
-  @Override
-  protected Sort determineSortOrder(Map<String, String> requestParams) {
-    return this.sortService.parseMap(requestParams);
   }
 }

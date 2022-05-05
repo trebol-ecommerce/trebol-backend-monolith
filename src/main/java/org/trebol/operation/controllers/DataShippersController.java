@@ -23,12 +23,13 @@ package org.trebol.operation.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.trebol.config.OperationProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.ISortJpaService;
 import org.trebol.operation.GenericDataCrudController;
+import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ShipperPojo;
 
@@ -43,10 +44,11 @@ public class DataShippersController
   extends GenericDataCrudController<ShipperPojo, Shipper> {
 
   @Autowired
-  public DataShippersController(OperationProperties globals,
+  public DataShippersController(PaginationService paginationService,
+                                ISortJpaService<Shipper> sortService,
                                 GenericCrudJpaService<ShipperPojo, Shipper> crudService,
                                 IPredicateJpaService<Shipper> predicateService) {
-    super(globals, crudService, predicateService);
+    super(paginationService, sortService, crudService, predicateService);
   }
 
   @GetMapping({"", "/"})
