@@ -31,7 +31,7 @@ import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
 import org.trebol.jpa.repositories.IProductListsJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortJpaService;
+import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
@@ -48,7 +48,7 @@ public class DataProductListContentsController {
   private static final String ITEM_NOT_FOUND = "Requested item(s) not found";
 
   private final PaginationService paginationService;
-  private final ISortJpaService<ProductListItem> sortService;
+  private final ISortSpecJpaService<ProductListItem> sortService;
   private final IProductListItemsJpaRepository listItemsRepository;
   private final IProductListsJpaRepository listsRepository;
   private final IPredicateJpaService<ProductListItem> listItemsPredicateService;
@@ -57,7 +57,7 @@ public class DataProductListContentsController {
 
   @Autowired
   public DataProductListContentsController(PaginationService paginationService,
-                                           ISortJpaService<ProductListItem> sortService,
+                                           ISortSpecJpaService<ProductListItem> sortService,
                                            IProductListItemsJpaRepository listItemsRepository,
                                            IProductListsJpaRepository listsRepository,
                                            IPredicateJpaService<ProductListItem> listItemsPredicateService,

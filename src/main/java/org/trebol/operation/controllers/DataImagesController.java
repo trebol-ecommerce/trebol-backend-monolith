@@ -27,7 +27,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortJpaService;
+import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
@@ -46,7 +46,7 @@ public class DataImagesController
 
   @Autowired
   public DataImagesController(PaginationService paginationService,
-                              ISortJpaService<Image> sortService,
+                              ISortSpecJpaService<Image> sortService,
                               GenericCrudJpaService<ImagePojo, Image> crudService,
                               IPredicateJpaService<Image> predicateService) {
     super(paginationService, sortService, crudService, predicateService);

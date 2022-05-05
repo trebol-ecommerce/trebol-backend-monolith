@@ -30,7 +30,7 @@ import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortJpaService;
+import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.ISalesProcessService;
 import org.trebol.operation.PaginationService;
@@ -54,7 +54,7 @@ public class DataSalesController
 
   @Autowired
   public DataSalesController(PaginationService paginationService,
-                             ISortJpaService<Sell> sortService,
+                             ISortSpecJpaService<Sell> sortService,
                              GenericCrudJpaService<SellPojo, Sell> crudService,
                              IPredicateJpaService<Sell> predicateService,
                              ISalesProcessService processService,
