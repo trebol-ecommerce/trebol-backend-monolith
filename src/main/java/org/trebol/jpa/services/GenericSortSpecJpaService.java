@@ -27,7 +27,7 @@ import org.springframework.data.querydsl.QSort;
 import java.util.Map;
 
 public abstract class GenericSortSpecJpaService<E>
-  implements ISortJpaService<E> {
+  implements ISortSpecJpaService<E> {
 
   protected final Map<String, OrderSpecifier<?>> orderSpecifierMap;
 

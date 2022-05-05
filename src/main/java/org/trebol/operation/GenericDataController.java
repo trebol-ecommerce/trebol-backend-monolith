@@ -24,7 +24,7 @@ import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
 import org.trebol.jpa.services.ICrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortJpaService;
+import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.pojo.DataPagePojo;
 
 import javax.validation.constraints.NotNull;
@@ -39,12 +39,12 @@ public abstract class GenericDataController<P, E>
   implements IDataController<P> {
 
   protected PaginationService paginationService;
-  protected ISortJpaService<E> sortService;
+  protected ISortSpecJpaService<E> sortService;
   protected final ICrudJpaService<P, Long> crudService;
   protected final IPredicateJpaService<E> predicateService;
 
   public GenericDataController(PaginationService paginationService,
-                               ISortJpaService<E> sortService,
+                               ISortSpecJpaService<E> sortService,
                                ICrudJpaService<P, Long> crudService,
                                IPredicateJpaService<E> predicateService) {
     this.paginationService = paginationService;

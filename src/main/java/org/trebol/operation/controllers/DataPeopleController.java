@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortJpaService;
+import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.operation.GenericDataController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
@@ -45,7 +45,7 @@ public class DataPeopleController
 
   @Autowired
   public DataPeopleController(PaginationService paginationService,
-                              ISortJpaService<Person> sortService,
+                              ISortSpecJpaService<Person> sortService,
                               GenericCrudJpaService<PersonPojo, Person> crudService,
                               IPredicateJpaService<Person> predicateService) {
     super(paginationService, sortService, crudService, predicateService);

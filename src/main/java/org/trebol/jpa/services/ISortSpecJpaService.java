@@ -30,7 +30,7 @@ import java.util.Map;
  * This should only be implemented and used in cases not covered by the GenericDataController
  * @param <E> The target Entity class
  */
-public interface ISortJpaService<E> {
+public interface ISortSpecJpaService<E> {
 
   /**
    * Get base QueryDSL type for building OrderSpecifiers

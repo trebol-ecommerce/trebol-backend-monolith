@@ -27,7 +27,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortJpaService;
+import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
@@ -48,7 +48,7 @@ public class DataUsersController
 
   @Autowired
   public DataUsersController(PaginationService paginationService,
-                             ISortJpaService<User> sortService,
+                             ISortSpecJpaService<User> sortService,
                              GenericCrudJpaService<UserPojo, User> crudService,
                              IPredicateJpaService<User> predicateService) {
     super(paginationService, sortService, crudService, predicateService);
