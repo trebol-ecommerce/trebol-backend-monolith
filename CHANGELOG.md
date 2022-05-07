@@ -25,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Include Mailgun HTTP API implementation
     - To use it, the `mailgun` spring profile should be active
     - An empty configuration file is provided
-- Property to configure the guest user (a public account only enabled for checking out)
 
 ### Changed
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
