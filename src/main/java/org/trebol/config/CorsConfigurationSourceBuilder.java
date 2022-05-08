@@ -26,40 +26,58 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.trebol.exceptions.CorsMappingParseException;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * CorsConfigurationSource builder class
+ * Type that creates an instance of CorsConfigurationSource using information from an instance of CorsProperties
  */
 public class CorsConfigurationSourceBuilder {
 
+  private final String listDelimiter;
   private final List<String> allowedHeaders;
   private final List<String> allowedOrigins;
-  private final Map<String, String> corsMappings;
+  private final Map<String, String> mappings;
 
   public CorsConfigurationSourceBuilder(CorsProperties corsProperties) throws CorsMappingParseException {
-    this.allowedHeaders = corsProperties.getAllowedHeadersAsList();
-    this.allowedOrigins = corsProperties.getAllowedOriginsAsList();
-    this.corsMappings = corsProperties.getMappingsAsMap();
+    this.listDelimiter = corsProperties.getListDelimiter();
+    this.allowedHeaders = Arrays.asList(corsProperties.getAllowedHeaders().split(this.listDelimiter));
+    this.allowedOrigins = Arrays.asList(corsProperties.getAllowedOrigins().split(this.listDelimiter));
+    this.mappings = this.parseMappings(corsProperties);
   }
 
   public CorsConfigurationSource build() {
     CorsConfiguration baseConfig = new CorsConfiguration();
-    baseConfig.setAllowedHeaders(allowedHeaders);
+    baseConfig.setAllowedHeaders(this.allowedHeaders);
     baseConfig.setAllowCredentials(true);
     baseConfig.setMaxAge(300L);
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    for (String path : corsMappings.keySet()) {
-
-      List<String> methods = Arrays.asList(corsMappings.get(path).split(","));
+    UrlBasedCorsConfigurationSource cfg = new UrlBasedCorsConfigurationSource();
+    for (String path : mappings.keySet()) {
+      List<String> methods = Arrays.asList(this.mappings.get(path).split(","));
       CorsConfiguration pathConfig = new CorsConfiguration(baseConfig);
-      pathConfig.setAllowedOrigins(allowedOrigins);
+      pathConfig.setAllowedOrigins(this.allowedOrigins);
       pathConfig.setAllowedMethods(methods);
-      source.registerCorsConfiguration(path, pathConfig);
+      cfg.registerCorsConfiguration(path, pathConfig);
     }
-    return source;
+    return cfg;
+  }
+
+  private Map<String, String> parseMappings(CorsProperties corsProperties) throws CorsMappingParseException {
+    Map<String, String> map = new HashMap<>();
+
+    for (String chunk : corsProperties.getMappings().split(this.listDelimiter)) {
+      String[] mapping = chunk.split(" ");
+      try {
+        String method = mapping[0] + ",HEAD,OPTIONS";
+        String path = mapping[1];
+        map.put(path, method);
+      } catch (ArrayIndexOutOfBoundsException e) {
+        throw new CorsMappingParseException(
+                "Could not parse '" + chunk + "', format must be 'METHOD[,METHOD2,...] /path/to/api'");
+      }
+    }
+    return map;
   }
 
 }

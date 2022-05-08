@@ -23,13 +23,8 @@ package org.trebol.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
-import org.trebol.exceptions.CorsMappingParseException;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Validated
 @Configuration
@@ -75,31 +70,6 @@ public class CorsProperties {
 
   public void setListDelimiter(String listDelimiter) {
     this.listDelimiter = listDelimiter;
-  }
-
-  public List<String> getAllowedHeadersAsList() {
-    return Arrays.asList(allowedHeaders.split(listDelimiter));
-  }
-
-  public List<String> getAllowedOriginsAsList() {
-    return Arrays.asList(allowedOrigins.split(listDelimiter));
-  }
-
-  public Map<String, String> getMappingsAsMap() throws CorsMappingParseException {
-    Map<String, String> map = new HashMap<>();
-
-    for (String m : mappings.split(listDelimiter)) {
-      String[] mapping = m.split(" ");
-      try {
-        String method = mapping[0] + ",HEAD,OPTIONS";
-        String path = mapping[1];
-        map.put(path, method);
-      } catch (ArrayIndexOutOfBoundsException e) {
-        throw new CorsMappingParseException(
-            "Could not parse '" + m + "', format must be 'METHOD[,METHOD2,...] /path/to/api'");
-      }
-    }
-    return map;
   }
 
 }
