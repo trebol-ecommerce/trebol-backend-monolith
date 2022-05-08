@@ -59,12 +59,11 @@ public class AccessController {
     String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
     if (authorizationHeader == null || !authorizationHeader.matches("^Bearer .+$")) {
       return null;
-    } else {
-      String jwt = authorizationHeader.replace("Bearer ", "");
-      Claims body = jwtClaimsParserService.parseToken(jwt);
-      String username = body.getSubject();
-      return userDetailsService.loadUserByUsername(username);
     }
+    String jwt = authorizationHeader.replace("Bearer ", "");
+    Claims body = jwtClaimsParserService.parseToken(jwt);
+    String username = body.getSubject();
+    return userDetailsService.loadUserByUsername(username);
   }
 
   @GetMapping({"", "/"})
@@ -72,13 +71,12 @@ public class AccessController {
     throws UsernameNotFoundException, IllegalStateException {
     UserDetails userDetails = this.getUserDetails(requestHeaders);
     if (userDetails == null) {
-      return null;
-    } else {
-      Collection<String> routes = authorizedApiService.getAuthorizedApiRoutes(userDetails);
-      AuthorizedAccessPojo target = new AuthorizedAccessPojo();
-      target.setRoutes(routes);
-      return target;
+      throw new IllegalStateException("");
     }
+    Collection<String> routes = authorizedApiService.getAuthorizedApiRoutes(userDetails);
+    AuthorizedAccessPojo target = new AuthorizedAccessPojo();
+    target.setRoutes(routes);
+    return target;
   }
 
   @GetMapping({"/{apiRoute}", "/{apiRoute}/"})
@@ -89,12 +87,11 @@ public class AccessController {
     UserDetails userDetails = this.getUserDetails(requestHeaders);
     if (userDetails == null) {
       return null;
-    } else {
-      Collection<String> permissions = authorizedApiService.getAuthorizedApiRouteAccess(userDetails, apiRoute);
-      AuthorizedAccessPojo target = new AuthorizedAccessPojo();
-      target.setPermissions(permissions);
-      return target;
     }
+    Collection<String> permissions = authorizedApiService.getAuthorizedApiRouteAccess(userDetails, apiRoute);
+    AuthorizedAccessPojo target = new AuthorizedAccessPojo();
+    target.setPermissions(permissions);
+    return target;
   }
 
   @ResponseStatus(UNAUTHORIZED)
