@@ -35,6 +35,9 @@ public abstract class GenericSortSpecJpaService<E>
 
   @Override
   public Sort parseMap(Map<String, String> queryParamsMap) {
+    if (!queryParamsMap.containsKey("sortBy")) {
+      return Sort.unsorted();
+    }
     String propertyName = queryParamsMap.get("sortBy");
     OrderSpecifier<?> orderSpecifier = this.getOrderSpecMap().get(propertyName);
     Sort sortBy = QSort.by(orderSpecifier);
