@@ -45,7 +45,7 @@ import java.util.Optional;
  */
 @Transactional
 public abstract class GenericCrudJpaService<P, E>
-  implements ICrudJpaService<P, Long> {
+  implements ICrudJpaService<P> {
 
   // avoid shadowing this field; as implementations should always refer to their specific repositories
   private final IJpaRepository<E> repository;
