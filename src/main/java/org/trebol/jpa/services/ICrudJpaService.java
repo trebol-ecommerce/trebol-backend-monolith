@@ -33,9 +33,8 @@ import javax.persistence.EntityNotFoundException;
 /**
  * Interface for wrapping basic CRUD service operations by using Pojo classes
  * @param <P> The pojo type class
- * @param <I> The identifier type class
  */
-public interface ICrudJpaService<P, I> {
+public interface ICrudJpaService<P> {
 
   /**
    * Inserts and persists an item.

@@ -40,12 +40,12 @@ public abstract class GenericDataController<P, E>
 
   protected PaginationService paginationService;
   protected ISortSpecJpaService<E> sortService;
-  protected final ICrudJpaService<P, Long> crudService;
+  protected final ICrudJpaService<P> crudService;
   protected final IPredicateJpaService<E> predicateService;
 
   public GenericDataController(PaginationService paginationService,
                                ISortSpecJpaService<E> sortService,
-                               ICrudJpaService<P, Long> crudService,
+                               ICrudJpaService<P> crudService,
                                IPredicateJpaService<E> predicateService) {
     this.paginationService = paginationService;
     this.sortService = sortService;
