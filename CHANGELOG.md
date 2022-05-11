@@ -35,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump dependencies
   - `spring-boot-starter-parent` from `2.6.2` to `2.6.4`
   - `h2database` from `inherited` to `2.1.212`
+  - `jjwt-*` from `0.11.2` to `0.11.5`
+  - `unirest-java` from `3.13.6` to `3.13.8`
 
 - Bump plugins
   - `jacoco-maven-plugin` from `0.8.5` to `0.8.8`
