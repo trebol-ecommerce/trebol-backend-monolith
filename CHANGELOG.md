@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - An empty configuration file is provided
 
 ### Changed
+- Use [Project Lombok](https://projectlombok.org) 
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
 - Default `GET /data/sales` sort order is by descending `buyOrder`
 - (Temporary) Disable regex pattern validation for phone numbers
