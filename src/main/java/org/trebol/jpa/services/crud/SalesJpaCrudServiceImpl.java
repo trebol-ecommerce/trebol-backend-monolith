@@ -99,16 +99,16 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  protected SellPojo doUpdate(SellPojo input, Sell existingEntity)
+  protected SellPojo doUpdate(SellPojo changes, Sell existingEntity)
       throws BadInputException {
     Integer statusCode = existingEntity.getStatus().getCode();
     if ((statusCode >= 3 || statusCode < 0) && !CAN_EDIT_AFTER_PROCESS) {
       throw new BadInputException("The requested transaction cannot be modified");
     }
-    Sell updatedEntity = converter.applyChangesToExistingEntity(input, existingEntity);
+    Sell updatedEntity = converter.applyChangesToExistingEntity(changes, existingEntity);
     this.updateTotals(updatedEntity);
     if (existingEntity.equals(updatedEntity)) {
-      return input;
+      return changes;
     } else {
       Sell output = salesRepository.saveAndFlush(updatedEntity);
       return converter.convertToPojo(output);

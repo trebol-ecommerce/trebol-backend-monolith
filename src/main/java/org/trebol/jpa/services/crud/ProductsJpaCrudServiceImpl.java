@@ -117,9 +117,9 @@ public class ProductsJpaCrudServiceImpl
   }
 
   @Override
-  protected ProductPojo doUpdate(ProductPojo inputPojo, Product existingEntity)
+  protected ProductPojo doUpdate(ProductPojo changes, Product existingEntity)
       throws BadInputException {
-    Product localChanges = converter.applyChangesToExistingEntity(inputPojo, existingEntity);
+    Product localChanges = converter.applyChangesToExistingEntity(changes, existingEntity);
     Product persistent = productsRepository.saveAndFlush(localChanges);
     ProductPojo outputPojo = converter.convertToPojo(persistent);
     if (outputPojo == null) {
@@ -130,7 +130,7 @@ public class ProductsJpaCrudServiceImpl
 
     // one-Product-to-many-Images
     productImagesRepository.deleteByProductId(persistent.getId());
-    Collection<ImagePojo> inputPojoImages = inputPojo.getImages();
+    Collection<ImagePojo> inputPojoImages = changes.getImages();
     if (inputPojoImages != null) {
       List<ProductImage> resultImages = this.makeTransientProductImages(persistent, inputPojoImages);
       productImagesRepository.saveAll(resultImages);
@@ -139,7 +139,7 @@ public class ProductsJpaCrudServiceImpl
 
     // one-Product-to-one-ProductCategory
     persistent.setProductCategory(null);
-    ProductCategoryPojo inputCategory = inputPojo.getCategory();
+    ProductCategoryPojo inputCategory = changes.getCategory();
     if (inputCategory != null) {
       Optional<ProductCategory> match = categoriesCrudService.getExisting(inputCategory);
       if (match.isPresent()) {
