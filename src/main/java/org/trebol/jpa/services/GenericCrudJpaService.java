@@ -158,20 +158,19 @@ public abstract class GenericCrudJpaService<P, E>
   }
 
   /**
-   * Applies changes, and flushes. If no changes are detected, return input as-is
-   * @param input A Pojo class instance with the data that is being submitted
+   * Applies changes, and flushes. If no changes are detected, return changes as-is
+   * @param changes A Pojo class instance with the data that is being submitted
    * @param existingEntity An existing entity class instance that will be updated
    * @return The resulting Pojo class instance
    * @throws BadInputException If data in Pojo is insufficient, incorrect, malformed, etc
    */
-  protected P doUpdate(P input, E existingEntity)
+  protected P doUpdate(P changes, E existingEntity)
       throws BadInputException {
-    E updatedEntity = converter.applyChangesToExistingEntity(input, existingEntity);
+    E updatedEntity = converter.applyChangesToExistingEntity(changes, existingEntity);
     if (existingEntity.equals(updatedEntity)) {
-      return input;
-    } else {
-      E output = repository.saveAndFlush(updatedEntity);
-      return converter.convertToPojo(output);
+      return changes;
     }
+    E output = repository.saveAndFlush(updatedEntity);
+    return converter.convertToPojo(output);
   }
 }
