@@ -81,11 +81,10 @@ public abstract class GenericCrudJpaService<P, E>
       throws BadInputException, EntityExistsException {
     if (this.getExisting(inputPojo).isPresent()) {
       throw new EntityExistsException(ITEM_ALREADY_EXISTS);
-    } else {
-      E input = converter.convertToNewEntity(inputPojo);
-      E output = repository.saveAndFlush(input);
-      return converter.convertToPojo(output);
     }
+    E input = converter.convertToNewEntity(inputPojo);
+    E output = repository.saveAndFlush(input);
+    return converter.convertToPojo(output);
   }
 
   /**
@@ -102,13 +101,11 @@ public abstract class GenericCrudJpaService<P, E>
     Page<E> iterable = ((filters == null) ?
         repository.findAll(pagination) :
         repository.findAll(filters, pagination));
-
     List<P> pojoList = new ArrayList<>();
     for (E item : iterable) {
       P outputItem = converter.convertToPojo(item);
       pojoList.add(outputItem);
     }
-
     return new DataPagePojo<>(pojoList, pageIndex, totalCount, pageSize);
   }
 
@@ -118,9 +115,8 @@ public abstract class GenericCrudJpaService<P, E>
     Optional<E> match = this.getExisting(input);
     if (match.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
-    } else {
-      return this.doUpdate(input, match.get());
     }
+    return this.doUpdate(input, match.get());
   }
 
   @Override
@@ -129,9 +125,8 @@ public abstract class GenericCrudJpaService<P, E>
     Optional<E> firstMatch = repository.findOne(filters);
     if (firstMatch.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
-    } else {
-      return this.doUpdate(input, firstMatch.get());
     }
+    return this.doUpdate(input, firstMatch.get());
   }
 
   @Override
@@ -140,9 +135,8 @@ public abstract class GenericCrudJpaService<P, E>
     long count = repository.count(filters);
     if (count == 0) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
-    } else {
-      repository.deleteAll(repository.findAll(filters));
     }
+    repository.deleteAll(repository.findAll(filters));
   }
 
   @Override
@@ -151,10 +145,9 @@ public abstract class GenericCrudJpaService<P, E>
     Optional<E> entity = repository.findOne(filters);
     if (entity.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
-    } else {
-      E found = entity.get();
-      return converter.convertToPojo(found);
     }
+    E found = entity.get();
+    return converter.convertToPojo(found);
   }
 
   /**
