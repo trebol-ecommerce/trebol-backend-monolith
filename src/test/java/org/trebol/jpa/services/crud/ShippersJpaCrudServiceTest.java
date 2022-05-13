@@ -1,6 +1,7 @@
 package org.trebol.jpa.services.crud;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -8,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.repositories.IShippersJpaRepository;
+import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ShipperPojo;
 
@@ -18,14 +20,21 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ShippersJpaCrudServiceTest {
-
   @Mock IShippersJpaRepository shippersRepositoryMock;
   @Mock ITwoWayConverterJpaService<ShipperPojo, Shipper> shippersConverterMock;
+  private GenericCrudJpaService<ShipperPojo, Shipper> instance;
+
+  @BeforeEach
+  void setUp() {
+    instance = new ShippersJpaCrudServiceImpl(
+            shippersRepositoryMock,
+            shippersConverterMock
+    );
+  }
 
   @Test
   void sanity_check() {
-    ShippersJpaCrudServiceImpl service = instantiate();
-    assertNotNull(service);
+    assertNotNull(instance);
   }
 
   @Test
@@ -35,20 +44,12 @@ class ShippersJpaCrudServiceTest {
     ShipperPojo example = new ShipperPojo(shipperName);
     Shipper persistedEntity = new Shipper(shipperId, shipperName);
     when(shippersRepositoryMock.findByName(shipperName)).thenReturn(Optional.of(persistedEntity));
-    ShippersJpaCrudServiceImpl service = instantiate();
 
-    Optional<Shipper> match = service.getExisting(example);
+    Optional<Shipper> match = instance.getExisting(example);
 
     assertTrue(match.isPresent());
     assertEquals(match.get().getId(), shipperId);
     assertEquals(match.get().getName(), shipperName);
-  }
-
-  private ShippersJpaCrudServiceImpl instantiate() {
-    return new ShippersJpaCrudServiceImpl(
-        shippersRepositoryMock,
-        shippersConverterMock
-    );
   }
 
 }

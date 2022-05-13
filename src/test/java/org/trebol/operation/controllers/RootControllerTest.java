@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 
 class RootControllerTest {
-
   @Test
   void return_200OK() {
     given().
@@ -17,5 +16,4 @@ class RootControllerTest {
         assertThat().
         status(HttpStatus.OK);
   }
-
 }

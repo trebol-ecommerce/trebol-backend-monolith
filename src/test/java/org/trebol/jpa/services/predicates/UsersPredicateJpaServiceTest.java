@@ -2,7 +2,10 @@ package org.trebol.jpa.services.predicates;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.trebol.jpa.entities.User;
+import org.trebol.jpa.services.IPredicateJpaService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,22 +15,23 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UsersPredicateJpaServiceTest {
+  private IPredicateJpaService<User> instance;
+
+  @BeforeEach
+  void setUp() {
+    instance = new UsersJpaPredicateServiceImpl();
+  }
 
   @Test
   void parses_map() {
     Predicate emptyPredicate = new BooleanBuilder();
-    UsersJpaPredicateServiceImpl service = instantiate();
     List<Predicate> predicates = List.of(emptyPredicate,
-                                         service.parseMap(Map.of("id", "1")),
-                                         service.parseMap(Map.of("name", "test")),
-                                         service.parseMap(Map.of("email", "test")),
-                                         service.parseMap(Map.of("nameLike", "name portion")),
-                                         service.parseMap(Map.of("emailLike", "email portion")));
+                                         instance.parseMap(Map.of("id", "1")),
+                                         instance.parseMap(Map.of("name", "test")),
+                                         instance.parseMap(Map.of("email", "test")),
+                                         instance.parseMap(Map.of("nameLike", "name portion")),
+                                         instance.parseMap(Map.of("emailLike", "email portion")));
     Set<Predicate> distinctPredicates = new HashSet<>(predicates);
     assertEquals(predicates.size(), distinctPredicates.size());
-  }
-
-  private UsersJpaPredicateServiceImpl instantiate() {
-    return new UsersJpaPredicateServiceImpl();
   }
 }

@@ -1,5 +1,6 @@
 package org.trebol.operation.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -12,15 +13,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class PublicReceiptControllerTest {
 
   @Mock IReceiptService receiptService;
+  private PublicReceiptController instance;
+
+  @BeforeEach
+  void setUp() {
+    instance = new PublicReceiptController(receiptService);
+  }
 
   @Test
   void sanity_check() {
-    PublicReceiptController service = instantiate();
-    assertNotNull(service);
+    assertNotNull(instance);
   }
-
-  private PublicReceiptController instantiate() {
-    return new PublicReceiptController(receiptService);
-  }
-
 }
