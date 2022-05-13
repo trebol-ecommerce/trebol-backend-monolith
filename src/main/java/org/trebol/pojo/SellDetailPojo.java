@@ -22,11 +22,12 @@ package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
+@Data
 @JsonInclude
 public class SellDetailPojo {
   @JsonIgnore
@@ -50,73 +51,5 @@ public class SellDetailPojo {
     this.units = units;
     this.unitValue = unitValue;
     this.product = product;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public int getUnits() {
-    return units;
-  }
-
-  public void setUnits(int units) {
-    this.units = units;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public ProductPojo getProduct() {
-    return product;
-  }
-
-  public void setProduct(ProductPojo product) {
-    this.product = product;
-  }
-
-  public int getUnitValue() {
-    return unitValue;
-  }
-
-  public void setUnitValue(int unitValue) {
-    this.unitValue = unitValue;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    SellDetailPojo that = (SellDetailPojo) o;
-    return units == that.units &&
-        unitValue == that.unitValue &&
-        Objects.equals(id, that.id) &&
-        Objects.equals(product, that.product) &&
-        Objects.equals(description, that.description);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, units, product, unitValue, description);
-  }
-
-  @Override
-  public String toString() {
-    return "SellDetailPojo{" +
-        "id=" + id +
-        ", units=" + units +
-        ", product=" + product +
-        ", unitValue=" + unitValue +
-        ", description=" + description +
-        '}';
   }
 }

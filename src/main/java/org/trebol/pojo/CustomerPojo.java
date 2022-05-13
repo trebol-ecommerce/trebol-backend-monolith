@@ -22,11 +22,12 @@ package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
+@Data
 @JsonInclude
 public class CustomerPojo {
   @JsonIgnore
@@ -43,43 +44,5 @@ public class CustomerPojo {
 
   public CustomerPojo(PersonPojo person) {
     this.person = person;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public PersonPojo getPerson() {
-    return person;
-  }
-
-  public void setPerson(PersonPojo person) {
-    this.person = person;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    CustomerPojo that = (CustomerPojo) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(person, that.person);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, person);
-  }
-
-  @Override
-  public String toString() {
-    return "CustomerPojo{" +
-        "id=" + id +
-        ", person=" + person +
-        '}';
   }
 }
