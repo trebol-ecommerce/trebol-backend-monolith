@@ -1,6 +1,7 @@
 package org.trebol.jpa.services.crud;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -8,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
+import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductCategoryPojo;
 
@@ -20,14 +22,21 @@ import static org.trebol.testhelpers.ProductCategoriesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductCategoriesJpaCrudServiceTest {
-
   @Mock IProductsCategoriesJpaRepository categoriesRepositoryMock;
   @Mock ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverterMock;
+  private GenericCrudJpaService<ProductCategoryPojo, ProductCategory> instance;
+
+  @BeforeEach
+  void setUp() {
+    instance = new ProductCategoriesJpaCrudServiceImpl(
+            categoriesRepositoryMock,
+            categoriesConverterMock
+    );
+  }
 
   @Test
   void sanity_check() {
-    ProductCategoriesJpaCrudServiceImpl service = instantiate();
-    assertNotNull(service);
+    assertNotNull(instance);
   }
 
   @Test
@@ -35,9 +44,8 @@ class ProductCategoriesJpaCrudServiceTest {
     resetProductCategories();
     when(categoriesRepositoryMock.findByCode(
         productCategoryPojoForFetch().getCode())).thenReturn(Optional.of(productCategoryEntityAfterCreation()));
-    ProductCategoriesJpaCrudServiceImpl service = instantiate();
 
-    Optional<ProductCategory> match = service.getExisting(productCategoryPojoForFetch());
+    Optional<ProductCategory> match = instance.getExisting(productCategoryPojoForFetch());
 
     assertTrue(match.isPresent());
     verify(categoriesRepositoryMock).findByCode(productCategoryPojoForFetch().getCode());
@@ -45,12 +53,4 @@ class ProductCategoriesJpaCrudServiceTest {
     assertEquals(match.get().getCode(), productCategoryEntityAfterCreation().getCode());
     assertEquals(match.get().getName(), productCategoryEntityAfterCreation().getName());
   }
-
-  private ProductCategoriesJpaCrudServiceImpl instantiate() {
-    return new ProductCategoriesJpaCrudServiceImpl(
-        categoriesRepositoryMock,
-        categoriesConverterMock
-    );
-  }
-
 }

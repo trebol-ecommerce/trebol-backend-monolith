@@ -1,5 +1,6 @@
 package org.trebol.operation.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -10,19 +11,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class AccountProfileControllerTest {
+  @Mock IProfileService userProfileService;
+  private AccountProfileController instance;
 
-
-  @Mock
-  IProfileService userProfileService;
+  @BeforeEach
+  void setUp() {
+    instance = new AccountProfileController(userProfileService);
+  }
 
   @Test
   void sanity_check() {
-    AccountProfileController service = instantiate();
-    assertNotNull(service);
+    assertNotNull(instance);
   }
-
-  private AccountProfileController instantiate() {
-    return new AccountProfileController(userProfileService);
-  }
-
 }

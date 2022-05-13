@@ -1,5 +1,6 @@
 package org.trebol.operation.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -15,20 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class DataCustomersControllerTest {
-
   @Mock PaginationService paginationService;
   @Mock ISortSpecJpaService<Customer> sortService;
   @Mock GenericCrudJpaService<CustomerPojo, Customer> crudService;
   @Mock IPredicateJpaService<Customer> predicateService;
+  private DataCustomersController instance;
 
-  @Test
-  void sanity_check() {
-    DataCustomersController service = instantiate();
-    assertNotNull(service);
-  }
-
-  private DataCustomersController instantiate() {
-    return new DataCustomersController(
+  @BeforeEach
+  void setUp() {
+    instance = new DataCustomersController(
             paginationService,
             sortService,
             crudService,
@@ -36,4 +32,8 @@ class DataCustomersControllerTest {
     );
   }
 
+  @Test
+  void sanity_check() {
+    assertNotNull(instance);
+  }
 }

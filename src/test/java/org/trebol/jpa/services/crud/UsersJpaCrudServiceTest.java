@@ -1,6 +1,7 @@
 package org.trebol.jpa.services.crud;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -10,6 +11,7 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
+import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.UserPojo;
 
@@ -20,14 +22,21 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UsersJpaCrudServiceTest {
-
   @Mock IUsersJpaRepository usersRepositoryMock;
   @Mock ITwoWayConverterJpaService<UserPojo, User> usersConverterMock;
+  private GenericCrudJpaService<UserPojo, User> instance;
+
+  @BeforeEach
+  void setUp() {
+    instance = new UsersJpaCrudServiceImpl(
+            usersRepositoryMock,
+            usersConverterMock
+    );
+  }
 
   @Test
   void sanity_check() {
-    UsersJpaCrudServiceImpl service = instantiate();
-    assertNotNull(service);
+    assertNotNull(instance);
   }
 
   @Test
@@ -43,9 +52,8 @@ class UsersJpaCrudServiceTest {
     UserPojo example = new UserPojo(userName);
     User persistedEntity = new User(userId, userName, userPassword, person, role);
     when(usersRepositoryMock.findByName(userName)).thenReturn(Optional.of(persistedEntity));
-    UsersJpaCrudServiceImpl service = instantiate();
 
-    Optional<User> match = service.getExisting(example);
+    Optional<User> match = instance.getExisting(example);
 
     assertTrue(match.isPresent());
     assertEquals(match.get().getId(), userId);
@@ -53,13 +61,6 @@ class UsersJpaCrudServiceTest {
     assertEquals(match.get().getPassword(), userPassword);
     assertEquals(match.get().getPerson().getIdNumber(), idNumber);
     assertEquals(match.get().getUserRole().getName(), roleName);
-  }
-
-  private UsersJpaCrudServiceImpl instantiate() {
-    return new UsersJpaCrudServiceImpl(
-        usersRepositoryMock,
-        usersConverterMock
-    );
   }
 
 }
