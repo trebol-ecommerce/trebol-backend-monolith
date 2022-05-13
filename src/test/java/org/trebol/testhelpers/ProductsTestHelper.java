@@ -40,7 +40,7 @@ public class ProductsTestHelper {
 
   public static ProductPojo productPojoBeforeCreation() {
     if (pojoBeforeCreation == null) {
-      pojoBeforeCreation = new ProductPojo(PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION, PRODUCT_PRICE,
+      pojoBeforeCreation = new ProductPojo(null, PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION, PRODUCT_PRICE,
                                            PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null, List.of());
     }
     return pojoBeforeCreation;

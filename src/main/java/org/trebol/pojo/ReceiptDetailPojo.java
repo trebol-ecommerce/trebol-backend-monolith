@@ -21,71 +21,13 @@
 package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
-import java.util.Objects;
-
+@Data
 @JsonInclude
 public class ReceiptDetailPojo {
   private ProductPojo product;
   private int units;
   private Integer unitValue;
   private String description;
-
-  public ProductPojo getProduct() {
-    return product;
-  }
-
-  public void setProduct(ProductPojo product) {
-    this.product = product;
-  }
-
-  public int getUnits() {
-    return units;
-  }
-
-  public void setUnits(int units) {
-    this.units = units;
-  }
-
-  public Integer getUnitValue() {
-    return unitValue;
-  }
-
-  public void setUnitValue(Integer unitValue) {
-    this.unitValue = unitValue;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    ReceiptDetailPojo that = (ReceiptDetailPojo) o;
-    return units == that.units &&
-        Objects.equals(product, that.product) &&
-        Objects.equals(unitValue, that.unitValue) &&
-        Objects.equals(description, that.description);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(product, units, unitValue, description);
-  }
-
-  @Override
-  public String toString() {
-    return "ReceiptDetailPojo{" +
-        "product=" + product +
-        ", units=" + units +
-        ", unitValue=" + unitValue +
-        ", description=" + description +
-        '}';
-  }
 }

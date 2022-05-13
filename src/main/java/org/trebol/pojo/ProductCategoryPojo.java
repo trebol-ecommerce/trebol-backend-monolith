@@ -22,12 +22,13 @@ package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+@Data
 @JsonInclude
 public class ProductCategoryPojo {
   @JsonIgnore
@@ -56,63 +57,5 @@ public class ProductCategoryPojo {
     this.code = code;
     this.name = name;
     this.parent = parent;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public ProductCategoryPojo getParent() {
-    return parent;
-  }
-
-  public void setParent(ProductCategoryPojo parent) {
-    this.parent = parent;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    ProductCategoryPojo that = (ProductCategoryPojo) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(code, that.code) &&
-        Objects.equals(name, that.name) &&
-        Objects.equals(parent, that.parent);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, code, name, parent);
-  }
-
-  @Override
-  public String toString() {
-    return "ProductCategoryPojo{" +
-        "id=" + id +
-        ", code='" + code + '\'' +
-        ", name='" + name + '\'' +
-        ", parent=" + parent +
-        '}';
   }
 }

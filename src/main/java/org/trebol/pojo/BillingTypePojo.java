@@ -21,46 +21,21 @@
 package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Objects;
 
+@Data
 @JsonInclude
 public class BillingTypePojo {
   @NotBlank
+  @NonNull
   private String name;
 
-  public String getName() {
-    return name;
-  }
+  public BillingTypePojo() {}
 
-  public void setName(String name) {
+  public BillingTypePojo(@NonNull String name) {
     this.name = name;
-  }
-
-  public BillingTypePojo() { }
-
-  public BillingTypePojo(String name) {
-    this.name = name;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    BillingTypePojo that = (BillingTypePojo) o;
-    return Objects.equals(name, that.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(name);
-  }
-
-  @Override
-  public String toString() {
-    return "BillingTypePojo{" +
-        "name='" + name + '\'' +
-        '}';
   }
 }
