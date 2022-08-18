@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v3.0.0.rc-1] - 2022-08-18
 
 ### Added
 - Support sorting product lists by item count (the amount of products held on each)
@@ -12,8 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `trebol.security.guestUserEnabled` - Can be true or false
   - `trebol.security.guestUserName` - Any non-blank string; also acts as its password
 - Property to configure max allowed nested depth while fetching categories
-- `SellDetail` entity now has a `description` field, which is meant to summarize its metadata in a human-readable string and remove dependency to the `Product` entity 
-  - *NOTE*: This will affect normal operation, check the next tagged release for a migration script named `migrate-to-mariadb-schema-v2.3.5.sql`
+- *BREAKING CHANGE*: `SellDetail` entity now has a `description` field, which is meant to describe and summarize the detail in a human-readable format
 - When fetching data, filters by category may include descendant of lower level categories
   - For example, assumming that category A includes subcategories AB and AC, filtering 'by category A' may include children from subcategories AB and AC as well 
   - This applies for filtering categories and products
