@@ -116,6 +116,28 @@ public class UsersConverterJpaServiceImplTest {
         when(conversion.convert(any(UserPojo.class), eq(User.class))).thenReturn(null);
         BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(userPojo));
         assertEquals("Invalid user data", badInputException.getMessage());
+    }
 
+    @Test
+    void testConvertToNewEntity() throws BadInputException {
+        when(conversion.convert(any(UserPojo.class), eq(User.class))).thenReturn(user);
+        when(passwordEncoder.encode(anyString())).thenReturn(ANY);
+        final Person person = new Person();
+        person.setId(3L);
+        when(peopleRepository.findByIdNumber(anyString())).thenReturn(Optional.of(person));
+        final UserRole userRole = new UserRole();
+        userRole.setId(2L);
+        when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(userRole));
+
+        userPojo.setPassword(ANY);
+        final PersonPojo personPojo = new PersonPojo();
+        personPojo.setIdNumber(ANY);
+        userPojo.setPerson(personPojo);
+        userPojo.setRole(ANY);
+
+        User actual = sut.convertToNewEntity(userPojo);
+
+        assertEquals(3L, actual.getPerson().getId());
+        assertEquals(2L, actual.getUserRole().getId());
     }
 }

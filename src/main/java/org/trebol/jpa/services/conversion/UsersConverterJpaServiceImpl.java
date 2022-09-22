@@ -92,7 +92,7 @@ public class UsersConverterJpaServiceImpl
     if (target == null) {
       throw new BadInputException("Invalid user data");
     } else {
-      if (source.getPassword() != null && !source.getPassword().isEmpty()) {
+      if (source.getPassword() != null && !source.getPassword().isBlank()) {
         String rawPassword = source.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         target.setPassword(encodedPassword);
