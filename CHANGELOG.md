@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Tests
+
+- Add `mockito-inline` dependency to create inline mocks - Thank you @NyorJa
+    - Useful to mock final classes and methods, also for having constant regex
+- Add TestConstants to hold some static final values for use with mocks - Thank you @NyorJa
+- Introduce unit tests for 15 converter services - Thank you @NyorJa
+    - `BillingCompaniesConverterJpaServiceImpl`
+    - `BillingTypesConverterJpaServiceImpl`
+    - `CustomersConverterJpaServiceImpl`
+    - `ImagesConverterJpaServiceImpl`
+    - `PeopleConverterJpaServiceImpl`
+    - `ProductCategoriesConverterJpaServiceImpl`
+    - `ProductListsConverterJpaServiceImpl`
+    - `ProductsConverterJpaServiceImplTest`
+    - `SalesStatusesConverterJpaServiceImplTest`
+    - `SellStatusesConverterJpaServiceImplTest`
+    - `ShippersConverterJpaServiceImplTest`
+    - `UserRolesConverterJpaServiceImplTest`
+    - `UsersConverterJpaServiceImplTest`
+
+### Fixed  
+
+- Using a better fitted java11 method of String to check for emptiness - Thank you @NyorJa
+
 ## [v3.0.0.rc-1] - 2022-08-18
 
 ### Added
