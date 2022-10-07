@@ -15,8 +15,8 @@ import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
 import org.trebol.pojo.ProductListPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.trebol.constant.TestContants.ANY;
-import static org.trebol.constant.TestContants.ID_1L;
+import static org.trebol.constant.TestConstants.ANY;
+import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListConverterJpaServiceImplTest {
