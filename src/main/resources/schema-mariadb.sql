@@ -45,8 +45,8 @@ CREATE TABLE `app_permissions` (
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-DROP TABLE IF EXISTS `app_users_roles`;
-CREATE TABLE `app_users_roles` (
+DROP TABLE IF EXISTS `app_user_roles`;
+CREATE TABLE `app_user_roles` (
   `user_role_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_role_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`user_role_id`),
@@ -127,8 +127,8 @@ CREATE TABLE `product_lists` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-DROP TABLE IF EXISTS `products_categories`;
-CREATE TABLE `products_categories` (
+DROP TABLE IF EXISTS `product_categories`;
+CREATE TABLE `product_categories` (
   `product_category_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `product_category_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `product_category_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -136,12 +136,12 @@ CREATE TABLE `products_categories` (
   PRIMARY KEY (`product_category_id`),
   UNIQUE KEY `UK_PROD_CAT_CODE` (`product_category_code`),
   UNIQUE KEY `UK_PROD_CAT_IF_CHILD` (`parent_product_category_id`,`product_category_name`),
-  CONSTRAINT `FK_PROD_CAT_PARENT` FOREIGN KEY (`parent_product_category_id`) REFERENCES `products_categories` (`product_category_id`)
+  CONSTRAINT `FK_PROD_CAT_PARENT` FOREIGN KEY (`parent_product_category_id`) REFERENCES `product_categories` (`product_category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-DROP TABLE IF EXISTS `sales_statuses`;
-CREATE TABLE `sales_statuses` (
+DROP TABLE IF EXISTS `sell_statuses`;
+CREATE TABLE `sell_statuses` (
   `sell_status_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `sell_status_code` int(11) NOT NULL,
   `sell_status_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -175,18 +175,18 @@ CREATE TABLE `app_users` (
   UNIQUE KEY `UK_USER_NAME` (`user_name`),
   KEY `IDX_USER_NAME` (`user_name`),
   CONSTRAINT `FK_USER_PERSON_ID` FOREIGN KEY (`person_id`) REFERENCES `people` (`person_id`),
-  CONSTRAINT `FK_USER_UROLE_ID` FOREIGN KEY (`user_role_id`) REFERENCES `app_users_roles` (`user_role_id`)
+  CONSTRAINT `FK_USER_UROLE_ID` FOREIGN KEY (`user_role_id`) REFERENCES `app_user_roles` (`user_role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-DROP TABLE IF EXISTS `app_users_roles_permissions`;
-CREATE TABLE `app_users_roles_permissions` (
+DROP TABLE IF EXISTS `app_user_role_permissions`;
+CREATE TABLE `app_user_role_permissions` (
   `user_role_permission_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `permission_id` bigint(20) NOT NULL,
   `user_role_id` bigint(20) NOT NULL,
   PRIMARY KEY (`user_role_permission_id`),
   CONSTRAINT `FK_UROLEPERMS_PERM_ID` FOREIGN KEY (`permission_id`) REFERENCES `app_permissions` (`permission_id`),
-  CONSTRAINT `FK_UROLEPERMS_UROLE_ID` FOREIGN KEY (`user_role_id`) REFERENCES `app_users_roles` (`user_role_id`)
+  CONSTRAINT `FK_UROLEPERMS_UROLE_ID` FOREIGN KEY (`user_role_id`) REFERENCES `app_user_roles` (`user_role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -214,7 +214,7 @@ CREATE TABLE `products` (
   UNIQUE KEY `UK_PRODUCT_CODE` (`product_code`),
   UNIQUE KEY `UK_PRODUCT_NAME` (`product_name`),
   KEY `IDX_PRODUCT_NAME` (`product_name`),
-  CONSTRAINT `FK_PRODUCT_CAT_ID` FOREIGN KEY (`product_category_id`) REFERENCES `products_categories` (`product_category_id`)
+  CONSTRAINT `FK_PRODUCT_CAT_ID` FOREIGN KEY (`product_category_id`) REFERENCES `product_categories` (`product_category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -232,8 +232,8 @@ CREATE TABLE `salespeople` (
 
 
 
-DROP TABLE IF EXISTS `products_images`;
-CREATE TABLE `products_images` (
+DROP TABLE IF EXISTS `product_images`;
+CREATE TABLE `product_images` (
   `product_image_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `image_id` bigint(20) NOT NULL,
   `product_id` bigint(20) NOT NULL,
@@ -279,7 +279,7 @@ CREATE TABLE `sales` (
   CONSTRAINT `FK_SELL_CUSTOM_ID` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`),
   CONSTRAINT `FK_SELL_BILL_TYP_ID` FOREIGN KEY (`billing_type_id`) REFERENCES `billing_types` (`billing_type_id`),
   CONSTRAINT `FK_SELL_PAYMT_TYP_ID` FOREIGN KEY (`payment_type_id`) REFERENCES `payment_types` (`payment_type_id`),
-  CONSTRAINT `FK_SELL_STATUS_ID` FOREIGN KEY (`sell_status_id`) REFERENCES `sales_statuses` (`sell_status_id`),
+  CONSTRAINT `FK_SELL_STATUS_ID` FOREIGN KEY (`sell_status_id`) REFERENCES `sell_statuses` (`sell_status_id`),
   CONSTRAINT `FK_SELL_BILL_CY_ID` FOREIGN KEY (`billing_company_id`) REFERENCES `billing_companies` (`billing_company_id`),
   CONSTRAINT `FK_SELL_ADDR_BILL` FOREIGN KEY (`billing_address_id`) REFERENCES `addresses` (`address_id`),
   CONSTRAINT `FK_SELL_SHIPPER_ID` FOREIGN KEY (`shipper_id`) REFERENCES `shippers` (`shipper_id`),

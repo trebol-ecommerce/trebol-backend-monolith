@@ -27,7 +27,7 @@ import java.util.Objects;
 
 @Entity
 @Table(
-  name = "app_users_roles",
+  name = "app_user_roles",
   indexes = {
     @Index(columnList = "user_role_name")
   })
