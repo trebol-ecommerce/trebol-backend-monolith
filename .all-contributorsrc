@@ -68,6 +68,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mepox",
+      "name": "mepox",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21198248?v=4",
+      "profile": "https://mepox.github.io/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -75,5 +84,6 @@
   "projectOwner": "trebol-ecommerce",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }
