@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "sales_statuses")
+@Table(name = "sell_statuses")
 public class SellStatus
   implements Serializable {
 

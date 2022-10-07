@@ -6,7 +6,7 @@ VALUES
 (03, 'company', 'bannerImageURL', 'https://fakeimg.pl/400x150'),
 (04, 'company', 'logoImageURL', 'https://fakeimg.pl/250');
 
-INSERT INTO `sales_statuses`
+INSERT INTO `sell_statuses`
 (`sell_status_id`, `sell_status_code`, `sell_status_name`)
 VALUES
 (01, -6, 'Returned'),
@@ -33,7 +33,7 @@ INSERT INTO `payment_types`
 VALUES
 (01, 'WebPay Plus');
 
-INSERT INTO `app_users_roles`
+INSERT INTO `app_user_roles`
 (`user_role_id`, `user_role_name`)
 VALUES 
 (01, 'Administrator'),
@@ -99,7 +99,7 @@ VALUES
 (53, 'product_lists:read'),
 (54, 'product_lists:contents');
 
-INSERT INTO `app_users_roles_permissions`
+INSERT INTO `app_user_role_permissions`
 (`permission_id`, `user_role_id`)
 VALUES
 (01, 01),
@@ -157,7 +157,7 @@ VALUES
 (53, 01),
 (54, 01);
 
-INSERT INTO `app_users_roles_permissions`
+INSERT INTO `app_user_role_permissions`
 (`permission_id`, `user_role_id`)
 VALUES
 (01, 02),
@@ -192,7 +192,7 @@ VALUES
 (53, 02),
 (54, 02);
 
-INSERT INTO `app_users_roles_permissions`
+INSERT INTO `app_user_role_permissions`
 (`permission_id`, `user_role_id`)
 VALUES
 (03, 03),
@@ -210,7 +210,7 @@ VALUES
 (40, 03),
 (45, 03);
 
-INSERT INTO `app_users_roles_permissions`
+INSERT INTO `app_user_role_permissions`
 (`permission_id`, `user_role_id`)
 VALUES
 (45, 04);

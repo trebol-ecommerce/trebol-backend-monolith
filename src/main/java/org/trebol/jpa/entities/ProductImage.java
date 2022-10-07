@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "products_images")
+@Table(name = "product_images")
 public class ProductImage
   implements Serializable {
 

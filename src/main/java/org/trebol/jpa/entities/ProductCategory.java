@@ -27,7 +27,7 @@ import java.util.Objects;
 
 @Entity
 @Table(
-  name = "products_categories",
+  name = "product_categories",
   uniqueConstraints = {
     @UniqueConstraint(columnNames = {"parent_product_category_id", "product_category_name"})
   })
