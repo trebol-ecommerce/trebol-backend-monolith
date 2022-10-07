@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Rename table names to follow the naming convention
+- *BREAKING CHANGE*: Rename table names to follow the naming convention
 	- `products_categories` 			-> `product_categories`
 	- `products_images` 				-> `should be product_images`
 	- `sales_statuses` 				-> `should be sell_statuses`
