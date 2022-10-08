@@ -16,7 +16,7 @@ class PublicRegisterControllerTest {
   private PublicRegisterController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new PublicRegisterController(registrationService);
   }
 

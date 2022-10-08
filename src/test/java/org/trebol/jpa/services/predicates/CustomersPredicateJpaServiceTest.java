@@ -18,7 +18,7 @@ class CustomersPredicateJpaServiceTest {
   private IPredicateJpaService<Customer> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new CustomersPredicateJpaServiceImpl();
   }
 

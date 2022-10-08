@@ -23,7 +23,7 @@ class DataCustomersControllerTest {
   private DataCustomersController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new DataCustomersController(
             paginationService,
             sortService,

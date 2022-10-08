@@ -105,7 +105,7 @@ class SalesConverterJpaServiceImplTest {
     private Sell sell;
 
     @BeforeEach
-    public void setUpBefore() {
+    public void beforeEach() {
         when(validationProperties.getIdNumberRegexp()).thenReturn(ANY);
         sut = new SalesConverterJpaServiceImpl( conversion,
                 statusesRepository,

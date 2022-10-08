@@ -18,7 +18,7 @@ class ShippersPredicateJpaServiceTest {
   private IPredicateJpaService<Shipper> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new ShippersPredicateJpaServiceImpl();
   }
 

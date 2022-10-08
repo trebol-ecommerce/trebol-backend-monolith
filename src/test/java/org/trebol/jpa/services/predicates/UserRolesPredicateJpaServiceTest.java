@@ -18,7 +18,7 @@ class UserRolesPredicateJpaServiceTest {
   private IPredicateJpaService<UserRole> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new UserRolesPredicateJpaServiceImpl();
   }
 

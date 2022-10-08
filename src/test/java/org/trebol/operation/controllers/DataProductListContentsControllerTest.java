@@ -32,7 +32,7 @@ class DataProductListContentsControllerTest {
   private DataProductListContentsController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new DataProductListContentsController(
             paginationService,
             sortService,

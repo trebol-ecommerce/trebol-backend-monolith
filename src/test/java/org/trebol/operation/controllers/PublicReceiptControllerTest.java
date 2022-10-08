@@ -16,7 +16,7 @@ class PublicReceiptControllerTest {
   private PublicReceiptController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new PublicReceiptController(receiptService);
   }
 

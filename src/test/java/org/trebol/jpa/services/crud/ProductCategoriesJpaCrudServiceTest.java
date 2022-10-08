@@ -27,7 +27,7 @@ class ProductCategoriesJpaCrudServiceTest {
   private GenericCrudJpaService<ProductCategoryPojo, ProductCategory> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new ProductCategoriesJpaCrudServiceImpl(
             categoriesRepositoryMock,
             categoriesConverterMock

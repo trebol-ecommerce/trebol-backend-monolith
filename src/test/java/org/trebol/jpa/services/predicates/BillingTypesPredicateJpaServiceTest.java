@@ -18,7 +18,7 @@ class BillingTypesPredicateJpaServiceTest {
   private IPredicateJpaService<BillingType> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new BillingTypesPredicateJpaServiceImpl();
   }
 

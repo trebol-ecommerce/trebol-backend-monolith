@@ -24,7 +24,7 @@ class DataUsersControllerTest {
   private DataUsersController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance =  new DataUsersController(
             paginationService,
             sortService,

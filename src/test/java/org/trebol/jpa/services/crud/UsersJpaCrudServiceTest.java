@@ -27,7 +27,7 @@ class UsersJpaCrudServiceTest {
   private GenericCrudJpaService<UserPojo, User> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new UsersJpaCrudServiceImpl(
             usersRepositoryMock,
             usersConverterMock
