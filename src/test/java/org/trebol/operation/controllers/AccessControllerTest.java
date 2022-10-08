@@ -20,7 +20,7 @@ class AccessControllerTest {
   private AccessController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new AccessController(jwtClaimsParserService, userDetailsService, authorizedApiService);
   }
 

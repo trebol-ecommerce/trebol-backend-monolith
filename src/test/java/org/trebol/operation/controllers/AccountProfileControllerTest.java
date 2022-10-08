@@ -15,7 +15,7 @@ class AccountProfileControllerTest {
   private AccountProfileController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new AccountProfileController(userProfileService);
   }
 

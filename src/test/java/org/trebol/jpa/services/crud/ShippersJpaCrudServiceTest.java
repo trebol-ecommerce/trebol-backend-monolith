@@ -25,7 +25,7 @@ class ShippersJpaCrudServiceTest {
   private GenericCrudJpaService<ShipperPojo, Shipper> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new ShippersJpaCrudServiceImpl(
             shippersRepositoryMock,
             shippersConverterMock

@@ -25,7 +25,7 @@ class UserRolesJpaCrudServiceTest {
   private GenericCrudJpaService<UserRolePojo, UserRole> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance =  new UserRolesJpaCrudServiceImpl(
             userRolesRepositoryMock,
             userRolesConverterMock

@@ -26,7 +26,7 @@ class BillingTypesJpaCrudServiceTest {
   private GenericCrudJpaService<BillingTypePojo, BillingType> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new BillingTypesJpaCrudServiceImpl(
             billingTypesRepositoryMock,
             billingTypesConverterMock

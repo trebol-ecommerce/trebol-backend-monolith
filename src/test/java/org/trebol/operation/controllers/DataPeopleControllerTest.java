@@ -24,7 +24,7 @@ class DataPeopleControllerTest {
   private DataPeopleController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new DataPeopleController(
             paginationService,
             sortService,
