@@ -16,7 +16,7 @@ class PublicAboutControllerTest {
   private PublicAboutController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new PublicAboutController(companyService);
   }
 

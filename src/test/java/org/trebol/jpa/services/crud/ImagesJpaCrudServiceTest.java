@@ -27,7 +27,7 @@ class ImagesJpaCrudServiceTest {
   private GenericCrudJpaService<ImagePojo, Image> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new ImagesJpaCrudServiceImpl(
             imagesRepositoryMock,
             imagesConverterMock

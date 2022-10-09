@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "app_users_roles_permissions")
+@Table(name = "app_user_role_permissions")
 public class UserRolePermission
   implements Serializable {
 

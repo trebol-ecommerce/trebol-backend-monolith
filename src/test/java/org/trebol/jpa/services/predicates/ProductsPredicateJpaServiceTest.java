@@ -22,7 +22,7 @@ class ProductsPredicateJpaServiceTest {
   private IPredicateJpaService<Product> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new ProductsPredicateJpaServiceImpl(categoryTreeResolver);
   }
 

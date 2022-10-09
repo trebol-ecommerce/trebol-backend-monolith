@@ -59,6 +59,27 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "NyorJa",
+      "name": "Rod Fetalvero",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8148370?v=4",
+      "profile": "https://github.com/NyorJa",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "mepox",
+      "name": "mepox",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21198248?v=4",
+      "profile": "https://mepox.github.io/",
+      "contributions": [
+        "code",
+        "maintenance",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -66,5 +87,6 @@
   "projectOwner": "trebol-ecommerce",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }

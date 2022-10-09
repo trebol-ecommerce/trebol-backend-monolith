@@ -23,7 +23,7 @@ class DataBillingTypesControllerTest {
   private DataBillingTypesController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new DataBillingTypesController(paginationService, sortService, crudService, predicateService);
   }
 

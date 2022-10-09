@@ -18,7 +18,7 @@ class SellStatusesPredicateJpaServiceTest {
   private IPredicateJpaService<SellStatus> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new SellStatusesPredicateJpaServiceImpl();
   }
 

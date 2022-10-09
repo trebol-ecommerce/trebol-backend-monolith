@@ -24,7 +24,7 @@ class DataProductListsControllerTest {
   private DataProductListsController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new DataProductListsController(
             paginationService,
             sortService,

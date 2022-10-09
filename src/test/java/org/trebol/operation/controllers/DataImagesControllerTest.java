@@ -24,7 +24,7 @@ class DataImagesControllerTest {
   private DataImagesController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new DataImagesController(
             paginationService,
             sortService,

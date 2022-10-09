@@ -24,7 +24,7 @@ class DataShippersControllerTest {
   private DataShippersController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new DataShippersController(
             paginationService,
             sortService,

@@ -24,7 +24,7 @@ class DataSellStatusesControllerTest {
   private DataSellStatusesController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new DataSellStatusesController(
             paginationService,
             sortService,

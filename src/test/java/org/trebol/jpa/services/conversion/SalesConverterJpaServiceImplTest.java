@@ -58,8 +58,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.constant.TestContants.ANY;
-import static org.trebol.constant.TestContants.ID_1L;
+import static org.trebol.constant.TestConstants.ANY;
+import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class SalesConverterJpaServiceImplTest {
@@ -105,7 +105,7 @@ class SalesConverterJpaServiceImplTest {
     private Sell sell;
 
     @BeforeEach
-    public void setUpBefore() {
+    public void beforeEach() {
         when(validationProperties.getIdNumberRegexp()).thenReturn(ANY);
         sut = new SalesConverterJpaServiceImpl( conversion,
                 statusesRepository,

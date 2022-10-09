@@ -18,7 +18,7 @@ class ImagesPredicateJpaServiceTest {
   private IPredicateJpaService<Image> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new ImagesPredicateJpaServiceImpl();
   }
 

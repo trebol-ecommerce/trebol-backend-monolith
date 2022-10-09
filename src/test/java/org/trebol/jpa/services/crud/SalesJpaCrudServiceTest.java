@@ -37,7 +37,7 @@ class SalesJpaCrudServiceTest {
   private GenericCrudJpaService<SellPojo, Sell> instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new SalesJpaCrudServiceImpl(
             salesRepositoryMock,
             salesConverterMock,

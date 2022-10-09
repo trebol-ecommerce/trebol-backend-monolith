@@ -24,7 +24,7 @@ class DataUserRolesControllerTest {
   private DataUserRolesController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new DataUserRolesController(
             paginationService,
             sortService,

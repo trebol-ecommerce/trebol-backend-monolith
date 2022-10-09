@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- *BREAKING CHANGE*: Rename table names to follow the naming convention
+	- `products_categories` 			-> `product_categories`
+	- `products_images` 				-> `should be product_images`
+	- `sales_statuses` 				-> `should be sell_statuses`
+	- `app_users_roles` 				-> `should be app_user_roles`
+	- `app_users_roles_permissions` -> `should be app_user_role_permissions`
+
 ### Tests
 
 - Add `mockito-inline` dependency to create inline mocks - Thank you @NyorJa

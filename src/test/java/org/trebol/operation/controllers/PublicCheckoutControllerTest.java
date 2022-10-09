@@ -24,7 +24,7 @@ class PublicCheckoutControllerTest {
   private PublicCheckoutController instance;
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     instance = new PublicCheckoutController(
             service,
             salesCrudService,
