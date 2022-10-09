@@ -23,11 +23,13 @@ package org.trebol.operation.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.trebol.config.SecurityProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
+import org.trebol.jpa.services.crud.UsersJpaCrudServiceImpl;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
@@ -38,13 +40,16 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/data/users")
 @PreAuthorize("isAuthenticated()")
 public class DataUsersController
   extends GenericDataCrudController<UserPojo, User> {
-
+	
+  @Autowired
+  private SecurityProperties securityProperties;
 
   @Autowired
   public DataUsersController(PaginationService paginationService,
@@ -82,6 +87,17 @@ public class DataUsersController
       throws EntityNotFoundException, BadInputException {
     if (requestParams.containsKey("name") && requestParams.get("name").equals(principal.getName())) {
       throw new BadInputException("A user should not be able to delete their own account");
+    }
+    if (securityProperties.isAccountProtectionEnabled()) {
+    	if (requestParams.containsKey("name")) {
+    		Optional<User> optionalUser = ((UsersJpaCrudServiceImpl) crudService).getExisting(new UserPojo(requestParams.get("name")));
+    		if (optionalUser.isPresent()) {
+	    		User user = optionalUser.get();
+	    		if (user != null && user.getId() == securityProperties.getProtectedAccountId()) {
+	        		throw new BadInputException("Protected account cannot be deleted");
+	        	}
+    		}
+    	}    	
     }
     super.delete(requestParams);
   }

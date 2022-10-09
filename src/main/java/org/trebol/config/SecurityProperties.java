@@ -45,6 +45,9 @@ public class SecurityProperties {
   private int bcryptEncoderStrength;
   private boolean guestUserEnabled;
   private String guestUserName;
+  private boolean accountProtectionEnabled;
+  @Min(1)
+  private int protectedAccountId; 
 
   public String getJwtSecretKey() {
     return jwtSecretKey;
@@ -101,4 +104,21 @@ public class SecurityProperties {
   public void setGuestUserName(String guestUserName) {
     this.guestUserName = guestUserName;
   }
+  
+  public boolean isAccountProtectionEnabled() {
+	  return accountProtectionEnabled;
+  }
+  
+  public void setAccountProtectionEnabled(boolean accountProtectionEnabled) {
+	  this.accountProtectionEnabled = accountProtectionEnabled;
+  }
+  
+  public int getProtectedAccountId() {
+	  return protectedAccountId;
+  }
+  
+  public void setProtectedAccountId(int protectedAccountId) {
+	  this.protectedAccountId = protectedAccountId;
+  }
+
 }
