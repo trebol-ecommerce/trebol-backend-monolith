@@ -3,6 +3,7 @@ package org.trebol.operation.controllers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.Product;
@@ -29,11 +30,13 @@ class DataProductListContentsControllerTest {
   @Mock IPredicateJpaService<ProductListItem> listItemsPredicateService;
   @Mock GenericCrudJpaService<ProductPojo, Product> productCrudService;
   @Mock ITwoWayConverterJpaService<ProductPojo, ProductListItem> itemConverterService;
+
+  @InjectMocks
   private DataProductListContentsController instance;
 
   @BeforeEach
   void beforeEach() {
-    instance = new DataProductListContentsController(
+    /*instance = new DataProductListContentsController(
             paginationService,
             sortService,
             listItemsRepository,
@@ -41,7 +44,7 @@ class DataProductListContentsControllerTest {
             listItemsPredicateService,
             productCrudService,
             itemConverterService
-    );
+    );*/
   }
 
   @Test

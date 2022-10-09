@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
@@ -12,6 +13,7 @@ import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.operation.ICheckoutService;
 import org.trebol.operation.ISalesProcessService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
@@ -31,6 +33,9 @@ class CheckoutServiceTest {
   @Mock ISalesProcessService salesProcessService;
   @Mock IPredicateJpaService<Sell> salesPredicateService;
   @Mock IPaymentsIntegrationService paymentIntegrationService;
+
+  @InjectMocks
+  private CheckoutServiceImpl service;
   private static final String PAYMENT_URL = "https://example.com/pay";
   private static final String RECEIPT_BASE_URL = "https://example2.com/callback";
   private static final String RECEIPT_URL = RECEIPT_BASE_URL + "?token=" + SELL_TRANSACTION_TOKEN;
@@ -38,8 +43,8 @@ class CheckoutServiceTest {
 
   @Test
   void sanity_check() {
-    CheckoutServiceImpl service = instantiate();
-    assertNotNull(service);
+/*    CheckoutServiceImpl service = instantiate();
+    assertNotNull(service);*/
   }
 
   @Test
@@ -48,7 +53,7 @@ class CheckoutServiceTest {
     PaymentRedirectionDetailsPojo payload = new PaymentRedirectionDetailsPojo(PAYMENT_URL, SELL_TRANSACTION_TOKEN);
     resetSales();
     when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
-    CheckoutServiceImpl service = instantiate();
+//    CheckoutServiceImpl service = instantiate();
 
     PaymentRedirectionDetailsPojo result = service.requestTransactionStart(sellPojoAfterCreation());
 
@@ -88,7 +93,7 @@ class CheckoutServiceTest {
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
     when(salesProcessService.markAsAborted(sellPojoAfterCreation())).thenReturn(null);
-    CheckoutServiceImpl service = instantiate();
+//    CheckoutServiceImpl service = instantiate();
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, true);
 
@@ -107,7 +112,7 @@ class CheckoutServiceTest {
     when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
     doThrow(new EntityNotFoundException(exceptionMessage)).
         when(salesProcessService).markAsStarted(sellPojoAfterCreation());
-    CheckoutServiceImpl service = instantiate();
+//    CheckoutServiceImpl service = instantiate();
 
     PaymentRedirectionDetailsPojo result = null;
     try {
@@ -129,7 +134,7 @@ class CheckoutServiceTest {
     String exceptionMessage = "No match";
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenThrow(new EntityNotFoundException(exceptionMessage));
-    CheckoutServiceImpl service = instantiate();
+//    CheckoutServiceImpl service = instantiate();
 
     SellPojo result = null;
     try {

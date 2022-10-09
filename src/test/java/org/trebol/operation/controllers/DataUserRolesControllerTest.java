@@ -3,6 +3,7 @@ package org.trebol.operation.controllers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.UserRole;
@@ -21,16 +22,17 @@ class DataUserRolesControllerTest {
   @Mock ISortSpecJpaService<UserRole> sortService;
   @Mock GenericCrudJpaService<UserRolePojo, UserRole> crudService;
   @Mock IPredicateJpaService<UserRole> predicateService;
+  @InjectMocks
   private DataUserRolesController instance;
 
   @BeforeEach
   void beforeEach() {
-    instance = new DataUserRolesController(
+   /* instance = new DataUserRolesController(
             paginationService,
             sortService,
             crudService,
             predicateService
-    );
+    );*/
   }
 
   @Test
