@@ -3,6 +3,7 @@ package org.trebol.operation.controllers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.integration.IMailingIntegrationService;
@@ -25,18 +26,19 @@ class DataSalesControllerTest {
   @Mock IPredicateJpaService<Sell> predicateService;
   @Mock ISalesProcessService salesProcessService;
   @Mock IMailingIntegrationService mailingIntegrationService;
+  @InjectMocks
   private DataSalesController instance;
 
   @BeforeEach
   void beforeEach() {
-    instance = new DataSalesController(
+/*    instance = new DataSalesController(
             paginationService,
             sortService,
             crudService,
             predicateService,
             salesProcessService,
             mailingIntegrationService
-    );
+    );*/
   }
 
   @Test

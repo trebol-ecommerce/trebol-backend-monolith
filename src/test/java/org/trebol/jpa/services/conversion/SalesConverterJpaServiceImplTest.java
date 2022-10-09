@@ -544,7 +544,6 @@ class SalesConverterJpaServiceImplTest {
     }
 
 
-    @Disabled
     @Test
     void testConvertToNewEntityApplyBillingAddress() throws BadInputException {
 
@@ -599,5 +598,6 @@ class SalesConverterJpaServiceImplTest {
 
         Sell actual = sut.convertToNewEntity(sellPojo);
 
+        assertEquals(person.getId(), actual.getCustomer().getPerson().getId());
     }
 }
