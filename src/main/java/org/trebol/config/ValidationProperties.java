@@ -32,6 +32,8 @@ import javax.validation.constraints.NotBlank;
 public class ValidationProperties {
   @NotBlank
   private String idNumberRegexp;
+  @NotBlank
+  private String phoneNumberRegexp;
 
   public String getIdNumberRegexp() {
     return idNumberRegexp;
@@ -39,5 +41,13 @@ public class ValidationProperties {
 
   public void setIdNumberRegexp(String idNumberRegexp) {
     this.idNumberRegexp = idNumberRegexp;
+  }
+
+  public String getPhoneNumberRegexp() {
+	return phoneNumberRegexp;
+  }
+
+  public void setPhoneNumberRegexp(String phoneNumberRegexp) {
+	this.phoneNumberRegexp = phoneNumberRegexp;
   }
 }
