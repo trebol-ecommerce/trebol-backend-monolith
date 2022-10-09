@@ -7,7 +7,7 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 
-This application is a complete, monolithic, Spring Boot-based backend for the eCommerce project Trébol.
+This application is a complete, monolithic, [Spring Boot v2.6](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/)-based backend for the eCommerce project Trébol.
 
 
 ## Features:
@@ -17,11 +17,11 @@ This application is a complete, monolithic, Spring Boot-based backend for the eC
   * Filtering, sorting and pagination of data are implemented through query params
   * Login, registration and guest accounts
   * Checking out with user or guest accounts
-* Uses Spring Data JPA
+* Uses [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
   * Annotated entity classes; including constraints and indexes where they are most needed at scale
     * Bundles drivers for H2 and MariaDB, but can virtually connect to any JDBC-compatible database with the correct driver
-* Uses Spring Security
-  * Stateless session authentication/autorization with JWT
+* Uses [Spring Security](https://spring.io/projects/spring-security)
+  * Implements stateless session authentication/autorization through [JSON Web Tokens](https://jwt.io/) with aid from the [JJWT library](https://github.com/jwtk/jjwt)
     * Paired with `users`, `roles`, and `permissions` database tables (see `/src/main/resources/data.sql` for an example setup with 4 roles and users)
     * Do note that Authorities required in some controllers are hard-coded. These must match entries in the `permissions` table
   * Passwords are encoded using BCrypt
