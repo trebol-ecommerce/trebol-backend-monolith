@@ -20,13 +20,12 @@ This application is a complete, monolithic, Spring Boot-based backend for the eC
 * Uses Spring Data JPA
   * Annotated entity classes; including constraints and indexes where they are most needed at scale
     * Bundles drivers for H2 and MariaDB, but can virtually connect to any JDBC-compatible database with the correct driver
-    * [Bare-bones DB schema](https://github.com/trebol-ecommerce/spring-boot-backend/blob/main/schema.png)
 * Uses Spring Security
   * Stateless session authentication/autorization with JWT
     * Paired with `users`, `roles`, and `permissions` database tables (see `/src/main/resources/data.sql` for an example setup with 4 roles and users)
     * Do note that Authorities required in some controllers are hard-coded. These must match entries in the `permissions` table
   * Passwords are encoded using BCrypt
-* Integrates payments with [Webpay Plus](https://transbankdevelopers.cl/producto/webpay) by Transbank ([Java SDK repo](https://github.com/TransbankDevelopers/transbank-sdk-java)) 
+* Integrates payments with [Webpay Plus](https://transbankdevelopers.cl/producto/webpay) by Transbank ([Java SDK repo](https://github.com/TransbankDevelopers/transbank-sdk-java))
   * On due time, it may be possible to integrate more popular payment services such as Paypal and Stripe
 * Integrates mail notifications with [Mailgun](https://mailgun.com) (an account is required)
 * Human-friendly sample properties files for configuring mission-critical parameters such as:
@@ -36,6 +35,12 @@ This application is a complete, monolithic, Spring Boot-based backend for the eC
   * Webpay integration endpoints
   * Mailgun & general mail properties
 * And all other Spring Boot goodness!
+
+### Data model diagram
+
+![Schema](./schema.png)
+
+This schema was designed in a couple minutes using [Azimutt](https://github.com/azimuttapp/azimutt), a MIT-licensed, handy navigation and diagram visualization tool for Entity-Relationship models.
 
 
 ## Status
