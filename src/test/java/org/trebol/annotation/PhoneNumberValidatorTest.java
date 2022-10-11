@@ -4,47 +4,66 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.trebol.config.ValidationProperties;
 
-@ExtendWith(MockitoExtension.class)
+
+@ExtendWith(SpringExtension.class)
+@TestPropertySource("classpath:application.properties")
 public class PhoneNumberValidatorTest {
 	
 	@Mock
 	private ValidationProperties validationProperties;
 	
+	@Value("${trebol.validation.phonenumber-regexp}")
+	private String phoneNumberRegex;
+	
 	@InjectMocks
 	private PhoneNumberValidator phoneNumberValidator;
 	
-	private static String regex;
-	
-	@BeforeAll
-	public static void beforeAll() {
-		regex = "^\\+(?:[0-9] ?){6,14}[0-9]$"; // todo to read from the application.properties
-	}
+	private String phoneNumber;
 	
 	@BeforeEach
-	public void beforeEach() {
-		when(validationProperties.getPhoneNumberRegexp()).thenReturn(regex);
+	public void beforeEach() {	
+		phoneNumber = "";		
+		when(validationProperties.getPhoneNumberRegexp()).thenReturn(phoneNumberRegex);
 		phoneNumberValidator.initialize(null);
 	}
 	
 	@Test
-	public void when_InvalidPhoneNumber_ReturnFalse() {
-		String phoneNumber = "+123";		
+	public void when_OnlyCountryCode_ReturnFalse() {
+		phoneNumber = "+123";		
 		assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
 	}
 	
 	@Test
-	public void when_ValidPhoneNumber_ReturnTrue() {
-		String phoneNumber = "+123 123456";		
+	public void when_CountryCodeIsMissing_ReturnFalse() {
+		phoneNumber = "123456";
+		assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
+	}
+	
+	@Test
+	public void when_WithoutSpace_ReturnTrue() {
+		phoneNumber = "+123456789";		
 		assertTrue(phoneNumberValidator.isValid(phoneNumber, null));
+	}
+	
+	@Test
+	public void when_WithSpace_ReturnTrue() {
+		phoneNumber = "+123 456789";		
+		assertTrue(phoneNumberValidator.isValid(phoneNumber, null));
+	}	
+	
+	@Test
+	public void when_Over15Digits_ReturnFalse() {
+		phoneNumber = "+123 4567890123456";
+		assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
 	}
 }
