@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.config.SecurityProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
@@ -31,7 +32,11 @@ import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.UserPojo;
 
+import com.querydsl.core.types.Predicate;
+
 import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 @Transactional
 @Service
@@ -39,14 +44,17 @@ public class UsersJpaCrudServiceImpl
   extends GenericCrudJpaService<UserPojo, User> {
 
   private final IUsersJpaRepository userRepository;
+  private final SecurityProperties securityProperties;
 
   @Autowired
   public UsersJpaCrudServiceImpl(IUsersJpaRepository repository,
-                                 ITwoWayConverterJpaService<UserPojo, User> converter) {
+                                 ITwoWayConverterJpaService<UserPojo, User> converter,
+                                 SecurityProperties securityProperties) {
     super(repository,
           converter,
           LoggerFactory.getLogger(UsersJpaCrudServiceImpl.class));
     this.userRepository = repository;
+    this.securityProperties = securityProperties;
   }
 
   @Override
@@ -58,4 +66,19 @@ public class UsersJpaCrudServiceImpl
       return userRepository.findByName(name);
     }
   }
+
+  @Override
+  public void delete(Predicate filters) throws EntityNotFoundException, BadInputException {	
+    if (securityProperties.isAccountProtectionEnabled()) {
+    	Optional<User> optionalUser = userRepository.findOne(filters);
+    	if (optionalUser != null && optionalUser.isPresent()) {
+    		User user = optionalUser.get();
+    		if (user != null && user.getId() == securityProperties.getProtectedAccountId()) {
+    			throw new BadInputException("Protected account cannot be deleted");
+    		}
+    	}
+    }
+	super.delete(filters);
+  }
+  
 }
