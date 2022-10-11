@@ -71,7 +71,7 @@ public class UsersJpaCrudServiceImpl
   public void delete(Predicate filters) throws EntityNotFoundException, BadInputException {	
     if (securityProperties.isAccountProtectionEnabled()) {
     	Optional<User> optionalUser = userRepository.findOne(filters);
-    	if (optionalUser != null && optionalUser.isPresent()) {
+    	if (optionalUser.isPresent()) {
     		User user = optionalUser.get();
     		if (user != null && user.getId() == securityProperties.getProtectedAccountId()) {
     			throw new BadInputException("Protected account cannot be deleted");
