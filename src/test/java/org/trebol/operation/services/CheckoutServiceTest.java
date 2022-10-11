@@ -13,7 +13,6 @@ import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.operation.ICheckoutService;
 import org.trebol.operation.ISalesProcessService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
@@ -37,15 +36,7 @@ class CheckoutServiceTest {
   @InjectMocks
   private CheckoutServiceImpl service;
   private static final String PAYMENT_URL = "https://example.com/pay";
-  private static final String RECEIPT_BASE_URL = "https://example2.com/callback";
-  private static final String RECEIPT_URL = RECEIPT_BASE_URL + "?token=" + SELL_TRANSACTION_TOKEN;
   private static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
-
-  @Test
-  void sanity_check() {
-/*    CheckoutServiceImpl service = instantiate();
-    assertNotNull(service);*/
-  }
 
   @Test
   void requests_transaction_start()
@@ -53,7 +44,6 @@ class CheckoutServiceTest {
     PaymentRedirectionDetailsPojo payload = new PaymentRedirectionDetailsPojo(PAYMENT_URL, SELL_TRANSACTION_TOKEN);
     resetSales();
     when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
-//    CheckoutServiceImpl service = instantiate();
 
     PaymentRedirectionDetailsPojo result = service.requestTransactionStart(sellPojoAfterCreation());
 
@@ -93,7 +83,6 @@ class CheckoutServiceTest {
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
     when(salesProcessService.markAsAborted(sellPojoAfterCreation())).thenReturn(null);
-//    CheckoutServiceImpl service = instantiate();
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, true);
 
@@ -112,7 +101,6 @@ class CheckoutServiceTest {
     when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
     doThrow(new EntityNotFoundException(exceptionMessage)).
         when(salesProcessService).markAsStarted(sellPojoAfterCreation());
-//    CheckoutServiceImpl service = instantiate();
 
     PaymentRedirectionDetailsPojo result = null;
     try {
@@ -134,7 +122,6 @@ class CheckoutServiceTest {
     String exceptionMessage = "No match";
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenThrow(new EntityNotFoundException(exceptionMessage));
-//    CheckoutServiceImpl service = instantiate();
 
     SellPojo result = null;
     try {

@@ -1,7 +1,6 @@
 package org.trebol.operation.controllers;
 
 import io.jsonwebtoken.Claims;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,11 +19,6 @@ class AccessControllerTest {
   @Mock IAuthorizedApiService authorizedApiService;
   @InjectMocks
   private AccessController instance;
-
-  @BeforeEach
-  void beforeEach() {
-//    instance = new AccessController(jwtClaimsParserService, userDetailsService, authorizedApiService);
-  }
 
   @Test
   void sanity_check() {
