@@ -1,4 +1,4 @@
-package org.trebol.annotation;
+package org.trebol.annotation.validator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,6 +7,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.trebol.annotation.PhoneNumber;
 import org.trebol.config.ValidationProperties;
 
 public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
