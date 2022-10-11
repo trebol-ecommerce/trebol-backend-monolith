@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.trebol.annotation.validator.PhoneNumberValidator;
 import org.trebol.config.ValidationProperties;
 
 

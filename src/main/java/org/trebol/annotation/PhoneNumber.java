@@ -8,6 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+import org.trebol.annotation.validator.PhoneNumberValidator;
+
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PhoneNumberValidator.class)
