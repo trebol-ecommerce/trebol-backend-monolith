@@ -155,7 +155,7 @@ class GenericJpaCrudServiceTest {
 
   @Test
   void deletes_data()
-      throws EntityNotFoundException {
+      throws EntityNotFoundException, BadInputException {
     PageImpl<GenericEntity> persistedEntityPage = new PageImpl<>(persistedEntityList);
     Predicate filters = new BooleanBuilder();
     when(genericRepositoryMock.count(filters)).thenReturn(1L);

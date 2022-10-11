@@ -45,7 +45,6 @@ import java.util.Map;
 public class DataUsersController
   extends GenericDataCrudController<UserPojo, User> {
 
-
   @Autowired
   public DataUsersController(PaginationService paginationService,
                              ISortSpecJpaService<User> sortService,
