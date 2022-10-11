@@ -14,16 +14,16 @@ public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, St
 	@Autowired
 	private ValidationProperties validationProperties;
 	
-	private Pattern pattern;
-	private Matcher matcher;	
+	private Pattern pattern;	
 	
+	@Override
 	public void initialize(PhoneNumber constraintAnnotation) {
 		pattern = Pattern.compile(validationProperties.getPhoneNumberRegexp());			
 	}
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		matcher = pattern.matcher(value);		
+		Matcher matcher = pattern.matcher(value);		
 		return matcher.matches();
 	}
 }

@@ -17,7 +17,7 @@ import org.trebol.config.ValidationProperties;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource("classpath:application.properties")
-public class PhoneNumberValidatorTest {
+class PhoneNumberValidatorTest {
 	
 	@Mock
 	private ValidationProperties validationProperties;
@@ -31,38 +31,38 @@ public class PhoneNumberValidatorTest {
 	private String phoneNumber;
 	
 	@BeforeEach
-	public void beforeEach() {	
+	void beforeEach() {	
 		phoneNumber = "";		
 		when(validationProperties.getPhoneNumberRegexp()).thenReturn(phoneNumberRegex);
 		phoneNumberValidator.initialize(null);
 	}
 	
 	@Test
-	public void when_OnlyCountryCode_ReturnFalse() {
+	void when_OnlyCountryCode_ReturnFalse() {
 		phoneNumber = "+123";		
 		assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
 	}
 	
 	@Test
-	public void when_CountryCodeIsMissing_ReturnFalse() {
+	void when_CountryCodeIsMissing_ReturnFalse() {
 		phoneNumber = "123456";
 		assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
 	}
 	
 	@Test
-	public void when_WithoutSpace_ReturnTrue() {
+	void when_WithoutSpace_ReturnTrue() {
 		phoneNumber = "+123456789";		
 		assertTrue(phoneNumberValidator.isValid(phoneNumber, null));
 	}
 	
 	@Test
-	public void when_WithSpace_ReturnTrue() {
+	void when_WithSpace_ReturnTrue() {
 		phoneNumber = "+123 456789";		
 		assertTrue(phoneNumberValidator.isValid(phoneNumber, null));
 	}	
 	
 	@Test
-	public void when_Over15Digits_ReturnFalse() {
+	void when_Over15Digits_ReturnFalse() {
 		phoneNumber = "+123 4567890123456";
 		assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
 	}
