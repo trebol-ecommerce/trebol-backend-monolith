@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.config.SecurityProperties;
+import org.trebol.exceptions.AccountProtectionViolationException;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
@@ -68,13 +69,13 @@ public class UsersJpaCrudServiceImpl
   }
 
   @Override
-  public void delete(Predicate filters) throws EntityNotFoundException, BadInputException {	
+  public void delete(Predicate filters) throws EntityNotFoundException {	
     if (securityProperties.isAccountProtectionEnabled()) {
     	Optional<User> optionalUser = userRepository.findOne(filters);
     	if (optionalUser.isPresent()) {
     		User user = optionalUser.get();
-    		if (user != null && user.getId() == securityProperties.getProtectedAccountId()) {
-    			throw new BadInputException("Protected account cannot be deleted");
+    		if (user.getId() == securityProperties.getProtectedAccountId()) {
+    			throw new AccountProtectionViolationException("Protected account cannot be deleted");
     		}
     	}
     }

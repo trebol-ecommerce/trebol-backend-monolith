@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.config.SecurityProperties;
+import org.trebol.exceptions.AccountProtectionViolationException;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
@@ -102,7 +103,7 @@ class UsersJpaCrudServiceTest {
 	when(securityPropertiesMock.getProtectedAccountId()).thenReturn(userId);
 	when(usersRepositoryMock.findOne(predicateMock)).thenReturn(Optional.of(userMock));
 	
-	assertThrows(BadInputException.class, () -> instance.delete(predicateMock));
+	assertThrows(AccountProtectionViolationException.class, () -> instance.delete(predicateMock));
   }
 
 }

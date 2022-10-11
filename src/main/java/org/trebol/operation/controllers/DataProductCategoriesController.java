@@ -79,7 +79,7 @@ public class DataProductCategoriesController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_categories:delete')")
   public void delete(@RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException, BadInputException {
+      throws EntityNotFoundException {
     super.delete(requestParams);
   }
 }

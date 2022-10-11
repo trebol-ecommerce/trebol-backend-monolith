@@ -131,7 +131,7 @@ public abstract class GenericCrudJpaService<P, E>
 
   @Override
   public void delete(Predicate filters)
-      throws EntityNotFoundException, BadInputException {
+      throws EntityNotFoundException {
     long count = repository.count(filters);
     if (count == 0) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);

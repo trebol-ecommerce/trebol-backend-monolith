@@ -60,7 +60,7 @@ public class GenericDataCrudController<P, E>
 
   @Override
   public void delete(Map<String, String> requestParams) 
-      throws BadInputException, EntityNotFoundException {
+      throws EntityNotFoundException {
     Predicate predicate = predicateService.parseMap(requestParams);
     crudService.delete(predicate);
   }

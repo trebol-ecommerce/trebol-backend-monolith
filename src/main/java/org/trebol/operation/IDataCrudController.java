@@ -37,5 +37,5 @@ public interface IDataCrudController<P>
 
   void update(P input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException;
 
-  void delete(Map<String, String> requestParams) throws EntityNotFoundException, BadInputException;
+  void delete(Map<String, String> requestParams) throws EntityNotFoundException;
 }
