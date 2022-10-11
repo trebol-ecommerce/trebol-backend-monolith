@@ -1,6 +1,5 @@
 package org.trebol.operation.controllers;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,19 +32,6 @@ class DataProductListContentsControllerTest {
 
   @InjectMocks
   private DataProductListContentsController instance;
-
-  @BeforeEach
-  void beforeEach() {
-    /*instance = new DataProductListContentsController(
-            paginationService,
-            sortService,
-            listItemsRepository,
-            listsRepository,
-            listItemsPredicateService,
-            productCrudService,
-            itemConverterService
-    );*/
-  }
 
   @Test
   void sanity_check() {

@@ -5,16 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.commons.util.StringUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
-import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.ProductCategoryPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

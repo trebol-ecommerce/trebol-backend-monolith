@@ -2,11 +2,9 @@ package org.trebol.jpa.services.conversion;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 import org.trebol.config.ValidationProperties;
@@ -38,7 +36,6 @@ import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SalespersonPojo;
 import org.trebol.pojo.SellDetailPojo;
 import org.trebol.pojo.SellPojo;
-import org.trebol.pojo.ShipperPojo;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;

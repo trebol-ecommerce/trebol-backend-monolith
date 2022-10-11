@@ -1,6 +1,5 @@
 package org.trebol.operation.controllers;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,16 +23,6 @@ class DataPeopleControllerTest {
   @Mock IPredicateJpaService<Person> predicateService;
   @InjectMocks
   private DataPeopleController instance;
-
-  @BeforeEach
-  void beforeEach() {
-/*    instance = new DataPeopleController(
-            paginationService,
-            sortService,
-            crudService,
-            predicateService
-    );*/
-  }
 
   @Test
   void sanity_check() {

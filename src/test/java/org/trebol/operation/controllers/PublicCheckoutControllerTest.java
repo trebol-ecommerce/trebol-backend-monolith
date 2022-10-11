@@ -1,6 +1,5 @@
 package org.trebol.operation.controllers;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,16 +23,6 @@ class PublicCheckoutControllerTest {
   @Mock IMailingIntegrationService mailingIntegrationService;
   @InjectMocks
   private PublicCheckoutController instance;
-
-  @BeforeEach
-  void beforeEach() {
-/*    instance = new PublicCheckoutController(
-            service,
-            salesCrudService,
-            salesPredicateService,
-            mailingIntegrationService
-    );*/
-  }
 
   @Test
   void sanity_check() {
