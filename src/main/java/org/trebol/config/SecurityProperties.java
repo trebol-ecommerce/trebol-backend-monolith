@@ -47,7 +47,7 @@ public class SecurityProperties {
   private String guestUserName;
   private boolean accountProtectionEnabled;
   @Min(1)
-  private int protectedAccountId; 
+  private long protectedAccountId; 
 
   public String getJwtSecretKey() {
     return jwtSecretKey;
@@ -113,11 +113,11 @@ public class SecurityProperties {
 	  this.accountProtectionEnabled = accountProtectionEnabled;
   }
   
-  public int getProtectedAccountId() {
+  public long getProtectedAccountId() {
 	  return protectedAccountId;
   }
   
-  public void setProtectedAccountId(int protectedAccountId) {
+  public void setProtectedAccountId(long protectedAccountId) {
 	  this.protectedAccountId = protectedAccountId;
   }
 
