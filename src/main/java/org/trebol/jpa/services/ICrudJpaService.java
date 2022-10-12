@@ -100,7 +100,7 @@ public interface ICrudJpaService<P> {
    * @param filters Filtering conditions
    *
    * @throws EntityNotFoundException When no item matches given filters.
- * @throws BadInputException 
+   * @throws BadInputException
    */
   void delete(Predicate filters) throws EntityNotFoundException;
 }
