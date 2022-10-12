@@ -7,38 +7,39 @@ assignees: ''
 
 ---
 
-**Project version**
+## Build context
+
+### Project version
+
 The current value `<version>` of the version tag in the POM. See file and line number `pom.xml:26`
 
-**Latest commits**
+### Latest commits
+
 Please copy and paste the output of `git log` below within code tags. Note that the latest three (3) commits should suffice, no need to scroll further down.
 
-**Describe the bug**
+## Summary
+
 A simple, human-readable description of what the bug is.
 
-**To Reproduce**
+## How to Reproduce
+
 Steps to reproduce the behavior.
+
 1. Run application
 2. Call its API `/some/api/path` with parameters '{...}'
 3. Send payload to API `/some/other/api` with content '{...}'
 4. An error shows up
 
-**Expected behavior**
+## Expected behavior
+
 A simple description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem. Try not to post screenshots of text; instead enclose that text within code tags and post it under `Additional context` below.
+## Screenshots
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS, Windows 11, Linux Mint]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+If applicable, add screenshots to help explain your problem.
 
-**Smartphone (if it applies, please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+Please do not post screenshots of plain text, such as console output; instead copy and paste that text, and enclose it within a code block.
 
-**Additional context**
-Add any other context about the problem here.
+## Additional context
+
+Any other context about the problem here; such as the OS & Browser version. 
