@@ -18,36 +18,33 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.annotation.validator;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.validation.annotation.Validated;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
-@Validated
-@Configuration
-@ConfigurationProperties(prefix = "trebol.validation")
-public class ValidationProperties {
-  @NotBlank
-  private String idNumberRegexp;
-  @NotBlank
-  private String phoneNumberRegexp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.trebol.annotation.PhoneNumber;
+import org.trebol.config.ValidationProperties;
 
-  public String getIdNumberRegexp() {
-    return idNumberRegexp;
-  }
+public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
+	
+	@Autowired
+	private ValidationProperties validationProperties;
+	
+	private Pattern pattern;	
+	
+	@Override
+	public void initialize(PhoneNumber constraintAnnotation) {
+		pattern = Pattern.compile(validationProperties.getPhoneNumberRegexp());			
+	}
 
-  public void setIdNumberRegexp(String idNumberRegexp) {
-    this.idNumberRegexp = idNumberRegexp;
-  }
-
-  public String getPhoneNumberRegexp() {
-	return phoneNumberRegexp;
-  }
-
-  public void setPhoneNumberRegexp(String phoneNumberRegexp) {
-	this.phoneNumberRegexp = phoneNumberRegexp;
-  }
+	@Override
+	public boolean isValid(String value, ConstraintValidatorContext context) {
+		Matcher matcher = pattern.matcher(value);		
+		return matcher.matches();
+	}
 }

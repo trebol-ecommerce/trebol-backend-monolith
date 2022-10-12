@@ -6,9 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `PhoneNumber` annotation for validating phone numbers - **Thank you `@mepox`**
+  - Use custom `PhoneNumberValidator`, subclass of `javax.validation.ValidationConstraint`, which validates using regular expression
+  - Configure the regular expression through `trebol.validation.phonenumber-regexp` in `application.properties`
+- Account protection mechanism by `user_id` - **Thank you `@mepox`**
+  - Any attempt to delete one certain user account will be cancelled
+  - The protected user account must have the same `id` indicated by `trebol.security.protected-account-id` in `application.properties`
+
 ### Changed
 
-- *BREAKING CHANGE*: Rename table names to follow the naming convention
+- **BREAKING CHANGE**: Rename table names to follow the naming convention - **Thank you `@mepox`**
 	- `products_categories` 			-> `product_categories`
 	- `products_images` 				-> `should be product_images`
 	- `sales_statuses` 				-> `should be sell_statuses`
@@ -17,10 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Tests
 
-- Add `mockito-inline` dependency to create inline mocks - Thank you @NyorJa
+- Add `mockito-inline` dependency to create inline mocks - **Thank you `@NyorJa`**
     - Useful to mock final classes and methods, also for having constant regex
-- Add TestConstants to hold some static final values for use with mocks - Thank you @NyorJa
-- Introduce unit tests for 15 converter services - Thank you @NyorJa
+- Add TestConstants to hold some static final values for use with mocks - **Thank you `@NyorJa`**
+- Introduce unit tests for 15 converter services - **Thank you `@NyorJa`**
     - `BillingCompaniesConverterJpaServiceImpl`
     - `BillingTypesConverterJpaServiceImpl`
     - `CustomersConverterJpaServiceImpl`
@@ -34,10 +43,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `ShippersConverterJpaServiceImplTest`
     - `UserRolesConverterJpaServiceImplTest`
     - `UsersConverterJpaServiceImplTest`
+- Refactor out test boilerplate using `@InjectMocks`
 
 ### Fixed  
 
-- Using a better fitted java11 method of String to check for emptiness - Thank you @NyorJa
+- Using a better fitted java11 method of String to check for emptiness - **Thank you `@NyorJa`**
 
 ## [v3.0.0.rc-1] - 2022-08-18
 

@@ -18,36 +18,26 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.annotation;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.validation.annotation.Validated;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.Constraint;
+import javax.validation.Payload;
 
-@Validated
-@Configuration
-@ConfigurationProperties(prefix = "trebol.validation")
-public class ValidationProperties {
-  @NotBlank
-  private String idNumberRegexp;
-  @NotBlank
-  private String phoneNumberRegexp;
+import org.trebol.annotation.validator.PhoneNumberValidator;
 
-  public String getIdNumberRegexp() {
-    return idNumberRegexp;
-  }
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = PhoneNumberValidator.class)
+public @interface PhoneNumber {
+	
+	 String message() default "Phone number is not valid";
 
-  public void setIdNumberRegexp(String idNumberRegexp) {
-    this.idNumberRegexp = idNumberRegexp;
-  }
+	 Class<?>[] groups() default {};
 
-  public String getPhoneNumberRegexp() {
-	return phoneNumberRegexp;
-  }
-
-  public void setPhoneNumberRegexp(String phoneNumberRegexp) {
-	this.phoneNumberRegexp = phoneNumberRegexp;
-  }
+	 Class<? extends Payload>[] payload() default {};
 }

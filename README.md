@@ -12,6 +12,9 @@ This application is a complete, monolithic, [Spring Boot v2.6](https://docs.spri
 
 ## Features:
 
+* Uses [Project Lombok](https://projectlombok.org)
+  * You should have the correct plugin in your IDE to integrate with it.
+  * Here's a list of [compatible software with their installation guides](https://projectlombok.org/setup/)  
 * Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api)
   * Supports all operations as described by the document
   * Filtering, sorting and pagination of data are implemented through query params
