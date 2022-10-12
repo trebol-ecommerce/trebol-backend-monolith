@@ -1,16 +1,31 @@
-# Trébol Backend
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+<h1 align="center">Trébol eCommerce Spring Boot Backend</h1>
 
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
+<div align="center">
 
-This application is a complete, monolithic, [Spring Boot v2.6](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/)-based backend for the eCommerce project Trébol.
+  <a href="https://angular.io">
+    <img src="https://angular.io/assets/images/logos/angular/angular.svg"
+    height="120" alt="Angular Logo">
+  </a>
 
+  <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+  [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+  <!-- ALL-CONTRIBUTORS-BADGE:END -->
+  
+  [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
+  [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
+  [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 
-## Features:
+  A monolithic, [Spring Boot v2.6](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/)-based backend application for the eCommerce project Trébol.
+
+</div>
+
+## Current Status 📓
+
+Implementing [Trébol API v1.5.0](https://github.com/trebol-ecommerce/api/blob/bglamadrid/main/trebol-api.json).
+
+Please take a look at the `CHANGELOG.md` file to review the latest changes and additions.
+
+## Features 🚀
 
 * Uses [Project Lombok](https://projectlombok.org)
   * You should have the correct plugin in your IDE to integrate with it.
@@ -30,14 +45,13 @@ This application is a complete, monolithic, [Spring Boot v2.6](https://docs.spri
   * Passwords are encoded using BCrypt
 * Integrates payments with [Webpay Plus](https://transbankdevelopers.cl/producto/webpay) by Transbank ([Java SDK repo](https://github.com/TransbankDevelopers/transbank-sdk-java))
   * On due time, it may be possible to integrate more popular payment services such as Paypal and Stripe
-* Integrates mail notifications with [Mailgun](https://mailgun.com) (an account is required)
-* Human-friendly sample properties files for configuring mission-critical parameters such as:
+* Integrates mail notifications with [Mailgun](https://mailgun.com) (an account and API key are required)
+* Self-evident properties files for configuring mission-critical parameters such as
   * CORS mappings
   * JWT secret key and duration
   * BCrypt algorithm strength
   * Webpay integration endpoints
   * Mailgun & general mail properties
-* And all other Spring Boot goodness!
 
 ### Data model diagram
 
@@ -45,42 +59,53 @@ This application is a complete, monolithic, [Spring Boot v2.6](https://docs.spri
 
 This schema was designed in a couple minutes using [Azimutt](https://github.com/azimuttapp/azimutt), a MIT-licensed, handy navigation and diagram visualization tool for Entity-Relationship models.
 
+## Getting started 👍
 
-## Status
-
-Supporting [API v1.5.0](https://github.com/trebol-ecommerce/api/blob/bglamadrid/main/trebol-api.json).
-Recently the underlying data model has suffered a few changes, please view the `CHANGELOG.md` file for details.
-
-
-## Requirements
+### Requirements
 
 * JDK 11+
 * Apache Maven 3.6.0
 
+### Installation
 
-## Getting started
+After cloning the repository, run `mvn verify`, grab a drink and wait a little. 
+That command will:
 
-After cloning the repository, I recommend to run `mvn verify`, grab a drink and wait a little. That command will download/install dependencies, compile the project, generate the WAR package file, install it to your local maven repo, run unit tests and check code coverage.
+- Download & install dependencies
+- Compile the project
+- Generate the WAR package file
+- Install it to your local maven repo
+- Run unit tests
+- Check code coverage
 
-__The important step here is to compile the project first__, because some classes are not versioned and instead must be generated through a Maven plugin that is provided in the project dependencies.
+**The important step here is to compile the project first**, because some classes (QueryDSL types such as `QUser`, `QProduct` and so on) are unversioned.
 
-If for any reason you fail to compile, please run `mvn generate-sources` and try it again.
+Instead, these classes are generated through a Maven plugin included within the project dependencies.
 
-Once you're done with the above, you can quickly run the application with `mvn spring-boot:run`
+If for any reason you fail to compile, please run `mvn clean generate-sources` and try it again.
+
+Also don't forget to install any [Project Lombok plugin for your IDE](https://projectlombok.org/setup/) if you don't have it already.
+
+### How to use
+
+You can quickly run the application over an embedded server by executing `mvn spring-boot:run`
 
 Mailgun integration will only be available if the `mailgun` profile is active. Please read the `application-mailgun.empty.properties` file and [this bit of the Spring Boot documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.profiles) to know how to proceed with that.
 
-
 ### Configuration
 
-The default configuration profile, which is located at `/src/main/resources/application.properties` contains sane default settings.
-You "can" run the application out-of-the-box with these, though you'll need to change several options if you're to install it on production.
+The default configuration profile, which is located at `/src/main/resources/application.properties`
+contains sane default settings and brief summaries of what everything does.
 
+You _can_ run the application out-of-the-box with these, though you should have a look at it.
 
-## Contributing to this repository
+Also remember, that Spring Boot does support using more than one profile at once.
+[This](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.external-config) and 
+[this](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.profiles) section of the Spring Boot guide can help you understand these mechanisms.
+
+## Contributing to this repository 😍
 
 Please review the [contributing guidelines](https://github.com/trebol-ecommerce/spring-boot-backend/blob/main/CONTRIBUTING.md) before proceeding.
-
 
 ## Contributors ✨
 
