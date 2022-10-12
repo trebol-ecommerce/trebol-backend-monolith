@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- [.editorconfig](https://editorconfig.org) file
 - `PhoneNumber` annotation for validating phone numbers - **Thank you `@mepox`**
   - Use custom `PhoneNumberValidator`, subclass of `javax.validation.ValidationConstraint`, which validates using regular expression
   - Configure the regular expression through `trebol.validation.phonenumber-regexp` in `application.properties`
