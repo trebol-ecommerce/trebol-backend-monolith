@@ -20,15 +20,17 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserRolesJpaCrudServiceTest {
-  @Mock IUserRolesJpaRepository userRolesRepositoryMock;
-  @Mock ITwoWayConverterJpaService<UserRolePojo, UserRole> userRolesConverterMock;
+  @Mock
+  IUserRolesJpaRepository userRolesRepositoryMock;
+  @Mock
+  ITwoWayConverterJpaService<UserRolePojo, UserRole> userRolesConverterMock;
   private GenericCrudJpaService<UserRolePojo, UserRole> instance;
 
   @BeforeEach
   void beforeEach() {
-    instance =  new UserRolesJpaCrudServiceImpl(
-            userRolesRepositoryMock,
-            userRolesConverterMock
+    instance = new UserRolesJpaCrudServiceImpl(
+      userRolesRepositoryMock,
+      userRolesConverterMock
     );
   }
 

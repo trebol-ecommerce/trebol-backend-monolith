@@ -46,7 +46,7 @@ public class PeopleTestHelper {
   public static PersonPojo personPojoAfterCreation() {
     if (pojoAfterCreation == null) {
       pojoAfterCreation = new PersonPojo(GENERIC_ID, PERSON_FIRST_NAME, PERSON_LAST_NAME, PERSON_ID_NUMBER,
-                                         PERSON_EMAIL, PERSON_PHONE1, PERSON_PHONE2);
+        PERSON_EMAIL, PERSON_PHONE1, PERSON_PHONE2);
     }
     return pojoAfterCreation;
   }
@@ -61,7 +61,7 @@ public class PeopleTestHelper {
   public static Person personEntityAfterCreation() {
     if (entityAfterCreation == null) {
       entityAfterCreation = new Person(GENERIC_ID, PERSON_FIRST_NAME, PERSON_LAST_NAME, PERSON_ID_NUMBER, PERSON_EMAIL,
-                                       PERSON_PHONE1, PERSON_PHONE2);
+        PERSON_PHONE1, PERSON_PHONE2);
     }
     return entityAfterCreation;
   }

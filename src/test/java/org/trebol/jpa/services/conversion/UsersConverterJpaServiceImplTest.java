@@ -34,110 +34,110 @@ import static org.trebol.constant.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 public class UsersConverterJpaServiceImplTest {
 
-    @InjectMocks
-    private UsersConverterJpaServiceImpl sut;
+  @InjectMocks
+  private UsersConverterJpaServiceImpl sut;
 
-    @Mock
-    private IUsersJpaRepository userRepository;
-    @Mock
-    private IUserRolesJpaRepository rolesRepository;
-    @Mock
-    private ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
-    @Mock
-    private IPeopleJpaRepository peopleRepository;
-    @Mock
-    private ConversionService conversion;
-    @Mock
-    private PasswordEncoder passwordEncoder;
-    private User user;
-    private UserPojo userPojo;
+  @Mock
+  private IUsersJpaRepository userRepository;
+  @Mock
+  private IUserRolesJpaRepository rolesRepository;
+  @Mock
+  private ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
+  @Mock
+  private IPeopleJpaRepository peopleRepository;
+  @Mock
+  private ConversionService conversion;
+  @Mock
+  private PasswordEncoder passwordEncoder;
+  private User user;
+  private UserPojo userPojo;
 
-    @BeforeEach
-    void beforeEach() {
-        user = new User();
-        user.setName(ANY);
-        user.setId(1L);
-        final UserRole userRole = new UserRole();
-        userRole.setName(ANY);
-        user.setUserRole(userRole);
-        Person person = new Person();
-        user.setPerson(person);
-        userPojo = new UserPojo();
-        userPojo.setId(1L);
-        userPojo.setName(ANY);
-    }
+  @BeforeEach
+  void beforeEach() {
+    user = new User();
+    user.setName(ANY);
+    user.setId(1L);
+    final UserRole userRole = new UserRole();
+    userRole.setName(ANY);
+    user.setUserRole(userRole);
+    Person person = new Person();
+    user.setPerson(person);
+    userPojo = new UserPojo();
+    userPojo.setId(1L);
+    userPojo.setName(ANY);
+  }
 
-    @AfterEach
-    void afterEach() {
-        user = null;
-        userPojo = null;
-    }
+  @AfterEach
+  void afterEach() {
+    user = null;
+    userPojo = null;
+  }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        userPojo.setId(1L);
-        userPojo.setName(ANY);
-        userPojo.setRole(ANY);
-        userPojo.setPassword(ANY);
-        final PersonPojo personPojo = new PersonPojo();
-        personPojo.setIdNumber(ANY);
-        userPojo.setPerson(personPojo);
-
-
-        user.setId(1L);
-        user.setName(ANY + " ");
-        final UserRole role = new UserRole();
-        role.setName(ANY + " ");
-        user.setUserRole(role);
-        user.setPassword(ANY + " ");
-        final Person person = new Person();
-        person.setIdNumber(ANY + " ");
-        user.setPerson(person);
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    userPojo.setId(1L);
+    userPojo.setName(ANY);
+    userPojo.setRole(ANY);
+    userPojo.setPassword(ANY);
+    final PersonPojo personPojo = new PersonPojo();
+    personPojo.setIdNumber(ANY);
+    userPojo.setPerson(personPojo);
 
 
-        when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(role));
-        when(passwordEncoder.encode(anyString())).thenReturn(ANY);
-        when(peopleRepository.findByIdNumber(anyString())).thenReturn(Optional.of(person));
+    user.setId(1L);
+    user.setName(ANY + " ");
+    final UserRole role = new UserRole();
+    role.setName(ANY + " ");
+    user.setUserRole(role);
+    user.setPassword(ANY + " ");
+    final Person person = new Person();
+    person.setIdNumber(ANY + " ");
+    user.setPerson(person);
 
-        User actual = sut.applyChangesToExistingEntity(userPojo, user);
 
-        assertEquals(ANY + " ", actual.getPerson().getIdNumber());
-    }
+    when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(role));
+    when(passwordEncoder.encode(anyString())).thenReturn(ANY);
+    when(peopleRepository.findByIdNumber(anyString())).thenReturn(Optional.of(person));
 
-    @Test
-    void testConvertToPojo() {
-        when(peopleService.convertToPojo(any(Person.class))).thenReturn(new PersonPojo());
-        UserPojo actual = sut.convertToPojo(user);
-        assertNotNull(actual.getPerson());
-    }
+    User actual = sut.applyChangesToExistingEntity(userPojo, user);
 
-    @Test
-    void testConvertToNewEntityBadInputException() throws BadInputException {
-        when(conversion.convert(any(UserPojo.class), eq(User.class))).thenReturn(null);
-        BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(userPojo));
-        assertEquals("Invalid user data", badInputException.getMessage());
-    }
+    assertEquals(ANY + " ", actual.getPerson().getIdNumber());
+  }
 
-    @Test
-    void testConvertToNewEntity() throws BadInputException {
-        when(conversion.convert(any(UserPojo.class), eq(User.class))).thenReturn(user);
-        when(passwordEncoder.encode(anyString())).thenReturn(ANY);
-        final Person person = new Person();
-        person.setId(3L);
-        when(peopleRepository.findByIdNumber(anyString())).thenReturn(Optional.of(person));
-        final UserRole userRole = new UserRole();
-        userRole.setId(2L);
-        when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(userRole));
+  @Test
+  void testConvertToPojo() {
+    when(peopleService.convertToPojo(any(Person.class))).thenReturn(new PersonPojo());
+    UserPojo actual = sut.convertToPojo(user);
+    assertNotNull(actual.getPerson());
+  }
 
-        userPojo.setPassword(ANY);
-        final PersonPojo personPojo = new PersonPojo();
-        personPojo.setIdNumber(ANY);
-        userPojo.setPerson(personPojo);
-        userPojo.setRole(ANY);
+  @Test
+  void testConvertToNewEntityBadInputException() throws BadInputException {
+    when(conversion.convert(any(UserPojo.class), eq(User.class))).thenReturn(null);
+    BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(userPojo));
+    assertEquals("Invalid user data", badInputException.getMessage());
+  }
 
-        User actual = sut.convertToNewEntity(userPojo);
+  @Test
+  void testConvertToNewEntity() throws BadInputException {
+    when(conversion.convert(any(UserPojo.class), eq(User.class))).thenReturn(user);
+    when(passwordEncoder.encode(anyString())).thenReturn(ANY);
+    final Person person = new Person();
+    person.setId(3L);
+    when(peopleRepository.findByIdNumber(anyString())).thenReturn(Optional.of(person));
+    final UserRole userRole = new UserRole();
+    userRole.setId(2L);
+    when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(userRole));
 
-        assertEquals(3L, actual.getPerson().getId());
-        assertEquals(2L, actual.getUserRole().getId());
-    }
+    userPojo.setPassword(ANY);
+    final PersonPojo personPojo = new PersonPojo();
+    personPojo.setIdNumber(ANY);
+    userPojo.setPerson(personPojo);
+    userPojo.setRole(ANY);
+
+    User actual = sut.convertToNewEntity(userPojo);
+
+    assertEquals(3L, actual.getPerson().getId());
+    assertEquals(2L, actual.getUserRole().getId());
+  }
 }

@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(MockitoExtension.class)
 class PublicRegisterControllerTest {
 
-  @Mock IRegistrationService registrationService;
+  @Mock
+  IRegistrationService registrationService;
   @InjectMocks
   private PublicRegisterController instance;
 

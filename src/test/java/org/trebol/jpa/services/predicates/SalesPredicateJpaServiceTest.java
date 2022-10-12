@@ -27,11 +27,11 @@ class SalesPredicateJpaServiceTest {
   void parses_map() {
     Predicate emptyPredicate = new BooleanBuilder();
     List<Predicate> predicates = List.of(emptyPredicate,
-                                         instance.parseMap(Map.of("id", "1")),
-                                         instance.parseMap(Map.of("buyOrder", "1")), // same as id
-                                         instance.parseMap(Map.of("date", Instant.now().toString())),
-                                         instance.parseMap(Map.of("statusName", "test")),
-                                         instance.parseMap(Map.of("token", "test")));
+      instance.parseMap(Map.of("id", "1")),
+      instance.parseMap(Map.of("buyOrder", "1")), // same as id
+      instance.parseMap(Map.of("date", Instant.now().toString())),
+      instance.parseMap(Map.of("statusName", "test")),
+      instance.parseMap(Map.of("token", "test")));
     Set<Predicate> distinctPredicates = new HashSet<>(predicates);
     assertEquals(predicates.size(), distinctPredicates.size() + 1);
   }

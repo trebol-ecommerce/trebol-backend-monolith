@@ -18,7 +18,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductsPredicateJpaServiceTest {
-  @Mock IProductCategoryTreeResolver categoryTreeResolver;
+  @Mock
+  IProductCategoryTreeResolver categoryTreeResolver;
   private IPredicateJpaService<Product> instance;
 
   @BeforeEach
@@ -31,13 +32,13 @@ class ProductsPredicateJpaServiceTest {
     when(categoryTreeResolver.getBranchIdsFromRootCode("category-code")).thenReturn(new ArrayList<>());
     Predicate emptyPredicate = new BooleanBuilder();
     List<Predicate> predicates = List.of(emptyPredicate,
-                                         instance.parseMap(Map.of("id", "1")),
-                                         instance.parseMap(Map.of("barcode", "test1")),
-                                         instance.parseMap(Map.of("name", "test2")),
-                                         instance.parseMap(Map.of("categoryCode", "category-code")),
-                                         instance.parseMap(Map.of("barcodeLike", "portion")),
-                                         instance.parseMap(Map.of("nameLike", "portion")),
-                                         instance.parseMap(Map.of("categoryCodeLike", "portion")));
+      instance.parseMap(Map.of("id", "1")),
+      instance.parseMap(Map.of("barcode", "test1")),
+      instance.parseMap(Map.of("name", "test2")),
+      instance.parseMap(Map.of("categoryCode", "category-code")),
+      instance.parseMap(Map.of("barcodeLike", "portion")),
+      instance.parseMap(Map.of("nameLike", "portion")),
+      instance.parseMap(Map.of("categoryCodeLike", "portion")));
     Set<Predicate> distinctPredicates = new HashSet<>(predicates);
     assertEquals(predicates.size(), distinctPredicates.size());
   }

@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(MockitoExtension.class)
 class PublicReceiptControllerTest {
 
-  @Mock IReceiptService receiptService;
+  @Mock
+  IReceiptService receiptService;
   @InjectMocks
   private PublicReceiptController instance;
 

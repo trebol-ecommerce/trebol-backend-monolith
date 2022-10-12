@@ -22,50 +22,51 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserRolesConverterJpaServiceImplTest {
 
-    @InjectMocks
-    private UserRolesConverterJpaServiceImpl sut;
+  @InjectMocks
+  private UserRolesConverterJpaServiceImpl sut;
 
-    @Mock
-    private ConversionService conversionService;
+  @Mock
+  private ConversionService conversionService;
 
-    private UserRole userRole;
-    private UserRolePojo userRolePojo ;
+  private UserRole userRole;
+  private UserRolePojo userRolePojo;
 
-    @BeforeEach
-    void beforeEach() {
-        userRole = new UserRole();
-        userRole.setName("ANY");
-        userRole.setId(1L);
+  @BeforeEach
+  void beforeEach() {
+    userRole = new UserRole();
+    userRole.setName("ANY");
+    userRole.setId(1L);
 
-        userRolePojo = new UserRolePojo();
-        userRolePojo.setId(1L);
-        userRolePojo.setName("ANY");
-    }
+    userRolePojo = new UserRolePojo();
+    userRolePojo.setId(1L);
+    userRolePojo.setName("ANY");
+  }
 
-    @AfterEach
-    void afterEach() {
-        userRole = null;
-        userRolePojo = null;
-    }
+  @AfterEach
+  void afterEach() {
+    userRole = null;
+    userRolePojo = null;
+  }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        UserRole actual = sut.applyChangesToExistingEntity(userRolePojo, userRole);
-        assertEquals(1L, actual.getId());
-    }
-    @Test
-    void testConvertToPojo() {
-        when(conversionService.convert(any(UserRole.class), eq(UserRolePojo.class))).thenReturn(userRolePojo);
-        UserRolePojo actual = sut.convertToPojo(userRole);
-        assertEquals(1L, actual.getId());
-        verify(conversionService, times(1)).convert(any(UserRole.class), eq(UserRolePojo.class));
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    UserRole actual = sut.applyChangesToExistingEntity(userRolePojo, userRole);
+    assertEquals(1L, actual.getId());
+  }
 
-    @Test
-    void testConvertToNewEntity() {
-        when(conversionService.convert(any(UserRolePojo.class), eq(UserRole.class))).thenReturn(userRole);
-        UserRole actual = sut.convertToNewEntity(userRolePojo);
-        assertEquals(1L, actual.getId());
-        verify(conversionService, times(1)).convert(any(UserRolePojo.class), eq(UserRole.class));
-    }
+  @Test
+  void testConvertToPojo() {
+    when(conversionService.convert(any(UserRole.class), eq(UserRolePojo.class))).thenReturn(userRolePojo);
+    UserRolePojo actual = sut.convertToPojo(userRole);
+    assertEquals(1L, actual.getId());
+    verify(conversionService, times(1)).convert(any(UserRole.class), eq(UserRolePojo.class));
+  }
+
+  @Test
+  void testConvertToNewEntity() {
+    when(conversionService.convert(any(UserRolePojo.class), eq(UserRole.class))).thenReturn(userRole);
+    UserRole actual = sut.convertToNewEntity(userRolePojo);
+    assertEquals(1L, actual.getId());
+    verify(conversionService, times(1)).convert(any(UserRolePojo.class), eq(UserRole.class));
+  }
 }

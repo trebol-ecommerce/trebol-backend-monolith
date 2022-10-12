@@ -20,15 +20,17 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SellStatusesJpaCrudServiceTest {
-  @Mock ISellStatusesJpaRepository sellStatusesRepositoryMock;
-  @Mock ITwoWayConverterJpaService<SellStatusPojo, SellStatus> sellStatusesConverterMock;
+  @Mock
+  ISellStatusesJpaRepository sellStatusesRepositoryMock;
+  @Mock
+  ITwoWayConverterJpaService<SellStatusPojo, SellStatus> sellStatusesConverterMock;
   private GenericCrudJpaService<SellStatusPojo, SellStatus> instance;
 
   @BeforeEach
   void beforeEach() {
     instance = new SellStatusesJpaCrudServiceImpl(
-            sellStatusesRepositoryMock,
-            sellStatusesConverterMock
+      sellStatusesRepositoryMock,
+      sellStatusesConverterMock
     );
   }
 

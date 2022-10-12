@@ -14,9 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class AccessControllerTest {
-  @Mock IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
-  @Mock UserDetailsService userDetailsService;
-  @Mock IAuthorizedApiService authorizedApiService;
+  @Mock
+  IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  @Mock
+  UserDetailsService userDetailsService;
+  @Mock
+  IAuthorizedApiService authorizedApiService;
   @InjectMocks
   private AccessController instance;
 

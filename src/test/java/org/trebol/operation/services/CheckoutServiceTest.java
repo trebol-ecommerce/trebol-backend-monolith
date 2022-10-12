@@ -28,10 +28,14 @@ import static org.trebol.testhelpers.SalesTestHelper.*;
 @ExtendWith(MockitoExtension.class)
 class CheckoutServiceTest {
 
-  @Mock GenericCrudJpaService<SellPojo, Sell> salesCrudService;
-  @Mock ISalesProcessService salesProcessService;
-  @Mock IPredicateJpaService<Sell> salesPredicateService;
-  @Mock IPaymentsIntegrationService paymentIntegrationService;
+  @Mock
+  GenericCrudJpaService<SellPojo, Sell> salesCrudService;
+  @Mock
+  ISalesProcessService salesProcessService;
+  @Mock
+  IPredicateJpaService<Sell> salesPredicateService;
+  @Mock
+  IPaymentsIntegrationService paymentIntegrationService;
 
   @InjectMocks
   private CheckoutServiceImpl service;
@@ -40,7 +44,7 @@ class CheckoutServiceTest {
 
   @Test
   void requests_transaction_start()
-      throws BadInputException, PaymentServiceException, EntityNotFoundException {
+    throws BadInputException, PaymentServiceException, EntityNotFoundException {
     PaymentRedirectionDetailsPojo payload = new PaymentRedirectionDetailsPojo(PAYMENT_URL, SELL_TRANSACTION_TOKEN);
     resetSales();
     when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
@@ -55,10 +59,10 @@ class CheckoutServiceTest {
 
   @Test
   void acknowledges_successful_transaction()
-      throws PaymentServiceException, EntityNotFoundException, BadInputException {
+    throws PaymentServiceException, EntityNotFoundException, BadInputException {
     Map<String, String> matcherMap = Map.of(
-        "statusCode", SELL_STATUS_PAYMENT_STARTED,
-        "token", SELL_TRANSACTION_TOKEN);
+      "statusCode", SELL_STATUS_PAYMENT_STARTED,
+      "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
     when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(0);
@@ -76,10 +80,10 @@ class CheckoutServiceTest {
 
   @Test
   void acknowledges_aborted_transaction()
-      throws PaymentServiceException, EntityNotFoundException, BadInputException {
+    throws PaymentServiceException, EntityNotFoundException, BadInputException {
     Map<String, String> matcherMap = Map.of(
-        "statusCode", SELL_STATUS_PAYMENT_STARTED,
-        "token", SELL_TRANSACTION_TOKEN);
+      "statusCode", SELL_STATUS_PAYMENT_STARTED,
+      "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
     when(salesProcessService.markAsAborted(sellPojoAfterCreation())).thenReturn(null);
@@ -94,13 +98,13 @@ class CheckoutServiceTest {
 
   @Test
   void throws_exceptions_at_unexisting_transactions_before_requesting_payments()
-      throws PaymentServiceException, EntityNotFoundException, BadInputException {
+    throws PaymentServiceException, EntityNotFoundException, BadInputException {
     PaymentRedirectionDetailsPojo payload = new PaymentRedirectionDetailsPojo(PAYMENT_URL, SELL_TRANSACTION_TOKEN);
     String exceptionMessage = "No match";
     resetSales();
     when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
     doThrow(new EntityNotFoundException(exceptionMessage)).
-        when(salesProcessService).markAsStarted(sellPojoAfterCreation());
+      when(salesProcessService).markAsStarted(sellPojoAfterCreation());
 
     PaymentRedirectionDetailsPojo result = null;
     try {
@@ -115,10 +119,10 @@ class CheckoutServiceTest {
 
   @Test
   void throws_exceptions_at_invalid_transactions_before_confirming()
-      throws PaymentServiceException, EntityNotFoundException {
+    throws PaymentServiceException, EntityNotFoundException {
     Map<String, String> matcherMap = Map.of(
-        "statusCode", SELL_STATUS_PAYMENT_STARTED,
-        "token", SELL_TRANSACTION_TOKEN);
+      "statusCode", SELL_STATUS_PAYMENT_STARTED,
+      "token", SELL_TRANSACTION_TOKEN);
     String exceptionMessage = "No match";
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenThrow(new EntityNotFoundException(exceptionMessage));
@@ -135,8 +139,8 @@ class CheckoutServiceTest {
 
   private CheckoutServiceImpl instantiate() {
     return new CheckoutServiceImpl(salesCrudService,
-                                   salesProcessService,
-                                   salesPredicateService,
-                                   paymentIntegrationService);
+      salesProcessService,
+      salesPredicateService,
+      paymentIntegrationService);
   }
 }

@@ -21,15 +21,17 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BillingTypesJpaCrudServiceTest {
-  @Mock IBillingTypesJpaRepository billingTypesRepositoryMock;
-  @Mock ITwoWayConverterJpaService<BillingTypePojo, BillingType> billingTypesConverterMock;
+  @Mock
+  IBillingTypesJpaRepository billingTypesRepositoryMock;
+  @Mock
+  ITwoWayConverterJpaService<BillingTypePojo, BillingType> billingTypesConverterMock;
   private GenericCrudJpaService<BillingTypePojo, BillingType> instance;
 
   @BeforeEach
   void beforeEach() {
     instance = new BillingTypesJpaCrudServiceImpl(
-            billingTypesRepositoryMock,
-            billingTypesConverterMock
+      billingTypesRepositoryMock,
+      billingTypesConverterMock
     );
   }
 

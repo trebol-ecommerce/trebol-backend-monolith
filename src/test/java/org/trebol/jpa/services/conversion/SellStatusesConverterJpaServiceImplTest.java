@@ -22,49 +22,50 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class SellStatusesConverterJpaServiceImplTest {
-    @InjectMocks
-    private SellStatusesConverterJpaServiceImpl sut;
+  @InjectMocks
+  private SellStatusesConverterJpaServiceImpl sut;
 
-    @Mock
-    private ConversionService conversionService;
+  @Mock
+  private ConversionService conversionService;
 
-    private SellStatus sellStatus;
-    private SellStatusPojo sellStatusPojo;
+  private SellStatus sellStatus;
+  private SellStatusPojo sellStatusPojo;
 
-    @BeforeEach
-    void beforeEach() {
-        sellStatus = new SellStatus();
-        sellStatus.setName(ANY);
-        sellStatus.setId(1L);
-        sellStatus.setName(ANY);
+  @BeforeEach
+  void beforeEach() {
+    sellStatus = new SellStatus();
+    sellStatus.setName(ANY);
+    sellStatus.setId(1L);
+    sellStatus.setName(ANY);
 
-        sellStatusPojo = new SellStatusPojo();
-        sellStatusPojo.setName(ANY);
-    }
+    sellStatusPojo = new SellStatusPojo();
+    sellStatusPojo.setName(ANY);
+  }
 
-    @AfterEach
-    void afterEach() {
-        sellStatus = null;
-        sellStatusPojo = null;
-    }
+  @AfterEach
+  void afterEach() {
+    sellStatus = null;
+    sellStatusPojo = null;
+  }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        sellStatusPojo.setName("PIOLO");
-        SellStatus actual = sut.applyChangesToExistingEntity(sellStatusPojo, sellStatus);
-        assertEquals(1L, actual.getId());
-    }
-    @Test
-    void testConvertToPojo() {
-        when(conversionService.convert(any(SellStatus.class), eq(SellStatusPojo.class))).thenReturn(sellStatusPojo);
-        SellStatusPojo actual = sut.convertToPojo(sellStatus);
-        assertEquals(ANY, actual.getName());
-        verify(conversionService, times(1)).convert(any(SellStatus.class), eq(SellStatusPojo.class));
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    sellStatusPojo.setName("PIOLO");
+    SellStatus actual = sut.applyChangesToExistingEntity(sellStatusPojo, sellStatus);
+    assertEquals(1L, actual.getId());
+  }
 
-    @Test
-    void testConvertToNewEntity() {
-        SellStatus actual = sut.convertToNewEntity(sellStatusPojo);
-        assertEquals(ANY, actual.getName());
-    }
+  @Test
+  void testConvertToPojo() {
+    when(conversionService.convert(any(SellStatus.class), eq(SellStatusPojo.class))).thenReturn(sellStatusPojo);
+    SellStatusPojo actual = sut.convertToPojo(sellStatus);
+    assertEquals(ANY, actual.getName());
+    verify(conversionService, times(1)).convert(any(SellStatus.class), eq(SellStatusPojo.class));
+  }
+
+  @Test
+  void testConvertToNewEntity() {
+    SellStatus actual = sut.convertToNewEntity(sellStatusPojo);
+    assertEquals(ANY, actual.getName());
+  }
 }

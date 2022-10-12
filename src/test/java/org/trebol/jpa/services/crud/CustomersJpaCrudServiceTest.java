@@ -22,15 +22,17 @@ import static org.trebol.testhelpers.CustomersTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class CustomersJpaCrudServiceTest {
-  @Mock ICustomersJpaRepository customersRepositoryMock;
-  @Mock ITwoWayConverterJpaService<CustomerPojo, Customer> billingTypesConverterMock;
+  @Mock
+  ICustomersJpaRepository customersRepositoryMock;
+  @Mock
+  ITwoWayConverterJpaService<CustomerPojo, Customer> billingTypesConverterMock;
   private GenericCrudJpaService<CustomerPojo, Customer> instance;
 
   @BeforeEach
   void beforeEach() {
     instance = new CustomersJpaCrudServiceImpl(
-            customersRepositoryMock,
-            billingTypesConverterMock
+      customersRepositoryMock,
+      billingTypesConverterMock
     );
   }
 
