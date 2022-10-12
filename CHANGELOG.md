@@ -19,11 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **BREAKING CHANGE**: Rename table names to follow the naming convention - **Thank you `@mepox`**
-	- `products_categories` 			-> `product_categories`
-	- `products_images` 				-> `should be product_images`
-	- `sales_statuses` 				-> `should be sell_statuses`
-	- `app_users_roles` 				-> `should be app_user_roles`
-	- `app_users_roles_permissions` -> `should be app_user_role_permissions`
+    - `products_categories` 			-> `product_categories`
+    - `products_images` 				-> `should be product_images`
+    - `sales_statuses` 				-> `should be sell_statuses`
+    - `app_users_roles` 				-> `should be app_user_roles`
+    - `app_users_roles_permissions` -> `should be app_user_role_permissions`
+- Update to latest Spring Boot patch (as of Oct 12th, 2022)
+  - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
 
 ### Tests
 
