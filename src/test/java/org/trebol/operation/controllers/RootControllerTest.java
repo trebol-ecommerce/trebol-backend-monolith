@@ -9,11 +9,11 @@ class RootControllerTest {
   @Test
   void return_200OK() {
     given().
-        standaloneSetup(new RootController()).
-    when().
-        get("/").
-    then().
-        assertThat().
-        status(HttpStatus.OK);
+      standaloneSetup(new RootController()).
+      when().
+      get("/").
+      then().
+      assertThat().
+      status(HttpStatus.OK);
   }
 }

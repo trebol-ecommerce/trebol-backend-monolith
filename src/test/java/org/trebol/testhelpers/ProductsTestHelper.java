@@ -41,7 +41,7 @@ public class ProductsTestHelper {
   public static ProductPojo productPojoBeforeCreation() {
     if (pojoBeforeCreation == null) {
       pojoBeforeCreation = new ProductPojo(null, PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION, PRODUCT_PRICE,
-                                           PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null, List.of());
+        PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null, List.of());
     }
     return pojoBeforeCreation;
   }
@@ -49,7 +49,7 @@ public class ProductsTestHelper {
   public static ProductPojo productPojoAfterCreation() {
     if (pojoAfterCreation == null) {
       pojoAfterCreation = new ProductPojo(PRODUCT_ID, PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION,
-                                          PRODUCT_PRICE, PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null, List.of());
+        PRODUCT_PRICE, PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null, List.of());
     }
     return pojoAfterCreation;
   }
@@ -57,7 +57,7 @@ public class ProductsTestHelper {
   public static Product productEntityBeforeCreation() {
     if (entityBeforeCreation == null) {
       entityBeforeCreation = new Product(PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION, PRODUCT_PRICE,
-                                         PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL);
+        PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL);
     }
     return entityBeforeCreation;
   }
@@ -65,7 +65,7 @@ public class ProductsTestHelper {
   public static Product productEntityAfterCreation() {
     if (entityAfterCreation == null) {
       entityAfterCreation = new Product(PRODUCT_ID, PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION,
-                                        PRODUCT_PRICE, PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null);
+        PRODUCT_PRICE, PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null);
     }
     return entityAfterCreation;
   }

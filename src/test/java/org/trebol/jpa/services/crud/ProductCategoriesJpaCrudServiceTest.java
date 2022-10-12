@@ -22,15 +22,17 @@ import static org.trebol.testhelpers.ProductCategoriesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductCategoriesJpaCrudServiceTest {
-  @Mock IProductsCategoriesJpaRepository categoriesRepositoryMock;
-  @Mock ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverterMock;
+  @Mock
+  IProductsCategoriesJpaRepository categoriesRepositoryMock;
+  @Mock
+  ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverterMock;
   private GenericCrudJpaService<ProductCategoryPojo, ProductCategory> instance;
 
   @BeforeEach
   void beforeEach() {
     instance = new ProductCategoriesJpaCrudServiceImpl(
-            categoriesRepositoryMock,
-            categoriesConverterMock
+      categoriesRepositoryMock,
+      categoriesConverterMock
     );
   }
 
@@ -43,7 +45,7 @@ class ProductCategoriesJpaCrudServiceTest {
   void finds_by_code() throws BadInputException {
     resetProductCategories();
     when(categoriesRepositoryMock.findByCode(
-        productCategoryPojoForFetch().getCode())).thenReturn(Optional.of(productCategoryEntityAfterCreation()));
+      productCategoryPojoForFetch().getCode())).thenReturn(Optional.of(productCategoryEntityAfterCreation()));
 
     Optional<ProductCategory> match = instance.getExisting(productCategoryPojoForFetch());
 

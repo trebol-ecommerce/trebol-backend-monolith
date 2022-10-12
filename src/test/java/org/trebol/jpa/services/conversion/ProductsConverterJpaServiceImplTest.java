@@ -32,74 +32,75 @@ import static org.trebol.constant.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 public class ProductsConverterJpaServiceImplTest {
 
-    @InjectMocks
-    private ProductsConverterJpaServiceImpl sut;
+  @InjectMocks
+  private ProductsConverterJpaServiceImpl sut;
 
-    @Mock
-    private ConversionService conversionService;
+  @Mock
+  private ConversionService conversionService;
 
-    @Mock
-    private IProductImagesJpaRepository productImagesRepository;
+  @Mock
+  private IProductImagesJpaRepository productImagesRepository;
 
-    private Product product;
-    private ProductPojo productPojo;
+  private Product product;
+  private ProductPojo productPojo;
 
-    @BeforeEach
-    void beforeEach() {
-        product = new Product();
-        product.setName(ANY);
-        product.setId(1L);
-        productPojo = new ProductPojo();
-        productPojo.setId(1L);
-        productPojo.setName(ANY);
-    }
+  @BeforeEach
+  void beforeEach() {
+    product = new Product();
+    product.setName(ANY);
+    product.setId(1L);
+    productPojo = new ProductPojo();
+    productPojo.setId(1L);
+    productPojo.setName(ANY);
+  }
 
-    @AfterEach
-    void afterEach() {
-        product = null;
-        productPojo = null;
-    }
+  @AfterEach
+  void afterEach() {
+    product = null;
+    productPojo = null;
+  }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        productPojo.setBarcode(ANY);
-        productPojo.setName("Bear Brand");
-        productPojo.setPrice(1);
-        productPojo.setDescription(ANY);
-        productPojo.setCurrentStock(1);
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    productPojo.setBarcode(ANY);
+    productPojo.setName("Bear Brand");
+    productPojo.setPrice(1);
+    productPojo.setDescription(ANY);
+    productPojo.setCurrentStock(1);
 
-        product.setBarcode(ANY + " ");
-        product.setName("Bear Brand  ");
-        product.setPrice(2);
-        product.setDescription(ANY + " ");
-        Product actual = sut.applyChangesToExistingEntity(productPojo, product);
-        assertEquals(ANY, actual.getBarcode());
-    }
-    @Test
-    void testConvertToPojo() {
-        when(conversionService.convert(any(Product.class), eq(ProductPojo.class))).thenReturn(productPojo);
-        final ProductImage productImage = new ProductImage();
-        final ImagePojo imagePojo = new ImagePojo();
-        final Image image = new Image();
-        productImage.setImage(image);
-        when(productImagesRepository.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
-        when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(imagePojo);
-        final ProductCategory productCategory = new ProductCategory();
-        product.setProductCategory(productCategory);
-        when(conversionService.convert(any(ProductCategory.class), eq(ProductCategoryPojo.class))).thenReturn(new ProductCategoryPojo());
+    product.setBarcode(ANY + " ");
+    product.setName("Bear Brand  ");
+    product.setPrice(2);
+    product.setDescription(ANY + " ");
+    Product actual = sut.applyChangesToExistingEntity(productPojo, product);
+    assertEquals(ANY, actual.getBarcode());
+  }
 
-        ProductPojo actual = sut.convertToPojo(product);
+  @Test
+  void testConvertToPojo() {
+    when(conversionService.convert(any(Product.class), eq(ProductPojo.class))).thenReturn(productPojo);
+    final ProductImage productImage = new ProductImage();
+    final ImagePojo imagePojo = new ImagePojo();
+    final Image image = new Image();
+    productImage.setImage(image);
+    when(productImagesRepository.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
+    when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(imagePojo);
+    final ProductCategory productCategory = new ProductCategory();
+    product.setProductCategory(productCategory);
+    when(conversionService.convert(any(ProductCategory.class), eq(ProductCategoryPojo.class))).thenReturn(new ProductCategoryPojo());
+
+    ProductPojo actual = sut.convertToPojo(product);
 
 
-        assertEquals(ANY, actual.getName());
-        verify(conversionService, times(1)).convert(any(Product.class), eq(ProductPojo.class));
-    }
+    assertEquals(ANY, actual.getName());
+    verify(conversionService, times(1)).convert(any(Product.class), eq(ProductPojo.class));
+  }
 
-    @Test
-    void testConvertToNewEntity() throws BadInputException {
-        when(conversionService.convert(any(ProductPojo.class), eq(Product.class))).thenReturn(product);
-        Product actual = sut.convertToNewEntity(productPojo);
-        assertEquals(ANY, actual.getName());
-        verify(conversionService, times(1)).convert(any(ProductPojo.class), eq(Product.class));
-    }
+  @Test
+  void testConvertToNewEntity() throws BadInputException {
+    when(conversionService.convert(any(ProductPojo.class), eq(Product.class))).thenReturn(product);
+    Product actual = sut.convertToNewEntity(productPojo);
+    assertEquals(ANY, actual.getName());
+    verify(conversionService, times(1)).convert(any(ProductPojo.class), eq(Product.class));
+  }
 }

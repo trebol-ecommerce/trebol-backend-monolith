@@ -17,10 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(MockitoExtension.class)
 class PublicCheckoutControllerTest {
 
-  @Mock ICheckoutService service;
-  @Mock GenericCrudJpaService<SellPojo, Sell> salesCrudService;
-  @Mock IPredicateJpaService<Sell> salesPredicateService;
-  @Mock IMailingIntegrationService mailingIntegrationService;
+  @Mock
+  ICheckoutService service;
+  @Mock
+  GenericCrudJpaService<SellPojo, Sell> salesCrudService;
+  @Mock
+  IPredicateJpaService<Sell> salesPredicateService;
+  @Mock
+  IMailingIntegrationService mailingIntegrationService;
   @InjectMocks
   private PublicCheckoutController instance;
 

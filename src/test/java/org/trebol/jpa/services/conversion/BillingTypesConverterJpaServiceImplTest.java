@@ -23,49 +23,50 @@ import static org.trebol.constant.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 class BillingTypesConverterJpaServiceImplTest {
 
-    @InjectMocks
-    private BillingTypesConverterJpaServiceImpl sut;
+  @InjectMocks
+  private BillingTypesConverterJpaServiceImpl sut;
 
-    @Mock
-    private ConversionService conversionService;
+  @Mock
+  private ConversionService conversionService;
 
-    private BillingType billingType;
-    private BillingTypePojo billingTypePojo;
+  private BillingType billingType;
+  private BillingTypePojo billingTypePojo;
 
-    @BeforeEach
-    void beforeEach() {
-        billingType = new BillingType();
-        billingType.setName(ANY);
-        billingType.setId(1L);
-        billingType.setName(ANY);
+  @BeforeEach
+  void beforeEach() {
+    billingType = new BillingType();
+    billingType.setName(ANY);
+    billingType.setId(1L);
+    billingType.setName(ANY);
 
-        billingTypePojo = new BillingTypePojo();
-        billingTypePojo.setName(ANY);
-    }
+    billingTypePojo = new BillingTypePojo();
+    billingTypePojo.setName(ANY);
+  }
 
-    @AfterEach
-    void afterEach() {
-        billingType = null;
-        billingTypePojo = null;
-    }
+  @AfterEach
+  void afterEach() {
+    billingType = null;
+    billingTypePojo = null;
+  }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        billingTypePojo.setName("PIOLO");
-        BillingType actual = sut.applyChangesToExistingEntity(billingTypePojo, billingType);
-        assertEquals(1L, actual.getId());
-    }
-    @Test
-    void testConvertToPojo() {
-        when(conversionService.convert(any(BillingType.class), eq(BillingTypePojo.class))).thenReturn(billingTypePojo);
-        BillingTypePojo actual = sut.convertToPojo(billingType);
-        assertEquals(ANY, actual.getName());
-        verify(conversionService, times(1)).convert(any(BillingType.class), eq(BillingTypePojo.class));
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    billingTypePojo.setName("PIOLO");
+    BillingType actual = sut.applyChangesToExistingEntity(billingTypePojo, billingType);
+    assertEquals(1L, actual.getId());
+  }
 
-    @Test
-    void testConvertToNewEntity() {
-        BillingType actual = sut.convertToNewEntity(billingTypePojo);
-        assertEquals(ANY, actual.getName());
-    }
+  @Test
+  void testConvertToPojo() {
+    when(conversionService.convert(any(BillingType.class), eq(BillingTypePojo.class))).thenReturn(billingTypePojo);
+    BillingTypePojo actual = sut.convertToPojo(billingType);
+    assertEquals(ANY, actual.getName());
+    verify(conversionService, times(1)).convert(any(BillingType.class), eq(BillingTypePojo.class));
+  }
+
+  @Test
+  void testConvertToNewEntity() {
+    BillingType actual = sut.convertToNewEntity(billingTypePojo);
+    assertEquals(ANY, actual.getName());
+  }
 }

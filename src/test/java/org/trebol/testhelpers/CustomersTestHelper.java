@@ -48,8 +48,8 @@ public class CustomersTestHelper {
   public static CustomerPojo customerPojoAfterCreation() {
     if (pojoAfterCreation == null) {
       pojoAfterCreation = new CustomerPojo(new PersonPojo(GENERIC_ID, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME,
-                                                          CUSTOMER_ID_NUMBER, CUSTOMER_EMAIL, CUSTOMER_PHONE1,
-                                                          CUSTOMER_PHONE2));
+        CUSTOMER_ID_NUMBER, CUSTOMER_EMAIL, CUSTOMER_PHONE1,
+        CUSTOMER_PHONE2));
     }
     return pojoAfterCreation;
   }
@@ -57,7 +57,7 @@ public class CustomersTestHelper {
   public static Customer customerEntityBeforeCreation() {
     if (entityBeforeCreation == null) {
       entityBeforeCreation = new Customer(new Person(CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME,
-                                                     CUSTOMER_ID_NUMBER, CUSTOMER_EMAIL));
+        CUSTOMER_ID_NUMBER, CUSTOMER_EMAIL));
     }
     return entityBeforeCreation;
   }
@@ -65,8 +65,8 @@ public class CustomersTestHelper {
   public static Customer customerEntityAfterCreation() {
     if (entityAfterCreation == null) {
       entityAfterCreation = new Customer(new Person(GENERIC_ID, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME,
-                                                    CUSTOMER_ID_NUMBER, CUSTOMER_EMAIL, CUSTOMER_PHONE1,
-                                                    CUSTOMER_PHONE2));
+        CUSTOMER_ID_NUMBER, CUSTOMER_EMAIL, CUSTOMER_PHONE1,
+        CUSTOMER_PHONE2));
     }
     return entityAfterCreation;
   }

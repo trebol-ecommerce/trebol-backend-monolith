@@ -53,7 +53,7 @@ public class SalesTestHelper {
     if (pojoBeforeCreation == null) {
       SellDetailPojo newDetailPojo = new SellDetailPojo(SELL_DETAIL_UNITS, productPojoBeforeCreation());
       pojoBeforeCreation = new SellPojo(List.of(newDetailPojo), SELL_BILLING_TYPE_NAME_PERSON, SELL_PAYMENT_TYPE_NAME,
-                                        customerPojoBeforeCreation());
+        customerPojoBeforeCreation());
     }
     return pojoBeforeCreation;
   }
@@ -61,13 +61,13 @@ public class SalesTestHelper {
   public static SellPojo sellPojoAfterCreation() {
     if (pojoAfterCreation == null) {
       SellDetailPojo persistedDetailPojo = new SellDetailPojo(GENERIC_ID, SELL_DETAIL_UNITS,
-                                                              productPojoAfterCreation().getPrice(),
-                                                              productPojoAfterCreation());
+        productPojoAfterCreation().getPrice(),
+        productPojoAfterCreation());
       pojoAfterCreation = new SellPojo(GENERIC_ID, SELL_TRANSACTION_TOKEN, GENERIC_DATE, List.of(persistedDetailPojo),
-                                       SELL_NET_VALUE, SELL_TAXES_VALUE, SELL_TRANSPORT_VALUE, SELL_TOTAL_VALUE,
-                                       SELL_TOTAL_ITEMS, SELL_STATUS_NAME, SELL_BILLING_TYPE_NAME_PERSON,
-                                       SELL_PAYMENT_TYPE_NAME, customerPojoAfterCreation(), null, null,
-                                       null, null, null);
+        SELL_NET_VALUE, SELL_TAXES_VALUE, SELL_TRANSPORT_VALUE, SELL_TOTAL_VALUE,
+        SELL_TOTAL_ITEMS, SELL_STATUS_NAME, SELL_BILLING_TYPE_NAME_PERSON,
+        SELL_PAYMENT_TYPE_NAME, customerPojoAfterCreation(), null, null,
+        null, null, null);
     }
     return pojoAfterCreation;
   }
@@ -79,9 +79,9 @@ public class SalesTestHelper {
       SellDetail newDetailEntity = new SellDetail(SELL_DETAIL_UNITS, productEntityBeforeCreation());
       newDetailEntity.setUnitValue(productEntityBeforeCreation().getPrice());
       entityBeforeCreation = new Sell(customerEntityBeforeCreation(),
-                                      paymentTypeEntity,
-                                      billingTypeEntity,
-                                      List.of(newDetailEntity));
+        paymentTypeEntity,
+        billingTypeEntity,
+        List.of(newDetailEntity));
     }
     return entityBeforeCreation;
   }
@@ -91,13 +91,13 @@ public class SalesTestHelper {
       PaymentType paymentTypeEntity = new PaymentType(GENERIC_ID, SELL_PAYMENT_TYPE_NAME);
       BillingType billingTypeEntity = new BillingType(GENERIC_ID, SELL_BILLING_TYPE_NAME_PERSON);
       SellDetail persistedDetailEntity = new SellDetail(GENERIC_ID, SELL_DETAIL_UNITS,
-                                                        productEntityAfterCreation().getPrice(),
-                                                        productEntityAfterCreation());
+        productEntityAfterCreation().getPrice(),
+        productEntityAfterCreation());
       SellStatus sellStatusEntity = new SellStatus(GENERIC_ID, SELL_STATUS_CODE, SELL_STATUS_NAME);
       entityAfterCreation = new Sell(GENERIC_ID, GENERIC_DATE, SELL_TOTAL_ITEMS, SELL_NET_VALUE, SELL_TRANSPORT_VALUE,
-                                     SELL_TAXES_VALUE, SELL_TOTAL_VALUE, SELL_TRANSACTION_TOKEN,
-                                     customerEntityAfterCreation(), paymentTypeEntity, sellStatusEntity,
-                                     billingTypeEntity, null, null, null, null, null, List.of(persistedDetailEntity));
+        SELL_TAXES_VALUE, SELL_TOTAL_VALUE, SELL_TRANSACTION_TOKEN,
+        customerEntityAfterCreation(), paymentTypeEntity, sellStatusEntity,
+        billingTypeEntity, null, null, null, null, null, List.of(persistedDetailEntity));
     }
     return entityAfterCreation;
   }

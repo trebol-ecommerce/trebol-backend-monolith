@@ -31,17 +31,20 @@ import static org.trebol.testhelpers.SalesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class SalesJpaCrudServiceTest {
-  @Mock ISalesJpaRepository salesRepositoryMock;
-  @Mock ITwoWayConverterJpaService<SellPojo, Sell> salesConverterMock;
-  @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock;
+  @Mock
+  ISalesJpaRepository salesRepositoryMock;
+  @Mock
+  ITwoWayConverterJpaService<SellPojo, Sell> salesConverterMock;
+  @Mock
+  ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock;
   private GenericCrudJpaService<SellPojo, Sell> instance;
 
   @BeforeEach
   void beforeEach() {
     instance = new SalesJpaCrudServiceImpl(
-            salesRepositoryMock,
-            salesConverterMock,
-            productsConverterMock
+      salesRepositoryMock,
+      salesConverterMock,
+      productsConverterMock
     );
   }
 
@@ -52,7 +55,7 @@ class SalesJpaCrudServiceTest {
 
   @Test
   void finds_by_id_aka_buy_order()
-      throws BadInputException {
+    throws BadInputException {
     resetSales();
     when(salesRepositoryMock.findById(sellPojoForFetch().getBuyOrder())).thenReturn(Optional.of(sellEntityAfterCreation()));
 
@@ -65,7 +68,7 @@ class SalesJpaCrudServiceTest {
 
   @Test
   void finds_using_predicates()
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     resetProducts();
     resetSales();
     Predicate filters = new BooleanBuilder();
@@ -83,7 +86,7 @@ class SalesJpaCrudServiceTest {
 
   @Test
   void creates_sell()
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     resetSales();
     when(salesConverterMock.convertToNewEntity(sellPojoBeforeCreation())).thenReturn(sellEntityBeforeCreation());
     when(salesRepositoryMock.saveAndFlush(sellEntityBeforeCreation())).thenReturn(sellEntityAfterCreation());
@@ -106,7 +109,7 @@ class SalesJpaCrudServiceTest {
 
   @Test
   void updates_sell()
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     resetSales();
     Instant updatedDate = Instant.now().minus(Duration.ofHours(1L));
     SellPojo sellPojoWithUpdates = new SellPojo(sellPojoAfterCreation());
@@ -132,7 +135,7 @@ class SalesJpaCrudServiceTest {
 
   @Test
   void returns_same_when_no_update_is_made()
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     resetSales();
     SellPojo copy = new SellPojo(sellPojoAfterCreation());
     Predicate filters = new BooleanBuilder();

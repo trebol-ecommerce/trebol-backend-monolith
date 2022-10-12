@@ -25,87 +25,87 @@ import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductCategoriesConverterJpaServiceImplTest {
-    @InjectMocks
-    private ProductCategoriesConverterJpaServiceImpl sut;
+  @InjectMocks
+  private ProductCategoriesConverterJpaServiceImpl sut;
 
-    @Mock
-    private ConversionService conversionService;
+  @Mock
+  private ConversionService conversionService;
 
-    @Mock
-    private IProductsCategoriesJpaRepository categoriesRepository;
+  @Mock
+  private IProductsCategoriesJpaRepository categoriesRepository;
 
-    private ProductCategory productCategory;
-    private ProductCategoryPojo productCategoryPojo;
+  private ProductCategory productCategory;
+  private ProductCategoryPojo productCategoryPojo;
 
-    @BeforeEach
-    void beforeEach() {
-        productCategory = new ProductCategory();
-        productCategory.setId(ID_1L);
+  @BeforeEach
+  void beforeEach() {
+    productCategory = new ProductCategory();
+    productCategory.setId(ID_1L);
 
-        productCategoryPojo = new ProductCategoryPojo();
-        productCategoryPojo.setId(ID_1L);
-        productCategoryPojo.setName(ANY);
-        productCategoryPojo.setCode(ANY);
-    }
+    productCategoryPojo = new ProductCategoryPojo();
+    productCategoryPojo.setId(ID_1L);
+    productCategoryPojo.setName(ANY);
+    productCategoryPojo.setCode(ANY);
+  }
 
-    @AfterEach
-    void afterEach() {
-        productCategory = null;
-        productCategoryPojo = null;
-    }
+  @AfterEach
+  void afterEach() {
+    productCategory = null;
+    productCategoryPojo = null;
+  }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        productCategory.setName(ANY + " ");
-        ProductCategory actual = sut.applyChangesToExistingEntity(productCategoryPojo, productCategory);
-        assertEquals(ANY, actual.getName());
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    productCategory.setName(ANY + " ");
+    ProductCategory actual = sut.applyChangesToExistingEntity(productCategoryPojo, productCategory);
+    assertEquals(ANY, actual.getName());
 
-    }
-    @Test
-    void testConvertToPojo() {
-        when(conversionService.convert(any(ProductCategory.class), eq(ProductCategoryPojo.class))).thenReturn(productCategoryPojo);
-        ProductCategoryPojo actual = sut.convertToPojo(productCategory);
-        verify(conversionService, times(1)).convert(any(ProductCategory.class), eq(ProductCategoryPojo.class));
-    }
+  }
 
-    @Test
-    void testConvertToNewEntity() {
-        ProductCategory actual = sut.convertToNewEntity(productCategoryPojo);
-        assertEquals(ANY, actual.getCode());
-        assertEquals(ANY, actual.getName());
-    }
+  @Test
+  void testConvertToPojo() {
+    when(conversionService.convert(any(ProductCategory.class), eq(ProductCategoryPojo.class))).thenReturn(productCategoryPojo);
+    ProductCategoryPojo actual = sut.convertToPojo(productCategory);
+    verify(conversionService, times(1)).convert(any(ProductCategory.class), eq(ProductCategoryPojo.class));
+  }
 
-    @DisplayName("Will test parent which is a private method...")
-    @Test
-    void testApplyParent() throws BadInputException {
-        final ProductCategoryPojo parentPojo = new ProductCategoryPojo();
-//        parentPojo.setCode(ANY);
-        final ProductCategory parent = new ProductCategory();
-        parent.setName(ANY);
-        productCategory.setParent(parent);
-        productCategory.setName(ANY);
-        productCategoryPojo.setParent(parentPojo);
-        productCategory.setId(1L);
-        when(categoriesRepository.save(any(ProductCategory.class))).thenReturn(parent);
-        ProductCategory actual = sut.applyChangesToExistingEntity(productCategoryPojo, productCategory);
+  @Test
+  void testConvertToNewEntity() {
+    ProductCategory actual = sut.convertToNewEntity(productCategoryPojo);
+    assertEquals(ANY, actual.getCode());
+    assertEquals(ANY, actual.getName());
+  }
 
-        assertEquals(ANY, actual.getParent().getName());
-    }
+  @DisplayName("Will test parent which is a private method...")
+  @Test
+  void testApplyParent() throws BadInputException {
+    final ProductCategoryPojo parentPojo = new ProductCategoryPojo();
+    final ProductCategory parent = new ProductCategory();
+    parent.setName(ANY);
+    productCategory.setParent(parent);
+    productCategory.setName(ANY);
+    productCategoryPojo.setParent(parentPojo);
+    productCategory.setId(1L);
+    when(categoriesRepository.save(any(ProductCategory.class))).thenReturn(parent);
+    ProductCategory actual = sut.applyChangesToExistingEntity(productCategoryPojo, productCategory);
 
-    @Test
-    void testApplyParent2() throws BadInputException {
-        final ProductCategoryPojo parentPojo = new ProductCategoryPojo();
-        parentPojo.setCode(ANY);
-        final ProductCategory parent = new ProductCategory();
-        parent.setName(ANY);
-        parent.setCode("");
-        productCategory.setParent(parent);
-        productCategory.setName(ANY);
-        productCategoryPojo.setParent(parentPojo);
-        productCategory.setId(1L);
-        when(categoriesRepository.save(any(ProductCategory.class))).thenReturn(parent);
-        ProductCategory actual = sut.applyChangesToExistingEntity(productCategoryPojo, productCategory);
+    assertEquals(ANY, actual.getParent().getName());
+  }
 
-        assertEquals(ANY, actual.getParent().getName());
-    }
+  @Test
+  void testApplyParent2() throws BadInputException {
+    final ProductCategoryPojo parentPojo = new ProductCategoryPojo();
+    parentPojo.setCode(ANY);
+    final ProductCategory parent = new ProductCategory();
+    parent.setName(ANY);
+    parent.setCode("");
+    productCategory.setParent(parent);
+    productCategory.setName(ANY);
+    productCategoryPojo.setParent(parentPojo);
+    productCategory.setId(1L);
+    when(categoriesRepository.save(any(ProductCategory.class))).thenReturn(parent);
+    ProductCategory actual = sut.applyChangesToExistingEntity(productCategoryPojo, productCategory);
+
+    assertEquals(ANY, actual.getParent().getName());
+  }
 }
