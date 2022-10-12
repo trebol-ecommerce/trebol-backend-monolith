@@ -52,8 +52,8 @@ public class UsersJpaCrudServiceImpl
                                  ITwoWayConverterJpaService<UserPojo, User> converter,
                                  SecurityProperties securityProperties) {
     super(repository,
-          converter,
-          LoggerFactory.getLogger(UsersJpaCrudServiceImpl.class));
+      converter,
+      LoggerFactory.getLogger(UsersJpaCrudServiceImpl.class));
     this.userRepository = repository;
     this.securityProperties = securityProperties;
   }
@@ -69,17 +69,17 @@ public class UsersJpaCrudServiceImpl
   }
 
   @Override
-  public void delete(Predicate filters) throws EntityNotFoundException {	
+  public void delete(Predicate filters) throws EntityNotFoundException {
     if (securityProperties.isAccountProtectionEnabled()) {
-    	Optional<User> optionalUser = userRepository.findOne(filters);
-    	if (optionalUser.isPresent()) {
-    		User user = optionalUser.get();
-    		if (user.getId() == securityProperties.getProtectedAccountId()) {
-    			throw new AccountProtectionViolationException("Protected account cannot be deleted");
-    		}
-    	}
+      Optional<User> optionalUser = userRepository.findOne(filters);
+      if (optionalUser.isPresent()) {
+        User user = optionalUser.get();
+        if (user.getId() == securityProperties.getProtectedAccountId()) {
+          throw new AccountProtectionViolationException("Protected account cannot be deleted");
+        }
+      }
     }
-	super.delete(filters);
+    super.delete(filters);
   }
-  
+
 }
