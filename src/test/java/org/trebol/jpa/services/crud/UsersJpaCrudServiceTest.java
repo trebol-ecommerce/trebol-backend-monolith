@@ -83,21 +83,20 @@ class UsersJpaCrudServiceTest {
     User userMock = new User(userId, userName, userPassword, person, role);
     
     Predicate predicateMock = new Predicate() {		
-		@Override
-		public Class<? extends Boolean> getType() {			
+      @Override
+      public Class<? extends Boolean> getType() {
 			return null;
 		}
-		
-		@Override
+        @Override
 		public <R, C> R accept(Visitor<R, C> v, C context) {			
 			return null;
 		}
 		
 		@Override
-		public Predicate not() {			
+        public Predicate not() {
 			return null;
 		}
-	};	
+    };
     
 	when(securityPropertiesMock.isAccountProtectionEnabled()).thenReturn(true);
 	when(securityPropertiesMock.getProtectedAccountId()).thenReturn(userId);
