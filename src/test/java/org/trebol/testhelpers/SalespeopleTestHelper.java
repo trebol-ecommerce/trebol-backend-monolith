@@ -48,8 +48,8 @@ public class SalespeopleTestHelper {
   public static SalespersonPojo salespersonPojoAfterCreation() {
     if (pojoAfterCreation == null) {
       pojoAfterCreation = new SalespersonPojo(new PersonPojo(GENERIC_ID, SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
-                                                             SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL,
-                                                             SALESPERSON_PHONE1, SALESPERSON_PHONE2));
+        SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL,
+        SALESPERSON_PHONE1, SALESPERSON_PHONE2));
     }
     return pojoAfterCreation;
   }
@@ -57,7 +57,7 @@ public class SalespeopleTestHelper {
   public static Salesperson salespersonEntityBeforeCreation() {
     if (entityBeforeCreation == null) {
       entityBeforeCreation = new Salesperson(new Person(SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
-                                                        SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL));
+        SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL));
     }
     return entityBeforeCreation;
   }
@@ -65,8 +65,8 @@ public class SalespeopleTestHelper {
   public static Salesperson salespersonEntityAfterCreation() {
     if (entityAfterCreation == null) {
       entityAfterCreation = new Salesperson(new Person(GENERIC_ID, SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
-                                                       SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL, SALESPERSON_PHONE1,
-                                                       SALESPERSON_PHONE2));
+        SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL, SALESPERSON_PHONE1,
+        SALESPERSON_PHONE2));
     }
     return entityAfterCreation;
   }

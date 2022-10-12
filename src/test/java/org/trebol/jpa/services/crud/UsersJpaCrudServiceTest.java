@@ -26,17 +26,20 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UsersJpaCrudServiceTest {
-  @Mock IUsersJpaRepository usersRepositoryMock;
-  @Mock ITwoWayConverterJpaService<UserPojo, User> usersConverterMock;
-  @Mock SecurityProperties securityPropertiesMock;
+  @Mock
+  IUsersJpaRepository usersRepositoryMock;
+  @Mock
+  ITwoWayConverterJpaService<UserPojo, User> usersConverterMock;
+  @Mock
+  SecurityProperties securityPropertiesMock;
   private GenericCrudJpaService<UserPojo, User> instance;
 
   @BeforeEach
   void beforeEach() {
     instance = new UsersJpaCrudServiceImpl(
-            usersRepositoryMock,
-            usersConverterMock,
-            securityPropertiesMock
+      usersRepositoryMock,
+      usersConverterMock,
+      securityPropertiesMock
     );
   }
 
@@ -68,10 +71,10 @@ class UsersJpaCrudServiceTest {
     assertEquals(match.get().getPerson().getIdNumber(), idNumber);
     assertEquals(match.get().getUserRole().getName(), roleName);
   }
-  
+
   @Test
   void delete_ProtectedAccount_ThrowsBadInputException() {
-	Long userId = 1L;
+    Long userId = 1L;
     String userName = "test-user";
     String userPassword = "test-password";
     String idNumber = "111111111";
@@ -81,29 +84,29 @@ class UsersJpaCrudServiceTest {
     UserRole role = new UserRole(roleId, roleName);
     UserPojo example = new UserPojo(userName);
     User userMock = new User(userId, userName, userPassword, person, role);
-    
-    Predicate predicateMock = new Predicate() {		
-		@Override
-		public Class<? extends Boolean> getType() {			
-			return null;
-		}
-		
-		@Override
-		public <R, C> R accept(Visitor<R, C> v, C context) {			
-			return null;
-		}
-		
-		@Override
-		public Predicate not() {			
-			return null;
-		}
-	};	
-    
-	when(securityPropertiesMock.isAccountProtectionEnabled()).thenReturn(true);
-	when(securityPropertiesMock.getProtectedAccountId()).thenReturn(userId);
-	when(usersRepositoryMock.findOne(predicateMock)).thenReturn(Optional.of(userMock));
-	
-	assertThrows(AccountProtectionViolationException.class, () -> instance.delete(predicateMock));
+
+    Predicate predicateMock = new Predicate() {
+      @Override
+      public Class<? extends Boolean> getType() {
+        return null;
+      }
+
+      @Override
+      public <R, C> R accept(Visitor<R, C> v, C context) {
+        return null;
+      }
+
+      @Override
+      public Predicate not() {
+        return null;
+      }
+    };
+
+    when(securityPropertiesMock.isAccountProtectionEnabled()).thenReturn(true);
+    when(securityPropertiesMock.getProtectedAccountId()).thenReturn(userId);
+    when(usersRepositoryMock.findOne(predicateMock)).thenReturn(Optional.of(userMock));
+
+    assertThrows(AccountProtectionViolationException.class, () -> instance.delete(predicateMock));
   }
 
 }

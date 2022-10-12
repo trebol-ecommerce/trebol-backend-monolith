@@ -17,10 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(MockitoExtension.class)
 class DataUsersControllerTest {
 
-  @Mock PaginationService paginationService;
-  @Mock ISortSpecJpaService<User> sortService;
-  @Mock GenericCrudJpaService<UserPojo, User> crudService;
-  @Mock IPredicateJpaService<User> predicateService;
+  @Mock
+  PaginationService paginationService;
+  @Mock
+  ISortSpecJpaService<User> sortService;
+  @Mock
+  GenericCrudJpaService<UserPojo, User> crudService;
+  @Mock
+  IPredicateJpaService<User> predicateService;
   @InjectMocks
   private DataUsersController instance;
 

@@ -22,15 +22,17 @@ import static org.trebol.testhelpers.SalespeopleTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class SalespeopleJpaCrudServiceTest {
-  @Mock ISalespeopleJpaRepository salespeopleRepositoryMock;
-  @Mock ITwoWayConverterJpaService<SalespersonPojo, Salesperson> salespeopleConverterMock;
+  @Mock
+  ISalespeopleJpaRepository salespeopleRepositoryMock;
+  @Mock
+  ITwoWayConverterJpaService<SalespersonPojo, Salesperson> salespeopleConverterMock;
   private GenericCrudJpaService<SalespersonPojo, Salesperson> instance;
 
   @BeforeEach
   void beforeEach() {
     instance = new SalespeopleJpaCrudServiceImpl(
-            salespeopleRepositoryMock,
-            salespeopleConverterMock
+      salespeopleRepositoryMock,
+      salespeopleConverterMock
     );
   }
 

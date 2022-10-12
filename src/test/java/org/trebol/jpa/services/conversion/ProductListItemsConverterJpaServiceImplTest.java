@@ -28,44 +28,45 @@ import static org.trebol.constant.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 class ProductListItemsConverterJpaServiceImplTest {
 
-    @InjectMocks
-    private ProductListItemsConverterJpaServiceImpl sut;
+  @InjectMocks
+  private ProductListItemsConverterJpaServiceImpl sut;
 
-    @Mock
-    private ConversionService conversionService;
+  @Mock
+  private ConversionService conversionService;
 
-    @Mock
-    private IProductImagesJpaRepository iProductImagesJpaRepository;
+  @Mock
+  private IProductImagesJpaRepository iProductImagesJpaRepository;
 
-    @Test
-    void testApplyChangesToExistingEntity() {
-        UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
-                () -> sut.convertToNewEntity(new ProductPojo()));
-        assertEquals("Not implemented", unsupportedOperationException.getMessage());
-    }
-    @Test
-    void testConvertToPojo() {
-        final ProductListItem productListItem = new ProductListItem();
-        final Product product = new Product();
-        productListItem.setProduct(product);
-        final ProductPojo productPojo = new ProductPojo();
-        productPojo.setId(1L);
-        final ProductImage productImage = new ProductImage();
-        productImage.setImage(new Image());
-        final ImagePojo imagePojo = new ImagePojo(ANY);
-        when(conversionService.convert(any(Product.class), eq(ProductPojo.class))).thenReturn(productPojo);
-        when(iProductImagesJpaRepository.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
-        when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(imagePojo);
+  @Test
+  void testApplyChangesToExistingEntity() {
+    UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
+      () -> sut.convertToNewEntity(new ProductPojo()));
+    assertEquals("Not implemented", unsupportedOperationException.getMessage());
+  }
 
-        ProductPojo actual = sut.convertToPojo(productListItem);
+  @Test
+  void testConvertToPojo() {
+    final ProductListItem productListItem = new ProductListItem();
+    final Product product = new Product();
+    productListItem.setProduct(product);
+    final ProductPojo productPojo = new ProductPojo();
+    productPojo.setId(1L);
+    final ProductImage productImage = new ProductImage();
+    productImage.setImage(new Image());
+    final ImagePojo imagePojo = new ImagePojo(ANY);
+    when(conversionService.convert(any(Product.class), eq(ProductPojo.class))).thenReturn(productPojo);
+    when(iProductImagesJpaRepository.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
+    when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(imagePojo);
 
-        assertNotNull(actual.getImages());
-    }
+    ProductPojo actual = sut.convertToPojo(productListItem);
 
-    @Test
-    void testConvertToNewEntity() {
-        UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
-                () -> sut.applyChangesToExistingEntity(new ProductPojo(), new ProductListItem()));
-        assertEquals("Not implemented", unsupportedOperationException.getMessage());
-    }
+    assertNotNull(actual.getImages());
+  }
+
+  @Test
+  void testConvertToNewEntity() {
+    UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
+      () -> sut.applyChangesToExistingEntity(new ProductPojo(), new ProductListItem()));
+    assertEquals("Not implemented", unsupportedOperationException.getMessage());
+  }
 }

@@ -22,13 +22,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class DataProductListContentsControllerTest {
 
 
-  @Mock PaginationService paginationService;
-  @Mock ISortSpecJpaService<ProductListItem> sortService;
-  @Mock IProductListItemsJpaRepository listItemsRepository;
-  @Mock IProductListsJpaRepository listsRepository;
-  @Mock IPredicateJpaService<ProductListItem> listItemsPredicateService;
-  @Mock GenericCrudJpaService<ProductPojo, Product> productCrudService;
-  @Mock ITwoWayConverterJpaService<ProductPojo, ProductListItem> itemConverterService;
+  @Mock
+  PaginationService paginationService;
+  @Mock
+  ISortSpecJpaService<ProductListItem> sortService;
+  @Mock
+  IProductListItemsJpaRepository listItemsRepository;
+  @Mock
+  IProductListsJpaRepository listsRepository;
+  @Mock
+  IPredicateJpaService<ProductListItem> listItemsPredicateService;
+  @Mock
+  GenericCrudJpaService<ProductPojo, Product> productCrudService;
+  @Mock
+  ITwoWayConverterJpaService<ProductPojo, ProductListItem> itemConverterService;
 
   @InjectMocks
   private DataProductListContentsController instance;

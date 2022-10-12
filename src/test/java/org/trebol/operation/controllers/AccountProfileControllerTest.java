@@ -11,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class AccountProfileControllerTest {
-  @Mock IProfileService userProfileService;
+  @Mock
+  IProfileService userProfileService;
   @InjectMocks
   private AccountProfileController instance;
 

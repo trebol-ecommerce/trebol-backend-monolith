@@ -31,25 +31,32 @@ import static org.trebol.testhelpers.ProductsTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductsJpaCrudServiceTest {
-  @Mock IProductsJpaRepository productsRepositoryMock;
-  @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock;
-  @Mock IProductImagesJpaRepository productImagesRepositoryMock;
-  @Mock GenericCrudJpaService<ImagePojo, Image> imagesCrudServiceMock;
-  @Mock GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesCrudServiceMock;
-  @Mock ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverterMock;
-  @Mock ITwoWayConverterJpaService<ImagePojo, Image> imagesConverterMock;
+  @Mock
+  IProductsJpaRepository productsRepositoryMock;
+  @Mock
+  ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock;
+  @Mock
+  IProductImagesJpaRepository productImagesRepositoryMock;
+  @Mock
+  GenericCrudJpaService<ImagePojo, Image> imagesCrudServiceMock;
+  @Mock
+  GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesCrudServiceMock;
+  @Mock
+  ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverterMock;
+  @Mock
+  ITwoWayConverterJpaService<ImagePojo, Image> imagesConverterMock;
   private GenericCrudJpaService<ProductPojo, Product> instance;
 
   @BeforeEach
   void beforeEach() {
     instance = new ProductsJpaCrudServiceImpl(
-            productsRepositoryMock,
-            productsConverterMock,
-            productImagesRepositoryMock,
-            imagesCrudServiceMock,
-            categoriesCrudServiceMock,
-            categoriesConverterMock,
-            imagesConverterMock
+      productsRepositoryMock,
+      productsConverterMock,
+      productImagesRepositoryMock,
+      imagesCrudServiceMock,
+      categoriesCrudServiceMock,
+      categoriesConverterMock,
+      imagesConverterMock
     );
   }
 
@@ -60,10 +67,10 @@ class ProductsJpaCrudServiceTest {
 
   @Test
   void finds_by_barcode()
-      throws BadInputException {
+    throws BadInputException {
     resetProducts();
     when(productsRepositoryMock.findByBarcode(productPojoForFetch().getBarcode())).thenReturn(
-        Optional.of(productEntityAfterCreation()));
+      Optional.of(productEntityAfterCreation()));
 
     Optional<Product> match = instance.getExisting(productPojoForFetch());
 
@@ -81,11 +88,11 @@ class ProductsJpaCrudServiceTest {
 
   @Test
   void creates_product()
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     resetProducts();
 
     when(productsConverterMock.convertToNewEntity(productPojoBeforeCreation())).thenReturn(
-        productEntityBeforeCreation());
+      productEntityBeforeCreation());
     when(productsRepositoryMock.saveAndFlush(productEntityBeforeCreation())).thenReturn(productEntityAfterCreation());
     when(productsConverterMock.convertToPojo(productEntityAfterCreation())).thenReturn(productPojoAfterCreation());
     when(productsRepositoryMock.getById(productEntityAfterCreation().getId())).thenReturn(productEntityAfterCreation());
@@ -110,13 +117,13 @@ class ProductsJpaCrudServiceTest {
 
   @Test
   void creates_product_with_nonexistent_image()
-      throws BadInputException {
+    throws BadInputException {
     resetProducts();
     resetImages();
 
     productPojoBeforeCreation().setImages(List.of(imagePojoBeforeCreation()));
     when(productsConverterMock.convertToNewEntity(productPojoBeforeCreation())).thenReturn(
-        productEntityBeforeCreation());
+      productEntityBeforeCreation());
     when(productsRepositoryMock.saveAndFlush(productEntityBeforeCreation())).thenReturn(productEntityAfterCreation());
     when(productsConverterMock.convertToPojo(productEntityAfterCreation())).thenReturn(productPojoAfterCreation());
     when(productsRepositoryMock.getById(productPojoAfterCreation().getId())).thenReturn(productEntityAfterCreation());
@@ -134,19 +141,19 @@ class ProductsJpaCrudServiceTest {
 
   @Test
   void creates_product_with_existing_image()
-      throws BadInputException {
+    throws BadInputException {
     resetProducts();
     resetImages();
 
     productPojoBeforeCreation().setImages(List.of(imagePojoBeforeCreation()));
     productPojoAfterCreation().setImages(List.of(imagePojoAfterCreation()));
     when(productsConverterMock.convertToNewEntity(productPojoBeforeCreation())).thenReturn(
-        productEntityBeforeCreation());
+      productEntityBeforeCreation());
     when(productsRepositoryMock.saveAndFlush(productEntityBeforeCreation())).thenReturn(productEntityAfterCreation());
     when(productsConverterMock.convertToPojo(productEntityAfterCreation())).thenReturn(productPojoAfterCreation());
     when(productsRepositoryMock.getById(productPojoAfterCreation().getId())).thenReturn(productEntityAfterCreation());
     when(imagesCrudServiceMock.getExisting(imagePojoBeforeCreation())).thenReturn(
-        Optional.of(imageEntityAfterCreation()));
+      Optional.of(imageEntityAfterCreation()));
     when(productImagesRepositoryMock.saveAll(any())).thenReturn(List.of()); // unused value, stubbed for safety
     when(imagesConverterMock.convertToPojo(imageEntityAfterCreation())).thenReturn(imagePojoAfterCreation());
 
@@ -162,13 +169,13 @@ class ProductsJpaCrudServiceTest {
 
   @Test
   void creates_product_with_nonexistent_category()
-      throws BadInputException {
+    throws BadInputException {
     resetProducts();
     resetProductCategories();
 
     productPojoBeforeCreation().setCategory(productCategoryPojoBeforeCreation());
     when(productsConverterMock.convertToNewEntity(productPojoBeforeCreation())).thenReturn(
-        productEntityBeforeCreation());
+      productEntityBeforeCreation());
     when(productsRepositoryMock.saveAndFlush(productEntityBeforeCreation())).thenReturn(productEntityAfterCreation());
     when(productsConverterMock.convertToPojo(productEntityAfterCreation())).thenReturn(productPojoAfterCreation());
     when(productsRepositoryMock.getById(productEntityAfterCreation().getId())).thenReturn(productEntityAfterCreation());
@@ -183,21 +190,21 @@ class ProductsJpaCrudServiceTest {
 
   @Test
   void creates_product_with_existing_category()
-      throws BadInputException {
+    throws BadInputException {
     resetProducts();
     resetProductCategories();
 
     productPojoBeforeCreation().setCategory(productCategoryPojoBeforeCreation());
     productPojoAfterCreation().setCategory(productCategoryPojoAfterCreation());
     when(productsConverterMock.convertToNewEntity(productPojoBeforeCreation())).thenReturn(
-        productEntityBeforeCreation());
+      productEntityBeforeCreation());
     when(productsRepositoryMock.saveAndFlush(productEntityBeforeCreation())).thenReturn(productEntityAfterCreation());
     when(productsConverterMock.convertToPojo(productEntityAfterCreation())).thenReturn(productPojoAfterCreation());
     when(productsRepositoryMock.getById(productEntityAfterCreation().getId())).thenReturn(productEntityAfterCreation());
     when(categoriesCrudServiceMock.getExisting(productCategoryPojoBeforeCreation())).thenReturn(
-        Optional.of(productCategoryEntityAfterCreation()));
+      Optional.of(productCategoryEntityAfterCreation()));
     when(categoriesConverterMock.convertToPojo(productCategoryEntityAfterCreation())).thenReturn(
-        productCategoryPojoAfterCreation());
+      productCategoryPojoAfterCreation());
 
     ProductPojo result = instance.create(productPojoBeforeCreation());
 

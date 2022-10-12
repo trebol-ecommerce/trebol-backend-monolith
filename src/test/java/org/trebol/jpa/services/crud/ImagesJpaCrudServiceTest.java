@@ -22,15 +22,17 @@ import static org.trebol.testhelpers.ImagesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class ImagesJpaCrudServiceTest {
-  @Mock IImagesJpaRepository imagesRepositoryMock;
-  @Mock ITwoWayConverterJpaService<ImagePojo, Image> imagesConverterMock;
+  @Mock
+  IImagesJpaRepository imagesRepositoryMock;
+  @Mock
+  ITwoWayConverterJpaService<ImagePojo, Image> imagesConverterMock;
   private GenericCrudJpaService<ImagePojo, Image> instance;
 
   @BeforeEach
   void beforeEach() {
     instance = new ImagesJpaCrudServiceImpl(
-            imagesRepositoryMock,
-            imagesConverterMock
+      imagesRepositoryMock,
+      imagesConverterMock
     );
   }
 

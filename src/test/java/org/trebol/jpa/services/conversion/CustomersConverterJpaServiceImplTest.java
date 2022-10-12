@@ -22,60 +22,60 @@ import static org.trebol.constant.TestConstants.ID_1L;
 @ExtendWith(MockitoExtension.class)
 class CustomersConverterJpaServiceImplTest {
 
-    @InjectMocks
-    private CustomersConverterJpaServiceImpl sut;
+  @InjectMocks
+  private CustomersConverterJpaServiceImpl sut;
 
-    @Mock
-    private ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
+  @Mock
+  private ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
 
-    private Customer customer;
-    private CustomerPojo customerPojo;
-    private Person person;
-    private PersonPojo personPojo;
-
-
-    @BeforeEach
-    void beforeEach() {
-        personPojo = new PersonPojo();
-        personPojo.setId(ID_1L);
-        person = new Person();
-        person.setId(ID_1L);
-        customer = new Customer();
-        customer.setId(ID_1L);
-        customer.setPerson(person);
-
-        customerPojo = new CustomerPojo();
-        customerPojo.setPerson(personPojo);
-    }
+  private Customer customer;
+  private CustomerPojo customerPojo;
+  private Person person;
+  private PersonPojo personPojo;
 
 
-    @Test
-    void testApplyChangesToExistingEntityThrowsBadInputException() {
-        customerPojo.setPerson(null);
-        BadInputException badInputException = assertThrows(BadInputException.class, ()
-                -> sut.applyChangesToExistingEntity(customerPojo, customer));
-        assertEquals("Customer must have a person profile", badInputException.getMessage());
-    }
+  @BeforeEach
+  void beforeEach() {
+    personPojo = new PersonPojo();
+    personPojo.setId(ID_1L);
+    person = new Person();
+    person.setId(ID_1L);
+    customer = new Customer();
+    customer.setId(ID_1L);
+    customer.setPerson(person);
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        when(peopleService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
-        Customer actual = sut.applyChangesToExistingEntity(customerPojo, customer);
-        assertEquals(person.getId(), actual.getPerson().getId());
-    }
+    customerPojo = new CustomerPojo();
+    customerPojo.setPerson(personPojo);
+  }
 
-    @Test
-    void testConvertToPojo() {
-        when(peopleService.convertToPojo(any(Person.class))).thenReturn(personPojo);
-        CustomerPojo actual = sut.convertToPojo(customer);
-        assertEquals(personPojo.getId(), actual.getPerson().getId());
-    }
 
-    @Test
-    void testConvertToNewEntity() throws BadInputException {
-        when(peopleService.convertToNewEntity(any(PersonPojo.class))).thenReturn(person);
-        Customer actual = sut.convertToNewEntity(customerPojo);
-        assertEquals(person.getId(), actual.getPerson().getId());
+  @Test
+  void testApplyChangesToExistingEntityThrowsBadInputException() {
+    customerPojo.setPerson(null);
+    BadInputException badInputException = assertThrows(BadInputException.class, ()
+      -> sut.applyChangesToExistingEntity(customerPojo, customer));
+    assertEquals("Customer must have a person profile", badInputException.getMessage());
+  }
 
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    when(peopleService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
+    Customer actual = sut.applyChangesToExistingEntity(customerPojo, customer);
+    assertEquals(person.getId(), actual.getPerson().getId());
+  }
+
+  @Test
+  void testConvertToPojo() {
+    when(peopleService.convertToPojo(any(Person.class))).thenReturn(personPojo);
+    CustomerPojo actual = sut.convertToPojo(customer);
+    assertEquals(personPojo.getId(), actual.getPerson().getId());
+  }
+
+  @Test
+  void testConvertToNewEntity() throws BadInputException {
+    when(peopleService.convertToNewEntity(any(PersonPojo.class))).thenReturn(person);
+    Customer actual = sut.convertToNewEntity(customerPojo);
+    assertEquals(person.getId(), actual.getPerson().getId());
+
+  }
 }
