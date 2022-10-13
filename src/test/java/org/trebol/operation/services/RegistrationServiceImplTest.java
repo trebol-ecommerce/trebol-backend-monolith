@@ -75,10 +75,10 @@ class RegistrationServiceImplTest {
 		regPojoMock.setPassword(password);
 		regPojoMock.setProfile(personPojoMock);
 		
-		// PersonMock - DONT TEST
+		// PersonMock - DONT TEST - assume the conversionService.convert() works correctly
 		personMock = new Person(id, firstName, lastName, idNumber, email, phone1, phone2);		
 		
-		// CustomerRole - DONT TEST
+		// CustomerRole
 		Optional<UserRole> customerRole = Optional.of(new UserRole(1L, "Customer"));
 		
 		// mock dependencies with default values	
@@ -211,8 +211,14 @@ class RegistrationServiceImplTest {
 	
 	@Test
 	void IdAlreadyExists_EntityExistsException() {
-		when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
+		when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(true);
 		assertThrows(EntityExistsException.class, () -> instance.register(regPojoMock));
+	}
+	
+	@Test
+	void CustomerRoleNotFound_IllegalStateException() {
+		when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+		assertThrows(IllegalStateException.class, () -> instance.register(regPojoMock));
 	}
 	
 }
