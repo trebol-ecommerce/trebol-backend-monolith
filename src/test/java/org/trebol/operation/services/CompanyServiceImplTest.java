@@ -47,12 +47,12 @@ class CompanyServiceImplTest {
     param4.setValue("anyLogoImageURL");
     Iterable<Param> params = List.of(param, param2, param3, param4);
 
-    when(paramsRepository.findParamsByCategory(eq("company"))).thenReturn(params);
+    when(paramsRepository.findParamsByCategory("company")).thenReturn(params);
 
     CompanyDetailsPojo actual = sut.readDetails();
 
 
-    verify(paramsRepository, times(1)).findParamsByCategory(eq("company"));
+    verify(paramsRepository, times(1)).findParamsByCategory("company");
 
     assertEquals("Piolo", actual.getName());
     assertEquals("guwapo", actual.getDescription());
