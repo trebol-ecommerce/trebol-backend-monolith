@@ -2,9 +2,9 @@
 
 <div align="center">
 
-  <a href="https://angular.io">
-    <img src="https://angular.io/assets/images/logos/angular/angular.svg"
-    height="120" alt="Angular Logo">
+  <a href="https://spring.io">
+    <img src="https://spring.io/images/projects/spring.svg"
+    height="120" alt="Spring Logo">
   </a>
 
   <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
