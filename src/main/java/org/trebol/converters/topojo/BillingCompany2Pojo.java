@@ -31,11 +31,9 @@ public class BillingCompany2Pojo
 
   @Override
   public BillingCompanyPojo convert(BillingCompany source) {
-    BillingCompanyPojo target = new BillingCompanyPojo();
-
-    target.setIdNumber(source.getIdNumber());
-    target.setName(source.getName());
-
-    return target;
+    return BillingCompanyPojo.builder()
+      .idNumber(source.getIdNumber())
+      .name(source.getName())
+      .build();
   }
 }

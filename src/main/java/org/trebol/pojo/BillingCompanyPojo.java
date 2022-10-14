@@ -21,17 +21,13 @@
 package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 @JsonInclude
 public class BillingCompanyPojo {
   private String idNumber;
   private String name;
-
-  public BillingCompanyPojo() { }
-
-  public BillingCompanyPojo(String idNumber) {
-    this.idNumber = idNumber;
-  }
 }

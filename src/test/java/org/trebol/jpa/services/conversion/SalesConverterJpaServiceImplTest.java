@@ -142,7 +142,7 @@ class SalesConverterJpaServiceImplTest {
         sell.setCustomer(new Customer(ANY));
         sell.setSalesperson(new Salesperson(ANY));
         when(conversion.convert(any(Sell. class), eq(SellPojo.class))).thenReturn(sellPojo);
-        when(conversion.convert(any(BillingCompany.class), eq(BillingCompanyPojo.class))).thenReturn(new BillingCompanyPojo());
+        when(conversion.convert(any(BillingCompany.class), eq(BillingCompanyPojo.class))).thenReturn(BillingCompanyPojo.builder().build());
         when(conversion.convert(any(Address.class), eq(AddressPojo.class))).thenReturn(AddressPojo.builder().build());
 
         when(customersConverter.convertToPojo(any(Customer.class))).thenReturn(new CustomerPojo());
@@ -268,7 +268,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setDate(Instant.now());
         sellPojo.setPaymentType(ANY);
         sellPojo.setBillingType("Enterprise Invoice");
-        sellPojo.setBillingCompany(new BillingCompanyPojo());
+        sellPojo.setBillingCompany(BillingCompanyPojo.builder().build());
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
         when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(new PaymentType(ID_1L, ANY)));
@@ -286,7 +286,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setDate(Instant.now());
         sellPojo.setPaymentType(ANY);
         sellPojo.setBillingType("Enterprise Invoice");
-        sellPojo.setBillingCompany(new BillingCompanyPojo(ANY));
+        sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
         when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(new PaymentType(ID_1L, ANY)));
@@ -321,7 +321,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setDate(Instant.now());
         sellPojo.setPaymentType(ANY);
         sellPojo.setBillingType("Enterprise Invoice");
-        sellPojo.setBillingCompany(new BillingCompanyPojo(ANY));
+        sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
         when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(new PaymentType(ID_1L, ANY)));
@@ -358,7 +358,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setDate(Instant.now());
         sellPojo.setPaymentType(ANY);
         sellPojo.setBillingType("Enterprise Invoice");
-        sellPojo.setBillingCompany(new BillingCompanyPojo(ANY));
+        sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(new CustomerPojo(ANY));
         final SellDetailPojo sellDetailPojo = new SellDetailPojo();
         sellDetailPojo.setProduct(new ProductPojo(null));
@@ -407,7 +407,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setDate(Instant.now());
         sellPojo.setPaymentType(ANY);
         sellPojo.setBillingType("Enterprise Invoice");
-        sellPojo.setBillingCompany(new BillingCompanyPojo(ANY));
+        sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(new CustomerPojo(ANY));
         final SellDetailPojo sellDetailPojo = new SellDetailPojo();
         sellDetailPojo.setProduct(new ProductPojo(ANY));
@@ -457,7 +457,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setDate(Instant.now());
         sellPojo.setPaymentType(ANY);
         sellPojo.setBillingType("Enterprise Invoice");
-        sellPojo.setBillingCompany(new BillingCompanyPojo(ANY));
+        sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(new CustomerPojo(ANY));
         final SellDetailPojo sellDetailPojo = new SellDetailPojo();
         sellDetailPojo.setProduct(new ProductPojo(ANY));
@@ -510,7 +510,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setDate(Instant.now());
         sellPojo.setPaymentType(ANY);
         sellPojo.setBillingType("Enterprise Invoice");
-        sellPojo.setBillingCompany(new BillingCompanyPojo(ANY));
+        sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(new CustomerPojo(ANY));
         final SellDetailPojo sellDetailPojo = new SellDetailPojo();
         sellDetailPojo.setProduct(new ProductPojo(ANY));
@@ -565,7 +565,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setDate(Instant.now());
         sellPojo.setPaymentType(ANY);
         sellPojo.setBillingType("Enterprise Invoice");
-        sellPojo.setBillingCompany(new BillingCompanyPojo(ANY));
+        sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(new CustomerPojo(ANY));
         final SellDetailPojo sellDetailPojo = new SellDetailPojo();
         sellDetailPojo.setProduct(new ProductPojo(ANY));

@@ -38,9 +38,10 @@ class BillingCompaniesConverterJpaServiceImplTest {
         billingCompany.setId(1L);
         billingCompany.setIdNumber(ANY);
 
-        billingCompanyPojo = new BillingCompanyPojo();
-        billingCompanyPojo.setIdNumber(ANY);
-        billingCompanyPojo.setName(ANY);
+        billingCompanyPojo = BillingCompanyPojo.builder()
+          .idNumber(ANY)
+          .name(ANY)
+          .build();
     }
 
     @AfterEach
