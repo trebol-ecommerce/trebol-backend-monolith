@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
 - Take advantage of Project Lombok `@Builder` annotation for Pojo classes
   -  `AddressPojo`
+  -  `AuthorizedAccessPojo`
 
 ### Tests
 - CompanyServiceImpl - validate the proper mapping behaviour of method "readDetails"
