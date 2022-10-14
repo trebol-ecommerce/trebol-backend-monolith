@@ -42,7 +42,7 @@ class BillingTypesJpaCrudServiceTest {
   void finds_by_name() throws BadInputException {
     Long billingTypeId = 1L;
     String billingTypeName = "test company";
-    BillingTypePojo example = new BillingTypePojo(billingTypeName);
+    BillingTypePojo example = BillingTypePojo.builder().name(billingTypeName).build();
     BillingType persistedEntity = new BillingType(billingTypeId, billingTypeName);
     when(billingTypesRepositoryMock.findByName(billingTypeName)).thenReturn(Optional.of(persistedEntity));
 

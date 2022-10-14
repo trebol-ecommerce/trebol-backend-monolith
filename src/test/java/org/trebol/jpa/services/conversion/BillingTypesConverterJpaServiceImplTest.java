@@ -39,8 +39,9 @@ class BillingTypesConverterJpaServiceImplTest {
         billingType.setId(1L);
         billingType.setName(ANY);
 
-        billingTypePojo = new BillingTypePojo();
-        billingTypePojo.setName(ANY);
+        billingTypePojo = BillingTypePojo.builder()
+          .name(ANY)
+          .build();
     }
 
     @AfterEach
