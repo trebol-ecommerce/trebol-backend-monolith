@@ -20,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.ICustomersJpaRepository;
@@ -94,114 +93,7 @@ class RegistrationServiceImplTest {
 	@Test
 	void Everything_Correct_NoException() {		
 		assertDoesNotThrow(() -> instance.register(regPojoMock));		
-	}	
-
-	@Test
-	void RegPojo_IsNull_BadInputException() {		
-		assertThrows(BadInputException.class, () -> instance.register(null));
-	}
-	
-	@Test
-	void RegPojo_NameIsNull_BadInputException() {
-		regPojoMock.setName(null);
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));		
-	}
-	
-	@Test
-	void RegPojo_NameIsBlank_BadInputException() {
-		regPojoMock.setName("");
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void RegPojo_PasswordIsNull_BadInputException() {
-		regPojoMock.setPassword(null);
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void RegPojo_PasswordIsBlank_BadInputException() {
-		regPojoMock.setPassword("");
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void RegPojo_ProfileIsNull_BadInputException() {
-		regPojoMock.setProfile(null);
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_FirstNameIsNull_BadInputException() {
-		personPojoMock.setFirstName(null);		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_FirstNameIsBlank_BadInputException() {
-		personPojoMock.setFirstName("");		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_LastNameIsNull_BadInputException() {
-		personPojoMock.setLastName(null);		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_LastNameIsBlank_BadInputException() {
-		personPojoMock.setLastName("");		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_IdNumberIsNull_BadInputException() {
-		personPojoMock.setIdNumber(null);		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_IdNumberIsBlank_BadInputException() {
-		personPojoMock.setIdNumber("");		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_EmailIsNull_BadInputException() {
-		personPojoMock.setEmail(null);		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_EmailIsBlank_BadInputException() {
-		personPojoMock.setEmail("");		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_Phone1IsNull_BadInputException() {
-		personPojoMock.setPhone1(null);		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_Phone1IsBlank_BadInputException() {
-		personPojoMock.setPhone1("");		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_Phone2IsNull_BadInputException() {
-		personPojoMock.setPhone2(null);		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
-	
-	@Test
-	void PersonPojo_Phone2IsBlank_BadInputException() {
-		personPojoMock.setPhone2("");		
-		assertThrows(BadInputException.class, () -> instance.register(regPojoMock));
-	}
+	}		
 	
 	@Test
 	void NameAlreadyExists_EntityExistsException() {		
