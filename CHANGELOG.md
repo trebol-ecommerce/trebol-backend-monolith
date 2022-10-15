@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
 
 ### Tests
+- Refactor PhoneNumberValidatorTest - resolve code smell tag by sonarqube and @ParameterizedTest is the solution
 - CompanyServiceImpl - validate the proper mapping behaviour of method "readDetails"
 - Add `mockito-inline` dependency to create inline mocks - **Thank you `@NyorJa`**
     - Useful to mock final classes and methods, also for having constant regex
