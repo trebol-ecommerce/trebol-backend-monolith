@@ -2,6 +2,7 @@ package org.trebol.operation.services;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,12 +19,22 @@ import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
 
 import javax.persistence.EntityNotFoundException;
+import java.net.URI;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
-import static org.trebol.testhelpers.SalesTestHelper.*;
+import static org.trebol.constant.TestConstants.ANY;
+import static org.trebol.constant.TestConstants.ONE;
+import static org.trebol.testhelpers.SalesTestHelper.SELL_TRANSACTION_TOKEN;
+import static org.trebol.testhelpers.SalesTestHelper.resetSales;
+import static org.trebol.testhelpers.SalesTestHelper.sellPojoAfterCreation;
 
 @ExtendWith(MockitoExtension.class)
 class CheckoutServiceTest {
@@ -63,7 +74,6 @@ class CheckoutServiceTest {
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
     when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(0);
     when(salesProcessService.markAsPaid(sellPojoAfterCreation())).thenReturn(null);
-    CheckoutServiceImpl service = instantiate();
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, false);
 
@@ -72,6 +82,47 @@ class CheckoutServiceTest {
     verify(paymentIntegrationService).requestPaymentResult(SELL_TRANSACTION_TOKEN);
     verify(salesProcessService).markAsPaid(sellPojoAfterCreation());
     assertNull(result);
+  }
+
+  @DisplayName("Confirm transaction when status code is not equal to zero call mark as failed")
+  @Test
+  void acknowledges_successful_transaction_payment_integration_returns_1()
+    throws PaymentServiceException, EntityNotFoundException, BadInputException {
+    Map<String, String> matcherMap = Map.of(
+      "statusCode", SELL_STATUS_PAYMENT_STARTED,
+      "token", SELL_TRANSACTION_TOKEN);
+    when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
+    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
+    when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(1);
+    when(salesProcessService.markAsFailed(sellPojoAfterCreation())).thenReturn(null);
+
+    SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, false);
+
+    verify(salesPredicateService).parseMap(matcherMap);
+    verify(salesCrudService).readOne(MATCHER_PREDICATE);
+    verify(paymentIntegrationService).requestPaymentResult(SELL_TRANSACTION_TOKEN);
+    verify(salesProcessService).markAsFailed(sellPojoAfterCreation());
+    assertNull(result);
+  }
+
+  @DisplayName("Confirm transaction when status code is not equal to zero call mark as failed throws BadInputException")
+  @Test
+  void acknowledges_successful_transaction_payment_integration_returns_1_mark_as_failed_throws_bad_input_exception()
+    throws PaymentServiceException, EntityNotFoundException, BadInputException {
+    Map<String, String> matcherMap = Map.of(
+      "statusCode", SELL_STATUS_PAYMENT_STARTED,
+      "token", SELL_TRANSACTION_TOKEN);
+    when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
+    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
+    when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(1);
+    when(salesProcessService.markAsFailed(sellPojoAfterCreation())).thenThrow(BadInputException.class);
+
+    assertThrows(IllegalStateException.class, () -> service.confirmTransaction(SELL_TRANSACTION_TOKEN, false));
+
+    verify(salesPredicateService, times(ONE)).parseMap(matcherMap);
+    verify(salesCrudService, times(ONE)).readOne(MATCHER_PREDICATE);
+    verify(paymentIntegrationService, times(ONE)).requestPaymentResult(SELL_TRANSACTION_TOKEN);
+    verify(salesProcessService, times(ONE)).markAsFailed(sellPojoAfterCreation());
   }
 
   @Test
@@ -86,10 +137,28 @@ class CheckoutServiceTest {
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, true);
 
-    verify(salesPredicateService).parseMap(matcherMap);
-    verify(salesCrudService).readOne(MATCHER_PREDICATE);
-    verify(salesProcessService).markAsAborted(sellPojoAfterCreation());
+    verify(salesPredicateService, times(ONE)).parseMap(matcherMap);
+    verify(salesCrudService, times(ONE)).readOne(MATCHER_PREDICATE);
+    verify(salesProcessService, times(ONE)).markAsAborted(sellPojoAfterCreation());
     assertNull(result);
+  }
+
+  @DisplayName("Confirm Transaction when mark as aborted catch BadInputException throw IllegalArgumentException")
+  @Test
+  void acknowledges_aborted_transaction_illegal_bad_input_exception() throws EntityNotFoundException, BadInputException {
+    Map<String, String> matcherMap = Map.of(
+      "statusCode", SELL_STATUS_PAYMENT_STARTED,
+      "token", SELL_TRANSACTION_TOKEN);
+    when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
+    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
+    when(salesProcessService.markAsAborted(sellPojoAfterCreation())).thenThrow(BadInputException.class);
+
+    assertThrows(IllegalStateException.class,
+      () -> service.confirmTransaction(SELL_TRANSACTION_TOKEN, true), "Transaction could not be confirmed");
+
+    verify(salesPredicateService, times(ONE)).parseMap(matcherMap);
+    verify(salesCrudService, times(ONE)).readOne(MATCHER_PREDICATE);
+    verify(salesProcessService, times(ONE)).markAsAborted(sellPojoAfterCreation());
   }
 
   @Test
@@ -133,10 +202,27 @@ class CheckoutServiceTest {
     assertNull(result);
   }
 
-  private CheckoutServiceImpl instantiate() {
-    return new CheckoutServiceImpl(salesCrudService,
-                                   salesProcessService,
-                                   salesPredicateService,
-                                   paymentIntegrationService);
+  @DisplayName("Generate result page proper url to URI")
+  @Test
+  void generate_result_page_url() {
+
+    when(paymentIntegrationService.getPaymentResultPageUrl()).thenReturn("http://www.any.com");
+
+    URI actual = service.generateResultPageUrl(ANY);
+
+    assertEquals("http://www.any.com?token=ANY", actual.toString());
+    verify(paymentIntegrationService, times(1)).getPaymentResultPageUrl();
+  }
+
+  @DisplayName("Generate result page proper url to URI when result page generates malformed url then catch " +
+    "MalformedURLException and throw IllegalArgumentException")
+  @Test
+  void generate_result_page_url_throws_illegal_argument_exception() {
+
+    when(paymentIntegrationService.getPaymentResultPageUrl()).thenReturn(ANY);
+
+    assertThrows(IllegalStateException.class, () -> service.generateResultPageUrl(ANY), "Transaction was confirmed, but server had an unexpected malfunction");
+
+    verify(paymentIntegrationService, times(1)).getPaymentResultPageUrl();
   }
 }
