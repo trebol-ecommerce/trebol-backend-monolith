@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.constant.TestConstants;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
@@ -211,7 +212,7 @@ class CheckoutServiceTest {
     URI actual = service.generateResultPageUrl(ANY);
 
     assertEquals("http://www.any.com?token=ANY", actual.toString());
-    verify(paymentIntegrationService, times(1)).getPaymentResultPageUrl();
+    verify(paymentIntegrationService, times(ONE)).getPaymentResultPageUrl();
   }
 
   @DisplayName("Generate result page proper url to URI when result page generates malformed url then catch " +
@@ -223,6 +224,6 @@ class CheckoutServiceTest {
 
     assertThrows(IllegalStateException.class, () -> service.generateResultPageUrl(ANY), "Transaction was confirmed, but server had an unexpected malfunction");
 
-    verify(paymentIntegrationService, times(1)).getPaymentResultPageUrl();
+    verify(paymentIntegrationService, times(ONE)).getPaymentResultPageUrl();
   }
 }
