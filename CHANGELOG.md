@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
 
 ### Tests
+- Refactor PhoneNumberValidatorTest - resolve code smell tag by sonarqube and @ParameterizedTest is the solution
 - Additional entry in TestConstants `int 1`
 - CheckoutServiceImpl - add more coverage for method "confirmTransaction, generatePageUrl"
 - CompanyServiceImpl - validate the proper mapping behaviour of method "readDetails"
