@@ -57,7 +57,15 @@ class RegistrationServiceImplTest {
 	@BeforeEach
 	void beforeEach() {
 		// Default mock objects 
-		personPojoMock = mockPersonPojo(1L, "firstName", "lastName", "1", "email@example.com", "+123 456", "+123 456");
+		personPojoMock = PersonPojo.builder()
+      .id(1L)
+      .firstName("firstName")
+      .lastName("lastName")
+      .idNumber("1")
+      .email("email@example.com")
+      .phone1("+123 456")
+      .phone2("+123 456")
+      .build();
 		regPojoMock = mockRegPojo("name", "password", personPojoMock);
 		personMock = mockPerson(1L, "firstName", "lastName", "1", "email@example.com", "+123 456", "+123 456");		
 		customerRoleMock = Optional.of(new UserRole(1L, "Customer"));
@@ -131,11 +139,6 @@ class RegistrationServiceImplTest {
 	}
 	
 	// Helper methods ---
-	
-	PersonPojo mockPersonPojo(Long id, String firstName, String lastName, String idNumber, String email, 
-								String phone1, String phone2) {
-		return new PersonPojo(id, firstName, lastName, idNumber, email, phone1, phone2);				
-	}
 	
 	RegistrationPojo mockRegPojo(String name, String password, PersonPojo personPojo) {
 		RegistrationPojo regPojoMock = new RegistrationPojo();
