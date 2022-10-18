@@ -34,4 +34,6 @@ public class BillingTypePojo {
   @NotBlank
   @NonNull
   private String name;
+
+  public BillingTypePojo() {}
 }

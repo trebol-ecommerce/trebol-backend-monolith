@@ -142,8 +142,8 @@ class SalesConverterJpaServiceImplTest {
         sell.setCustomer(new Customer(ANY));
         sell.setSalesperson(new Salesperson(ANY));
         when(conversion.convert(any(Sell. class), eq(SellPojo.class))).thenReturn(sellPojo);
-        when(conversion.convert(any(BillingCompany.class), eq(BillingCompanyPojo.class))).thenReturn(BillingCompanyPojo.builder().build());
-        when(conversion.convert(any(Address.class), eq(AddressPojo.class))).thenReturn(AddressPojo.builder().build());
+        when(conversion.convert(any(BillingCompany.class), eq(BillingCompanyPojo.class))).thenReturn(new BillingCompanyPojo());
+        when(conversion.convert(any(Address.class), eq(AddressPojo.class))).thenReturn(new AddressPojo());
 
         when(customersConverter.convertToPojo(any(Customer.class))).thenReturn(new CustomerPojo());
         when(salespeopleConverter.convertToPojo(any(Salesperson.class))).thenReturn(new SalespersonPojo());
@@ -268,7 +268,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setDate(Instant.now());
         sellPojo.setPaymentType(ANY);
         sellPojo.setBillingType("Enterprise Invoice");
-        sellPojo.setBillingCompany(BillingCompanyPojo.builder().build());
+        sellPojo.setBillingCompany(new BillingCompanyPojo());
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
         when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(new PaymentType(ID_1L, ANY)));
@@ -571,7 +571,7 @@ class SalesConverterJpaServiceImplTest {
         sellDetailPojo.setProduct(new ProductPojo(ANY));
         sellDetailPojo.setUnits(1);
         sellPojo.setDetails(List.of(sellDetailPojo));
-        sellPojo.setBillingAddress(AddressPojo.builder().build());
+        sellPojo.setBillingAddress(new AddressPojo());
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
         when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(new PaymentType(ID_1L, ANY)));

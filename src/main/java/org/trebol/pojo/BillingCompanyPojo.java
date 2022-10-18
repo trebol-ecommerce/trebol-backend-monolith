@@ -30,4 +30,6 @@ import lombok.Data;
 public class BillingCompanyPojo {
   private String idNumber;
   private String name;
+
+  public BillingCompanyPojo() {}
 }
