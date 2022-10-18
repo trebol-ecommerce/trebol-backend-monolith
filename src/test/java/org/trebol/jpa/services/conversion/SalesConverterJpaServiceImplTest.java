@@ -354,9 +354,9 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingType("Enterprise Invoice");
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
-        final SellDetailPojo sellDetailPojo = new SellDetailPojo();
-        sellDetailPojo.setProduct(ProductPojo.builder().build());
-        sellPojo.setDetails(List.of(sellDetailPojo));
+        sellPojo.setDetails(List.of(SellDetailPojo.builder()
+                                      .product(ProductPojo.builder().build())
+                                      .build()));
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
         when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(new PaymentType(ID_1L, ANY)));
@@ -403,9 +403,9 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingType("Enterprise Invoice");
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
-        final SellDetailPojo sellDetailPojo = new SellDetailPojo();
-        sellDetailPojo.setProduct(ProductPojo.builder().build());
-        sellPojo.setDetails(List.of(sellDetailPojo));
+        sellPojo.setDetails(List.of(SellDetailPojo.builder()
+                                      .product(ProductPojo.builder().build())
+                                      .build()));
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
         when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(new PaymentType(ID_1L, ANY)));
@@ -453,10 +453,10 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingType("Enterprise Invoice");
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
-        final SellDetailPojo sellDetailPojo = new SellDetailPojo();
-        sellDetailPojo.setProduct(ProductPojo.builder().build());
-        sellDetailPojo.setUnits(1);
-        sellPojo.setDetails(List.of(sellDetailPojo));
+        sellPojo.setDetails(List.of(SellDetailPojo.builder()
+                                      .product(ProductPojo.builder().build())
+                                      .units(1)
+                                      .build()));
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
         when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(new PaymentType(ID_1L, ANY)));
@@ -506,10 +506,10 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingType("Enterprise Invoice");
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
-        final SellDetailPojo sellDetailPojo = new SellDetailPojo();
-        sellDetailPojo.setProduct(ProductPojo.builder().build());
-        sellDetailPojo.setUnits(1);
-        sellPojo.setDetails(List.of(sellDetailPojo));
+        sellPojo.setDetails(List.of(SellDetailPojo.builder()
+                                      .product(ProductPojo.builder().build())
+                                      .units(1)
+                                      .build()));
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
         when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(new PaymentType(ID_1L, ANY)));
@@ -561,10 +561,10 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingType("Enterprise Invoice");
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build()); // TODO refactor this inline CustomerPojo, there's 6 of these
-        final SellDetailPojo sellDetailPojo = new SellDetailPojo();
-        sellDetailPojo.setProduct(ProductPojo.builder().build());
-        sellDetailPojo.setUnits(1);
-        sellPojo.setDetails(List.of(sellDetailPojo));
+        sellPojo.setDetails(List.of(SellDetailPojo.builder()
+                                      .product(ProductPojo.builder().build())
+                                      .units(1)
+                                      .build()));
         sellPojo.setBillingAddress(AddressPojo.builder().build());
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));

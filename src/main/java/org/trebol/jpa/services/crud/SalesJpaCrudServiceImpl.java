@@ -137,12 +137,13 @@ public class SalesJpaCrudServiceImpl
       List<SellDetailPojo> sellDetails = new ArrayList<>();
       for (SellDetail sourceSellDetail : details) {
         ProductPojo product = productConverter.convertToPojo(sourceSellDetail.getProduct());
-        SellDetailPojo targetSellDetail = new SellDetailPojo();
-        targetSellDetail.setId(sourceSellDetail.getId());
-        targetSellDetail.setUnitValue(sourceSellDetail.getUnitValue());
-        targetSellDetail.setUnits(sourceSellDetail.getUnits());
-        targetSellDetail.setProduct(product);
-        targetSellDetail.setDescription(sourceSellDetail.getDescription());
+        SellDetailPojo targetSellDetail = SellDetailPojo.builder()
+          .id(sourceSellDetail.getId())
+          .unitValue(sourceSellDetail.getUnitValue())
+          .units(sourceSellDetail.getUnits())
+          .product(product)
+          .description(sourceSellDetail.getDescription())
+          .build();
         sellDetails.add(targetSellDetail);
       }
       target.setDetails(sellDetails);

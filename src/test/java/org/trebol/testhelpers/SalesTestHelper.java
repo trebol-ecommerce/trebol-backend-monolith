@@ -51,7 +51,10 @@ public class SalesTestHelper {
 
   public static SellPojo sellPojoBeforeCreation() {
     if (pojoBeforeCreation == null) {
-      SellDetailPojo newDetailPojo = new SellDetailPojo(SELL_DETAIL_UNITS, productPojoBeforeCreation());
+      SellDetailPojo newDetailPojo = SellDetailPojo.builder()
+        .units(SELL_DETAIL_UNITS)
+        .product(productPojoBeforeCreation())
+        .build();
       pojoBeforeCreation = new SellPojo(List.of(newDetailPojo), SELL_BILLING_TYPE_NAME_PERSON, SELL_PAYMENT_TYPE_NAME,
                                         customerPojoBeforeCreation());
     }
@@ -60,9 +63,12 @@ public class SalesTestHelper {
 
   public static SellPojo sellPojoAfterCreation() {
     if (pojoAfterCreation == null) {
-      SellDetailPojo persistedDetailPojo = new SellDetailPojo(GENERIC_ID, SELL_DETAIL_UNITS,
-                                                              productPojoAfterCreation().getPrice(),
-                                                              productPojoAfterCreation());
+      SellDetailPojo persistedDetailPojo = SellDetailPojo.builder()
+        .id(GENERIC_ID)
+        .units(SELL_DETAIL_UNITS)
+        .unitValue(productPojoAfterCreation().getPrice())
+        .product(productPojoAfterCreation())
+        .build();
       pojoAfterCreation = new SellPojo(GENERIC_ID, SELL_TRANSACTION_TOKEN, GENERIC_DATE, List.of(persistedDetailPojo),
                                        SELL_NET_VALUE, SELL_TAXES_VALUE, SELL_TRANSPORT_VALUE, SELL_TOTAL_VALUE,
                                        SELL_TOTAL_ITEMS, SELL_STATUS_NAME, SELL_BILLING_TYPE_NAME_PERSON,
