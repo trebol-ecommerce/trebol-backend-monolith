@@ -103,8 +103,7 @@ class ProductsJpaCrudServiceTest {
     assertEquals(result.getDescription(), productPojoAfterCreation().getDescription());
     assertEquals(result.getCurrentStock(), productPojoAfterCreation().getCurrentStock());
     assertEquals(result.getCriticalStock(), productPojoAfterCreation().getCriticalStock());
-    assertNotNull(result.getImages());
-    assertTrue(result.getImages().isEmpty());
+    assertNull(result.getImages());
     assertNull(result.getCategory());
   }
 

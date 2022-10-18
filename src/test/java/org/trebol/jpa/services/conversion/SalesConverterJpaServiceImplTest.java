@@ -404,7 +404,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
         sellPojo.setDetails(List.of(SellDetailPojo.builder()
-                                      .product(ProductPojo.builder().build())
+                                      .product(ProductPojo.builder().barcode(ANY).build())
                                       .build()));
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
@@ -454,7 +454,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
         sellPojo.setDetails(List.of(SellDetailPojo.builder()
-                                      .product(ProductPojo.builder().build())
+                                      .product(ProductPojo.builder().barcode(ANY).build())
                                       .units(1)
                                       .build()));
 
@@ -507,7 +507,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
         sellPojo.setDetails(List.of(SellDetailPojo.builder()
-                                      .product(ProductPojo.builder().build())
+                                      .product(ProductPojo.builder().barcode(ANY).build())
                                       .units(1)
                                       .build()));
 
@@ -562,7 +562,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build()); // TODO refactor this inline CustomerPojo, there's 6 of these
         sellPojo.setDetails(List.of(SellDetailPojo.builder()
-                                      .product(ProductPojo.builder().build())
+                                      .product(ProductPojo.builder().barcode(ANY).build())
                                       .units(1)
                                       .build()));
         sellPojo.setBillingAddress(AddressPojo.builder().build());
