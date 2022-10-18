@@ -31,11 +31,9 @@ public class Shipper2Pojo
 
   @Override
   public ShipperPojo convert(Shipper source) {
-    ShipperPojo target = new ShipperPojo();
-
-    target.setId(source.getId());
-    target.setName(source.getName());
-
-    return target;
+    return ShipperPojo.builder()
+      .id(source.getId())
+      .name(source.getName())
+      .build();
   }
 }
