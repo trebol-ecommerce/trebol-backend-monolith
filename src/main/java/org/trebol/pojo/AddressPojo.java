@@ -41,6 +41,4 @@ public class AddressPojo {
   private String city;
   private String postalCode;
   private String notes;
-
-  public AddressPojo() {}
 }
