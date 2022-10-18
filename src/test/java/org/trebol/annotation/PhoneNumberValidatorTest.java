@@ -5,8 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,33 +41,18 @@ class PhoneNumberValidatorTest {
 		phoneNumberValidator.initialize(null);
 	}
 	
-	@Test
-	void when_OnlyCountryCode_ReturnFalse() {
-		phoneNumber = "+123";		
-		assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
-	}
-	
-	@Test
-	void when_CountryCodeIsMissing_ReturnFalse() {
-		phoneNumber = "123456";
-		assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
-	}
-	
-	@Test
-	void when_WithoutSpace_ReturnTrue() {
-		phoneNumber = "+123456789";		
-		assertTrue(phoneNumberValidator.isValid(phoneNumber, null));
-	}
-	
-	@Test
-	void when_WithSpace_ReturnTrue() {
-		phoneNumber = "+123 456789";		
-		assertTrue(phoneNumberValidator.isValid(phoneNumber, null));
-	}	
-	
-	@Test
-	void when_Over15Digits_ReturnFalse() {
-		phoneNumber = "+123 4567890123456";
-		assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
-	}
+  @DisplayName("Validate invalid phone number w/ no country code, only country code, and over 15 digits " +
+    "it should return false")
+  @ParameterizedTest
+  @ValueSource(strings = {"123456", "+123","+123 4567890123456"})
+  void testPhoneValidatorWithInvalidPhoneNumber(String phoneNumber) {
+    assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
+  }
+
+  @DisplayName("Validate phone number with or without space and return true")
+  @ParameterizedTest
+  @ValueSource(strings = {"+123456789", "+123 456789"})
+  void testPhoneValidatorWithOrWithoutSpace(String phoneNumber) {
+    assertTrue(phoneNumberValidator.isValid(phoneNumber, null));
+  }
 }

@@ -48,6 +48,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `UserRolePojo`
 
 ### Tests
+- RegistrationServiceImpl - add unit tests
+- Refactor PhoneNumberValidatorTest - resolve code smell tag by sonarqube and @ParameterizedTest is the solution
+- Additional entry in TestConstants `int 1`
+- CheckoutServiceImpl - add more coverage for method "confirmTransaction, generatePageUrl"
 - CompanyServiceImpl - validate the proper mapping behaviour of method "readDetails"
 - Add `mockito-inline` dependency to create inline mocks - **Thank you `@NyorJa`**
     - Useful to mock final classes and methods, also for having constant regex
