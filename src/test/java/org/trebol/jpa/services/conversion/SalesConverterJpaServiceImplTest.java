@@ -140,7 +140,7 @@ class SalesConverterJpaServiceImplTest {
         when(conversion.convert(any(Address.class), eq(AddressPojo.class))).thenReturn(AddressPojo.builder().build());
 
         when(customersConverter.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
-        when(salespeopleConverter.convertToPojo(any(Salesperson.class))).thenReturn(new SalespersonPojo());
+        when(salespeopleConverter.convertToPojo(any(Salesperson.class))).thenReturn(SalespersonPojo.builder().build());
 
         SellPojo actual = sut.convertToPojo(sell);
 

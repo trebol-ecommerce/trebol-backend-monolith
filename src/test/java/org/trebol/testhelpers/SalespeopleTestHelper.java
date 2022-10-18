@@ -33,30 +33,35 @@ public class SalespeopleTestHelper {
 
   public static SalespersonPojo salespersonPojoForFetch() {
     if (pojoForFetch == null) {
-      pojoForFetch = new SalespersonPojo(SALESPERSON_ID_NUMBER);
+      pojoForFetch = SalespersonPojo.builder()
+        .person(PersonPojo.builder().idNumber(SALESPERSON_ID_NUMBER).build())
+        .build();
     }
     return pojoForFetch;
   }
 
   public static SalespersonPojo salespersonPojoBeforeCreation() {
     if (pojoBeforeCreation == null) {
-      pojoBeforeCreation = new SalespersonPojo(SALESPERSON_ID_NUMBER);
+      pojoForFetch = SalespersonPojo.builder()
+        .person(PersonPojo.builder().idNumber(SALESPERSON_ID_NUMBER).build())
+        .build();
     }
     return pojoBeforeCreation;
   }
 
   public static SalespersonPojo salespersonPojoAfterCreation() {
     if (pojoAfterCreation == null) {
-      pojoAfterCreation = new SalespersonPojo(
-        PersonPojo.builder()
-          .id(GENERIC_ID)
-          .firstName(SALESPERSON_FIRST_NAME)
-          .lastName(SALESPERSON_LAST_NAME)
-          .idNumber(SALESPERSON_ID_NUMBER)
-          .email(SALESPERSON_EMAIL)
-          .phone1(SALESPERSON_PHONE1)
-          .phone2(SALESPERSON_PHONE2)
-          .build());
+      pojoAfterCreation = SalespersonPojo.builder()
+        .person(PersonPojo.builder()
+                  .id(GENERIC_ID)
+                  .firstName(SALESPERSON_FIRST_NAME)
+                  .lastName(SALESPERSON_LAST_NAME)
+                  .idNumber(SALESPERSON_ID_NUMBER)
+                  .email(SALESPERSON_EMAIL)
+                  .phone1(SALESPERSON_PHONE1)
+                  .phone2(SALESPERSON_PHONE2)
+                  .build())
+        .build();
     }
     return pojoAfterCreation;
   }

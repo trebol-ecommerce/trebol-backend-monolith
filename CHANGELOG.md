@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `PersonPojo`
   - `ProductCategoryPojo`
   - `ProductListPojo`
+  - `SalespersonPojo`
 
 ### Tests
 - CompanyServiceImpl - validate the proper mapping behaviour of method "readDetails"

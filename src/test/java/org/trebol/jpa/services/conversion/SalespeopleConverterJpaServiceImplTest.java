@@ -43,8 +43,7 @@ public class SalespeopleConverterJpaServiceImplTest {
         salesperson.setId(ID_1L);
         salesperson.setPerson(person);
 
-        salespersonPojo = new SalespersonPojo();
-        salespersonPojo.setPerson(personPojo);
+        salespersonPojo = SalespersonPojo.builder().person(personPojo).build();
     }
 
 
