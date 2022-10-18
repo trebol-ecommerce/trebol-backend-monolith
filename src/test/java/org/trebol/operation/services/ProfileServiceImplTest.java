@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.PersonPojo;
 
 @ExtendWith(MockitoExtension.class)
-public class ProfileServiceImplTest {
+class ProfileServiceImplTest {
 	
 	@InjectMocks 	ProfileServiceImpl instance;
 	@Mock	IUsersJpaRepository usersRepositoryMock;
