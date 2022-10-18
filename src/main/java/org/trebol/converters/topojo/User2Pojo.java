@@ -31,10 +31,10 @@ public class User2Pojo
 
   @Override
   public UserPojo convert(User source) {
-    UserPojo target = new UserPojo();
-    target.setId(source.getId());
-    target.setName(source.getName());
-    target.setRole(source.getUserRole().getName());
-    return target;
+    return UserPojo.builder()
+      .id(source.getId())
+      .name(source.getName())
+      .role(source.getUserRole().getName())
+      .build();
   }
 }

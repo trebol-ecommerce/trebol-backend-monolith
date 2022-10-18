@@ -62,9 +62,10 @@ public class UsersConverterJpaServiceImplTest {
         user.setUserRole(userRole);
         Person person = new Person();
         user.setPerson(person);
-        userPojo = new UserPojo();
-        userPojo.setId(1L);
-        userPojo.setName(ANY);
+        userPojo = UserPojo.builder()
+          .id(1L)
+          .name(ANY)
+          .build();
     }
 
     @AfterEach
