@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -54,7 +55,7 @@ class ProfileServiceImplTest {
 	}
 	
 	// TEST METHOD: getProfileFromUserName(String userName)
-	
+	@DisplayName("getProfile, when User not found, throw UserNotFoundException")
 	@Test
 	void getProfileFromUserName_UserNotFound_UserNotFoundException() {		
 		when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.empty()); // in getUserFromName
@@ -62,6 +63,7 @@ class ProfileServiceImplTest {
 		assertThrows(UserNotFoundException.class, () -> instance.getProfileFromUserName("userName"));		
 	}
 	
+	@DisplayName("getProfile, when User has no profile, throw PersonNotFoundException")
 	@Test
 	void getProfileFromUserName_UserWithoutProfile_PersonNotFoundException() {
 		userMock.setPerson(null); // Person profile is null
@@ -71,6 +73,7 @@ class ProfileServiceImplTest {
 		assertThrows(PersonNotFoundException.class, () -> instance.getProfileFromUserName("userName"));
 	}
 	
+	@DisplayName("getProfile, when User has a profile, No Exception")
 	@Test
 	void getProfileFromUserName_UserFoundWithProfile_NoException() {
 		when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userMock)); // in getUserFromName
@@ -81,6 +84,7 @@ class ProfileServiceImplTest {
 	
 	// TEST METHOD: updateProfileForUserWithName(String userName, PersonPojo profile)
 	
+	@DisplayName("updateProfile, when User not found, throw UserNotFoundException")
 	@Test
 	void updateProfileForUserWithName_UserNotFound_UserNotFoundException() {
 		when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.empty()); // in getUserFromName
@@ -89,6 +93,7 @@ class ProfileServiceImplTest {
 				() -> instance.updateProfileForUserWithName("userName", null));		
 	}
 	
+	@DisplayName("updateProfile, when User has a profile then update it, No Exception")
 	@Test
 	void updateProfileForUserWithName_UserHasProfile_UpdateProfile_NoException() throws BadInputException {
 		when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userMock)); // in getUserFromName
@@ -100,6 +105,7 @@ class ProfileServiceImplTest {
 		verify(peopleRepositoryMock, times(1)).saveAndFlush(any(Person.class));
 	}
 	
+	@DisplayName("updateProfile, when User has no profile then create it, No Exception")
 	@Test
 	void updateProfileForUserWithName_UserHasNoProfile_CreateNewProfile_NoException() throws BadInputException {		
 		userMock.setPerson(null); // Person profile is null		
@@ -116,6 +122,7 @@ class ProfileServiceImplTest {
 		verify(usersRepositoryMock, times(1)).saveAndFlush(any(User.class));		
 	}	
 	
+	@DisplayName("updateProfile, when User has no profile then use existing profile, No Exception")
 	@Test
 	void updateProfileForUserWithName_UserHasNoProfile_UseExistingProfile_NoException() throws BadInputException {
 		userMock.setPerson(null); // Person profile is null		
@@ -130,6 +137,7 @@ class ProfileServiceImplTest {
 		verify(usersRepositoryMock, times(1)).saveAndFlush(any(User.class));
 	}
 	
+	@DisplayName("updateProfile, when User has no profile but existing profile in use, throw BadInputException")
 	@Test
 	void updateProfileForUserWithName_UserHasNoProfile_ExistingProfileAlreadyInUse_BadInputException() throws BadInputException {
 		userMock.setPerson(null); // Person profile is null	
