@@ -27,21 +27,28 @@ public class ProductCategoriesTestHelper {
 
   public static ProductCategoryPojo productCategoryPojoForFetch() {
     if (pojoForFetch == null) {
-      pojoForFetch = new ProductCategoryPojo(CATEGORY_CODE);
+      pojoForFetch = ProductCategoryPojo.builder().code(CATEGORY_CODE).build();
     }
     return pojoForFetch;
   }
 
   public static ProductCategoryPojo productCategoryPojoBeforeCreation() {
     if (pojoBeforeCreation == null) {
-      pojoBeforeCreation = new ProductCategoryPojo(CATEGORY_CODE, CATEGORY_NAME, null);
+      pojoBeforeCreation = ProductCategoryPojo.builder()
+        .code(CATEGORY_CODE)
+        .name(CATEGORY_NAME)
+        .build();
     }
     return pojoBeforeCreation;
   }
 
   public static ProductCategoryPojo productCategoryPojoAfterCreation() {
     if (pojoAfterCreation == null) {
-      pojoAfterCreation = new ProductCategoryPojo(PRODUCT_ID, CATEGORY_CODE, CATEGORY_NAME, null);
+      pojoAfterCreation = ProductCategoryPojo.builder()
+        .id(PRODUCT_ID)
+        .code(CATEGORY_CODE)
+        .name(CATEGORY_NAME)
+        .build();
     }
     return pojoAfterCreation;
   }

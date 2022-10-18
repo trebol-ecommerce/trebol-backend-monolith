@@ -42,10 +42,11 @@ public class ProductCategoriesConverterJpaServiceImplTest {
         productCategory = new ProductCategory();
         productCategory.setId(ID_1L);
 
-        productCategoryPojo = new ProductCategoryPojo();
-        productCategoryPojo.setId(ID_1L);
-        productCategoryPojo.setName(ANY);
-        productCategoryPojo.setCode(ANY);
+        productCategoryPojo = ProductCategoryPojo.builder()
+          .id(ID_1L)
+          .name(ANY)
+          .code(ANY)
+          .build();
     }
 
     @AfterEach
@@ -78,13 +79,11 @@ public class ProductCategoriesConverterJpaServiceImplTest {
     @DisplayName("Will test parent which is a private method...")
     @Test
     void testApplyParent() throws BadInputException {
-        final ProductCategoryPojo parentPojo = new ProductCategoryPojo();
-//        parentPojo.setCode(ANY);
         final ProductCategory parent = new ProductCategory();
         parent.setName(ANY);
         productCategory.setParent(parent);
         productCategory.setName(ANY);
-        productCategoryPojo.setParent(parentPojo);
+        productCategoryPojo.setParent(ProductCategoryPojo.builder().build());
         productCategory.setId(1L);
         when(categoriesRepository.save(any(ProductCategory.class))).thenReturn(parent);
         ProductCategory actual = sut.applyChangesToExistingEntity(productCategoryPojo, productCategory);
@@ -94,14 +93,12 @@ public class ProductCategoriesConverterJpaServiceImplTest {
 
     @Test
     void testApplyParent2() throws BadInputException {
-        final ProductCategoryPojo parentPojo = new ProductCategoryPojo();
-        parentPojo.setCode(ANY);
         final ProductCategory parent = new ProductCategory();
         parent.setName(ANY);
         parent.setCode("");
         productCategory.setParent(parent);
         productCategory.setName(ANY);
-        productCategoryPojo.setParent(parentPojo);
+        productCategoryPojo.setParent(ProductCategoryPojo.builder().code(ANY).build());
         productCategory.setId(1L);
         when(categoriesRepository.save(any(ProductCategory.class))).thenReturn(parent);
         ProductCategory actual = sut.applyChangesToExistingEntity(productCategoryPojo, productCategory);

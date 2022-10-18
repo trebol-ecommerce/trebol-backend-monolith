@@ -85,7 +85,7 @@ public class ProductsConverterJpaServiceImplTest {
         when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(ImagePojo.builder().build());
         final ProductCategory productCategory = new ProductCategory();
         product.setProductCategory(productCategory);
-        when(conversionService.convert(any(ProductCategory.class), eq(ProductCategoryPojo.class))).thenReturn(new ProductCategoryPojo());
+        when(conversionService.convert(any(ProductCategory.class), eq(ProductCategoryPojo.class))).thenReturn(ProductCategoryPojo.builder().build());
 
         ProductPojo actual = sut.convertToPojo(product);
 
