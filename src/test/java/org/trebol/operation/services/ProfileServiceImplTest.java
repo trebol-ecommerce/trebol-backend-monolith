@@ -55,14 +55,15 @@ class ProfileServiceImplTest {
 	}
 	
 	// TEST METHOD: getProfileFromUserName(String userName)
+
 	@DisplayName("getProfile, when User not found, throw UserNotFoundException")
 	@Test
 	void getProfileFromUserName_UserNotFound_UserNotFoundException() {		
 		when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.empty()); // in getUserFromName
 		
 		assertThrows(UserNotFoundException.class, () -> instance.getProfileFromUserName("userName"));		
-	}
-	
+	}	
+
 	@DisplayName("getProfile, when User has no profile, throw PersonNotFoundException")
 	@Test
 	void getProfileFromUserName_UserWithoutProfile_PersonNotFoundException() {
@@ -72,7 +73,7 @@ class ProfileServiceImplTest {
 		
 		assertThrows(PersonNotFoundException.class, () -> instance.getProfileFromUserName("userName"));
 	}
-	
+
 	@DisplayName("getProfile, when User has a profile, No Exception")
 	@Test
 	void getProfileFromUserName_UserFoundWithProfile_NoException() {
@@ -83,7 +84,7 @@ class ProfileServiceImplTest {
 	
 	
 	// TEST METHOD: updateProfileForUserWithName(String userName, PersonPojo profile)
-	
+
 	@DisplayName("updateProfile, when User not found, throw UserNotFoundException")
 	@Test
 	void updateProfileForUserWithName_UserNotFound_UserNotFoundException() {
