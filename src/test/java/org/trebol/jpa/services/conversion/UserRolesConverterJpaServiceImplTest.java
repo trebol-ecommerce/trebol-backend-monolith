@@ -37,9 +37,10 @@ class UserRolesConverterJpaServiceImplTest {
         userRole.setName("ANY");
         userRole.setId(1L);
 
-        userRolePojo = new UserRolePojo();
-        userRolePojo.setId(1L);
-        userRolePojo.setName("ANY");
+        userRolePojo = UserRolePojo.builder()
+          .id(1L)
+          .name("ANY")
+          .build();
     }
 
     @AfterEach
