@@ -22,12 +22,14 @@ package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Data
+@Builder
 @JsonInclude
 public class CustomerPojo {
   @JsonIgnore
@@ -35,14 +37,4 @@ public class CustomerPojo {
   @NotNull
   @Valid
   private PersonPojo person;
-
-  public CustomerPojo() { }
-
-  public CustomerPojo(String idNumber) {
-    this.person = PersonPojo.builder().idNumber(idNumber).build();
-  }
-
-  public CustomerPojo(PersonPojo person) {
-    this.person = person;
-  }
 }

@@ -43,8 +43,7 @@ class CustomersConverterJpaServiceImplTest {
         customer.setId(ID_1L);
         customer.setPerson(person);
 
-        customerPojo = new CustomerPojo();
-        customerPojo.setPerson(personPojo);
+        customerPojo = CustomerPojo.builder().person(personPojo).build();
     }
 
 
