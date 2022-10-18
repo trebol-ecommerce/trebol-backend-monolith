@@ -38,8 +38,7 @@ class SellStatusesConverterJpaServiceImplTest {
         sellStatus.setId(1L);
         sellStatus.setName(ANY);
 
-        sellStatusPojo = new SellStatusPojo();
-        sellStatusPojo.setName(ANY);
+        sellStatusPojo = SellStatusPojo.builder().name(ANY).build();
     }
 
     @AfterEach
