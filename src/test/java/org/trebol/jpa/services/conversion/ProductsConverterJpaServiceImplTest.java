@@ -79,11 +79,10 @@ public class ProductsConverterJpaServiceImplTest {
     void testConvertToPojo() {
         when(conversionService.convert(any(Product.class), eq(ProductPojo.class))).thenReturn(productPojo);
         final ProductImage productImage = new ProductImage();
-        final ImagePojo imagePojo = new ImagePojo();
         final Image image = new Image();
         productImage.setImage(image);
         when(productImagesRepository.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
-        when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(imagePojo);
+        when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(ImagePojo.builder().build());
         final ProductCategory productCategory = new ProductCategory();
         product.setProductCategory(productCategory);
         when(conversionService.convert(any(ProductCategory.class), eq(ProductCategoryPojo.class))).thenReturn(new ProductCategoryPojo());

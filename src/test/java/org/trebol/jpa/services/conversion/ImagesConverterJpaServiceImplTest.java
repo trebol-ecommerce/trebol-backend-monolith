@@ -38,9 +38,10 @@ class ImagesConverterJpaServiceImplTest {
         image.setId(1L);
         image.setFilename(ANY);
 
-        imagePojo = new ImagePojo();
-        imagePojo.setId(1L);
-        imagePojo.setFilename(ANY);
+        imagePojo = ImagePojo.builder()
+          .id(1L)
+          .filename(ANY)
+          .build();
     }
 
     @AfterEach

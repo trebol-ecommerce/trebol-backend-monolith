@@ -52,10 +52,9 @@ class ProductListItemsConverterJpaServiceImplTest {
         productPojo.setId(1L);
         final ProductImage productImage = new ProductImage();
         productImage.setImage(new Image());
-        final ImagePojo imagePojo = new ImagePojo(ANY);
         when(conversionService.convert(any(Product.class), eq(ProductPojo.class))).thenReturn(productPojo);
         when(iProductImagesJpaRepository.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
-        when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(imagePojo);
+        when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(ImagePojo.builder().filename(ANY).build());
 
         ProductPojo actual = sut.convertToPojo(productListItem);
 

@@ -31,12 +31,12 @@ public class Image2Pojo
 
   @Override
   public ImagePojo convert(Image source) {
-    ImagePojo target = new ImagePojo();
-    target.setId(source.getId());
-    target.setCode(source.getCode());
-    target.setFilename(source.getFilename());
-    target.setUrl(source.getUrl());
-    return target;
+    return ImagePojo.builder()
+      .id(source.getId())
+      .code(source.getCode())
+      .filename(source.getFilename())
+      .url(source.getUrl())
+      .build();
   }
 
 }

@@ -28,21 +28,30 @@ public class ImagesTestHelper {
 
   public static ImagePojo imagePojoForFetch() {
     if (pojoForFetch == null) {
-      pojoForFetch = new ImagePojo(IMAGE_FILENAME);
+      pojoForFetch = ImagePojo.builder().filename(IMAGE_FILENAME).build();
     }
     return pojoForFetch;
   }
 
   public static ImagePojo imagePojoBeforeCreation() {
     if (pojoBeforeCreation == null) {
-      pojoBeforeCreation = new ImagePojo(IMAGE_CODE, IMAGE_FILENAME, IMAGE_URL);
+      pojoBeforeCreation = ImagePojo.builder()
+        .code(IMAGE_CODE)
+        .filename(IMAGE_FILENAME)
+        .url(IMAGE_URL)
+        .build();
     }
     return pojoBeforeCreation;
   }
 
   public static ImagePojo imagePojoAfterCreation() {
     if (pojoAfterCreation == null) {
-      pojoAfterCreation = new ImagePojo(IMAGE_ID, IMAGE_CODE, IMAGE_FILENAME, IMAGE_URL);
+      pojoAfterCreation = ImagePojo.builder()
+        .id(IMAGE_ID)
+        .code(IMAGE_CODE)
+        .filename(IMAGE_FILENAME)
+        .url(IMAGE_URL)
+        .build();
     }
     return pojoAfterCreation;
   }
