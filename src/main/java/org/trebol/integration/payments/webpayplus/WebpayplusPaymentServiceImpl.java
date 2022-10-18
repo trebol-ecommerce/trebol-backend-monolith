@@ -66,10 +66,10 @@ public class WebpayplusPaymentServiceImpl
       WebpayPlusTransactionCreateResponse webpayResponse = webpayTransaction.create(
         buyOrder, sessionId, amount, returnUrl
       );
-      PaymentRedirectionDetailsPojo response = new PaymentRedirectionDetailsPojo();
-      response.setUrl(webpayResponse.getUrl());
-      response.setToken(webpayResponse.getToken());
-      return response;
+      return PaymentRedirectionDetailsPojo.builder()
+        .url(webpayResponse.getUrl())
+        .token(webpayResponse.getToken())
+        .build();
     } catch (TransactionCreateException | IOException exc) {
       logger.error("Exception raised while creating transaction: ", exc);
       throw new PaymentServiceException("Webpay could not create a new transaction");

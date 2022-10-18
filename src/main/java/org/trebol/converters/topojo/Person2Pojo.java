@@ -31,12 +31,13 @@ public class Person2Pojo
 
   @Override
   public PersonPojo convert(Person source) {
-    PersonPojo target = new PersonPojo();
-    target.setId(source.getId());
-    target.setIdNumber(source.getIdNumber());
-    target.setFirstName(source.getFirstName());
-    target.setLastName(source.getLastName());
-    target.setEmail(source.getEmail());
+    PersonPojo target = PersonPojo.builder()
+      .id(source.getId())
+      .idNumber(source.getIdNumber())
+      .firstName(source.getFirstName())
+      .lastName(source.getLastName())
+      .email(source.getEmail())
+      .build();
     if (source.getPhone1() != null) {
       target.setPhone1(source.getPhone1());
     }

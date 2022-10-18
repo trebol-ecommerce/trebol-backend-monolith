@@ -27,6 +27,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `app_users_roles_permissions` -> `should be app_user_role_permissions`
 - Update to latest Spring Boot patch (as of Oct 12th, 2022)
   - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
+- Take advantage of Project Lombok `@Builder` annotation for Pojo classes
+  - `AddressPojo`
+  - `AuthorizedAccessPojo`
+  - `BillingCompanyPojo`
+  - `BillingTypePojo`
+  - `CustomerPojo`
+  - `ImagePojo`
+  - `PaymentRedirectionDetailsPojo`
+  - `PersonPojo`
+  - `ProductPojo`
+  - `ProductCategoryPojo`
+  - `ProductListPojo`
+  - `SalespersonPojo`
+  - `SellPojo`
+  - `SellDetailPojo`
+  - `SellStatusPojo`
+  - `ShipperPojo`
+  - `UserPojo`
+  - `UserRolePojo`
 
 ### Tests
 - RegistrationServiceImpl - add unit tests

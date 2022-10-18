@@ -31,8 +31,8 @@ public class Salesperson2Pojo
 
   @Override
   public SalespersonPojo convert(Salesperson source) {
-    SalespersonPojo target = new SalespersonPojo();
-    target.setId(source.getId());
-    return target;
+    return SalespersonPojo.builder()
+      .id(source.getId())
+      .build();
   }
 }

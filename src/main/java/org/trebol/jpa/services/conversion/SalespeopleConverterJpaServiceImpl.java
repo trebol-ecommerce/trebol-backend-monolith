@@ -44,11 +44,11 @@ public class SalespeopleConverterJpaServiceImpl
   @Override
   @Nullable
   public SalespersonPojo convertToPojo(Salesperson source) {
-    SalespersonPojo target = new SalespersonPojo();
-    target.setId(source.getId());
     PersonPojo targetPerson = peopleService.convertToPojo(source.getPerson());
-    target.setPerson(targetPerson);
-    return target;
+    return SalespersonPojo.builder()
+      .id(source.getId())
+      .person(targetPerson)
+      .build();
   }
 
   @Override

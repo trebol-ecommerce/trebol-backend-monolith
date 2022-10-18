@@ -41,11 +41,10 @@ class ShippersJpaCrudServiceTest {
   void finds_by_name() throws BadInputException {
     Long shipperId = 1L;
     String shipperName = "test-one";
-    ShipperPojo example = new ShipperPojo(shipperName);
     Shipper persistedEntity = new Shipper(shipperId, shipperName);
     when(shippersRepositoryMock.findByName(shipperName)).thenReturn(Optional.of(persistedEntity));
 
-    Optional<Shipper> match = instance.getExisting(example);
+    Optional<Shipper> match = instance.getExisting(ShipperPojo.builder().name(shipperName).build());
 
     assertTrue(match.isPresent());
     assertEquals(match.get().getId(), shipperId);

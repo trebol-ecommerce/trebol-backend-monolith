@@ -22,6 +22,7 @@ package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ import javax.validation.constraints.NotBlank;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
+@Builder
 @JsonInclude(NON_NULL)
 public class ImagePojo {
   @JsonIgnore
@@ -39,23 +41,4 @@ public class ImagePojo {
   private String filename;
   @NotBlank
   private String url;
-
-  public ImagePojo() { }
-
-  public ImagePojo(String filename) {
-    this.filename = filename;
-  }
-
-  public ImagePojo(String code, String filename, String url) {
-    this.code = code;
-    this.filename = filename;
-    this.url = url;
-  }
-
-  public ImagePojo(Long id, String code, String filename, String url) {
-    this.id = id;
-    this.code = code;
-    this.filename = filename;
-    this.url = url;
-  }
 }

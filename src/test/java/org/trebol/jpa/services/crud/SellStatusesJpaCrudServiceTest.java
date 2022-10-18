@@ -42,11 +42,10 @@ class SellStatusesJpaCrudServiceTest {
     Long statusId = 1L;
     Integer statusCode = 0;
     String statusName = "example sell status name";
-    SellStatusPojo example = new SellStatusPojo(statusName);
     SellStatus persistedEntity = new SellStatus(statusId, statusCode, statusName);
     when(sellStatusesRepositoryMock.findByName(statusName)).thenReturn(Optional.of(persistedEntity));
 
-    Optional<SellStatus> match = instance.getExisting(example);
+    Optional<SellStatus> match = instance.getExisting(SellStatusPojo.builder().name(statusName).build());
 
     assertTrue(match.isPresent());
     assertEquals(match.get().getId(), statusId);

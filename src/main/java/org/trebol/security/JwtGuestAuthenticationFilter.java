@@ -79,8 +79,7 @@ public class JwtGuestAuthenticationFilter
 
   private void saveCustomerData(PersonPojo guestData) throws BadInputException {
     try {
-      CustomerPojo targetCustomer = new CustomerPojo();
-      targetCustomer.setPerson(guestData);
+      CustomerPojo targetCustomer = CustomerPojo.builder().person(guestData).build();
       customersService.create(targetCustomer);
     } catch (EntityExistsException e) {
       myLogger.info("Guest with idNumber={} is already registered in the database", guestData.getIdNumber());

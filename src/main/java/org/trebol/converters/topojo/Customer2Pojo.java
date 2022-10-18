@@ -31,8 +31,8 @@ public class Customer2Pojo
 
   @Override
   public CustomerPojo convert(Customer source) {
-    CustomerPojo target = new CustomerPojo();
-    target.setId(source.getId());
-    return target;
+    return CustomerPojo.builder()
+      .id(source.getId())
+      .build();
   }
 }

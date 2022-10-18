@@ -74,9 +74,9 @@ public class AccessController {
       throw new IllegalStateException("");
     }
     Collection<String> routes = authorizedApiService.getAuthorizedApiRoutes(userDetails);
-    AuthorizedAccessPojo target = new AuthorizedAccessPojo();
-    target.setRoutes(routes);
-    return target;
+    return AuthorizedAccessPojo.builder()
+      .routes(routes)
+      .build();
   }
 
   @GetMapping({"/{apiRoute}", "/{apiRoute}/"})
@@ -89,9 +89,9 @@ public class AccessController {
       return null;
     }
     Collection<String> permissions = authorizedApiService.getAuthorizedApiRouteAccess(userDetails, apiRoute);
-    AuthorizedAccessPojo target = new AuthorizedAccessPojo();
-    target.setPermissions(permissions);
-    return target;
+    return AuthorizedAccessPojo.builder()
+      .permissions(permissions)
+      .build();
   }
 
   @ResponseStatus(UNAUTHORIZED)

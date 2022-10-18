@@ -22,12 +22,14 @@ package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Data
+@Builder
 @JsonInclude
 public class SellDetailPojo {
   @JsonIgnore
@@ -38,18 +40,4 @@ public class SellDetailPojo {
   private String description;
   @NotNull
   private ProductPojo product;
-
-  public SellDetailPojo() { }
-
-  public SellDetailPojo(int units, ProductPojo product) {
-    this.units = units;
-    this.product = product;
-  }
-
-  public SellDetailPojo(Long id, int units, int unitValue, ProductPojo product) {
-    this.id = id;
-    this.units = units;
-    this.unitValue = unitValue;
-    this.product = product;
-  }
 }

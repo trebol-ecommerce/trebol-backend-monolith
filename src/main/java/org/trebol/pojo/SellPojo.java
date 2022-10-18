@@ -23,6 +23,7 @@ package org.trebol.pojo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.Valid;
@@ -35,6 +36,7 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 @Data
+@Builder
 @JsonInclude
 public class SellPojo {
   private Long buyOrder;
@@ -62,62 +64,4 @@ public class SellPojo {
   private BillingCompanyPojo billingCompany;
   private AddressPojo billingAddress;
   private AddressPojo shippingAddress;
-
-  public SellPojo() { }
-
-  public SellPojo(Long buyOrder, String token, Instant date, Collection<SellDetailPojo> details, int netValue,
-                  int taxValue, int transportValue, int totalValue, int totalItems, String status, String billingType,
-                  String paymentType, CustomerPojo customer, SalespersonPojo salesperson, ShipperPojo shipper,
-                  BillingCompanyPojo billingCompany, AddressPojo billingAddress, AddressPojo shippingAddress) {
-    this.buyOrder = buyOrder;
-    this.token = token;
-    this.date = date;
-    this.details = details;
-    this.netValue = netValue;
-    this.taxValue = taxValue;
-    this.transportValue = transportValue;
-    this.totalValue = totalValue;
-    this.totalItems = totalItems;
-    this.status = status;
-    this.billingType = billingType;
-    this.paymentType = paymentType;
-    this.customer = customer;
-    this.salesperson = salesperson;
-    this.shipper = shipper;
-    this.billingCompany = billingCompany;
-    this.billingAddress = billingAddress;
-    this.shippingAddress = shippingAddress;
-  }
-
-  public SellPojo(SellPojo source) {
-    this.buyOrder = source.buyOrder;
-    this.token = source.token;
-    this.date = source.date;
-    this.details = source.details;
-    this.netValue = source.netValue;
-    this.taxValue = source.taxValue;
-    this.transportValue = source.transportValue;
-    this.totalValue = source.totalValue;
-    this.totalItems = source.totalItems;
-    this.status = source.status;
-    this.billingType = source.billingType;
-    this.paymentType = source.paymentType;
-    this.customer = source.customer;
-    this.salesperson = source.salesperson;
-    this.shipper = source.shipper;
-    this.billingCompany = source.billingCompany;
-    this.billingAddress = source.billingAddress;
-    this.shippingAddress = source.shippingAddress;
-  }
-
-  public SellPojo(Long buyOrder) {
-    this.buyOrder = buyOrder;
-  }
-
-  public SellPojo(Collection<SellDetailPojo> details, String billingType, String paymentType, CustomerPojo customer) {
-    this.details = details;
-    this.billingType = billingType;
-    this.paymentType = paymentType;
-    this.customer = customer;
-  }
 }

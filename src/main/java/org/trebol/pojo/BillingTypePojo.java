@@ -21,21 +21,17 @@
 package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
+@Builder
 @JsonInclude
 public class BillingTypePojo {
   @NotBlank
   @NonNull
   private String name;
-
-  public BillingTypePojo() {}
-
-  public BillingTypePojo(@NonNull String name) {
-    this.name = name;
-  }
 }

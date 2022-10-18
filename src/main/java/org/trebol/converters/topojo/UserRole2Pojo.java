@@ -31,9 +31,9 @@ public class UserRole2Pojo
 
   @Override
   public UserRolePojo convert(UserRole source) {
-    UserRolePojo target = new UserRolePojo();
-    target.setId(source.getId());
-    target.setName(source.getName());
-    return target;
+    return UserRolePojo.builder()
+      .id(source.getId())
+      .name(source.getName())
+      .build();
   }
 }

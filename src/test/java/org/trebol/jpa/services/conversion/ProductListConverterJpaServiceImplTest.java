@@ -37,10 +37,11 @@ class ProductListConverterJpaServiceImplTest {
         productList.setName(ANY);
         productList.setName(ANY);
 
-        productListPojo = new ProductListPojo();
-        productListPojo.setId(1L);
-        productListPojo.setName(ANY + " ");
-        productListPojo.setCode(ANY + " ");
+        productListPojo = ProductListPojo.builder()
+          .id(1L)
+          .name(ANY + " ")
+          .code(ANY + " ")
+          .build();
     }
 
     @AfterEach

@@ -31,9 +31,9 @@ public class SellStatus2Pojo
 
   @Override
   public SellStatusPojo convert(SellStatus source) {
-    SellStatusPojo target = new SellStatusPojo();
-    target.setCode(source.getCode());
-    target.setName(source.getName());
-    return target;
+    return SellStatusPojo.builder()
+      .code(source.getCode())
+      .name(source.getName())
+      .build();
   }
 }

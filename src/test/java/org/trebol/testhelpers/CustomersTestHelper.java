@@ -33,23 +33,35 @@ public class CustomersTestHelper {
 
   public static CustomerPojo customerPojoForFetch() {
     if (pojoForFetch == null) {
-      pojoForFetch = new CustomerPojo(CUSTOMER_ID_NUMBER);
+      pojoForFetch = CustomerPojo.builder()
+        .person(PersonPojo.builder().idNumber(CUSTOMER_ID_NUMBER).build())
+        .build();
     }
     return pojoForFetch;
   }
 
   public static CustomerPojo customerPojoBeforeCreation() {
     if (pojoBeforeCreation == null) {
-      pojoBeforeCreation = new CustomerPojo(CUSTOMER_ID_NUMBER);
+      pojoForFetch = CustomerPojo.builder()
+        .person(PersonPojo.builder().idNumber(CUSTOMER_ID_NUMBER).build())
+        .build();
     }
     return pojoBeforeCreation;
   }
 
   public static CustomerPojo customerPojoAfterCreation() {
     if (pojoAfterCreation == null) {
-      pojoAfterCreation = new CustomerPojo(new PersonPojo(GENERIC_ID, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME,
-                                                          CUSTOMER_ID_NUMBER, CUSTOMER_EMAIL, CUSTOMER_PHONE1,
-                                                          CUSTOMER_PHONE2));
+      pojoAfterCreation = CustomerPojo.builder()
+        .person(PersonPojo.builder()
+                  .id(GENERIC_ID)
+                  .firstName(CUSTOMER_FIRST_NAME)
+                  .lastName(CUSTOMER_LAST_NAME)
+                  .idNumber(CUSTOMER_ID_NUMBER)
+                  .email(CUSTOMER_EMAIL)
+                  .phone1(CUSTOMER_PHONE1)
+                  .phone2(CUSTOMER_PHONE2)
+                  .build())
+        .build();
     }
     return pojoAfterCreation;
   }

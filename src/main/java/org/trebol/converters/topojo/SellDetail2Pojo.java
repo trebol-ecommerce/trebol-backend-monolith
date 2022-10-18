@@ -31,10 +31,10 @@ public class SellDetail2Pojo
 
   @Override
   public SellDetailPojo convert(SellDetail source) {
-    SellDetailPojo target = new SellDetailPojo();
-    target.setId(source.getId());
-    target.setUnits(source.getUnits());
-    target.setDescription(source.getDescription());
-    return target;
+    return SellDetailPojo.builder()
+      .id(source.getId())
+      .units(source.getUnits())
+      .description(source.getDescription())
+      .build();
   }
 }

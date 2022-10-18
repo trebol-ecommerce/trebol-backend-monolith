@@ -38,8 +38,7 @@ class ShippersConverterJpaServiceImplTest {
         shipper.setId(1L);
         shipper.setName(ANY);
 
-        shipperPojo = new ShipperPojo();
-        shipperPojo.setName(ANY);
+        shipperPojo = ShipperPojo.builder().name(ANY).build();
     }
 
     @AfterEach

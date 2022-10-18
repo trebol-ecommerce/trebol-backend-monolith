@@ -22,6 +22,7 @@ package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ import javax.validation.constraints.NotBlank;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
+@Builder
 @JsonInclude(NON_NULL)
 public class PersonPojo {
   @JsonIgnore
@@ -45,28 +47,4 @@ public class PersonPojo {
   private String phone1;
   // @Pattern(regexp = "^(((\\(\\+?[0-9]{3}\\))|(\\+?[0-9]{3})) ?)?[0-9]{3,4}[ -]?[0-9]{4}$")
   private String phone2;
-
-  public PersonPojo() { }
-
-  public PersonPojo(String idNumber) {
-    this.idNumber = idNumber;
-  }
-
-  public PersonPojo(String firstName, String lastName, String idNumber, String email) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.idNumber = idNumber;
-    this.email = email;
-  }
-
-  public PersonPojo(Long id, String firstName, String lastName, String idNumber, String email, String phone1,
-                    String phone2) {
-    this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.idNumber = idNumber;
-    this.email = email;
-    this.phone1 = phone1;
-    this.phone2 = phone2;
-  }
 }

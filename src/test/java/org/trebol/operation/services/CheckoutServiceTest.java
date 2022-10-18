@@ -52,7 +52,10 @@ class CheckoutServiceTest {
   @Test
   void requests_transaction_start()
       throws BadInputException, PaymentServiceException, EntityNotFoundException {
-    PaymentRedirectionDetailsPojo payload = new PaymentRedirectionDetailsPojo(PAYMENT_URL, SELL_TRANSACTION_TOKEN);
+    PaymentRedirectionDetailsPojo payload = PaymentRedirectionDetailsPojo.builder()
+      .url(PAYMENT_URL)
+      .token(SELL_TRANSACTION_TOKEN)
+      .build();
     resetSales();
     when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
 
@@ -164,7 +167,10 @@ class CheckoutServiceTest {
   @Test
   void throws_exceptions_at_unexisting_transactions_before_requesting_payments()
       throws PaymentServiceException, EntityNotFoundException, BadInputException {
-    PaymentRedirectionDetailsPojo payload = new PaymentRedirectionDetailsPojo(PAYMENT_URL, SELL_TRANSACTION_TOKEN);
+    PaymentRedirectionDetailsPojo payload = PaymentRedirectionDetailsPojo.builder()
+      .url(PAYMENT_URL)
+      .token(SELL_TRANSACTION_TOKEN)
+      .build();
     String exceptionMessage = "No match";
     resetSales();
     when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);

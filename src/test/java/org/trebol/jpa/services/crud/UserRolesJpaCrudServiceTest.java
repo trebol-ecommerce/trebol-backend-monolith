@@ -41,11 +41,10 @@ class UserRolesJpaCrudServiceTest {
   void finds_by_name() throws BadInputException {
     Long roleId = 1L;
     String roleName = "test-role";
-    UserRolePojo example = new UserRolePojo(roleName);
     UserRole persistedEntity = new UserRole(roleId, roleName);
     when(userRolesRepositoryMock.findByName(roleName)).thenReturn(Optional.of(persistedEntity));
 
-    Optional<UserRole> match = instance.getExisting(example);
+    Optional<UserRole> match = instance.getExisting(UserRolePojo.builder().name(roleName).build());
 
     assertTrue(match.isPresent());
     assertEquals(match.get().getId(), roleId);

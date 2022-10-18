@@ -22,6 +22,7 @@ package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ import javax.validation.constraints.NotBlank;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
+@Builder
 @JsonInclude(NON_NULL)
 public class UserPojo {
   @JsonIgnore
@@ -40,10 +42,4 @@ public class UserPojo {
   private String password;
   private PersonPojo person;
   private String role;
-
-  public UserPojo() { }
-
-  public UserPojo(String name) {
-    this.name = name;
-  }
 }

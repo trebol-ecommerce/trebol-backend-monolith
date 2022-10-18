@@ -150,10 +150,12 @@ public class SalesProcessServiceImpl
     List<SellDetailPojo> pojoDetails = new ArrayList<>();
     for (SellDetail detail : sellDetailsRepository.findBySellId(existingSell.getId())) {
       ProductPojo productPojo = productConverterService.convertToPojo(detail.getProduct());
-      SellDetailPojo sellDetailPojo = new SellDetailPojo(detail.getId(),
-                                                         detail.getUnits(),
-                                                         detail.getUnitValue(),
-                                                         productPojo);
+      SellDetailPojo sellDetailPojo = SellDetailPojo.builder()
+        .id(detail.getId())
+        .units(detail.getUnits())
+        .unitValue(detail.getUnitValue())
+        .product(productPojo)
+        .build();
       pojoDetails.add(sellDetailPojo);
     }
     target.setStatus(SELL_STATUS_PAID_UNCONFIRMED);
@@ -182,10 +184,12 @@ public class SalesProcessServiceImpl
     List<SellDetailPojo> pojoDetails = new ArrayList<>();
     for (SellDetail detail : sellDetailsRepository.findBySellId(existingSell.getId())) {
       ProductPojo productPojo = productConverterService.convertToPojo(detail.getProduct());
-      SellDetailPojo sellDetailPojo = new SellDetailPojo(detail.getId(),
-                                                         detail.getUnits(),
-                                                         detail.getUnitValue(),
-                                                         productPojo);
+      SellDetailPojo sellDetailPojo = SellDetailPojo.builder()
+        .id(detail.getId())
+        .units(detail.getUnits())
+        .unitValue(detail.getUnitValue())
+        .product(productPojo)
+        .build();
       pojoDetails.add(sellDetailPojo);
     }
     target.setDetails(pojoDetails);
@@ -215,10 +219,12 @@ public class SalesProcessServiceImpl
     List<SellDetailPojo> pojoDetails = new ArrayList<>();
     for (SellDetail detail : sellDetailsRepository.findBySellId(existingSell.getId())) {
       ProductPojo productPojo = productConverterService.convertToPojo(detail.getProduct());
-      SellDetailPojo sellDetailPojo = new SellDetailPojo(detail.getId(),
-                                                         detail.getUnits(),
-                                                         detail.getUnitValue(),
-                                                         productPojo);
+      SellDetailPojo sellDetailPojo = SellDetailPojo.builder()
+        .id(detail.getId())
+        .units(detail.getUnits())
+        .unitValue(detail.getUnitValue())
+        .product(productPojo)
+        .build();
       pojoDetails.add(sellDetailPojo);
     }
     target.setDetails(pojoDetails);
@@ -247,10 +253,12 @@ public class SalesProcessServiceImpl
     List<SellDetailPojo> pojoDetails = new ArrayList<>();
     for (SellDetail detail : sellDetailsRepository.findBySellId(existingSell.getId())) {
       ProductPojo productPojo = productConverterService.convertToPojo(detail.getProduct());
-      SellDetailPojo sellDetailPojo = new SellDetailPojo(detail.getId(),
-                                                         detail.getUnits(),
-                                                         detail.getUnitValue(),
-                                                         productPojo);
+      SellDetailPojo sellDetailPojo = SellDetailPojo.builder()
+        .id(detail.getId())
+        .units(detail.getUnits())
+        .unitValue(detail.getUnitValue())
+        .product(productPojo)
+        .build();
       pojoDetails.add(sellDetailPojo);
     }
     target.setDetails(pojoDetails);

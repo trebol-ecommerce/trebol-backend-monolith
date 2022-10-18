@@ -31,10 +31,8 @@ public class BillingType2Pojo
 
   @Override
   public BillingTypePojo convert(BillingType source) {
-    BillingTypePojo target = new BillingTypePojo();
-
-    target.setName(source.getName());
-
-    return target;
+    return BillingTypePojo.builder()
+      .name(source.getName())
+      .build();
   }
 }

@@ -55,11 +55,10 @@ class UsersJpaCrudServiceTest {
     Long roleId = 2L;
     String roleName = "test-role";
     UserRole role = new UserRole(roleId, roleName);
-    UserPojo example = new UserPojo(userName);
     User persistedEntity = new User(userId, userName, userPassword, person, role);
     when(usersRepositoryMock.findByName(userName)).thenReturn(Optional.of(persistedEntity));
 
-    Optional<User> match = instance.getExisting(example);
+    Optional<User> match = instance.getExisting(UserPojo.builder().name(userName).build());
 
     assertTrue(match.isPresent());
     assertEquals(match.get().getId(), userId);
@@ -79,7 +78,6 @@ class UsersJpaCrudServiceTest {
     Long roleId = 2L;
     String roleName = "test-role";
     UserRole role = new UserRole(roleId, roleName);
-    UserPojo example = new UserPojo(userName);
     User userMock = new User(userId, userName, userPassword, person, role);
 
     Predicate predicateMock = new Predicate() {

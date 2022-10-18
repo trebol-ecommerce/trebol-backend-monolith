@@ -22,6 +22,7 @@ package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ import javax.validation.constraints.NotBlank;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
+@Builder
 @JsonInclude
 public class ProductCategoryPojo {
   @JsonIgnore
@@ -39,23 +41,4 @@ public class ProductCategoryPojo {
   private String name;
   @JsonInclude(NON_NULL)
   private ProductCategoryPojo parent;
-
-  public ProductCategoryPojo() { }
-
-  public ProductCategoryPojo(String code) {
-    this.code = code;
-  }
-
-  public ProductCategoryPojo(String code, String name, ProductCategoryPojo parent) {
-    this.code = code;
-    this.name = name;
-    this.parent = parent;
-  }
-
-  public ProductCategoryPojo(Long id, String code, String name, ProductCategoryPojo parent) {
-    this.id = id;
-    this.code = code;
-    this.name = name;
-    this.parent = parent;
-  }
 }

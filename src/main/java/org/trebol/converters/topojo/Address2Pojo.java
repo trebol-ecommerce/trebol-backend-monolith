@@ -31,10 +31,11 @@ public class Address2Pojo
 
   @Override
   public AddressPojo convert(Address source) {
-    AddressPojo target = new AddressPojo();
-    target.setCity(source.getCity());
-    target.setMunicipality(source.getMunicipality());
-    target.setFirstLine(source.getFirstLine());
+    AddressPojo target = AddressPojo.builder()
+      .city(source.getCity())
+      .municipality(source.getMunicipality())
+      .firstLine(source.getFirstLine())
+      .build();
     if (source.getSecondLine() != null && !source.getSecondLine().isBlank()) {
       target.setSecondLine(source.getSecondLine());
     }

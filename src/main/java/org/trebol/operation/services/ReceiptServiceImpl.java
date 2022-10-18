@@ -67,9 +67,7 @@ public class ReceiptServiceImpl
         ReceiptDetailPojo targetDetail = conversionService.convert(d, ReceiptDetailPojo.class);
         if (targetDetail != null) {
           Product pd = d.getProduct();
-          ProductPojo targetDetailProduct = new ProductPojo();
-          targetDetailProduct.setName(pd.getName());
-          targetDetailProduct.setBarcode(pd.getBarcode());
+          ProductPojo targetDetailProduct = ProductPojo.builder().name(pd.getName()).barcode(pd.getBarcode()).build();
           targetDetail.setProduct(targetDetailProduct);
           targetDetail.setUnitValue(d.getUnitValue());
           targetDetails.add(targetDetail);

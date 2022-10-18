@@ -72,10 +72,11 @@ public class UsersConverterJpaServiceImpl
   @Override
   @Nullable
   public UserPojo convertToPojo(User source) {
-    UserPojo target = new UserPojo();
-    target.setId(source.getId());
-    target.setName(source.getName());
-    target.setRole(source.getUserRole().getName());
+    UserPojo target = UserPojo.builder()
+      .id(source.getId())
+      .name(source.getName())
+      .role(source.getUserRole().getName())
+      .build();
 
     Person sourcePerson = source.getPerson();
     if (sourcePerson != null) {
