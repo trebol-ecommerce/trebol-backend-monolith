@@ -48,6 +48,4 @@ public class PersonPojo {
   private String phone1;
   // @Pattern(regexp = "^(((\\(\\+?[0-9]{3}\\))|(\\+?[0-9]{3})) ?)?[0-9]{3,4}[ -]?[0-9]{4}$")
   private String phone2;
-
-  public PersonPojo() {}
 }

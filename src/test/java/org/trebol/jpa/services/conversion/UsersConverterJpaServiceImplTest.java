@@ -105,7 +105,7 @@ public class UsersConverterJpaServiceImplTest {
 
     @Test
     void testConvertToPojo() {
-        when(peopleService.convertToPojo(any(Person.class))).thenReturn(new PersonPojo());
+        when(peopleService.convertToPojo(any(Person.class))).thenReturn(PersonPojo.builder().build());
         UserPojo actual = sut.convertToPojo(user);
         assertNotNull(actual.getPerson());
     }
