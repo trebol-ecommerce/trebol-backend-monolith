@@ -44,7 +44,7 @@ public class SalesTestHelper {
 
   public static SellPojo sellPojoForFetch() {
     if (pojoForFetch == null) {
-      pojoForFetch = new SellPojo(GENERIC_ID);
+      pojoForFetch = SellPojo.builder().buyOrder(GENERIC_ID).build();
     }
     return pojoForFetch;
   }
@@ -55,8 +55,12 @@ public class SalesTestHelper {
         .units(SELL_DETAIL_UNITS)
         .product(productPojoBeforeCreation())
         .build();
-      pojoBeforeCreation = new SellPojo(List.of(newDetailPojo), SELL_BILLING_TYPE_NAME_PERSON, SELL_PAYMENT_TYPE_NAME,
-                                        customerPojoBeforeCreation());
+      pojoBeforeCreation = SellPojo.builder()
+        .details(List.of(newDetailPojo))
+        .billingType(SELL_BILLING_TYPE_NAME_PERSON)
+        .paymentType(SELL_PAYMENT_TYPE_NAME)
+        .customer(customerPojoBeforeCreation())
+        .build();
     }
     return pojoBeforeCreation;
   }
@@ -69,11 +73,21 @@ public class SalesTestHelper {
         .unitValue(productPojoAfterCreation().getPrice())
         .product(productPojoAfterCreation())
         .build();
-      pojoAfterCreation = new SellPojo(GENERIC_ID, SELL_TRANSACTION_TOKEN, GENERIC_DATE, List.of(persistedDetailPojo),
-                                       SELL_NET_VALUE, SELL_TAXES_VALUE, SELL_TRANSPORT_VALUE, SELL_TOTAL_VALUE,
-                                       SELL_TOTAL_ITEMS, SELL_STATUS_NAME, SELL_BILLING_TYPE_NAME_PERSON,
-                                       SELL_PAYMENT_TYPE_NAME, customerPojoAfterCreation(), null, null,
-                                       null, null, null);
+      pojoAfterCreation = SellPojo.builder()
+        .buyOrder(GENERIC_ID)
+        .token(SELL_TRANSACTION_TOKEN)
+        .date(GENERIC_DATE)
+        .details(List.of(persistedDetailPojo))
+        .netValue(SELL_NET_VALUE)
+        .taxValue(SELL_TAXES_VALUE)
+        .transportValue(SELL_TRANSPORT_VALUE)
+        .totalValue(SELL_TOTAL_VALUE)
+        .totalValue(SELL_TOTAL_ITEMS)
+        .status(SELL_STATUS_NAME)
+        .billingType(SELL_BILLING_TYPE_NAME_PERSON)
+        .paymentType(SELL_PAYMENT_TYPE_NAME)
+        .customer(customerPojoAfterCreation())
+        .build();
     }
     return pojoAfterCreation;
   }

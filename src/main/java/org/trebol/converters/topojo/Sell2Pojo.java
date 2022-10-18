@@ -31,17 +31,15 @@ public class Sell2Pojo
 
   @Override
   public SellPojo convert(Sell source) {
-    SellPojo target = new SellPojo();
-
-    target.setBuyOrder(source.getId());
-    target.setDate(source.getDate());
-    target.setNetValue(source.getNetValue());
-    target.setTaxValue(source.getTaxesValue());
-    target.setTotalValue(source.getTotalValue());
-    target.setTotalItems(source.getTotalItems());
-    target.setTransportValue(source.getTransportValue());
-    target.setToken(source.getTransactionToken());
-
-    return target;
+    return SellPojo.builder()
+      .buyOrder(source.getId())
+      .date(source.getDate())
+      .netValue(source.getNetValue())
+      .taxValue(source.getTaxesValue())
+      .totalValue(source.getTotalValue())
+      .totalItems(source.getTotalItems())
+      .transportValue(source.getTransportValue())
+      .token(source.getTransactionToken())
+      .build();
   }
 }

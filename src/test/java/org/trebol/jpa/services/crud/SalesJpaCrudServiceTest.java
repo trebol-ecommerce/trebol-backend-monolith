@@ -109,7 +109,7 @@ class SalesJpaCrudServiceTest {
       throws BadInputException, EntityNotFoundException {
     resetSales();
     Instant updatedDate = Instant.now().minus(Duration.ofHours(1L));
-    SellPojo sellPojoWithUpdates = new SellPojo(sellPojoAfterCreation());
+    SellPojo sellPojoWithUpdates = sellPojoAfterCreation();
     sellPojoWithUpdates.setDate(updatedDate);
     Sell sellEntityWithUpdates = new Sell(sellEntityAfterCreation());
     sellEntityWithUpdates.setDate(updatedDate);
@@ -134,7 +134,7 @@ class SalesJpaCrudServiceTest {
   void returns_same_when_no_update_is_made()
       throws BadInputException, EntityNotFoundException {
     resetSales();
-    SellPojo copy = new SellPojo(sellPojoAfterCreation());
+    SellPojo copy = sellPojoAfterCreation();
     Predicate filters = new BooleanBuilder();
     when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.of(sellEntityAfterCreation()));
     when(salesConverterMock.applyChangesToExistingEntity(copy, sellEntityAfterCreation())).thenReturn(sellEntityAfterCreation());

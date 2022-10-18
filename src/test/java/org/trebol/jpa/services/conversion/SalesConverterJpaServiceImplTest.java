@@ -113,7 +113,7 @@ class SalesConverterJpaServiceImplTest {
                  productsRepository,
                  validator,
                  validationProperties);
-        sellPojo = new SellPojo();
+        sellPojo = SellPojo.builder().build();
         sell = new Sell();
     }
 
