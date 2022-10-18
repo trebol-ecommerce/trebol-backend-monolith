@@ -31,13 +31,13 @@ public class Product2Pojo
 
   @Override
   public ProductPojo convert(Product source) {
-    ProductPojo target = new ProductPojo();
-    target.setId(source.getId());
-    target.setName(source.getName());
-    target.setBarcode(source.getBarcode());
-    target.setPrice(source.getPrice());
-    target.setCurrentStock(source.getStockCurrent());
-    target.setCriticalStock(source.getStockCritical());
-    return target;
+    return ProductPojo.builder()
+      .id(source.getId())
+      .name(source.getName())
+      .barcode(source.getBarcode())
+      .price(source.getPrice())
+      .currentStock(source.getStockCurrent())
+      .criticalStock(source.getStockCritical())
+      .build();
   }
 }

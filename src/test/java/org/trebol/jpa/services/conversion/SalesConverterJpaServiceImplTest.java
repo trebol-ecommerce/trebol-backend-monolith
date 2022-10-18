@@ -355,7 +355,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
         final SellDetailPojo sellDetailPojo = new SellDetailPojo();
-        sellDetailPojo.setProduct(new ProductPojo(null));
+        sellDetailPojo.setProduct(ProductPojo.builder().build());
         sellPojo.setDetails(List.of(sellDetailPojo));
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
@@ -404,7 +404,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
         final SellDetailPojo sellDetailPojo = new SellDetailPojo();
-        sellDetailPojo.setProduct(new ProductPojo(ANY));
+        sellDetailPojo.setProduct(ProductPojo.builder().build());
         sellPojo.setDetails(List.of(sellDetailPojo));
 
         when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(new SellStatus(ID_1L, 1, ANY)));
@@ -454,7 +454,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
         final SellDetailPojo sellDetailPojo = new SellDetailPojo();
-        sellDetailPojo.setProduct(new ProductPojo(ANY));
+        sellDetailPojo.setProduct(ProductPojo.builder().build());
         sellDetailPojo.setUnits(1);
         sellPojo.setDetails(List.of(sellDetailPojo));
 
@@ -507,7 +507,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
         final SellDetailPojo sellDetailPojo = new SellDetailPojo();
-        sellDetailPojo.setProduct(new ProductPojo(ANY));
+        sellDetailPojo.setProduct(ProductPojo.builder().build());
         sellDetailPojo.setUnits(1);
         sellPojo.setDetails(List.of(sellDetailPojo));
 
@@ -562,7 +562,7 @@ class SalesConverterJpaServiceImplTest {
         sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
         sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build()); // TODO refactor this inline CustomerPojo, there's 6 of these
         final SellDetailPojo sellDetailPojo = new SellDetailPojo();
-        sellDetailPojo.setProduct(new ProductPojo(ANY));
+        sellDetailPojo.setProduct(ProductPojo.builder().build());
         sellDetailPojo.setUnits(1);
         sellPojo.setDetails(List.of(sellDetailPojo));
         sellPojo.setBillingAddress(AddressPojo.builder().build());

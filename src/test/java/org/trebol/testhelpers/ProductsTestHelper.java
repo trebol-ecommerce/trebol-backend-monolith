@@ -33,23 +33,36 @@ public class ProductsTestHelper {
 
   public static ProductPojo productPojoForFetch() {
     if (pojoForFetch == null) {
-      pojoForFetch = new ProductPojo(PRODUCT_BARCODE);
+      pojoForFetch = ProductPojo.builder().barcode(PRODUCT_BARCODE).build();
     }
     return pojoForFetch;
   }
 
   public static ProductPojo productPojoBeforeCreation() {
     if (pojoBeforeCreation == null) {
-      pojoBeforeCreation = new ProductPojo(null, PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION, PRODUCT_PRICE,
-                                           PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null, List.of());
+      pojoBeforeCreation = ProductPojo.builder()
+        .name(PRODUCT_NAME)
+        .barcode(PRODUCT_BARCODE)
+        .description(PRODUCT_DESCRIPTION)
+        .price(PRODUCT_PRICE)
+        .currentStock(PRODUCT_STOCK)
+        .criticalStock(PRODUCT_STOCK_CRITICAL)
+        .build();
     }
     return pojoBeforeCreation;
   }
 
   public static ProductPojo productPojoAfterCreation() {
     if (pojoAfterCreation == null) {
-      pojoAfterCreation = new ProductPojo(PRODUCT_ID, PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION,
-                                          PRODUCT_PRICE, PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null, List.of());
+      pojoAfterCreation = ProductPojo.builder()
+        .id(PRODUCT_ID)
+        .name(PRODUCT_NAME)
+        .barcode(PRODUCT_BARCODE)
+        .description(PRODUCT_DESCRIPTION)
+        .price(PRODUCT_PRICE)
+        .currentStock(PRODUCT_STOCK)
+        .criticalStock(PRODUCT_STOCK_CRITICAL)
+        .build();
     }
     return pojoAfterCreation;
   }

@@ -40,7 +40,7 @@ class ProductListItemsConverterJpaServiceImplTest {
     @Test
     void testApplyChangesToExistingEntity() {
         UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
-                () -> sut.convertToNewEntity(new ProductPojo()));
+                () -> sut.convertToNewEntity(ProductPojo.builder().build()));
         assertEquals("Not implemented", unsupportedOperationException.getMessage());
     }
     @Test
@@ -48,11 +48,9 @@ class ProductListItemsConverterJpaServiceImplTest {
         final ProductListItem productListItem = new ProductListItem();
         final Product product = new Product();
         productListItem.setProduct(product);
-        final ProductPojo productPojo = new ProductPojo();
-        productPojo.setId(1L);
         final ProductImage productImage = new ProductImage();
         productImage.setImage(new Image());
-        when(conversionService.convert(any(Product.class), eq(ProductPojo.class))).thenReturn(productPojo);
+        when(conversionService.convert(any(Product.class), eq(ProductPojo.class))).thenReturn(ProductPojo.builder().id(1L).build());
         when(iProductImagesJpaRepository.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
         when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(ImagePojo.builder().filename(ANY).build());
 
@@ -64,7 +62,7 @@ class ProductListItemsConverterJpaServiceImplTest {
     @Test
     void testConvertToNewEntity() {
         UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
-                () -> sut.applyChangesToExistingEntity(new ProductPojo(), new ProductListItem()));
+                () -> sut.applyChangesToExistingEntity(ProductPojo.builder().build(), new ProductListItem()));
         assertEquals("Not implemented", unsupportedOperationException.getMessage());
     }
 }

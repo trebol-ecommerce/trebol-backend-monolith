@@ -49,9 +49,10 @@ public class ProductsConverterJpaServiceImplTest {
         product = new Product();
         product.setName(ANY);
         product.setId(1L);
-        productPojo = new ProductPojo();
-        productPojo.setId(1L);
-        productPojo.setName(ANY);
+        productPojo = ProductPojo.builder()
+          .id(1L)
+          .name(ANY)
+          .build();
     }
 
     @AfterEach
