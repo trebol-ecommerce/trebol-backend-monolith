@@ -44,7 +44,12 @@ public class ProductListConverterJpaServiceImpl
   public ProductListPojo convertToPojo(ProductList source) {
     Long sourceListId = source.getId();
     long itemCount = productListItemRepository.count(QProductListItem.productListItem.list.id.eq(sourceListId));
-    return new ProductListPojo(sourceListId, source.getName(), source.getCode(), itemCount);
+    return ProductListPojo.builder()
+      .id(sourceListId)
+      .name(source.getName())
+      .code(source.getCode())
+      .totalCount(itemCount)
+      .build();
   }
 
   @Override
