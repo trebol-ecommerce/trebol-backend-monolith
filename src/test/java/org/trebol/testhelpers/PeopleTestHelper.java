@@ -31,22 +31,29 @@ public class PeopleTestHelper {
 
   public static PersonPojo personPojoForFetch() {
     if (pojoForFetch == null) {
-      pojoForFetch = new PersonPojo(PERSON_ID_NUMBER);
+      pojoForFetch = PersonPojo.builder().idNumber(PERSON_ID_NUMBER).build();
     }
     return pojoForFetch;
   }
 
   public static PersonPojo personPojoBeforeCreation() {
     if (pojoBeforeCreation == null) {
-      pojoBeforeCreation = new PersonPojo(PERSON_ID_NUMBER);
+      pojoBeforeCreation = PersonPojo.builder().idNumber(PERSON_ID_NUMBER).build();
     }
     return pojoBeforeCreation;
   }
 
   public static PersonPojo personPojoAfterCreation() {
     if (pojoAfterCreation == null) {
-      pojoAfterCreation = new PersonPojo(GENERIC_ID, PERSON_FIRST_NAME, PERSON_LAST_NAME, PERSON_ID_NUMBER,
-                                         PERSON_EMAIL, PERSON_PHONE1, PERSON_PHONE2);
+      pojoAfterCreation = PersonPojo.builder()
+        .id(GENERIC_ID)
+        .firstName(PERSON_FIRST_NAME)
+        .lastName(PERSON_LAST_NAME)
+        .idNumber(PERSON_ID_NUMBER)
+        .email(PERSON_EMAIL)
+        .phone1(PERSON_PHONE1)
+        .phone2(PERSON_PHONE2)
+        .build();
     }
     return pojoAfterCreation;
   }

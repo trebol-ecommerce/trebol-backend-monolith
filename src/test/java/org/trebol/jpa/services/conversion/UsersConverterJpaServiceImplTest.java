@@ -79,8 +79,7 @@ public class UsersConverterJpaServiceImplTest {
         userPojo.setName(ANY);
         userPojo.setRole(ANY);
         userPojo.setPassword(ANY);
-        final PersonPojo personPojo = new PersonPojo();
-        personPojo.setIdNumber(ANY);
+        final PersonPojo personPojo = PersonPojo.builder().idNumber(ANY).build();
         userPojo.setPerson(personPojo);
 
 
@@ -130,8 +129,7 @@ public class UsersConverterJpaServiceImplTest {
         when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(userRole));
 
         userPojo.setPassword(ANY);
-        final PersonPojo personPojo = new PersonPojo();
-        personPojo.setIdNumber(ANY);
+        final PersonPojo personPojo = PersonPojo.builder().idNumber(ANY).build();
         userPojo.setPerson(personPojo);
         userPojo.setRole(ANY);
 

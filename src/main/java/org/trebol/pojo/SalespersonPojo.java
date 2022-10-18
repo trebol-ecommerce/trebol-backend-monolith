@@ -39,7 +39,7 @@ public class SalespersonPojo {
   public SalespersonPojo() { }
 
   public SalespersonPojo(String idNumber) {
-    this.person = new PersonPojo(idNumber);
+    this.person = PersonPojo.builder().idNumber(idNumber).build();
   }
 
   public SalespersonPojo(PersonPojo person) {

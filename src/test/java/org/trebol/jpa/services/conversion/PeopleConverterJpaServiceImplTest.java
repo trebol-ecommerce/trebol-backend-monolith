@@ -36,8 +36,7 @@ class PeopleConverterJpaServiceImplTest {
         person = new Person();
         person.setId(1L);
 
-        personPojo = new PersonPojo();
-        personPojo.setId(1L);
+        personPojo = PersonPojo.builder().id(1L).build();
     }
 
     @AfterEach

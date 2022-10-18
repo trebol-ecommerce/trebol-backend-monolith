@@ -36,8 +36,7 @@ public class SalespeopleConverterJpaServiceImplTest {
 
     @BeforeEach
     void beforeEach() {
-        personPojo = new PersonPojo();
-        personPojo.setId(ID_1L);
+        personPojo = PersonPojo.builder().id(ID_1L).build();
         person = new Person();
         person.setId(ID_1L);
         salesperson = new Salesperson();
