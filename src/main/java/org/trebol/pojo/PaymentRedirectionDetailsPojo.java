@@ -21,21 +21,16 @@
 package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * Wrapper class for data needed to redirect towards payment page
  */
 @Data
+@Builder
 @JsonInclude
 public class PaymentRedirectionDetailsPojo {
   private String url;
   private String token;
-
-  public PaymentRedirectionDetailsPojo() { }
-
-  public PaymentRedirectionDetailsPojo(String url, String token) {
-    this.url = url;
-    this.token = token;
-  }
 }
