@@ -50,8 +50,15 @@ class ProfileServiceImplTest {
 		personMock = new Person(1L, "firstName", "lastName", "123",
 				"email@mock.com", "+123 456", "+123 456");
 		userMock = new User(1L, "userName", "password", personMock, userRoleMock);
-		personPojoMock = new PersonPojo(1L, "firstName", "lastName", "1", 
-				"email@example.com", "+123 456", "+123 456");
+		personPojoMock = PersonPojo.builder()
+				.id(1L)
+				.firstName("firstName")
+				.lastName("lastName")
+				.idNumber("1")
+				.email("email@example.com")
+				.phone1("+123 456")
+				.phone2("+123 456")
+				.build();
 	}
 	
 	// TEST METHOD: getProfileFromUserName(String userName)
