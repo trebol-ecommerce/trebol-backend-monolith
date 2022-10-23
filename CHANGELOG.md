@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `UserRolePojo`
 
 ### Tests
+- SalesProcessServiceImpl - add unit tests
 - ProfileServiceImpl - add unit tests
 - RegistrationServiceImpl - add unit tests
 - Refactor PhoneNumberValidatorTest - resolve code smell tag by sonarqube and @ParameterizedTest is the solution
