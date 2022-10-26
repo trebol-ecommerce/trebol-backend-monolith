@@ -49,6 +49,9 @@ import static org.trebol.config.Constants.*;
 public class SalesProcessServiceImpl
   implements ISalesProcessService {
 
+  private static final String THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION = "The transaction is not in a valid state for this operation";
+  private static final String NO_STATUS_MATCHES_THE = "No status matches the";
+  public static final String NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT = "name - Is the database empty or corrupt?";
   private final GenericCrudJpaService<SellPojo, Sell> crudService;
   private final ISalesJpaRepository salesRepository;
   private final ISellDetailsJpaRepository sellDetailsRepository;
@@ -78,12 +81,12 @@ public class SalesProcessServiceImpl
     Sell existingSell = this.fetchExistingOrThrowException(sell);
 
     if (!existingSell.getStatus().getName().equals(SELL_STATUS_PENDING)) {
-      throw new BadInputException("The transaction is not in a valid state for this operation");
+      throw new BadInputException(THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION);
     }
 
     Optional<SellStatus> startedStatus = sellStatusesRepository.findByName(SELL_STATUS_PAYMENT_STARTED);
     if (startedStatus.isEmpty()) {
-      throw new IllegalStateException("No status matches the '" + SELL_STATUS_PAYMENT_STARTED + "' name - Is the database empty or corrupt?");
+      throw new IllegalStateException(NO_STATUS_MATCHES_THE + " '" + SELL_STATUS_PAYMENT_STARTED + "' " + NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT);
     }
     salesRepository.setStatus(existingSell.getId(), startedStatus.get());
     salesRepository.setTransactionToken(existingSell.getId(), sell.getToken());
@@ -98,12 +101,12 @@ public class SalesProcessServiceImpl
     Sell existingSell = this.fetchExistingOrThrowException(sell);
 
     if (!existingSell.getStatus().getName().equals(SELL_STATUS_PAYMENT_STARTED)) {
-      throw new BadInputException("The transaction is not in a valid state for this operation");
+      throw new BadInputException(THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION);
     }
 
     Optional<SellStatus> abortedStatus = sellStatusesRepository.findByName(SELL_STATUS_PAYMENT_CANCELLED);
     if (abortedStatus.isEmpty()) {
-      throw new IllegalStateException("No status matches the '" + SELL_STATUS_PAYMENT_CANCELLED + "' name - Is the database empty or corrupt?");
+      throw new IllegalStateException(NO_STATUS_MATCHES_THE + " '" + SELL_STATUS_PAYMENT_CANCELLED + "' " + NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT);
     }
     salesRepository.setStatus(existingSell.getId(), abortedStatus.get());
 
@@ -117,12 +120,12 @@ public class SalesProcessServiceImpl
     Sell existingSell = this.fetchExistingOrThrowException(sell);
 
     if (!existingSell.getStatus().getName().equals(SELL_STATUS_PAYMENT_STARTED)) {
-      throw new BadInputException("The transaction is not in a valid state for this operation");
+      throw new BadInputException(THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION);
     }
 
     Optional<SellStatus> failedStatus = sellStatusesRepository.findByName(SELL_STATUS_PAYMENT_FAILED);
     if (failedStatus.isEmpty()) {
-      throw new IllegalStateException("No status matches the '" + SELL_STATUS_PAYMENT_FAILED + "' name - Is the database empty or corrupt?");
+      throw new IllegalStateException(NO_STATUS_MATCHES_THE + " '" + SELL_STATUS_PAYMENT_FAILED + "' " + NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT);
     }
     salesRepository.setStatus(existingSell.getId(), failedStatus.get());
 
@@ -136,12 +139,12 @@ public class SalesProcessServiceImpl
     Sell existingSell = this.fetchExistingOrThrowException(sell);
 
     if (!existingSell.getStatus().getName().equals(SELL_STATUS_PAYMENT_STARTED)) {
-      throw new BadInputException("The transaction is not in a valid state for this operation");
+      throw new BadInputException(THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION);
     }
 
     Optional<SellStatus> paidStatus = sellStatusesRepository.findByName(SELL_STATUS_PAID_UNCONFIRMED);
     if (paidStatus.isEmpty()) {
-      throw new IllegalStateException("No status matches the '" + SELL_STATUS_PAID_UNCONFIRMED + "' name - Is the database empty or corrupt?");
+      throw new IllegalStateException(NO_STATUS_MATCHES_THE + " '" + SELL_STATUS_PAID_UNCONFIRMED + "' " + NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT);
     }
     salesRepository.setStatus(existingSell.getId(), paidStatus.get());
 
@@ -170,12 +173,12 @@ public class SalesProcessServiceImpl
     Sell existingSell = this.fetchExistingOrThrowException(sell);
 
     if (!existingSell.getStatus().getName().equals(SELL_STATUS_PAID_UNCONFIRMED)) {
-      throw new BadInputException("The transaction is not in a valid state for this operation");
+      throw new BadInputException(THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION);
     }
 
     Optional<SellStatus> confirmedStatus = sellStatusesRepository.findByName(SELL_STATUS_PAID_CONFIRMED);
     if (confirmedStatus.isEmpty()) {
-      throw new IllegalStateException("No status matches the '" + SELL_STATUS_PAID_CONFIRMED + "' name - Is the database empty or corrupt?");
+      throw new IllegalStateException(NO_STATUS_MATCHES_THE + " '" + SELL_STATUS_PAID_CONFIRMED + "' " + NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT);
     }
     salesRepository.setStatus(existingSell.getId(), confirmedStatus.get());
 
@@ -205,12 +208,12 @@ public class SalesProcessServiceImpl
     Sell existingSell = this.fetchExistingOrThrowException(sell);
 
     if (!existingSell.getStatus().getName().equals(SELL_STATUS_PAID_UNCONFIRMED)) {
-      throw new BadInputException("The transaction is not in a valid state for this operation");
+      throw new BadInputException(THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION);
     }
 
     Optional<SellStatus> rejectedStatus = sellStatusesRepository.findByName(SELL_STATUS_REJECTED);
     if (rejectedStatus.isEmpty()) {
-      throw new IllegalStateException("No status matches the '" + SELL_STATUS_REJECTED + "' name - Is the database empty or corrupt?");
+      throw new IllegalStateException(NO_STATUS_MATCHES_THE + " '" + SELL_STATUS_REJECTED + "' " + NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT);
     }
     salesRepository.setStatus(existingSell.getId(), rejectedStatus.get());
 
@@ -239,12 +242,12 @@ public class SalesProcessServiceImpl
     Sell existingSell = this.fetchExistingOrThrowException(sell);
 
     if (!existingSell.getStatus().getName().equals(SELL_STATUS_PAID_CONFIRMED)) {
-      throw new BadInputException("The transaction is not in a valid state for this operation");
+      throw new BadInputException(THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION);
     }
 
     Optional<SellStatus> completedStatus = sellStatusesRepository.findByName(SELL_STATUS_COMPLETED);
     if (completedStatus.isEmpty()) {
-      throw new IllegalStateException("No status matches the '" + SELL_STATUS_COMPLETED + "' name - Is the database empty or corrupt?");
+      throw new IllegalStateException(NO_STATUS_MATCHES_THE + " '" + SELL_STATUS_COMPLETED + "' " + NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT);
     }
     salesRepository.setStatus(existingSell.getId(), completedStatus.get());
 

@@ -22,10 +22,12 @@ package org.trebol.jpa.services.predicates;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.QProductCategory;
 import org.trebol.jpa.services.IPredicateJpaService;
@@ -70,27 +72,27 @@ public class ProductCategoriesPredicateJpaServiceImpl
             predicate.and(getBasePath().name.likeIgnoreCase("%" + stringValue + "%"));
             break;
           case "parentCode":
-            if (stringValue != null && !stringValue.isEmpty()) {
+            if (StringUtils.isNotBlank(stringValue)) {
               predicate.and(getBasePath().parent.code.eq(stringValue));
             }
             break;
           case "parentId":
-            if (stringValue == null || stringValue.isEmpty()) {
+            if (StringUtils.isNotBlank(stringValue)) {
               predicate.and(getBasePath().parent.isNull());
             } else {
               predicate.and(getBasePath().parent.id.eq(Long.valueOf(stringValue)));
             }
             break;
           case "rootId":
-            if (stringValue != null && !stringValue.isEmpty()) {
+            if (StringUtils.isNotBlank(stringValue)) {
               List<Long> branchParentIds = treeResolver.getBranchIdsFromRootId(Long.valueOf(stringValue));
               predicate.and(getBasePath().parent.id.in(branchParentIds));
             }
             break;
           case "rootCode":
-            if (stringValue != null && !stringValue.isEmpty()) {
+            if (StringUtils.isNotBlank(stringValue)) {
               List<Long> branchParentIds = treeResolver.getBranchIdsFromRootCode(stringValue);
-              if (!branchParentIds.isEmpty()) {
+              if (!CollectionUtils.isEmpty(branchParentIds)) {
                 predicate.and(getBasePath().parent.id.in(branchParentIds));
               }
             }

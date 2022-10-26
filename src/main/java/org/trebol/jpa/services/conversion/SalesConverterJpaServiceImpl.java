@@ -43,6 +43,7 @@ import java.util.regex.Pattern;
 public class SalesConverterJpaServiceImpl
   implements ITwoWayConverterJpaService<SellPojo, Sell> {
 
+  private static final String IS_NOT_VALID = "is not valid";
   private final ISellStatusesJpaRepository statusesRepository;
   private final IBillingTypesJpaRepository billingTypesRepository;
   private final IPaymentTypesJpaRepository paymentTypesRepository;
@@ -203,7 +204,7 @@ public class SalesConverterJpaServiceImpl
 
     Optional<SellStatus> existingStatus = statusesRepository.findByName(statusName);
     if (existingStatus.isEmpty()) {
-      throw new BadInputException("Status '" + statusName + "' is not valid");
+      throw new BadInputException("Status '" + statusName + "' " + IS_NOT_VALID);
     } else {
       target.setStatus(existingStatus.get());
     }
@@ -216,7 +217,7 @@ public class SalesConverterJpaServiceImpl
     } else {
       Optional<PaymentType> existingPaymentType = paymentTypesRepository.findByName(paymentType);
       if (existingPaymentType.isEmpty()) {
-        throw new BadInputException("Payment type '" + paymentType + "' is not valid");
+        throw new BadInputException("Payment type '" + paymentType + "' " + IS_NOT_VALID);
       } else {
         target.setPaymentType(existingPaymentType.get());
       }
@@ -233,7 +234,7 @@ public class SalesConverterJpaServiceImpl
     if (existingBillingType.isPresent()) {
       target.setBillingType(existingBillingType.get());
     } else {
-      throw new BadInputException("Billing type '" + billingType + "' is not valid");
+      throw new BadInputException("Billing type '" + billingType + "' " + IS_NOT_VALID);
     }
 
     if (billingType.equals("Enterprise Invoice")) {
@@ -250,7 +251,7 @@ public class SalesConverterJpaServiceImpl
   private void applyCustomer(SellPojo source, Sell target) throws BadInputException {
     CustomerPojo sourceCustomer = source.getCustomer();
     if (sourceCustomer == null) {
-      throw new BadInputException("Customer must posess valid personal information");
+      throw new BadInputException("Customer must possess valid personal information");
     } else {
       Optional<Customer> existing = customersService.getExisting(sourceCustomer);
       if (existing.isPresent()) {
@@ -270,7 +271,7 @@ public class SalesConverterJpaServiceImpl
         Address targetAddress = this.fetchOrConvertAddress(billingAddress);
         target.setBillingAddress(targetAddress);
       } catch (BadInputException ex) {
-        throw new BadInputException("The provided billing address is not valid");
+        throw new BadInputException("The provided billing address " + IS_NOT_VALID);
       }
     }
   }
@@ -282,7 +283,7 @@ public class SalesConverterJpaServiceImpl
         Address targetAddress = this.fetchOrConvertAddress(shippingAddress);
         target.setShippingAddress(targetAddress);
       } catch (BadInputException ex) {
-        throw new BadInputException("The provided shipping address is not valid");
+        throw new BadInputException("The provided shipping address " + IS_NOT_VALID);
       }
     }
   }

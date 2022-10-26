@@ -325,7 +325,7 @@ class SalesConverterJpaServiceImplTest {
 
 
         BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(sellPojo));
-        assertEquals("Customer must posess valid personal information", badInputException.getMessage());
+        assertEquals("Customer must possess valid personal information", badInputException.getMessage());
     }
 
     @Test
