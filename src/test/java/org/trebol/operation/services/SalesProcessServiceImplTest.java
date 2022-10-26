@@ -48,6 +48,11 @@ class SalesProcessServiceImplTest {
 	@Mock	ISellStatusesJpaRepository sellStatusesRepository;
 	@Mock	ISellDetailsJpaRepository sellDetailsRepository;
 	
+	/*
+	 * SalesProcessService cannot be instantiated with a simple @InjectMocks annotation.
+	 * Two dependencies (SalesConverterJpaService and ProductsConverterJpaService) uses the same generic interface.
+	 * We have to manually inject these dependencies, see the beforeEach() method.
+	 */
 	ITwoWayConverterJpaService<SellPojo, Sell> sellConverterService;
 	ITwoWayConverterJpaService<ProductPojo, Product> productConverterService;
 	SalesProcessServiceImpl instance;
