@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Tests
 
+- ProductListJpaCrudServiceImpl - add unit tests
 - ReceiptServiceImpl - add unit tests
 - SalesProcessServiceImpl - add unit tests
 - ProfileServiceImpl - add unit tests
