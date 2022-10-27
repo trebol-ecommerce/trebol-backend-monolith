@@ -1,13 +1,14 @@
+<!-- THESE COMMENTS ARE MEANT ONLY FOR YOU TO SEE. PLEASE REMOVE THESE BEFORE SUBMITTING YOUR PULL REQUEST -->
+
 ## PR Checklist
 
 - [ ] Read the [contribution guidelines](/CONTRIBUTING.md)
 - [ ] Added a brief description of these changes to the top of the [changelog](/CHANGELOG.md)
 - [ ] Changes in code meet test criteria (running `mvn test` returns exit code 0, without errors)
-- [ ] 
 
 ## PR Type
 
-<!-- Please check only one, remove the others -->
+<!-- Please check only one, and remove the others -->
 
 - [ ] Bugfix
 - [ ] Feature
@@ -19,16 +20,18 @@
 
 ## Summary
 
-Briefly describe the intention behind this PR. 
-
 <!--
+
+Briefly describe the intention behind this PR.
+
 These questions may help you get the right idea
 
 - What areas of interest am I covering here?
 - What is the expected behavior, and how is it different from the previous behavior?
 - How will this contribution help others?
+
 -->
 
 ## Additional info
 
-If you have additional context to provide, such as console output, test edge cases, or anything else worth mentioning, you may include it here.
+<!-- If you have additional context to provide, such as console output, test edge cases, or anything else worth mentioning, you may include it here. -->
