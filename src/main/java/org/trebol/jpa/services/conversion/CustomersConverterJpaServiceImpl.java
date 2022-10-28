@@ -65,9 +65,6 @@ public class CustomersConverterJpaServiceImpl
     Person existingPerson = existing.getPerson();
 
     PersonPojo sourcePerson = source.getPerson();
-    if (sourcePerson == null) {
-      throw new BadInputException("Customer must have a person profile");
-    }
     Person person = peopleService.applyChangesToExistingEntity(sourcePerson, existingPerson);
     target.setPerson(person);
 
