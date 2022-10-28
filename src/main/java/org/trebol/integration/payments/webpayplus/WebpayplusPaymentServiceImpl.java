@@ -98,7 +98,7 @@ public class WebpayplusPaymentServiceImpl
     String commerceCode = IntegrationCommerceCodes.WEBPAY_PLUS;
     String apiKey = IntegrationApiKeys.WEBPAY;
     IntegrationType integrationType = IntegrationType.TEST;
-    if (properties.isProduction()) {
+    if (Boolean.TRUE.equals(properties.isProduction())) {
       commerceCode = properties.getCommerceCode();
       apiKey = properties.getApiKey();
       integrationType = IntegrationType.LIVE;
