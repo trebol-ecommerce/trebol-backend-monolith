@@ -72,17 +72,13 @@ public class PeopleConverterJpaServiceImpl
 
     // phones may be empty, but not null
     String phone1 = source.getPhone1();
-    if (phone1 != null) {
-      if (!target.getPhone1().equals(phone1)) {
+    if (phone1 != null && !target.getPhone1().equals(phone1)) {
         target.setPhone1(phone1);
-      }
     }
 
     String phone2 = source.getPhone2();
-    if (phone2 != null) {
-      if (!target.getPhone2().equals(phone2)) {
+    if (phone2 != null && !target.getPhone2().equals(phone2)) {
         target.setPhone2(phone2);
-      }
     }
 
     return target;
