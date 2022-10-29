@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `sales_statuses` 				-> `should be sell_statuses`
     - `app_users_roles` 				-> `should be app_user_roles`
     - `app_users_roles_permissions` -> `should be app_user_role_permissions`
+    - `if (phone1 != null) {` 
+        `if (!target.getPhone1().equals(phone1)) {}}`  -> `if (phone1 != null && !target.getPhone1().equals(phone1)) {`
+    - `if (phone2 != null) {
+         if (!target.getPhone2().equals(phone2)) {}}`  -> `if (phone2 != null && !target.getPhone2().equals(phone2)){}`
 - Update to latest Spring Boot patch (as of Oct 12th, 2022)
   - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
 - Take advantage of Project Lombok `@Builder` annotation for Pojo classes
