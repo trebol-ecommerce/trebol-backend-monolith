@@ -19,6 +19,8 @@ public class PredicateCommand {
   private static final String PARENT_ID = "parentId";
   private static final String ROOT_ID = "rootId";
   private static final String ROOT_CODE = "rootCode";
+
+  private PredicateCommand() {}
   private static final Map<String, Command> PREDICATE_MAP = Map.of(
     ID, (stringValue, treeResolver, category, booleanBuilder) -> booleanBuilder.and(category.id.eq(Long.valueOf(stringValue))),
     CODE, (stringValue, treeResolver, category, booleanBuilder) -> booleanBuilder.and(category.code.eq(stringValue)),
@@ -56,51 +58,6 @@ public class PredicateCommand {
   );
 
 
-  /*
-        switch (paramName) {
-          case "id":
-            return getBasePath().id.eq(Long.valueOf(stringValue));
-          case "code":
-            return getBasePath().code.eq(stringValue);
-          case "name":
-            predicate.and(getBasePath().name.eq(stringValue));
-            break;
-          case "nameLike":
-            predicate.and(getBasePath().name.likeIgnoreCase("%" + stringValue + "%"));
-            break;
-          case "parentCode":
-            if (StringUtils.isNotBlank(stringValue)) {
-              predicate.and(getBasePath().parent.code.eq(stringValue));
-            }
-            break;
-          case "parentId":
-            if (StringUtils.isNotBlank(stringValue)) {
-              predicate.and(getBasePath().parent.isNull());
-            } else {
-              predicate.and(getBasePath().parent.id.eq(Long.valueOf(stringValue)));
-            }
-            break;
-          case "rootId":
-            if (StringUtils.isNotBlank(stringValue)) {
-              List<Long> branchParentIds = treeResolver.getBranchIdsFromRootId(Long.valueOf(stringValue));
-              predicate.and(getBasePath().parent.id.in(branchParentIds));
-            }
-            break;
-          case "rootCode":
-            if (StringUtils.isNotBlank(stringValue)) {
-              List<Long> branchParentIds = treeResolver.getBranchIdsFromRootCode(stringValue);
-              if (!CollectionUtils.isEmpty(branchParentIds)) {
-                predicate.and(getBasePath().parent.id.in(branchParentIds));
-              }
-            }
-            break;
-          default:
-            break;
-        }
-*/
-
-
-
   public static Predicate getPredicate(String param, String stringValue, IProductCategoryTreeResolver treeResolver, QProductCategory category, BooleanBuilder booleanBuilder) {
     Command command = PREDICATE_MAP.get(param);
 
@@ -109,7 +66,6 @@ public class PredicateCommand {
         + param);
     }
 
-    Predicate predicate = command.getPredicate(stringValue, treeResolver, category, booleanBuilder);
-    return predicate;
+    return command.getPredicate(stringValue, treeResolver, category, booleanBuilder);
   }
 }
