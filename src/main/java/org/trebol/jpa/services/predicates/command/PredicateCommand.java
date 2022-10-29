@@ -11,32 +11,40 @@ import java.util.List;
 import java.util.Map;
 
 public class PredicateCommand {
-  private static Map<String, Command> PREDICATE_MAP = Map.of(
-    "id", (stringValue, treeResolver, category, booleanBuilder) -> booleanBuilder.and(category.id.eq(Long.valueOf(stringValue))),
-    "code", (stringValue, treeResolver, category, booleanBuilder) -> booleanBuilder.and(category.code.eq(stringValue)),
-    "name", (stringValue, treeResolver, category, booleanBuilder) -> booleanBuilder.and(category.name.eq(stringValue)),
-    "nameLike", (stringValue, treeResolver, category, booleanBuilder) -> booleanBuilder.and(category.name.likeIgnoreCase("%" + stringValue + "%")),
-    "parentCode", (stringValue, treeResolver, category, booleanBuilder) -> {
+  private static final String ID = "id";
+  private static final String CODE = "code";
+  private static final String NAME = "name";
+  private static final String NAME_LIKE = "nameLike";
+  private static final String PARENT_CODE = "parentCode";
+  private static final String PARENT_ID = "parentId";
+  private static final String ROOT_ID = "rootId";
+  private static final String ROOT_CODE = "rootCode";
+  private static final Map<String, Command> PREDICATE_MAP = Map.of(
+    ID, (stringValue, treeResolver, category, booleanBuilder) -> booleanBuilder.and(category.id.eq(Long.valueOf(stringValue))),
+    CODE, (stringValue, treeResolver, category, booleanBuilder) -> booleanBuilder.and(category.code.eq(stringValue)),
+    NAME, (stringValue, treeResolver, category, booleanBuilder) -> booleanBuilder.and(category.name.eq(stringValue)),
+    NAME_LIKE, (stringValue, treeResolver, category, booleanBuilder) -> booleanBuilder.and(category.name.likeIgnoreCase("%" + stringValue + "%")),
+    PARENT_CODE, (stringValue, treeResolver, category, booleanBuilder) -> {
       if (StringUtils.isNotBlank(stringValue)) {
         return booleanBuilder.and(category.parent.code.eq(stringValue));
       }
       return booleanBuilder;
     },
-    "parentId", (stringValue, treeResolver, category, booleanBuilder) -> {
+    PARENT_ID, (stringValue, treeResolver, category, booleanBuilder) -> {
       if (StringUtils.isNotBlank(stringValue)) {
         return booleanBuilder.and(category.parent.isNull());
       } else {
         return booleanBuilder.and(category.parent.id.eq(Long.valueOf(stringValue)));
       }
     },
-    "rootId", (stringValue, treeResolver, category, booleanBuilder) -> {
+    ROOT_ID, (stringValue, treeResolver, category, booleanBuilder) -> {
       if (StringUtils.isNotBlank(stringValue)) {
         List<Long> branchParentIds = treeResolver.getBranchIdsFromRootId(Long.valueOf(stringValue));
         return booleanBuilder.and(category.parent.id.in(branchParentIds));
       }
       return booleanBuilder;
     },
-    "rootCode", (stringValue, treeResolver, category, booleanBuilder) -> {
+    ROOT_CODE, (stringValue, treeResolver, category, booleanBuilder) -> {
       if (StringUtils.isNotBlank(stringValue)) {
         List<Long> branchParentIds = treeResolver.getBranchIdsFromRootCode(stringValue);
         if (!CollectionUtils.isEmpty(branchParentIds)) {
