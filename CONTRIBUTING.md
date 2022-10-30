@@ -28,7 +28,8 @@ want your contributions to be accepted eagerly, it is better to follow them as g
 ## Working on Issues
 
 - If you want to to work on an issue, please request that it is assigned to you beforehand.
-- If for any reason at all you decide to stop or find yourself unable to work on the issue, please let me know. It's totally okay. This IS what open-source means to me; total freedom. I just really happen to appreciate  
+- If for any reason at all you decide to stop or find yourself unable to work on the issue, **please let me know**.
+  - I may be requesting updates if an issue gets stalled for too long, and eventually mark them unassigned if no feedback is provided.
 
 ## Submitting Pull Requests
 
