@@ -18,7 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - The protected user account must have the same `id` indicated by `trebol.security.protected-account-id` in `application.properties`
 
 ### Changed
-
+- UsersConverterJpaServiceImpl - refactor `convertToNewEntity` since it tag as cyclomatic issue
+- SalesConverterJpaServiceImpl, SalesProcessServiceImpl - add string constants
+- Add Apache Commons Lang 3 StringUtils for null checking of strings
+- ProductCategoriesPredicateJpaServiceImpl - refactor switch case snippet to command pattern since sonar tag as cyclomatic issue
 - **BREAKING CHANGE**: Rename table names to follow the naming convention - **Thank you `@mepox`**
     - `products_categories` 			-> `product_categories`
     - `products_images` 				-> `should be product_images`

@@ -51,7 +51,7 @@ public class SalesProcessServiceImpl
 
   private static final String THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION = "The transaction is not in a valid state for this operation";
   private static final String NO_STATUS_MATCHES_THE = "No status matches the";
-  public static final String NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT = "name - Is the database empty or corrupt?";
+  private static final String NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT = "name - Is the database empty or corrupt?";
   private final GenericCrudJpaService<SellPojo, Sell> crudService;
   private final ISalesJpaRepository salesRepository;
   private final ISellDetailsJpaRepository sellDetailsRepository;
