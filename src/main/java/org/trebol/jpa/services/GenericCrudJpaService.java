@@ -55,7 +55,7 @@ public abstract class GenericCrudJpaService<P, E>
   protected final ITwoWayConverterJpaService<P, E> converter;
   protected final Logger logger;
 
-  public GenericCrudJpaService(IJpaRepository<E> repository,
+  protected GenericCrudJpaService(IJpaRepository<E> repository,
                                ITwoWayConverterJpaService<P, E> converter,
                                Logger logger) {
     this.repository = repository;
