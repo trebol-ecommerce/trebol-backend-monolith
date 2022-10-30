@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `ShipperPojo`
   - `UserPojo`
   - `UserRolePojo`
+- Use entrySet in place of keySet for better iteration
 
 ### Tests
 
