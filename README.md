@@ -21,7 +21,7 @@
 
 ## Current Status 📓
 
-Implementing [Trébol API v1.5.0](https://github.com/trebol-ecommerce/api/blob/bglamadrid/main/trebol-api.json).
+Implementing [Trébol API v1.5.0](https://github.com/trebol-ecommerce/api/blob/main/trebol-api.json).
 
 Please take a look at the `CHANGELOG.md` file to review the latest changes and additions.
 
@@ -128,6 +128,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center"><a href="https://mepox.github.io/"><img src="https://avatars.githubusercontent.com/u/21198248?v=4?s=100" width="100px;" alt="mepox"/><br /><sub><b>mepox</b></sub></a><br /><a href="https://github.com/trebol-ecommerce/spring-boot-backend/commits?author=mepox" title="Code">💻</a> <a href="#maintenance-mepox" title="Maintenance">🚧</a> <a href="#ideas-mepox" title="Ideas, Planning, & Feedback">🤔</a></td>
       <td align="center"><a href="https://github.com/shivam-Purohit"><img src="https://avatars.githubusercontent.com/u/91889807?v=4?s=100" width="100px;" alt="Shivam Purohit"/><br /><sub><b>Shivam Purohit</b></sub></a><br /><a href="https://github.com/trebol-ecommerce/spring-boot-backend/commits?author=shivam-Purohit" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/ujwalkumar1995"><img src="https://avatars.githubusercontent.com/u/20976813?v=4?s=100" width="100px;" alt="Ujwal Kumar"/><br /><sub><b>Ujwal Kumar</b></sub></a><br /><a href="https://github.com/trebol-ecommerce/spring-boot-backend/commits?author=ujwalkumar1995" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
