@@ -48,14 +48,6 @@ class CustomersConverterJpaServiceImplTest {
 
 
     @Test
-    void testApplyChangesToExistingEntityThrowsBadInputException() {
-        customerPojo.setPerson(null);
-        BadInputException badInputException = assertThrows(BadInputException.class, ()
-                -> sut.applyChangesToExistingEntity(customerPojo, customer));
-        assertEquals("Customer must have a person profile", badInputException.getMessage());
-    }
-
-    @Test
     void testApplyChangesToExistingEntity() throws BadInputException {
         when(peopleService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
         Customer actual = sut.applyChangesToExistingEntity(customerPojo, customer);
