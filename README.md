@@ -21,7 +21,7 @@
 
 ## Current Status 📓
 
-Implementing [Trébol API v1.5.0](https://github.com/trebol-ecommerce/api/blob/bglamadrid/main/trebol-api.json).
+Implementing [Trébol API v1.5.0](https://github.com/trebol-ecommerce/api/blob/main/trebol-api.json).
 
 Please take a look at the `CHANGELOG.md` file to review the latest changes and additions.
 
