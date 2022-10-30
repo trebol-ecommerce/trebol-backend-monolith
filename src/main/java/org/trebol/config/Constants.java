@@ -23,7 +23,12 @@ package org.trebol.config;
 /**
  * A temporary helper class to hold on to some name keys
  */
-public class Constants {
+public final class Constants {
+
+  private Constants() {
+
+  }
+  
   public static final String SELL_STATUS_PENDING = "Pending";
   public static final String SELL_STATUS_PAYMENT_STARTED = "Payment Started";
   public static final String SELL_STATUS_PAYMENT_CANCELLED = "Payment Cancelled";
