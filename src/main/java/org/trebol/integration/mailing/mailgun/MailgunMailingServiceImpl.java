@@ -68,8 +68,8 @@ public class MailgunMailingServiceImpl
   private final ConversionService conversionService;
   private final ObjectMapper mailObjectMapper;
 
-  private final static String CUSTOMER_MAPS_KEY_PREFIX = "customer:";
-  private final static String OWNERS_MAPS_KEY_PREFIX = "owners:";
+  private static final String CUSTOMER_MAPS_KEY_PREFIX = "customer:";
+  private static final String OWNERS_MAPS_KEY_PREFIX = "owners:";
 
   @Autowired
   public MailgunMailingServiceImpl(MailingProperties mailingProperties,
