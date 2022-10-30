@@ -122,6 +122,13 @@
       <artifactId>mariadb-java-client</artifactId>
     </dependency>
 
+<!--    apache common lang-->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.12.0</version>
+    </dependency>
+
     <!-- JWT -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
