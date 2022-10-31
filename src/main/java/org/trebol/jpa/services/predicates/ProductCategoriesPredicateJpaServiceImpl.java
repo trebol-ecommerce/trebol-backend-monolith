@@ -22,16 +22,19 @@ package org.trebol.jpa.services.predicates;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.QProductCategory;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.IProductCategoryTreeResolver;
 import org.trebol.jpa.services.predicates.command.PredicateCommand;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -61,6 +64,46 @@ public class ProductCategoriesPredicateJpaServiceImpl
 
         PredicateCommand.getPredicate(paramName, stringValue, treeResolver, getBasePath(), predicate);
 
+        /*switch (paramName) {
+          case "id":
+            return getBasePath().id.eq(Long.valueOf(stringValue));
+          case "code":
+            return getBasePath().code.eq(stringValue);
+          case "name":
+            predicate.and(getBasePath().name.eq(stringValue));
+            break;
+          case "nameLike":
+            predicate.and(getBasePath().name.likeIgnoreCase("%" + stringValue + "%"));
+            break;
+          case "parentCode":
+            if (StringUtils.isNotBlank(stringValue)) {
+              predicate.and(getBasePath().parent.code.eq(stringValue));
+            }
+            break;
+          case "parentId":
+            if (StringUtils.isNotBlank(stringValue)) {
+              predicate.and(getBasePath().parent.isNull());
+            } else {
+              predicate.and(getBasePath().parent.id.eq(Long.valueOf(stringValue)));
+            }
+            break;
+          case "rootId":
+            if (StringUtils.isNotBlank(stringValue)) {
+              List<Long> branchParentIds = treeResolver.getBranchIdsFromRootId(Long.valueOf(stringValue));
+              predicate.and(getBasePath().parent.id.in(branchParentIds));
+            }
+            break;
+          case "rootCode":
+            if (StringUtils.isNotBlank(stringValue)) {
+              List<Long> branchParentIds = treeResolver.getBranchIdsFromRootCode(stringValue);
+              if (!CollectionUtils.isEmpty(branchParentIds)) {
+                predicate.and(getBasePath().parent.id.in(branchParentIds));
+              }
+            }
+            break;
+          default:
+            break;
+        }*/
       } catch (NumberFormatException exc) {
         logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       }
