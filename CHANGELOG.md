@@ -20,11 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **BREAKING CHANGE**: Rename table names to follow the naming convention - **Thank you `@mepox`**
-    - `products_categories` 			-> `product_categories`
-    - `products_images` 				-> `should be product_images`
-    - `sales_statuses` 				-> `should be sell_statuses`
-    - `app_users_roles` 				-> `should be app_user_roles`
-    - `app_users_roles_permissions` -> `should be app_user_role_permissions`
+  - `products_categories` 			-> `product_categories`
+  - `products_images` 				-> `should be product_images`
+  - `sales_statuses` 				-> `should be sell_statuses`
+  - `app_users_roles` 				-> `should be app_user_roles`
+  - `app_users_roles_permissions` -> `should be app_user_role_permissions`
 - Update to latest Spring Boot patch (as of Oct 12th, 2022)
   - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
 - Take advantage of Project Lombok `@Builder` annotation for Pojo classes
@@ -60,25 +60,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CheckoutServiceImpl - add more coverage for method "confirmTransaction, generatePageUrl"
 - CompanyServiceImpl - validate the proper mapping behaviour of method "readDetails"
 - Add `mockito-inline` dependency to create inline mocks - **Thank you `@NyorJa`**
-    - Useful to mock final classes and methods, also for having constant regex
+  - Useful to mock final classes and methods, also for having constant regex
 - Add TestConstants to hold some static final values for use with mocks - **Thank you `@NyorJa`**
 - Introduce unit tests for 15 converter services - **Thank you `@NyorJa`**
-    - `BillingCompaniesConverterJpaServiceImpl`
-    - `BillingTypesConverterJpaServiceImpl`
-    - `CustomersConverterJpaServiceImpl`
-    - `ImagesConverterJpaServiceImpl`
-    - `PeopleConverterJpaServiceImpl`
-    - `ProductCategoriesConverterJpaServiceImpl`
-    - `ProductListsConverterJpaServiceImpl`
-    - `ProductsConverterJpaServiceImplTest`
-    - `SalesStatusesConverterJpaServiceImplTest`
-    - `SellStatusesConverterJpaServiceImplTest`
-    - `ShippersConverterJpaServiceImplTest`
-    - `UserRolesConverterJpaServiceImplTest`
-    - `UsersConverterJpaServiceImplTest`
+  - `BillingCompaniesConverterJpaServiceImpl`
+  - `BillingTypesConverterJpaServiceImpl`
+  - `CustomersConverterJpaServiceImpl`
+  - `ImagesConverterJpaServiceImpl`
+  - `PeopleConverterJpaServiceImpl`
+  - `ProductCategoriesConverterJpaServiceImpl`
+  - `ProductListsConverterJpaServiceImpl`
+  - `ProductsConverterJpaServiceImplTest`
+  - `SalesStatusesConverterJpaServiceImplTest`
+  - `SellStatusesConverterJpaServiceImplTest`
+  - `ShippersConverterJpaServiceImplTest`
+  - `UserRolesConverterJpaServiceImplTest`
+  - `UsersConverterJpaServiceImplTest`
 - Refactor out test boilerplate using `@InjectMocks`
 
-### Fixed  
+### Fixed
 
 - Using a better fitted java11 method of String to check for emptiness - **Thank you `@NyorJa`**
 
@@ -92,7 +92,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Property to configure max allowed nested depth while fetching categories
 - *BREAKING CHANGE*: `SellDetail` entity now has a `description` field, which is meant to describe and summarize the detail in a human-readable format
 - When fetching data, filters by category may include descendant of lower level categories
-  - For example, assumming that category A includes subcategories AB and AC, filtering 'by category A' may include children from subcategories AB and AC as well 
+  - For example, assumming that category A includes subcategories AB and AC, filtering 'by category A' may include children from subcategories AB and AC as well
   - This applies for filtering categories and products
   - Behavior before was to fetch only direct descendants of a given category
 - Implement three API resources to interact with sales after a checkout process from the customer
@@ -105,7 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - An empty configuration file is provided
 
 ### Changed
-- Use [Project Lombok](https://projectlombok.org) 
+- Use [Project Lombok](https://projectlombok.org)
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
 - Default `GET /data/sales` sort order is by descending `buyOrder`
 - (Temporary) Disable regex pattern validation for phone numbers
@@ -156,7 +156,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/public/categories`
   - `/public/products`
   - `/public/products/{barcode}`
-- Remove any reference to the depreacted `amount` property in the Receipt entity 
+- Remove any reference to the depreacted `amount` property in the Receipt entity
 
 ## [v1.2.0] - 2022-01-07
 
@@ -169,7 +169,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated security rule for `GET /data/products` to: do not require any authority
 - Simplified method signature for `readMany` method in `IDataController`
-- Updated BD schema diagram `schema.png` 
+- Updated BD schema diagram `schema.png`
 
 ### Removed
 - Clean up deprecated resources
@@ -271,8 +271,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix default application parameters related to the checkout/payment service
-    - Self-callback URL after clients navigates checkout
-    - Success/Failure page URL to send customers to, after checkout
+  - Self-callback URL after clients navigates checkout
+  - Success/Failure page URL to send customers to, after checkout
 - Add missing sales filters required to fetch data during the checkout flow
 - Add missing mock data into `data.sql` that is needed to invoke `/public/about`
 - `ReceiptPojo` now uses `Instant` to represent dates, just like `Sell` and `SellPojo`
