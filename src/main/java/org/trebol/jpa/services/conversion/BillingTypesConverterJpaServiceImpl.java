@@ -58,7 +58,7 @@ public class BillingTypesConverterJpaServiceImpl
     BillingType target = new BillingType(existing);
 
     String name = source.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+    if (!name.isBlank() && !target.getName().equals(name)) {
       target.setName(name);
     }
 
