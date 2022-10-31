@@ -97,9 +97,7 @@ public class ProductsConverterJpaServiceImpl
     }
 
     Integer price = source.getPrice();
-    if (price != null) {
-      target.setPrice(price);
-    }
+    target.setPrice(price);
 
     String description = source.getDescription();
     if (description != null) {
