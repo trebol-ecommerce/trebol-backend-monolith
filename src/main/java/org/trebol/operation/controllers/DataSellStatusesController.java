@@ -51,6 +51,7 @@ public class DataSellStatusesController
     super(paginationService, sortService, crudService, predicateService);
   }
 
+  @Override
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('sell_statuses:read')")
   public DataPagePojo<SellStatusPojo> readMany(@RequestParam Map<String, String> allRequestParams) {

@@ -53,6 +53,7 @@ public class DataCustomersController
     this.sortService = sortService;
   }
 
+  @Override
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:read')")
   public DataPagePojo<CustomerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {

@@ -53,6 +53,7 @@ public class DataUsersController
     super(paginationService, sortService, crudService, predicateService);
   }
 
+  @Override
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('users:read')")
   public DataPagePojo<UserPojo> readMany(@RequestParam Map<String, String> allRequestParams) {

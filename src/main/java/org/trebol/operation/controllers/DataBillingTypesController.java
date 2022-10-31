@@ -49,6 +49,7 @@ public class DataBillingTypesController
     super(paginationService, sortService, crudService, predicateService);
   }
 
+  @Override
   @GetMapping({"", "/"})
   public DataPagePojo<BillingTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(allRequestParams);
