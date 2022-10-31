@@ -20,6 +20,7 @@
 
 package org.trebol.jpa.services.conversion;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,43 +93,55 @@ public class UsersConverterJpaServiceImpl
     User target = conversion.convert(source, User.class);
     if (target == null) {
       throw new BadInputException("Invalid user data");
-    } else {
-      if (source.getPassword() != null && !source.getPassword().isBlank()) {
-        String rawPassword = source.getPassword();
-        String encodedPassword = passwordEncoder.encode(rawPassword);
-        target.setPassword(encodedPassword);
-      } else if (source.getId() != null) {
-        // TODO optimize this! if the user exists and no password was provided, "reload" password from the database
-        Optional<User> userById = userRepository.findById(source.getId());
-        userById.ifPresent(user -> target.setPassword(user.getPassword()));
-      }
+    }
 
-      PersonPojo sourcePerson = source.getPerson();
-      if (sourcePerson != null && sourcePerson.getIdNumber() != null &&
-          !sourcePerson.getIdNumber().isBlank()) {
-        logger.trace("Finding person profile...");
-        Optional<Person> personByIdNumber = peopleRepository.findByIdNumber(sourcePerson.getIdNumber());
-        if (personByIdNumber.isPresent()) {
-          logger.trace("Person profile found");
-          target.setPerson(personByIdNumber.get());
-        }
-      }
+    setPassword(source, target);
 
-      String role = source.getRole();
-      if (role != null && !role.isEmpty()){
-        logger.trace("Searching user role by name '{}'...", role);
-        Optional<UserRole> roleByName = rolesRepository.findByName(role);
-        if (roleByName.isPresent()) {
-          logger.trace("User role found");
-          target.setUserRole(roleByName.get());
-        } else {
-          throw new BadInputException("The specified user role does not exist");
-        }
+    PersonPojo sourcePerson = source.getPerson();
+    setPersonProfile(target, sourcePerson);
+
+    String role = source.getRole();
+    setPersonRole(target, role);
+
+    return target;
+  }
+
+  private void setPersonRole(User target, String role) throws BadInputException {
+    if (StringUtils.isNotBlank(role)) {
+      logger.trace("Searching user role by name '{}'...", role);
+      Optional<UserRole> roleByName = rolesRepository.findByName(role);
+      if (roleByName.isPresent()) {
+        logger.trace("User role found");
+        target.setUserRole(roleByName.get());
       } else {
-        throw new BadInputException("The user does not have a role");
+        throw new BadInputException("The specified user role does not exist");
+      }
+    } else {
+      throw new BadInputException("The user does not have a role");
+    }
+  }
+
+  private void setPersonProfile(User target, PersonPojo sourcePerson) {
+    if (sourcePerson != null && StringUtils.isNotBlank(sourcePerson.getIdNumber())) {
+      logger.trace("Finding person profile...");
+      Optional<Person> personByIdNumber = peopleRepository.findByIdNumber(sourcePerson.getIdNumber());
+      if (personByIdNumber.isPresent()) {
+        logger.trace("Person profile found");
+        target.setPerson(personByIdNumber.get());
       }
     }
-    return target;
+  }
+
+  private void setPassword(UserPojo source, User target) {
+    if (StringUtils.isNotBlank(source.getPassword())) {
+      String rawPassword = source.getPassword();
+      String encodedPassword = passwordEncoder.encode(rawPassword);
+      target.setPassword(encodedPassword);
+    } else if (source.getId() != null) {
+      // TODO optimize this! if the user exists and no password was provided, "reload" password from the database
+      Optional<User> userById = userRepository.findById(source.getId());
+      userById.ifPresent(user -> target.setPassword(user.getPassword()));
+    }
   }
 
   @Override
