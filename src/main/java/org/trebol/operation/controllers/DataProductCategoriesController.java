@@ -51,6 +51,7 @@ public class DataProductCategoriesController
     super(paginationService, sortService, crudService, predicateService);
   }
 
+  @Override
   @GetMapping({"", "/"})
   public DataPagePojo<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     if (allRequestParams.isEmpty()) {

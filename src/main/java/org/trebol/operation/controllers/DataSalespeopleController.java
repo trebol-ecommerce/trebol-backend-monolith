@@ -53,6 +53,7 @@ public class DataSalespeopleController
     super(paginationService, sortService, crudService, predicateService);
   }
 
+  @Override
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:read')")
   public DataPagePojo<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {

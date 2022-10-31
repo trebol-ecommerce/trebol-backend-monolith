@@ -52,6 +52,7 @@ public class DataImagesController
     super(paginationService, sortService, crudService, predicateService);
   }
 
+  @Override
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('images:read')")
   public DataPagePojo<ImagePojo> readMany(@RequestParam Map<String, String> allRequestParams) {

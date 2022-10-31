@@ -64,6 +64,7 @@ public class DataSalesController
     this.mailingIntegrationService = mailingIntegrationService;
   }
 
+  @Override
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:read')")
   public DataPagePojo<SellPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
