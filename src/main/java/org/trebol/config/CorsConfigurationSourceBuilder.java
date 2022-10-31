@@ -53,12 +53,12 @@ public class CorsConfigurationSourceBuilder {
     baseConfig.setAllowCredentials(true);
     baseConfig.setMaxAge(300L);
     UrlBasedCorsConfigurationSource cfg = new UrlBasedCorsConfigurationSource();
-    for (String path : mappings.keySet()) {
-      List<String> methods = Arrays.asList(this.mappings.get(path).split(","));
+    for (Map.Entry<String,String> properties : mappings.entrySet()) {
+      List<String> methods = Arrays.asList(properties.getValue().split(","));
       CorsConfiguration pathConfig = new CorsConfiguration(baseConfig);
       pathConfig.setAllowedOrigins(this.allowedOrigins);
       pathConfig.setAllowedMethods(methods);
-      cfg.registerCorsConfiguration(path, pathConfig);
+      cfg.registerCorsConfiguration(properties.getKey(), pathConfig);
     }
     return cfg;
   }
