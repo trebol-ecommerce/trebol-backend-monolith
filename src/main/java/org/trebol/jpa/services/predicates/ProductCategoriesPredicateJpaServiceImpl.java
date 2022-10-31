@@ -32,7 +32,6 @@ import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.QProductCategory;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.IProductCategoryTreeResolver;
-import org.trebol.jpa.services.predicates.command.PredicateCommand;
 
 import java.util.List;
 import java.util.Map;
@@ -61,10 +60,7 @@ public class ProductCategoriesPredicateJpaServiceImpl
       String paramName = entry.getKey();
       String stringValue = entry.getValue();
       try {
-
-        PredicateCommand.getPredicate(paramName, stringValue, treeResolver, getBasePath(), predicate);
-
-        /*switch (paramName) {
+        switch (paramName) {
           case "id":
             return getBasePath().id.eq(Long.valueOf(stringValue));
           case "code":
@@ -103,7 +99,7 @@ public class ProductCategoriesPredicateJpaServiceImpl
             break;
           default:
             break;
-        }*/
+        }
       } catch (NumberFormatException exc) {
         logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
       }
