@@ -41,24 +41,24 @@ public class GlobalCorsConfiguration {
 	@Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/public/login")
-                	.allowedOrigins(allowedOrigins)
-                	.allowedHeaders(allowedHeaders)
-                	.allowedMethods("POST");
-                
-				registry.addMapping("/public/guest")
-					.allowedOrigins(allowedOrigins)
-					.allowedHeaders(allowedHeaders)
-					.allowedMethods("POST");
-				
-				registry.addMapping("/**")
-					.allowedOrigins(allowedOrigins)
-					.allowedHeaders(allowedHeaders)
-					.allowCredentials(true)
-					.maxAge(300L)
-					.allowedMethods("");
+        	@Override
+        	public void addCorsMappings(CorsRegistry registry) {
+        		registry.addMapping("/public/login")
+        		   	.allowedOrigins(allowedOrigins)
+        		   	.allowedHeaders(allowedHeaders)
+        		   	.allowedMethods("POST");
+        		
+        		registry.addMapping("/public/guest")
+        			.allowedOrigins(allowedOrigins)
+        			.allowedHeaders(allowedHeaders)
+        			.allowedMethods("POST");
+        		
+        		registry.addMapping("/**")
+        			.allowedOrigins(allowedOrigins)
+        			.allowedHeaders(allowedHeaders)
+        			.allowCredentials(true)
+        			.maxAge(300L)
+        			.allowedMethods("");
             }
         };
     }
