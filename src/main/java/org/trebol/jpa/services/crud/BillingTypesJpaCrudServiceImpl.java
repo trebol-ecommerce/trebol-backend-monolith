@@ -52,7 +52,7 @@ public class BillingTypesJpaCrudServiceImpl
   @Override
   public Optional<BillingType> getExisting(BillingTypePojo input) throws BadInputException {
     String name = input.getName();
-    if (name == null || name.isBlank()) {
+    if (name.isBlank()) {
       throw new BadInputException("Billing type has no name");
     } else {
       return billingTypesRepository.findByName(name);
