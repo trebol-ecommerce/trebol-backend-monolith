@@ -41,6 +41,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/data/product_list_contents")
 public class DataProductListContentsController {

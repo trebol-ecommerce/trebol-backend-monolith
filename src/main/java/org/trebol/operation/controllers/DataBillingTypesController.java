@@ -21,6 +21,7 @@
 package org.trebol.operation.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +37,7 @@ import org.trebol.pojo.DataPagePojo;
 
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/data/billing_types")
 public class DataBillingTypesController

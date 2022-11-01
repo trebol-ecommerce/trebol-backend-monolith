@@ -36,6 +36,7 @@ import java.util.Collection;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/access")
 @PreAuthorize("isAuthenticated()")

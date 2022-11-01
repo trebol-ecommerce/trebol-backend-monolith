@@ -39,6 +39,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/data/users")
 @PreAuthorize("isAuthenticated()")

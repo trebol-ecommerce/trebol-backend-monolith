@@ -119,10 +119,10 @@ public class SecurityConfig
     return provider;
   }
 
-  @Bean
+  /*@Bean
   public CorsConfigurationSource corsConfigurationSource() throws CorsMappingParseException {
     return new CorsConfigurationSourceBuilder(corsProperties).build();
-  }
+  }*/
 
   @Bean
   public PasswordEncoder passwordEncoder() {

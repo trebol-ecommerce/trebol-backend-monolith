@@ -30,6 +30,7 @@ import org.trebol.pojo.PersonPojo;
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/account/profile")
 @PreAuthorize("isAuthenticated()")

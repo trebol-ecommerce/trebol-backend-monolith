@@ -49,6 +49,7 @@ import java.util.Map;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.SEE_OTHER;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/public/checkout")
 public class PublicCheckoutController {

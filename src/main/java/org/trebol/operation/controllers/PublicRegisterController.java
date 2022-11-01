@@ -21,6 +21,7 @@
 package org.trebol.operation.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ import org.trebol.pojo.RegistrationPojo;
 import javax.persistence.EntityExistsException;
 import javax.validation.Valid;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/public/register")
 public class PublicRegisterController {
