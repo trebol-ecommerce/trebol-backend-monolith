@@ -16,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -35,9 +34,9 @@ class ControllersCorsTest {
 	
 	@BeforeAll
 	void beforeAll() {
-		allowedOrigins = Arrays.asList("http://localhost:4200", "https://localhost:4200", "null");
-		notAllowedOrigins = Arrays.asList("http://notallowedorigins.com", "https://notallowedorigins.com");
-		allowedHeaders = Arrays.asList("Content-Type", "Accept", "X-Requested-With", "Authorization");
+		allowedOrigins = List.of("http://localhost:4200", "https://localhost:4200", "null");
+		notAllowedOrigins = List.of("http://notallowedorigins.com", "https://notallowedorigins.com");
+		allowedHeaders = List.of("Content-Type", "Accept", "X-Requested-With", "Authorization");
 		
 		/*
 		GET /;\		
@@ -51,38 +50,12 @@ class ControllersCorsTest {
 		POST /data/sales/confirmation;\
 		POST /data/sales/rejection;\
 		POST /data/sales/completion;\
-		*/
-		
-		apiPaths = new ArrayList<>();
-		apiPaths.add(new ApiPath("/", "GET"));
-		apiPaths.add(new ApiPath("/public/about", "GET"));
-		apiPaths.add(new ApiPath("/public/receipt/TOKEN", "GET"));
-		apiPaths.add(new ApiPath("/public/checkout", "POST"));
-		apiPaths.add(new ApiPath("/public/checkout/validate", "POST", "GET")); // GET was missing
-		apiPaths.add(new ApiPath("/public/guest", "POST"));
-		apiPaths.add(new ApiPath("/public/login", "POST"));
-		apiPaths.add(new ApiPath("/public/register", "POST"));
-		apiPaths.add(new ApiPath("/data/sales/confirmation", "POST"));
-		apiPaths.add(new ApiPath("/data/sales/rejection", "POST"));
-		apiPaths.add(new ApiPath("/data/sales/completion", "POST"));
-		
-		/*
 		GET,PUT /account/profile;\
 		GET /access;\
 		GET /access/*;\
 		GET /data/people;\
 		GET /data/billing_types;\
 		GET /data/sell_statuses;\
-		*/
-		
-		apiPaths.add(new ApiPath("/account/profile", "GET", "PUT"));
-		apiPaths.add(new ApiPath("/access", "GET"));
-		apiPaths.add(new ApiPath("/access/APIROUTE", "GET"));
-		apiPaths.add(new ApiPath("/data/people", "GET"));
-		apiPaths.add(new ApiPath("/data/billing_types", "GET"));
-		apiPaths.add(new ApiPath("/data/sell_statuses", "GET"));
-		
-		/*
 		GET,POST,PUT,DELETE /data/customers;\
 		GET,POST,PUT,DELETE /data/images;\
 		GET,POST,PUT,DELETE /data/products;\
@@ -95,30 +68,45 @@ class ControllersCorsTest {
 		GET,POST,PUT,DELETE /data/users;\
 		GET,POST,PUT,DELETE /data/user_roles;\
 		*/
-		
-		apiPaths.add(new ApiPath("/data/customers", "GET", "POST", "PUT", "DELETE"));
-		apiPaths.add(new ApiPath("/data/images", "GET", "POST", "PUT", "DELETE"));
-		apiPaths.add(new ApiPath("/data/products", "GET", "POST", "PUT", "DELETE"));
-		apiPaths.add(new ApiPath("/data/product_lists", "GET", "POST", "PUT", "DELETE"));
-		apiPaths.add(new ApiPath("/data/product_list_contents", "GET", "POST", "PUT", "DELETE"));
-		apiPaths.add(new ApiPath("/data/product_categories", "GET", "POST", "PUT", "DELETE"));
-		apiPaths.add(new ApiPath("/data/sales", "GET", "POST", "PUT", "DELETE"));
-		apiPaths.add(new ApiPath("/data/salespeople", "GET", "POST", "PUT", "DELETE"));
-		apiPaths.add(new ApiPath("/data/shippers", "GET", "POST", "PUT", "DELETE"));
-		apiPaths.add(new ApiPath("/data/users", "GET", "POST", "PUT", "DELETE"));
-		apiPaths.add(new ApiPath("/data/user_roles", "GET", "POST", "PUT", "DELETE"));
+				
+		apiPaths = List.of(new ApiPath("/", "GET"),
+						new ApiPath("/public/about", "GET"),
+						new ApiPath("/public/receipt/TOKEN", "GET"),
+						new ApiPath("/public/checkout", "POST"),
+						new ApiPath("/public/checkout/validate", "POST", "GET"), // GET was missing
+						new ApiPath("/public/guest", "POST"),
+						new ApiPath("/public/login", "POST"),
+						new ApiPath("/public/register", "POST"),
+						new ApiPath("/data/sales/confirmation", "POST"),
+						new ApiPath("/data/sales/rejection", "POST"),
+						new ApiPath("/data/sales/completion", "POST"),		
+						new ApiPath("/account/profile", "GET", "PUT"),
+						new ApiPath("/access", "GET"),
+						new ApiPath("/access/APIROUTE", "GET"),
+						new ApiPath("/data/people", "GET"),
+						new ApiPath("/data/billing_types", "GET"),
+						new ApiPath("/data/sell_statuses", "GET"),
+						new ApiPath("/data/customers", "GET", "POST", "PUT", "DELETE"),
+						new ApiPath("/data/images", "GET", "POST", "PUT", "DELETE"),
+						new ApiPath("/data/products", "GET", "POST", "PUT", "DELETE"),
+						new ApiPath("/data/product_lists", "GET", "POST", "PUT", "DELETE"),
+						new ApiPath("/data/product_list_contents", "GET", "POST", "PUT", "DELETE"),
+						new ApiPath("/data/product_categories", "GET", "POST", "PUT", "DELETE"),
+						new ApiPath("/data/sales", "GET", "POST", "PUT", "DELETE"),
+						new ApiPath("/data/salespeople", "GET", "POST", "PUT", "DELETE"),
+						new ApiPath("/data/shippers", "GET", "POST", "PUT", "DELETE"),
+						new ApiPath("/data/users", "GET", "POST", "PUT", "DELETE"),
+						new ApiPath("/data/user_roles", "GET", "POST", "PUT", "DELETE"));
 		
 		// Some ApiPaths with Invalid methods to test (if this fail, others should fail too)
-		apiPathsWithInvalidMethods = new ArrayList<>();
-		
-		apiPathsWithInvalidMethods.add(new ApiPath("/public/checkout", "GET"));
-		apiPathsWithInvalidMethods.add(new ApiPath("/public/checkout/validate", "PUT"));
-		apiPathsWithInvalidMethods.add(new ApiPath("/public/guest", "GET"));
-		apiPathsWithInvalidMethods.add(new ApiPath("/public/login", "GET"));
-		apiPathsWithInvalidMethods.add(new ApiPath("/public/register", "GET"));
-		apiPathsWithInvalidMethods.add(new ApiPath("/data/sales/confirmation", "GET"));
-		apiPathsWithInvalidMethods.add(new ApiPath("/data/sales/rejection", "GET"));
-		apiPathsWithInvalidMethods.add(new ApiPath("/data/sales/completion", "GET"));
+		apiPathsWithInvalidMethods = List.of(new ApiPath("/public/checkout", "GET"),
+											new ApiPath("/public/checkout/validate", "PUT"),
+											new ApiPath("/public/guest", "GET"),
+											new ApiPath("/public/login", "GET"),
+											new ApiPath("/public/register", "GET"),
+											new ApiPath("/data/sales/confirmation", "GET"),
+											new ApiPath("/data/sales/rejection", "GET"),
+											new ApiPath("/data/sales/completion", "GET"));
 	}
 	
 	// Arguments Providers
