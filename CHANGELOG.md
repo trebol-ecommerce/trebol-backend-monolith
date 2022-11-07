@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update GitHub Action workflows
   - `actions/checkout`      | `v2 -> `v3`
   - `actions/setup-java`    | `v1 -> `v3`
+    - Following [Switching to V2](https://github.com/actions/setup-java/blob/v3.6.0/docs/switching-to-v2.md) guide
+    - Chose `temurin` distro, maintained by the Eclipse foundation
   - `actions/cache`         | `v1 -> `v3`
 - Update to latest Spring Boot patch (as of Oct 12th, 2022)
   - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
