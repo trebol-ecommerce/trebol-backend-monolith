@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `sales_statuses` 				-> `should be sell_statuses`
     - `app_users_roles` 				-> `should be app_user_roles`
     - `app_users_roles_permissions` -> `should be app_user_role_permissions`
-- Update GitHub Action workflows
+- Update GitHub Actions workflow
   - `actions/checkout`      | `v2 -> `v3`
   - `actions/setup-java`    | `v1 -> `v3`
     - Following [Switching to V2](https://github.com/actions/setup-java/blob/v3.6.0/docs/switching-to-v2.md) guide
