@@ -26,6 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `sales_statuses` 				-> `should be sell_statuses`
     - `app_users_roles` 				-> `should be app_user_roles`
     - `app_users_roles_permissions` -> `should be app_user_role_permissions`
+- Update GitHub Action workflows
+  - `actions/checkout`      | `v2 -> `v3`
+  - `actions/setup-java`    | `v1 -> `v3`
+  - `actions/cache`         | `v1 -> `v3`
 - Update to latest Spring Boot patch (as of Oct 12th, 2022)
   - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
 - Take advantage of Project Lombok `@Builder` annotation for Pojo classes
