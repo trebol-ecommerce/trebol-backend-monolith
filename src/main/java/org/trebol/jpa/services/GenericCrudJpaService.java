@@ -53,13 +53,16 @@ public abstract class GenericCrudJpaService<P, E>
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
   protected final ITwoWayConverterJpaService<P, E> converter;
+  protected final IDataTransportJpaService<P, E> dataTransportService;
   protected final Logger logger;
 
   protected GenericCrudJpaService(IJpaRepository<E> repository,
                                ITwoWayConverterJpaService<P, E> converter,
+                               IDataTransportJpaService<P, E> dataTransportService,
                                Logger logger) {
     this.repository = repository;
     this.converter = converter;
+    this.dataTransportService = dataTransportService;
     this.logger = logger;
   }
 
@@ -159,7 +162,7 @@ public abstract class GenericCrudJpaService<P, E>
    */
   protected P doUpdate(P changes, E existingEntity)
       throws BadInputException {
-    E updatedEntity = converter.applyChangesToExistingEntity(changes, existingEntity);
+    E updatedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
     if (existingEntity.equals(updatedEntity)) {
       return changes;
     }
