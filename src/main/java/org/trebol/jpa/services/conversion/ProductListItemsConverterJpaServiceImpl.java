@@ -73,9 +73,4 @@ public class ProductListItemsConverterJpaServiceImpl
   public ProductListItem convertToNewEntity(ProductPojo source) throws BadInputException {
     throw new UnsupportedOperationException("Not implemented");
   }
-
-  @Override
-  public ProductListItem applyChangesToExistingEntity(ProductPojo source, ProductListItem existing) throws BadInputException {
-    throw new UnsupportedOperationException("Not implemented");
-  }
 }

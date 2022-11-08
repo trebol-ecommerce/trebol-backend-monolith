@@ -58,19 +58,4 @@ public class SalespeopleConverterJpaServiceImpl
     target.setPerson(targetPerson);
     return target;
   }
-
-  @Override
-  public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson existing) throws BadInputException {
-    Salesperson target = new Salesperson(existing);
-    Person existingPerson = existing.getPerson();
-
-    PersonPojo sourcePerson = source.getPerson();
-    if (sourcePerson == null) {
-      throw new BadInputException("Salesperson must have a person profile");
-    }
-    Person person = peopleService.applyChangesToExistingEntity(sourcePerson, existingPerson);
-    target.setPerson(person);
-
-    return target;
-  }
 }

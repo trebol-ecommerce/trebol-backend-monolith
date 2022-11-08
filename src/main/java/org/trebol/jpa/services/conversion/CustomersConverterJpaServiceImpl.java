@@ -58,16 +58,4 @@ public class CustomersConverterJpaServiceImpl
     target.setPerson(targetPerson);
     return target;
   }
-
-  @Override
-  public Customer applyChangesToExistingEntity(CustomerPojo source, Customer existing) throws BadInputException {
-    Customer target = new Customer(existing);
-    Person existingPerson = existing.getPerson();
-
-    PersonPojo sourcePerson = source.getPerson();
-    Person person = peopleService.applyChangesToExistingEntity(sourcePerson, existingPerson);
-    target.setPerson(person);
-
-    return target;
-  }
 }
