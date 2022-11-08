@@ -36,8 +36,6 @@ public class CorsProperties {
   @NotBlank
   private String allowedOrigins;
   @NotBlank
-  private String mappings;
-  @NotBlank
   private String listDelimiter;
 
   public String getAllowedHeaders() {
@@ -54,14 +52,6 @@ public class CorsProperties {
 
   public void setAllowedOrigins(String allowedOrigins) {
     this.allowedOrigins = allowedOrigins;
-  }
-
-  public String getMappings() {
-    return mappings;
-  }
-
-  public void setMappings(String mappings) {
-    this.mappings = mappings;
   }
 
   public String getListDelimiter() {

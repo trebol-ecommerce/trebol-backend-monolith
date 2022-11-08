@@ -35,8 +35,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.trebol.exceptions.CorsMappingParseException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.pojo.CustomerPojo;
@@ -56,7 +54,6 @@ public class SecurityConfig
   private final UserDetailsService userDetailsService;
   private final SecretKey secretKey;
   private final SecurityProperties securityProperties;
-  private final CorsProperties corsProperties;
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final GenericCrudJpaService<CustomerPojo, Customer> customersService;
 
@@ -65,13 +62,11 @@ public class SecurityConfig
                         SecretKey secretKey,
                         SecurityProperties securityProperties,
                         IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-                        CorsProperties corsProperties,
                         GenericCrudJpaService<CustomerPojo, Customer> customersService) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.securityProperties = securityProperties;
     this.jwtClaimsParserService = jwtClaimsParserService;
-    this.corsProperties = corsProperties;
     this.customersService = customersService;
   }
 
@@ -118,11 +113,6 @@ public class SecurityConfig
     provider.setUserDetailsService(userDetailsService);
     return provider;
   }
-
-  /*@Bean
-  public CorsConfigurationSource corsConfigurationSource() throws CorsMappingParseException {
-    return new CorsConfigurationSourceBuilder(corsProperties).build();
-  }*/
 
   @Bean
   public PasswordEncoder passwordEncoder() {
