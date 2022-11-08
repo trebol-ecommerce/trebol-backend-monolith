@@ -25,26 +25,18 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductCategoryPojo;
-
-import java.util.Optional;
 
 @Transactional
 @Service
 public class ProductCategoriesConverterJpaServiceImpl
   implements ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> {
-
-  private final IProductsCategoriesJpaRepository categoriesRepository;
   private final ConversionService conversion;
 
   @Autowired
-  public ProductCategoriesConverterJpaServiceImpl(IProductsCategoriesJpaRepository repository,
-                                                  ConversionService conversion) {
-    this.categoriesRepository = repository;
+  public ProductCategoriesConverterJpaServiceImpl(ConversionService conversion) {
     this.conversion = conversion;
   }
 
@@ -59,46 +51,6 @@ public class ProductCategoriesConverterJpaServiceImpl
     ProductCategory target = new ProductCategory();
     target.setCode(source.getCode());
     target.setName(source.getName());
-    this.applyParent(source, target);
     return target;
-  }
-
-  @Override
-  public ProductCategory applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory existing)
-          throws BadInputException {
-    ProductCategory target = new ProductCategory(existing);
-
-    String name = source.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
-    }
-
-    this.applyParent(source, target);
-
-    return target;
-  }
-
-  private void applyParent(ProductCategoryPojo source, ProductCategory target) {
-    ProductCategoryPojo parent = source.getParent();
-    if (parent != null) {
-      String parentCode = parent.getCode();
-      ProductCategory previousParent = target.getParent();
-      if (parentCode == null) {
-        this.applyNewParent(target, parent);
-      } else if (previousParent == null || !previousParent.getCode().equals(parentCode)) {
-        Optional<ProductCategory> parentMatch = categoriesRepository.findByCode(parentCode);
-        if (parentMatch.isPresent()) {
-          target.setParent(parentMatch.get());
-        } else {
-          this.applyNewParent(target, parent);
-        }
-      }
-    }
-  }
-
-  private void applyNewParent(ProductCategory target, ProductCategoryPojo parent) {
-    ProductCategory newParentEntity = this.convertToNewEntity(parent);
-    newParentEntity = categoriesRepository.save(newParentEntity);
-    target.setParent(newParentEntity);
   }
 }

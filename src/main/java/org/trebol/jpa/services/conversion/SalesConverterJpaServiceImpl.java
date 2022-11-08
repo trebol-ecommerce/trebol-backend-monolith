@@ -38,6 +38,7 @@ import javax.validation.Validator;
 import java.util.*;
 import java.util.regex.Pattern;
 
+// TODO reduce the complexity & code duplication arising from this service
 @Transactional
 @Service
 public class SalesConverterJpaServiceImpl
@@ -156,46 +157,6 @@ public class SalesConverterJpaServiceImpl
     return target;
   }
 
-  @Transactional
-  @Override
-  public Sell applyChangesToExistingEntity(SellPojo source, Sell existing) throws BadInputException {
-    Sell target = new Sell(existing);
-
-    if (source.getDate() != null) {
-      target.setDate(source.getDate());
-    }
-    if (source.getStatus() != null) {
-      this.applyStatus(source, target);
-    }
-    if (source.getPaymentType() != null) {
-      this.applyPaymentType(source, target);
-    }
-    if (source.getBillingType() != null) {
-      this.applyBillingTypeAndCompany(source, target);
-    }
-    if (source.getCustomer() != null) {
-      this.applyCustomer(source, target);
-    }
-    if (source.getBillingAddress() != null) {
-      this.applyBillingAddress(source, target);
-    }
-    if (source.getShippingAddress() != null) {
-      this.applyShippingAddress(source, target);
-    }
-
-    if (source.getShipper() != null) {
-      this.applyShipper(source, target);
-    }
-
-    Collection<SellDetailPojo> details = source.getDetails();
-    if (details != null && !details.isEmpty()) {
-      List<SellDetail> entityDetails = this.convertDetails(details);
-      target.setDetails(entityDetails);
-    }
-
-    return target;
-  }
-
   private void applyStatus(SellPojo source, Sell target) throws BadInputException {
     String statusName = source.getStatus();
     if (statusName == null || statusName.isBlank()) {
@@ -242,7 +203,7 @@ public class SalesConverterJpaServiceImpl
       if (sourceBillingCompany == null) {
         throw new BadInputException("Billing company details are required to generate enterprise invoices");
       } else {
-        BillingCompany billingCompany = fetchOrConvertBillingCompany(target, sourceBillingCompany);
+        BillingCompany billingCompany = fetchOrConvertBillingCompany(sourceBillingCompany);
         target.setBillingCompany(billingCompany);
       }
     }
@@ -340,7 +301,7 @@ public class SalesConverterJpaServiceImpl
     }
   }
 
-  private BillingCompany fetchOrConvertBillingCompany(Sell target, BillingCompanyPojo sourceBillingCompany)
+  private BillingCompany fetchOrConvertBillingCompany(BillingCompanyPojo sourceBillingCompany)
     throws BadInputException {
     String idNumber = sourceBillingCompany.getIdNumber();
     if (idNumber == null || idNumber.isBlank() ) {
