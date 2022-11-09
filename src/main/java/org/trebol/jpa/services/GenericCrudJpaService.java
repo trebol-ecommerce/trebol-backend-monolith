@@ -21,7 +21,6 @@
 package org.trebol.jpa.services;
 
 import com.querydsl.core.types.Predicate;
-import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -54,16 +53,13 @@ public abstract class GenericCrudJpaService<P, E>
   protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
   protected final ITwoWayConverterJpaService<P, E> converter;
   protected final IDataTransportJpaService<P, E> dataTransportService;
-  protected final Logger logger;
 
   protected GenericCrudJpaService(IJpaRepository<E> repository,
                                ITwoWayConverterJpaService<P, E> converter,
-                               IDataTransportJpaService<P, E> dataTransportService,
-                               Logger logger) {
+                               IDataTransportJpaService<P, E> dataTransportService) {
     this.repository = repository;
     this.converter = converter;
     this.dataTransportService = dataTransportService;
-    this.logger = logger;
   }
 
   /**
