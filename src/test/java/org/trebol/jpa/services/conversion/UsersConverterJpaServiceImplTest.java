@@ -22,12 +22,8 @@ import org.trebol.pojo.UserPojo;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.trebol.constant.TestConstants.ANY;
 
@@ -72,36 +68,6 @@ public class UsersConverterJpaServiceImplTest {
     void afterEach() {
         user = null;
         userPojo = null;
-    }
-
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        userPojo.setId(1L);
-        userPojo.setName(ANY);
-        userPojo.setRole(ANY);
-        userPojo.setPassword(ANY);
-        final PersonPojo personPojo = PersonPojo.builder().idNumber(ANY).build();
-        userPojo.setPerson(personPojo);
-
-
-        user.setId(1L);
-        user.setName(ANY + " ");
-        final UserRole role = new UserRole();
-        role.setName(ANY + " ");
-        user.setUserRole(role);
-        user.setPassword(ANY + " ");
-        final Person person = new Person();
-        person.setIdNumber(ANY + " ");
-        user.setPerson(person);
-
-
-        when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(role));
-        when(passwordEncoder.encode(anyString())).thenReturn(ANY);
-        when(peopleRepository.findByIdNumber(anyString())).thenReturn(Optional.of(person));
-
-        User actual = sut.applyChangesToExistingEntity(userPojo, user);
-
-        assertEquals(ANY + " ", actual.getPerson().getIdNumber());
     }
 
     @Test

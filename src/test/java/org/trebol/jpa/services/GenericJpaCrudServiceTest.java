@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.trebol.exceptions.BadInputException;
@@ -28,6 +27,7 @@ class GenericJpaCrudServiceTest {
   @Mock IJpaRepository<GenericEntity> genericRepositoryMock;
 
   @Mock ITwoWayConverterJpaService<GenericPojo, GenericEntity> genericConverterMock;
+  @Mock IDataTransportJpaService<GenericPojo, GenericEntity> genericDataTransportServiceMock;
 
   private final GenericPojo newPojo = new GenericPojo(null, "test");
   private final GenericEntity newEntity = new GenericEntity(null, "test");
@@ -118,7 +118,7 @@ class GenericJpaCrudServiceTest {
       throws BadInputException, EntityNotFoundException {
     GenericPojo updatingPojo = new GenericPojo(1L, "test2");
     GenericEntity updatedEntity = new GenericEntity(1L, "test2");
-    when(genericConverterMock.applyChangesToExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
+    when(genericDataTransportServiceMock.applyChangesToExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
     when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
     when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatingPojo);
     GenericCrudJpaService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
@@ -127,7 +127,7 @@ class GenericJpaCrudServiceTest {
 
     assertNotNull(result);
     assertEquals(updatingPojo, result);
-    verify(genericConverterMock).applyChangesToExistingEntity(updatingPojo, persistedEntity);
+    verify(genericDataTransportServiceMock).applyChangesToExistingEntity(updatingPojo, persistedEntity);
     verify(genericRepositoryMock).saveAndFlush(updatedEntity);
     verify(genericConverterMock).convertToPojo(updatedEntity);
   }
@@ -139,7 +139,7 @@ class GenericJpaCrudServiceTest {
     GenericPojo updatingPojo = new GenericPojo(1L, "test2");
     GenericEntity updatedEntity = new GenericEntity(1L, "test2");
     when(genericRepositoryMock.findOne(filters)).thenReturn(Optional.of(persistedEntity));
-    when(genericConverterMock.applyChangesToExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
+    when(genericDataTransportServiceMock.applyChangesToExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
     when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
     when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatingPojo);
 
@@ -148,7 +148,7 @@ class GenericJpaCrudServiceTest {
 
     assertEquals(result, updatingPojo);
     verify(genericRepositoryMock).findOne(filters);
-    verify(genericConverterMock).applyChangesToExistingEntity(updatingPojo, persistedEntity);
+    verify(genericDataTransportServiceMock).applyChangesToExistingEntity(updatingPojo, persistedEntity);
     verify(genericRepositoryMock).saveAndFlush(updatedEntity);
     verify(genericConverterMock).convertToPojo(updatedEntity);
   }
@@ -190,7 +190,7 @@ class GenericJpaCrudServiceTest {
     return new GenericCrudJpaService<>(
         genericRepositoryMock,
         genericConverterMock,
-        LoggerFactory.getLogger(GenericCrudJpaService.class)) {
+        genericDataTransportServiceMock) {
       @Override
       public Optional<GenericEntity> getExisting(GenericPojo example) {
         return Optional.empty();
@@ -202,7 +202,7 @@ class GenericJpaCrudServiceTest {
     return new GenericCrudJpaService<>(
         genericRepositoryMock,
         genericConverterMock,
-        LoggerFactory.getLogger(GenericCrudJpaService.class)) {
+        genericDataTransportServiceMock) {
       @Override
       public Optional<GenericEntity> getExisting(GenericPojo example) {
         return Optional.of(persistedEntity);

@@ -1,8 +1,10 @@
 package org.trebol.jpa.services.crud;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Visitor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.config.SecurityProperties;
@@ -13,11 +15,9 @@ import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.UserPojo;
-
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.Visitor;
 
 import java.util.Optional;
 
@@ -26,19 +26,11 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UsersJpaCrudServiceTest {
+  @InjectMocks GenericCrudJpaService<UserPojo, User> instance;
   @Mock IUsersJpaRepository usersRepositoryMock;
   @Mock ITwoWayConverterJpaService<UserPojo, User> usersConverterMock;
+  @Mock IDataTransportJpaService<UserPojo, User> dataTransportServiceMock;
   @Mock SecurityProperties securityPropertiesMock;
-  private GenericCrudJpaService<UserPojo, User> instance;
-
-  @BeforeEach
-  void beforeEach() {
-    instance = new UsersJpaCrudServiceImpl(
-      usersRepositoryMock,
-      usersConverterMock,
-      securityPropertiesMock
-    );
-  }
 
   @Test
   void sanity_check() {

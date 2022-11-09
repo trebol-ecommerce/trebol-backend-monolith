@@ -1,15 +1,16 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.repositories.IBillingTypesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.BillingTypePojo;
 
@@ -21,17 +22,10 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BillingTypesJpaCrudServiceTest {
+  @InjectMocks GenericCrudJpaService<BillingTypePojo, BillingType> instance;
   @Mock IBillingTypesJpaRepository billingTypesRepositoryMock;
   @Mock ITwoWayConverterJpaService<BillingTypePojo, BillingType> billingTypesConverterMock;
-  private GenericCrudJpaService<BillingTypePojo, BillingType> instance;
-
-  @BeforeEach
-  void beforeEach() {
-    instance = new BillingTypesJpaCrudServiceImpl(
-            billingTypesRepositoryMock,
-            billingTypesConverterMock
-    );
-  }
+  @Mock IDataTransportJpaService<BillingTypePojo, BillingType> dataTransportServiceMock;
 
   @Test
   void sanity_check() {

@@ -8,16 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
-import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.pojo.ShipperPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,12 +44,6 @@ class ShippersConverterJpaServiceImplTest {
         shipperPojo = null;
     }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        shipperPojo.setName("PIOLO");
-        Shipper actual = sut.applyChangesToExistingEntity(shipperPojo, shipper);
-        assertEquals(1L, actual.getId());
-    }
     @Test
     void testConvertToPojo() {
         when(conversionService.convert(any(Shipper.class), eq(ShipperPojo.class))).thenReturn(shipperPojo);

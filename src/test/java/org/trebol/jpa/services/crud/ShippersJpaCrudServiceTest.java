@@ -1,15 +1,16 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.repositories.IShippersJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ShipperPojo;
 
@@ -20,17 +21,10 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ShippersJpaCrudServiceTest {
+  @InjectMocks GenericCrudJpaService<ShipperPojo, Shipper> instance;
   @Mock IShippersJpaRepository shippersRepositoryMock;
   @Mock ITwoWayConverterJpaService<ShipperPojo, Shipper> shippersConverterMock;
-  private GenericCrudJpaService<ShipperPojo, Shipper> instance;
-
-  @BeforeEach
-  void beforeEach() {
-    instance = new ShippersJpaCrudServiceImpl(
-            shippersRepositoryMock,
-            shippersConverterMock
-    );
-  }
+  @Mock IDataTransportJpaService<ShipperPojo, Shipper> dataTransportServiceMock;
 
   @Test
   void sanity_check() {

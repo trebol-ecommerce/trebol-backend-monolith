@@ -1,15 +1,5 @@
 package org.trebol.operation.services;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,8 +16,17 @@ import org.trebol.jpa.exceptions.UserNotFoundException;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.PersonPojo;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceImplTest {
@@ -36,6 +35,7 @@ class ProfileServiceImplTest {
 	@Mock	IUsersJpaRepository usersRepositoryMock;
 	@Mock	GenericCrudJpaService<PersonPojo, Person> peopleServiceMock;
 	@Mock	ITwoWayConverterJpaService<PersonPojo, Person> peopleConverterMock;
+	@Mock IDataTransportJpaService<PersonPojo, Person> peopleDataTransportServiceMock;
 	@Mock	IPeopleJpaRepository peopleRepositoryMock;
 	
 	UserRole userRoleMock;
@@ -105,7 +105,7 @@ class ProfileServiceImplTest {
 	@Test
 	void updateProfileForUserWithName_UserHasProfile_UpdateProfile_NoException() throws BadInputException {
 		when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userMock)); // in getUserFromName
-		when(peopleConverterMock.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class)))
+		when(peopleDataTransportServiceMock.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class)))
 				.thenReturn(personMock);
 		
 		assertDoesNotThrow(() -> instance.updateProfileForUserWithName("userName", personPojoMock));

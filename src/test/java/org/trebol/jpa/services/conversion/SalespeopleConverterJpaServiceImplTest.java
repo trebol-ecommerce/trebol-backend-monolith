@@ -14,7 +14,6 @@ import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.SalespersonPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.trebol.constant.TestConstants.ID_1L;
@@ -44,22 +43,6 @@ public class SalespeopleConverterJpaServiceImplTest {
         salesperson.setPerson(person);
 
         salespersonPojo = SalespersonPojo.builder().person(personPojo).build();
-    }
-
-
-    @Test
-    void testApplyChangesToExistingEntityThrowsBadInputException() {
-        salespersonPojo.setPerson(null);
-        BadInputException badInputException = assertThrows(BadInputException.class, ()
-                -> sut.applyChangesToExistingEntity(salespersonPojo, salesperson));
-        assertEquals("Salesperson must have a person profile", badInputException.getMessage());
-    }
-
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        when(peopleService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
-        Salesperson actual = sut.applyChangesToExistingEntity(salespersonPojo, salesperson);
-        assertEquals(person.getId(), actual.getPerson().getId());
     }
 
     @Test
