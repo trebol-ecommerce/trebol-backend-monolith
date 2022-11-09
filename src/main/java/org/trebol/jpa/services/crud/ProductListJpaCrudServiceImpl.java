@@ -21,7 +21,6 @@
 package org.trebol.jpa.services.crud;
 
 import com.querydsl.core.types.Predicate;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +28,7 @@ import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
 import org.trebol.jpa.repositories.IProductListsJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductListPojo;
 
@@ -46,10 +46,11 @@ public class ProductListJpaCrudServiceImpl
   @Autowired
   public ProductListJpaCrudServiceImpl(IProductListsJpaRepository productListRepository,
                                        IProductListItemsJpaRepository productListItemRepository,
-                                       ITwoWayConverterJpaService<ProductListPojo, ProductList> converterService) {
+                                       ITwoWayConverterJpaService<ProductListPojo, ProductList> converterService,
+                                       IDataTransportJpaService<ProductListPojo, ProductList> dataTransportService) {
     super(productListRepository,
            converterService,
-           LoggerFactory.getLogger(ProductListJpaCrudServiceImpl.class));
+           dataTransportService);
     this.productListRepository = productListRepository;
     this.productListItemRepository = productListItemRepository;
   }

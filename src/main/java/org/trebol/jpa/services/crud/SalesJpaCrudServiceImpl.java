@@ -21,7 +21,6 @@
 package org.trebol.jpa.services.crud;
 
 import com.querydsl.core.types.Predicate;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +30,7 @@ import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
@@ -56,10 +56,11 @@ public class SalesJpaCrudServiceImpl
   @Autowired
   public SalesJpaCrudServiceImpl(ISalesJpaRepository repository,
                                  ITwoWayConverterJpaService<SellPojo, Sell> converter,
+                                 IDataTransportJpaService<SellPojo, Sell> dataTransportService,
                                  ITwoWayConverterJpaService<ProductPojo, Product> productConverter) {
     super(repository,
           converter,
-          LoggerFactory.getLogger(SalesJpaCrudServiceImpl.class));
+          dataTransportService);
     this.salesRepository = repository;
     this.productConverter = productConverter;
   }
@@ -105,7 +106,7 @@ public class SalesJpaCrudServiceImpl
     if ((statusCode >= 3 || statusCode < 0) && !CAN_EDIT_AFTER_PROCESS) {
       throw new BadInputException("The requested transaction cannot be modified");
     }
-    Sell updatedEntity = converter.applyChangesToExistingEntity(changes, existingEntity);
+    Sell updatedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
     this.updateTotals(updatedEntity);
     if (existingEntity.equals(updatedEntity)) {
       return changes;

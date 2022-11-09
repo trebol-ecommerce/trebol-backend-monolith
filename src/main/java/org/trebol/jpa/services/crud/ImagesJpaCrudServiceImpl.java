@@ -20,7 +20,6 @@
 
 package org.trebol.jpa.services.crud;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +27,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.repositories.IImagesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ImagePojo;
 
@@ -42,10 +42,11 @@ public class ImagesJpaCrudServiceImpl
 
   @Autowired
   public ImagesJpaCrudServiceImpl(IImagesJpaRepository repository,
-                                  ITwoWayConverterJpaService<ImagePojo, Image> converter) {
+                                  ITwoWayConverterJpaService<ImagePojo, Image> converter,
+                                  IDataTransportJpaService<ImagePojo, Image> dataTransportService) {
     super(repository,
           converter,
-          LoggerFactory.getLogger(ImagesJpaCrudServiceImpl.class));
+          dataTransportService);
     this.imagesRepository = repository;
   }
 
