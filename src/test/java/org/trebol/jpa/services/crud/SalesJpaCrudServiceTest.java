@@ -3,9 +3,9 @@ package org.trebol.jpa.services.crud;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
@@ -13,6 +13,7 @@ import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellPojo;
@@ -31,19 +32,11 @@ import static org.trebol.testhelpers.SalesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class SalesJpaCrudServiceTest {
+  @InjectMocks GenericCrudJpaService<SellPojo, Sell> instance;
   @Mock ISalesJpaRepository salesRepositoryMock;
   @Mock ITwoWayConverterJpaService<SellPojo, Sell> salesConverterMock;
+  @Mock IDataTransportJpaService<SellPojo, Sell> dataTransportServiceMock;
   @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock;
-  private GenericCrudJpaService<SellPojo, Sell> instance;
-
-  @BeforeEach
-  void beforeEach() {
-    instance = new SalesJpaCrudServiceImpl(
-            salesRepositoryMock,
-            salesConverterMock,
-            productsConverterMock
-    );
-  }
 
   @Test
   void sanity_check() {
@@ -115,14 +108,14 @@ class SalesJpaCrudServiceTest {
     sellEntityWithUpdates.setDate(updatedDate);
     Predicate filters = new BooleanBuilder();
     when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.of(sellEntityAfterCreation()));
-    when(salesConverterMock.applyChangesToExistingEntity(sellPojoWithUpdates, sellEntityAfterCreation())).thenReturn(sellEntityWithUpdates);
+    when(dataTransportServiceMock.applyChangesToExistingEntity(sellPojoWithUpdates, sellEntityAfterCreation())).thenReturn(sellEntityWithUpdates);
     when(salesRepositoryMock.saveAndFlush(sellEntityWithUpdates)).thenReturn(sellEntityWithUpdates);
     when(salesConverterMock.convertToPojo(sellEntityWithUpdates)).thenReturn(sellPojoWithUpdates);
 
     SellPojo result = instance.update(sellPojoWithUpdates, filters);
 
     verify(salesRepositoryMock).findOne(filters);
-    verify(salesConverterMock).applyChangesToExistingEntity(sellPojoWithUpdates, sellEntityAfterCreation());
+    verify(dataTransportServiceMock).applyChangesToExistingEntity(sellPojoWithUpdates, sellEntityAfterCreation());
     verify(salesRepositoryMock).saveAndFlush(sellEntityWithUpdates);
     verify(salesConverterMock).convertToPojo(sellEntityWithUpdates);
     assertNotNull(result);
@@ -137,12 +130,12 @@ class SalesJpaCrudServiceTest {
     SellPojo copy = sellPojoAfterCreation();
     Predicate filters = new BooleanBuilder();
     when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.of(sellEntityAfterCreation()));
-    when(salesConverterMock.applyChangesToExistingEntity(copy, sellEntityAfterCreation())).thenReturn(sellEntityAfterCreation());
+    when(dataTransportServiceMock.applyChangesToExistingEntity(copy, sellEntityAfterCreation())).thenReturn(sellEntityAfterCreation());
 
     SellPojo result = instance.update(copy, filters);
 
     verify(salesRepositoryMock).findOne(filters);
-    verify(salesConverterMock).applyChangesToExistingEntity(copy, sellEntityAfterCreation());
+    verify(dataTransportServiceMock).applyChangesToExistingEntity(copy, sellEntityAfterCreation());
     assertEquals(result, copy);
   }
 

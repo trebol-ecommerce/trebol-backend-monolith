@@ -1,9 +1,9 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
@@ -11,6 +11,7 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.repositories.ISalespeopleJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.SalespersonPojo;
 
@@ -22,17 +23,10 @@ import static org.trebol.testhelpers.SalespeopleTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class SalespeopleJpaCrudServiceTest {
+  @InjectMocks GenericCrudJpaService<SalespersonPojo, Salesperson> instance;
   @Mock ISalespeopleJpaRepository salespeopleRepositoryMock;
   @Mock ITwoWayConverterJpaService<SalespersonPojo, Salesperson> salespeopleConverterMock;
-  private GenericCrudJpaService<SalespersonPojo, Salesperson> instance;
-
-  @BeforeEach
-  void beforeEach() {
-    instance = new SalespeopleJpaCrudServiceImpl(
-            salespeopleRepositoryMock,
-            salespeopleConverterMock
-    );
-  }
+  @Mock IDataTransportJpaService<SalespersonPojo, Salesperson> dataTransportService;
 
   @Test
   void sanity_check() {

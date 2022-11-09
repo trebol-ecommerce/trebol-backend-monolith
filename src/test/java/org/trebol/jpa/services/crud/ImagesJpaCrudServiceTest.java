@@ -1,15 +1,16 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.repositories.IImagesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ImagePojo;
 
@@ -22,17 +23,10 @@ import static org.trebol.testhelpers.ImagesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class ImagesJpaCrudServiceTest {
+  @InjectMocks GenericCrudJpaService<ImagePojo, Image> instance;
   @Mock IImagesJpaRepository imagesRepositoryMock;
   @Mock ITwoWayConverterJpaService<ImagePojo, Image> imagesConverterMock;
-  private GenericCrudJpaService<ImagePojo, Image> instance;
-
-  @BeforeEach
-  void beforeEach() {
-    instance = new ImagesJpaCrudServiceImpl(
-            imagesRepositoryMock,
-            imagesConverterMock
-    );
-  }
+  @Mock IDataTransportJpaService<ImagePojo, Image> dataTransportServiceMock;
 
   @Test
   void sanity_check() {

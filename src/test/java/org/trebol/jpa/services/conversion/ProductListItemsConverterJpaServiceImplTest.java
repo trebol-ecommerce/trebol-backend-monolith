@@ -16,12 +16,8 @@ import org.trebol.pojo.ProductPojo;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.trebol.constant.TestConstants.ANY;
 
@@ -57,12 +53,5 @@ class ProductListItemsConverterJpaServiceImplTest {
         ProductPojo actual = sut.convertToPojo(productListItem);
 
         assertNotNull(actual.getImages());
-    }
-
-    @Test
-    void testConvertToNewEntity() {
-        UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
-                () -> sut.applyChangesToExistingEntity(ProductPojo.builder().build(), new ProductListItem()));
-        assertEquals("Not implemented", unsupportedOperationException.getMessage());
     }
 }

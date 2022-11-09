@@ -51,11 +51,6 @@ class ProductListConverterJpaServiceImplTest {
     }
 
     @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        ProductList actual = sut.applyChangesToExistingEntity(productListPojo, productList);
-        assertEquals(1L, actual.getId());
-    }
-    @Test
     void testConvertToPojo() {
         Mockito.when(productListItemRepository.count(Mockito.any(Predicate.class))).thenReturn(ID_1L);
         ProductListPojo actual = sut.convertToPojo(productList);

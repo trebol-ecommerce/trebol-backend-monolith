@@ -21,12 +21,8 @@ import org.trebol.pojo.ProductPojo;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,21 +57,6 @@ public class ProductsConverterJpaServiceImplTest {
         productPojo = null;
     }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        productPojo.setBarcode(ANY);
-        productPojo.setName("Bear Brand");
-        productPojo.setPrice(1);
-        productPojo.setDescription(ANY);
-        productPojo.setCurrentStock(1);
-
-        product.setBarcode(ANY + " ");
-        product.setName("Bear Brand  ");
-        product.setPrice(2);
-        product.setDescription(ANY + " ");
-        Product actual = sut.applyChangesToExistingEntity(productPojo, product);
-        assertEquals(ANY, actual.getBarcode());
-    }
     @Test
     void testConvertToPojo() {
         when(conversionService.convert(any(Product.class), eq(ProductPojo.class))).thenReturn(productPojo);

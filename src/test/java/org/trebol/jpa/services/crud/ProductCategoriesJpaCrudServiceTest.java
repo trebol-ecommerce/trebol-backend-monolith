@@ -1,15 +1,16 @@
 package org.trebol.jpa.services.crud;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductCategoryPojo;
 
@@ -22,17 +23,10 @@ import static org.trebol.testhelpers.ProductCategoriesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductCategoriesJpaCrudServiceTest {
+  @InjectMocks GenericCrudJpaService<ProductCategoryPojo, ProductCategory> instance;
   @Mock IProductsCategoriesJpaRepository categoriesRepositoryMock;
   @Mock ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverterMock;
-  private GenericCrudJpaService<ProductCategoryPojo, ProductCategory> instance;
-
-  @BeforeEach
-  void beforeEach() {
-    instance = new ProductCategoriesJpaCrudServiceImpl(
-            categoriesRepositoryMock,
-            categoriesConverterMock
-    );
-  }
+  @Mock IDataTransportJpaService<ProductCategoryPojo, ProductCategory> dataTransportServiceMock;
 
   @Test
   void sanity_check() {
