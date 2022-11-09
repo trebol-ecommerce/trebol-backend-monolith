@@ -28,6 +28,8 @@ import org.trebol.operation.IProfileService;
 import org.trebol.pojo.PersonPojo;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+
 import java.security.Principal;
 
 @RestController
@@ -50,7 +52,7 @@ public class AccountProfileController {
   }
 
   @PutMapping({"", "/"})
-  public void updateProfile(Principal principal, @RequestBody PersonPojo newProfile)
+  public void updateProfile(Principal principal, @Valid @RequestBody PersonPojo newProfile)
       throws EntityNotFoundException, BadInputException {
     String username = principal.getName();
     userProfileService.updateProfileForUserWithName(principal.getName(), newProfile);
