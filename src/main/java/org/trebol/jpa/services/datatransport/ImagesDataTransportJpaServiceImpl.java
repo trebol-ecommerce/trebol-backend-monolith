@@ -27,10 +27,10 @@ import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.ImagePojo;
 
 @Service
-public class ImagesDataTranposrtJpaServiceImpl
+public class ImagesDataTransportJpaServiceImpl
   implements IDataTransportJpaService<ImagePojo, Image> {
 
-  public ImagesDataTranposrtJpaServiceImpl(
+  public ImagesDataTransportJpaServiceImpl(
   ) {
   }
 
