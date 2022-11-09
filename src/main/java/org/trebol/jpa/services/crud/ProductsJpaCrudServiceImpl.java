@@ -20,6 +20,7 @@
 
 package org.trebol.jpa.services.crud;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
@@ -54,10 +56,12 @@ public class ProductsJpaCrudServiceImpl
   private final GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesCrudService;
   private final ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverter;
   private final ITwoWayConverterJpaService<ImagePojo, Image> imageConverter;
+  private final Logger logger = LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class);
 
   @Autowired
   public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository,
                                     ITwoWayConverterJpaService<ProductPojo, Product> converter,
+                                    IDataTransportJpaService<ProductPojo, Product> dataTransportService,
                                     IProductImagesJpaRepository productImagesRepository,
                                     GenericCrudJpaService<ImagePojo, Image> imagesCrudService,
                                     GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesService,
@@ -65,7 +69,7 @@ public class ProductsJpaCrudServiceImpl
                                     ITwoWayConverterJpaService<ImagePojo, Image> imageConverter) {
     super(repository,
           converter,
-          LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class));
+          dataTransportService);
     this.productsRepository = repository;
     this.imagesCrudService = imagesCrudService;
     this.categoriesConverter = categoriesConverter;
@@ -119,11 +123,10 @@ public class ProductsJpaCrudServiceImpl
   @Override
   protected ProductPojo doUpdate(ProductPojo changes, Product existingEntity)
       throws BadInputException {
-    Product localChanges = converter.applyChangesToExistingEntity(changes, existingEntity);
+    Product localChanges = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
     Product persistent = productsRepository.saveAndFlush(localChanges);
     ProductPojo outputPojo = converter.convertToPojo(persistent);
     if (outputPojo == null) {
-      logger.warn("A persistent Product with [id={}] caused an exception", persistent.getId());
       throw new IllegalStateException("Conversion service returned null when requested to convert one " +
                                           "persisted Product to a ProductPojo");
     }

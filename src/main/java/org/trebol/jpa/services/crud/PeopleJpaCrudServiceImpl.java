@@ -20,7 +20,6 @@
 
 package org.trebol.jpa.services.crud;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +27,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.PersonPojo;
 
@@ -42,10 +42,11 @@ public class PeopleJpaCrudServiceImpl
 
   @Autowired
   public PeopleJpaCrudServiceImpl(IPeopleJpaRepository repository,
-                                  ITwoWayConverterJpaService<PersonPojo, Person> converter) {
+                                  ITwoWayConverterJpaService<PersonPojo, Person> converter,
+                                  IDataTransportJpaService<PersonPojo, Person> dataTransportService) {
     super(repository,
           converter,
-          LoggerFactory.getLogger(PeopleJpaCrudServiceImpl.class));
+          dataTransportService);
     this.peopleRepository = repository;
   }
 
