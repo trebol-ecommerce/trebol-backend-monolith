@@ -3,6 +3,7 @@ package org.trebol.jpa.services.crud;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.repositories.IProductsJpaRepository;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductPojo;
@@ -25,18 +26,26 @@ import java.time.Instant;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.ProductsTestHelper.*;
 import static org.trebol.testhelpers.SalesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-class SalesJpaCrudServiceTest {
-  @InjectMocks GenericCrudJpaService<SellPojo, Sell> instance;
+class SalesJpaCrudServiceImplTest {
+  @InjectMocks SalesJpaCrudServiceImpl instance;
   @Mock ISalesJpaRepository salesRepositoryMock;
+  @Mock IProductsJpaRepository productsRepository;
   @Mock ITwoWayConverterJpaService<SellPojo, Sell> salesConverterMock;
   @Mock IDataTransportJpaService<SellPojo, Sell> dataTransportServiceMock;
   @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock;
+
+  @BeforeEach
+  public void beforeEach() {
+    resetSales();
+    resetProducts();
+  }
 
   @Test
   void sanity_check() {
@@ -59,8 +68,6 @@ class SalesJpaCrudServiceTest {
   @Test
   void finds_using_predicates()
       throws EntityNotFoundException {
-    resetProducts();
-    resetSales();
     Predicate filters = new BooleanBuilder();
     when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.of(sellEntityAfterCreation()));
     when(salesConverterMock.convertToPojo(sellEntityAfterCreation())).thenReturn(sellPojoAfterCreation());
@@ -77,7 +84,6 @@ class SalesJpaCrudServiceTest {
   @Test
   void creates_sell()
       throws BadInputException, EntityExistsException {
-    resetSales();
     when(salesConverterMock.convertToNewEntity(sellPojoBeforeCreation())).thenReturn(sellEntityBeforeCreation());
     when(salesRepositoryMock.saveAndFlush(sellEntityBeforeCreation())).thenReturn(sellEntityAfterCreation());
     when(salesConverterMock.convertToPojo(sellEntityAfterCreation())).thenReturn(sellPojoAfterCreation());
@@ -100,7 +106,6 @@ class SalesJpaCrudServiceTest {
   @Test
   void updates_sell()
       throws BadInputException, EntityNotFoundException {
-    resetSales();
     Instant updatedDate = Instant.now().minus(Duration.ofHours(1L));
     SellPojo sellPojoWithUpdates = sellPojoAfterCreation();
     sellPojoWithUpdates.setDate(updatedDate);
@@ -109,6 +114,7 @@ class SalesJpaCrudServiceTest {
     Predicate filters = new BooleanBuilder();
     when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.of(sellEntityAfterCreation()));
     when(dataTransportServiceMock.applyChangesToExistingEntity(sellPojoWithUpdates, sellEntityAfterCreation())).thenReturn(sellEntityWithUpdates);
+    when(productsRepository.findByBarcode(any())).thenReturn(Optional.of(productEntityAfterCreation()));
     when(salesRepositoryMock.saveAndFlush(sellEntityWithUpdates)).thenReturn(sellEntityWithUpdates);
     when(salesConverterMock.convertToPojo(sellEntityWithUpdates)).thenReturn(sellPojoWithUpdates);
 
@@ -126,10 +132,10 @@ class SalesJpaCrudServiceTest {
   @Test
   void returns_same_when_no_update_is_made()
       throws BadInputException, EntityNotFoundException {
-    resetSales();
     SellPojo copy = sellPojoAfterCreation();
     Predicate filters = new BooleanBuilder();
     when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.of(sellEntityAfterCreation()));
+    when(productsRepository.findByBarcode(any())).thenReturn(Optional.of(productEntityAfterCreation()));
     when(dataTransportServiceMock.applyChangesToExistingEntity(copy, sellEntityAfterCreation())).thenReturn(sellEntityAfterCreation());
 
     SellPojo result = instance.update(copy, filters);
