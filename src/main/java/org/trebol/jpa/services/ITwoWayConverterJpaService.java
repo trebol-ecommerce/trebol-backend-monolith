@@ -32,6 +32,7 @@ public interface ITwoWayConverterJpaService<P, E> {
 
   /**
    * Straightly converts a Pojo to a new @Entity, assuming that the Pojo is already @Valid.
+   * It does not include relationships to other entities.
    * This method DOES NOT persist data.
    * @param source The source Pojo.
    * @return A new entity, prepared to be saved to the database.
