@@ -70,14 +70,13 @@ public class ProductCategoriesJpaCrudServiceImpl
   }
 
   @Override
-  protected final ProductCategoryPojo doUpdate(ProductCategoryPojo changes, ProductCategory existingEntity) throws BadInputException {
+  protected final ProductCategory doUpdate(ProductCategoryPojo changes, ProductCategory existingEntity) throws BadInputException {
     ProductCategory preparedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
-    if (existingEntity.equals(preparedEntity)) {
-      return changes;
-    }
     this.passParentIfMatchingEntityExists(preparedEntity, changes.getParent());
-    ProductCategory updatedEntity = categoriesRepository.saveAndFlush(preparedEntity);
-    return converter.convertToPojo(updatedEntity);
+    if (!existingEntity.equals(preparedEntity)) {
+      return existingEntity;
+    }
+    return preparedEntity;
   }
 
   private void passParentIfMatchingEntityExists(ProductCategory target, ProductCategoryPojo sourceParent) {
