@@ -9,9 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.repositories.IShippersJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ShipperPojo;
 
 import java.util.Optional;
@@ -20,11 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ShippersJpaCrudServiceTest {
-  @InjectMocks GenericCrudJpaService<ShipperPojo, Shipper> instance;
+class ShippersJpaCrudServiceImplTest {
+  @InjectMocks ShippersJpaCrudServiceImpl instance;
   @Mock IShippersJpaRepository shippersRepositoryMock;
-  @Mock ITwoWayConverterJpaService<ShipperPojo, Shipper> shippersConverterMock;
-  @Mock IDataTransportJpaService<ShipperPojo, Shipper> dataTransportServiceMock;
 
   @Test
   void sanity_check() {

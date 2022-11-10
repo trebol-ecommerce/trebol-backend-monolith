@@ -9,9 +9,6 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.repositories.ICustomersJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.CustomerPojo;
 
 import java.util.Optional;
@@ -22,11 +19,9 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.CustomersTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-class CustomersJpaCrudServiceTest {
-  @InjectMocks GenericCrudJpaService<CustomerPojo, Customer> instance;
+class CustomersJpaCrudServiceImplTest {
+  @InjectMocks CustomersJpaCrudServiceImpl instance;
   @Mock ICustomersJpaRepository customersRepositoryMock;
-  @Mock ITwoWayConverterJpaService<CustomerPojo, Customer> billingTypesConverterMock;
-  @Mock IDataTransportJpaService<CustomerPojo, Customer> dataTransportServiceMock;
 
   @Test
   void sanity_check() {

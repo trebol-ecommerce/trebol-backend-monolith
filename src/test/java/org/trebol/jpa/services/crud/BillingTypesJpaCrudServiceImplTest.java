@@ -9,9 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.repositories.IBillingTypesJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.BillingTypePojo;
 
 import java.util.Optional;
@@ -21,11 +18,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BillingTypesJpaCrudServiceTest {
-  @InjectMocks GenericCrudJpaService<BillingTypePojo, BillingType> instance;
+class BillingTypesJpaCrudServiceImplTest {
+  @InjectMocks BillingTypesJpaCrudServiceImpl instance;
   @Mock IBillingTypesJpaRepository billingTypesRepositoryMock;
-  @Mock ITwoWayConverterJpaService<BillingTypePojo, BillingType> billingTypesConverterMock;
-  @Mock IDataTransportJpaService<BillingTypePojo, BillingType> dataTransportServiceMock;
 
   @Test
   void sanity_check() {

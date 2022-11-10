@@ -1,19 +1,7 @@
 package org.trebol.jpa.services.crud;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
-
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,12 +12,16 @@ import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
 import org.trebol.jpa.repositories.IProductListsJpaRepository;
 import org.trebol.pojo.ProductListPojo;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListJpaCrudServiceImplTest {
-	
 	@InjectMocks	ProductListJpaCrudServiceImpl instance;
 	@Mock	IProductListsJpaRepository productListRepository;
 	@Mock	IProductListItemsJpaRepository productListItemRepository;
@@ -49,7 +41,7 @@ class ProductListJpaCrudServiceImplTest {
 		
 		ProductList productListMock = new ProductList();
 		productListMock.setId(1L);
-		List<ProductList> productListsMock = Arrays.asList(productListMock);		
+		List<ProductList> productListsMock = List.of(productListMock);
 		
 		when(productListRepository.count(predicateMock)).thenReturn(1L);
 		when(productListRepository.findAll(predicateMock)).thenReturn(productListsMock);

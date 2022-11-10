@@ -9,10 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.repositories.IImagesJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
-import org.trebol.pojo.ImagePojo;
 
 import java.util.Optional;
 
@@ -22,11 +18,9 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testhelpers.ImagesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-class ImagesJpaCrudServiceTest {
-  @InjectMocks GenericCrudJpaService<ImagePojo, Image> instance;
+class ImagesJpaCrudServiceImplTest {
+  @InjectMocks ImagesJpaCrudServiceImpl instance;
   @Mock IImagesJpaRepository imagesRepositoryMock;
-  @Mock ITwoWayConverterJpaService<ImagePojo, Image> imagesConverterMock;
-  @Mock IDataTransportJpaService<ImagePojo, Image> dataTransportServiceMock;
 
   @Test
   void sanity_check() {
