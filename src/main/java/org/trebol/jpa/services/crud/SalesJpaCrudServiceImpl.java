@@ -28,6 +28,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
+import org.trebol.jpa.repositories.IProductsJpaRepository;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IDataTransportJpaService;
@@ -36,7 +37,6 @@ import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
 import org.trebol.pojo.SellPojo;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,12 +49,14 @@ public class SalesJpaCrudServiceImpl
   extends GenericCrudJpaService<SellPojo, Sell> {
 
   private final ISalesJpaRepository salesRepository;
+  private final IProductsJpaRepository productsRepository;
   private final ITwoWayConverterJpaService<ProductPojo, Product> productConverter;
   private static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
   private static final boolean CAN_EDIT_AFTER_PROCESS = true; // TODO refactor as part of application properties
 
   @Autowired
   public SalesJpaCrudServiceImpl(ISalesJpaRepository repository,
+                                 IProductsJpaRepository productsRepository,
                                  ITwoWayConverterJpaService<SellPojo, Sell> converter,
                                  IDataTransportJpaService<SellPojo, Sell> dataTransportService,
                                  ITwoWayConverterJpaService<ProductPojo, Product> productConverter) {
@@ -62,16 +64,8 @@ public class SalesJpaCrudServiceImpl
           converter,
           dataTransportService);
     this.salesRepository = repository;
+    this.productsRepository = productsRepository;
     this.productConverter = productConverter;
-  }
-
-  @Override
-  public SellPojo create(SellPojo inputPojo)
-      throws BadInputException, EntityExistsException {
-    Sell input = converter.convertToNewEntity(inputPojo);
-    this.updateTotals(input);
-    Sell output = salesRepository.saveAndFlush(input);
-    return converter.convertToPojo(output);
   }
 
   @Override
@@ -92,7 +86,8 @@ public class SalesJpaCrudServiceImpl
     if (matchingSell.isPresent()) {
       Sell found = matchingSell.get();
       SellPojo foundPojo = converter.convertToPojo(found);
-      this.applyDetails(found, foundPojo);
+      List<SellDetailPojo> detailPojos = this.convertDetailsToPojos(found.getDetails());
+      foundPojo.setDetails(detailPojos);
       return foundPojo;
     } else {
       throw new EntityNotFoundException("No sell matches the filtering conditions");
@@ -100,20 +95,59 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  protected SellPojo doUpdate(SellPojo changes, Sell existingEntity)
+  protected Sell doUpdate(SellPojo changes, Sell existingEntity)
       throws BadInputException {
     Integer statusCode = existingEntity.getStatus().getCode();
     if ((statusCode >= 3 || statusCode < 0) && !CAN_EDIT_AFTER_PROCESS) {
       throw new BadInputException("The requested transaction cannot be modified");
     }
     Sell updatedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
+    List<SellDetail> detailEntities = this.convertDetailsToEntities(changes.getDetails());
+    updatedEntity.setDetails(detailEntities);
     this.updateTotals(updatedEntity);
-    if (existingEntity.equals(updatedEntity)) {
-      return changes;
-    } else {
-      Sell output = salesRepository.saveAndFlush(updatedEntity);
-      return converter.convertToPojo(output);
+    return updatedEntity;
+  }
+
+  @Override
+  public Sell prepareNewEntityFromInputPojo(SellPojo inputPojo) throws BadInputException {
+    Sell target = converter.convertToNewEntity(inputPojo);
+    this.updateTotals(target);
+    return target;
+  }
+
+  private List<SellDetail> convertDetailsToEntities(Collection<SellDetailPojo> sourceDetails) throws BadInputException {
+    List<SellDetail> details = new ArrayList<>();
+    for (SellDetailPojo d : sourceDetails) {
+      String barcode = d.getProduct().getBarcode();
+      if (barcode == null || barcode.isBlank()) {
+        throw new BadInputException("Product barcode must be valid");
+      }
+      Optional<Product> productByBarcode = productsRepository.findByBarcode(barcode);
+      if (productByBarcode.isEmpty()) {
+        throw new BadInputException("Unexisting product in sell details");
+      }
+      Product product = productByBarcode.get();
+      SellDetail targetDetail = new SellDetail(d.getUnits(), product);
+      targetDetail.setUnitValue(product.getPrice());
+      details.add(targetDetail);
     }
+    return details;
+  }
+
+  private List<SellDetailPojo> convertDetailsToPojos(Collection<SellDetail> details) {
+    List<SellDetailPojo> sellDetails = new ArrayList<>();
+    for (SellDetail sourceSellDetail : details) {
+      ProductPojo product = productConverter.convertToPojo(sourceSellDetail.getProduct());
+      SellDetailPojo targetSellDetail = SellDetailPojo.builder()
+        .id(sourceSellDetail.getId())
+        .unitValue(sourceSellDetail.getUnitValue())
+        .units(sourceSellDetail.getUnits())
+        .product(product)
+        .description(sourceSellDetail.getDescription())
+        .build();
+      sellDetails.add(targetSellDetail);
+    }
+    return sellDetails;
   }
 
   private void updateTotals(Sell input) {
@@ -130,24 +164,5 @@ public class SalesJpaCrudServiceImpl
     input.setNetValue(netValue);
     input.setTotalValue(taxesValue + netValue);
     input.setTotalItems(totalUnits);
-  }
-
-  private void applyDetails(Sell source, SellPojo target) {
-    Collection<SellDetail> details = source.getDetails();
-    if (details != null && !details.isEmpty()) {
-      List<SellDetailPojo> sellDetails = new ArrayList<>();
-      for (SellDetail sourceSellDetail : details) {
-        ProductPojo product = productConverter.convertToPojo(sourceSellDetail.getProduct());
-        SellDetailPojo targetSellDetail = SellDetailPojo.builder()
-          .id(sourceSellDetail.getId())
-          .unitValue(sourceSellDetail.getUnitValue())
-          .units(sourceSellDetail.getUnits())
-          .product(product)
-          .description(sourceSellDetail.getDescription())
-          .build();
-        sellDetails.add(targetSellDetail);
-      }
-      target.setDetails(sellDetails);
-    }
   }
 }

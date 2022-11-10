@@ -35,7 +35,8 @@ import org.trebol.pojo.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.util.*;
+import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @Transactional
@@ -54,7 +55,6 @@ public class SalesDataTransportJpaServiceImpl
   private final ITwoWayConverterJpaService<CustomerPojo, Customer> customersConverter;
   private final GenericCrudJpaService<CustomerPojo, Customer> customersService;
   private final ICustomersJpaRepository customersRepository;
-  private final IProductsJpaRepository productsRepository;
   private final ConversionService conversion;
   private final Validator validator;
   private final Pattern companyIdNumberPattern;
@@ -71,7 +71,6 @@ public class SalesDataTransportJpaServiceImpl
                                           ITwoWayConverterJpaService<CustomerPojo, Customer> customersConverter,
                                           GenericCrudJpaService<CustomerPojo, Customer> customersService,
                                           ICustomersJpaRepository customersRepository,
-                                          IProductsJpaRepository productsRepository,
                                           Validator validator,
                                           ValidationProperties validationProperties) {
     this.conversion = conversion;
@@ -85,9 +84,8 @@ public class SalesDataTransportJpaServiceImpl
     this.customersConverter = customersConverter;
     this.customersService = customersService;
     this.customersRepository = customersRepository;
-    this.productsRepository = productsRepository;
     this.validator = validator;
-    this.companyIdNumberPattern = Pattern.compile(validationProperties.getIdNumberRegexp());
+    this.companyIdNumberPattern = Pattern.compile(validationProperties.getIdNumberRegexp()); // TODO refactor this awful line to a separate, memoizing service
   }
 
   @Transactional
@@ -119,12 +117,6 @@ public class SalesDataTransportJpaServiceImpl
 
     if (source.getShipper() != null) {
       this.applyShipper(source, target);
-    }
-
-    Collection<SellDetailPojo> details = source.getDetails();
-    if (details != null && !details.isEmpty()) {
-      List<SellDetail> entityDetails = this.convertDetails(details);
-      target.setDetails(entityDetails);
     }
 
     return target;
@@ -237,25 +229,6 @@ public class SalesDataTransportJpaServiceImpl
         }
       }
     }
-  }
-
-  private List<SellDetail> convertDetails(Collection<SellDetailPojo> sourceDetails) throws BadInputException {
-    List<SellDetail> details = new ArrayList<>();
-    for (SellDetailPojo d : sourceDetails) {
-      String barcode = d.getProduct().getBarcode();
-      if (barcode == null || barcode.isBlank()) {
-        throw new BadInputException("Product barcode must be valid");
-      }
-      Optional<Product> productByBarcode = productsRepository.findByBarcode(barcode);
-      if (productByBarcode.isEmpty()) {
-        throw new BadInputException("Unexisting product in sell details");
-      }
-      Product product = productByBarcode.get();
-      SellDetail targetDetail = new SellDetail(d.getUnits(), product);
-      targetDetail.setUnitValue(product.getPrice());
-      details.add(targetDetail);
-    }
-    return details;
   }
 
   private Address fetchOrConvertAddress(AddressPojo source) throws BadInputException {

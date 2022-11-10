@@ -112,7 +112,8 @@ public abstract class GenericCrudJpaService<P, E>
     if (match.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
-    return this.doUpdate(input, match.get());
+    E preparedEntity = this.doUpdate(input, match.get());
+    return this.persist(preparedEntity);
   }
 
   @Override
@@ -122,7 +123,8 @@ public abstract class GenericCrudJpaService<P, E>
     if (firstMatch.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
-    return this.doUpdate(input, firstMatch.get());
+    E preparedEntity = this.doUpdate(input, firstMatch.get());
+    return this.persist(preparedEntity);
   }
 
   @Override
@@ -146,6 +148,11 @@ public abstract class GenericCrudJpaService<P, E>
     return converter.convertToPojo(found);
   }
 
+  private P persist(E preparedEntity) {
+    E result = repository.saveAndFlush(preparedEntity);
+    return converter.convertToPojo(result);
+  }
+
   /**
    * Applies changes, and flushes. If no changes are detected, return changes as-is
    * @param changes A Pojo class instance with the data that is being submitted
@@ -153,14 +160,13 @@ public abstract class GenericCrudJpaService<P, E>
    * @return The resulting Pojo class instance
    * @throws BadInputException If data in Pojo is insufficient, incorrect, malformed, etc
    */
-  protected P doUpdate(P changes, E existingEntity)
+  protected E doUpdate(P changes, E existingEntity)
       throws BadInputException {
     E updatedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
     if (existingEntity.equals(updatedEntity)) {
-      return changes;
+      return existingEntity;
     }
-    E output = repository.saveAndFlush(updatedEntity);
-    return converter.convertToPojo(output);
+    return updatedEntity;
   }
 
   /**
