@@ -12,7 +12,6 @@ import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
@@ -31,11 +30,10 @@ import static org.trebol.testhelpers.ProductCategoriesTestHelper.*;
 import static org.trebol.testhelpers.ProductsTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
-class ProductsJpaCrudServiceTest {
-  @InjectMocks GenericCrudJpaService<ProductPojo, Product> instance;
+class ProductsJpaCrudServiceImplTest {
+  @InjectMocks ProductsJpaCrudServiceImpl instance;
   @Mock IProductsJpaRepository productsRepositoryMock;
   @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock;
-  @Mock IDataTransportJpaService<ProductPojo, Product> dataTransportServiceMock;
   @Mock IProductImagesJpaRepository productImagesRepositoryMock;
   @Mock GenericCrudJpaService<ImagePojo, Image> imagesCrudServiceMock;
   @Mock GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesCrudServiceMock;

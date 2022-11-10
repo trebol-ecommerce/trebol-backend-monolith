@@ -9,9 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.UserRolePojo;
 
 import java.util.Optional;
@@ -20,11 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UserRolesJpaCrudServiceTest {
-  @InjectMocks GenericCrudJpaService<UserRolePojo, UserRole> instance;
+class UserRolesJpaCrudServiceImplTest {
+  @InjectMocks UserRolesJpaCrudServiceImpl instance;
   @Mock IUserRolesJpaRepository userRolesRepositoryMock;
-  @Mock ITwoWayConverterJpaService<UserRolePojo, UserRole> userRolesConverterMock;
-  @Mock IDataTransportJpaService<UserRolePojo, UserRole> dataTransportServiceMock;
 
   @Test
   void sanity_check() {

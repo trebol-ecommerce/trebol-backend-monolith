@@ -14,9 +14,6 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.UserPojo;
 
 import java.util.Optional;
@@ -25,11 +22,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UsersJpaCrudServiceTest {
-  @InjectMocks GenericCrudJpaService<UserPojo, User> instance;
+class UsersJpaCrudServiceImplTest {
+  @InjectMocks UsersJpaCrudServiceImpl instance;
   @Mock IUsersJpaRepository usersRepositoryMock;
-  @Mock ITwoWayConverterJpaService<UserPojo, User> usersConverterMock;
-  @Mock IDataTransportJpaService<UserPojo, User> dataTransportServiceMock;
   @Mock SecurityProperties securityPropertiesMock;
 
   @Test
