@@ -71,17 +71,14 @@ public abstract class GenericCrudJpaService<P, E>
   public abstract Optional<E> getExisting(P example) throws BadInputException;
 
   /**
-   * Convert a pojo to an entity, save it, convert it back to a pojo and return
-   * it.
+   * Converts a pojo to an entity, saves it and returns it back as a brand new pojo equivalent.
    * @param inputPojo The Pojo instance to be converted and inserted.
    */
   @Override
   public P create(P inputPojo)
       throws BadInputException, EntityExistsException {
-    if (this.getExisting(inputPojo).isPresent()) {
-      throw new EntityExistsException(ITEM_ALREADY_EXISTS);
-    }
-    E input = converter.convertToNewEntity(inputPojo);
+    this.validateInputPojoBeforeCreation(inputPojo);
+    E input = this.prepareNewEntityFromInputPojo(inputPojo);
     E output = repository.saveAndFlush(input);
     return converter.convertToPojo(output);
   }
@@ -164,5 +161,28 @@ public abstract class GenericCrudJpaService<P, E>
     }
     E output = repository.saveAndFlush(updatedEntity);
     return converter.convertToPojo(output);
+  }
+
+  /**
+   * Base entity-specific validation  method.
+   * Should be called at the beginning of the create() method.
+   * @param inputPojo A pojo to validate
+   * @throws BadInputException If the pojo does not have a valid identifying property
+   */
+  protected void validateInputPojoBeforeCreation(P inputPojo) throws BadInputException {
+    if (this.getExisting(inputPojo).isPresent()) {
+      throw new EntityExistsException(ITEM_ALREADY_EXISTS);
+    }
+  }
+
+  /**
+   * Main entity-specific processing method.
+   * Executes right before persisting data.
+   * @param inputPojo A pojo to convert to an entity
+   * @return An entity object equivalent to the provided pojo, ready for saving
+   * @throws BadInputException If the pojo does not have a valid identifying property
+   */
+  protected E prepareNewEntityFromInputPojo(P inputPojo) throws BadInputException {
+    return converter.convertToNewEntity(inputPojo);
   }
 }
