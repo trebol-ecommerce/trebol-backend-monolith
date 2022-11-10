@@ -25,22 +25,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.ProductCategoryPojo;
-
-import java.util.Optional;
 
 @Transactional
 @Service
 public class ProductCategoriesDataTransportJpaServiceImpl
   implements IDataTransportJpaService<ProductCategoryPojo, ProductCategory> {
 
-  private final IProductsCategoriesJpaRepository categoriesRepository;
-
   @Autowired
-  public ProductCategoriesDataTransportJpaServiceImpl(IProductsCategoriesJpaRepository repository) {
-    this.categoriesRepository = repository;
+  public ProductCategoriesDataTransportJpaServiceImpl(
+  ) {
   }
 
   @Override
@@ -53,35 +48,6 @@ public class ProductCategoriesDataTransportJpaServiceImpl
       target.setName(name);
     }
 
-    this.applyParent(source, target);
-
     return target;
-  }
-
-  private void applyParent(ProductCategoryPojo source, ProductCategory target) {
-    ProductCategoryPojo parent = source.getParent();
-    if (parent != null) {
-      String parentCode = parent.getCode();
-      ProductCategory previousParent = target.getParent();
-      if (parentCode == null) {
-        this.applyNewParent(target, parent);
-      } else if (previousParent == null || !previousParent.getCode().equals(parentCode)) {
-        Optional<ProductCategory> parentMatch = categoriesRepository.findByCode(parentCode);
-        if (parentMatch.isPresent()) {
-          target.setParent(parentMatch.get());
-        } else {
-          this.applyNewParent(target, parent);
-        }
-      }
-    }
-  }
-
-  // TODO remove this method and fix the signature of its calling method
-  private void applyNewParent(ProductCategory target, ProductCategoryPojo parent) {
-    // this method implies that a whole parent tree can be created from an update operation. that's bad design.
-    // the `convertToNewEntity` method below, used to belong to the `ITwoWayConverterJpaService`
-    ProductCategory newParentEntity = this.convertToNewEntity(parent);
-    newParentEntity = categoriesRepository.save(newParentEntity);
-    target.setParent(newParentEntity);
   }
 }

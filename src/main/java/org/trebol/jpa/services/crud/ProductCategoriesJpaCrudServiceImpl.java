@@ -59,4 +59,35 @@ public class ProductCategoriesJpaCrudServiceImpl
       return this.categoriesRepository.findByCode(code);
     }
   }
+
+  @Override
+  protected final ProductCategory prepareNewEntityFromInputPojo(ProductCategoryPojo inputPojo) throws BadInputException {
+    ProductCategory target = super.prepareNewEntityFromInputPojo(inputPojo);
+    if (inputPojo.getParent() != null) {
+      this.passParentIfMatchingEntityExists(target, inputPojo.getParent());
+    }
+    return target;
+  }
+
+  @Override
+  protected final ProductCategoryPojo doUpdate(ProductCategoryPojo changes, ProductCategory existingEntity) throws BadInputException {
+    ProductCategory preparedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
+    if (existingEntity.equals(preparedEntity)) {
+      return changes;
+    }
+    this.passParentIfMatchingEntityExists(preparedEntity, changes.getParent());
+    ProductCategory updatedEntity = categoriesRepository.saveAndFlush(preparedEntity);
+    return converter.convertToPojo(updatedEntity);
+  }
+
+  private void passParentIfMatchingEntityExists(ProductCategory target, ProductCategoryPojo sourceParent) {
+    String sourceParentCode = sourceParent.getCode();
+    ProductCategory previousExistingParent = target.getParent();
+    if (sourceParentCode != null && (previousExistingParent == null || !previousExistingParent.getCode().equals(sourceParentCode))) {
+      Optional<ProductCategory> parentMatch = categoriesRepository.findByCode(sourceParentCode);
+      if (parentMatch.isPresent()) {
+        target.setParent(parentMatch.get());
+      }
+    }
+  }
 }
