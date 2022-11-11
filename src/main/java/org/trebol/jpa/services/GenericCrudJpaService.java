@@ -112,7 +112,7 @@ public abstract class GenericCrudJpaService<P, E>
     if (match.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
-    E preparedEntity = this.doUpdate(input, match.get());
+    E preparedEntity = this.prepareEntityWithUpdatesFromPojo(input, match.get());
     return this.persist(preparedEntity);
   }
 
@@ -123,7 +123,7 @@ public abstract class GenericCrudJpaService<P, E>
     if (firstMatch.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
-    E preparedEntity = this.doUpdate(input, firstMatch.get());
+    E preparedEntity = this.prepareEntityWithUpdatesFromPojo(input, firstMatch.get());
     return this.persist(preparedEntity);
   }
 
@@ -160,7 +160,7 @@ public abstract class GenericCrudJpaService<P, E>
    * @return The resulting Pojo class instance
    * @throws BadInputException If data in Pojo is insufficient, incorrect, malformed, etc
    */
-  protected E doUpdate(P changes, E existingEntity)
+  protected E prepareEntityWithUpdatesFromPojo(P changes, E existingEntity)
       throws BadInputException {
     E updatedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
     if (existingEntity.equals(updatedEntity)) {

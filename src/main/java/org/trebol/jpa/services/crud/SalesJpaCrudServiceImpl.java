@@ -94,7 +94,7 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  protected Sell doUpdate(SellPojo changes, Sell existingEntity)
+  protected Sell prepareEntityWithUpdatesFromPojo(SellPojo changes, Sell existingEntity)
       throws BadInputException {
     Integer statusCode = existingEntity.getStatus().getCode();
     if ((statusCode >= 3 || statusCode < 0) && !CAN_EDIT_AFTER_PROCESS) {
