@@ -35,7 +35,7 @@ public class GlobalCorsConfiguration {
 	@Autowired
 	public GlobalCorsConfiguration(CorsProperties corsProperties) {
 		this.allowedHeaders = corsProperties.getAllowedHeaders().split(corsProperties.getListDelimiter());
-	    this.allowedOrigins = corsProperties.getAllowedOrigins().split(corsProperties.getListDelimiter());		
+		this.allowedOrigins = corsProperties.getAllowedOrigins().split(corsProperties.getListDelimiter());
 	}
 	
 	@Bean

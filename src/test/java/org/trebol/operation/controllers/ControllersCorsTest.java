@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import lombok.Getter;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -28,6 +30,7 @@ class ControllersCorsTest {
 	
 	private List<ApiPath> apiPaths;
 	private List<ApiPath> apiPathsWithInvalidMethods;
+	private List<ApiPath> invalidApiPaths;
 	private List<String> allowedOrigins;
 	private List<String> notAllowedOrigins;
 	private List<String> allowedHeaders;
@@ -36,38 +39,7 @@ class ControllersCorsTest {
 	void beforeAll() {
 		allowedOrigins = List.of("http://localhost:4200", "https://localhost:4200", "null");
 		notAllowedOrigins = List.of("http://notallowedorigins.com", "https://notallowedorigins.com");
-		allowedHeaders = List.of("Content-Type", "Accept", "X-Requested-With", "Authorization");
-		
-		/*
-		GET /;\		
-		GET /public/about;\
-		GET /public/receipt/*;\
-		POST /public/checkout;\
-		POST /public/checkout/validate;\
-		POST /public/guest;\
-		POST /public/login;\
-		POST /public/register;\
-		POST /data/sales/confirmation;\
-		POST /data/sales/rejection;\
-		POST /data/sales/completion;\
-		GET,PUT /account/profile;\
-		GET /access;\
-		GET /access/*;\
-		GET /data/people;\
-		GET /data/billing_types;\
-		GET /data/sell_statuses;\
-		GET,POST,PUT,DELETE /data/customers;\
-		GET,POST,PUT,DELETE /data/images;\
-		GET,POST,PUT,DELETE /data/products;\
-		GET,POST,PUT,DELETE /data/product_lists;\
-		GET,POST,PUT,DELETE /data/product_list_contents;\
-		GET,POST,PUT,DELETE /data/product_categories;\
-		GET,POST,PUT,DELETE /data/sales;\
-		GET,POST,PUT,DELETE /data/salespeople;\
-		GET,POST,PUT,DELETE /data/shippers;\
-		GET,POST,PUT,DELETE /data/users;\
-		GET,POST,PUT,DELETE /data/user_roles;\
-		*/
+		allowedHeaders = List.of("Content-Type", "Accept", "X-Requested-With", "Authorization");		
 				
 		apiPaths = List.of(new ApiPath("/", "GET"),
 						new ApiPath("/public/about", "GET"),
@@ -107,11 +79,16 @@ class ControllersCorsTest {
 											new ApiPath("/data/sales/confirmation", "GET"),
 											new ApiPath("/data/sales/rejection", "GET"),
 											new ApiPath("/data/sales/completion", "GET"));
+		
+		invalidApiPaths = List.of(new ApiPath("/public/checkoutttt", "POST"),
+								new ApiPath("/data/sales/confirmatiooon", "POST"),
+								new ApiPath("/data/peopleeee", "GET"),
+								new ApiPath("/data/useers", "GET", "POST", "PUT", "DELETE"));
 	}
 	
-	// Arguments Providers
-	
-	// All paths with all methods and all allowed origins	
+	/** 
+	 * Provides all paths, all methods and all allowed origins as test method parameters.
+	 */	
 	private Stream<Arguments> provideArgumentsWithAllowedOrigins() {
 		List<Arguments> args = new ArrayList<>();
 		
@@ -126,7 +103,9 @@ class ControllersCorsTest {
 		return args.stream();
 	}
 	
-	// All paths with all methods and all not allowed origins
+	/**
+	 * Provides all paths with all methods, with origins that are not allowed, as test method parameters.
+	 */
 	private Stream<Arguments> provideArgumentsWithNotAllowedOrigins() {
 		List<Arguments> args = new ArrayList<>();
 		
@@ -141,7 +120,9 @@ class ControllersCorsTest {
 		return args.stream();
 	}
 	
-	// All paths with all methods and all allowed headers
+	/**
+	 * Provides all paths with all methods and all allowed headers as test method parameters.
+	 */
 	private Stream<Arguments> provideArgumentsWithAllowedHeaders() {
 		List<Arguments> args = new ArrayList<>();
 		
@@ -156,7 +137,9 @@ class ControllersCorsTest {
 		return args.stream();
 	}
 	
-	// Some Paths with Invalid methods
+	/** 
+	 * Provides some Paths with invalid methods as test method parameters.
+	 */
 	private Stream<Arguments> provideArgumentsWithInvalidMethods() {
 		List<Arguments> args = new ArrayList<>();
 		
@@ -167,9 +150,22 @@ class ControllersCorsTest {
 		}
 		
 		return args.stream();
-	}
+	}	
 	
-	// Tests
+	/** 
+	 * Provides some Invalid Paths with valid methods as test method parameters.
+	 */
+	private Stream<Arguments> provideArgumentsWithInvalidPaths() {
+		List<Arguments> args = new ArrayList<>();
+		
+		for (ApiPath apiPath : invalidApiPaths) {
+			for (String method : apiPath.methods) {				
+				args.add(arguments(apiPath.getPath(), method));				
+			}
+		}
+		
+		return args.stream();
+	}	
 	
 	@ParameterizedTest
 	@MethodSource("provideArgumentsWithAllowedOrigins")
@@ -212,23 +208,28 @@ class ControllersCorsTest {
 			.andExpect(status().is(403));
 	}
 	
-	// Helper Class
+	@ParameterizedTest
+	@MethodSource("provideArgumentsWithInvalidPaths")
+	void whenInvalidPaths_thenStatus403(String path, String method) throws Exception {
+		String origin = allowedOrigins.get(0);
+		
+		mvc.perform(options(path)
+				.header("Access-Control-Request-Method", method)
+				.header("Origin", origin))			
+			.andExpect(status().is(403));
+	}
 	
+	/**
+	 * Helper class that holds execution data for testing a single RESTful API call
+	 */
+	@Getter
 	class ApiPath {
-		private final String path;
+		private final String path;		
 		private final String[] methods;
 		
 		public ApiPath(String path, String... methods) {
 			this.path = path;
 			this.methods = methods;
-		}
-		
-		public String getPath() {
-			return path;
-		}
-		
-		public String[] getMethods() {
-			return methods;
 		}
 	}
 
