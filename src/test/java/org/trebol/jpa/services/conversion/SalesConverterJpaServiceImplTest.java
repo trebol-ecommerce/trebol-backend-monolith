@@ -27,14 +27,11 @@ class SalesConverterJpaServiceImplTest {
     @Mock ITwoWayConverterJpaService<CustomerPojo, Customer> customersConverter;
     @Mock ITwoWayConverterJpaService<SalespersonPojo, Salesperson> salespeopleConverter;
     @Mock ConversionService conversion;
-    @Mock ValidationProperties validationProperties;
-
     private SellPojo sellPojo;
     private Sell sell;
 
     @BeforeEach
     public void beforeEach() {
-        when(validationProperties.getIdNumberRegexp()).thenReturn(ANY);
         sellPojo = SellPojo.builder().build();
         sell = new Sell();
     }
