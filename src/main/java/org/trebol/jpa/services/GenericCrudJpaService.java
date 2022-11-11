@@ -78,9 +78,8 @@ public abstract class GenericCrudJpaService<P, E>
   public P create(P inputPojo)
       throws BadInputException, EntityExistsException {
     this.validateInputPojoBeforeCreation(inputPojo);
-    E input = this.prepareNewEntityFromInputPojo(inputPojo);
-    E output = repository.saveAndFlush(input);
-    return converter.convertToPojo(output);
+    E preparedEntity = this.prepareNewEntityFromInputPojo(inputPojo);
+    return this.persist(preparedEntity);
   }
 
   /**
