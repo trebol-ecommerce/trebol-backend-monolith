@@ -121,7 +121,7 @@ public class ProductsJpaCrudServiceImpl
   }
 
   @Override
-  protected Product doUpdate(ProductPojo changes, Product existingEntity)
+  protected Product prepareEntityWithUpdatesFromPojo(ProductPojo changes, Product existingEntity)
       throws BadInputException {
     Product localChanges = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
     Product persistent = productsRepository.saveAndFlush(localChanges);
