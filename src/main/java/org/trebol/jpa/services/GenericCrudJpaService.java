@@ -38,15 +38,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Base abstraction for JPA-based CRUD services that communicate with Pojos, keeping entity classes out of scope
+ * Simple CRUD service abstraction. Communicates with other services only through Pojos, keeping JPA entity classes only within their own scope.
+ * Whenever possible, its public abstract API should not be overriden, but its protected methods instead.
  * @param <P> The pojo class
  * @param <E> The entity class
  */
 @Transactional
 public abstract class GenericCrudJpaService<P, E>
   implements ICrudJpaService<P> {
-
-  // avoid shadowing this field; as implementations should always refer to their specific repositories
   private final IJpaRepository<E> repository;
 
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
@@ -63,9 +62,10 @@ public abstract class GenericCrudJpaService<P, E>
   }
 
   /**
-   * Attempts to match the given pojo class instance to an existing entity in the persistence context.
+   * Attempts to match the given pojo class instance to an existing entity.
+   * This method is also useful to assert bare-minimum pojo validity for using it to update data.
    * @param example The pojo class instance that should hold a valid identifying property
-   * @return A possible entity match
+   * @return A possible entity match that may have succeeded or not
    * @throws BadInputException When the pojo doesn't have its identifying property.
    */
   public abstract Optional<E> getExisting(P example) throws BadInputException;
@@ -154,7 +154,9 @@ public abstract class GenericCrudJpaService<P, E>
   }
 
   /**
-   * Applies changes, and flushes. If no changes are detected, return changes as-is
+   * Copies changes from a pojo to an entity.
+   * Executes right before updating (persisting) data.
+   * Ideal overridable method to include cascading entity relationships.
    * @param changes A Pojo class instance with the data that is being submitted
    * @param existingEntity An existing entity class instance that will be updated
    * @return The resulting Pojo class instance
@@ -182,8 +184,9 @@ public abstract class GenericCrudJpaService<P, E>
   }
 
   /**
-   * Main entity-specific processing method.
+   * Creates a new entity from a pojo.
    * Executes right before persisting data.
+   * Ideal overridable method to include cascading entity relationships.
    * @param inputPojo A pojo to convert to an entity
    * @return An entity object equivalent to the provided pojo, ready for saving
    * @throws BadInputException If the pojo does not have a valid identifying property
