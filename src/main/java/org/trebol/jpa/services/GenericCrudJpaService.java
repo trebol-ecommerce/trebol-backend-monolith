@@ -148,7 +148,7 @@ public abstract class GenericCrudJpaService<P, E>
     return converter.convertToPojo(found);
   }
 
-  private P persist(E preparedEntity) {
+  protected final P persist(E preparedEntity) {
     E result = repository.saveAndFlush(preparedEntity);
     return converter.convertToPojo(result);
   }
