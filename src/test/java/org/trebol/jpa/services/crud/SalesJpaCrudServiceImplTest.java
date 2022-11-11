@@ -3,7 +3,6 @@ package org.trebol.jpa.services.crud;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,13 +22,14 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.testhelpers.ProductsTestHelper.*;
+import static org.trebol.testhelpers.ProductsTestHelper.productEntityAfterCreation;
 import static org.trebol.testhelpers.SalesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,18 +39,7 @@ class SalesJpaCrudServiceImplTest {
   @Mock IProductsJpaRepository productsRepository;
   @Mock ITwoWayConverterJpaService<SellPojo, Sell> salesConverterMock;
   @Mock IDataTransportJpaService<SellPojo, Sell> dataTransportServiceMock;
-  @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock;
-
-  @BeforeEach
-  public void beforeEach() {
-    resetSales();
-    resetProducts();
-  }
-
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock; // TODO write an unit test that needs this mock
 
   @Test
   void finds_by_id_aka_buy_order()
@@ -66,19 +55,19 @@ class SalesJpaCrudServiceImplTest {
   }
 
   @Test
-  void finds_using_predicates()
-      throws EntityNotFoundException {
+  void finds_using_predicates() throws EntityNotFoundException {
+    final SellPojo targetFoundSellPojo = SellPojo.builder()
+      .buyOrder(1L)
+      .details(List.of()) // omit conversion cascading
+      .build();
     Predicate filters = new BooleanBuilder();
     when(salesRepositoryMock.findOne(filters)).thenReturn(Optional.of(sellEntityAfterCreation()));
-    when(salesConverterMock.convertToPojo(sellEntityAfterCreation())).thenReturn(sellPojoAfterCreation());
-    when(productsConverterMock.convertToPojo(productEntityAfterCreation())).thenReturn(productPojoAfterCreation());
+    when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(targetFoundSellPojo);
 
     SellPojo result = instance.readOne(filters);
 
-    verify(salesRepositoryMock).findOne(filters);
     assertNotNull(result);
-    assertEquals(result.getBuyOrder(), sellPojoAfterCreation().getBuyOrder());
-    assertEquals(result.getDate(), sellPojoAfterCreation().getDate());
+    assertEquals(result.getBuyOrder(), targetFoundSellPojo.getBuyOrder());
   }
 
   @Test
