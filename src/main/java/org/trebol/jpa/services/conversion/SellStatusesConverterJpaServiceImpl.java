@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.SellStatusPojo;
@@ -51,5 +52,10 @@ public class SellStatusesConverterJpaServiceImpl
     target.setCode(source.getCode());
     target.setName(source.getName());
     return target;
+  }
+
+  @Override
+  public SellStatus applyChangesToExistingEntity(SellStatusPojo source, SellStatus target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

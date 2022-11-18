@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.BillingCompanyPojo;
@@ -51,5 +52,10 @@ public class BillingCompaniesConverterJpaServiceImpl
     target.setIdNumber(source.getIdNumber());
     target.setName(source.getName());
     return target;
+  }
+
+  @Override
+  public BillingCompany applyChangesToExistingEntity(BillingCompanyPojo source, BillingCompany target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

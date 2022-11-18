@@ -101,4 +101,9 @@ public class SalesConverterJpaServiceImpl
 
     return target;
   }
+
+  @Override
+  public Sell applyChangesToExistingEntity(SellPojo source, Sell target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
+  }
 }

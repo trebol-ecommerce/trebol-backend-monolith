@@ -143,4 +143,9 @@ public class UsersConverterJpaServiceImpl
       userById.ifPresent(user -> target.setPassword(user.getPassword()));
     }
   }
+
+  @Override
+  public User applyChangesToExistingEntity(UserPojo source, User target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
+  }
 }

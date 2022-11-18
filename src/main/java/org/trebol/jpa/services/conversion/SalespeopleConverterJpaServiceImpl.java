@@ -58,4 +58,9 @@ public class SalespeopleConverterJpaServiceImpl
     target.setPerson(targetPerson);
     return target;
   }
+
+  @Override
+  public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
+  }
 }
