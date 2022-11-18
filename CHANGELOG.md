@@ -18,6 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - The protected user account must have the same `id` indicated by `trebol.security.protected-account-id` in `application.properties`
 
 ### Changed
+
+- [WIP] **BREAKING CHANGE** Split logic in services that implement `ICrudJpaService<P>` and extend `GenericCrudJpaService<P, E>`
+  - Introduce `IDataTransportJpaService<P, E>` to keep specific domain-dependant boilerplate code for updating entities before they are submitted to database
+    - This new, separate interface inherits the `applyChangesToExistingEntity` method from `ITwoWayConverterJpaService<P, E>`
+    - The original method in `ITwoWayConverterJpaService` has been deprecated
+  - Break down the steps taken on each method in the public API of `GenericCrudJpaService` and its sub-implementations, by introducing these overridable `protected` methods 
+    - `prepareEntityWithUpdatesFromPojo`
+    - `validateInputPojoBeforeCreation`
+    - `prepareNewEntityFromInputPojo`
 - UsersConverterJpaServiceImpl - refactor `convertToNewEntity` since it tag as cyclomatic issue
 - SalesConverterJpaServiceImpl, SalesProcessServiceImpl - add string constants
 - **BREAKING CHANGE**: Rename table names to follow the naming convention - **Thank you `@mepox`**
