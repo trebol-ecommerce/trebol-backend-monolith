@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.UserRolePojo;
@@ -48,5 +49,10 @@ public class UserRolesConverterJpaServiceImpl
   @Override
   public UserRole convertToNewEntity(UserRolePojo source) {
     return conversion.convert(source, UserRole.class);
+  }
+
+  @Override
+  public UserRole applyChangesToExistingEntity(UserRolePojo source, UserRole target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

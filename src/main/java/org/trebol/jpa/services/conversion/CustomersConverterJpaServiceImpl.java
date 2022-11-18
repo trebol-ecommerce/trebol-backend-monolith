@@ -58,4 +58,9 @@ public class CustomersConverterJpaServiceImpl
     target.setPerson(targetPerson);
     return target;
   }
+
+  @Override
+  public Customer applyChangesToExistingEntity(CustomerPojo source, Customer target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
+  }
 }

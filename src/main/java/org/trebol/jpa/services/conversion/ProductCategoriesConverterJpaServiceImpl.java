@@ -25,6 +25,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductCategoryPojo;
@@ -52,5 +53,10 @@ public class ProductCategoriesConverterJpaServiceImpl
     target.setCode(source.getCode());
     target.setName(source.getName());
     return target;
+  }
+
+  @Override
+  public ProductCategory applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

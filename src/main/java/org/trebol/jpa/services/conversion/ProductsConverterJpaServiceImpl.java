@@ -81,4 +81,9 @@ public class ProductsConverterJpaServiceImpl
   public Product convertToNewEntity(ProductPojo source) throws BadInputException {
     return conversion.convert(source, Product.class);
   }
+
+  @Override
+  public Product applyChangesToExistingEntity(ProductPojo source, Product target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
+  }
 }
