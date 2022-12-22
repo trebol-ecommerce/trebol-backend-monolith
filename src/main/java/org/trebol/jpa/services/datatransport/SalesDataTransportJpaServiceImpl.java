@@ -85,7 +85,7 @@ public class SalesDataTransportJpaServiceImpl
     this.customersService = customersService;
     this.customersRepository = customersRepository;
     this.validator = validator;
-    this.companyIdNumberPattern = Pattern.compile(validationProperties.getIdNumberRegexp()); // TODO refactor this awful line to a separate, memoizing service
+    this.companyIdNumberPattern = Pattern.compile(validationProperties.getIdNumberRegexp()); // TODO refactor this line to a separate, memoizing service
   }
 
   @Transactional
