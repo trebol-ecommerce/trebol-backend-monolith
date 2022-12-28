@@ -150,7 +150,7 @@ class ProductsJpaCrudServiceImplTest {
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-    when(productsRepositoryMock.getById(any(Product.class).getId())).thenReturn(resultEntity);
+    when(productsRepositoryMock.getById(anyLong())).thenReturn(resultEntity);
     when(categoriesCrudServiceMock.getExisting(any(ProductCategoryPojo.class))).thenReturn(Optional.empty());
 
     ProductPojo result = instance.create(input);
@@ -175,7 +175,7 @@ class ProductsJpaCrudServiceImplTest {
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-    when(productsRepositoryMock.getById(any(Product.class).getId())).thenReturn(resultEntity);
+    when(productsRepositoryMock.getById(anyLong())).thenReturn(resultEntity);
     when(categoriesCrudServiceMock.getExisting(any(ProductCategoryPojo.class))).thenReturn(Optional.of(categoryEntity));
     when(categoriesConverterMock.convertToPojo(any(ProductCategory.class))).thenReturn(expectedResultCategory);
 
