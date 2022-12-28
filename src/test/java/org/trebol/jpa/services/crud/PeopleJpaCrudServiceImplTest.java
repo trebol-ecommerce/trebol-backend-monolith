@@ -11,6 +11,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.pojo.PersonPojo;
+import org.trebol.testhelpers.PeopleTestHelper;
 
 import java.util.Optional;
 
@@ -19,22 +20,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.testhelpers.PeopleTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class PeopleJpaCrudServiceImplTest {
   @InjectMocks PeopleJpaCrudServiceImpl instance;
   @Mock IPeopleJpaRepository peopleRepositoryMock;
+  PeopleTestHelper peopleHelper = new PeopleTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    resetPeople();
+    peopleHelper.resetPeople();
   }
 
   @Test
   void finds_by_id_number() throws BadInputException {
-    PersonPojo input = personPojoForFetch();
-    Person expectedResult = personEntityAfterCreation();
+    PersonPojo input = peopleHelper.personPojoForFetch();
+    Person expectedResult = peopleHelper.personEntityAfterCreation();
     when(peopleRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(expectedResult));
 
     Optional<Person> match = instance.getExisting(input);
