@@ -17,41 +17,41 @@ public class SalespeopleTestHelper {
   public static final String SALESPERSON_EMAIL = "salesperson@example.com";
   public static final String SALESPERSON_PHONE1 = "1234567";
   public static final String SALESPERSON_PHONE2 = "9876543";
-  private static SalespersonPojo pojoForFetch;
-  private static SalespersonPojo pojoBeforeCreation;
-  private static SalespersonPojo pojoAfterCreation;
-  private static Salesperson entityBeforeCreation;
-  private static Salesperson entityAfterCreation;
+  private SalespersonPojo pojoForFetch;
+  private SalespersonPojo pojoBeforeCreation;
+  private SalespersonPojo pojoAfterCreation;
+  private Salesperson entityBeforeCreation;
+  private Salesperson entityAfterCreation;
 
-  public static void resetSalespeople() {
-    pojoForFetch = null;
-    pojoBeforeCreation = null;
-    pojoAfterCreation = null;
-    entityBeforeCreation = null;
-    entityAfterCreation = null;
+  public void resetSalespeople() {
+    this.pojoForFetch = null;
+    this.pojoBeforeCreation = null;
+    this.pojoAfterCreation = null;
+    this.entityBeforeCreation = null;
+    this.entityAfterCreation = null;
   }
 
-  public static SalespersonPojo salespersonPojoForFetch() {
-    if (pojoForFetch == null) {
-      pojoForFetch = SalespersonPojo.builder()
+  public SalespersonPojo salespersonPojoForFetch() {
+    if (this.pojoForFetch == null) {
+      this.pojoForFetch = SalespersonPojo.builder()
         .person(PersonPojo.builder().idNumber(SALESPERSON_ID_NUMBER).build())
         .build();
     }
-    return pojoForFetch;
+    return this.pojoForFetch;
   }
 
-  public static SalespersonPojo salespersonPojoBeforeCreation() {
-    if (pojoBeforeCreation == null) {
-      pojoForFetch = SalespersonPojo.builder()
+  public SalespersonPojo salespersonPojoBeforeCreation() {
+    if (this.pojoBeforeCreation == null) {
+      this.pojoForFetch = SalespersonPojo.builder()
         .person(PersonPojo.builder().idNumber(SALESPERSON_ID_NUMBER).build())
         .build();
     }
-    return pojoBeforeCreation;
+    return this.pojoBeforeCreation;
   }
 
-  public static SalespersonPojo salespersonPojoAfterCreation() {
-    if (pojoAfterCreation == null) {
-      pojoAfterCreation = SalespersonPojo.builder()
+  public SalespersonPojo salespersonPojoAfterCreation() {
+    if (this.pojoAfterCreation == null) {
+      this.pojoAfterCreation = SalespersonPojo.builder()
         .person(PersonPojo.builder()
                   .id(GENERIC_ID)
                   .firstName(SALESPERSON_FIRST_NAME)
@@ -63,23 +63,23 @@ public class SalespeopleTestHelper {
                   .build())
         .build();
     }
-    return pojoAfterCreation;
+    return this.pojoAfterCreation;
   }
 
-  public static Salesperson salespersonEntityBeforeCreation() {
-    if (entityBeforeCreation == null) {
-      entityBeforeCreation = new Salesperson(new Person(SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
+  public Salesperson salespersonEntityBeforeCreation() {
+    if (this.entityBeforeCreation == null) {
+      this.entityBeforeCreation = new Salesperson(new Person(SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
                                                         SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL));
     }
-    return entityBeforeCreation;
+    return this.entityBeforeCreation;
   }
 
-  public static Salesperson salespersonEntityAfterCreation() {
-    if (entityAfterCreation == null) {
-      entityAfterCreation = new Salesperson(new Person(GENERIC_ID, SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
+  public Salesperson salespersonEntityAfterCreation() {
+    if (this.entityAfterCreation == null) {
+      this.entityAfterCreation = new Salesperson(new Person(GENERIC_ID, SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
                                                        SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL, SALESPERSON_PHONE1,
                                                        SALESPERSON_PHONE2));
     }
-    return entityAfterCreation;
+    return this.entityAfterCreation;
   }
 }
