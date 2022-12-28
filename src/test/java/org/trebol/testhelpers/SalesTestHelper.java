@@ -7,9 +7,6 @@ import org.trebol.pojo.SellPojo;
 import java.time.Instant;
 import java.util.List;
 
-import static org.trebol.testhelpers.CustomersTestHelper.*;
-import static org.trebol.testhelpers.ProductsTestHelper.*;
-
 /**
  * Builds & caches reusable instances of Sell and SellPojo
  */
@@ -28,13 +25,14 @@ public class SalesTestHelper {
   public static final int SELL_TAXES_VALUE = 0;
   public static final int SELL_TOTAL_VALUE = 100;
   public static final String SELL_TRANSACTION_TOKEN = "qwerty";
-  private static SellPojo pojoForFetch;
-  private static SellPojo pojoBeforeCreation;
-  private static SellPojo pojoAfterCreation;
-  private static Sell entityBeforeCreation;
-  private static Sell entityAfterCreation;
+  private SellPojo pojoForFetch;
+  private SellPojo pojoBeforeCreation;
+  private SellPojo pojoAfterCreation;
+  private Sell entityBeforeCreation;
+  private Sell entityAfterCreation;
+  ProductsTestHelper productsHelper = new ProductsTestHelper();
 
-  public static void resetSales() {
+  public void resetSales() {
     pojoForFetch = null;
     pojoBeforeCreation = null;
     pojoAfterCreation = null;
@@ -42,18 +40,18 @@ public class SalesTestHelper {
     entityAfterCreation = null;
   }
 
-  public static SellPojo sellPojoForFetch() {
+  public SellPojo sellPojoForFetch() {
     if (pojoForFetch == null) {
       pojoForFetch = SellPojo.builder().buyOrder(GENERIC_ID).build();
     }
     return pojoForFetch;
   }
 
-  public static SellPojo sellPojoBeforeCreation() {
+  public SellPojo sellPojoBeforeCreation() {
     if (pojoBeforeCreation == null) {
       SellDetailPojo newDetailPojo = SellDetailPojo.builder()
         .units(SELL_DETAIL_UNITS)
-        .product(productPojoBeforeCreation())
+        .product(productsHelper.productPojoBeforeCreation())
         .build();
       pojoBeforeCreation = SellPojo.builder()
         .details(List.of(newDetailPojo))
@@ -65,13 +63,13 @@ public class SalesTestHelper {
     return pojoBeforeCreation;
   }
 
-  public static SellPojo sellPojoAfterCreation() {
+  public SellPojo sellPojoAfterCreation() {
     if (pojoAfterCreation == null) {
       SellDetailPojo persistedDetailPojo = SellDetailPojo.builder()
         .id(GENERIC_ID)
         .units(SELL_DETAIL_UNITS)
-        .unitValue(productPojoAfterCreation().getPrice())
-        .product(productPojoAfterCreation())
+        .unitValue(productsHelper.productPojoAfterCreation().getPrice())
+        .product(productsHelper.productPojoAfterCreation())
         .build();
       pojoAfterCreation = SellPojo.builder()
         .buyOrder(GENERIC_ID)
@@ -92,12 +90,12 @@ public class SalesTestHelper {
     return pojoAfterCreation;
   }
 
-  public static Sell sellEntityBeforeCreation() {
+  public Sell sellEntityBeforeCreation() {
     if (entityBeforeCreation == null) {
       PaymentType paymentTypeEntity = new PaymentType(GENERIC_ID, SELL_PAYMENT_TYPE_NAME);
       BillingType billingTypeEntity = new BillingType(GENERIC_ID, SELL_BILLING_TYPE_NAME_PERSON);
-      SellDetail newDetailEntity = new SellDetail(SELL_DETAIL_UNITS, productEntityBeforeCreation());
-      newDetailEntity.setUnitValue(productEntityBeforeCreation().getPrice());
+      SellDetail newDetailEntity = new SellDetail(SELL_DETAIL_UNITS, productsHelper.productEntityBeforeCreation());
+      newDetailEntity.setUnitValue(productsHelper.productEntityBeforeCreation().getPrice());
       entityBeforeCreation = new Sell(customerEntityBeforeCreation(),
                                       paymentTypeEntity,
                                       billingTypeEntity,
@@ -106,13 +104,13 @@ public class SalesTestHelper {
     return entityBeforeCreation;
   }
 
-  public static Sell sellEntityAfterCreation() {
+  public Sell sellEntityAfterCreation() {
     if (entityAfterCreation == null) {
       PaymentType paymentTypeEntity = new PaymentType(GENERIC_ID, SELL_PAYMENT_TYPE_NAME);
       BillingType billingTypeEntity = new BillingType(GENERIC_ID, SELL_BILLING_TYPE_NAME_PERSON);
       SellDetail persistedDetailEntity = new SellDetail(GENERIC_ID, SELL_DETAIL_UNITS,
-                                                        productEntityAfterCreation().getPrice(),
-                                                        productEntityAfterCreation());
+                                                        productsHelper.productEntityAfterCreation().getPrice(),
+                                                        productsHelper.productEntityAfterCreation());
       SellStatus sellStatusEntity = new SellStatus(GENERIC_ID, SELL_STATUS_CODE, SELL_STATUS_NAME);
       entityAfterCreation = new Sell(GENERIC_ID, GENERIC_DATE, SELL_TOTAL_ITEMS, SELL_NET_VALUE, SELL_TRANSPORT_VALUE,
                                      SELL_TAXES_VALUE, SELL_TOTAL_VALUE, SELL_TRANSACTION_TOKEN,
