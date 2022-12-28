@@ -17,6 +17,7 @@ import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.pojo.ProductPojo;
+import org.trebol.testhelpers.ImagesTestHelper;
 import org.trebol.testhelpers.ProductsTestHelper;
 
 import javax.persistence.EntityExistsException;
@@ -27,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.testhelpers.ImagesTestHelper.*;
 import static org.trebol.testhelpers.ProductCategoriesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,12 +41,13 @@ class ProductsJpaCrudServiceImplTest {
   @Mock ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverterMock;
   @Mock ITwoWayConverterJpaService<ImagePojo, Image> imagesConverterMock;
   ProductsTestHelper productsHelper = new ProductsTestHelper();
+  ImagesTestHelper imagesHelper = new ImagesTestHelper();
 
   @BeforeEach
   void beforeEach() {
     productsHelper.resetProducts();
     resetProductCategories();
-    resetImages();
+    imagesHelper.resetImages();
   }
 
 
@@ -87,7 +88,7 @@ class ProductsJpaCrudServiceImplTest {
   void creates_product_with_nonexistent_image()
       throws BadInputException {
     ProductPojo input = productsHelper.productPojoBeforeCreation();
-    input.setImages(List.of(imagePojoBeforeCreation()));
+    input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(productsHelper.productEntityBeforeCreation());
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(productsHelper.productEntityAfterCreation());
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(productsHelper.productPojoAfterCreation());
@@ -107,15 +108,15 @@ class ProductsJpaCrudServiceImplTest {
   void creates_product_with_existing_image()
       throws BadInputException {
     ProductPojo input = productsHelper.productPojoBeforeCreation();
-    input.setImages(List.of(imagePojoBeforeCreation()));
+    input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
     ProductPojo expectedResult = productsHelper.productPojoAfterCreation();
-    ImagePojo expectedResultImage = imagePojoAfterCreation();
+    ImagePojo expectedResultImage = imagesHelper.imagePojoAfterCreation();
     expectedResult.setImages(List.of(expectedResultImage));
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(productsHelper.productEntityBeforeCreation());
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(productsHelper.productEntityAfterCreation());
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
     when(productsRepositoryMock.getById(anyLong())).thenReturn(productsHelper.productEntityAfterCreation());
-    when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.of(imageEntityAfterCreation()));
+    when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.of(imagesHelper.imageEntityAfterCreation()));
     when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(List.of()); // unused value, stubbed for safety
     when(imagesConverterMock.convertToPojo(any(Image.class))).thenReturn(expectedResultImage);
 
