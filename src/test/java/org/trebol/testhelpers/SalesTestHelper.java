@@ -31,6 +31,7 @@ public class SalesTestHelper {
   private Sell entityBeforeCreation;
   private Sell entityAfterCreation;
   ProductsTestHelper productsHelper = new ProductsTestHelper();
+  CustomersTestHelper customersHelper = new CustomersTestHelper();
 
   public void resetSales() {
     pojoForFetch = null;
@@ -57,7 +58,7 @@ public class SalesTestHelper {
         .details(List.of(newDetailPojo))
         .billingType(SELL_BILLING_TYPE_NAME_PERSON)
         .paymentType(SELL_PAYMENT_TYPE_NAME)
-        .customer(customerPojoBeforeCreation())
+        .customer(customersHelper.customerPojoBeforeCreation())
         .build();
     }
     return pojoBeforeCreation;
@@ -84,7 +85,7 @@ public class SalesTestHelper {
         .status(SELL_STATUS_NAME)
         .billingType(SELL_BILLING_TYPE_NAME_PERSON)
         .paymentType(SELL_PAYMENT_TYPE_NAME)
-        .customer(customerPojoAfterCreation())
+        .customer(customersHelper.customerPojoAfterCreation())
         .build();
     }
     return pojoAfterCreation;
@@ -96,7 +97,7 @@ public class SalesTestHelper {
       BillingType billingTypeEntity = new BillingType(GENERIC_ID, SELL_BILLING_TYPE_NAME_PERSON);
       SellDetail newDetailEntity = new SellDetail(SELL_DETAIL_UNITS, productsHelper.productEntityBeforeCreation());
       newDetailEntity.setUnitValue(productsHelper.productEntityBeforeCreation().getPrice());
-      entityBeforeCreation = new Sell(customerEntityBeforeCreation(),
+      entityBeforeCreation = new Sell(customersHelper.customerEntityBeforeCreation(),
                                       paymentTypeEntity,
                                       billingTypeEntity,
                                       List.of(newDetailEntity));
@@ -114,7 +115,7 @@ public class SalesTestHelper {
       SellStatus sellStatusEntity = new SellStatus(GENERIC_ID, SELL_STATUS_CODE, SELL_STATUS_NAME);
       entityAfterCreation = new Sell(GENERIC_ID, GENERIC_DATE, SELL_TOTAL_ITEMS, SELL_NET_VALUE, SELL_TRANSPORT_VALUE,
                                      SELL_TAXES_VALUE, SELL_TOTAL_VALUE, SELL_TRANSACTION_TOKEN,
-                                     customerEntityAfterCreation(), paymentTypeEntity, sellStatusEntity,
+                                     customersHelper.customerEntityAfterCreation(), paymentTypeEntity, sellStatusEntity,
                                      billingTypeEntity, null, null, null, null, null, List.of(persistedDetailEntity));
     }
     return entityAfterCreation;
