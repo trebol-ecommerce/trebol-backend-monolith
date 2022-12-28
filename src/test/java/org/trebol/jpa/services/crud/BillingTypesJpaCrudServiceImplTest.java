@@ -13,7 +13,9 @@ import org.trebol.pojo.BillingTypePojo;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,23 +25,18 @@ class BillingTypesJpaCrudServiceImplTest {
   @Mock IBillingTypesJpaRepository billingTypesRepositoryMock;
 
   @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
-
-  @Test
   void finds_by_name() throws BadInputException {
-    Long billingTypeId = 1L;
     String billingTypeName = "test company";
-    BillingTypePojo example = BillingTypePojo.builder().name(billingTypeName).build();
-    BillingType persistedEntity = new BillingType(billingTypeId, billingTypeName);
-    when(billingTypesRepositoryMock.findByName(billingTypeName)).thenReturn(Optional.of(persistedEntity));
+    BillingTypePojo example = BillingTypePojo.builder()
+      .name(billingTypeName)
+      .build();
+    BillingType expectedResult = new BillingType(1L, billingTypeName);
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
 
     Optional<BillingType> match = instance.getExisting(example);
 
     verify(billingTypesRepositoryMock).findByName(billingTypeName);
     assertTrue(match.isPresent());
-    assertEquals(match.get().getId(), billingTypeId);
-    assertEquals(match.get().getName(), billingTypeName);
+    assertEquals(expectedResult, match.get());
   }
 }

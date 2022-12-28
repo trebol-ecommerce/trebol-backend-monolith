@@ -13,7 +13,10 @@ import org.trebol.pojo.SellStatusPojo;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,23 +25,18 @@ class SellStatusesJpaCrudServiceImplTest {
   @Mock ISellStatusesJpaRepository sellStatusesRepositoryMock;
 
   @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
-
-  @Test
   void finds_by_name() throws BadInputException {
-    Long statusId = 1L;
-    Integer statusCode = 0;
     String statusName = "example sell status name";
-    SellStatus persistedEntity = new SellStatus(statusId, statusCode, statusName);
-    when(sellStatusesRepositoryMock.findByName(statusName)).thenReturn(Optional.of(persistedEntity));
+    SellStatusPojo input = SellStatusPojo.builder()
+      .name(statusName)
+      .build();
+    SellStatus expectedResult = new SellStatus(1L, 0, statusName);
+    when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
 
-    Optional<SellStatus> match = instance.getExisting(SellStatusPojo.builder().name(statusName).build());
+    Optional<SellStatus> match = instance.getExisting(input);
 
+    verify(sellStatusesRepositoryMock).findByName(statusName);
     assertTrue(match.isPresent());
-    assertEquals(match.get().getId(), statusId);
-    assertEquals(match.get().getCode(), statusCode);
-    assertEquals(match.get().getName(), statusName);
+    assertEquals(expectedResult, match.get());
   }
 }

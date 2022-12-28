@@ -13,7 +13,10 @@ import org.trebol.pojo.UserRolePojo;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,21 +25,18 @@ class UserRolesJpaCrudServiceImplTest {
   @Mock IUserRolesJpaRepository userRolesRepositoryMock;
 
   @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
-
-  @Test
   void finds_by_name() throws BadInputException {
-    Long roleId = 1L;
     String roleName = "test-role";
-    UserRole persistedEntity = new UserRole(roleId, roleName);
-    when(userRolesRepositoryMock.findByName(roleName)).thenReturn(Optional.of(persistedEntity));
+    UserRolePojo input = UserRolePojo.builder()
+      .name(roleName)
+      .build();
+    UserRole persistedEntity = new UserRole(1L, roleName);
+    when(userRolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(persistedEntity));
 
-    Optional<UserRole> match = instance.getExisting(UserRolePojo.builder().name(roleName).build());
+    Optional<UserRole> match = instance.getExisting(input);
 
+    verify(userRolesRepositoryMock).findByName(roleName);
     assertTrue(match.isPresent());
-    assertEquals(match.get().getId(), roleId);
-    assertEquals(match.get().getName(), roleName);
+    assertEquals(persistedEntity, match.get());
   }
 }

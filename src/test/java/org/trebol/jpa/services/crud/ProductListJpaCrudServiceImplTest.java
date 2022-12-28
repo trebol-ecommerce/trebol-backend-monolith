@@ -17,36 +17,31 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListJpaCrudServiceImplTest {
-	@InjectMocks	ProductListJpaCrudServiceImpl instance;
+	@InjectMocks ProductListJpaCrudServiceImpl instance;
 	@Mock	IProductListsJpaRepository productListRepository;
 	@Mock	IProductListItemsJpaRepository productListItemRepository;
 	
 	@Test
 	void delete_whenProductListNotFound_throwsEntityNotFoundException() {
-		Predicate predicateMock = new BooleanBuilder();
 		
-		when(productListRepository.count(predicateMock)).thenReturn(0L);
+		when(productListRepository.count(any(Predicate.class))).thenReturn(0L);
 		
-		assertThrows(EntityNotFoundException.class, () -> instance.delete(predicateMock));		
+		assertThrows(EntityNotFoundException.class, () -> instance.delete(new BooleanBuilder()));
 	}
 	
 	@Test
 	void delete_whenProductListFound_shouldCallDeleteOnRepositories() {
-		Predicate predicateMock = new BooleanBuilder();
-		
 		ProductList productListMock = new ProductList();
 		productListMock.setId(1L);
 		List<ProductList> productListsMock = List.of(productListMock);
+		when(productListRepository.count(any(Predicate.class))).thenReturn(1L);
+		when(productListRepository.findAll(any(Predicate.class))).thenReturn(productListsMock);
 		
-		when(productListRepository.count(predicateMock)).thenReturn(1L);
-		when(productListRepository.findAll(predicateMock)).thenReturn(productListsMock);
-		
-		instance.delete(predicateMock);
+		instance.delete(new BooleanBuilder());
 		
 		verify(productListItemRepository, times(productListsMock.size())).deleteByListId(1L);
 		verify(productListRepository).deleteAll(productListsMock);
@@ -61,35 +56,30 @@ class ProductListJpaCrudServiceImplTest {
 		
 		Optional<ProductList> actualProductListOptional = instance.getExisting(productListPojoMock);
 		
-		assertEquals(Optional.empty(), actualProductListOptional);
+		assertTrue(actualProductListOptional.isEmpty());
 	}
 	
 	@Test
 	void getExisting_whenNameNull_shouldReturnEmptyOptional() {
-		ProductListPojo productListPojoMock = ProductListPojo.builder()
-				.id(1L)
-				.name(null)
-				.build();
+		ProductListPojo productListPojoMock = ProductListPojo.builder().build();
 		
 		Optional<ProductList> actualProductListOptional = instance.getExisting(productListPojoMock);
 		
-		assertEquals(Optional.empty(), actualProductListOptional);
+		assertTrue(actualProductListOptional.isEmpty());
 	}
 	
 	@Test
-	void getExisting_whenIdAndNameNotNull_shouldReturnProductList() {
+	void getExisting_whenNameNotNull_shouldReturnProductList() {
 		ProductListPojo productListPojoMock = ProductListPojo.builder()
-				.id(1L)
 				.name("productListPojoName")
 				.build();
-		
 		ProductList productListMock = new ProductList();
 		productListMock.setName("productListName");
-		
-		when(productListRepository.findById(anyLong())).thenReturn(Optional.of(productListMock));
+		when(productListRepository.findByName(anyString())).thenReturn(Optional.of(productListMock));
 		
 		Optional<ProductList> actualProductListOptional = instance.getExisting(productListPojoMock);
-		
+
+    verify(productListRepository).findByName(productListPojoMock.getName());
 		assertTrue(actualProductListOptional.isPresent());
 		assertEquals(productListMock, actualProductListOptional.get());
 	}	
