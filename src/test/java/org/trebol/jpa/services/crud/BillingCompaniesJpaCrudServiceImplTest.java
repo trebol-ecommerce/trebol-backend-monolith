@@ -13,7 +13,10 @@ import org.trebol.pojo.BillingCompanyPojo;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,24 +25,18 @@ class BillingCompaniesJpaCrudServiceImplTest {
   @Mock IBillingCompaniesJpaRepository billingCompaniesRepositoryMock;
 
   @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
-
-  @Test
   void finds_by_id_number() throws BadInputException {
-    Long companyId = 1L;
     String companyIdNumber = "11111111";
-    String companyName = "test company";
-    BillingCompanyPojo example = BillingCompanyPojo.builder().idNumber(companyIdNumber).build();
-    BillingCompany persistedEntity = new BillingCompany(companyId, companyIdNumber, companyName);
-    when(billingCompaniesRepositoryMock.findByIdNumber(companyIdNumber)).thenReturn(Optional.of(persistedEntity));
+    BillingCompanyPojo input = BillingCompanyPojo.builder()
+      .idNumber(companyIdNumber)
+      .build();
+    BillingCompany expectedResult = new BillingCompany(1L, companyIdNumber, "test company");
+    when(billingCompaniesRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(expectedResult));
 
-    Optional<BillingCompany> match = instance.getExisting(example);
+    Optional<BillingCompany> match = instance.getExisting(input);
 
+    verify(billingCompaniesRepositoryMock).findByIdNumber(companyIdNumber);
     assertTrue(match.isPresent());
-    assertEquals(match.get().getId(), companyId);
-    assertEquals(match.get().getIdNumber(), companyIdNumber);
-    assertEquals(match.get().getName(), companyName);
+    assertEquals(expectedResult, match.get());
   }
 }

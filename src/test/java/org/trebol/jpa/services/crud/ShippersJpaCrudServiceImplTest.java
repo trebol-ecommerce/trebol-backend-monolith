@@ -13,7 +13,10 @@ import org.trebol.pojo.ShipperPojo;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,22 +25,19 @@ class ShippersJpaCrudServiceImplTest {
   @Mock IShippersJpaRepository shippersRepositoryMock;
 
   @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
-
-  @Test
   void finds_by_name() throws BadInputException {
-    Long shipperId = 1L;
     String shipperName = "test-one";
-    Shipper persistedEntity = new Shipper(shipperId, shipperName);
-    when(shippersRepositoryMock.findByName(shipperName)).thenReturn(Optional.of(persistedEntity));
+    ShipperPojo input = ShipperPojo.builder()
+      .name(shipperName)
+      .build();
+    Shipper expectedResult = new Shipper(1L, shipperName);
+    when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
 
-    Optional<Shipper> match = instance.getExisting(ShipperPojo.builder().name(shipperName).build());
+    Optional<Shipper> match = instance.getExisting(input);
 
+    verify(shippersRepositoryMock).findByName(shipperName);
     assertTrue(match.isPresent());
-    assertEquals(match.get().getId(), shipperId);
-    assertEquals(match.get().getName(), shipperName);
+    assertEquals(expectedResult, match.get());
   }
 
 }
