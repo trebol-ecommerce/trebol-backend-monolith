@@ -17,41 +17,41 @@ public class CustomersTestHelper {
   public static final String CUSTOMER_EMAIL = "customer@example.com";
   public static final String CUSTOMER_PHONE1 = "1234567";
   public static final String CUSTOMER_PHONE2 = "9876543";
-  private static CustomerPojo pojoForFetch;
-  private static CustomerPojo pojoBeforeCreation;
-  private static CustomerPojo pojoAfterCreation;
-  private static Customer entityBeforeCreation;
-  private static Customer entityAfterCreation;
+  private CustomerPojo pojoForFetch;
+  private CustomerPojo pojoBeforeCreation;
+  private CustomerPojo pojoAfterCreation;
+  private Customer entityBeforeCreation;
+  private Customer entityAfterCreation;
 
-  public static void resetCustomers() {
-    pojoForFetch = null;
-    pojoBeforeCreation = null;
-    pojoAfterCreation = null;
-    entityBeforeCreation = null;
-    entityAfterCreation = null;
+  public void resetCustomers() {
+    this.pojoForFetch = null;
+    this.pojoBeforeCreation = null;
+    this.pojoAfterCreation = null;
+    this.entityBeforeCreation = null;
+    this.entityAfterCreation = null;
   }
 
-  public static CustomerPojo customerPojoForFetch() {
-    if (pojoForFetch == null) {
-      pojoForFetch = CustomerPojo.builder()
+  public CustomerPojo customerPojoForFetch() {
+    if (this.pojoForFetch == null) {
+      this.pojoForFetch = CustomerPojo.builder()
         .person(PersonPojo.builder().idNumber(CUSTOMER_ID_NUMBER).build())
         .build();
     }
-    return pojoForFetch;
+    return this.pojoForFetch;
   }
 
-  public static CustomerPojo customerPojoBeforeCreation() {
-    if (pojoBeforeCreation == null) {
-      pojoForFetch = CustomerPojo.builder()
+  public CustomerPojo customerPojoBeforeCreation() {
+    if (this.pojoBeforeCreation == null) {
+      this.pojoForFetch = CustomerPojo.builder()
         .person(PersonPojo.builder().idNumber(CUSTOMER_ID_NUMBER).build())
         .build();
     }
-    return pojoBeforeCreation;
+    return this.pojoBeforeCreation;
   }
 
-  public static CustomerPojo customerPojoAfterCreation() {
-    if (pojoAfterCreation == null) {
-      pojoAfterCreation = CustomerPojo.builder()
+  public CustomerPojo customerPojoAfterCreation() {
+    if (this.pojoAfterCreation == null) {
+      this.pojoAfterCreation = CustomerPojo.builder()
         .person(PersonPojo.builder()
                   .id(GENERIC_ID)
                   .firstName(CUSTOMER_FIRST_NAME)
@@ -63,23 +63,23 @@ public class CustomersTestHelper {
                   .build())
         .build();
     }
-    return pojoAfterCreation;
+    return this.pojoAfterCreation;
   }
 
-  public static Customer customerEntityBeforeCreation() {
-    if (entityBeforeCreation == null) {
-      entityBeforeCreation = new Customer(new Person(CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME,
+  public Customer customerEntityBeforeCreation() {
+    if (this.entityBeforeCreation == null) {
+      this.entityBeforeCreation = new Customer(new Person(CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME,
                                                      CUSTOMER_ID_NUMBER, CUSTOMER_EMAIL));
     }
-    return entityBeforeCreation;
+    return this.entityBeforeCreation;
   }
 
-  public static Customer customerEntityAfterCreation() {
-    if (entityAfterCreation == null) {
-      entityAfterCreation = new Customer(new Person(GENERIC_ID, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME,
+  public Customer customerEntityAfterCreation() {
+    if (this.entityAfterCreation == null) {
+      this.entityAfterCreation = new Customer(new Person(GENERIC_ID, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME,
                                                     CUSTOMER_ID_NUMBER, CUSTOMER_EMAIL, CUSTOMER_PHONE1,
                                                     CUSTOMER_PHONE2));
     }
-    return entityAfterCreation;
+    return this.entityAfterCreation;
   }
 }
