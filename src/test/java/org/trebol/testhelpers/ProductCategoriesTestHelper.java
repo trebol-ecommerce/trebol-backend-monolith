@@ -11,59 +11,59 @@ public class ProductCategoriesTestHelper {
   public static final long PRODUCT_ID = 1L;
   public static final String CATEGORY_NAME = "test product name";
   public static final String CATEGORY_CODE = "TESTPROD1";
-  private static ProductCategoryPojo pojoForFetch;
-  private static ProductCategoryPojo pojoBeforeCreation;
-  private static ProductCategoryPojo pojoAfterCreation;
-  private static ProductCategory entityBeforeCreation;
-  private static ProductCategory entityAfterCreation;
+  private ProductCategoryPojo pojoForFetch;
+  private ProductCategoryPojo pojoBeforeCreation;
+  private ProductCategoryPojo pojoAfterCreation;
+  private ProductCategory entityBeforeCreation;
+  private ProductCategory entityAfterCreation;
 
-  public static void resetProductCategories() {
-    pojoForFetch = null;
-    pojoBeforeCreation = null;
-    pojoAfterCreation = null;
-    entityBeforeCreation = null;
-    entityAfterCreation = null;
+  public void resetProductCategories() {
+    this.pojoForFetch = null;
+    this.pojoBeforeCreation = null;
+    this.pojoAfterCreation = null;
+    this.entityBeforeCreation = null;
+    this.entityAfterCreation = null;
   }
 
-  public static ProductCategoryPojo productCategoryPojoForFetch() {
-    if (pojoForFetch == null) {
-      pojoForFetch = ProductCategoryPojo.builder().code(CATEGORY_CODE).build();
+  public ProductCategoryPojo productCategoryPojoForFetch() {
+    if (this.pojoForFetch == null) {
+      this.pojoForFetch = ProductCategoryPojo.builder().code(CATEGORY_CODE).build();
     }
-    return pojoForFetch;
+    return this.pojoForFetch;
   }
 
-  public static ProductCategoryPojo productCategoryPojoBeforeCreation() {
-    if (pojoBeforeCreation == null) {
-      pojoBeforeCreation = ProductCategoryPojo.builder()
+  public ProductCategoryPojo productCategoryPojoBeforeCreation() {
+    if (this.pojoBeforeCreation == null) {
+      this.pojoBeforeCreation = ProductCategoryPojo.builder()
         .code(CATEGORY_CODE)
         .name(CATEGORY_NAME)
         .build();
     }
-    return pojoBeforeCreation;
+    return this.pojoBeforeCreation;
   }
 
-  public static ProductCategoryPojo productCategoryPojoAfterCreation() {
-    if (pojoAfterCreation == null) {
-      pojoAfterCreation = ProductCategoryPojo.builder()
+  public ProductCategoryPojo productCategoryPojoAfterCreation() {
+    if (this.pojoAfterCreation == null) {
+      this.pojoAfterCreation = ProductCategoryPojo.builder()
         .id(PRODUCT_ID)
         .code(CATEGORY_CODE)
         .name(CATEGORY_NAME)
         .build();
     }
-    return pojoAfterCreation;
+    return this.pojoAfterCreation;
   }
 
-  public static ProductCategory productCategoryEntityBeforeCreation() {
-    if (entityBeforeCreation == null) {
-      entityBeforeCreation = new ProductCategory(CATEGORY_CODE, CATEGORY_NAME, null);
+  public ProductCategory productCategoryEntityBeforeCreation() {
+    if (this.entityBeforeCreation == null) {
+      this.entityBeforeCreation = new ProductCategory(CATEGORY_CODE, CATEGORY_NAME, null);
     }
-    return entityBeforeCreation;
+    return this.entityBeforeCreation;
   }
 
-  public static ProductCategory productCategoryEntityAfterCreation() {
-    if (entityAfterCreation == null) {
-      entityAfterCreation = new ProductCategory(PRODUCT_ID, CATEGORY_CODE, CATEGORY_NAME, null);
+  public ProductCategory productCategoryEntityAfterCreation() {
+    if (this.entityAfterCreation == null) {
+      this.entityAfterCreation = new ProductCategory(PRODUCT_ID, CATEGORY_CODE, CATEGORY_NAME, null);
     }
-    return entityAfterCreation;
+    return this.entityAfterCreation;
   }
 }
