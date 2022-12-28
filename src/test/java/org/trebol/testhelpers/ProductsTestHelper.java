@@ -3,8 +3,6 @@ package org.trebol.testhelpers;
 import org.trebol.jpa.entities.Product;
 import org.trebol.pojo.ProductPojo;
 
-import java.util.List;
-
 /**
  * Builds & caches reusable instances of Product and ProductPojo
  */
@@ -17,30 +15,30 @@ public class ProductsTestHelper {
   public static final int PRODUCT_PRICE = 100;
   public static final int PRODUCT_STOCK = 10;
   public static final int PRODUCT_STOCK_CRITICAL = 1;
-  private static ProductPojo pojoForFetch;
-  private static ProductPojo pojoBeforeCreation;
-  private static ProductPojo pojoAfterCreation;
-  private static Product entityBeforeCreation;
-  private static Product entityAfterCreation;
+  private ProductPojo pojoForFetch;
+  private ProductPojo pojoBeforeCreation;
+  private ProductPojo pojoAfterCreation;
+  private Product entityBeforeCreation;
+  private Product entityAfterCreation;
 
-  public static void resetProducts() {
-    pojoForFetch = null;
-    pojoBeforeCreation = null;
-    pojoAfterCreation = null;
-    entityBeforeCreation = null;
-    entityAfterCreation = null;
+  public void resetProducts() {
+    this.pojoForFetch = null;
+    this.pojoBeforeCreation = null;
+    this.pojoAfterCreation = null;
+    this.entityBeforeCreation = null;
+    this.entityAfterCreation = null;
   }
 
-  public static ProductPojo productPojoForFetch() {
-    if (pojoForFetch == null) {
-      pojoForFetch = ProductPojo.builder().barcode(PRODUCT_BARCODE).build();
+  public ProductPojo productPojoForFetch() {
+    if (this.pojoForFetch == null) {
+      this.pojoForFetch = ProductPojo.builder().barcode(PRODUCT_BARCODE).build();
     }
-    return pojoForFetch;
+    return this.pojoForFetch;
   }
 
-  public static ProductPojo productPojoBeforeCreation() {
-    if (pojoBeforeCreation == null) {
-      pojoBeforeCreation = ProductPojo.builder()
+  public ProductPojo productPojoBeforeCreation() {
+    if (this.pojoBeforeCreation == null) {
+      this.pojoBeforeCreation = ProductPojo.builder()
         .name(PRODUCT_NAME)
         .barcode(PRODUCT_BARCODE)
         .description(PRODUCT_DESCRIPTION)
@@ -49,12 +47,12 @@ public class ProductsTestHelper {
         .criticalStock(PRODUCT_STOCK_CRITICAL)
         .build();
     }
-    return pojoBeforeCreation;
+    return this.pojoBeforeCreation;
   }
 
-  public static ProductPojo productPojoAfterCreation() {
-    if (pojoAfterCreation == null) {
-      pojoAfterCreation = ProductPojo.builder()
+  public ProductPojo productPojoAfterCreation() {
+    if (this.pojoAfterCreation == null) {
+      this.pojoAfterCreation = ProductPojo.builder()
         .id(PRODUCT_ID)
         .name(PRODUCT_NAME)
         .barcode(PRODUCT_BARCODE)
@@ -67,19 +65,19 @@ public class ProductsTestHelper {
     return pojoAfterCreation;
   }
 
-  public static Product productEntityBeforeCreation() {
-    if (entityBeforeCreation == null) {
-      entityBeforeCreation = new Product(PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION, PRODUCT_PRICE,
+  public Product productEntityBeforeCreation() {
+    if (this.entityBeforeCreation == null) {
+      this.entityBeforeCreation = new Product(PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION, PRODUCT_PRICE,
                                          PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL);
     }
-    return entityBeforeCreation;
+    return this.entityBeforeCreation;
   }
 
-  public static Product productEntityAfterCreation() {
-    if (entityAfterCreation == null) {
-      entityAfterCreation = new Product(PRODUCT_ID, PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION,
+  public Product productEntityAfterCreation() {
+    if (this.entityAfterCreation == null) {
+      this.entityAfterCreation = new Product(PRODUCT_ID, PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION,
                                         PRODUCT_PRICE, PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null);
     }
-    return entityAfterCreation;
+    return this.entityAfterCreation;
   }
 }

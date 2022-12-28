@@ -18,6 +18,8 @@ import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellPojo;
+import org.trebol.testhelpers.ProductsTestHelper;
+import org.trebol.testhelpers.SalesTestHelper;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -30,8 +32,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.testhelpers.ProductsTestHelper.productEntityAfterCreation;
-import static org.trebol.testhelpers.SalesTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 class SalesJpaCrudServiceImplTest {
@@ -41,16 +41,19 @@ class SalesJpaCrudServiceImplTest {
   @Mock ITwoWayConverterJpaService<SellPojo, Sell> salesConverterMock;
   @Mock IDataTransportJpaService<SellPojo, Sell> dataTransportServiceMock;
   @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock; // TODO write an unit test that needs this mock
+  ProductsTestHelper productsHelper = new ProductsTestHelper();
+  SalesTestHelper salesHelper = new SalesTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    resetSales();
+    productsHelper.resetProducts();
+    salesHelper.resetSales();
   }
 
   @Test
   void finds_by_example_using_buy_order() {
-    SellPojo input = sellPojoForFetch();
-    Sell expectedResult = sellEntityAfterCreation();
+    SellPojo input = salesHelper.sellPojoForFetch();
+    Sell expectedResult = salesHelper.sellEntityAfterCreation();
     when(salesRepositoryMock.findById(anyLong())).thenReturn(Optional.of(expectedResult));
 
     Optional<Sell> match = instance.getExisting(input);
@@ -66,7 +69,7 @@ class SalesJpaCrudServiceImplTest {
       .buyOrder(1L)
       .details(List.of()) // omit conversion cascading
       .build();
-    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(sellEntityAfterCreation()));
+    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
     when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(expectedResult);
 
     SellPojo result = instance.readOne(new BooleanBuilder());
@@ -78,10 +81,10 @@ class SalesJpaCrudServiceImplTest {
   @Test
   void creates_sell()
       throws BadInputException, EntityExistsException {
-    SellPojo input = sellPojoBeforeCreation();
-    SellPojo expectedResult = sellPojoAfterCreation();
-    when(salesConverterMock.convertToNewEntity(any(SellPojo.class))).thenReturn(sellEntityBeforeCreation());
-    when(salesRepositoryMock.saveAndFlush(any(Sell.class))).thenReturn(sellEntityAfterCreation());
+    SellPojo input = salesHelper.sellPojoBeforeCreation();
+    SellPojo expectedResult = salesHelper.sellPojoAfterCreation();
+    when(salesConverterMock.convertToNewEntity(any(SellPojo.class))).thenReturn(salesHelper.sellEntityBeforeCreation());
+    when(salesRepositoryMock.saveAndFlush(any(Sell.class))).thenReturn(salesHelper.sellEntityAfterCreation());
     when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(expectedResult);
 
     SellPojo result = instance.create(input);
@@ -93,14 +96,14 @@ class SalesJpaCrudServiceImplTest {
   @Test
   void updates_sell()
       throws BadInputException, EntityNotFoundException {
-    SellPojo input = sellPojoAfterCreation();
+    SellPojo input = salesHelper.sellPojoAfterCreation();
     Instant updatedDate = Instant.now().minus(Duration.ofHours(1L));
     input.setDate(updatedDate);
-    Sell internalResult = new Sell(sellEntityAfterCreation());
+    Sell internalResult = new Sell(salesHelper.sellEntityAfterCreation());
     internalResult.setDate(updatedDate);
-    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(sellEntityAfterCreation()));
-    when(dataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), sellEntityAfterCreation())).thenReturn(internalResult);
-    when(productsRepository.findByBarcode(anyString())).thenReturn(Optional.of(productEntityAfterCreation()));
+    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
+    when(dataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), salesHelper.sellEntityAfterCreation())).thenReturn(internalResult);
+    when(productsRepository.findByBarcode(anyString())).thenReturn(Optional.of(productsHelper.productEntityAfterCreation()));
     when(salesRepositoryMock.saveAndFlush(any(Sell.class))).thenReturn(internalResult);
     when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(input);
 
@@ -113,15 +116,15 @@ class SalesJpaCrudServiceImplTest {
   @Test
   void returns_same_when_no_update_is_made()
       throws BadInputException, EntityNotFoundException {
-    SellPojo input = sellPojoAfterCreation();
-    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(sellEntityAfterCreation()));
-    when(productsRepository.findByBarcode(anyString())).thenReturn(Optional.of(productEntityAfterCreation()));
-    when(dataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(sellEntityAfterCreation());
+    SellPojo input = salesHelper.sellPojoAfterCreation();
+    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
+    when(productsRepository.findByBarcode(anyString())).thenReturn(Optional.of(productsHelper.productEntityAfterCreation()));
+    when(dataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(salesHelper.sellEntityAfterCreation());
     when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(input);
 
     SellPojo result = instance.update(input, new BooleanBuilder());
 
-    verify(dataTransportServiceMock).applyChangesToExistingEntity(input, sellEntityAfterCreation());
+    verify(dataTransportServiceMock).applyChangesToExistingEntity(input, salesHelper.sellEntityAfterCreation());
     assertEquals(input, result);
   }
 

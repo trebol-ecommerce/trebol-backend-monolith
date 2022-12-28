@@ -1,23 +1,5 @@
 package org.trebol.operation.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
-import static org.trebol.config.Constants.SELL_STATUS_PENDING;
-import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_CANCELLED;
-import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_FAILED;
-import static org.trebol.config.Constants.SELL_STATUS_PAID_UNCONFIRMED;
-import static org.trebol.config.Constants.SELL_STATUS_PAID_CONFIRMED;
-import static org.trebol.config.Constants.SELL_STATUS_REJECTED;
-import static org.trebol.config.Constants.SELL_STATUS_COMPLETED;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -40,6 +22,17 @@ import org.trebol.pojo.SellDetailPojo;
 import org.trebol.pojo.SellPojo;
 import org.trebol.testhelpers.ProductsTestHelper;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.trebol.config.Constants.*;
+
 @ExtendWith(MockitoExtension.class)
 class SalesProcessServiceImplTest {
 	
@@ -47,6 +40,7 @@ class SalesProcessServiceImplTest {
 	@Mock	ISalesJpaRepository salesRepository;
 	@Mock	ISellStatusesJpaRepository sellStatusesRepository;
 	@Mock	ISellDetailsJpaRepository sellDetailsRepository;
+  ProductsTestHelper productsHelper = new ProductsTestHelper();
 	
 	/*
 	 * SalesProcessService cannot be instantiated with a simple @InjectMocks annotation.
@@ -314,7 +308,7 @@ class SalesProcessServiceImplTest {
 			sellDetailMock.setUnitValue(111);
 			List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
 			
-			ProductPojo productPojoMock = ProductsTestHelper.productPojoAfterCreation();
+			ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
 			
 			// Stubbing
 			when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException		
@@ -408,7 +402,7 @@ class SalesProcessServiceImplTest {
 			sellDetailMock.setUnitValue(111);
 			List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
 			
-			ProductPojo productPojoMock = ProductsTestHelper.productPojoAfterCreation();
+			ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
 			
 			// Stubbing
 			when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException		
@@ -502,7 +496,7 @@ class SalesProcessServiceImplTest {
 			sellDetailMock.setUnitValue(111);
 			List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
 			
-			ProductPojo productPojoMock = ProductsTestHelper.productPojoAfterCreation();
+			ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
 			
 			// Stubbing
 			when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException		
@@ -596,7 +590,7 @@ class SalesProcessServiceImplTest {
 			sellDetailMock.setUnitValue(111);
 			List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
 			
-			ProductPojo productPojoMock = ProductsTestHelper.productPojoAfterCreation();
+			ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
 			
 			// Stubbing
 			when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException		
