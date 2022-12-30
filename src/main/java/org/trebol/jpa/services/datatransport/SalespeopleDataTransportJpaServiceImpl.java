@@ -25,18 +25,17 @@ import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.SalespersonPojo;
 
 @Service
 public class SalespeopleDataTransportJpaServiceImpl
-  implements IDataTransportJpaService<SalespersonPojo, Salesperson> {
+  implements ISalespeopleDataTransportJpaService {
 
-  private final IDataTransportJpaService<PersonPojo, Person> peopleService;
+  private final IPeopleDataTransportJpaService peopleService;
 
   @Autowired
-  public SalespeopleDataTransportJpaServiceImpl(IDataTransportJpaService<PersonPojo, Person> peopleService) {
+  public SalespeopleDataTransportJpaServiceImpl(IPeopleDataTransportJpaService peopleService) {
     this.peopleService = peopleService;
   }
 

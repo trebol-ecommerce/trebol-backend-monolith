@@ -8,9 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
-import org.trebol.config.ValidationProperties;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,10 +20,10 @@ import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class SalesConverterJpaServiceImplTest {
-    
+
     @InjectMocks SalesConverterJpaServiceImpl sut;
-    @Mock ITwoWayConverterJpaService<CustomerPojo, Customer> customersConverter;
-    @Mock ITwoWayConverterJpaService<SalespersonPojo, Salesperson> salespeopleConverter;
+    @Mock ICustomersConverterJpaService customersConverter;
+    @Mock ISalespeopleConverterJpaService salespeopleConverter;
     @Mock ConversionService conversion;
     private SellPojo sellPojo;
     private Sell sell;

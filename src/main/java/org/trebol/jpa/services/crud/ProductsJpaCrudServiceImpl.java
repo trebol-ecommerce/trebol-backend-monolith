@@ -33,8 +33,10 @@ import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IImagesConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductCategoriesConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
+import org.trebol.jpa.services.datatransport.IProductsDataTransportJpaService;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.pojo.ProductPojo;
@@ -54,19 +56,19 @@ public class ProductsJpaCrudServiceImpl
   private final IProductImagesJpaRepository productImagesRepository;
   private final GenericCrudJpaService<ImagePojo, Image> imagesCrudService;
   private final GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesCrudService;
-  private final ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverter;
-  private final ITwoWayConverterJpaService<ImagePojo, Image> imageConverter;
+  private final IProductCategoriesConverterJpaService categoriesConverter;
+  private final IImagesConverterJpaService imageConverter;
   private final Logger logger = LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class);
 
   @Autowired
   public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository,
-                                    ITwoWayConverterJpaService<ProductPojo, Product> converter,
-                                    IDataTransportJpaService<ProductPojo, Product> dataTransportService,
+                                    IProductsConverterJpaService converter,
+                                    IProductsDataTransportJpaService dataTransportService,
                                     IProductImagesJpaRepository productImagesRepository,
                                     GenericCrudJpaService<ImagePojo, Image> imagesCrudService,
                                     GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesService,
-                                    ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> categoriesConverter,
-                                    ITwoWayConverterJpaService<ImagePojo, Image> imageConverter) {
+                                    IProductCategoriesConverterJpaService categoriesConverter,
+                                    IImagesConverterJpaService imageConverter) {
     super(repository,
           converter,
           dataTransportService);

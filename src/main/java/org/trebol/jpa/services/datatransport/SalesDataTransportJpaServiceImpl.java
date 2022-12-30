@@ -29,8 +29,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IBillingCompaniesConverterJpaService;
+import org.trebol.jpa.services.conversion.ICustomersConverterJpaService;
 import org.trebol.pojo.*;
 
 import javax.validation.ConstraintViolation;
@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 @Transactional
 @Service
 public class SalesDataTransportJpaServiceImpl
-  implements IDataTransportJpaService<SellPojo, Sell> {
+  implements ISalesDataTransportJpaService {
 
   private static final String IS_NOT_VALID = "is not valid";
   private final ISellStatusesJpaRepository statusesRepository;
@@ -51,8 +51,8 @@ public class SalesDataTransportJpaServiceImpl
   private final IBillingCompaniesJpaRepository billingCompaniesRepository;
   private final IShippersJpaRepository shippersRepository;
   private final IAddressesJpaRepository addressesRepository;
-  private final ITwoWayConverterJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesConverter;
-  private final ITwoWayConverterJpaService<CustomerPojo, Customer> customersConverter;
+  private final IBillingCompaniesConverterJpaService billingCompaniesConverter;
+  private final ICustomersConverterJpaService customersConverter;
   private final GenericCrudJpaService<CustomerPojo, Customer> customersService;
   private final ICustomersJpaRepository customersRepository;
   private final ConversionService conversion;
@@ -67,8 +67,8 @@ public class SalesDataTransportJpaServiceImpl
                                           IPaymentTypesJpaRepository paymentTypesRepository,
                                           IAddressesJpaRepository addressesRepository,
                                           IShippersJpaRepository shippersRepository,
-                                          ITwoWayConverterJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesConverter,
-                                          ITwoWayConverterJpaService<CustomerPojo, Customer> customersConverter,
+                                          IBillingCompaniesConverterJpaService billingCompaniesConverter,
+                                          ICustomersConverterJpaService customersConverter,
                                           GenericCrudJpaService<CustomerPojo, Customer> customersService,
                                           ICustomersJpaRepository customersRepository,
                                           Validator validator,

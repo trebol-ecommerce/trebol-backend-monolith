@@ -31,8 +31,9 @@ import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
+import org.trebol.jpa.services.conversion.ISalesConverterJpaService;
+import org.trebol.jpa.services.datatransport.ISalesDataTransportJpaService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
 import org.trebol.pojo.SellPojo;
@@ -50,16 +51,16 @@ public class SalesJpaCrudServiceImpl
 
   private final ISalesJpaRepository salesRepository;
   private final IProductsJpaRepository productsRepository;
-  private final ITwoWayConverterJpaService<ProductPojo, Product> productConverter;
+  private final IProductsConverterJpaService productConverter;
   private static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
   private static final boolean CAN_EDIT_AFTER_PROCESS = true; // TODO refactor as part of application properties
 
   @Autowired
   public SalesJpaCrudServiceImpl(ISalesJpaRepository repository,
                                  IProductsJpaRepository productsRepository,
-                                 ITwoWayConverterJpaService<SellPojo, Sell> converter,
-                                 IDataTransportJpaService<SellPojo, Sell> dataTransportService,
-                                 ITwoWayConverterJpaService<ProductPojo, Product> productConverter) {
+                                 ISalesConverterJpaService converter,
+                                 ISalesDataTransportJpaService dataTransportService,
+                                 IProductsConverterJpaService productConverter) {
     super(repository,
           converter,
           dataTransportService);

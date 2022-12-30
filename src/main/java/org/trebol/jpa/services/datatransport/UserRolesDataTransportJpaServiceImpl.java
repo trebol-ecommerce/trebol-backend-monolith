@@ -23,12 +23,11 @@ package org.trebol.jpa.services.datatransport;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.UserRolePojo;
 
 @Service
 public class UserRolesDataTransportJpaServiceImpl
-  implements IDataTransportJpaService<UserRolePojo, UserRole> {
+  implements IUserRolesDataTransportJpaService {
 
   public UserRolesDataTransportJpaServiceImpl(
   ) {

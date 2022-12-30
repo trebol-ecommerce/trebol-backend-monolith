@@ -26,12 +26,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.PersonPojo;
 
 @Service
 public class PeopleConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<PersonPojo, Person> {
+  implements IPeopleConverterJpaService {
 
   private final ConversionService conversion;
 

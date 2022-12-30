@@ -28,8 +28,8 @@ import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
 import org.trebol.jpa.repositories.IProductListsJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductListsConverterJpaService;
+import org.trebol.jpa.services.datatransport.IProductListsDataTransportJpaService;
 import org.trebol.pojo.ProductListPojo;
 
 import javax.persistence.EntityNotFoundException;
@@ -46,8 +46,8 @@ public class ProductListJpaCrudServiceImpl
   @Autowired
   public ProductListJpaCrudServiceImpl(IProductListsJpaRepository productListRepository,
                                        IProductListItemsJpaRepository productListItemRepository,
-                                       ITwoWayConverterJpaService<ProductListPojo, ProductList> converterService,
-                                       IDataTransportJpaService<ProductListPojo, ProductList> dataTransportService) {
+                                       IProductListsConverterJpaService converterService,
+                                       IProductListsDataTransportJpaService dataTransportService) {
     super(productListRepository,
            converterService,
            dataTransportService);

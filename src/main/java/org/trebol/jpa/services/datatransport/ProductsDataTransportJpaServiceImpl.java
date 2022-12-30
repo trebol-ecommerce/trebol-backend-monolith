@@ -24,13 +24,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.ProductPojo;
 
 @Transactional
 @Service
 public class ProductsDataTransportJpaServiceImpl
-  implements IDataTransportJpaService<ProductPojo, Product> {
+  implements IProductsDataTransportJpaService {
 
   public ProductsDataTransportJpaServiceImpl(
   ) {

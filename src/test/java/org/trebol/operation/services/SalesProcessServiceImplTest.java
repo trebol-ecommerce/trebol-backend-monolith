@@ -4,11 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.entities.SellStatus;
@@ -16,7 +15,8 @@ import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.repositories.ISellDetailsJpaRepository;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
+import org.trebol.jpa.services.conversion.ISalesConverterJpaService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
 import org.trebol.pojo.SellPojo;
@@ -35,29 +35,18 @@ import static org.trebol.config.Constants.*;
 
 @ExtendWith(MockitoExtension.class)
 class SalesProcessServiceImplTest {
-	
+	@InjectMocks SalesProcessServiceImpl instance;
 	@Mock	GenericCrudJpaService<SellPojo, Sell> crudService;
 	@Mock	ISalesJpaRepository salesRepository;
 	@Mock	ISellStatusesJpaRepository sellStatusesRepository;
 	@Mock	ISellDetailsJpaRepository sellDetailsRepository;
+	@Mock ISalesConverterJpaService sellConverterService;
+	@Mock IProductsConverterJpaService productConverterService;
   ProductsTestHelper productsHelper = new ProductsTestHelper();
-	
-	/*
-	 * SalesProcessService cannot be instantiated with a simple @InjectMocks annotation.
-	 * Two dependencies (SalesConverterJpaService and ProductsConverterJpaService) uses the same generic interface.
-	 * We have to manually inject these dependencies, see the beforeEach() method.
-	 */
-	ITwoWayConverterJpaService<SellPojo, Sell> sellConverterService;
-	ITwoWayConverterJpaService<ProductPojo, Product> productConverterService;
-	SalesProcessServiceImpl instance;
 	
 	@BeforeEach
 	void beforeEach() {
-		sellConverterService = (ITwoWayConverterJpaService<SellPojo, Sell>) Mockito.mock(ITwoWayConverterJpaService.class);
-		productConverterService = (ITwoWayConverterJpaService<ProductPojo, Product>) 
-				Mockito.mock(ITwoWayConverterJpaService.class);
-		instance = new SalesProcessServiceImpl(crudService, salesRepository, sellDetailsRepository, 
-				sellStatusesRepository, sellConverterService, productConverterService);
+		productsHelper.resetProducts();
 	}
 	
 	@Nested

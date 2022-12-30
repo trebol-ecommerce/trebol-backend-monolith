@@ -27,8 +27,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.repositories.IImagesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IImagesConverterJpaService;
+import org.trebol.jpa.services.datatransport.IImagesDataTransportJpaService;
 import org.trebol.pojo.ImagePojo;
 
 import java.util.Optional;
@@ -42,8 +42,8 @@ public class ImagesJpaCrudServiceImpl
 
   @Autowired
   public ImagesJpaCrudServiceImpl(IImagesJpaRepository repository,
-                                  ITwoWayConverterJpaService<ImagePojo, Image> converter,
-                                  IDataTransportJpaService<ImagePojo, Image> dataTransportService) {
+                                  IImagesConverterJpaService converter,
+                                  IImagesDataTransportJpaService dataTransportService) {
     super(repository,
           converter,
           dataTransportService);

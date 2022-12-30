@@ -26,12 +26,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ShipperPojo;
 
 @Service
 public class ShippersConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<ShipperPojo, Shipper> {
+  implements IShippersConverterJpaService {
 
   private final ConversionService conversion;
 

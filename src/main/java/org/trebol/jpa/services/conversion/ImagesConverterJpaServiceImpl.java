@@ -26,12 +26,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ImagePojo;
 
 @Service
 public class ImagesConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<ImagePojo, Image> {
+  implements IImagesConverterJpaService {
 
   private final ConversionService conversion;
 

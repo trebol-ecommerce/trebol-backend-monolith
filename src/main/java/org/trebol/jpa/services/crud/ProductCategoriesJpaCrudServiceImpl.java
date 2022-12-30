@@ -27,8 +27,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductCategoriesConverterJpaService;
+import org.trebol.jpa.services.datatransport.IProductCategoriesDataTransportJpaService;
 import org.trebol.pojo.ProductCategoryPojo;
 
 import java.util.Optional;
@@ -42,8 +42,8 @@ public class ProductCategoriesJpaCrudServiceImpl
 
   @Autowired
   public ProductCategoriesJpaCrudServiceImpl(IProductsCategoriesJpaRepository repository,
-                                             ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> converter,
-                                             IDataTransportJpaService<ProductCategoryPojo, ProductCategory> dataTransportService) {
+                                             IProductCategoriesConverterJpaService converter,
+                                             IProductCategoriesDataTransportJpaService dataTransportService) {
     super(repository,
           converter,
           dataTransportService);

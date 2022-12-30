@@ -29,7 +29,6 @@ import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.UserPojo;
 
@@ -38,7 +37,7 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UsersDataTransportJpaServiceImpl
-  implements IDataTransportJpaService<UserPojo, User> {
+  implements IUsersDataTransportJpaService {
   private final IUserRolesJpaRepository rolesRepository;
   private final IPeopleJpaRepository peopleRepository;
   private final PasswordEncoder passwordEncoder;

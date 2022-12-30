@@ -24,12 +24,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.PersonPojo;
 
 @Service
 public class PeopleDataTransportJpaServiceImpl
-  implements IDataTransportJpaService<PersonPojo, Person> {
+  implements IPeopleDataTransportJpaService {
 
   public PeopleDataTransportJpaServiceImpl(
   ) {

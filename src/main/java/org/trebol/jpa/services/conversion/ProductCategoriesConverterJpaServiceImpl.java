@@ -27,13 +27,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductCategoryPojo;
 
 @Transactional
 @Service
 public class ProductCategoriesConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> {
+  implements IProductCategoriesConverterJpaService {
   private final ConversionService conversion;
 
   @Autowired

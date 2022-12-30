@@ -12,7 +12,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IBillingCompaniesConverterJpaService;
+import org.trebol.jpa.services.conversion.ICustomersConverterJpaService;
 import org.trebol.pojo.*;
 
 import javax.validation.ConstraintViolation;
@@ -32,17 +33,15 @@ import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class SalesDataTransportJpaServiceImplTest {
-    
     @InjectMocks SalesDataTransportJpaServiceImpl sut;
-
     @Mock ISellStatusesJpaRepository statusesRepository;
     @Mock IBillingTypesJpaRepository billingTypesRepository;
     @Mock IPaymentTypesJpaRepository paymentTypesRepository;
     @Mock IBillingCompaniesJpaRepository billingCompaniesRepository;
     @Mock IShippersJpaRepository shippersRepository;
     @Mock IAddressesJpaRepository addressesRepository;
-    @Mock ITwoWayConverterJpaService<BillingCompanyPojo, BillingCompany> billingCompaniesConverter;
-    @Mock ITwoWayConverterJpaService<CustomerPojo, Customer> customersConverter;
+    @Mock IBillingCompaniesConverterJpaService billingCompaniesConverter;
+    @Mock ICustomersConverterJpaService customersConverter;
     @Mock GenericCrudJpaService<CustomerPojo, Customer> customersService;
     @Mock ICustomersJpaRepository customersRepository;
     @Mock ConversionService conversion;

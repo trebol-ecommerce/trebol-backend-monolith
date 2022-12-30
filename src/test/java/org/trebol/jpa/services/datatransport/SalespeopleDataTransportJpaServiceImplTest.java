@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.SalespersonPojo;
 
@@ -21,13 +20,9 @@ import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class SalespeopleDataTransportJpaServiceImplTest {
-
     @InjectMocks
-    private SalespeopleDataTransportJpaServiceImpl sut;
-
-    @Mock
-    private IDataTransportJpaService<PersonPojo, Person> peopleService;
-
+    SalespeopleDataTransportJpaServiceImpl sut;
+    @Mock IPeopleDataTransportJpaService peopleDataTransportService;
     private Salesperson salesperson;
     private SalespersonPojo salespersonPojo;
     private Person person;
@@ -57,7 +52,7 @@ public class SalespeopleDataTransportJpaServiceImplTest {
 
     @Test
     void testApplyChangesToExistingEntity() throws BadInputException {
-        when(peopleService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
+        when(peopleDataTransportService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
         Salesperson actual = sut.applyChangesToExistingEntity(salespersonPojo, salesperson);
         assertEquals(person.getId(), actual.getPerson().getId());
     }
