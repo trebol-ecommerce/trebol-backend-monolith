@@ -15,8 +15,7 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class PeopleDataTransportJpaServiceImplTest {
-    @InjectMocks
-    private PeopleDataTransportJpaServiceImpl sut;
+    @InjectMocks PeopleDataTransportJpaServiceImpl sut;
 
     private Person person;
     private PersonPojo personPojo;

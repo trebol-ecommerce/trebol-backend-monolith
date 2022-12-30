@@ -20,8 +20,7 @@ import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class SalespeopleDataTransportJpaServiceImplTest {
-    @InjectMocks
-    SalespeopleDataTransportJpaServiceImpl sut;
+    @InjectMocks SalespeopleDataTransportJpaServiceImpl sut;
     @Mock IPeopleDataTransportJpaService peopleDataTransportService;
     private Salesperson salesperson;
     private SalespersonPojo salespersonPojo;

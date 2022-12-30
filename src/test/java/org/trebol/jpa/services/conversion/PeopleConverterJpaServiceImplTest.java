@@ -17,8 +17,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PeopleConverterJpaServiceImplTest {
-    @InjectMocks
-    private PeopleConverterJpaServiceImpl sut;
+    @InjectMocks PeopleConverterJpaServiceImpl sut;
 
     @Mock
     private ConversionService conversionService;
