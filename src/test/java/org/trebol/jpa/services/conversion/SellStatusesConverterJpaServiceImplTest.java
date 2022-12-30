@@ -21,9 +21,8 @@ import static org.trebol.constant.TestConstants.ANY;
 class SellStatusesConverterJpaServiceImplTest {
     @InjectMocks SellStatusesConverterJpaServiceImpl sut;
     @Mock ConversionService conversionService;
-
-    private SellStatus sellStatus;
-    private SellStatusPojo sellStatusPojo;
+    SellStatus sellStatus;
+    SellStatusPojo sellStatusPojo;
 
     @BeforeEach
     void beforeEach() {

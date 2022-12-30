@@ -21,9 +21,8 @@ import static org.trebol.constant.TestConstants.ANY;
 class ImagesConverterJpaServiceImplTest {
     @InjectMocks ImagesConverterJpaServiceImpl sut;
     @Mock ConversionService conversionService;
-
-    private Image image;
-    private ImagePojo imagePojo;
+    Image image;
+    ImagePojo imagePojo;
 
     @BeforeEach
     void beforeEach() {

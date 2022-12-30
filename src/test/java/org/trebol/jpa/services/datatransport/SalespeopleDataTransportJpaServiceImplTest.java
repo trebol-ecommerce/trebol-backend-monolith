@@ -22,10 +22,9 @@ import static org.trebol.constant.TestConstants.ID_1L;
 public class SalespeopleDataTransportJpaServiceImplTest {
     @InjectMocks SalespeopleDataTransportJpaServiceImpl sut;
     @Mock IPeopleDataTransportJpaService peopleDataTransportService;
-    private Salesperson salesperson;
-    private SalespersonPojo salespersonPojo;
-    private Person person;
-
+    Salesperson salesperson;
+    SalespersonPojo salespersonPojo;
+    Person person;
 
     @BeforeEach
     void beforeEach() {

@@ -30,8 +30,8 @@ public class UsersDataTransportJpaServiceImplTest {
     @Mock IUserRolesJpaRepository rolesRepository;
     @Mock IPeopleJpaRepository peopleRepository;
     @Mock PasswordEncoder passwordEncoder;
-    private User user;
-    private UserPojo userPojo;
+    User user;
+    UserPojo userPojo;
 
     @BeforeEach
     void beforeEach() {

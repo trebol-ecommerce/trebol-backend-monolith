@@ -20,7 +20,6 @@ class CompanyServiceImplTest {
   @InjectMocks CompanyServiceImpl sut;
   @Mock IParamsJpaRepository paramsRepository;
 
-
   @DisplayName("It should read get params which contains name and value by category of company map it " +
     "to CompanyDetailsPojo")
   @Test

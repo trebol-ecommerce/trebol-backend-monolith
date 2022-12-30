@@ -21,9 +21,8 @@ import static org.trebol.constant.TestConstants.ANY;
 class ShippersConverterJpaServiceImplTest {
     @InjectMocks ShippersConverterJpaServiceImpl sut;
     @Mock ConversionService conversionService;
-
-    private Shipper shipper;
-    private ShipperPojo shipperPojo;
+    Shipper shipper;
+    ShipperPojo shipperPojo;
 
     @BeforeEach
     void beforeEach() {

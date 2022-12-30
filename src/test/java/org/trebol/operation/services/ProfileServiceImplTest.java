@@ -36,7 +36,6 @@ class ProfileServiceImplTest {
   @Mock IPeopleConverterJpaService peopleConverterMock;
   @Mock IPeopleDataTransportJpaService peopleDataTransportServiceMock;
   @Mock IPeopleJpaRepository peopleRepositoryMock;
-
   UserRole userRoleMock;
   Person personMock;
   User userMock;

@@ -23,20 +23,17 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GenericJpaCrudServiceTest {
-
   @Mock IJpaRepository<GenericEntity> genericRepositoryMock;
-
   @Mock ITwoWayConverterJpaService<GenericPojo, GenericEntity> genericConverterMock;
   @Mock IDataTransportJpaService<GenericPojo, GenericEntity> genericDataTransportServiceMock;
-
-  private final GenericPojo newPojo = new GenericPojo(null, "test");
-  private final GenericEntity newEntity = new GenericEntity(null, "test");
-  private final GenericEntity persistedEntity = new GenericEntity(1L, "test");
-  private final GenericPojo persistedPojo = new GenericPojo(1L, "test");
-  private final List<GenericEntity> emptyEntityList = List.of();
-  private final List<GenericEntity> persistedEntityList = List.of(persistedEntity);
-  private final List<GenericPojo> persistedPojoList = List.of(persistedPojo);
-  private final PageRequest simplePageRequest = PageRequest.of(0, 10);
+  final GenericPojo newPojo = new GenericPojo(null, "test");
+  final GenericEntity newEntity = new GenericEntity(null, "test");
+  final GenericEntity persistedEntity = new GenericEntity(1L, "test");
+  final GenericPojo persistedPojo = new GenericPojo(1L, "test");
+  final List<GenericEntity> emptyEntityList = List.of();
+  final List<GenericEntity> persistedEntityList = List.of(persistedEntity);
+  final List<GenericPojo> persistedPojoList = List.of(persistedPojo);
+  final PageRequest simplePageRequest = PageRequest.of(0, 10);
 
   @Test
   void sanity_checks() {

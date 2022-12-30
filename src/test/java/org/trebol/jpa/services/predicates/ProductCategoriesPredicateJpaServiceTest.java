@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 class ProductCategoriesPredicateJpaServiceTest {
   @Mock IProductCategoryTreeResolver treeResolver;
-  private IPredicateJpaService<ProductCategory> instance;
+  IPredicateJpaService<ProductCategory> instance;
 
   @BeforeEach
   void beforeEach() {

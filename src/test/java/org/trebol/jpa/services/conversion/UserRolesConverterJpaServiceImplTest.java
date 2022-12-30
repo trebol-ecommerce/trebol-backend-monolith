@@ -20,9 +20,8 @@ import static org.mockito.Mockito.*;
 class UserRolesConverterJpaServiceImplTest {
     @InjectMocks UserRolesConverterJpaServiceImpl sut;
     @Mock ConversionService conversionService;
-
-    private UserRole userRole;
-    private UserRolePojo userRolePojo ;
+    UserRole userRole;
+    UserRolePojo userRolePojo ;
 
     @BeforeEach
     void beforeEach() {

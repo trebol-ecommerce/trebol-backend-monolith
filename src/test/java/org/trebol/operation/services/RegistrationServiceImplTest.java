@@ -39,7 +39,6 @@ class RegistrationServiceImplTest {
   @Mock IUserRolesJpaRepository rolesRepositoryMock;
   @Mock PasswordEncoder passwordEncoderMock;
   @Mock ICustomersJpaRepository customerRepositoryMock;
-
   PersonPojo personPojoMock;
   RegistrationPojo regPojoMock;
   Person personMock;
