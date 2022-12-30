@@ -78,7 +78,6 @@ public class SalesJpaCrudServiceImpl
       return this.salesRepository.findById(buyOrder);
     }
   }
-
   @Override
   public SellPojo readOne(Predicate conditions)
       throws EntityNotFoundException {
@@ -95,7 +94,7 @@ public class SalesJpaCrudServiceImpl
   }
 
   @Override
-  protected Sell prepareEntityWithUpdatesFromPojo(SellPojo changes, Sell existingEntity)
+  protected SellPojo persistEntityWithUpdatesFromPojo(SellPojo changes, Sell existingEntity)
       throws BadInputException {
     Integer statusCode = existingEntity.getStatus().getCode();
     if ((statusCode >= 3 || statusCode < 0) && !CAN_EDIT_AFTER_PROCESS) {
@@ -105,7 +104,7 @@ public class SalesJpaCrudServiceImpl
     List<SellDetail> detailEntities = this.convertDetailsToEntities(changes.getDetails());
     updatedEntity.setDetails(detailEntities);
     this.updateTotals(updatedEntity);
-    return updatedEntity;
+    return this.persist(updatedEntity);
   }
 
   @Override
