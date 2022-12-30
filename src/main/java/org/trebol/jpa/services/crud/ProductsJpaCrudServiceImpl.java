@@ -123,7 +123,7 @@ public class ProductsJpaCrudServiceImpl
   }
 
   @Override
-  protected Product prepareEntityWithUpdatesFromPojo(ProductPojo changes, Product existingEntity)
+  protected ProductPojo persistEntityWithUpdatesFromPojo(ProductPojo changes, Product existingEntity)
       throws BadInputException {
     Product localChanges = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
     Product persistent = productsRepository.saveAndFlush(localChanges);
@@ -154,7 +154,7 @@ public class ProductsJpaCrudServiceImpl
         outputPojo.setCategory(outputCategory);
       }
     }
-    return persistent;
+    return outputPojo;
   }
 
   private void addImagesToPojo(List<ProductImage> resultImages, ProductPojo outputPojo) {
