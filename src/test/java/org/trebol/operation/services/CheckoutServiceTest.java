@@ -38,9 +38,8 @@ class CheckoutServiceTest {
   @Mock ISalesProcessService salesProcessService;
   @Mock IPredicateJpaService<Sell> salesPredicateService;
   @Mock IPaymentsIntegrationService paymentIntegrationService;
-
-  private static final String PAYMENT_URL = "https://example.com/pay";
-  private static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
+  static final String PAYMENT_URL = "https://example.com/pay";
+  static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
   SalesTestHelper salesHelper = new SalesTestHelper();
 
   @BeforeEach

@@ -24,9 +24,8 @@ public class ProductCategoriesConverterJpaServiceImplTest {
     @InjectMocks ProductCategoriesConverterJpaServiceImpl sut;
     @Mock ConversionService conversionService;
     @Mock IProductsCategoriesJpaRepository categoriesRepository;
-
-    private ProductCategory productCategory;
-    private ProductCategoryPojo productCategoryPojo;
+    ProductCategory productCategory;
+    ProductCategoryPojo productCategoryPojo;
 
     @BeforeEach
     void beforeEach() {

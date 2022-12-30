@@ -30,9 +30,8 @@ public class ProductsConverterJpaServiceImplTest {
     @InjectMocks ProductsConverterJpaServiceImpl sut;
     @Mock ConversionService conversionService;
     @Mock IProductImagesJpaRepository productImagesRepository;
-
-    private Product product;
-    private ProductPojo productPojo;
+    Product product;
+    ProductPojo productPojo;
 
     @BeforeEach
     void beforeEach() {

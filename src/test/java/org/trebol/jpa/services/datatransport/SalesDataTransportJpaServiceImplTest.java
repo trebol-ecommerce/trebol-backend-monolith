@@ -47,9 +47,8 @@ class SalesDataTransportJpaServiceImplTest {
     @Mock ConversionService conversion;
     @Mock Validator validator;
     @Mock ValidationProperties validationProperties;
-
-    private SellPojo sellPojo;
-    private Sell sell;
+    SellPojo sellPojo;
+    Sell sell;
 
     @BeforeEach
     public void beforeEach() {

@@ -21,9 +21,8 @@ import static org.trebol.constant.TestConstants.ANY;
 class BillingTypesConverterJpaServiceImplTest {
     @InjectMocks BillingTypesConverterJpaServiceImpl sut;
     @Mock ConversionService conversionService;
-
-    private BillingType billingType;
-    private BillingTypePojo billingTypePojo;
+    BillingType billingType;
+    BillingTypePojo billingTypePojo;
 
     @BeforeEach
     void beforeEach() {

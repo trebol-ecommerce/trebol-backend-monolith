@@ -24,8 +24,8 @@ class SalesConverterJpaServiceImplTest {
     @Mock ICustomersConverterJpaService customersConverter;
     @Mock ISalespeopleConverterJpaService salespeopleConverter;
     @Mock ConversionService conversion;
-    private SellPojo sellPojo;
-    private Sell sell;
+    SellPojo sellPojo;
+    Sell sell;
 
     @BeforeEach
     public void beforeEach() {

@@ -35,8 +35,8 @@ public class UsersConverterJpaServiceImplTest {
     @Mock IPeopleJpaRepository peopleRepository;
     @Mock ConversionService conversion;
     @Mock PasswordEncoder passwordEncoder;
-    private User user;
-    private UserPojo userPojo;
+    User user;
+    UserPojo userPojo;
 
     @BeforeEach
     void beforeEach() {

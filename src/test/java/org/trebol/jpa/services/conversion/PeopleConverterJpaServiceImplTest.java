@@ -19,9 +19,8 @@ import static org.mockito.Mockito.*;
 class PeopleConverterJpaServiceImplTest {
     @InjectMocks PeopleConverterJpaServiceImpl sut;
     @Mock ConversionService conversionService;
-
-    private Person person;
-    private PersonPojo personPojo;
+    Person person;
+    PersonPojo personPojo;
 
     @BeforeEach
     void beforeEach() {

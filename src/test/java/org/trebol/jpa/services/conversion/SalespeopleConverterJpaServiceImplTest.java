@@ -21,12 +21,10 @@ import static org.trebol.constant.TestConstants.ID_1L;
 public class SalespeopleConverterJpaServiceImplTest {
     @InjectMocks SalespeopleConverterJpaServiceImpl sut;
     @Mock IPeopleConverterJpaService peopleService;
-
-    private Salesperson salesperson;
-    private SalespersonPojo salespersonPojo;
-    private Person person;
-    private PersonPojo personPojo;
-
+    Salesperson salesperson;
+    SalespersonPojo salespersonPojo;
+    Person person;
+    PersonPojo personPojo;
 
     @BeforeEach
     void beforeEach() {
