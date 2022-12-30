@@ -22,12 +22,8 @@ import static org.trebol.constant.TestConstants.ID_1L;
 @ExtendWith(MockitoExtension.class)
 public class ProductCategoriesConverterJpaServiceImplTest {
     @InjectMocks ProductCategoriesConverterJpaServiceImpl sut;
-
-    @Mock
-    private ConversionService conversionService;
-
-    @Mock
-    private IProductsCategoriesJpaRepository categoriesRepository;
+    @Mock ConversionService conversionService;
+    @Mock IProductsCategoriesJpaRepository categoriesRepository;
 
     private ProductCategory productCategory;
     private ProductCategoryPojo productCategoryPojo;

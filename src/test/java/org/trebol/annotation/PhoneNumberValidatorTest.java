@@ -22,8 +22,7 @@ import static org.mockito.Mockito.when;
 @TestPropertySource("classpath:application.properties")
 class PhoneNumberValidatorTest {
 
-  @Mock
-  private ValidationProperties validationProperties;
+  @Mock ValidationProperties validationProperties;
 
   @Value("${trebol.validation.phonenumber-regexp}")
   private String phoneNumberRegex;
