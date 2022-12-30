@@ -20,8 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class DataProductListContentsControllerTest {
-
-
+  @InjectMocks DataProductListContentsController instance;
   @Mock PaginationService paginationService;
   @Mock ISortSpecJpaService<ProductListItem> sortService;
   @Mock IProductListItemsJpaRepository listItemsRepository;
@@ -30,8 +29,6 @@ class DataProductListContentsControllerTest {
   @Mock GenericCrudJpaService<ProductPojo, Product> productCrudService;
   @Mock IProductListItemsConverterJpaService itemConverterService;
 
-  @InjectMocks
-  private DataProductListContentsController instance;
 
   @Test
   void sanity_check() {
