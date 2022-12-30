@@ -101,15 +101,17 @@ public class SalesJpaCrudServiceImpl
       throw new BadInputException("The requested transaction cannot be modified");
     }
     Sell updatedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
-    List<SellDetail> detailEntities = this.convertDetailsToEntities(changes.getDetails());
-    updatedEntity.setDetails(detailEntities);
-    this.updateTotals(updatedEntity);
+    if (updatedEntity.equals(existingEntity)) {
+      return changes;
+    }
     return this.persist(updatedEntity);
   }
 
   @Override
   public Sell prepareNewEntityFromInputPojo(SellPojo inputPojo) throws BadInputException {
     Sell target = converter.convertToNewEntity(inputPojo);
+    List<SellDetail> detailEntities = this.convertDetailsToEntities(inputPojo.getDetails());
+    target.setDetails(detailEntities);
     this.updateTotals(target);
     return target;
   }
