@@ -20,9 +20,7 @@ import static org.trebol.constant.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 class BillingCompaniesConverterJpaServiceImplTest {
     @InjectMocks BillingCompaniesConverterJpaServiceImpl sut;
-
-    @Mock
-    private ConversionService conversionService;
+    @Mock ConversionService conversionService;
 
     private BillingCompany billingCompany;
     private BillingCompanyPojo billingCompanyPojo;

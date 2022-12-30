@@ -28,12 +28,8 @@ import static org.trebol.constant.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 public class ProductsConverterJpaServiceImplTest {
     @InjectMocks ProductsConverterJpaServiceImpl sut;
-
-    @Mock
-    private ConversionService conversionService;
-
-    @Mock
-    private IProductImagesJpaRepository productImagesRepository;
+    @Mock ConversionService conversionService;
+    @Mock IProductImagesJpaRepository productImagesRepository;
 
     private Product product;
     private ProductPojo productPojo;

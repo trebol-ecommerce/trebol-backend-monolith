@@ -13,10 +13,7 @@ import org.trebol.pojo.CompanyDetailsPojo;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CompanyServiceImplTest {
@@ -24,8 +21,7 @@ class CompanyServiceImplTest {
   @InjectMocks
   private CompanyServiceImpl sut;
 
-  @Mock
-  private IParamsJpaRepository paramsRepository;
+  @Mock IParamsJpaRepository paramsRepository;
 
 
   @DisplayName("It should read get params which contains name and value by category of company map it " +

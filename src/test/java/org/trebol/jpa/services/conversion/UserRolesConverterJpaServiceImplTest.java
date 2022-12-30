@@ -19,9 +19,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserRolesConverterJpaServiceImplTest {
     @InjectMocks UserRolesConverterJpaServiceImpl sut;
-
-    @Mock
-    private ConversionService conversionService;
+    @Mock ConversionService conversionService;
 
     private UserRole userRole;
     private UserRolePojo userRolePojo ;
