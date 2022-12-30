@@ -27,8 +27,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IUserRolesConverterJpaService;
+import org.trebol.jpa.services.datatransport.IUserRolesDataTransportJpaService;
 import org.trebol.pojo.UserRolePojo;
 
 import java.util.Optional;
@@ -42,8 +42,8 @@ public class UserRolesJpaCrudServiceImpl
 
   @Autowired
   public UserRolesJpaCrudServiceImpl(IUserRolesJpaRepository repository,
-                                     ITwoWayConverterJpaService<UserRolePojo, UserRole> converter,
-                                     IDataTransportJpaService<UserRolePojo, UserRole> dataTransportService) {
+                                     IUserRolesConverterJpaService converter,
+                                     IUserRolesDataTransportJpaService dataTransportService) {
     super(repository,
           converter,
           dataTransportService);

@@ -27,8 +27,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.repositories.ISalespeopleJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.ISalespeopleConverterJpaService;
+import org.trebol.jpa.services.datatransport.ISalespeopleDataTransportJpaService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.SalespersonPojo;
 
@@ -43,8 +43,8 @@ public class SalespeopleJpaCrudServiceImpl
 
   @Autowired
   public SalespeopleJpaCrudServiceImpl(ISalespeopleJpaRepository repository,
-                                       ITwoWayConverterJpaService<SalespersonPojo, Salesperson> converter,
-                                       IDataTransportJpaService<SalespersonPojo, Salesperson> dataTransportService) {
+                                       ISalespeopleConverterJpaService converter,
+                                       ISalespeopleDataTransportJpaService dataTransportService) {
     super(repository,
           converter,
           dataTransportService);

@@ -26,12 +26,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.BillingTypePojo;
 
 @Service
 public class BillingTypesConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<BillingTypePojo, BillingType> {
+  implements IBillingTypesConverterJpaService {
 
   private final ConversionService conversion;
 

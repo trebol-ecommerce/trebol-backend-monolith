@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.PersonPojo;
 
@@ -25,7 +24,7 @@ class CustomersConverterJpaServiceImplTest {
     private CustomersConverterJpaServiceImpl sut;
 
     @Mock
-    private ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
+    private IPeopleConverterJpaService peopleService;
 
     private Customer customer;
     private CustomerPojo customerPojo;

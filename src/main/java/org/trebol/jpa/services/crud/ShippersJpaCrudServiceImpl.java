@@ -27,8 +27,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.repositories.IShippersJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IShippersConverterJpaService;
+import org.trebol.jpa.services.datatransport.IShippersDataTransportJpaService;
 import org.trebol.pojo.ShipperPojo;
 
 import java.util.Optional;
@@ -42,8 +42,8 @@ public class ShippersJpaCrudServiceImpl
 
   @Autowired
   public ShippersJpaCrudServiceImpl(IShippersJpaRepository repository,
-                                    ITwoWayConverterJpaService<ShipperPojo, Shipper> converter,
-                                    IDataTransportJpaService<ShipperPojo, Shipper> dataTransportService) {
+                                    IShippersConverterJpaService converter,
+                                    IShippersDataTransportJpaService dataTransportService) {
     super(repository,
           converter,
           dataTransportService);

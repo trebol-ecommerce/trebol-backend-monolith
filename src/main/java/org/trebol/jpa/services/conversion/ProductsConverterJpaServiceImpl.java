@@ -30,7 +30,6 @@ import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.pojo.ProductPojo;
@@ -41,7 +40,7 @@ import java.util.Set;
 @Transactional
 @Service
 public class ProductsConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<ProductPojo, Product> {
+  implements IProductsConverterJpaService {
 
   private final IProductImagesJpaRepository productImagesRepository;
   private final ConversionService conversion;

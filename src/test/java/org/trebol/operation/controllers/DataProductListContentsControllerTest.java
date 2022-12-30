@@ -12,7 +12,7 @@ import org.trebol.jpa.repositories.IProductListsJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductListItemsConverterJpaService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.ProductPojo;
 
@@ -28,7 +28,7 @@ class DataProductListContentsControllerTest {
   @Mock IProductListsJpaRepository listsRepository;
   @Mock IPredicateJpaService<ProductListItem> listItemsPredicateService;
   @Mock GenericCrudJpaService<ProductPojo, Product> productCrudService;
-  @Mock ITwoWayConverterJpaService<ProductPojo, ProductListItem> itemConverterService;
+  @Mock IProductListItemsConverterJpaService itemConverterService;
 
   @InjectMocks
   private DataProductListContentsController instance;

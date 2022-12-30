@@ -16,7 +16,6 @@ import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.UserPojo;
 
@@ -38,7 +37,7 @@ public class UsersConverterJpaServiceImplTest {
     @Mock
     private IUserRolesJpaRepository rolesRepository;
     @Mock
-    private ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
+    private IPeopleConverterJpaService peopleService;
     @Mock
     private IPeopleJpaRepository peopleRepository;
     @Mock

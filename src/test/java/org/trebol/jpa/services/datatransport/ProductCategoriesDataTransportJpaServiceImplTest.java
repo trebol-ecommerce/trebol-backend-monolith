@@ -16,8 +16,7 @@ import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductCategoriesDataTransportJpaServiceImplTest {
-    @InjectMocks private ProductCategoriesDataTransportJpaServiceImpl sut;
-
+    @InjectMocks ProductCategoriesDataTransportJpaServiceImpl sut;
     private ProductCategory productCategory;
     private ProductCategoryPojo productCategoryPojo;
 

@@ -26,12 +26,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.SellStatusPojo;
 
 @Service
 public class SellStatusesConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<SellStatusPojo, SellStatus> {
+  implements ISellStatusesConverterJpaService {
 
   private final ConversionService conversion;
 

@@ -27,8 +27,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.repositories.IBillingCompaniesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IBillingCompaniesConverterJpaService;
+import org.trebol.jpa.services.datatransport.IBillingCompaniesDataTransportJpaService;
 import org.trebol.pojo.BillingCompanyPojo;
 
 import java.util.Optional;
@@ -42,8 +42,8 @@ public class BillingCompaniesJpaCrudServiceImpl
 
   @Autowired
   public BillingCompaniesJpaCrudServiceImpl(IBillingCompaniesJpaRepository repository,
-                                            ITwoWayConverterJpaService<BillingCompanyPojo, BillingCompany> converter,
-                                            IDataTransportJpaService<BillingCompanyPojo, BillingCompany> dataTransportService) {
+                                            IBillingCompaniesConverterJpaService converter,
+                                            IBillingCompaniesDataTransportJpaService dataTransportService) {
     super(repository,
           converter,
           dataTransportService);

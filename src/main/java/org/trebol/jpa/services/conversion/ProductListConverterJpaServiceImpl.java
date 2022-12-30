@@ -26,12 +26,11 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.entities.QProductListItem;
 import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductListPojo;
 
 @Service
 public class ProductListConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<ProductListPojo, ProductList> {
+  implements IProductListsConverterJpaService {
 
   private final IProductListItemsJpaRepository productListItemRepository;
 

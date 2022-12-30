@@ -29,7 +29,6 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.entities.ProductListItem;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductPojo;
 
@@ -39,7 +38,7 @@ import java.util.Set;
 @Transactional
 @Service
 public class ProductListItemsConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<ProductPojo, ProductListItem> {
+  implements IProductListItemsConverterJpaService {
 
   private final IProductImagesJpaRepository productImagesRepository;
   private final ConversionService conversion;

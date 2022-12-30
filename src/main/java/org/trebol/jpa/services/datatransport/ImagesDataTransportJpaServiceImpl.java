@@ -23,12 +23,11 @@ package org.trebol.jpa.services.datatransport;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.ImagePojo;
 
 @Service
 public class ImagesDataTransportJpaServiceImpl
-  implements IDataTransportJpaService<ImagePojo, Image> {
+  implements IImagesDataTransportJpaService {
 
   public ImagesDataTransportJpaServiceImpl(
   ) {

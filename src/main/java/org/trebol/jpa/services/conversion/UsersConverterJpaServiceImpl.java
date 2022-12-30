@@ -36,7 +36,6 @@ import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.UserPojo;
 
@@ -45,12 +44,12 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UsersConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<UserPojo, User> {
+  implements IUsersConverterJpaService {
 
   private final Logger logger = LoggerFactory.getLogger(UsersConverterJpaServiceImpl.class);
   private final IUsersJpaRepository userRepository;
   private final IUserRolesJpaRepository rolesRepository;
-  private final ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
+  private final IPeopleConverterJpaService peopleService;
   private final IPeopleJpaRepository peopleRepository;
   private final ConversionService conversion;
   private final PasswordEncoder passwordEncoder;
@@ -58,7 +57,7 @@ public class UsersConverterJpaServiceImpl
   @Autowired
   public UsersConverterJpaServiceImpl(IUsersJpaRepository repository,
                                       IUserRolesJpaRepository rolesRepository,
-                                      ITwoWayConverterJpaService<PersonPojo, Person> peopleService,
+                                      IPeopleConverterJpaService peopleService,
                                       IPeopleJpaRepository peopleRepository,
                                       ConversionService conversion,
                                       PasswordEncoder passwordEncoder) {

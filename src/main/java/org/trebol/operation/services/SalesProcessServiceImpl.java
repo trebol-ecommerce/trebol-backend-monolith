@@ -23,7 +23,6 @@ package org.trebol.operation.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.entities.SellStatus;
@@ -31,7 +30,8 @@ import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.repositories.ISellDetailsJpaRepository;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
+import org.trebol.jpa.services.conversion.ISalesConverterJpaService;
 import org.trebol.operation.ISalesProcessService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
@@ -56,15 +56,15 @@ public class SalesProcessServiceImpl
   private final ISalesJpaRepository salesRepository;
   private final ISellDetailsJpaRepository sellDetailsRepository;
   private final ISellStatusesJpaRepository sellStatusesRepository;
-  private final ITwoWayConverterJpaService<SellPojo, Sell> converterService;
-  private final ITwoWayConverterJpaService<ProductPojo, Product> productConverterService;
+  private final ISalesConverterJpaService converterService;
+  private final IProductsConverterJpaService productConverterService;
 
   public SalesProcessServiceImpl(GenericCrudJpaService<SellPojo, Sell> crudService,
                                  ISalesJpaRepository salesRepository,
                                  ISellDetailsJpaRepository sellDetailsRepository,
                                  ISellStatusesJpaRepository sellStatusesRepository,
-                                 ITwoWayConverterJpaService<SellPojo, Sell> converterService,
-                                 ITwoWayConverterJpaService<ProductPojo, Product> productConverterService) {
+                                 ISalesConverterJpaService converterService,
+                                 IProductsConverterJpaService productConverterService) {
     this.crudService = crudService;
     this.salesRepository = salesRepository;
     this.sellDetailsRepository = sellDetailsRepository;

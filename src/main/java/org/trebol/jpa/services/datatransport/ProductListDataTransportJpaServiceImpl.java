@@ -24,12 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.ProductListPojo;
 
 @Service
 public class ProductListDataTransportJpaServiceImpl
-  implements IDataTransportJpaService<ProductListPojo, ProductList> {
+  implements IProductListsDataTransportJpaService {
 
   @Autowired
   public ProductListDataTransportJpaServiceImpl(

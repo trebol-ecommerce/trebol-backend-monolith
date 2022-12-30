@@ -27,8 +27,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.ISellStatusesConverterJpaService;
+import org.trebol.jpa.services.datatransport.ISellStatusesDataTransportJpaService;
 import org.trebol.pojo.SellStatusPojo;
 
 import java.util.Optional;
@@ -42,8 +42,8 @@ public class SellStatusesJpaCrudServiceImpl
 
   @Autowired
   public SellStatusesJpaCrudServiceImpl(ISellStatusesJpaRepository repository,
-                                        ITwoWayConverterJpaService<SellStatusPojo, SellStatus> converter,
-                                        IDataTransportJpaService<SellStatusPojo, SellStatus> dataTransportService) {
+                                        ISellStatusesConverterJpaService converter,
+                                        ISellStatusesDataTransportJpaService dataTransportService) {
     super(repository,
           converter,
           dataTransportService);

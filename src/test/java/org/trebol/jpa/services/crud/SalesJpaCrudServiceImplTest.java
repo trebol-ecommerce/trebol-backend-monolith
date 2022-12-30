@@ -10,13 +10,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
-import org.trebol.pojo.ProductPojo;
+import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
+import org.trebol.jpa.services.conversion.ISalesConverterJpaService;
+import org.trebol.jpa.services.datatransport.ISalesDataTransportJpaService;
 import org.trebol.pojo.SellPojo;
 import org.trebol.testhelpers.ProductsTestHelper;
 import org.trebol.testhelpers.SalesTestHelper;
@@ -38,9 +37,9 @@ class SalesJpaCrudServiceImplTest {
   @InjectMocks SalesJpaCrudServiceImpl instance;
   @Mock ISalesJpaRepository salesRepositoryMock;
   @Mock IProductsJpaRepository productsRepository;
-  @Mock ITwoWayConverterJpaService<SellPojo, Sell> salesConverterMock;
-  @Mock IDataTransportJpaService<SellPojo, Sell> dataTransportServiceMock;
-  @Mock ITwoWayConverterJpaService<ProductPojo, Product> productsConverterMock; // TODO write an unit test that needs this mock
+  @Mock ISalesConverterJpaService salesConverterMock;
+  @Mock ISalesDataTransportJpaService dataTransportServiceMock;
+  @Mock IProductsConverterJpaService productsConverterMock; // TODO write an unit test that needs this mock
   ProductsTestHelper productsHelper = new ProductsTestHelper();
   SalesTestHelper salesHelper = new SalesTestHelper();
 
@@ -120,7 +119,6 @@ class SalesJpaCrudServiceImplTest {
     when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
     when(productsRepository.findByBarcode(anyString())).thenReturn(Optional.of(productsHelper.productEntityAfterCreation()));
     when(dataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(salesHelper.sellEntityAfterCreation());
-    when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(input);
 
     SellPojo result = instance.update(input, new BooleanBuilder());
 

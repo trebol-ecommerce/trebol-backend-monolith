@@ -23,12 +23,11 @@ package org.trebol.jpa.services.datatransport;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.BillingTypePojo;
 
 @Service
 public class BillingTypesDataTransportJpaServiceImpl
-  implements IDataTransportJpaService<BillingTypePojo, BillingType> {
+  implements IBillingTypesDataTransportJpaService {
 
   public BillingTypesDataTransportJpaServiceImpl(
   ) {

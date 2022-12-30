@@ -30,8 +30,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.IDataTransportJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IUsersConverterJpaService;
+import org.trebol.jpa.services.datatransport.IUsersDataTransportJpaService;
 import org.trebol.pojo.UserPojo;
 
 import javax.persistence.EntityNotFoundException;
@@ -47,8 +47,8 @@ public class UsersJpaCrudServiceImpl
 
   @Autowired
   public UsersJpaCrudServiceImpl(IUsersJpaRepository repository,
-                                 ITwoWayConverterJpaService<UserPojo, User> converter,
-                                 IDataTransportJpaService<UserPojo, User> dataTransportService,
+                                 IUsersConverterJpaService converter,
+                                 IUsersDataTransportJpaService dataTransportService,
                                  SecurityProperties securityProperties) {
     super(repository,
           converter,

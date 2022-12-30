@@ -23,12 +23,11 @@ package org.trebol.jpa.services.datatransport;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.SellStatusPojo;
 
 @Service
 public class SellStatusesDataTransportJpaServiceImpl
-  implements IDataTransportJpaService<SellStatusPojo, SellStatus> {
+  implements ISellStatusesDataTransportJpaService {
 
   public SellStatusesDataTransportJpaServiceImpl(
   ) {
