@@ -83,6 +83,7 @@ class SalesJpaCrudServiceImplTest {
     SellPojo input = salesHelper.sellPojoBeforeCreation();
     SellPojo expectedResult = salesHelper.sellPojoAfterCreation();
     when(salesConverterMock.convertToNewEntity(any(SellPojo.class))).thenReturn(salesHelper.sellEntityBeforeCreation());
+    when(productsRepository.findByBarcode(anyString())).thenReturn(Optional.of(productsHelper.productEntityAfterCreation()));
     when(salesRepositoryMock.saveAndFlush(any(Sell.class))).thenReturn(salesHelper.sellEntityAfterCreation());
     when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(expectedResult);
 
@@ -101,8 +102,7 @@ class SalesJpaCrudServiceImplTest {
     Sell internalResult = new Sell(salesHelper.sellEntityAfterCreation());
     internalResult.setDate(updatedDate);
     when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
-    when(dataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), salesHelper.sellEntityAfterCreation())).thenReturn(internalResult);
-    when(productsRepository.findByBarcode(anyString())).thenReturn(Optional.of(productsHelper.productEntityAfterCreation()));
+    when(dataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(internalResult);
     when(salesRepositoryMock.saveAndFlush(any(Sell.class))).thenReturn(internalResult);
     when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(input);
 
@@ -116,13 +116,13 @@ class SalesJpaCrudServiceImplTest {
   void returns_same_when_no_update_is_made()
       throws BadInputException, EntityNotFoundException {
     SellPojo input = salesHelper.sellPojoAfterCreation();
-    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
-    when(productsRepository.findByBarcode(anyString())).thenReturn(Optional.of(productsHelper.productEntityAfterCreation()));
-    when(dataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(salesHelper.sellEntityAfterCreation());
+    Sell matchingEntity = salesHelper.sellEntityAfterCreation();
+    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(matchingEntity));
+    when(dataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(matchingEntity);
 
     SellPojo result = instance.update(input, new BooleanBuilder());
 
-    verify(dataTransportServiceMock).applyChangesToExistingEntity(input, salesHelper.sellEntityAfterCreation());
+    verify(dataTransportServiceMock).applyChangesToExistingEntity(input, matchingEntity);
     assertEquals(input, result);
   }
 
