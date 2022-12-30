@@ -33,14 +33,12 @@ import static org.trebol.testhelpers.SalesTestHelper.SELL_TRANSACTION_TOKEN;
 
 @ExtendWith(MockitoExtension.class)
 class CheckoutServiceTest {
-
+  @InjectMocks CheckoutServiceImpl service;
   @Mock GenericCrudJpaService<SellPojo, Sell> salesCrudService;
   @Mock ISalesProcessService salesProcessService;
   @Mock IPredicateJpaService<Sell> salesPredicateService;
   @Mock IPaymentsIntegrationService paymentIntegrationService;
 
-  @InjectMocks
-  private CheckoutServiceImpl service;
   private static final String PAYMENT_URL = "https://example.com/pay";
   private static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
   SalesTestHelper salesHelper = new SalesTestHelper();

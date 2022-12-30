@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ReceiptServiceImplTest {
-
   @InjectMocks ReceiptServiceImpl instance;
   @Mock ISalesJpaRepository salesRepository;
   @Mock ConversionService conversionService;

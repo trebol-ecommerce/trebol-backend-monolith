@@ -17,10 +17,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CompanyServiceImplTest {
-
-  @InjectMocks
-  private CompanyServiceImpl sut;
-
+  @InjectMocks CompanyServiceImpl sut;
   @Mock IParamsJpaRepository paramsRepository;
 
 

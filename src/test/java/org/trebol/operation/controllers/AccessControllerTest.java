@@ -14,11 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class AccessControllerTest {
+  @InjectMocks AccessController instance;
   @Mock IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   @Mock UserDetailsService userDetailsService;
   @Mock IAuthorizedApiService authorizedApiService;
-  @InjectMocks
-  private AccessController instance;
 
   @Test
   void sanity_check() {

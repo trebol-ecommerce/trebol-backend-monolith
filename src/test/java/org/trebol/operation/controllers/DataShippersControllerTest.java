@@ -16,13 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class DataShippersControllerTest {
-
+  @InjectMocks DataShippersController instance;
   @Mock PaginationService paginationService;
   @Mock ISortSpecJpaService<Shipper> sortService;
   @Mock GenericCrudJpaService<ShipperPojo, Shipper> crudService;
   @Mock IPredicateJpaService<Shipper> predicateService;
-  @InjectMocks
-  private DataShippersController instance;
 
   @Test
   void sanity_check() {

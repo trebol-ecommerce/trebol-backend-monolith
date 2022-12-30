@@ -32,9 +32,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RegistrationServiceImplTest {
-
   @InjectMocks RegistrationServiceImpl instance;
-
   @Mock IUsersJpaRepository usersRepositoryMock;
   @Mock ConversionService conversionServiceMock;
   @Mock IPeopleJpaRepository peopleRepositoryMock;

@@ -30,7 +30,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceImplTest {
-
   @InjectMocks ProfileServiceImpl instance;
   @Mock IUsersJpaRepository usersRepositoryMock;
   @Mock GenericCrudJpaService<PersonPojo, Person> peopleServiceMock;

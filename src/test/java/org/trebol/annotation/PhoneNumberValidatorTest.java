@@ -21,14 +21,12 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @TestPropertySource("classpath:application.properties")
 class PhoneNumberValidatorTest {
-
+  @InjectMocks PhoneNumberValidator phoneNumberValidator;
   @Mock ValidationProperties validationProperties;
 
   @Value("${trebol.validation.phonenumber-regexp}")
   private String phoneNumberRegex;
 
-  @InjectMocks
-  private PhoneNumberValidator phoneNumberValidator;
 
   private String phoneNumber;
 
