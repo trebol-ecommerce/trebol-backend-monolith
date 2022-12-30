@@ -14,9 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class UserRolesDataTransportJpaServiceImplTest {
-
-    @InjectMocks
-    private UserRolesDataTransportJpaServiceImpl sut;
+    @InjectMocks UserRolesDataTransportJpaServiceImpl sut;
 
     private UserRole userRole;
     private UserRolePojo userRolePojo ;
