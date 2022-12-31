@@ -53,23 +53,8 @@ class SalesDataTransportJpaServiceImplTest {
     @BeforeEach
     public void beforeEach() {
       when(validationProperties.getIdNumberRegexp()).thenReturn(".");
-      sut = new SalesDataTransportJpaServiceImpl(
-        conversion,
-        statusesRepository,
-        billingTypesRepository,
-        billingCompaniesRepository,
-        paymentTypesRepository,
-        addressesRepository,
-        shippersRepository,
-        billingCompaniesConverter,
-        customersConverter,
-        customersService,
-        customersRepository,
-        validator,
-        validationProperties
-      );
-        sellPojo = SellPojo.builder().build();
-        sell = new Sell();
+      sellPojo = SellPojo.builder().build();
+      sell = new Sell();
     }
 
     @Test
