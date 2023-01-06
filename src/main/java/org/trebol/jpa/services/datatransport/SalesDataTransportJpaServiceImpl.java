@@ -20,24 +20,24 @@
 
 package org.trebol.jpa.services.datatransport;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.trebol.config.ValidationProperties;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IBillingCompaniesConverterJpaService;
 import org.trebol.jpa.services.conversion.ICustomersConverterJpaService;
+import org.trebol.jpa.services.helpers.RegexMatcherAdapter;
 import org.trebol.pojo.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 @Transactional
 @Service
@@ -57,7 +57,7 @@ public class SalesDataTransportJpaServiceImpl
   private final ICustomersJpaRepository customersRepository;
   private final ConversionService conversion;
   private final Validator validator;
-  private final Pattern companyIdNumberPattern;
+  private final RegexMatcherAdapter regexMatcherAdapter;
 
   @Autowired
   public SalesDataTransportJpaServiceImpl(ConversionService conversion,
@@ -72,7 +72,7 @@ public class SalesDataTransportJpaServiceImpl
                                           GenericCrudJpaService<CustomerPojo, Customer> customersService,
                                           ICustomersJpaRepository customersRepository,
                                           Validator validator,
-                                          ValidationProperties validationProperties) {
+                                          RegexMatcherAdapter regexMatcherAdapter) {
     this.conversion = conversion;
     this.statusesRepository = statusesRepository;
     this.billingTypesRepository = billingTypesRepository;
@@ -85,7 +85,7 @@ public class SalesDataTransportJpaServiceImpl
     this.customersService = customersService;
     this.customersRepository = customersRepository;
     this.validator = validator;
-    this.companyIdNumberPattern = Pattern.compile(validationProperties.getIdNumberRegexp()); // TODO refactor this line to a separate, memoizing service
+    this.regexMatcherAdapter = regexMatcherAdapter;
   }
 
   @Transactional
@@ -105,7 +105,7 @@ public class SalesDataTransportJpaServiceImpl
     if (source.getBillingType() != null) {
       this.applyBillingTypeAndCompany(source, target);
     }
-    if (source.getCustomer() != null) {
+    if (source.getCustomer() != null && source.getCustomer().getPerson() != null) {
       this.applyCustomer(source, target);
     }
     if (source.getBillingAddress() != null) {
@@ -124,7 +124,7 @@ public class SalesDataTransportJpaServiceImpl
 
   private void applyStatus(SellPojo source, Sell target) throws BadInputException {
     String statusName = source.getStatus();
-    if (statusName == null || statusName.isBlank()) {
+    if (StringUtils.isBlank(statusName)) {
       statusName = "Pending";
     }
 
@@ -138,7 +138,7 @@ public class SalesDataTransportJpaServiceImpl
 
   private void applyPaymentType(SellPojo source, Sell target) throws BadInputException {
     String paymentType = source.getPaymentType();
-    if (paymentType == null || paymentType.isBlank()) {
+    if (StringUtils.isBlank(paymentType)) {
       throw new BadInputException("An accepted payment type is required");
     } else {
       Optional<PaymentType> existingPaymentType = paymentTypesRepository.findByName(paymentType);
@@ -152,7 +152,7 @@ public class SalesDataTransportJpaServiceImpl
 
   private void applyBillingTypeAndCompany(SellPojo source, Sell target) throws BadInputException {
     String billingType = source.getBillingType();
-    if (billingType == null || billingType.isBlank()) {
+    if (StringUtils.isBlank(billingType)) {
       billingType = "Bill";
     }
 
@@ -176,7 +176,7 @@ public class SalesDataTransportJpaServiceImpl
 
   private void applyCustomer(SellPojo source, Sell target) throws BadInputException {
     CustomerPojo sourceCustomer = source.getCustomer();
-    if (sourceCustomer == null) {
+    if (StringUtils.isBlank(sourceCustomer.getPerson().getIdNumber())) {
       throw new BadInputException("Customer must possess valid personal information");
     } else {
       Optional<Customer> existing = customersService.getExisting(sourceCustomer);
@@ -250,11 +250,11 @@ public class SalesDataTransportJpaServiceImpl
   private BillingCompany fetchOrConvertBillingCompany(BillingCompanyPojo sourceBillingCompany)
     throws BadInputException {
     String idNumber = sourceBillingCompany.getIdNumber();
-    if (idNumber == null || idNumber.isBlank() ) {
+    if (StringUtils.isBlank(idNumber)) {
       throw new BadInputException("Billing company must have an id number");
     }
 
-    if (this.companyIdNumberPattern.matcher(idNumber).matches()) {
+    if (!regexMatcherAdapter.isAValidIdNumber(idNumber)) {
       throw new BadInputException("Billing company must have a correct id number");
     }
 
