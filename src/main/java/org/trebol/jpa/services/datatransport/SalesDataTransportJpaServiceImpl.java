@@ -31,6 +31,7 @@ import org.trebol.jpa.repositories.*;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IBillingCompaniesConverterJpaService;
 import org.trebol.jpa.services.conversion.ICustomersConverterJpaService;
+import org.trebol.jpa.services.crud.ICustomersCrudService;
 import org.trebol.jpa.services.helpers.RegexMatcherAdapter;
 import org.trebol.pojo.*;
 
@@ -53,7 +54,7 @@ public class SalesDataTransportJpaServiceImpl
   private final IAddressesJpaRepository addressesRepository;
   private final IBillingCompaniesConverterJpaService billingCompaniesConverter;
   private final ICustomersConverterJpaService customersConverter;
-  private final GenericCrudJpaService<CustomerPojo, Customer> customersService;
+  private final ICustomersCrudService customersService;
   private final ICustomersJpaRepository customersRepository;
   private final ConversionService conversion;
   private final Validator validator;
@@ -69,7 +70,7 @@ public class SalesDataTransportJpaServiceImpl
                                           IShippersJpaRepository shippersRepository,
                                           IBillingCompaniesConverterJpaService billingCompaniesConverter,
                                           ICustomersConverterJpaService customersConverter,
-                                          GenericCrudJpaService<CustomerPojo, Customer> customersService,
+                                          ICustomersCrudService customersService,
                                           ICustomersJpaRepository customersRepository,
                                           Validator validator,
                                           RegexMatcherAdapter regexMatcherAdapter) {
