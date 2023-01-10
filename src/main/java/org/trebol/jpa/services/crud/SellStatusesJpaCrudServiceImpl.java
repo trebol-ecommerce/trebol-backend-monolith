@@ -36,7 +36,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public class SellStatusesJpaCrudServiceImpl
-  extends GenericCrudJpaService<SellStatusPojo, SellStatus> {
+  extends GenericCrudJpaService<SellStatusPojo, SellStatus>
+  implements ISellStatusesCrudService {
 
   private final ISellStatusesJpaRepository statusesRepository;
 

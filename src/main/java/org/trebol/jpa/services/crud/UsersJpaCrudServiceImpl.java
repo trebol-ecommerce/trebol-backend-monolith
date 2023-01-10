@@ -40,7 +40,7 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UsersJpaCrudServiceImpl
-  extends GenericCrudJpaService<UserPojo, User> {
+  extends GenericCrudJpaService<UserPojo, User> implements IUsersCrudService {
 
   private final IUsersJpaRepository userRepository;
   private final SecurityProperties securityProperties;

@@ -36,7 +36,7 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ShippersJpaCrudServiceImpl
-  extends GenericCrudJpaService<ShipperPojo, Shipper> {
+  extends GenericCrudJpaService<ShipperPojo, Shipper> implements IShippersCrudService {
 
   private final IShippersJpaRepository shippersRepository;
 

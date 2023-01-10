@@ -28,13 +28,14 @@ import org.trebol.pojo.DataPagePojo;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 
 /**
  * Interface for wrapping basic CRUD service operations by using Pojo classes
  * @param <P> The pojo type class
  */
-public interface ICrudJpaService<P> {
+public interface ICrudJpaService<P, E> {
 
   /**
    * Inserts and persists an item.
@@ -69,6 +70,15 @@ public interface ICrudJpaService<P> {
    * @throws EntityNotFoundException When no item matches the filter.
    */
   P readOne(Predicate filters) throws EntityNotFoundException;
+
+  /**
+   * Attempts to match the given pojo class instance to an existing entity.
+   * This method is also useful to assert bare-minimum pojo validity for using it to update data.
+   * @param example The pojo class instance that should hold a valid identifying property
+   * @return A possible entity match that may have succeeded or not
+   * @throws BadInputException When the pojo doesn't have its identifying property.
+   */
+  public abstract Optional<E> getExisting(P example) throws BadInputException;
 
   /**
    * Updates an existing item.

@@ -36,7 +36,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ImagesJpaCrudServiceImpl
-  extends GenericCrudJpaService<ImagePojo, Image> {
+  extends GenericCrudJpaService<ImagePojo, Image>
+  implements IImagesCrudService {
 
   private final IImagesJpaRepository imagesRepository;
 
