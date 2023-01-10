@@ -13,6 +13,7 @@ import org.trebol.jpa.repositories.*;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IBillingCompaniesConverterJpaService;
 import org.trebol.jpa.services.conversion.ICustomersConverterJpaService;
+import org.trebol.jpa.services.crud.ICustomersCrudService;
 import org.trebol.jpa.services.helpers.RegexMatcherAdapter;
 import org.trebol.pojo.*;
 
@@ -41,7 +42,7 @@ class SalesDataTransportJpaServiceImplTest {
     @Mock IAddressesJpaRepository addressesRepository;
     @Mock IBillingCompaniesConverterJpaService billingCompaniesConverter;
     @Mock ICustomersConverterJpaService customersConverter;
-    @Mock GenericCrudJpaService<CustomerPojo, Customer> customersService;
+    @Mock ICustomersCrudService customersService;
     @Mock ICustomersJpaRepository customersRepository;
     @Mock ConversionService conversion;
     @Mock Validator validator;
