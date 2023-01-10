@@ -16,7 +16,9 @@ bin/
 .vscode/
 
 # Configuration files others than the one provided by default
-/src/main/resources/application-*.properties
+/src/main/resources/*.properties
+!/src/main/resources/application.properties
+!/src/main/resources/application-mailgun.empty.properties
 
 # System Files
 .DS_Store

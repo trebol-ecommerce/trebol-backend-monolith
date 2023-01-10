@@ -21,28 +21,25 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.PersonPojo;
 
 @Service
 public class CustomersConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<CustomerPojo, Customer> {
+  implements ICustomersConverterJpaService {
 
-  private final ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
+  private final IPeopleConverterJpaService peopleService;
 
   @Autowired
-  public CustomersConverterJpaServiceImpl(ITwoWayConverterJpaService<PersonPojo, Person> peopleService) {
+  public CustomersConverterJpaServiceImpl(IPeopleConverterJpaService peopleService) {
     this.peopleService = peopleService;
   }
 
   @Override
-  @Nullable
   public CustomerPojo convertToPojo(Customer source) {
     PersonPojo targetPerson = peopleService.convertToPojo(source.getPerson());
     return CustomerPojo.builder()
@@ -60,14 +57,7 @@ public class CustomersConverterJpaServiceImpl
   }
 
   @Override
-  public Customer applyChangesToExistingEntity(CustomerPojo source, Customer existing) throws BadInputException {
-    Customer target = new Customer(existing);
-    Person existingPerson = existing.getPerson();
-
-    PersonPojo sourcePerson = source.getPerson();
-    Person person = peopleService.applyChangesToExistingEntity(sourcePerson, existingPerson);
-    target.setPerson(person);
-
-    return target;
+  public Customer applyChangesToExistingEntity(CustomerPojo source, Customer target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

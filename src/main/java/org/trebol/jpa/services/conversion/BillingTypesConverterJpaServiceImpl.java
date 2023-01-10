@@ -21,29 +21,24 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.BillingTypePojo;
 
 @Service
 public class BillingTypesConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<BillingTypePojo, BillingType> {
-
-  private final ConversionService conversion;
+  implements IBillingTypesConverterJpaService {
 
   @Autowired
-  public BillingTypesConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public BillingTypesConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public BillingTypePojo convertToPojo(BillingType source) {
-    return conversion.convert(source, BillingTypePojo.class);
+    return BillingTypePojo.builder()
+      .name(source.getName())
+      .build();
   }
 
   @Override
@@ -54,14 +49,7 @@ public class BillingTypesConverterJpaServiceImpl
   }
 
   @Override
-  public BillingType applyChangesToExistingEntity(BillingTypePojo source, BillingType existing) throws BadInputException {
-    BillingType target = new BillingType(existing);
-
-    String name = source.getName();
-    if (!name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
-    }
-
-    return target;
+  public BillingType applyChangesToExistingEntity(BillingTypePojo source, BillingType target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

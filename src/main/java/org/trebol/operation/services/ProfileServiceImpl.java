@@ -31,7 +31,9 @@ import org.trebol.jpa.exceptions.UserNotFoundException;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IPeopleConverterJpaService;
+import org.trebol.jpa.services.crud.IPeopleCrudService;
+import org.trebol.jpa.services.datatransport.IPeopleDataTransportJpaService;
 import org.trebol.operation.IProfileService;
 import org.trebol.pojo.PersonPojo;
 
@@ -43,18 +45,21 @@ public class ProfileServiceImpl
     implements IProfileService {
 
   private final IUsersJpaRepository usersRepository;
-  private final GenericCrudJpaService<PersonPojo, Person> peopleService;
-  private final ITwoWayConverterJpaService<PersonPojo, Person> peopleConverter;
+  private final IPeopleCrudService peopleService;
+  private final IPeopleConverterJpaService peopleConverter;
+  private final IPeopleDataTransportJpaService peopleDataTransportService;
   private final IPeopleJpaRepository peopleRepository;
 
   @Autowired
   public ProfileServiceImpl(IUsersJpaRepository usersRepository,
-                            GenericCrudJpaService<PersonPojo, Person> peopleService,
-                            ITwoWayConverterJpaService<PersonPojo, Person> peopleConverter,
+                            IPeopleCrudService peopleService,
+                            IPeopleConverterJpaService peopleConverter,
+                            IPeopleDataTransportJpaService peopleDataTransportService,
                             IPeopleJpaRepository peopleRepository) {
     this.usersRepository = usersRepository;
     this.peopleService = peopleService;
     this.peopleConverter = peopleConverter;
+    this.peopleDataTransportService = peopleDataTransportService;
     this.peopleRepository = peopleRepository;
   }
 
@@ -94,7 +99,7 @@ public class ProfileServiceImpl
         usersRepository.saveAndFlush(targetUser);
       }
     } else {
-      target = peopleConverter.applyChangesToExistingEntity(profile, target);
+      target = peopleDataTransportService.applyChangesToExistingEntity(profile, target);
       peopleRepository.saveAndFlush(target);
     }
   }

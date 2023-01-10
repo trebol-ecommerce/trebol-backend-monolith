@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ProductsPredicateJpaServiceTest {
   @Mock IProductCategoryTreeResolver categoryTreeResolver;
-  private IPredicateJpaService<Product> instance;
+  IPredicateJpaService<Product> instance;
 
   @BeforeEach
   void beforeEach() {

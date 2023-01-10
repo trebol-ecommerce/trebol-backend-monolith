@@ -21,29 +21,25 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ShipperPojo;
 
 @Service
 public class ShippersConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<ShipperPojo, Shipper> {
-
-  private final ConversionService conversion;
+  implements IShippersConverterJpaService {
 
   @Autowired
-  public ShippersConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public ShippersConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public ShipperPojo convertToPojo(Shipper source) {
-    return conversion.convert(source, ShipperPojo.class);
+    return ShipperPojo.builder()
+      .id(source.getId())
+      .name(source.getName())
+      .build();
   }
 
   @Override
@@ -54,14 +50,7 @@ public class ShippersConverterJpaServiceImpl
   }
 
   @Override
-  public Shipper applyChangesToExistingEntity(ShipperPojo source, Shipper existing) throws BadInputException {
-    Shipper target = new Shipper(existing);
-
-    String name = source.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
-    }
-
-    return target;
+  public Shipper applyChangesToExistingEntity(ShipperPojo source, Shipper target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

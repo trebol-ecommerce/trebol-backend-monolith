@@ -28,6 +28,7 @@ import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
+import org.trebol.jpa.services.crud.IShippersCrudService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
@@ -47,7 +48,7 @@ public class DataShippersController
   @Autowired
   public DataShippersController(PaginationService paginationService,
                                 ISortSpecJpaService<Shipper> sortService,
-                                GenericCrudJpaService<ShipperPojo, Shipper> crudService,
+                                IShippersCrudService crudService,
                                 IPredicateJpaService<Shipper> predicateService) {
     super(paginationService, sortService, crudService, predicateService);
   }

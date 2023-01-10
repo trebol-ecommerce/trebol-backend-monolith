@@ -20,12 +20,8 @@ import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListConverterJpaServiceImplTest {
-
-    @InjectMocks
-    private ProductListConverterJpaServiceImpl sut;
-
-    @Mock
-    private IProductListItemsJpaRepository productListItemRepository;
+    @InjectMocks ProductListConverterJpaServiceImpl sut;
+    @Mock IProductListItemsJpaRepository productListItemRepository;
 
     private ProductList productList;
     private ProductListPojo productListPojo;
@@ -50,11 +46,6 @@ class ProductListConverterJpaServiceImplTest {
         productListPojo = null;
     }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        ProductList actual = sut.applyChangesToExistingEntity(productListPojo, productList);
-        assertEquals(1L, actual.getId());
-    }
     @Test
     void testConvertToPojo() {
         Mockito.when(productListItemRepository.count(Mockito.any(Predicate.class))).thenReturn(ID_1L);

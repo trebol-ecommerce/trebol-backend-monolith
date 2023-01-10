@@ -35,6 +35,7 @@ import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.operation.ICheckoutService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
@@ -56,7 +57,7 @@ public class PublicCheckoutController {
 
   private final Logger logger = LoggerFactory.getLogger(PublicCheckoutController.class);
   private final ICheckoutService service;
-  private final GenericCrudJpaService<SellPojo, Sell> salesCrudService;
+  private final ISalesCrudService salesCrudService;
   private final IPredicateJpaService<Sell> salesPredicateService;
   private final IMailingIntegrationService mailingIntegrationService;
   private static final String WEBPAY_SUCCESS_TOKEN_HEADER_NAME = "token_ws";
@@ -64,7 +65,7 @@ public class PublicCheckoutController {
 
   @Autowired
   public PublicCheckoutController(ICheckoutService service,
-                                  GenericCrudJpaService<SellPojo, Sell> salesCrudService,
+                                  ISalesCrudService salesCrudService,
                                   IPredicateJpaService<Sell> salesPredicateService,
                                   @Autowired(required = false) IMailingIntegrationService mailingIntegrationService) {
     this.service = service;

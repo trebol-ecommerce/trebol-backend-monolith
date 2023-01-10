@@ -31,6 +31,7 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
+import org.trebol.jpa.services.crud.IPeopleCrudService;
 import org.trebol.operation.GenericDataController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
@@ -48,7 +49,7 @@ public class DataPeopleController
   @Autowired
   public DataPeopleController(PaginationService paginationService,
                               ISortSpecJpaService<Person> sortService,
-                              GenericCrudJpaService<PersonPojo, Person> crudService,
+                              IPeopleCrudService crudService,
                               IPredicateJpaService<Person> predicateService) {
     super(paginationService, sortService, crudService, predicateService);
   }

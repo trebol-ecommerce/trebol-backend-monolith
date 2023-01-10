@@ -1,12 +1,7 @@
 package org.trebol.annotation;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -18,29 +13,30 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.trebol.annotation.validator.PhoneNumberValidator;
 import org.trebol.config.ValidationProperties;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource("classpath:application.properties")
 class PhoneNumberValidatorTest {
-	
-	@Mock
-	private ValidationProperties validationProperties;
-	
-	@Value("${trebol.validation.phonenumber-regexp}")
-	private String phoneNumberRegex;
-	
-	@InjectMocks
-	private PhoneNumberValidator phoneNumberValidator;
-	
-	private String phoneNumber;
-	
-	@BeforeEach
-	void beforeEach() {	
-		phoneNumber = "";		
-		when(validationProperties.getPhoneNumberRegexp()).thenReturn(phoneNumberRegex);
-		phoneNumberValidator.initialize(null);
-	}
-	
+  @InjectMocks PhoneNumberValidator phoneNumberValidator;
+  @Mock ValidationProperties validationProperties;
+
+  @Value("${trebol.validation.phonenumber-regexp}")
+  private String phoneNumberRegex;
+
+
+  private String phoneNumber;
+
+  @BeforeEach
+  void beforeEach() {
+    phoneNumber = "";
+    when(validationProperties.getPhoneNumberRegexp()).thenReturn(phoneNumberRegex);
+    phoneNumberValidator.initialize(null);
+  }
+
   @DisplayName("Validate invalid phone number w/ no country code, only country code, and over 15 digits " +
     "it should return false")
   @ParameterizedTest

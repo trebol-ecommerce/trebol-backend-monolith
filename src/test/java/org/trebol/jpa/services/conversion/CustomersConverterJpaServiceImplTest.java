@@ -9,29 +9,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.PersonPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class CustomersConverterJpaServiceImplTest {
-
-    @InjectMocks
-    private CustomersConverterJpaServiceImpl sut;
-
-    @Mock
-    private ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
-
-    private Customer customer;
-    private CustomerPojo customerPojo;
-    private Person person;
-    private PersonPojo personPojo;
+    @InjectMocks CustomersConverterJpaServiceImpl sut;
+    @Mock IPeopleConverterJpaService peopleService;
+    Customer customer;
+    CustomerPojo customerPojo;
+    Person person;
+    PersonPojo personPojo;
 
 
     @BeforeEach
@@ -44,14 +37,6 @@ class CustomersConverterJpaServiceImplTest {
         customer.setPerson(person);
 
         customerPojo = CustomerPojo.builder().person(personPojo).build();
-    }
-
-
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        when(peopleService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
-        Customer actual = sut.applyChangesToExistingEntity(customerPojo, customer);
-        assertEquals(person.getId(), actual.getPerson().getId());
     }
 
     @Test

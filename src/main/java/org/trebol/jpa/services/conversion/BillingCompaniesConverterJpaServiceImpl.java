@@ -21,29 +21,25 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.BillingCompanyPojo;
 
 @Service
 public class BillingCompaniesConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<BillingCompanyPojo, BillingCompany> {
-
-  private final ConversionService conversion;
+  implements IBillingCompaniesConverterJpaService {
 
   @Autowired
-  public BillingCompaniesConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public BillingCompaniesConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public BillingCompanyPojo convertToPojo(BillingCompany source) {
-    return conversion.convert(source, BillingCompanyPojo.class);
+    return BillingCompanyPojo.builder()
+      .idNumber(source.getIdNumber())
+      .name(source.getName())
+      .build();
   }
 
   @Override
@@ -55,15 +51,7 @@ public class BillingCompaniesConverterJpaServiceImpl
   }
 
   @Override
-  public BillingCompany applyChangesToExistingEntity(BillingCompanyPojo source, BillingCompany existing)
-          throws BadInputException {
-    BillingCompany target = new BillingCompany(existing);
-
-    String name = source.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
-    }
-
-    return target;
+  public BillingCompany applyChangesToExistingEntity(BillingCompanyPojo source, BillingCompany target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

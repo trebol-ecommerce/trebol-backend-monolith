@@ -20,7 +20,7 @@
 
 package org.trebol.jpa.services.crud;
 
-import org.slf4j.LoggerFactory;
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,30 +30,29 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IUsersConverterJpaService;
+import org.trebol.jpa.services.datatransport.IUsersDataTransportJpaService;
 import org.trebol.pojo.UserPojo;
 
-import com.querydsl.core.types.Predicate;
-
-import java.util.Optional;
-
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @Transactional
 @Service
 public class UsersJpaCrudServiceImpl
-  extends GenericCrudJpaService<UserPojo, User> {
+  extends GenericCrudJpaService<UserPojo, User> implements IUsersCrudService {
 
   private final IUsersJpaRepository userRepository;
   private final SecurityProperties securityProperties;
 
   @Autowired
   public UsersJpaCrudServiceImpl(IUsersJpaRepository repository,
-                                 ITwoWayConverterJpaService<UserPojo, User> converter,
+                                 IUsersConverterJpaService converter,
+                                 IUsersDataTransportJpaService dataTransportService,
                                  SecurityProperties securityProperties) {
     super(repository,
-      converter,
-      LoggerFactory.getLogger(UsersJpaCrudServiceImpl.class));
+          converter,
+          dataTransportService);
     this.userRepository = repository;
     this.securityProperties = securityProperties;
   }

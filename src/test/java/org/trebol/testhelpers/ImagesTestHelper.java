@@ -12,61 +12,61 @@ public class ImagesTestHelper {
   public static String IMAGE_CODE = "test-img";
   public static String IMAGE_FILENAME = "testimg.jpg";
   public static String IMAGE_URL = "http://example.com/img/testimg.jpg";
-  private static ImagePojo pojoForFetch;
-  private static ImagePojo pojoBeforeCreation;
-  private static ImagePojo pojoAfterCreation;
-  private static Image entityBeforeCreation;
-  private static Image entityAfterCreation;
+  private ImagePojo pojoForFetch;
+  private ImagePojo pojoBeforeCreation;
+  private ImagePojo pojoAfterCreation;
+  private Image entityBeforeCreation;
+  private Image entityAfterCreation;
 
-  public static void resetImages() {
-    pojoForFetch = null;
-    pojoBeforeCreation = null;
-    pojoAfterCreation = null;
-    entityBeforeCreation = null;
-    entityAfterCreation = null;
+  public void resetImages() {
+    this.pojoForFetch = null;
+    this.pojoBeforeCreation = null;
+    this.pojoAfterCreation = null;
+    this.entityBeforeCreation = null;
+    this.entityAfterCreation = null;
   }
 
-  public static ImagePojo imagePojoForFetch() {
-    if (pojoForFetch == null) {
-      pojoForFetch = ImagePojo.builder().filename(IMAGE_FILENAME).build();
+  public ImagePojo imagePojoForFetch() {
+    if (this.pojoForFetch == null) {
+      this.pojoForFetch = ImagePojo.builder().filename(IMAGE_FILENAME).build();
     }
-    return pojoForFetch;
+    return this.pojoForFetch;
   }
 
-  public static ImagePojo imagePojoBeforeCreation() {
-    if (pojoBeforeCreation == null) {
-      pojoBeforeCreation = ImagePojo.builder()
+  public ImagePojo imagePojoBeforeCreation() {
+    if (this.pojoBeforeCreation == null) {
+      this.pojoBeforeCreation = ImagePojo.builder()
         .code(IMAGE_CODE)
         .filename(IMAGE_FILENAME)
         .url(IMAGE_URL)
         .build();
     }
-    return pojoBeforeCreation;
+    return this.pojoBeforeCreation;
   }
 
-  public static ImagePojo imagePojoAfterCreation() {
-    if (pojoAfterCreation == null) {
-      pojoAfterCreation = ImagePojo.builder()
+  public ImagePojo imagePojoAfterCreation() {
+    if (this.pojoAfterCreation == null) {
+      this.pojoAfterCreation = ImagePojo.builder()
         .id(IMAGE_ID)
         .code(IMAGE_CODE)
         .filename(IMAGE_FILENAME)
         .url(IMAGE_URL)
         .build();
     }
-    return pojoAfterCreation;
+    return this.pojoAfterCreation;
   }
 
-  public static Image imageEntityBeforeCreation() {
-    if (entityBeforeCreation == null) {
-      entityBeforeCreation = new Image(IMAGE_CODE, IMAGE_FILENAME, IMAGE_URL);
+  public Image imageEntityBeforeCreation() {
+    if (this.entityBeforeCreation == null) {
+      this.entityBeforeCreation = new Image(IMAGE_CODE, IMAGE_FILENAME, IMAGE_URL);
     }
-    return entityBeforeCreation;
+    return this.entityBeforeCreation;
   }
 
-  public static Image imageEntityAfterCreation() {
-    if (entityAfterCreation == null) {
-      entityAfterCreation = new Image(IMAGE_ID, IMAGE_CODE, IMAGE_FILENAME, IMAGE_URL);
+  public Image imageEntityAfterCreation() {
+    if (this.entityAfterCreation == null) {
+      this.entityAfterCreation = new Image(IMAGE_ID, IMAGE_CODE, IMAGE_FILENAME, IMAGE_URL);
     }
-    return entityAfterCreation;
+    return this.entityAfterCreation;
   }
 }

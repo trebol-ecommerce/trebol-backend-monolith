@@ -21,29 +21,25 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.SellStatusPojo;
 
 @Service
 public class SellStatusesConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<SellStatusPojo, SellStatus> {
-
-  private final ConversionService conversion;
+  implements ISellStatusesConverterJpaService {
 
   @Autowired
-  public SellStatusesConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public SellStatusesConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public SellStatusPojo convertToPojo(SellStatus source) {
-    return conversion.convert(source, SellStatusPojo.class);
+    return SellStatusPojo.builder()
+      .code(source.getCode())
+      .name(source.getName())
+      .build();
   }
 
   @Override
@@ -55,19 +51,7 @@ public class SellStatusesConverterJpaServiceImpl
   }
 
   @Override
-  public SellStatus applyChangesToExistingEntity(SellStatusPojo source, SellStatus existing) throws BadInputException {
-    SellStatus target = new SellStatus(existing);
-
-    Integer code = source.getCode();
-    if (code != null && !target.getCode().equals(code))  {
-      target.setCode(code);
-    }
-
-    String name = source.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
-    }
-
-    return target;
+  public SellStatus applyChangesToExistingEntity(SellStatusPojo source, SellStatus target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

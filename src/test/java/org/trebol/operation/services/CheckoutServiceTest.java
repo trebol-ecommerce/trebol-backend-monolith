@@ -2,6 +2,7 @@ package org.trebol.operation.services;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,42 +13,39 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.operation.ISalesProcessService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
+import org.trebol.testhelpers.SalesTestHelper;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
 import static org.trebol.constant.TestConstants.ANY;
 import static org.trebol.constant.TestConstants.ONE;
 import static org.trebol.testhelpers.SalesTestHelper.SELL_TRANSACTION_TOKEN;
-import static org.trebol.testhelpers.SalesTestHelper.resetSales;
-import static org.trebol.testhelpers.SalesTestHelper.sellPojoAfterCreation;
 
 @ExtendWith(MockitoExtension.class)
 class CheckoutServiceTest {
-
-  @Mock GenericCrudJpaService<SellPojo, Sell> salesCrudService;
+  @InjectMocks CheckoutServiceImpl service;
+  @Mock ISalesCrudService salesCrudService;
   @Mock ISalesProcessService salesProcessService;
   @Mock IPredicateJpaService<Sell> salesPredicateService;
   @Mock IPaymentsIntegrationService paymentIntegrationService;
+  static final String PAYMENT_URL = "https://example.com/pay";
+  static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
+  SalesTestHelper salesHelper = new SalesTestHelper();
 
-  @InjectMocks
-  private CheckoutServiceImpl service;
-  private static final String PAYMENT_URL = "https://example.com/pay";
-  private static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
+  @BeforeEach
+  void beforeEach() {
+    salesHelper.resetSales();
+  }
 
   @Test
   void requests_transaction_start()
@@ -56,13 +54,12 @@ class CheckoutServiceTest {
       .url(PAYMENT_URL)
       .token(SELL_TRANSACTION_TOKEN)
       .build();
-    resetSales();
-    when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
+    when(paymentIntegrationService.requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation())).thenReturn(payload);
 
-    PaymentRedirectionDetailsPojo result = service.requestTransactionStart(sellPojoAfterCreation());
+    PaymentRedirectionDetailsPojo result = service.requestTransactionStart(salesHelper.sellPojoAfterCreation());
 
-    verify(paymentIntegrationService).requestNewPaymentPageDetails(sellPojoAfterCreation());
-    verify(salesProcessService).markAsStarted(sellPojoAfterCreation());
+    verify(paymentIntegrationService).requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation());
+    verify(salesProcessService).markAsStarted(salesHelper.sellPojoAfterCreation());
     assertEquals(result.getUrl(), PAYMENT_URL);
     assertEquals(result.getToken(), SELL_TRANSACTION_TOKEN);
   }
@@ -74,16 +71,16 @@ class CheckoutServiceTest {
         "statusCode", SELL_STATUS_PAYMENT_STARTED,
         "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
+    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
     when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(0);
-    when(salesProcessService.markAsPaid(sellPojoAfterCreation())).thenReturn(null);
+    when(salesProcessService.markAsPaid(salesHelper.sellPojoAfterCreation())).thenReturn(null);
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, false);
 
     verify(salesPredicateService).parseMap(matcherMap);
     verify(salesCrudService).readOne(MATCHER_PREDICATE);
     verify(paymentIntegrationService).requestPaymentResult(SELL_TRANSACTION_TOKEN);
-    verify(salesProcessService).markAsPaid(sellPojoAfterCreation());
+    verify(salesProcessService).markAsPaid(salesHelper.sellPojoAfterCreation());
     assertNull(result);
   }
 
@@ -95,16 +92,16 @@ class CheckoutServiceTest {
       "statusCode", SELL_STATUS_PAYMENT_STARTED,
       "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
+    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
     when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(1);
-    when(salesProcessService.markAsFailed(sellPojoAfterCreation())).thenReturn(null);
+    when(salesProcessService.markAsFailed(salesHelper.sellPojoAfterCreation())).thenReturn(null);
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, false);
 
     verify(salesPredicateService).parseMap(matcherMap);
     verify(salesCrudService).readOne(MATCHER_PREDICATE);
     verify(paymentIntegrationService).requestPaymentResult(SELL_TRANSACTION_TOKEN);
-    verify(salesProcessService).markAsFailed(sellPojoAfterCreation());
+    verify(salesProcessService).markAsFailed(salesHelper.sellPojoAfterCreation());
     assertNull(result);
   }
 
@@ -116,16 +113,16 @@ class CheckoutServiceTest {
       "statusCode", SELL_STATUS_PAYMENT_STARTED,
       "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
+    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
     when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(1);
-    when(salesProcessService.markAsFailed(sellPojoAfterCreation())).thenThrow(BadInputException.class);
+    when(salesProcessService.markAsFailed(salesHelper.sellPojoAfterCreation())).thenThrow(BadInputException.class);
 
     assertThrows(IllegalStateException.class, () -> service.confirmTransaction(SELL_TRANSACTION_TOKEN, false));
 
     verify(salesPredicateService, times(ONE)).parseMap(matcherMap);
     verify(salesCrudService, times(ONE)).readOne(MATCHER_PREDICATE);
     verify(paymentIntegrationService, times(ONE)).requestPaymentResult(SELL_TRANSACTION_TOKEN);
-    verify(salesProcessService, times(ONE)).markAsFailed(sellPojoAfterCreation());
+    verify(salesProcessService, times(ONE)).markAsFailed(salesHelper.sellPojoAfterCreation());
   }
 
   @Test
@@ -135,14 +132,14 @@ class CheckoutServiceTest {
         "statusCode", SELL_STATUS_PAYMENT_STARTED,
         "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
-    when(salesProcessService.markAsAborted(sellPojoAfterCreation())).thenReturn(null);
+    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
+    when(salesProcessService.markAsAborted(salesHelper.sellPojoAfterCreation())).thenReturn(null);
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, true);
 
     verify(salesPredicateService, times(ONE)).parseMap(matcherMap);
     verify(salesCrudService, times(ONE)).readOne(MATCHER_PREDICATE);
-    verify(salesProcessService, times(ONE)).markAsAborted(sellPojoAfterCreation());
+    verify(salesProcessService, times(ONE)).markAsAborted(salesHelper.sellPojoAfterCreation());
     assertNull(result);
   }
 
@@ -153,15 +150,15 @@ class CheckoutServiceTest {
       "statusCode", SELL_STATUS_PAYMENT_STARTED,
       "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(sellPojoAfterCreation());
-    when(salesProcessService.markAsAborted(sellPojoAfterCreation())).thenThrow(BadInputException.class);
+    when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
+    when(salesProcessService.markAsAborted(salesHelper.sellPojoAfterCreation())).thenThrow(BadInputException.class);
 
     assertThrows(IllegalStateException.class,
       () -> service.confirmTransaction(SELL_TRANSACTION_TOKEN, true), "Transaction could not be confirmed");
 
     verify(salesPredicateService, times(ONE)).parseMap(matcherMap);
     verify(salesCrudService, times(ONE)).readOne(MATCHER_PREDICATE);
-    verify(salesProcessService, times(ONE)).markAsAborted(sellPojoAfterCreation());
+    verify(salesProcessService, times(ONE)).markAsAborted(salesHelper.sellPojoAfterCreation());
   }
 
   @Test
@@ -172,20 +169,19 @@ class CheckoutServiceTest {
       .token(SELL_TRANSACTION_TOKEN)
       .build();
     String exceptionMessage = "No match";
-    resetSales();
-    when(paymentIntegrationService.requestNewPaymentPageDetails(sellPojoAfterCreation())).thenReturn(payload);
+    when(paymentIntegrationService.requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation())).thenReturn(payload);
     doThrow(new EntityNotFoundException(exceptionMessage)).
-        when(salesProcessService).markAsStarted(sellPojoAfterCreation());
+        when(salesProcessService).markAsStarted(salesHelper.sellPojoAfterCreation());
 
     PaymentRedirectionDetailsPojo result = null;
     try {
-      result = service.requestTransactionStart(sellPojoAfterCreation());
+      result = service.requestTransactionStart(salesHelper.sellPojoAfterCreation());
     } catch (Exception ex) {
-      verify(paymentIntegrationService).requestNewPaymentPageDetails(sellPojoAfterCreation());
+      verify(paymentIntegrationService).requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation());
     }
 
     assertNull(result);
-    verify(salesProcessService).markAsStarted(sellPojoAfterCreation());
+    verify(salesProcessService).markAsStarted(salesHelper.sellPojoAfterCreation());
   }
 
   @Test

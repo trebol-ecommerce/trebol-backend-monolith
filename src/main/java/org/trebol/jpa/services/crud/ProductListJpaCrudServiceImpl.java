@@ -21,7 +21,6 @@
 package org.trebol.jpa.services.crud;
 
 import com.querydsl.core.types.Predicate;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,8 @@ import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
 import org.trebol.jpa.repositories.IProductListsJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductListsConverterJpaService;
+import org.trebol.jpa.services.datatransport.IProductListsDataTransportJpaService;
 import org.trebol.pojo.ProductListPojo;
 
 import javax.persistence.EntityNotFoundException;
@@ -38,7 +38,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductListJpaCrudServiceImpl
-  extends GenericCrudJpaService<ProductListPojo, ProductList> {
+  extends GenericCrudJpaService<ProductListPojo, ProductList>
+  implements IProductListCrudService {
 
   private final IProductListsJpaRepository productListRepository;
   private final IProductListItemsJpaRepository productListItemRepository;
@@ -46,10 +47,11 @@ public class ProductListJpaCrudServiceImpl
   @Autowired
   public ProductListJpaCrudServiceImpl(IProductListsJpaRepository productListRepository,
                                        IProductListItemsJpaRepository productListItemRepository,
-                                       ITwoWayConverterJpaService<ProductListPojo, ProductList> converterService) {
+                                       IProductListsConverterJpaService converterService,
+                                       IProductListsDataTransportJpaService dataTransportService) {
     super(productListRepository,
            converterService,
-           LoggerFactory.getLogger(ProductListJpaCrudServiceImpl.class));
+           dataTransportService);
     this.productListRepository = productListRepository;
     this.productListItemRepository = productListItemRepository;
   }

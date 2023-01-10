@@ -20,7 +20,6 @@
 
 package org.trebol.jpa.services.crud;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductCategoriesConverterJpaService;
+import org.trebol.jpa.services.datatransport.IProductCategoriesDataTransportJpaService;
 import org.trebol.pojo.ProductCategoryPojo;
 
 import java.util.Optional;
@@ -36,16 +36,17 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductCategoriesJpaCrudServiceImpl
-  extends GenericCrudJpaService<ProductCategoryPojo, ProductCategory> {
+  extends GenericCrudJpaService<ProductCategoryPojo, ProductCategory> implements IProductCategoriesCrudService {
 
   private final IProductsCategoriesJpaRepository categoriesRepository;
 
   @Autowired
   public ProductCategoriesJpaCrudServiceImpl(IProductsCategoriesJpaRepository repository,
-                                             ITwoWayConverterJpaService<ProductCategoryPojo, ProductCategory> converter) {
+                                             IProductCategoriesConverterJpaService converter,
+                                             IProductCategoriesDataTransportJpaService dataTransportService) {
     super(repository,
           converter,
-          LoggerFactory.getLogger(ProductCategoriesJpaCrudServiceImpl.class));
+          dataTransportService);
     this.categoriesRepository = repository;
   }
 
@@ -56,6 +57,36 @@ public class ProductCategoriesJpaCrudServiceImpl
       throw new BadInputException("Invalid category code");
     } else {
       return this.categoriesRepository.findByCode(code);
+    }
+  }
+
+  @Override
+  protected final ProductCategory prepareNewEntityFromInputPojo(ProductCategoryPojo inputPojo) throws BadInputException {
+    ProductCategory target = super.prepareNewEntityFromInputPojo(inputPojo);
+    if (inputPojo.getParent() != null) {
+      this.passParentIfMatchingEntityExists(target, inputPojo.getParent());
+    }
+    return target;
+  }
+
+  @Override
+  protected final ProductCategoryPojo persistEntityWithUpdatesFromPojo(ProductCategoryPojo changes, ProductCategory existingEntity) throws BadInputException {
+    ProductCategory preparedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
+    this.passParentIfMatchingEntityExists(preparedEntity, changes.getParent());
+    if (!existingEntity.equals(preparedEntity)) {
+      return changes;
+    }
+    return this.persist(preparedEntity);
+  }
+
+  private void passParentIfMatchingEntityExists(ProductCategory target, ProductCategoryPojo sourceParent) {
+    String sourceParentCode = sourceParent.getCode();
+    ProductCategory previousExistingParent = target.getParent();
+    if (sourceParentCode != null && (previousExistingParent == null || !previousExistingParent.getCode().equals(sourceParentCode))) {
+      Optional<ProductCategory> parentMatch = categoriesRepository.findByCode(sourceParentCode);
+      if (parentMatch.isPresent()) {
+        target.setParent(parentMatch.get());
+      }
     }
   }
 }

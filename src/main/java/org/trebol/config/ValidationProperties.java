@@ -44,10 +44,10 @@ public class ValidationProperties {
   }
 
   public String getPhoneNumberRegexp() {
-	return phoneNumberRegexp;
+    return phoneNumberRegexp;
   }
 
   public void setPhoneNumberRegexp(String phoneNumberRegexp) {
-	this.phoneNumberRegexp = phoneNumberRegexp;
+    this.phoneNumberRegexp = phoneNumberRegexp;
   }
 }

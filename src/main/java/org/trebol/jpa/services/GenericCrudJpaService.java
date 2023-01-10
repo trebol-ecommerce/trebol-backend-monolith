@@ -21,7 +21,6 @@
 package org.trebol.jpa.services;
 
 import com.querydsl.core.types.Predicate;
-import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,52 +38,39 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Base abstraction for JPA-based CRUD services that communicate with Pojos, keeping entity classes out of scope
+ * Simple CRUD service abstraction. Communicates with other services only through Pojos, keeping JPA entity classes only within their own scope.
+ * Whenever possible, its public abstract API should not be overriden, but its protected methods instead.
  * @param <P> The pojo class
  * @param <E> The entity class
  */
 @Transactional
 public abstract class GenericCrudJpaService<P, E>
-  implements ICrudJpaService<P> {
-
-  // avoid shadowing this field; as implementations should always refer to their specific repositories
+  implements ICrudJpaService<P, E> {
   private final IJpaRepository<E> repository;
 
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
   protected final ITwoWayConverterJpaService<P, E> converter;
-  protected final Logger logger;
+  protected final IDataTransportJpaService<P, E> dataTransportService;
 
   protected GenericCrudJpaService(IJpaRepository<E> repository,
                                ITwoWayConverterJpaService<P, E> converter,
-                               Logger logger) {
+                               IDataTransportJpaService<P, E> dataTransportService) {
     this.repository = repository;
     this.converter = converter;
-    this.logger = logger;
+    this.dataTransportService = dataTransportService;
   }
 
   /**
-   * Attempts to match the given pojo class instance to an existing entity in the persistence context.
-   * @param example The pojo class instance that should hold a valid identifying property
-   * @return A possible entity match
-   * @throws BadInputException When the pojo doesn't have its identifying property.
-   */
-  public abstract Optional<E> getExisting(P example) throws BadInputException;
-
-  /**
-   * Convert a pojo to an entity, save it, convert it back to a pojo and return
-   * it.
+   * Converts a pojo to an entity, saves it and returns it back as a brand new pojo equivalent.
    * @param inputPojo The Pojo instance to be converted and inserted.
    */
   @Override
   public P create(P inputPojo)
       throws BadInputException, EntityExistsException {
-    if (this.getExisting(inputPojo).isPresent()) {
-      throw new EntityExistsException(ITEM_ALREADY_EXISTS);
-    }
-    E input = converter.convertToNewEntity(inputPojo);
-    E output = repository.saveAndFlush(input);
-    return converter.convertToPojo(output);
+    this.validateInputPojoBeforeCreation(inputPojo);
+    E preparedEntity = this.prepareNewEntityFromInputPojo(inputPojo);
+    return this.persist(preparedEntity);
   }
 
   /**
@@ -116,7 +102,7 @@ public abstract class GenericCrudJpaService<P, E>
     if (match.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
-    return this.doUpdate(input, match.get());
+    return this.persistEntityWithUpdatesFromPojo(input, match.get());
   }
 
   @Override
@@ -126,7 +112,7 @@ public abstract class GenericCrudJpaService<P, E>
     if (firstMatch.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
     }
-    return this.doUpdate(input, firstMatch.get());
+    return this.persistEntityWithUpdatesFromPojo(input, firstMatch.get());
   }
 
   @Override
@@ -150,20 +136,50 @@ public abstract class GenericCrudJpaService<P, E>
     return converter.convertToPojo(found);
   }
 
+  protected final P persist(E preparedEntity) {
+    E result = repository.saveAndFlush(preparedEntity);
+    return converter.convertToPojo(result);
+  }
+
   /**
-   * Applies changes, and flushes. If no changes are detected, return changes as-is
+   * Copies changes from a pojo to an entity.
+   * Executes right before updating (persisting) data.
+   * Ideal overridable method to include cascading entity relationships.
    * @param changes A Pojo class instance with the data that is being submitted
    * @param existingEntity An existing entity class instance that will be updated
    * @return The resulting Pojo class instance
    * @throws BadInputException If data in Pojo is insufficient, incorrect, malformed, etc
    */
-  protected P doUpdate(P changes, E existingEntity)
+  protected P persistEntityWithUpdatesFromPojo(P changes, E existingEntity)
       throws BadInputException {
-    E updatedEntity = converter.applyChangesToExistingEntity(changes, existingEntity);
+    E updatedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
     if (existingEntity.equals(updatedEntity)) {
       return changes;
     }
-    E output = repository.saveAndFlush(updatedEntity);
-    return converter.convertToPojo(output);
+    return this.persist(updatedEntity);
+  }
+
+  /**
+   * Base entity-specific validation  method.
+   * Should be called at the beginning of the create() method.
+   * @param inputPojo A pojo to validate
+   * @throws BadInputException If the pojo does not have a valid identifying property
+   */
+  protected void validateInputPojoBeforeCreation(P inputPojo) throws BadInputException {
+    if (this.getExisting(inputPojo).isPresent()) {
+      throw new EntityExistsException(ITEM_ALREADY_EXISTS);
+    }
+  }
+
+  /**
+   * Creates a new entity from a pojo.
+   * Executes right before persisting data.
+   * Ideal overridable method to include cascading entity relationships.
+   * @param inputPojo A pojo to convert to an entity
+   * @return An entity object equivalent to the provided pojo, ready for saving
+   * @throws BadInputException If the pojo does not have a valid identifying property
+   */
+  protected E prepareNewEntityFromInputPojo(P inputPojo) throws BadInputException {
+    return converter.convertToNewEntity(inputPojo);
   }
 }

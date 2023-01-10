@@ -21,28 +21,25 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.SalespersonPojo;
 
 @Service
 public class SalespeopleConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<SalespersonPojo, Salesperson> {
+  implements ISalespeopleConverterJpaService {
 
-  private final ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
+  private final IPeopleConverterJpaService peopleService;
 
   @Autowired
-  public SalespeopleConverterJpaServiceImpl(ITwoWayConverterJpaService<PersonPojo, Person> peopleService) {
+  public SalespeopleConverterJpaServiceImpl(IPeopleConverterJpaService peopleService) {
     this.peopleService = peopleService;
   }
 
   @Override
-  @Nullable
   public SalespersonPojo convertToPojo(Salesperson source) {
     PersonPojo targetPerson = peopleService.convertToPojo(source.getPerson());
     return SalespersonPojo.builder()
@@ -60,17 +57,7 @@ public class SalespeopleConverterJpaServiceImpl
   }
 
   @Override
-  public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson existing) throws BadInputException {
-    Salesperson target = new Salesperson(existing);
-    Person existingPerson = existing.getPerson();
-
-    PersonPojo sourcePerson = source.getPerson();
-    if (sourcePerson == null) {
-      throw new BadInputException("Salesperson must have a person profile");
-    }
-    Person person = peopleService.applyChangesToExistingEntity(sourcePerson, existingPerson);
-    target.setPerson(person);
-
-    return target;
+  public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

@@ -26,12 +26,11 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.entities.QProductListItem;
 import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.ProductListPojo;
 
 @Service
 public class ProductListConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<ProductListPojo, ProductList> {
+  implements IProductListsConverterJpaService {
 
   private final IProductListItemsJpaRepository productListItemRepository;
 
@@ -58,17 +57,7 @@ public class ProductListConverterJpaServiceImpl
   }
 
   @Override
-  public ProductList applyChangesToExistingEntity(ProductListPojo source, ProductList existing) throws BadInputException {
-    ProductList target = new ProductList(existing);
-
-    if (source.getName() != null && !source.getName().isEmpty() && !source.getName().equals(target.getName())) {
-      target.setName(source.getName());
-    }
-
-    if (source.getCode() != null && !source.getCode().isEmpty() && !source.getCode().equals(target.getCode())) {
-      target.setCode(source.getCode());
-    }
-
-    return target;
+  public ProductList applyChangesToExistingEntity(ProductListPojo source, ProductList target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

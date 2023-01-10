@@ -37,6 +37,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.crud.ICustomersCrudService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.security.IAuthorizationHeaderParserService;
 import org.trebol.security.JwtGuestAuthenticationFilter;
@@ -55,14 +56,14 @@ public class SecurityConfig
   private final SecretKey secretKey;
   private final SecurityProperties securityProperties;
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
-  private final GenericCrudJpaService<CustomerPojo, Customer> customersService;
+  private final ICustomersCrudService customersService;
 
   @Autowired
   public SecurityConfig(UserDetailsService userDetailsService,
                         SecretKey secretKey,
                         SecurityProperties securityProperties,
                         IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-                        GenericCrudJpaService<CustomerPojo, Customer> customersService) {
+                        ICustomersCrudService customersService) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.securityProperties = securityProperties;

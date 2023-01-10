@@ -20,11 +20,10 @@
 
 package org.trebol.jpa.services;
 
-import org.springframework.lang.Nullable;
 import org.trebol.exceptions.BadInputException;
 
 /**
- * Type-safe interface for direct interaction between Entities and Pojos
+ * Type-safe interface for converting Entities to Pojos and viceversa
  * @param <P> The Pojo class
  * @param <E> The Entity class
  */
@@ -32,6 +31,7 @@ public interface ITwoWayConverterJpaService<P, E> {
 
   /**
    * Straightly converts a Pojo to a new @Entity, assuming that the Pojo is already @Valid.
+   * It does not include relationships to other entities.
    * This method DOES NOT persist data.
    * @param source The source Pojo.
    * @return A new entity, prepared to be saved to the database.
@@ -47,14 +47,15 @@ public interface ITwoWayConverterJpaService<P, E> {
    * @param target The target entity.
    * @return An updated instance of the @Entity, prepared to be saved to the database.
    * @throws BadInputException If the object with changes has invalid values
+   * @deprecated Please use {@link IDataTransportJpaService}'s method instead
    */
+  @Deprecated
   E applyChangesToExistingEntity(P source, E target) throws BadInputException;
 
-  /**
+   /**
    * Converts an existing @Entity to its complete Pojo equivalent, including all relationships to other entities.
    * @param source The source @Entity.
    * @return The resulting Pojo, or null if the @Entity isn't persistent
    */
-  @Nullable
   P convertToPojo(E source);
 }

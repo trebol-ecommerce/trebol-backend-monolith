@@ -21,45 +21,36 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.UserRolePojo;
 
 @Service
 public class UserRolesConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<UserRolePojo, UserRole> {
-
-  private final ConversionService conversion;
+  implements IUserRolesConverterJpaService {
 
   @Autowired
-  public UserRolesConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public UserRolesConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public UserRolePojo convertToPojo(UserRole source) {
-    return conversion.convert(source, UserRolePojo.class);
+    return UserRolePojo.builder()
+      .id(source.getId())
+      .name(source.getName())
+      .build();
   }
 
   @Override
   public UserRole convertToNewEntity(UserRolePojo source) {
-    return conversion.convert(source, UserRole.class);
+    UserRole convert = new UserRole();
+    convert.setName(source.getName());
+    return convert;
   }
 
   @Override
-  public UserRole applyChangesToExistingEntity(UserRolePojo source, UserRole existing) throws BadInputException {
-    UserRole target = new UserRole(existing);
-
-    String name = source.getName();
-    if (name != null && !name.isBlank() && target.getName().equals(name)) {
-      target.setName(name);
-    }
-
-    return target;
+  public UserRole applyChangesToExistingEntity(UserRolePojo source, UserRole target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

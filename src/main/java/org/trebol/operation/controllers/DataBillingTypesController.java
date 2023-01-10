@@ -30,6 +30,7 @@ import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
+import org.trebol.jpa.services.crud.IBillingTypesCrudService;
 import org.trebol.operation.GenericDataController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.BillingTypePojo;
@@ -46,7 +47,7 @@ public class DataBillingTypesController
   @Autowired
   public DataBillingTypesController(PaginationService paginationService,
                                     ISortSpecJpaService<BillingType> sortService,
-                                    GenericCrudJpaService<BillingTypePojo, BillingType> crudService,
+                                    IBillingTypesCrudService crudService,
                                     IPredicateJpaService<BillingType> predicateService) {
     super(paginationService, sortService, crudService, predicateService);
   }

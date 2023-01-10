@@ -24,8 +24,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +34,6 @@ import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.UserPojo;
 
@@ -45,64 +42,52 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UsersConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<UserPojo, User> {
+  implements IUsersConverterJpaService {
 
   private final Logger logger = LoggerFactory.getLogger(UsersConverterJpaServiceImpl.class);
   private final IUsersJpaRepository userRepository;
   private final IUserRolesJpaRepository rolesRepository;
-  private final ITwoWayConverterJpaService<PersonPojo, Person> peopleService;
+  private final IPeopleConverterJpaService peopleService;
   private final IPeopleJpaRepository peopleRepository;
-  private final ConversionService conversion;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
   public UsersConverterJpaServiceImpl(IUsersJpaRepository repository,
                                       IUserRolesJpaRepository rolesRepository,
-                                      ITwoWayConverterJpaService<PersonPojo, Person> peopleService,
+                                      IPeopleConverterJpaService peopleService,
                                       IPeopleJpaRepository peopleRepository,
-                                      ConversionService conversion,
                                       PasswordEncoder passwordEncoder) {
     this.userRepository = repository;
     this.rolesRepository = rolesRepository;
     this.peopleService = peopleService;
     this.peopleRepository = peopleRepository;
-    this.conversion = conversion;
     this.passwordEncoder = passwordEncoder;
   }
 
   @Override
-  @Nullable
   public UserPojo convertToPojo(User source) {
     UserPojo target = UserPojo.builder()
       .id(source.getId())
       .name(source.getName())
       .role(source.getUserRole().getName())
       .build();
-
     Person sourcePerson = source.getPerson();
     if (sourcePerson != null) {
       PersonPojo personPojo = peopleService.convertToPojo(sourcePerson);
       target.setPerson(personPojo);
     }
-
     return target;
   }
 
   @Override
   public User convertToNewEntity(UserPojo source) throws BadInputException {
-    User target = conversion.convert(source, User.class);
-    if (target == null) {
-      throw new BadInputException("Invalid user data");
-    }
-
-    setPassword(source, target);
-
     PersonPojo sourcePerson = source.getPerson();
-    setPersonProfile(target, sourcePerson);
-
-    String role = source.getRole();
-    setPersonRole(target, role);
-
+    String sourceRole = source.getRole();
+    User target = new User();
+    target.setName(source.getName());
+    this.setPersonRole(target, sourceRole);
+    this.setPersonProfile(target, sourcePerson);
+    this.setPassword(source, target);
     return target;
   }
 
@@ -145,35 +130,7 @@ public class UsersConverterJpaServiceImpl
   }
 
   @Override
-  public User applyChangesToExistingEntity(UserPojo source, User existing) throws BadInputException {
-    User target = new User(existing);
-
-    String name = source.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
-    }
-
-    String roleName = source.getRole();
-    if (roleName != null && !roleName.isBlank() && !target.getUserRole().getName().equals(roleName)) {
-      Optional<UserRole> roleNameMatch = rolesRepository.findByName(roleName);
-      roleNameMatch.ifPresent(target::setUserRole);
-    }
-
-    String password = source.getPassword();
-    if (password != null && !password.isBlank() && !passwordEncoder.matches(password, target.getPassword())) {
-      String encodedPassword = passwordEncoder.encode(password);
-      target.setPassword(encodedPassword);
-    }
-
-    PersonPojo person = source.getPerson();
-    if (person != null) {
-      String idNumber = person.getIdNumber();
-      if (idNumber != null && !idNumber.isBlank() && !target.getPerson().getIdNumber().equals(idNumber)) {
-        Optional<Person> idNumberMatch = peopleRepository.findByIdNumber(idNumber);
-        idNumberMatch.ifPresent(target::setPerson);
-      }
-    }
-
-    return target;
+  public User applyChangesToExistingEntity(UserPojo source, User target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

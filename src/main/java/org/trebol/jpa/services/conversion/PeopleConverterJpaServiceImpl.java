@@ -21,69 +21,55 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.ITwoWayConverterJpaService;
 import org.trebol.pojo.PersonPojo;
-import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class PeopleConverterJpaServiceImpl
-  implements ITwoWayConverterJpaService<PersonPojo, Person> {
-
-  private final ConversionService conversion;
+  implements IPeopleConverterJpaService {
 
   @Autowired
-  public PeopleConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public PeopleConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public PersonPojo convertToPojo(Person source) {
-    return conversion.convert(source, PersonPojo.class);
+    PersonPojo target = PersonPojo.builder()
+      .id(source.getId())
+      .idNumber(source.getIdNumber())
+      .firstName(source.getFirstName())
+      .lastName(source.getLastName())
+      .email(source.getEmail())
+      .build();
+    if (source.getPhone1() != null) {
+      target.setPhone1(source.getPhone1());
+    }
+    if (source.getPhone2() != null) {
+      target.setPhone2(source.getPhone2());
+    }
+    return target;
   }
 
   @Override
   public Person convertToNewEntity(PersonPojo source) {
-    return conversion.convert(source, Person.class);
+    Person target = new Person();
+    target.setFirstName(source.getFirstName());
+    target.setLastName(source.getLastName());
+    target.setIdNumber(source.getIdNumber());
+    target.setEmail(source.getEmail());
+    if (source.getPhone1() != null) {
+      target.setPhone1(source.getPhone1());
+    }
+    if (source.getPhone2() != null) {
+      target.setPhone2(source.getPhone2());
+    }
+    return target;
   }
 
   @Override
-  public Person applyChangesToExistingEntity(PersonPojo source, Person existing) throws BadInputException {
-    Person target = new Person(existing);
-
-    String firstName = source.getFirstName();
-    if (firstName != null && !firstName.isBlank() && !target.getFirstName().equals(firstName)) {
-      target.setFirstName(firstName);
-    }
-
-    String lastName = source.getLastName();
-    if (lastName != null && !lastName.isBlank() && !target.getLastName().equals(lastName)) {
-      target.setLastName(lastName);
-    }
-
-    String email = source.getEmail();
-    if (email != null && !email.isBlank() && !target.getEmail().equals(email)) {
-      target.setEmail(email);
-    }
-
-    // phones may be empty, but not null
-    String phone1 = source.getPhone1();
-    if (!StringUtils.equals(target.getPhone1(),phone1)) {
-        target.setPhone1(phone1);
-      }
-
-    String phone2 = source.getPhone2();
-    if (phone2 != null) {
-      if (!target.getPhone2().equals(phone2)) {
-        target.setPhone2(phone2);
-      }
-    }
-
-    return target;
+  public Person applyChangesToExistingEntity(PersonPojo source, Person target) throws BadInputException {
+    throw new UnsupportedOperationException("This method is deprecated");
   }
 }

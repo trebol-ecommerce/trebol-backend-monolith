@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Issue and Pull Request templates
 - [.editorconfig](https://editorconfig.org) file
+  - Enforces Unix-style line endings (LF)
 - `PhoneNumber` annotation for validating phone numbers - **Thank you `@mepox`**
   - Use custom `PhoneNumberValidator`, subclass of `javax.validation.ValidationConstraint`, which validates using regular expression
   - Configure the regular expression through `trebol.validation.phonenumber-regexp` in `application.properties`
@@ -18,14 +19,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - The protected user account must have the same `id` indicated by `trebol.security.protected-account-id` in `application.properties`
 
 ### Changed
+
+- [WIP] **BREAKING CHANGE** Split logic in services that implement `ICrudJpaService<P>` and extend `GenericCrudJpaService<P, E>`
+  - Introduce `IDataTransportJpaService<P, E>` to keep specific domain-dependant boilerplate code for updating entities before they are submitted to database
+    - This new, separate interface inherits the `applyChangesToExistingEntity` method from `ITwoWayConverterJpaService<P, E>`
+    - The original method in `ITwoWayConverterJpaService` has been deprecated
+  - Break down the steps taken on each method in the public API of `GenericCrudJpaService` and its sub-implementations, by introducing these overridable `protected` methods 
+    - `prepareEntityWithUpdatesFromPojo`
+    - `validateInputPojoBeforeCreation`
+    - `prepareNewEntityFromInputPojo`
+  - Introduce sub-interfaces from `ICrudJpaService<P, E`, `IDataTransportJpaService<P, E>` and `ITwoWayConverterJpaService<P, E>`
+    - This increases the accuracy of type-safe dependency injection. Specially important for unit testing and mocks.
 - UsersConverterJpaServiceImpl - refactor `convertToNewEntity` since it tag as cyclomatic issue
 - SalesConverterJpaServiceImpl, SalesProcessServiceImpl - add string constants
 - **BREAKING CHANGE**: Rename table names to follow the naming convention - **Thank you `@mepox`**
-    - `products_categories` 			-> `product_categories`
-    - `products_images` 				-> `should be product_images`
-    - `sales_statuses` 				-> `should be sell_statuses`
-    - `app_users_roles` 				-> `should be app_user_roles`
-    - `app_users_roles_permissions` -> `should be app_user_role_permissions`
+    - `products_categories`          -> `product_categories`
+    - `products_images`              -> `product_images`
+    - `sales_statuses`               -> `sell_statuses`
+    - `app_users_roles`              -> `app_user_roles`
+    - `app_users_roles_permissions`  -> `app_user_role_permissions`
+- Update GitHub Actions workflow
+  - `actions/checkout`      | `v2 -> `v3`
+  - `actions/setup-java`    | `v1 -> `v3`
+    - Following [Switching to V2](https://github.com/actions/setup-java/blob/v3.6.0/docs/switching-to-v2.md) guide
+    - Chose `temurin` distro, maintained by the Eclipse foundation
+  - `actions/cache`         | `v1 -> `v3`
 - Update to latest Spring Boot patch (as of Oct 12th, 2022)
   - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
 - Take advantage of Project Lombok `@Builder` annotation for Pojo classes
