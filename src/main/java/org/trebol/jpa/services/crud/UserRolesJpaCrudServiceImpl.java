@@ -36,7 +36,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UserRolesJpaCrudServiceImpl
-  extends GenericCrudJpaService<UserRolePojo, UserRole> {
+  extends GenericCrudJpaService<UserRolePojo, UserRole>
+  implements IUserRolesCrudService {
 
   private final IUserRolesJpaRepository userRolesRepository;
 

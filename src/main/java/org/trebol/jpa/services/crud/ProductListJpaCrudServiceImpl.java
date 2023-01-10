@@ -38,7 +38,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductListJpaCrudServiceImpl
-  extends GenericCrudJpaService<ProductListPojo, ProductList> {
+  extends GenericCrudJpaService<ProductListPojo, ProductList>
+  implements IProductListCrudService {
 
   private final IProductListsJpaRepository productListRepository;
   private final IProductListItemsJpaRepository productListItemRepository;

@@ -36,7 +36,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public class BillingTypesJpaCrudServiceImpl
-  extends GenericCrudJpaService<BillingTypePojo, BillingType> {
+  extends GenericCrudJpaService<BillingTypePojo, BillingType>
+  implements IBillingTypesCrudService {
 
   private final IBillingTypesJpaRepository billingTypesRepository;
 

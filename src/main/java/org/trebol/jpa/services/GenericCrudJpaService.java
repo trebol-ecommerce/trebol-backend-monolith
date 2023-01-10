@@ -45,7 +45,7 @@ import java.util.Optional;
  */
 @Transactional
 public abstract class GenericCrudJpaService<P, E>
-  implements ICrudJpaService<P> {
+  implements ICrudJpaService<P, E> {
   private final IJpaRepository<E> repository;
 
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
@@ -60,15 +60,6 @@ public abstract class GenericCrudJpaService<P, E>
     this.converter = converter;
     this.dataTransportService = dataTransportService;
   }
-
-  /**
-   * Attempts to match the given pojo class instance to an existing entity.
-   * This method is also useful to assert bare-minimum pojo validity for using it to update data.
-   * @param example The pojo class instance that should hold a valid identifying property
-   * @return A possible entity match that may have succeeded or not
-   * @throws BadInputException When the pojo doesn't have its identifying property.
-   */
-  public abstract Optional<E> getExisting(P example) throws BadInputException;
 
   /**
    * Converts a pojo to an entity, saves it and returns it back as a brand new pojo equivalent.

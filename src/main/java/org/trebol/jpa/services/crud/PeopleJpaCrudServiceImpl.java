@@ -36,7 +36,7 @@ import java.util.Optional;
 @Transactional
 @Service
 public class PeopleJpaCrudServiceImpl
-  extends GenericCrudJpaService<PersonPojo, Person> {
+  extends GenericCrudJpaService<PersonPojo, Person> implements IPeopleCrudService {
 
   private final IPeopleJpaRepository peopleRepository;
 

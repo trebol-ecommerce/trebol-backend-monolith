@@ -50,7 +50,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductsJpaCrudServiceImpl
-  extends GenericCrudJpaService<ProductPojo, Product> {
+  extends GenericCrudJpaService<ProductPojo, Product>
+  implements IProductsCrudService {
 
   private final IProductsJpaRepository productsRepository;
   private final IProductImagesJpaRepository productImagesRepository;
@@ -84,8 +85,10 @@ public class ProductsJpaCrudServiceImpl
   @Override
   public ProductPojo create(ProductPojo inputPojo)
       throws BadInputException, EntityExistsException {
-    ProductPojo outputPojo = super.create(inputPojo);
-    Product persistent = productsRepository.getById(outputPojo.getId());
+    this.validateInputPojoBeforeCreation(inputPojo);
+    Product prepared = this.prepareNewEntityFromInputPojo(inputPojo);
+    Product persistent = productsRepository.saveAndFlush(prepared);
+    ProductPojo outputPojo = converter.convertToPojo(persistent);
 
     // one-Product-to-many-Images
     Collection<ImagePojo> inputPojoImages = inputPojo.getImages();
