@@ -22,7 +22,7 @@ package org.trebol.operation;
 
 import com.querydsl.core.types.Predicate;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.ICrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 
@@ -36,7 +36,7 @@ public class GenericDataCrudController<P, E>
 
   protected GenericDataCrudController(PaginationService paginationService,
                                       ISortSpecJpaService<E> sortService,
-                                      GenericCrudJpaService<P, E> crudService,
+                                      ICrudJpaService<P, E> crudService,
                                       IPredicateJpaService<E> predicateService) {
     super(paginationService, sortService, crudService, predicateService);
   }

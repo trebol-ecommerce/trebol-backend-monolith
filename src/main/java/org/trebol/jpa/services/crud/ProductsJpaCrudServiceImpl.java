@@ -55,8 +55,8 @@ public class ProductsJpaCrudServiceImpl
 
   private final IProductsJpaRepository productsRepository;
   private final IProductImagesJpaRepository productImagesRepository;
-  private final GenericCrudJpaService<ImagePojo, Image> imagesCrudService;
-  private final GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesCrudService;
+  private final IImagesCrudService imagesCrudService;
+  private final IProductCategoriesCrudService categoriesCrudService;
   private final IProductCategoriesConverterJpaService categoriesConverter;
   private final IImagesConverterJpaService imageConverter;
   private final Logger logger = LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class);
@@ -66,8 +66,8 @@ public class ProductsJpaCrudServiceImpl
                                     IProductsConverterJpaService converter,
                                     IProductsDataTransportJpaService dataTransportService,
                                     IProductImagesJpaRepository productImagesRepository,
-                                    GenericCrudJpaService<ImagePojo, Image> imagesCrudService,
-                                    GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesService,
+                                    IImagesCrudService imagesCrudService,
+                                    IProductCategoriesCrudService categoriesService,
                                     IProductCategoriesConverterJpaService categoriesConverter,
                                     IImagesConverterJpaService imageConverter) {
     super(repository,

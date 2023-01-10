@@ -32,6 +32,7 @@ import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IPeopleConverterJpaService;
+import org.trebol.jpa.services.crud.IPeopleCrudService;
 import org.trebol.jpa.services.datatransport.IPeopleDataTransportJpaService;
 import org.trebol.operation.IProfileService;
 import org.trebol.pojo.PersonPojo;
@@ -44,14 +45,14 @@ public class ProfileServiceImpl
     implements IProfileService {
 
   private final IUsersJpaRepository usersRepository;
-  private final GenericCrudJpaService<PersonPojo, Person> peopleService;
+  private final IPeopleCrudService peopleService;
   private final IPeopleConverterJpaService peopleConverter;
   private final IPeopleDataTransportJpaService peopleDataTransportService;
   private final IPeopleJpaRepository peopleRepository;
 
   @Autowired
   public ProfileServiceImpl(IUsersJpaRepository usersRepository,
-                            GenericCrudJpaService<PersonPojo, Person> peopleService,
+                            IPeopleCrudService peopleService,
                             IPeopleConverterJpaService peopleConverter,
                             IPeopleDataTransportJpaService peopleDataTransportService,
                             IPeopleJpaRepository peopleRepository) {
