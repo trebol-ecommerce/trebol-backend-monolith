@@ -78,7 +78,7 @@ public interface ICrudJpaService<P, E> {
    * @return A possible entity match that may have succeeded or not
    * @throws BadInputException When the pojo doesn't have its identifying property.
    */
-  public abstract Optional<E> getExisting(P example) throws BadInputException;
+  Optional<E> getExisting(P example) throws BadInputException;
 
   /**
    * Updates an existing item.
