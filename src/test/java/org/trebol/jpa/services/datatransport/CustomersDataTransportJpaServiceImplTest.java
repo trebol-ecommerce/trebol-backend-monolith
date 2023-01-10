@@ -21,7 +21,7 @@ import static org.trebol.constant.TestConstants.ID_1L;
 @ExtendWith(MockitoExtension.class)
 class CustomersDataTransportJpaServiceImplTest {
     @InjectMocks CustomersDataTransportJpaServiceImpl sut;
-    @Mock IDataTransportJpaService<PersonPojo, Person> peopleService;
+    @Mock IPeopleDataTransportJpaService peopleService;
     Customer customer;
     CustomerPojo customerPojo;
     Person person;
@@ -45,6 +45,6 @@ class CustomersDataTransportJpaServiceImplTest {
     void testApplyChangesToExistingEntity() throws BadInputException {
         when(peopleService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
         Customer actual = sut.applyChangesToExistingEntity(customerPojo, customer);
-        assertEquals(person.getId(), actual.getPerson().getId());
+        assertEquals(person, actual.getPerson());
     }
 }
