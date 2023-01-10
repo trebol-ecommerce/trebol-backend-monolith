@@ -5,25 +5,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.convert.ConversionService;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
 import org.trebol.pojo.ProductCategoryPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import static org.trebol.constant.TestConstants.ANY;
 import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductCategoriesConverterJpaServiceImplTest {
     @InjectMocks ProductCategoriesConverterJpaServiceImpl sut;
-    @Mock ConversionService conversionService;
-    @Mock IProductsCategoriesJpaRepository categoriesRepository;
     ProductCategory productCategory;
     ProductCategoryPojo productCategoryPojo;
 
@@ -47,15 +39,15 @@ public class ProductCategoriesConverterJpaServiceImplTest {
 
     @Test
     void testConvertToPojo() {
-        when(conversionService.convert(any(ProductCategory.class), eq(ProductCategoryPojo.class))).thenReturn(productCategoryPojo);
         ProductCategoryPojo actual = sut.convertToPojo(productCategory);
-        verify(conversionService, times(1)).convert(any(ProductCategory.class), eq(ProductCategoryPojo.class));
+        assertEquals(productCategory.getName(), actual.getName());
+        assertEquals(productCategory.getCode(), actual.getCode());
     }
 
     @Test
     void testConvertToNewEntity() {
         ProductCategory actual = sut.convertToNewEntity(productCategoryPojo);
-        assertEquals(ANY, actual.getCode());
-        assertEquals(ANY, actual.getName());
+        assertEquals(productCategoryPojo.getName(), actual.getName());
+        assertEquals(productCategoryPojo.getCode(), actual.getCode());
     }
 }

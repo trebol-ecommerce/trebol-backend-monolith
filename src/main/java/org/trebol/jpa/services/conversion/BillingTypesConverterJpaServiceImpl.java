@@ -21,8 +21,6 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
@@ -32,17 +30,15 @@ import org.trebol.pojo.BillingTypePojo;
 public class BillingTypesConverterJpaServiceImpl
   implements IBillingTypesConverterJpaService {
 
-  private final ConversionService conversion;
-
   @Autowired
-  public BillingTypesConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public BillingTypesConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public BillingTypePojo convertToPojo(BillingType source) {
-    return conversion.convert(source, BillingTypePojo.class);
+    return BillingTypePojo.builder()
+      .name(source.getName())
+      .build();
   }
 
   @Override

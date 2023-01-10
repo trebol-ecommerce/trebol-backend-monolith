@@ -5,22 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.convert.ConversionService;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.pojo.SellStatusPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class SellStatusesConverterJpaServiceImplTest {
     @InjectMocks SellStatusesConverterJpaServiceImpl sut;
-    @Mock ConversionService conversionService;
     SellStatus sellStatus;
     SellStatusPojo sellStatusPojo;
 
@@ -42,15 +36,13 @@ class SellStatusesConverterJpaServiceImplTest {
 
     @Test
     void testConvertToPojo() {
-        when(conversionService.convert(any(SellStatus.class), eq(SellStatusPojo.class))).thenReturn(sellStatusPojo);
         SellStatusPojo actual = sut.convertToPojo(sellStatus);
-        assertEquals(ANY, actual.getName());
-        verify(conversionService, times(1)).convert(any(SellStatus.class), eq(SellStatusPojo.class));
+        assertEquals(sellStatus.getName(), actual.getName());
     }
 
     @Test
     void testConvertToNewEntity() {
         SellStatus actual = sut.convertToNewEntity(sellStatusPojo);
-        assertEquals(ANY, actual.getName());
+        assertEquals(sellStatusPojo.getName(), actual.getName());
     }
 }

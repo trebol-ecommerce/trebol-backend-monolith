@@ -20,7 +20,6 @@
 
 package org.trebol.jpa.services;
 
-import org.springframework.lang.Nullable;
 import org.trebol.exceptions.BadInputException;
 
 /**
@@ -58,6 +57,5 @@ public interface ITwoWayConverterJpaService<P, E> {
    * @param source The source @Entity.
    * @return The resulting Pojo, or null if the @Entity isn't persistent
    */
-  @Nullable
   P convertToPojo(E source);
 }

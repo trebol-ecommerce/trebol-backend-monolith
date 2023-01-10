@@ -21,8 +21,6 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
@@ -43,42 +41,59 @@ public class ProductsConverterJpaServiceImpl
   implements IProductsConverterJpaService {
 
   private final IProductImagesJpaRepository productImagesRepository;
-  private final ConversionService conversion;
+  private final IImagesConverterJpaService imagesConverterService;
+  private final IProductCategoriesConverterJpaService productCategoriesConverterService;
 
   @Autowired
   public ProductsConverterJpaServiceImpl(IProductImagesJpaRepository productImagesRepository,
-                                         ConversionService conversion) {
+                                         IImagesConverterJpaService imagesConverterService,
+                                         IProductCategoriesConverterJpaService productCategoriesConverterService) {
     this.productImagesRepository = productImagesRepository;
-    this.conversion = conversion;
+    this.imagesConverterService = imagesConverterService;
+    this.productCategoriesConverterService = productCategoriesConverterService;
   }
 
+  // TODO this method can be expensive
   @Override
-  @Nullable
   public ProductPojo convertToPojo(Product source) {
-    ProductPojo target = conversion.convert(source, ProductPojo.class);
-    if (target != null) {
-      Long id = target.getId();
-      Set<ImagePojo> images = new HashSet<>();
-      for (ProductImage pi : productImagesRepository.deepFindProductImagesByProductId(id)) {
-        ImagePojo targetImage = conversion.convert(pi.getImage(), ImagePojo.class);
-        if (targetImage != null) {
-          images.add(targetImage);
-        }
+    ProductPojo target = ProductPojo.builder()
+      .id(source.getId())
+      .name(source.getName())
+      .barcode(source.getBarcode())
+      .price(source.getPrice())
+      .currentStock(source.getStockCurrent())
+      .criticalStock(source.getStockCritical())
+      .build();
+    Set<ImagePojo> images = new HashSet<>();
+    for (ProductImage pi : productImagesRepository.deepFindProductImagesByProductId(source.getId())) {
+      ImagePojo targetImage = imagesConverterService.convertToPojo(pi.getImage());
+      if (targetImage != null) {
+        images.add(targetImage);
       }
-      target.setImages(images);
+    }
+    target.setImages(images);
 
-      ProductCategory category = source.getProductCategory();
-      if (category != null) {
-        ProductCategoryPojo categoryPojo = conversion.convert(category, ProductCategoryPojo.class);
-        target.setCategory(categoryPojo);
-      }
+    ProductCategory category = source.getProductCategory();
+    if (category != null) {
+      ProductCategoryPojo categoryPojo = productCategoriesConverterService.convertToPojo(category);
+      target.setCategory(categoryPojo);
     }
     return target;
   }
 
   @Override
-  public Product convertToNewEntity(ProductPojo source) throws BadInputException {
-    return conversion.convert(source, Product.class);
+  public Product convertToNewEntity(ProductPojo source) {
+    Product target = new Product();
+    target.setName(source.getName());
+    target.setBarcode(source.getBarcode());
+    target.setPrice(source.getPrice());
+    if (source.getCurrentStock() != null) {
+      target.setStockCurrent(source.getCurrentStock());
+    }
+    if (source.getCriticalStock() != null) {
+      target.setStockCritical(source.getCriticalStock());
+    }
+    return target;
   }
 
   @Override

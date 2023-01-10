@@ -21,8 +21,6 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
@@ -32,17 +30,16 @@ import org.trebol.pojo.SellStatusPojo;
 public class SellStatusesConverterJpaServiceImpl
   implements ISellStatusesConverterJpaService {
 
-  private final ConversionService conversion;
-
   @Autowired
-  public SellStatusesConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public SellStatusesConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public SellStatusPojo convertToPojo(SellStatus source) {
-    return conversion.convert(source, SellStatusPojo.class);
+    return SellStatusPojo.builder()
+      .code(source.getCode())
+      .name(source.getName())
+      .build();
   }
 
   @Override

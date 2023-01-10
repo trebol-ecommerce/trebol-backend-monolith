@@ -24,8 +24,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +49,6 @@ public class UsersConverterJpaServiceImpl
   private final IUserRolesJpaRepository rolesRepository;
   private final IPeopleConverterJpaService peopleService;
   private final IPeopleJpaRepository peopleRepository;
-  private final ConversionService conversion;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
@@ -59,49 +56,38 @@ public class UsersConverterJpaServiceImpl
                                       IUserRolesJpaRepository rolesRepository,
                                       IPeopleConverterJpaService peopleService,
                                       IPeopleJpaRepository peopleRepository,
-                                      ConversionService conversion,
                                       PasswordEncoder passwordEncoder) {
     this.userRepository = repository;
     this.rolesRepository = rolesRepository;
     this.peopleService = peopleService;
     this.peopleRepository = peopleRepository;
-    this.conversion = conversion;
     this.passwordEncoder = passwordEncoder;
   }
 
   @Override
-  @Nullable
   public UserPojo convertToPojo(User source) {
     UserPojo target = UserPojo.builder()
       .id(source.getId())
       .name(source.getName())
       .role(source.getUserRole().getName())
       .build();
-
     Person sourcePerson = source.getPerson();
     if (sourcePerson != null) {
       PersonPojo personPojo = peopleService.convertToPojo(sourcePerson);
       target.setPerson(personPojo);
     }
-
     return target;
   }
 
   @Override
   public User convertToNewEntity(UserPojo source) throws BadInputException {
-    User target = conversion.convert(source, User.class);
-    if (target == null) {
-      throw new BadInputException("Invalid user data");
-    }
-
-    setPassword(source, target);
-
     PersonPojo sourcePerson = source.getPerson();
-    setPersonProfile(target, sourcePerson);
-
-    String role = source.getRole();
-    setPersonRole(target, role);
-
+    String sourceRole = source.getRole();
+    User target = new User();
+    target.setName(source.getName());
+    this.setPersonRole(target, sourceRole);
+    this.setPersonProfile(target, sourcePerson);
+    this.setPassword(source, target);
     return target;
   }
 

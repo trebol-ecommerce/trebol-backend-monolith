@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
@@ -22,7 +21,8 @@ import org.trebol.pojo.UserPojo;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.trebol.constant.TestConstants.ANY;
 
@@ -33,7 +33,6 @@ public class UsersConverterJpaServiceImplTest {
     @Mock IUserRolesJpaRepository rolesRepository;
     @Mock IPeopleConverterJpaService peopleService;
     @Mock IPeopleJpaRepository peopleRepository;
-    @Mock ConversionService conversion;
     @Mock PasswordEncoder passwordEncoder;
     User user;
     UserPojo userPojo;
@@ -63,36 +62,45 @@ public class UsersConverterJpaServiceImplTest {
     @Test
     void testConvertToPojo() {
         when(peopleService.convertToPojo(any(Person.class))).thenReturn(PersonPojo.builder().build());
+
         UserPojo actual = sut.convertToPojo(user);
+
         assertNotNull(actual.getPerson());
+        assertEquals(user.getId(), actual.getId());
+        assertEquals(user.getName(), actual.getName());
     }
 
     @Test
     void testConvertToNewEntityBadInputException() throws BadInputException {
-        when(conversion.convert(any(UserPojo.class), eq(User.class))).thenReturn(null);
         BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(userPojo));
-        assertEquals("Invalid user data", badInputException.getMessage());
+        assertEquals("The user does not have a role", badInputException.getMessage());
+
+        userPojo.setRole(ANY);
+        when(rolesRepository.findByName(anyString())).thenReturn(Optional.empty());
+
+        BadInputException badInputException2 = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(userPojo));
+        assertEquals("The specified user role does not exist", badInputException2.getMessage());
     }
 
     @Test
     void testConvertToNewEntity() throws BadInputException {
-        when(conversion.convert(any(UserPojo.class), eq(User.class))).thenReturn(user);
-        when(passwordEncoder.encode(anyString())).thenReturn(ANY);
         final Person person = new Person();
-        person.setId(3L);
-        when(peopleRepository.findByIdNumber(anyString())).thenReturn(Optional.of(person));
+        person.setIdNumber(ANY);
         final UserRole userRole = new UserRole();
-        userRole.setId(2L);
-        when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(userRole));
-
-        userPojo.setPassword(ANY);
+        userRole.setName(ANY);
         final PersonPojo personPojo = PersonPojo.builder().idNumber(ANY).build();
-        userPojo.setPerson(personPojo);
+        userPojo.setPassword(ANY);
         userPojo.setRole(ANY);
+        userPojo.setPerson(personPojo);
+        when(passwordEncoder.encode(anyString())).thenReturn(ANY);
+        when(peopleRepository.findByIdNumber(anyString())).thenReturn(Optional.of(person));
+        when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(userRole));
 
         User actual = sut.convertToNewEntity(userPojo);
 
-        assertEquals(3L, actual.getPerson().getId());
-        assertEquals(2L, actual.getUserRole().getId());
+        assertNotNull(actual.getPerson());
+        assertEquals(userPojo.getPerson().getIdNumber(), actual.getPerson().getIdNumber());
+        assertNotNull(actual.getUserRole());
+        assertEquals(userPojo.getRole(), actual.getUserRole().getName());
     }
 }

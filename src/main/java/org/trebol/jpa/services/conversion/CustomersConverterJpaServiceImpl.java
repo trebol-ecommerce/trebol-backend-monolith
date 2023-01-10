@@ -21,7 +21,6 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
@@ -41,7 +40,6 @@ public class CustomersConverterJpaServiceImpl
   }
 
   @Override
-  @Nullable
   public CustomerPojo convertToPojo(Customer source) {
     PersonPojo targetPerson = peopleService.convertToPojo(source.getPerson());
     return CustomerPojo.builder()

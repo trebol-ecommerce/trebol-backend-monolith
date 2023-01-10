@@ -5,22 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.convert.ConversionService;
 import org.trebol.jpa.entities.Image;
 import org.trebol.pojo.ImagePojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ImagesConverterJpaServiceImplTest {
     @InjectMocks ImagesConverterJpaServiceImpl sut;
-    @Mock ConversionService conversionService;
     Image image;
     ImagePojo imagePojo;
 
@@ -44,17 +38,15 @@ class ImagesConverterJpaServiceImplTest {
 
     @Test
     void testConvertToPojo() {
-        when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(imagePojo);
         ImagePojo actual = sut.convertToPojo(image);
-        assertEquals(ANY, actual.getFilename());
-        verify(conversionService, times(1)).convert(any(Image.class), eq(ImagePojo.class));
+        assertEquals(image.getFilename(), actual.getFilename());
+        assertEquals(image.getCode(), actual.getCode());
     }
 
     @Test
     void testConvertToNewEntity() {
-        when(conversionService.convert(any(ImagePojo.class), eq(Image.class))).thenReturn(image);
         Image actual = sut.convertToNewEntity(imagePojo);
-        assertEquals(ANY, actual.getFilename());
-        verify(conversionService, times(1)).convert(any(ImagePojo.class), eq(Image.class));
+        assertEquals(imagePojo.getFilename(), actual.getFilename());
+        assertEquals(imagePojo.getCode(), actual.getCode());
     }
 }

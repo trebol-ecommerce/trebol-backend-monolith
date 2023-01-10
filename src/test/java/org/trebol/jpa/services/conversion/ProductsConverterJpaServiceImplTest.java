@@ -1,14 +1,11 @@
 package org.trebol.jpa.services.conversion;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.convert.ConversionService;
-import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
@@ -21,15 +18,18 @@ import org.trebol.pojo.ProductPojo;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductsConverterJpaServiceImplTest {
     @InjectMocks ProductsConverterJpaServiceImpl sut;
-    @Mock ConversionService conversionService;
     @Mock IProductImagesJpaRepository productImagesRepository;
+    @Mock IImagesConverterJpaService imagesConverterService;
+    @Mock IProductCategoriesConverterJpaService productCategoriesConverterService;
     Product product;
     ProductPojo productPojo;
 
@@ -44,36 +44,33 @@ public class ProductsConverterJpaServiceImplTest {
           .build();
     }
 
-    @AfterEach
-    void afterEach() {
-        product = null;
-        productPojo = null;
-    }
-
     @Test
     void testConvertToPojo() {
-        when(conversionService.convert(any(Product.class), eq(ProductPojo.class))).thenReturn(productPojo);
+        final ProductCategory productCategory = new ProductCategory();
         final ProductImage productImage = new ProductImage();
         final Image image = new Image();
         productImage.setImage(image);
-        when(productImagesRepository.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
-        when(conversionService.convert(any(Image.class), eq(ImagePojo.class))).thenReturn(ImagePojo.builder().build());
-        final ProductCategory productCategory = new ProductCategory();
         product.setProductCategory(productCategory);
-        when(conversionService.convert(any(ProductCategory.class), eq(ProductCategoryPojo.class))).thenReturn(ProductCategoryPojo.builder().build());
+        when(productImagesRepository.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
+        when(imagesConverterService.convertToPojo(any(Image.class))).thenReturn(ImagePojo.builder().build());
+        when(productCategoriesConverterService.convertToPojo(any(ProductCategory.class))).thenReturn(ProductCategoryPojo.builder().build());
 
         ProductPojo actual = sut.convertToPojo(product);
 
-
-        assertEquals(ANY, actual.getName());
-        verify(conversionService, times(1)).convert(any(Product.class), eq(ProductPojo.class));
+        assertEquals(product.getName(), actual.getName());
+        assertEquals(product.getBarcode(), actual.getBarcode());
+        assertNotNull(actual.getCategory());
+        assertNotNull(actual.getImages());
+        assertEquals(1, actual.getImages().size());
     }
 
     @Test
-    void testConvertToNewEntity() throws BadInputException {
-        when(conversionService.convert(any(ProductPojo.class), eq(Product.class))).thenReturn(product);
+    void testConvertToNewEntity() {
+        productPojo.setBarcode(ANY);
+        productPojo.setPrice(1);
         Product actual = sut.convertToNewEntity(productPojo);
-        assertEquals(ANY, actual.getName());
-        verify(conversionService, times(1)).convert(any(ProductPojo.class), eq(Product.class));
+        assertEquals(productPojo.getName(), actual.getName());
+        assertEquals(productPojo.getBarcode(), actual.getBarcode());
+        assertEquals(productPojo.getPrice(), actual.getPrice());
     }
 }

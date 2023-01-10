@@ -5,22 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.convert.ConversionService;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.pojo.ShipperPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ShippersConverterJpaServiceImplTest {
     @InjectMocks ShippersConverterJpaServiceImpl sut;
-    @Mock ConversionService conversionService;
     Shipper shipper;
     ShipperPojo shipperPojo;
 
@@ -42,15 +36,13 @@ class ShippersConverterJpaServiceImplTest {
 
     @Test
     void testConvertToPojo() {
-        when(conversionService.convert(any(Shipper.class), eq(ShipperPojo.class))).thenReturn(shipperPojo);
         ShipperPojo actual = sut.convertToPojo(shipper);
-        assertEquals(ANY, actual.getName());
-        verify(conversionService, times(1)).convert(any(Shipper.class), eq(ShipperPojo.class));
+        assertEquals(shipper.getName(), actual.getName());
     }
 
     @Test
     void testConvertToNewEntity() {
         Shipper actual = sut.convertToNewEntity(shipperPojo);
-        assertEquals(ANY, actual.getName());
+        assertEquals(shipperPojo.getName(), actual.getName());
     }
 }

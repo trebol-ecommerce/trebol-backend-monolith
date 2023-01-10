@@ -21,8 +21,6 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
@@ -32,22 +30,27 @@ import org.trebol.pojo.ImagePojo;
 public class ImagesConverterJpaServiceImpl
   implements IImagesConverterJpaService {
 
-  private final ConversionService conversion;
-
   @Autowired
-  public ImagesConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public ImagesConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public ImagePojo convertToPojo(Image source) {
-    return conversion.convert(source, ImagePojo.class);
+    return ImagePojo.builder()
+      .id(source.getId())
+      .code(source.getCode())
+      .filename(source.getFilename())
+      .url(source.getUrl())
+      .build();
   }
 
   @Override
   public Image convertToNewEntity(ImagePojo source) {
-    return conversion.convert(source, Image.class);
+    Image target = new Image();
+    target.setCode(source.getCode());
+    target.setFilename(source.getFilename());
+    target.setUrl(source.getUrl());
+    return target;
   }
 
   @Override
