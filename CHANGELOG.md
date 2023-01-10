@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Issue and Pull Request templates
 - [.editorconfig](https://editorconfig.org) file
+  - Enforces Unix-style line endings (LF)
 - `PhoneNumber` annotation for validating phone numbers - **Thank you `@mepox`**
   - Use custom `PhoneNumberValidator`, subclass of `javax.validation.ValidationConstraint`, which validates using regular expression
   - Configure the regular expression through `trebol.validation.phonenumber-regexp` in `application.properties`
@@ -27,14 +28,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `prepareEntityWithUpdatesFromPojo`
     - `validateInputPojoBeforeCreation`
     - `prepareNewEntityFromInputPojo`
+  - Introduce sub-interfaces from `ICrudJpaService<P, E`, `IDataTransportJpaService<P, E>` and `ITwoWayConverterJpaService<P, E>`
+    - This increases the accuracy of type-safe dependency injection. Specially important for unit testing and mocks.
 - UsersConverterJpaServiceImpl - refactor `convertToNewEntity` since it tag as cyclomatic issue
 - SalesConverterJpaServiceImpl, SalesProcessServiceImpl - add string constants
 - **BREAKING CHANGE**: Rename table names to follow the naming convention - **Thank you `@mepox`**
-    - `products_categories` 			-> `product_categories`
-    - `products_images` 				-> `should be product_images`
-    - `sales_statuses` 				-> `should be sell_statuses`
-    - `app_users_roles` 				-> `should be app_user_roles`
-    - `app_users_roles_permissions` -> `should be app_user_role_permissions`
+    - `products_categories`          -> `product_categories`
+    - `products_images`              -> `product_images`
+    - `sales_statuses`               -> `sell_statuses`
+    - `app_users_roles`              -> `app_user_roles`
+    - `app_users_roles_permissions`  -> `app_user_role_permissions`
 - Update GitHub Actions workflow
   - `actions/checkout`      | `v2 -> `v3`
   - `actions/setup-java`    | `v1 -> `v3`
