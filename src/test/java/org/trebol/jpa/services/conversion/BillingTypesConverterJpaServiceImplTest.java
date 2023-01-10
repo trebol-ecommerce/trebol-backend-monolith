@@ -5,22 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.convert.ConversionService;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.pojo.BillingTypePojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class BillingTypesConverterJpaServiceImplTest {
     @InjectMocks BillingTypesConverterJpaServiceImpl sut;
-    @Mock ConversionService conversionService;
     BillingType billingType;
     BillingTypePojo billingTypePojo;
 
@@ -43,15 +37,13 @@ class BillingTypesConverterJpaServiceImplTest {
     }
     @Test
     void testConvertToPojo() {
-        when(conversionService.convert(any(BillingType.class), eq(BillingTypePojo.class))).thenReturn(billingTypePojo);
         BillingTypePojo actual = sut.convertToPojo(billingType);
-        assertEquals(ANY, actual.getName());
-        verify(conversionService, times(1)).convert(any(BillingType.class), eq(BillingTypePojo.class));
+        assertEquals(billingType.getName(), actual.getName());
     }
 
     @Test
     void testConvertToNewEntity() {
         BillingType actual = sut.convertToNewEntity(billingTypePojo);
-        assertEquals(ANY, actual.getName());
+        assertEquals(billingTypePojo.getName(), actual.getName());
     }
 }

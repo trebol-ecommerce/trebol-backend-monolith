@@ -22,7 +22,6 @@ package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
@@ -34,55 +33,64 @@ import org.trebol.pojo.*;
 @Service
 public class SalesConverterJpaServiceImpl
   implements ISalesConverterJpaService {
+  private final IBillingCompaniesConverterJpaService billingCompaniesConverter;
   private final ICustomersConverterJpaService customersConverter;
   private final ISalespeopleConverterJpaService salespeopleConverter;
-  private final ConversionService conversion;
+  private final ConversionService conversionService;
 
   @Autowired
-  public SalesConverterJpaServiceImpl(ConversionService conversion,
+  public SalesConverterJpaServiceImpl(IBillingCompaniesConverterJpaService billingCompaniesConverter,
                                       ICustomersConverterJpaService customersConverter,
-                                      ISalespeopleConverterJpaService salespeopleConverter) {
-    this.conversion = conversion;
+                                      ISalespeopleConverterJpaService salespeopleConverter,
+                                      ConversionService conversionService) {
+    this.billingCompaniesConverter = billingCompaniesConverter;
     this.customersConverter = customersConverter;
     this.salespeopleConverter = salespeopleConverter;
+    this.conversionService = conversionService;
   }
 
+  // TODO this method is expensive, please optimize it so that
   @Override
-  @Nullable
   public SellPojo convertToPojo(Sell source) {
-    // TODO can lesser null checks be used ?
-    SellPojo target = conversion.convert(source, SellPojo.class);
-    if (target != null) {
+    SellPojo target = SellPojo.builder()
+      .buyOrder(source.getId())
+      .date(source.getDate())
+      .netValue(source.getNetValue())
+      .taxValue(source.getTaxesValue())
+      .totalValue(source.getTotalValue())
+      .totalItems(source.getTotalItems())
+      .transportValue(source.getTransportValue())
+      .token(source.getTransactionToken())
+      .build();
 
-      target.setStatus(source.getStatus().getName());
-      target.setPaymentType(source.getPaymentType().getName());
-      target.setBillingType(source.getBillingType().getName());
+    target.setStatus(source.getStatus().getName());
+    target.setPaymentType(source.getPaymentType().getName());
+    target.setBillingType(source.getBillingType().getName());
 
-      if (target.getBillingType().equals("Enterprise Invoice")) {
-        BillingCompany sourceBillingCompany = source.getBillingCompany();
-        if (sourceBillingCompany != null) {
-          BillingCompanyPojo targetBillingCompany = conversion.convert(sourceBillingCompany, BillingCompanyPojo.class);
-          target.setBillingCompany(targetBillingCompany);
-        }
+    if (target.getBillingType().equals("Enterprise Invoice")) {
+      BillingCompany sourceBillingCompany = source.getBillingCompany();
+      if (sourceBillingCompany != null) {
+        BillingCompanyPojo targetBillingCompany = billingCompaniesConverter.convertToPojo(sourceBillingCompany);
+        target.setBillingCompany(targetBillingCompany);
       }
+    }
 
-      if (source.getBillingAddress() != null) {
-        AddressPojo billingAddress = conversion.convert(source.getBillingAddress(), AddressPojo.class);
-        target.setBillingAddress(billingAddress);
-      }
+    if (source.getBillingAddress() != null) {
+      AddressPojo billingAddress = conversionService.convert(source.getBillingAddress(), AddressPojo.class);
+      target.setBillingAddress(billingAddress);
+    }
 
-      if (source.getShippingAddress() != null) {
-        AddressPojo shippingAddress = conversion.convert(source.getShippingAddress(), AddressPojo.class);
-        target.setShippingAddress(shippingAddress);
-      }
+    if (source.getShippingAddress() != null) {
+      AddressPojo shippingAddress = conversionService.convert(source.getShippingAddress(), AddressPojo.class);
+      target.setShippingAddress(shippingAddress);
+    }
 
-      CustomerPojo customer = customersConverter.convertToPojo(source.getCustomer());
-      target.setCustomer(customer);
+    CustomerPojo customer = customersConverter.convertToPojo(source.getCustomer());
+    target.setCustomer(customer);
 
-      if (source.getSalesperson() != null) {
-        SalespersonPojo salesperson = salespeopleConverter.convertToPojo(source.getSalesperson());
-        target.setSalesperson(salesperson);
-      }
+    if (source.getSalesperson() != null) {
+      SalespersonPojo salesperson = salespeopleConverter.convertToPojo(source.getSalesperson());
+      target.setSalesperson(salesperson);
     }
     return target;
   }

@@ -21,8 +21,6 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
@@ -32,22 +30,23 @@ import org.trebol.pojo.UserRolePojo;
 public class UserRolesConverterJpaServiceImpl
   implements IUserRolesConverterJpaService {
 
-  private final ConversionService conversion;
-
   @Autowired
-  public UserRolesConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public UserRolesConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public UserRolePojo convertToPojo(UserRole source) {
-    return conversion.convert(source, UserRolePojo.class);
+    return UserRolePojo.builder()
+      .id(source.getId())
+      .name(source.getName())
+      .build();
   }
 
   @Override
   public UserRole convertToNewEntity(UserRolePojo source) {
-    return conversion.convert(source, UserRole.class);
+    UserRole convert = new UserRole();
+    convert.setName(source.getName());
+    return convert;
   }
 
   @Override

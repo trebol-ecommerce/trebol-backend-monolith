@@ -21,8 +21,6 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
@@ -33,17 +31,18 @@ import org.trebol.pojo.ProductCategoryPojo;
 @Service
 public class ProductCategoriesConverterJpaServiceImpl
   implements IProductCategoriesConverterJpaService {
-  private final ConversionService conversion;
 
   @Autowired
-  public ProductCategoriesConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public ProductCategoriesConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public ProductCategoryPojo convertToPojo(ProductCategory source) {
-    return conversion.convert(source, ProductCategoryPojo.class);
+    return ProductCategoryPojo.builder()
+      .id(source.getId())
+      .code(source.getCode())
+      .name(source.getName())
+      .build();
   }
 
   @Override

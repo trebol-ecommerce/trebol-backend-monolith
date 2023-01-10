@@ -21,8 +21,6 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
@@ -32,17 +30,16 @@ import org.trebol.pojo.ShipperPojo;
 public class ShippersConverterJpaServiceImpl
   implements IShippersConverterJpaService {
 
-  private final ConversionService conversion;
-
   @Autowired
-  public ShippersConverterJpaServiceImpl(ConversionService conversion) {
-    this.conversion = conversion;
+  public ShippersConverterJpaServiceImpl() {
   }
 
   @Override
-  @Nullable
   public ShipperPojo convertToPojo(Shipper source) {
-    return conversion.convert(source, ShipperPojo.class);
+    return ShipperPojo.builder()
+      .id(source.getId())
+      .name(source.getName())
+      .build();
   }
 
   @Override
