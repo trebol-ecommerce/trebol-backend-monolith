@@ -13,8 +13,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.operation.ISalesProcessService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
@@ -34,7 +34,7 @@ import static org.trebol.testhelpers.SalesTestHelper.SELL_TRANSACTION_TOKEN;
 @ExtendWith(MockitoExtension.class)
 class CheckoutServiceTest {
   @InjectMocks CheckoutServiceImpl service;
-  @Mock GenericCrudJpaService<SellPojo, Sell> salesCrudService;
+  @Mock ISalesCrudService salesCrudService;
   @Mock ISalesProcessService salesProcessService;
   @Mock IPredicateJpaService<Sell> salesPredicateService;
   @Mock IPaymentsIntegrationService paymentIntegrationService;
