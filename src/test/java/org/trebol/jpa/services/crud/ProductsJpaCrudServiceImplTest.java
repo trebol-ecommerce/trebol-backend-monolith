@@ -38,8 +38,8 @@ class ProductsJpaCrudServiceImplTest {
   @Mock IProductsJpaRepository productsRepositoryMock;
   @Mock IProductsConverterJpaService productsConverterMock;
   @Mock IProductImagesJpaRepository productImagesRepositoryMock;
-  @Mock GenericCrudJpaService<ImagePojo, Image> imagesCrudServiceMock;
-  @Mock GenericCrudJpaService<ProductCategoryPojo, ProductCategory> categoriesCrudServiceMock;
+  @Mock IImagesCrudService imagesCrudServiceMock;
+  @Mock IProductCategoriesCrudService categoriesCrudServiceMock;
   @Mock IProductCategoriesConverterJpaService categoriesConverterMock;
   @Mock IImagesConverterJpaService imagesConverterMock;
   ProductsTestHelper productsHelper = new ProductsTestHelper();
