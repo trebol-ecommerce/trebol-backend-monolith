@@ -33,6 +33,7 @@ import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.conversion.IProductListItemsConverterJpaService;
+import org.trebol.jpa.services.crud.IProductsCrudService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
@@ -52,7 +53,7 @@ public class DataProductListContentsController {
   private final IProductListItemsJpaRepository listItemsRepository;
   private final IProductListsJpaRepository listsRepository;
   private final IPredicateJpaService<ProductListItem> listItemsPredicateService;
-  private final GenericCrudJpaService<ProductPojo, Product> productCrudService;
+  private final IProductsCrudService productCrudService;
   private final IProductListItemsConverterJpaService itemConverterService;
 
   @Autowired
@@ -61,7 +62,7 @@ public class DataProductListContentsController {
                                            IProductListItemsJpaRepository listItemsRepository,
                                            IProductListsJpaRepository listsRepository,
                                            IPredicateJpaService<ProductListItem> listItemsPredicateService,
-                                           GenericCrudJpaService<ProductPojo, Product> productCrudService,
+                                           IProductsCrudService productCrudService,
                                            IProductListItemsConverterJpaService itemConverterService) {
     this.paginationService = paginationService;
     this.sortService = sortService;

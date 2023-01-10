@@ -32,6 +32,7 @@ import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
 import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
 import org.trebol.jpa.services.conversion.ISalesConverterJpaService;
+import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.operation.ISalesProcessService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
@@ -52,14 +53,14 @@ public class SalesProcessServiceImpl
   private static final String THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION = "The transaction is not in a valid state for this operation";
   private static final String NO_STATUS_MATCHES_THE = "No status matches the";
   private static final String NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT = "name - Is the database empty or corrupt?";
-  private final GenericCrudJpaService<SellPojo, Sell> crudService;
+  private final ISalesCrudService crudService;
   private final ISalesJpaRepository salesRepository;
   private final ISellDetailsJpaRepository sellDetailsRepository;
   private final ISellStatusesJpaRepository sellStatusesRepository;
   private final ISalesConverterJpaService converterService;
   private final IProductsConverterJpaService productConverterService;
 
-  public SalesProcessServiceImpl(GenericCrudJpaService<SellPojo, Sell> crudService,
+  public SalesProcessServiceImpl(ISalesCrudService crudService,
                                  ISalesJpaRepository salesRepository,
                                  ISellDetailsJpaRepository sellDetailsRepository,
                                  ISellStatusesJpaRepository sellStatusesRepository,

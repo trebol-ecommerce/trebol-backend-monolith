@@ -39,6 +39,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.trebol.exceptions.CorsMappingParseException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.GenericCrudJpaService;
+import org.trebol.jpa.services.crud.ICustomersCrudService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.security.IAuthorizationHeaderParserService;
 import org.trebol.security.JwtGuestAuthenticationFilter;
@@ -58,7 +59,7 @@ public class SecurityConfig
   private final SecurityProperties securityProperties;
   private final CorsProperties corsProperties;
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
-  private final GenericCrudJpaService<CustomerPojo, Customer> customersService;
+  private final ICustomersCrudService customersService;
 
   @Autowired
   public SecurityConfig(UserDetailsService userDetailsService,
@@ -66,7 +67,7 @@ public class SecurityConfig
                         SecurityProperties securityProperties,
                         IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
                         CorsProperties corsProperties,
-                        GenericCrudJpaService<CustomerPojo, Customer> customersService) {
+                        ICustomersCrudService customersService) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.securityProperties = securityProperties;
