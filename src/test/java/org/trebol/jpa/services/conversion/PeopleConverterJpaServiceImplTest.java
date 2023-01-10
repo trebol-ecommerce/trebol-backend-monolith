@@ -53,6 +53,8 @@ class PeopleConverterJpaServiceImplTest {
         personPojo.setFirstName(ANY);
         personPojo.setLastName(ANY);
         personPojo.setEmail(ANY);
+        personPojo.setPhone1("");
+        personPojo.setPhone2("");
         Person actual = sut.convertToNewEntity(personPojo);
         assertEquals(personPojo.getIdNumber(), actual.getIdNumber());
         assertEquals(personPojo.getFirstName(), actual.getFirstName());
