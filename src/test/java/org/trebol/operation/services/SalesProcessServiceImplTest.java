@@ -14,9 +14,9 @@ import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.repositories.ISellDetailsJpaRepository;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
 import org.trebol.jpa.services.conversion.ISalesConverterJpaService;
+import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
 import org.trebol.pojo.SellPojo;
@@ -36,7 +36,7 @@ import static org.trebol.config.Constants.*;
 @ExtendWith(MockitoExtension.class)
 class SalesProcessServiceImplTest {
   @InjectMocks SalesProcessServiceImpl instance;
-  @Mock GenericCrudJpaService<SellPojo, Sell> crudService;
+  @Mock ISalesCrudService crudService;
   @Mock ISalesJpaRepository salesRepository;
   @Mock ISellStatusesJpaRepository sellStatusesRepository;
   @Mock ISellDetailsJpaRepository sellDetailsRepository;

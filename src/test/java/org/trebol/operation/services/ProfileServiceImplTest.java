@@ -15,8 +15,8 @@ import org.trebol.jpa.exceptions.PersonNotFoundException;
 import org.trebol.jpa.exceptions.UserNotFoundException;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IPeopleConverterJpaService;
+import org.trebol.jpa.services.crud.IPeopleCrudService;
 import org.trebol.jpa.services.datatransport.IPeopleDataTransportJpaService;
 import org.trebol.pojo.PersonPojo;
 
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.*;
 class ProfileServiceImplTest {
   @InjectMocks ProfileServiceImpl instance;
   @Mock IUsersJpaRepository usersRepositoryMock;
-  @Mock GenericCrudJpaService<PersonPojo, Person> peopleServiceMock;
+  @Mock IPeopleCrudService peopleServiceMock;
   @Mock IPeopleConverterJpaService peopleConverterMock;
   @Mock IPeopleDataTransportJpaService peopleDataTransportServiceMock;
   @Mock IPeopleJpaRepository peopleRepositoryMock;
