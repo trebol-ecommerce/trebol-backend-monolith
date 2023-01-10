@@ -12,7 +12,6 @@ import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.IProductImagesJpaRepository;
 import org.trebol.jpa.repositories.IProductsJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IImagesConverterJpaService;
 import org.trebol.jpa.services.conversion.IProductCategoriesConverterJpaService;
 import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
@@ -78,7 +77,6 @@ class ProductsJpaCrudServiceImplTest {
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-    when(productsRepositoryMock.getById(anyLong())).thenReturn(resultEntity);
 
     ProductPojo result = instance.create(input);
 
@@ -100,7 +98,6 @@ class ProductsJpaCrudServiceImplTest {
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-    when(productsRepositoryMock.getById(anyLong())).thenReturn(resultEntity);
     when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.empty());
     when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(List.of()); // unused value, stubbed for safety
 
@@ -126,7 +123,6 @@ class ProductsJpaCrudServiceImplTest {
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-    when(productsRepositoryMock.getById(anyLong())).thenReturn(resultEntity);
     when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.of(imageEntity));
     when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(List.of()); // unused value, stubbed for safety
     when(imagesConverterMock.convertToPojo(any(Image.class))).thenReturn(expectedResultImage);
@@ -152,7 +148,6 @@ class ProductsJpaCrudServiceImplTest {
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-    when(productsRepositoryMock.getById(anyLong())).thenReturn(resultEntity);
     when(categoriesCrudServiceMock.getExisting(any(ProductCategoryPojo.class))).thenReturn(Optional.empty());
 
     ProductPojo result = instance.create(input);
@@ -178,7 +173,6 @@ class ProductsJpaCrudServiceImplTest {
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-    when(productsRepositoryMock.getById(anyLong())).thenReturn(resultEntity);
     when(categoriesCrudServiceMock.getExisting(any(ProductCategoryPojo.class))).thenReturn(Optional.of(categoryEntity));
     when(categoriesConverterMock.convertToPojo(any(ProductCategory.class))).thenReturn(expectedResultCategory);
 
