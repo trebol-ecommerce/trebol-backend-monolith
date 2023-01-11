@@ -5,6 +5,7 @@ bin/
 # Generated files
 /src/main/setup/
 /src/main/webapp/
+/logs
 
 # Editor files and folders
 .classpath
@@ -23,3 +24,11 @@ bin/
 # System Files
 .DS_Store
 Thumbs.db
+
+# Git worktree files
+/commondir
+/gitdir
+/HEAD
+/index
+/ORIG_HEAD
+/COMMIT_EDITMSG
