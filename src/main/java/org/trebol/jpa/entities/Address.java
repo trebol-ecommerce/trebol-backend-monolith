@@ -72,16 +72,6 @@ public class Address
   @Column(name = "address_notes")
   private String notes;
 
-  public Address(Address source) {
-    this.id = source.id;
-    this.city = source.city;
-    this.municipality = source.municipality;
-    this.firstLine = source.firstLine;
-    this.secondLine = source.secondLine;
-    this.postalCode = source.postalCode;
-    this.notes = source.notes;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

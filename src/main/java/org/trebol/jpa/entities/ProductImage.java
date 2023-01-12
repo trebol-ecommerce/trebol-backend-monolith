@@ -53,12 +53,6 @@ public class ProductImage
     this.image = image;
   }
 
-  public ProductImage(ProductImage source) {
-    this.id = source.id;
-    this.image = source.image;
-    this.product = source.product;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
