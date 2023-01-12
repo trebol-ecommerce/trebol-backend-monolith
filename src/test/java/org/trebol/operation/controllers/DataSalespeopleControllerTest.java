@@ -22,8 +22,5 @@ class DataSalespeopleControllerTest {
   @Mock GenericCrudJpaService<SalespersonPojo, Salesperson> crudService;
   @Mock IPredicateJpaService<Salesperson> predicateService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

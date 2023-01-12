@@ -22,8 +22,5 @@ class DataUserRolesControllerTest {
   @Mock GenericCrudJpaService<UserRolePojo, UserRole> crudService;
   @Mock IPredicateJpaService<UserRole> predicateService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

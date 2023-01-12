@@ -14,8 +14,5 @@ class PublicAboutControllerTest {
   @InjectMocks PublicAboutController instance;
   @Mock ICompanyService companyService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

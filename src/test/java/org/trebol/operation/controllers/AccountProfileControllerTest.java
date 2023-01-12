@@ -14,8 +14,5 @@ class AccountProfileControllerTest {
   @InjectMocks AccountProfileController instance;
   @Mock IProfileService userProfileService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

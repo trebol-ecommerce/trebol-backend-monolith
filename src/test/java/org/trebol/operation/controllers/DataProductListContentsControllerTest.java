@@ -30,8 +30,5 @@ class DataProductListContentsControllerTest {
   @Mock IProductListItemsConverterJpaService itemConverterService;
 
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

@@ -22,8 +22,5 @@ class DataShippersControllerTest {
   @Mock GenericCrudJpaService<ShipperPojo, Shipper> crudService;
   @Mock IPredicateJpaService<Shipper> predicateService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

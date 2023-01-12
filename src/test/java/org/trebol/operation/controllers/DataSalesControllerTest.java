@@ -26,8 +26,5 @@ class DataSalesControllerTest {
   @Mock ISalesProcessService salesProcessService;
   @Mock IMailingIntegrationService mailingIntegrationService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

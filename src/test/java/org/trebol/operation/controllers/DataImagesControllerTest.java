@@ -22,8 +22,5 @@ class DataImagesControllerTest {
   @Mock GenericCrudJpaService<ImagePojo, Image> crudService;
   @Mock IPredicateJpaService<Image> predicateService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

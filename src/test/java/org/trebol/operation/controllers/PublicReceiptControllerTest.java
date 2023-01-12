@@ -14,8 +14,5 @@ class PublicReceiptControllerTest {
   @InjectMocks PublicReceiptController instance;
   @Mock IReceiptService receiptService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

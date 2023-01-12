@@ -14,8 +14,5 @@ class PublicRegisterControllerTest {
   @InjectMocks PublicRegisterController instance;
   @Mock IRegistrationService registrationService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

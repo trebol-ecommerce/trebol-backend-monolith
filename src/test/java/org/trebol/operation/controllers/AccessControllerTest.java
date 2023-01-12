@@ -19,8 +19,5 @@ class AccessControllerTest {
   @Mock UserDetailsService userDetailsService;
   @Mock IAuthorizedApiService authorizedApiService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

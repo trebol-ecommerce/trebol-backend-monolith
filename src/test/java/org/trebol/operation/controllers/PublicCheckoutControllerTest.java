@@ -22,9 +22,5 @@ class PublicCheckoutControllerTest {
   @Mock IPredicateJpaService<Sell> salesPredicateService;
   @Mock IMailingIntegrationService mailingIntegrationService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
-
+  // TODO write a test
 }

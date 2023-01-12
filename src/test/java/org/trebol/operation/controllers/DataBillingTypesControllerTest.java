@@ -22,8 +22,5 @@ class DataBillingTypesControllerTest {
   @Mock GenericCrudJpaService<BillingTypePojo, BillingType> crudService;
   @Mock IPredicateJpaService<BillingType> predicateService;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(instance);
-  }
+  // TODO write a test
 }

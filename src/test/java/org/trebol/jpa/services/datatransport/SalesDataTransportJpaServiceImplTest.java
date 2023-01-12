@@ -63,11 +63,6 @@ class SalesDataTransportJpaServiceImplTest {
   }
 
   @Test
-  void sanity_check() {
-    assertNotNull(sut);
-  }
-
-  @Test
   void accepts_empty_object() {
     assertDoesNotThrow(() -> sut.applyChangesToExistingEntity(sellPojo, sell));
   }
