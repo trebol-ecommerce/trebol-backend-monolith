@@ -10,19 +10,17 @@ import org.springframework.core.convert.ConversionService;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IBillingCompaniesConverterJpaService;
 import org.trebol.jpa.services.conversion.ICustomersConverterJpaService;
 import org.trebol.jpa.services.crud.ICustomersCrudService;
 import org.trebol.jpa.services.helpers.RegexMatcherAdapter;
-import org.trebol.pojo.*;
+import org.trebol.pojo.BillingCompanyPojo;
+import org.trebol.pojo.CustomerPojo;
+import org.trebol.pojo.PersonPojo;
+import org.trebol.pojo.SellPojo;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.time.Instant;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

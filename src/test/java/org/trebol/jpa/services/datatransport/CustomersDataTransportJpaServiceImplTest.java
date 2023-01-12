@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.IDataTransportJpaService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.PersonPojo;
 

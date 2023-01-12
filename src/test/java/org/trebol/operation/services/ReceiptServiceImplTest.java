@@ -16,7 +16,6 @@ import org.trebol.pojo.ReceiptDetailPojo;
 import org.trebol.pojo.ReceiptPojo;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
