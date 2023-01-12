@@ -20,6 +20,10 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -34,6 +38,9 @@ import java.util.Objects;
     @Index(columnList = "person_last_name"),
     @Index(columnList = "person_email")
   })
+@NoArgsConstructor
+@Getter
+@Setter
 public class Person
   implements Serializable {
   private static final long serialVersionUID = 9L;
@@ -58,9 +65,6 @@ public class Person
   private String phone1 = "";
   @Column(name = "person_phone2", nullable = false)
   private String phone2 = "";
-
-  public Person() {
-  }
 
   public Person(Person source) {
     this.id = source.id;
@@ -96,62 +100,6 @@ public class Person
     this.idNumber = idNumber;
     this.email = email;
     this.phone1 = phone1;
-    this.phone2 = phone2;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public String getIdNumber() {
-    return idNumber;
-  }
-
-  public void setIdNumber(String idNumber) {
-    this.idNumber = idNumber;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPhone1() {
-    return phone1;
-  }
-
-  public void setPhone1(String phone1) {
-    this.phone1 = phone1;
-  }
-
-  public String getPhone2() {
-    return phone2;
-  }
-
-  public void setPhone2(String phone2) {
     this.phone2 = phone2;
   }
 

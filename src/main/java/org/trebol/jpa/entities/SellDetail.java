@@ -20,6 +20,10 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -27,6 +31,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "sell_details")
+@NoArgsConstructor
+@Getter
+@Setter
 public class SellDetail
   implements Serializable {
   private static final long serialVersionUID = 15L;
@@ -50,9 +57,6 @@ public class SellDetail
     foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Sell sell;
-
-  public SellDetail() {
-  }
 
   public SellDetail(SellDetail source) {
     this.id = source.id;
@@ -78,54 +82,6 @@ public class SellDetail
     this.product = product;
     this.description = String.format("%o x %s [%s] | Unit Val: %d",
       units, product.getName(), product.getBarcode(), product.getPrice());
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public int getUnits() {
-    return units;
-  }
-
-  public void setUnits(int units) {
-    this.units = units;
-  }
-
-  public Integer getUnitValue() {
-    return unitValue;
-  }
-
-  public void setUnitValue(Integer unitValue) {
-    this.unitValue = unitValue;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public Product getProduct() {
-    return product;
-  }
-
-  public void setProduct(Product product) {
-    this.product = product;
-  }
-
-  public Sell getSell() {
-    return sell;
-  }
-
-  public void setSell(Sell sell) {
-    this.sell = sell;
   }
 
   @Override

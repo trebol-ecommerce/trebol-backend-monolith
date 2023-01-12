@@ -20,6 +20,10 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -27,6 +31,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "sell_statuses")
+@NoArgsConstructor
+@Getter
+@Setter
 public class SellStatus
   implements Serializable {
   private static final long serialVersionUID = 16L;
@@ -41,9 +48,6 @@ public class SellStatus
   @Column(name = "sell_status_name", nullable = false, unique = true)
   private String name;
 
-  public SellStatus() {
-  }
-
   public SellStatus(SellStatus source) {
     this.id = source.id;
     this.code = source.code;
@@ -53,30 +57,6 @@ public class SellStatus
   public SellStatus(Long id, Integer code, String name) {
     this.id = id;
     this.code = code;
-    this.name = name;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Integer getCode() {
-    return code;
-  }
-
-  public void setCode(Integer code) {
-    this.code = code;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
     this.name = name;
   }
 

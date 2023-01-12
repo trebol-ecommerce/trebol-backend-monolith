@@ -20,6 +20,10 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -32,6 +36,9 @@ import java.util.Objects;
     @UniqueConstraint(columnNames = {"product_list_name"}),
     @UniqueConstraint(columnNames = {"product_list_code"}),
   })
+@NoArgsConstructor
+@Getter
+@Setter
 public class ProductList
   implements Serializable {
   private static final long serialVersionUID = 16L;
@@ -51,10 +58,6 @@ public class ProductList
   @OneToMany(mappedBy = "list")
   private List<ProductListItem> items;
 
-  public ProductList() {
-    this.disabled = true;
-  }
-
   public ProductList(ProductList source) {
     this.id = source.id;
     this.name = source.name;
@@ -70,46 +73,6 @@ public class ProductList
   public ProductList(String name, String code) {
     this.name = name;
     this.code = code;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public boolean isDisabled() {
-    return disabled;
-  }
-
-  public void setDisabled(boolean disabled) {
-    this.disabled = disabled;
-  }
-
-  public List<ProductListItem> getItems() {
-    return items;
-  }
-
-  public void setItems(List<ProductListItem> items) {
-    this.items = items;
   }
 
   @Override

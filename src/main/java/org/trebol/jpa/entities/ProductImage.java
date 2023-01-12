@@ -20,12 +20,19 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "product_images")
+@NoArgsConstructor
+@Getter
+@Setter
 public class ProductImage
   implements Serializable {
   private static final long serialVersionUID = 12L;
@@ -41,9 +48,6 @@ public class ProductImage
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Product product;
 
-  public ProductImage() {
-  }
-
   public ProductImage(Product product, Image image) {
     this.product = product;
     this.image = image;
@@ -53,30 +57,6 @@ public class ProductImage
     this.id = source.id;
     this.image = source.image;
     this.product = source.product;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Image getImage() {
-    return image;
-  }
-
-  public void setImage(Image image) {
-    this.image = image;
-  }
-
-  public Product getProduct() {
-    return product;
-  }
-
-  public void setProduct(Product product) {
-    this.product = product;
   }
 
   @Override

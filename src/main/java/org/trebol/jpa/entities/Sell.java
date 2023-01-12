@@ -20,6 +20,9 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -36,6 +39,9 @@ import java.util.Objects;
     @Index(columnList = "sell_date"),
     @Index(columnList = "sell_transaction_token"),
   })
+@NoArgsConstructor
+@Getter
+@Setter
 public class Sell
   implements Serializable {
   private static final long serialVersionUID = 14L;
@@ -90,9 +96,6 @@ public class Sell
   @JoinColumn(name = "sell_id", nullable = false)
   @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
   private Collection<SellDetail> details;
-
-  public Sell() {
-  }
 
   public Sell(Sell source) {
     this.id = source.id;
@@ -157,150 +160,6 @@ public class Sell
     this.shipper = shipper;
     this.shippingAddress = shippingAddress;
     this.salesperson = salesperson;
-    this.details = details;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Instant getDate() {
-    return date;
-  }
-
-  public void setDate(Instant date) {
-    this.date = date;
-  }
-
-  public int getTotalItems() {
-    return totalItems;
-  }
-
-  public void setTotalItems(int totalItems) {
-    this.totalItems = totalItems;
-  }
-
-  public int getNetValue() {
-    return netValue;
-  }
-
-  public void setNetValue(int netValue) {
-    this.netValue = netValue;
-  }
-
-  public int getTransportValue() {
-    return transportValue;
-  }
-
-  public void setTransportValue(int transportValue) {
-    this.transportValue = transportValue;
-  }
-
-  public int getTaxesValue() {
-    return taxesValue;
-  }
-
-  public void setTaxesValue(int taxesValue) {
-    this.taxesValue = taxesValue;
-  }
-
-  public int getTotalValue() {
-    return totalValue;
-  }
-
-  public void setTotalValue(int totalValue) {
-    this.totalValue = totalValue;
-  }
-
-  public String getTransactionToken() {
-    return transactionToken;
-  }
-
-  public void setTransactionToken(String transactionToken) {
-    this.transactionToken = transactionToken;
-  }
-
-  public Customer getCustomer() {
-    return customer;
-  }
-
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
-  }
-
-  public PaymentType getPaymentType() {
-    return paymentType;
-  }
-
-  public void setPaymentType(PaymentType paymentType) {
-    this.paymentType = paymentType;
-  }
-
-  public SellStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(SellStatus status) {
-    this.status = status;
-  }
-
-  public BillingType getBillingType() {
-    return billingType;
-  }
-
-  public void setBillingType(BillingType billingType) {
-    this.billingType = billingType;
-  }
-
-  public BillingCompany getBillingCompany() {
-    return billingCompany;
-  }
-
-  public void setBillingCompany(BillingCompany billingCompany) {
-    this.billingCompany = billingCompany;
-  }
-
-  public Address getBillingAddress() {
-    return billingAddress;
-  }
-
-  public void setBillingAddress(Address billingAddress) {
-    this.billingAddress = billingAddress;
-  }
-
-  public Shipper getShipper() {
-    return shipper;
-  }
-
-  public void setShipper(Shipper shipper) {
-    this.shipper = shipper;
-  }
-
-  public Address getShippingAddress() {
-    return shippingAddress;
-  }
-
-  public void setShippingAddress(Address shippingAddress) {
-    this.shippingAddress = shippingAddress;
-  }
-
-  public Salesperson getSalesperson() {
-    return salesperson;
-  }
-
-  public void setSalesperson(Salesperson salesperson) {
-    this.salesperson = salesperson;
-  }
-
-  public Collection<SellDetail> getDetails() {
-    return details;
-  }
-
-  public void setDetails(Collection<SellDetail> details) {
     this.details = details;
   }
 

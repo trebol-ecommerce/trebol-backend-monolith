@@ -20,12 +20,19 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Customer
   implements Serializable {
   private static final long serialVersionUID = 4L;
@@ -38,9 +45,6 @@ public class Customer
   @OneToOne(optional = false, cascade = CascadeType.ALL)
   private Person person;
 
-  public Customer() {
-  }
-
   public Customer(Customer source) {
     this.id = source.id;
     this.person = source.person;
@@ -51,22 +55,6 @@ public class Customer
   }
 
   public Customer(Person person) {
-    this.person = person;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Person getPerson() {
-    return person;
-  }
-
-  public void setPerson(Person person) {
     this.person = person;
   }
 

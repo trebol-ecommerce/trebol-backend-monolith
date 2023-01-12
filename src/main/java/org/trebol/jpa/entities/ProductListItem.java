@@ -20,12 +20,19 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "product_list_items")
+@NoArgsConstructor
+@Getter
+@Setter
 public class ProductListItem
   implements Serializable {
   private static final long serialVersionUID = 17L;
@@ -41,9 +48,6 @@ public class ProductListItem
   @ManyToOne(optional = false)
   private Product product;
 
-  public ProductListItem() {
-  }
-
   public ProductListItem(ProductListItem source) {
     this.id = source.id;
     this.list = source.list;
@@ -52,30 +56,6 @@ public class ProductListItem
 
   public ProductListItem(ProductList list, Product product) {
     this.list = list;
-    this.product = product;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public ProductList getList() {
-    return list;
-  }
-
-  public void setList(ProductList list) {
-    this.list = list;
-  }
-
-  public Product getProduct() {
-    return product;
-  }
-
-  public void setProduct(Product product) {
     this.product = product;
   }
 

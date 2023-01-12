@@ -20,6 +20,10 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -39,6 +43,9 @@ import java.util.Objects;
       "address_second_line", "address_postal_code", "address_notes"
     })
   })
+@NoArgsConstructor
+@Getter
+@Setter
 public class Address
   implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -65,9 +72,6 @@ public class Address
   @Column(name = "address_notes")
   private String notes;
 
-  public Address() {
-  }
-
   public Address(Address source) {
     this.id = source.id;
     this.city = source.city;
@@ -76,62 +80,6 @@ public class Address
     this.secondLine = source.secondLine;
     this.postalCode = source.postalCode;
     this.notes = source.notes;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getCity() {
-    return city;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
-  public String getMunicipality() {
-    return municipality;
-  }
-
-  public void setMunicipality(String municipality) {
-    this.municipality = municipality;
-  }
-
-  public String getFirstLine() {
-    return firstLine;
-  }
-
-  public void setFirstLine(String firstLine) {
-    this.firstLine = firstLine;
-  }
-
-  public String getSecondLine() {
-    return secondLine;
-  }
-
-  public void setSecondLine(String secondLine) {
-    this.secondLine = secondLine;
-  }
-
-  public String getPostalCode() {
-    return postalCode;
-  }
-
-  public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode;
-  }
-
-  public String getNotes() {
-    return notes;
-  }
-
-  public void setNotes(String notes) {
-    this.notes = notes;
   }
 
   @Override

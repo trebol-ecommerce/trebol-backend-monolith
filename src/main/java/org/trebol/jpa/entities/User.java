@@ -20,6 +20,10 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -31,6 +35,9 @@ import java.util.Objects;
   indexes = {
     @Index(columnList = "user_name")
   })
+@NoArgsConstructor
+@Getter
+@Setter
 public class User
   implements Serializable {
   private static final long serialVersionUID = 19L;
@@ -52,9 +59,6 @@ public class User
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
-  public User() {
-  }
-
   public User(User source) {
     this.id = source.id;
     this.name = source.name;
@@ -68,46 +72,6 @@ public class User
     this.name = name;
     this.password = password;
     this.person = person;
-    this.userRole = userRole;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public Person getPerson() {
-    return person;
-  }
-
-  public void setPerson(Person person) {
-    this.person = person;
-  }
-
-  public UserRole getUserRole() {
-    return userRole;
-  }
-
-  public void setUserRole(UserRole userRole) {
     this.userRole = userRole;
   }
 

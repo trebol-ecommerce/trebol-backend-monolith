@@ -20,6 +20,10 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -27,6 +31,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "billing_companies")
+@NoArgsConstructor
+@Getter
+@Setter
 public class BillingCompany
   implements Serializable {
   private static final long serialVersionUID = 2L;
@@ -42,9 +49,6 @@ public class BillingCompany
   @Column(name = "billing_company_name", nullable = false, unique = true)
   private String name;
 
-  public BillingCompany() {
-  }
-
   public BillingCompany(BillingCompany source) {
     this.id = source.id;
     this.idNumber = source.idNumber;
@@ -54,30 +58,6 @@ public class BillingCompany
   public BillingCompany(Long id, String idNumber, String name) {
     this.id = id;
     this.idNumber = idNumber;
-    this.name = name;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getIdNumber() {
-    return idNumber;
-  }
-
-  public void setIdNumber(String idNumber) {
-    this.idNumber = idNumber;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
     this.name = name;
   }
 

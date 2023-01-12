@@ -20,6 +20,10 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -31,6 +35,9 @@ import java.util.Objects;
   indexes = {
     @Index(columnList = "product_name")
   })
+@NoArgsConstructor
+@Getter
+@Setter
 public class Product
   implements Serializable {
   private static final long serialVersionUID = 10L;
@@ -57,9 +64,6 @@ public class Product
   @JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id")
   @ManyToOne(fetch = FetchType.LAZY)
   private ProductCategory productCategory;
-
-  public Product() {
-  }
 
   public Product(Product source) {
     this.id = source.id;
@@ -106,70 +110,6 @@ public class Product
     this.price = price;
     this.stockCurrent = stockCurrent;
     this.stockCritical = stockCritical;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getBarcode() {
-    return barcode;
-  }
-
-  public void setBarcode(String barcode) {
-    this.barcode = barcode;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public int getPrice() {
-    return price;
-  }
-
-  public void setPrice(int price) {
-    this.price = price;
-  }
-
-  public int getStockCurrent() {
-    return stockCurrent;
-  }
-
-  public void setStockCurrent(int stockCurrent) {
-    this.stockCurrent = stockCurrent;
-  }
-
-  public int getStockCritical() {
-    return stockCritical;
-  }
-
-  public void setStockCritical(int stockCritical) {
-    this.stockCritical = stockCritical;
-  }
-
-  public ProductCategory getProductCategory() {
-    return productCategory;
-  }
-
-  public void setProductCategory(ProductCategory productCategory) {
-    this.productCategory = productCategory;
   }
 
   @Override
