@@ -21,6 +21,7 @@
 package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import java.util.Collection;
  * @param <T> The type of data in the page
  */
 @Data
+@AllArgsConstructor
 @JsonInclude
 public class DataPagePojo<T> {
   private Collection<T> items;
@@ -42,13 +44,6 @@ public class DataPagePojo<T> {
   public DataPagePojo(int pageIndex, int pageSize) {
     this.items = new ArrayList<>();
     this.pageIndex = pageIndex;
-    this.pageSize = pageSize;
-  }
-
-  public DataPagePojo(Collection<T> items, int pageIndex, long totalCount, int pageSize) {
-    this.items = items;
-    this.pageIndex = pageIndex;
-    this.totalCount = totalCount;
     this.pageSize = pageSize;
   }
 }
