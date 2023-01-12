@@ -15,33 +15,33 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class BillingCompaniesDataTransportJpaServiceImplTest {
-    @InjectMocks BillingCompaniesDataTransportJpaServiceImpl sut;
-    private BillingCompany billingCompany;
-    private BillingCompanyPojo billingCompanyPojo;
+  @InjectMocks BillingCompaniesDataTransportJpaServiceImpl sut;
+  BillingCompany billingCompany;
+  BillingCompanyPojo billingCompanyPojo;
 
-    @BeforeEach
-    void beforeEach() {
-        billingCompany = new BillingCompany();
-        billingCompany.setName(ANY);
-        billingCompany.setId(1L);
-        billingCompany.setIdNumber(ANY);
+  @BeforeEach
+  void beforeEach() {
+    billingCompany = new BillingCompany();
+    billingCompany.setName(ANY);
+    billingCompany.setId(1L);
+    billingCompany.setIdNumber(ANY);
 
-        billingCompanyPojo = BillingCompanyPojo.builder()
-          .idNumber(ANY)
-          .name(ANY)
-          .build();
-    }
+    billingCompanyPojo = BillingCompanyPojo.builder()
+      .idNumber(ANY)
+      .name(ANY)
+      .build();
+  }
 
-    @AfterEach
-    void afterEach() {
-        billingCompany = null;
-        billingCompanyPojo = null;
-    }
+  @AfterEach
+  void afterEach() {
+    billingCompany = null;
+    billingCompanyPojo = null;
+  }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        billingCompanyPojo.setName("PIOLO");
-        BillingCompany actual = sut.applyChangesToExistingEntity(billingCompanyPojo, billingCompany);
-        assertEquals(1L, actual.getId());
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    billingCompanyPojo.setName("PIOLO");
+    BillingCompany actual = sut.applyChangesToExistingEntity(billingCompanyPojo, billingCompany);
+    assertEquals(1L, actual.getId());
+  }
 }

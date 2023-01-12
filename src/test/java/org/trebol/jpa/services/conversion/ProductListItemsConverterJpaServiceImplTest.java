@@ -16,25 +16,26 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListItemsConverterJpaServiceImplTest {
-    @InjectMocks ProductListItemsConverterJpaServiceImpl sut;
-    @Mock IProductsConverterJpaService productsConverterService;
+  @InjectMocks ProductListItemsConverterJpaServiceImpl sut;
+  @Mock IProductsConverterJpaService productsConverterService;
 
-    @Test
-    void testApplyChangesToExistingEntity() {
-        UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
-                () -> sut.convertToNewEntity(ProductPojo.builder().build()));
-        assertEquals("Not implemented", unsupportedOperationException.getMessage());
-    }
-    @Test
-    void testConvertToPojo() {
-        final ProductListItem productListItem = new ProductListItem();
-        final Product product = new Product();
-        productListItem.setProduct(product);
-        ProductPojo expectedResult = ProductPojo.builder().id(1L).build();
-        when(productsConverterService.convertToPojo(any(Product.class))).thenReturn(expectedResult);
+  @Test
+  void testApplyChangesToExistingEntity() {
+    UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
+      () -> sut.convertToNewEntity(ProductPojo.builder().build()));
+    assertEquals("Not implemented", unsupportedOperationException.getMessage());
+  }
 
-        ProductPojo actual = sut.convertToPojo(productListItem);
+  @Test
+  void testConvertToPojo() {
+    final ProductListItem productListItem = new ProductListItem();
+    final Product product = new Product();
+    productListItem.setProduct(product);
+    ProductPojo expectedResult = ProductPojo.builder().id(1L).build();
+    when(productsConverterService.convertToPojo(any(Product.class))).thenReturn(expectedResult);
 
-        assertEquals(expectedResult, actual);
-    }
+    ProductPojo actual = sut.convertToPojo(productListItem);
+
+    assertEquals(expectedResult, actual);
+  }
 }

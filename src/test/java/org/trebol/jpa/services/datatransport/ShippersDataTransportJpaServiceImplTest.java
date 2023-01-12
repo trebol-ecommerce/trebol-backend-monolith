@@ -15,31 +15,29 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ShippersDataTransportJpaServiceImplTest {
-    @InjectMocks ShippersDataTransportJpaServiceImpl sut;
+  @InjectMocks ShippersDataTransportJpaServiceImpl sut;
+  Shipper shipper;
+  ShipperPojo shipperPojo;
 
-    private Shipper shipper;
-    private ShipperPojo shipperPojo;
+  @BeforeEach
+  void beforeEach() {
+    shipper = new Shipper();
+    shipper.setName(ANY);
+    shipper.setId(1L);
+    shipper.setName(ANY);
+    shipperPojo = ShipperPojo.builder().name(ANY).build();
+  }
 
-    @BeforeEach
-    void beforeEach() {
-        shipper = new Shipper();
-        shipper.setName(ANY);
-        shipper.setId(1L);
-        shipper.setName(ANY);
+  @AfterEach
+  void afterEach() {
+    shipper = null;
+    shipperPojo = null;
+  }
 
-        shipperPojo = ShipperPojo.builder().name(ANY).build();
-    }
-
-    @AfterEach
-    void afterEach() {
-        shipper = null;
-        shipperPojo = null;
-    }
-
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        shipperPojo.setName("PIOLO");
-        Shipper actual = sut.applyChangesToExistingEntity(shipperPojo, shipper);
-        assertEquals(1L, actual.getId());
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    shipperPojo.setName("PIOLO");
+    Shipper actual = sut.applyChangesToExistingEntity(shipperPojo, shipper);
+    assertEquals(1L, actual.getId());
+  }
 }

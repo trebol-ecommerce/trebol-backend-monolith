@@ -15,39 +15,38 @@ import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductCategoriesConverterJpaServiceImplTest {
-    @InjectMocks ProductCategoriesConverterJpaServiceImpl sut;
-    ProductCategory productCategory;
-    ProductCategoryPojo productCategoryPojo;
+  @InjectMocks ProductCategoriesConverterJpaServiceImpl sut;
+  ProductCategory productCategory;
+  ProductCategoryPojo productCategoryPojo;
 
-    @BeforeEach
-    void beforeEach() {
-        productCategory = new ProductCategory();
-        productCategory.setId(ID_1L);
+  @BeforeEach
+  void beforeEach() {
+    productCategory = new ProductCategory();
+    productCategory.setId(ID_1L);
+    productCategoryPojo = ProductCategoryPojo.builder()
+      .id(ID_1L)
+      .name(ANY)
+      .code(ANY)
+      .build();
+  }
 
-        productCategoryPojo = ProductCategoryPojo.builder()
-          .id(ID_1L)
-          .name(ANY)
-          .code(ANY)
-          .build();
-    }
+  @AfterEach
+  void afterEach() {
+    productCategory = null;
+    productCategoryPojo = null;
+  }
 
-    @AfterEach
-    void afterEach() {
-        productCategory = null;
-        productCategoryPojo = null;
-    }
+  @Test
+  void testConvertToPojo() {
+    ProductCategoryPojo actual = sut.convertToPojo(productCategory);
+    assertEquals(productCategory.getName(), actual.getName());
+    assertEquals(productCategory.getCode(), actual.getCode());
+  }
 
-    @Test
-    void testConvertToPojo() {
-        ProductCategoryPojo actual = sut.convertToPojo(productCategory);
-        assertEquals(productCategory.getName(), actual.getName());
-        assertEquals(productCategory.getCode(), actual.getCode());
-    }
-
-    @Test
-    void testConvertToNewEntity() {
-        ProductCategory actual = sut.convertToNewEntity(productCategoryPojo);
-        assertEquals(productCategoryPojo.getName(), actual.getName());
-        assertEquals(productCategoryPojo.getCode(), actual.getCode());
-    }
+  @Test
+  void testConvertToNewEntity() {
+    ProductCategory actual = sut.convertToNewEntity(productCategoryPojo);
+    assertEquals(productCategoryPojo.getName(), actual.getName());
+    assertEquals(productCategoryPojo.getCode(), actual.getCode());
+  }
 }

@@ -14,37 +14,36 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class UserRolesConverterJpaServiceImplTest {
-    @InjectMocks UserRolesConverterJpaServiceImpl sut;
-    UserRole userRole;
-    UserRolePojo userRolePojo ;
+  @InjectMocks UserRolesConverterJpaServiceImpl sut;
+  UserRole userRole;
+  UserRolePojo userRolePojo;
 
-    @BeforeEach
-    void beforeEach() {
-        userRole = new UserRole();
-        userRole.setName(ANY);
-        userRole.setId(1L);
+  @BeforeEach
+  void beforeEach() {
+    userRole = new UserRole();
+    userRole.setName(ANY);
+    userRole.setId(1L);
+    userRolePojo = UserRolePojo.builder()
+      .id(1L)
+      .name(ANY)
+      .build();
+  }
 
-        userRolePojo = UserRolePojo.builder()
-          .id(1L)
-          .name(ANY)
-          .build();
-    }
+  @AfterEach
+  void afterEach() {
+    userRole = null;
+    userRolePojo = null;
+  }
 
-    @AfterEach
-    void afterEach() {
-        userRole = null;
-        userRolePojo = null;
-    }
+  @Test
+  void testConvertToPojo() {
+    UserRolePojo actual = sut.convertToPojo(userRole);
+    assertEquals(userRole.getName(), actual.getName());
+  }
 
-    @Test
-    void testConvertToPojo() {
-        UserRolePojo actual = sut.convertToPojo(userRole);
-        assertEquals(userRole.getName(), actual.getName());
-    }
-
-    @Test
-    void testConvertToNewEntity() {
-        UserRole actual = sut.convertToNewEntity(userRolePojo);
-        assertEquals(userRolePojo.getName(), actual.getName());
-    }
+  @Test
+  void testConvertToNewEntity() {
+    UserRole actual = sut.convertToNewEntity(userRolePojo);
+    assertEquals(userRolePojo.getName(), actual.getName());
+  }
 }

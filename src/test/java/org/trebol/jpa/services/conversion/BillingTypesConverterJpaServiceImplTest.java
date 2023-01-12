@@ -14,36 +14,37 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class BillingTypesConverterJpaServiceImplTest {
-    @InjectMocks BillingTypesConverterJpaServiceImpl sut;
-    BillingType billingType;
-    BillingTypePojo billingTypePojo;
+  @InjectMocks BillingTypesConverterJpaServiceImpl sut;
+  BillingType billingType;
+  BillingTypePojo billingTypePojo;
 
-    @BeforeEach
-    void beforeEach() {
-        billingType = new BillingType();
-        billingType.setName(ANY);
-        billingType.setId(1L);
-        billingType.setName(ANY);
+  @BeforeEach
+  void beforeEach() {
+    billingType = new BillingType();
+    billingType.setName(ANY);
+    billingType.setId(1L);
+    billingType.setName(ANY);
 
-        billingTypePojo = BillingTypePojo.builder()
-          .name(ANY)
-          .build();
-    }
+    billingTypePojo = BillingTypePojo.builder()
+      .name(ANY)
+      .build();
+  }
 
-    @AfterEach
-    void afterEach() {
-        billingType = null;
-        billingTypePojo = null;
-    }
-    @Test
-    void testConvertToPojo() {
-        BillingTypePojo actual = sut.convertToPojo(billingType);
-        assertEquals(billingType.getName(), actual.getName());
-    }
+  @AfterEach
+  void afterEach() {
+    billingType = null;
+    billingTypePojo = null;
+  }
 
-    @Test
-    void testConvertToNewEntity() {
-        BillingType actual = sut.convertToNewEntity(billingTypePojo);
-        assertEquals(billingTypePojo.getName(), actual.getName());
-    }
+  @Test
+  void testConvertToPojo() {
+    BillingTypePojo actual = sut.convertToPojo(billingType);
+    assertEquals(billingType.getName(), actual.getName());
+  }
+
+  @Test
+  void testConvertToNewEntity() {
+    BillingType actual = sut.convertToNewEntity(billingTypePojo);
+    assertEquals(billingTypePojo.getName(), actual.getName());
+  }
 }

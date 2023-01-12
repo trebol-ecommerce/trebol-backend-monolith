@@ -15,40 +15,41 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductsDataTransportJpaServiceImplTest {
-    @InjectMocks ProductsDataTransportJpaServiceImpl sut;
-    private Product product;
-    private ProductPojo productPojo;
+  @InjectMocks ProductsDataTransportJpaServiceImpl sut;
+  Product product;
+  ProductPojo productPojo;
 
-    @BeforeEach
-    void beforeEach() {
-        product = new Product();
-        product.setName(ANY);
-        product.setId(1L);
-        productPojo = ProductPojo.builder()
-          .id(1L)
-          .name(ANY)
-          .build();
-    }
+  @BeforeEach
+  void beforeEach() {
+    product = new Product();
+    product.setName(ANY);
+    product.setId(1L);
+    productPojo = ProductPojo.builder()
+      .id(1L)
+      .name(ANY)
+      .build();
+  }
 
-    @AfterEach
-    void afterEach() {
-        product = null;
-        productPojo = null;
-    }
+  @AfterEach
+  void afterEach() {
+    product = null;
+    productPojo = null;
+  }
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        productPojo.setBarcode(ANY);
-        productPojo.setName("Bear Brand");
-        productPojo.setPrice(1);
-        productPojo.setDescription(ANY);
-        productPojo.setCurrentStock(1);
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    productPojo.setBarcode(ANY);
+    productPojo.setName("Bear Brand");
+    productPojo.setPrice(1);
+    productPojo.setDescription(ANY);
+    productPojo.setCurrentStock(1);
+    product.setBarcode(ANY + " ");
+    product.setName("Bear Brand  ");
+    product.setPrice(2);
+    product.setDescription(ANY + " ");
 
-        product.setBarcode(ANY + " ");
-        product.setName("Bear Brand  ");
-        product.setPrice(2);
-        product.setDescription(ANY + " ");
-        Product actual = sut.applyChangesToExistingEntity(productPojo, product);
-        assertEquals(ANY, actual.getBarcode());
-    }
+    Product actual = sut.applyChangesToExistingEntity(productPojo, product);
+
+    assertEquals(ANY, actual.getBarcode());
+  }
 }

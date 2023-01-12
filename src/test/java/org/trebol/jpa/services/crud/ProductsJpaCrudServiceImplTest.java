@@ -52,10 +52,9 @@ class ProductsJpaCrudServiceImplTest {
     imagesHelper.resetImages();
   }
 
-
   @Test
   void finds_by_barcode()
-      throws BadInputException {
+    throws BadInputException {
     ProductPojo input = productsHelper.productPojoForFetch();
     Product expectedResult = productsHelper.productEntityAfterCreation();
     when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(expectedResult));
@@ -69,7 +68,7 @@ class ProductsJpaCrudServiceImplTest {
 
   @Test
   void creates_product()
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     ProductPojo input = productsHelper.productPojoBeforeCreation();
     ProductPojo expectedResult = productsHelper.productPojoAfterCreation();
     Product inputEntity = productsHelper.productEntityBeforeCreation();
@@ -89,7 +88,7 @@ class ProductsJpaCrudServiceImplTest {
 
   @Test
   void creates_product_with_nonexistent_image()
-      throws BadInputException {
+    throws BadInputException {
     ProductPojo input = productsHelper.productPojoBeforeCreation();
     input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
     Product inputEntity = productsHelper.productEntityBeforeCreation();
@@ -111,7 +110,7 @@ class ProductsJpaCrudServiceImplTest {
 
   @Test
   void creates_product_with_existing_image()
-      throws BadInputException {
+    throws BadInputException {
     ProductPojo input = productsHelper.productPojoBeforeCreation();
     input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
     ProductPojo expectedResult = productsHelper.productPojoAfterCreation();
@@ -139,7 +138,7 @@ class ProductsJpaCrudServiceImplTest {
 
   @Test
   void creates_product_with_nonexistent_category()
-      throws BadInputException {
+    throws BadInputException {
     ProductPojo input = productsHelper.productPojoBeforeCreation();
     input.setCategory(categoriesHelper.productCategoryPojoBeforeCreation());
     ProductPojo expectedResult = productsHelper.productPojoAfterCreation();
@@ -161,7 +160,7 @@ class ProductsJpaCrudServiceImplTest {
 
   @Test
   void creates_product_with_existing_category()
-      throws BadInputException {
+    throws BadInputException {
     ProductPojo input = productsHelper.productPojoBeforeCreation();
     input.setCategory(categoriesHelper.productCategoryPojoBeforeCreation());
     ProductPojo expectedResult = productsHelper.productPojoAfterCreation();

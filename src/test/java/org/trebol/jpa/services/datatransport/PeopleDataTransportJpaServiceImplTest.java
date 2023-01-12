@@ -15,51 +15,48 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class PeopleDataTransportJpaServiceImplTest {
-    @InjectMocks PeopleDataTransportJpaServiceImpl sut;
+  @InjectMocks PeopleDataTransportJpaServiceImpl sut;
+  Person person;
+  PersonPojo personPojo;
 
-    private Person person;
-    private PersonPojo personPojo;
+  @BeforeEach
+  void beforeEach() {
+    person = new Person();
+    person.setId(1L);
+    personPojo = PersonPojo.builder().id(1L).build();
+  }
 
-    @BeforeEach
-    void beforeEach() {
-        person = new Person();
-        person.setId(1L);
+  @AfterEach
+  void afterEach() {
+    person = null;
+    personPojo = null;
+  }
 
-        personPojo = PersonPojo.builder().id(1L).build();
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    Person actual = sut.applyChangesToExistingEntity(personPojo, person);
 
-    @AfterEach
-    void afterEach() {
-        person = null;
-        personPojo = null;
-    }
+    assertEquals(1L, actual.getId());
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        Person actual = sut.applyChangesToExistingEntity(personPojo, person);
-        assertEquals(1L, actual.getId());
+    person.setEmail(ANY);
+    person.setFirstName(ANY);
+    person.setLastName(ANY);
+    person.setIdNumber(ANY);
+    person.setPhone1(ANY);
+    person.setPhone2(ANY);
+    personPojo.setEmail(ANY + " ");
+    personPojo.setFirstName(ANY + " ");
+    personPojo.setLastName(ANY + " ");
+    personPojo.setIdNumber(ANY + " ");
+    personPojo.setPhone1(ANY + " ");
+    personPojo.setPhone2(ANY + " ");
 
-        person.setEmail(ANY);
-        person.setFirstName(ANY);
-        person.setLastName(ANY);
-        person.setIdNumber(ANY);
-        person.setPhone1(ANY);
-        person.setPhone2(ANY);
+    actual = sut.applyChangesToExistingEntity(personPojo, person);
 
-
-        personPojo.setEmail(ANY + " ");
-        personPojo.setFirstName(ANY + " ");
-        personPojo.setLastName(ANY + " ");
-        personPojo.setIdNumber(ANY + " ");
-        personPojo.setPhone1(ANY + " ");
-        personPojo.setPhone2(ANY + " ");
-
-        actual = sut.applyChangesToExistingEntity(personPojo, person);
-
-        assertEquals(ANY + " ", actual.getEmail());
-        assertEquals(ANY + " ", actual.getFirstName());
-        assertEquals(ANY + " ", actual.getLastName());
-        assertEquals(ANY + " ", actual.getPhone1());
-        assertEquals(ANY + " ", actual.getPhone2());
-    }
+    assertEquals(ANY + " ", actual.getEmail());
+    assertEquals(ANY + " ", actual.getFirstName());
+    assertEquals(ANY + " ", actual.getLastName());
+    assertEquals(ANY + " ", actual.getPhone1());
+    assertEquals(ANY + " ", actual.getPhone2());
+  }
 }

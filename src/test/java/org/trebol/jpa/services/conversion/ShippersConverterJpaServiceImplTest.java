@@ -14,35 +14,36 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ShippersConverterJpaServiceImplTest {
-    @InjectMocks ShippersConverterJpaServiceImpl sut;
-    Shipper shipper;
-    ShipperPojo shipperPojo;
+  @InjectMocks ShippersConverterJpaServiceImpl sut;
+  Shipper shipper;
+  ShipperPojo shipperPojo;
 
-    @BeforeEach
-    void beforeEach() {
-        shipper = new Shipper();
-        shipper.setName(ANY);
-        shipper.setId(1L);
-        shipper.setName(ANY);
+  @BeforeEach
+  void beforeEach() {
+    shipper = new Shipper();
+    shipper.setName(ANY);
+    shipper.setId(1L);
+    shipper.setName(ANY);
+    shipperPojo = ShipperPojo.builder()
+      .name(ANY)
+      .build();
+  }
 
-        shipperPojo = ShipperPojo.builder().name(ANY).build();
-    }
+  @AfterEach
+  void afterEach() {
+    shipper = null;
+    shipperPojo = null;
+  }
 
-    @AfterEach
-    void afterEach() {
-        shipper = null;
-        shipperPojo = null;
-    }
+  @Test
+  void testConvertToPojo() {
+    ShipperPojo actual = sut.convertToPojo(shipper);
+    assertEquals(shipper.getName(), actual.getName());
+  }
 
-    @Test
-    void testConvertToPojo() {
-        ShipperPojo actual = sut.convertToPojo(shipper);
-        assertEquals(shipper.getName(), actual.getName());
-    }
-
-    @Test
-    void testConvertToNewEntity() {
-        Shipper actual = sut.convertToNewEntity(shipperPojo);
-        assertEquals(shipperPojo.getName(), actual.getName());
-    }
+  @Test
+  void testConvertToNewEntity() {
+    Shipper actual = sut.convertToNewEntity(shipperPojo);
+    assertEquals(shipperPojo.getName(), actual.getName());
+  }
 }

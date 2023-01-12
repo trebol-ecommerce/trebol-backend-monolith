@@ -15,46 +15,44 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ImagesDataTransportJpaServiceImplTest {
-    @InjectMocks ImagesDataTransportJpaServiceImpl sut;
+  @InjectMocks ImagesDataTransportJpaServiceImpl sut;
+  Image image;
+  ImagePojo imagePojo;
 
-    private Image image;
-    private ImagePojo imagePojo;
+  @BeforeEach
+  void beforeEach() {
+    image = new Image();
+    image.setId(1L);
+    image.setFilename(ANY);
+    imagePojo = ImagePojo.builder()
+      .id(1L)
+      .filename(ANY)
+      .build();
+  }
 
-    @BeforeEach
-    void beforeEach() {
-        image = new Image();
-        image.setId(1L);
-        image.setFilename(ANY);
+  @AfterEach
+  void afterEach() {
+    image = null;
+    imagePojo = null;
+  }
 
-        imagePojo = ImagePojo.builder()
-          .id(1L)
-          .filename(ANY)
-          .build();
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    Image actual = sut.applyChangesToExistingEntity(imagePojo, image);
+    assertEquals(1L, actual.getId());
 
-    @AfterEach
-    void afterEach() {
-        image = null;
-        imagePojo = null;
-    }
+    image.setFilename(ANY);
+    image.setCode(ANY);
+    image.setUrl(ANY);
 
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        Image actual = sut.applyChangesToExistingEntity(imagePojo, image);
-        assertEquals(1L, actual.getId());
+    imagePojo.setUrl(ANY + " ");
+    imagePojo.setCode(ANY + " ");
+    imagePojo.setFilename(ANY + " ");
 
-        image.setFilename(ANY);
-        image.setCode(ANY);
-        image.setUrl(ANY);
+    actual = sut.applyChangesToExistingEntity(imagePojo, image);
 
-        imagePojo.setUrl(ANY + " ");
-        imagePojo.setCode(ANY + " ");
-        imagePojo.setFilename(ANY + " ");
-
-        actual = sut.applyChangesToExistingEntity(imagePojo, image);
-
-        assertEquals(ANY + " ", actual.getUrl());
-        assertEquals(ANY + " ", actual.getCode());
-        assertEquals(ANY + " ", actual.getFilename());
-    }
+    assertEquals(ANY + " ", actual.getUrl());
+    assertEquals(ANY + " ", actual.getCode());
+    assertEquals(ANY + " ", actual.getFilename());
+  }
 }

@@ -14,35 +14,36 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class SellStatusesConverterJpaServiceImplTest {
-    @InjectMocks SellStatusesConverterJpaServiceImpl sut;
-    SellStatus sellStatus;
-    SellStatusPojo sellStatusPojo;
+  @InjectMocks SellStatusesConverterJpaServiceImpl sut;
+  SellStatus sellStatus;
+  SellStatusPojo sellStatusPojo;
 
-    @BeforeEach
-    void beforeEach() {
-        sellStatus = new SellStatus();
-        sellStatus.setName(ANY);
-        sellStatus.setId(1L);
-        sellStatus.setName(ANY);
+  @BeforeEach
+  void beforeEach() {
+    sellStatus = new SellStatus();
+    sellStatus.setName(ANY);
+    sellStatus.setId(1L);
+    sellStatus.setName(ANY);
+    sellStatusPojo = SellStatusPojo.builder()
+      .name(ANY)
+      .build();
+  }
 
-        sellStatusPojo = SellStatusPojo.builder().name(ANY).build();
-    }
+  @AfterEach
+  void afterEach() {
+    sellStatus = null;
+    sellStatusPojo = null;
+  }
 
-    @AfterEach
-    void afterEach() {
-        sellStatus = null;
-        sellStatusPojo = null;
-    }
+  @Test
+  void testConvertToPojo() {
+    SellStatusPojo actual = sut.convertToPojo(sellStatus);
+    assertEquals(sellStatus.getName(), actual.getName());
+  }
 
-    @Test
-    void testConvertToPojo() {
-        SellStatusPojo actual = sut.convertToPojo(sellStatus);
-        assertEquals(sellStatus.getName(), actual.getName());
-    }
-
-    @Test
-    void testConvertToNewEntity() {
-        SellStatus actual = sut.convertToNewEntity(sellStatusPojo);
-        assertEquals(sellStatusPojo.getName(), actual.getName());
-    }
+  @Test
+  void testConvertToNewEntity() {
+    SellStatus actual = sut.convertToNewEntity(sellStatusPojo);
+    assertEquals(sellStatusPojo.getName(), actual.getName());
+  }
 }

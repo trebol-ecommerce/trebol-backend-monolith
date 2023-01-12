@@ -7,7 +7,6 @@ import org.trebol.pojo.PersonPojo;
  * Builds & caches reusable instances of Person and PersonPojo
  */
 public class PeopleTestHelper {
-
   public static final long GENERIC_ID = 1L;
   public static final String PERSON_ID_NUMBER = "111111111";
   public static final String PERSON_FIRST_NAME = "test f. name";
@@ -68,7 +67,7 @@ public class PeopleTestHelper {
   public Person personEntityAfterCreation() {
     if (this.entityAfterCreation == null) {
       this.entityAfterCreation = new Person(GENERIC_ID, PERSON_FIRST_NAME, PERSON_LAST_NAME, PERSON_ID_NUMBER, PERSON_EMAIL,
-                                       PERSON_PHONE1, PERSON_PHONE2);
+        PERSON_PHONE1, PERSON_PHONE2);
     }
     return this.entityAfterCreation;
   }

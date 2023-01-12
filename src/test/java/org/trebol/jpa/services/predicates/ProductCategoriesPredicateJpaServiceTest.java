@@ -32,12 +32,12 @@ class ProductCategoriesPredicateJpaServiceTest {
   void parses_map() {
     Predicate emptyPredicate = new BooleanBuilder();
     List<Predicate> predicates = List.of(emptyPredicate,
-                                         instance.parseMap(Map.of("id", "1")),
-                                         instance.parseMap(Map.of("code", "code test")),
-                                         instance.parseMap(Map.of("name", "name test")),
-                                         instance.parseMap(Map.of("nameLike", "name portion")),
-                                         instance.parseMap(Map.of("parentCode", "parent code test")),
-                                         instance.parseMap(Map.of("parentId", "1")));
+      instance.parseMap(Map.of("id", "1")),
+      instance.parseMap(Map.of("code", "code test")),
+      instance.parseMap(Map.of("name", "name test")),
+      instance.parseMap(Map.of("nameLike", "name portion")),
+      instance.parseMap(Map.of("parentCode", "parent code test")),
+      instance.parseMap(Map.of("parentId", "1")));
     Set<Predicate> distinctPredicates = new HashSet<>(predicates);
     assertEquals(predicates.size(), distinctPredicates.size());
   }

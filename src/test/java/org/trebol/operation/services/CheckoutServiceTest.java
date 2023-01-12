@@ -38,9 +38,9 @@ class CheckoutServiceTest {
   @Mock ISalesProcessService salesProcessService;
   @Mock IPredicateJpaService<Sell> salesPredicateService;
   @Mock IPaymentsIntegrationService paymentIntegrationService;
+  SalesTestHelper salesHelper = new SalesTestHelper();
   static final String PAYMENT_URL = "https://example.com/pay";
   static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
-  SalesTestHelper salesHelper = new SalesTestHelper();
 
   @BeforeEach
   void beforeEach() {
@@ -49,7 +49,7 @@ class CheckoutServiceTest {
 
   @Test
   void requests_transaction_start()
-      throws BadInputException, PaymentServiceException, EntityNotFoundException {
+    throws BadInputException, PaymentServiceException, EntityNotFoundException {
     PaymentRedirectionDetailsPojo payload = PaymentRedirectionDetailsPojo.builder()
       .url(PAYMENT_URL)
       .token(SELL_TRANSACTION_TOKEN)
@@ -66,10 +66,10 @@ class CheckoutServiceTest {
 
   @Test
   void acknowledges_successful_transaction()
-      throws PaymentServiceException, EntityNotFoundException, BadInputException {
+    throws PaymentServiceException, EntityNotFoundException, BadInputException {
     Map<String, String> matcherMap = Map.of(
-        "statusCode", SELL_STATUS_PAYMENT_STARTED,
-        "token", SELL_TRANSACTION_TOKEN);
+      "statusCode", SELL_STATUS_PAYMENT_STARTED,
+      "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
     when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(0);
@@ -127,10 +127,10 @@ class CheckoutServiceTest {
 
   @Test
   void acknowledges_aborted_transaction()
-      throws PaymentServiceException, EntityNotFoundException, BadInputException {
+    throws PaymentServiceException, EntityNotFoundException, BadInputException {
     Map<String, String> matcherMap = Map.of(
-        "statusCode", SELL_STATUS_PAYMENT_STARTED,
-        "token", SELL_TRANSACTION_TOKEN);
+      "statusCode", SELL_STATUS_PAYMENT_STARTED,
+      "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
     when(salesProcessService.markAsAborted(salesHelper.sellPojoAfterCreation())).thenReturn(null);
@@ -163,7 +163,7 @@ class CheckoutServiceTest {
 
   @Test
   void throws_exceptions_at_unexisting_transactions_before_requesting_payments()
-      throws PaymentServiceException, EntityNotFoundException, BadInputException {
+    throws PaymentServiceException, EntityNotFoundException, BadInputException {
     PaymentRedirectionDetailsPojo payload = PaymentRedirectionDetailsPojo.builder()
       .url(PAYMENT_URL)
       .token(SELL_TRANSACTION_TOKEN)
@@ -171,7 +171,7 @@ class CheckoutServiceTest {
     String exceptionMessage = "No match";
     when(paymentIntegrationService.requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation())).thenReturn(payload);
     doThrow(new EntityNotFoundException(exceptionMessage)).
-        when(salesProcessService).markAsStarted(salesHelper.sellPojoAfterCreation());
+      when(salesProcessService).markAsStarted(salesHelper.sellPojoAfterCreation());
 
     PaymentRedirectionDetailsPojo result = null;
     try {
@@ -186,10 +186,10 @@ class CheckoutServiceTest {
 
   @Test
   void throws_exceptions_at_invalid_transactions_before_confirming()
-      throws PaymentServiceException, EntityNotFoundException {
+    throws PaymentServiceException, EntityNotFoundException {
     Map<String, String> matcherMap = Map.of(
-        "statusCode", SELL_STATUS_PAYMENT_STARTED,
-        "token", SELL_TRANSACTION_TOKEN);
+      "statusCode", SELL_STATUS_PAYMENT_STARTED,
+      "token", SELL_TRANSACTION_TOKEN);
     String exceptionMessage = "No match";
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenThrow(new EntityNotFoundException(exceptionMessage));
@@ -207,7 +207,6 @@ class CheckoutServiceTest {
   @DisplayName("Generate result page proper url to URI")
   @Test
   void generate_result_page_url() {
-
     when(paymentIntegrationService.getPaymentResultPageUrl()).thenReturn("http://www.any.com");
 
     URI actual = service.generateResultPageUrl(ANY);
@@ -220,7 +219,6 @@ class CheckoutServiceTest {
     "MalformedURLException and throw IllegalArgumentException")
   @Test
   void generate_result_page_url_throws_illegal_argument_exception() {
-
     when(paymentIntegrationService.getPaymentResultPageUrl()).thenReturn(ANY);
 
     assertThrows(IllegalStateException.class, () -> service.generateResultPageUrl(ANY), "Transaction was confirmed, but server had an unexpected malfunction");

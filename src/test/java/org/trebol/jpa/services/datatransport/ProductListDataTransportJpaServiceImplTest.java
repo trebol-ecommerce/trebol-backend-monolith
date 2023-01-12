@@ -15,33 +15,32 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListDataTransportJpaServiceImplTest {
-    @InjectMocks ProductListDataTransportJpaServiceImpl sut;
-    private ProductList productList;
-    private ProductListPojo productListPojo;
+  @InjectMocks ProductListDataTransportJpaServiceImpl sut;
+  ProductList productList;
+  ProductListPojo productListPojo;
 
-    @BeforeEach
-    void beforeEach() {
-        productList = new ProductList();
-        productList.setId(1L);
-        productList.setName(ANY);
-        productList.setName(ANY);
+  @BeforeEach
+  void beforeEach() {
+    productList = new ProductList();
+    productList.setId(1L);
+    productList.setName(ANY);
+    productList.setName(ANY);
+    productListPojo = ProductListPojo.builder()
+      .id(1L)
+      .name(ANY + " ")
+      .code(ANY + " ")
+      .build();
+  }
 
-        productListPojo = ProductListPojo.builder()
-          .id(1L)
-          .name(ANY + " ")
-          .code(ANY + " ")
-          .build();
-    }
+  @AfterEach
+  void afterEach() {
+    productList = null;
+    productListPojo = null;
+  }
 
-    @AfterEach
-    void afterEach() {
-        productList = null;
-        productListPojo = null;
-    }
-
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        ProductList actual = sut.applyChangesToExistingEntity(productListPojo, productList);
-        assertEquals(1L, actual.getId());
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    ProductList actual = sut.applyChangesToExistingEntity(productListPojo, productList);
+    assertEquals(1L, actual.getId());
+  }
 }

@@ -18,6 +18,7 @@ import org.trebol.pojo.ReceiptPojo;
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,16 +31,16 @@ class ReceiptServiceImplTest {
   @Mock ISalesJpaRepository salesRepository;
   @Mock ConversionService conversionService;
 
-  @DisplayName("When Sale not found by token, throw EntityNotFoundException")
   @Test
+  @DisplayName("When Sale not found by token, throw EntityNotFoundException")
   void fetchReceiptByTransactionToken_SaleNotFound_EntityNotFoundException() {
     when(salesRepository.findByTransactionToken(anyString())).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> instance.fetchReceiptByTransactionToken("token"));
   }
 
-  @DisplayName("When Sale found by token, no exception")
   @Test
+  @DisplayName("When Sale found by token, no exception")
   void fetchReceiptByTransactionToken_SaleFound_NoException() {
     SellStatus sellStatusMock = new SellStatus();
     sellStatusMock.setName("statusName");
@@ -51,7 +52,7 @@ class ReceiptServiceImplTest {
     SellDetail sellDetailMock = new SellDetail();
     sellDetailMock.setProduct(productMock);
     sellDetailMock.setUnits(1);
-    Collection<SellDetail> sellDetailCollectionMock = Arrays.asList(sellDetailMock);
+    Collection<SellDetail> sellDetailCollectionMock = List.of(sellDetailMock);
 
     Sell sellMock = new Sell();
     sellMock.setDetails(sellDetailCollectionMock);
@@ -67,8 +68,8 @@ class ReceiptServiceImplTest {
     assertDoesNotThrow(() -> instance.fetchReceiptByTransactionToken("token"));
   }
 
-  @DisplayName("When Sale found by token, should return the correct ReceiptPojo")
   @Test
+  @DisplayName("When Sale found by token, should return the correct ReceiptPojo")
   void fetchReceiptByTransactionToken_ReturnsReceiptPojo() {
     SellStatus sellStatusMock = new SellStatus();
     sellStatusMock.setName("statusName");
@@ -80,7 +81,7 @@ class ReceiptServiceImplTest {
     SellDetail sellDetailMock = new SellDetail();
     sellDetailMock.setProduct(productMock);
     sellDetailMock.setUnitValue(1);
-    Collection<SellDetail> sellDetailCollectionMock = Arrays.asList(sellDetailMock);
+    Collection<SellDetail> sellDetailCollectionMock = List.of(sellDetailMock);
 
     Sell sellMock = new Sell();
     sellMock.setDetails(sellDetailCollectionMock);

@@ -40,7 +40,7 @@ class PhoneNumberValidatorTest {
   @DisplayName("Validate invalid phone number w/ no country code, only country code, and over 15 digits " +
     "it should return false")
   @ParameterizedTest
-  @ValueSource(strings = {"123456", "+123","+123 4567890123456"})
+  @ValueSource(strings = {"123456", "+123", "+123 4567890123456"})
   void testPhoneValidatorWithInvalidPhoneNumber(String phoneNumber) {
     assertFalse(phoneNumberValidator.isValid(phoneNumber, null));
   }

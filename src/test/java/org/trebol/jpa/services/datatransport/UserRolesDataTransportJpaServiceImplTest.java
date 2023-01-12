@@ -14,32 +14,30 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class UserRolesDataTransportJpaServiceImplTest {
-    @InjectMocks UserRolesDataTransportJpaServiceImpl sut;
+  @InjectMocks UserRolesDataTransportJpaServiceImpl sut;
+  UserRole userRole;
+  UserRolePojo userRolePojo;
 
-    private UserRole userRole;
-    private UserRolePojo userRolePojo ;
+  @BeforeEach
+  void beforeEach() {
+    userRole = new UserRole();
+    userRole.setName("ANY");
+    userRole.setId(1L);
+    userRolePojo = UserRolePojo.builder()
+      .id(1L)
+      .name("ANY")
+      .build();
+  }
 
-    @BeforeEach
-    void beforeEach() {
-        userRole = new UserRole();
-        userRole.setName("ANY");
-        userRole.setId(1L);
+  @AfterEach
+  void afterEach() {
+    userRole = null;
+    userRolePojo = null;
+  }
 
-        userRolePojo = UserRolePojo.builder()
-          .id(1L)
-          .name("ANY")
-          .build();
-    }
-
-    @AfterEach
-    void afterEach() {
-        userRole = null;
-        userRolePojo = null;
-    }
-
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        UserRole actual = sut.applyChangesToExistingEntity(userRolePojo, userRole);
-        assertEquals(1L, actual.getId());
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    UserRole actual = sut.applyChangesToExistingEntity(userRolePojo, userRole);
+    assertEquals(1L, actual.getId());
+  }
 }

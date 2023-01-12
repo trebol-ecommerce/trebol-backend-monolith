@@ -48,7 +48,7 @@ class UsersJpaCrudServiceImplTest {
     assertTrue(match.isPresent());
     assertEquals(expectedResult, match.get());
   }
-  
+
   @Test
   void delete_ProtectedAccount_ThrowsBadInputException() {
     Long userId = 1L;
@@ -64,5 +64,4 @@ class UsersJpaCrudServiceImplTest {
 
     assertThrows(AccountProtectionViolationException.class, () -> instance.delete(new BooleanBuilder()));
   }
-
 }

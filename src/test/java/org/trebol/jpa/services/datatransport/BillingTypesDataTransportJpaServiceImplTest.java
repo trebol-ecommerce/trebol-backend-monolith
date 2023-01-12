@@ -15,33 +15,31 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class BillingTypesDataTransportJpaServiceImplTest {
-    @InjectMocks BillingTypesDataTransportJpaServiceImpl sut;
+  @InjectMocks BillingTypesDataTransportJpaServiceImpl sut;
+  BillingType billingType;
+  BillingTypePojo billingTypePojo;
 
-    private BillingType billingType;
-    private BillingTypePojo billingTypePojo;
+  @BeforeEach
+  void beforeEach() {
+    billingType = new BillingType();
+    billingType.setName(ANY);
+    billingType.setId(1L);
+    billingType.setName(ANY);
+    billingTypePojo = BillingTypePojo.builder()
+      .name(ANY)
+      .build();
+  }
 
-    @BeforeEach
-    void beforeEach() {
-        billingType = new BillingType();
-        billingType.setName(ANY);
-        billingType.setId(1L);
-        billingType.setName(ANY);
+  @AfterEach
+  void afterEach() {
+    billingType = null;
+    billingTypePojo = null;
+  }
 
-        billingTypePojo = BillingTypePojo.builder()
-          .name(ANY)
-          .build();
-    }
-
-    @AfterEach
-    void afterEach() {
-        billingType = null;
-        billingTypePojo = null;
-    }
-
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        billingTypePojo.setName("PIOLO");
-        BillingType actual = sut.applyChangesToExistingEntity(billingTypePojo, billingType);
-        assertEquals(1L, actual.getId());
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    billingTypePojo.setName("PIOLO");
+    BillingType actual = sut.applyChangesToExistingEntity(billingTypePojo, billingType);
+    assertEquals(1L, actual.getId());
+  }
 }

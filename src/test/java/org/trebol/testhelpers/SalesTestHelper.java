@@ -11,7 +11,6 @@ import java.util.List;
  * Builds & caches reusable instances of Sell and SellPojo
  */
 public class SalesTestHelper {
-
   public static final long GENERIC_ID = 1L;
   public static final Instant GENERIC_DATE = Instant.now();
   public static final int SELL_DETAIL_UNITS = 1;
@@ -98,9 +97,9 @@ public class SalesTestHelper {
       SellDetail newDetailEntity = new SellDetail(SELL_DETAIL_UNITS, productsHelper.productEntityBeforeCreation());
       newDetailEntity.setUnitValue(productsHelper.productEntityBeforeCreation().getPrice());
       entityBeforeCreation = new Sell(customersHelper.customerEntityBeforeCreation(),
-                                      paymentTypeEntity,
-                                      billingTypeEntity,
-                                      List.of(newDetailEntity));
+        paymentTypeEntity,
+        billingTypeEntity,
+        List.of(newDetailEntity));
     }
     return entityBeforeCreation;
   }
@@ -110,13 +109,13 @@ public class SalesTestHelper {
       PaymentType paymentTypeEntity = new PaymentType(GENERIC_ID, SELL_PAYMENT_TYPE_NAME);
       BillingType billingTypeEntity = new BillingType(GENERIC_ID, SELL_BILLING_TYPE_NAME_PERSON);
       SellDetail persistedDetailEntity = new SellDetail(GENERIC_ID, SELL_DETAIL_UNITS,
-                                                        productsHelper.productEntityAfterCreation().getPrice(),
-                                                        productsHelper.productEntityAfterCreation());
+        productsHelper.productEntityAfterCreation().getPrice(),
+        productsHelper.productEntityAfterCreation());
       SellStatus sellStatusEntity = new SellStatus(GENERIC_ID, SELL_STATUS_CODE, SELL_STATUS_NAME);
       entityAfterCreation = new Sell(GENERIC_ID, GENERIC_DATE, SELL_TOTAL_ITEMS, SELL_NET_VALUE, SELL_TRANSPORT_VALUE,
-                                     SELL_TAXES_VALUE, SELL_TOTAL_VALUE, SELL_TRANSACTION_TOKEN,
-                                     customersHelper.customerEntityAfterCreation(), paymentTypeEntity, sellStatusEntity,
-                                     billingTypeEntity, null, null, null, null, null, List.of(persistedDetailEntity));
+        SELL_TAXES_VALUE, SELL_TOTAL_VALUE, SELL_TRANSACTION_TOKEN,
+        customersHelper.customerEntityAfterCreation(), paymentTypeEntity, sellStatusEntity,
+        billingTypeEntity, null, null, null, null, null, List.of(persistedDetailEntity));
     }
     return entityAfterCreation;
   }

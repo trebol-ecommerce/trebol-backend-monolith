@@ -7,7 +7,6 @@ import org.trebol.pojo.ProductPojo;
  * Builds & caches reusable instances of Product and ProductPojo
  */
 public class ProductsTestHelper {
-
   public static final long PRODUCT_ID = 1L;
   public static final String PRODUCT_NAME = "test product name";
   public static final String PRODUCT_BARCODE = "TESTPROD1";
@@ -68,7 +67,7 @@ public class ProductsTestHelper {
   public Product productEntityBeforeCreation() {
     if (this.entityBeforeCreation == null) {
       this.entityBeforeCreation = new Product(PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION, PRODUCT_PRICE,
-                                         PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL);
+        PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL);
     }
     return this.entityBeforeCreation;
   }
@@ -76,7 +75,7 @@ public class ProductsTestHelper {
   public Product productEntityAfterCreation() {
     if (this.entityAfterCreation == null) {
       this.entityAfterCreation = new Product(PRODUCT_ID, PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION,
-                                        PRODUCT_PRICE, PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null);
+        PRODUCT_PRICE, PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null);
     }
     return this.entityAfterCreation;
   }

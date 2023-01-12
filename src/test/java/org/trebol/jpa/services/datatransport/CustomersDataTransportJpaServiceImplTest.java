@@ -20,31 +20,29 @@ import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class CustomersDataTransportJpaServiceImplTest {
-    @InjectMocks CustomersDataTransportJpaServiceImpl sut;
-    @Mock IPeopleDataTransportJpaService peopleService;
-    Customer customer;
-    CustomerPojo customerPojo;
-    Person person;
-
+  @InjectMocks CustomersDataTransportJpaServiceImpl sut;
+  @Mock IPeopleDataTransportJpaService peopleService;
+  Customer customer;
+  Person person;
+  CustomerPojo customerPojo;
 
   @BeforeEach
-    void beforeEach() {
-        person = new Person();
-        person.setId(ID_1L);
-        customer = new Customer();
-        customer.setId(ID_1L);
-        customer.setPerson(person);
+  void beforeEach() {
+    person = new Person();
+    person.setId(ID_1L);
+    customer = new Customer();
+    customer.setId(ID_1L);
+    customer.setPerson(person);
+    customerPojo = CustomerPojo.builder()
+      .person(PersonPojo.builder().id(ID_1L).build())
+      .build();
+  }
 
-        customerPojo = CustomerPojo.builder()
-          .person(PersonPojo.builder().id(ID_1L).build())
-          .build();
-    }
 
-
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        when(peopleService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
-        Customer actual = sut.applyChangesToExistingEntity(customerPojo, customer);
-        assertEquals(person, actual.getPerson());
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    when(peopleService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
+    Customer actual = sut.applyChangesToExistingEntity(customerPojo, customer);
+    assertEquals(person, actual.getPerson());
+  }
 }

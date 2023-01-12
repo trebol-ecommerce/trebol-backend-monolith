@@ -14,39 +14,38 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ImagesConverterJpaServiceImplTest {
-    @InjectMocks ImagesConverterJpaServiceImpl sut;
-    Image image;
-    ImagePojo imagePojo;
+  @InjectMocks ImagesConverterJpaServiceImpl sut;
+  Image image;
+  ImagePojo imagePojo;
 
-    @BeforeEach
-    void beforeEach() {
-        image = new Image();
-        image.setId(1L);
-        image.setFilename(ANY);
+  @BeforeEach
+  void beforeEach() {
+    image = new Image();
+    image.setId(1L);
+    image.setFilename(ANY);
+    imagePojo = ImagePojo.builder()
+      .id(1L)
+      .filename(ANY)
+      .build();
+  }
 
-        imagePojo = ImagePojo.builder()
-          .id(1L)
-          .filename(ANY)
-          .build();
-    }
+  @AfterEach
+  void afterEach() {
+    image = null;
+    imagePojo = null;
+  }
 
-    @AfterEach
-    void afterEach() {
-        image = null;
-        imagePojo = null;
-    }
+  @Test
+  void testConvertToPojo() {
+    ImagePojo actual = sut.convertToPojo(image);
+    assertEquals(image.getFilename(), actual.getFilename());
+    assertEquals(image.getCode(), actual.getCode());
+  }
 
-    @Test
-    void testConvertToPojo() {
-        ImagePojo actual = sut.convertToPojo(image);
-        assertEquals(image.getFilename(), actual.getFilename());
-        assertEquals(image.getCode(), actual.getCode());
-    }
-
-    @Test
-    void testConvertToNewEntity() {
-        Image actual = sut.convertToNewEntity(imagePojo);
-        assertEquals(imagePojo.getFilename(), actual.getFilename());
-        assertEquals(imagePojo.getCode(), actual.getCode());
-    }
+  @Test
+  void testConvertToNewEntity() {
+    Image actual = sut.convertToNewEntity(imagePojo);
+    assertEquals(imagePojo.getFilename(), actual.getFilename());
+    assertEquals(imagePojo.getCode(), actual.getCode());
+  }
 }

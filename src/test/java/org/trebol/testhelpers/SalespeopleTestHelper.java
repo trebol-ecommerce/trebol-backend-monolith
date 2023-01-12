@@ -9,7 +9,6 @@ import org.trebol.pojo.SalespersonPojo;
  * Builds & caches reusable instances of Salesperson and SalespersonPojo
  */
 public class SalespeopleTestHelper {
-
   public static final long GENERIC_ID = 1L;
   public static final String SALESPERSON_ID_NUMBER = "333333333";
   public static final String SALESPERSON_FIRST_NAME = "salesperson f. name";
@@ -53,14 +52,14 @@ public class SalespeopleTestHelper {
     if (this.pojoAfterCreation == null) {
       this.pojoAfterCreation = SalespersonPojo.builder()
         .person(PersonPojo.builder()
-                  .id(GENERIC_ID)
-                  .firstName(SALESPERSON_FIRST_NAME)
-                  .lastName(SALESPERSON_LAST_NAME)
-                  .idNumber(SALESPERSON_ID_NUMBER)
-                  .email(SALESPERSON_EMAIL)
-                  .phone1(SALESPERSON_PHONE1)
-                  .phone2(SALESPERSON_PHONE2)
-                  .build())
+          .id(GENERIC_ID)
+          .firstName(SALESPERSON_FIRST_NAME)
+          .lastName(SALESPERSON_LAST_NAME)
+          .idNumber(SALESPERSON_ID_NUMBER)
+          .email(SALESPERSON_EMAIL)
+          .phone1(SALESPERSON_PHONE1)
+          .phone2(SALESPERSON_PHONE2)
+          .build())
         .build();
     }
     return this.pojoAfterCreation;
@@ -69,7 +68,7 @@ public class SalespeopleTestHelper {
   public Salesperson salespersonEntityBeforeCreation() {
     if (this.entityBeforeCreation == null) {
       this.entityBeforeCreation = new Salesperson(new Person(SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
-                                                        SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL));
+        SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL));
     }
     return this.entityBeforeCreation;
   }
@@ -77,8 +76,8 @@ public class SalespeopleTestHelper {
   public Salesperson salespersonEntityAfterCreation() {
     if (this.entityAfterCreation == null) {
       this.entityAfterCreation = new Salesperson(new Person(GENERIC_ID, SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
-                                                       SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL, SALESPERSON_PHONE1,
-                                                       SALESPERSON_PHONE2));
+        SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL, SALESPERSON_PHONE1,
+        SALESPERSON_PHONE2));
     }
     return this.entityAfterCreation;
   }

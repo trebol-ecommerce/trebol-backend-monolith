@@ -15,31 +15,29 @@ import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class SellStatusesDataTransportJpaServiceImplTest {
-    @InjectMocks SellStatusesDataTransportJpaServiceImpl sut;
+  @InjectMocks SellStatusesDataTransportJpaServiceImpl sut;
+  SellStatus sellStatus;
+  SellStatusPojo sellStatusPojo;
 
-    private SellStatus sellStatus;
-    private SellStatusPojo sellStatusPojo;
+  @BeforeEach
+  void beforeEach() {
+    sellStatus = new SellStatus();
+    sellStatus.setName(ANY);
+    sellStatus.setId(1L);
+    sellStatus.setName(ANY);
+    sellStatusPojo = SellStatusPojo.builder().name(ANY).build();
+  }
 
-    @BeforeEach
-    void beforeEach() {
-        sellStatus = new SellStatus();
-        sellStatus.setName(ANY);
-        sellStatus.setId(1L);
-        sellStatus.setName(ANY);
+  @AfterEach
+  void afterEach() {
+    sellStatus = null;
+    sellStatusPojo = null;
+  }
 
-        sellStatusPojo = SellStatusPojo.builder().name(ANY).build();
-    }
-
-    @AfterEach
-    void afterEach() {
-        sellStatus = null;
-        sellStatusPojo = null;
-    }
-
-    @Test
-    void testApplyChangesToExistingEntity() throws BadInputException {
-        sellStatusPojo.setName("PIOLO");
-        SellStatus actual = sut.applyChangesToExistingEntity(sellStatusPojo, sellStatus);
-        assertEquals(1L, actual.getId());
-    }
+  @Test
+  void testApplyChangesToExistingEntity() throws BadInputException {
+    sellStatusPojo.setName("PIOLO");
+    SellStatus actual = sut.applyChangesToExistingEntity(sellStatusPojo, sellStatus);
+    assertEquals(1L, actual.getId());
+  }
 }
