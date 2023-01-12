@@ -1,11 +1,9 @@
 package org.trebol.jpa.services;
 
-public class GenericEntity {
-  private Long id;
-  private String name;
+import lombok.AllArgsConstructor;
 
-  public GenericEntity(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
+@AllArgsConstructor
+public class GenericEntity {
+  private final Long id;
+  private final String name;
 }

@@ -1,11 +1,9 @@
 package org.trebol.jpa.services;
 
-public class GenericPojo {
-  private Long id;
-  private String name;
+import lombok.AllArgsConstructor;
 
-  public GenericPojo(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
+@AllArgsConstructor
+public class GenericPojo {
+  private final Long id;
+  private final String name;
 }
