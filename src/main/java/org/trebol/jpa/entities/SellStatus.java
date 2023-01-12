@@ -29,7 +29,6 @@ import java.util.Objects;
 @Table(name = "sell_statuses")
 public class SellStatus
   implements Serializable {
-
   private static final long serialVersionUID = 16L;
 
   @Id
@@ -42,7 +41,8 @@ public class SellStatus
   @Column(name = "sell_status_name", nullable = false, unique = true)
   private String name;
 
-  public SellStatus() { }
+  public SellStatus() {
+  }
 
   public SellStatus(SellStatus source) {
     this.id = source.id;
@@ -86,8 +86,8 @@ public class SellStatus
     if (o == null || getClass() != o.getClass()) return false;
     SellStatus that = (SellStatus) o;
     return Objects.equals(id, that.id) &&
-        Objects.equals(code, that.code) &&
-        Objects.equals(name, that.name);
+      Objects.equals(code, that.code) &&
+      Objects.equals(name, that.name);
   }
 
   @Override
@@ -98,9 +98,9 @@ public class SellStatus
   @Override
   public String toString() {
     return "SellStatus{" +
-        "id=" + id +
-        ", code=" + code +
-        ", name='" + name + '\'' +
-        '}';
+      "id=" + id +
+      ", code=" + code +
+      ", name='" + name + '\'' +
+      '}';
   }
 }

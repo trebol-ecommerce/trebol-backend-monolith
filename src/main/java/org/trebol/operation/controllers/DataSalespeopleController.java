@@ -25,7 +25,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.crud.ISalespeopleCrudService;
@@ -45,12 +44,13 @@ import java.util.Map;
 public class DataSalespeopleController
   extends GenericDataCrudController<SalespersonPojo, Salesperson> {
 
-
   @Autowired
-  public DataSalespeopleController(PaginationService paginationService,
-                                   ISortSpecJpaService<Salesperson> sortService,
-                                   ISalespeopleCrudService crudService,
-                                   IPredicateJpaService<Salesperson> predicateService) {
+  public DataSalespeopleController(
+    PaginationService paginationService,
+    ISortSpecJpaService<Salesperson> sortService,
+    ISalespeopleCrudService crudService,
+    IPredicateJpaService<Salesperson> predicateService
+  ) {
     super(paginationService, sortService, crudService, predicateService);
   }
 
@@ -65,7 +65,7 @@ public class DataSalespeopleController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:create')")
   public void create(@Valid @RequestBody SalespersonPojo input)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -73,7 +73,7 @@ public class DataSalespeopleController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:update')")
   public void update(@RequestBody SalespersonPojo input, @RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     super.update(input, requestParams);
   }
 
@@ -81,7 +81,7 @@ public class DataSalespeopleController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('salespeople:delete')")
   public void delete(@RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     super.delete(requestParams);
   }
 }

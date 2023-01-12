@@ -36,17 +36,17 @@ import java.util.Optional;
 @Transactional
 @Service
 public class PeopleJpaCrudServiceImpl
-  extends GenericCrudJpaService<PersonPojo, Person> implements IPeopleCrudService {
-
+  extends GenericCrudJpaService<PersonPojo, Person>
+  implements IPeopleCrudService {
   private final IPeopleJpaRepository peopleRepository;
 
   @Autowired
-  public PeopleJpaCrudServiceImpl(IPeopleJpaRepository repository,
-                                  IPeopleConverterJpaService converter,
-                                  IPeopleDataTransportJpaService dataTransportService) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public PeopleJpaCrudServiceImpl(
+    IPeopleJpaRepository repository,
+    IPeopleConverterJpaService converter,
+    IPeopleDataTransportJpaService dataTransportService
+  ) {
+    super(repository, converter, dataTransportService);
     this.peopleRepository = repository;
   }
 

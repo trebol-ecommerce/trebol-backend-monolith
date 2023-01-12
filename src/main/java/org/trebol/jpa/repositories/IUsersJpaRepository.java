@@ -30,8 +30,8 @@ import java.util.Optional;
 
 @Repository
 public interface IUsersJpaRepository
-    extends IJpaRepository<User> {
-  
+  extends IJpaRepository<User> {
+
   Optional<User> findByName(String name);
 
   @Query("SELECT u FROM User u JOIN FETCH u.userRole WHERE u.name = :name")

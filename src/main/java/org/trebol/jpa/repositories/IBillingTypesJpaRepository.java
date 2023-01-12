@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @Repository
 public interface IBillingTypesJpaRepository
-    extends IJpaRepository<BillingType> {
+  extends IJpaRepository<BillingType> {
 
   Optional<BillingType> findByName(String name);
 }

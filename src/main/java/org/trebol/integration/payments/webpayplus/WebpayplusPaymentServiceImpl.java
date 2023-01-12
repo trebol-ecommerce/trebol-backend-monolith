@@ -42,19 +42,18 @@ import java.io.IOException;
 @Service
 public class WebpayplusPaymentServiceImpl
   implements IPaymentsIntegrationService {
-
   private final Logger logger = LoggerFactory.getLogger(WebpayplusPaymentServiceImpl.class);
   private final WebpayplusPaymentProperties properties;
 
   @Autowired
-  public WebpayplusPaymentServiceImpl(WebpayplusPaymentProperties properties) {
+  public WebpayplusPaymentServiceImpl(
+    WebpayplusPaymentProperties properties
+  ) {
     this.properties = properties;
   }
 
   @Override
   public PaymentRedirectionDetailsPojo requestNewPaymentPageDetails(SellPojo transaction) throws PaymentServiceException {
-
-
     String buyOrder = transaction.getBuyOrder().toString();
     String sessionId = String.valueOf(transaction.hashCode());
     double amount = transaction.getTotalValue();
@@ -108,5 +107,4 @@ public class WebpayplusPaymentServiceImpl
 
     return new WebpayPlus.Transaction(wpOptions);
   }
-
 }

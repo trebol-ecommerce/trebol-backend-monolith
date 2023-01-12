@@ -30,26 +30,28 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.Map;
 
-public class GenericDataCrudController<P, E>
+public abstract class GenericDataCrudController<P, E>
   extends GenericDataController<P, E>
   implements IDataCrudController<P> {
 
-  protected GenericDataCrudController(PaginationService paginationService,
-                                      ISortSpecJpaService<E> sortService,
-                                      ICrudJpaService<P, E> crudService,
-                                      IPredicateJpaService<E> predicateService) {
+  public GenericDataCrudController(
+    PaginationService paginationService,
+    ISortSpecJpaService<E> sortService,
+    ICrudJpaService<P, E> crudService,
+    IPredicateJpaService<E> predicateService
+  ) {
     super(paginationService, sortService, crudService, predicateService);
   }
 
   @Override
   public void create(P input)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     crudService.create(input);
   }
 
   @Override
-  public void update(P input, Map<String, String> requestParams) 
-      throws BadInputException, EntityNotFoundException {
+  public void update(P input, Map<String, String> requestParams)
+    throws BadInputException, EntityNotFoundException {
     if (!requestParams.isEmpty()) {
       Predicate predicate = predicateService.parseMap(requestParams);
       crudService.update(input, predicate);
@@ -59,8 +61,8 @@ public class GenericDataCrudController<P, E>
   }
 
   @Override
-  public void delete(Map<String, String> requestParams) 
-      throws EntityNotFoundException {
+  public void delete(Map<String, String> requestParams)
+    throws EntityNotFoundException {
     Predicate predicate = predicateService.parseMap(requestParams);
     crudService.delete(predicate);
   }

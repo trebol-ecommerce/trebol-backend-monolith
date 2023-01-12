@@ -40,15 +40,15 @@ public class SalesSortSpecJpaServiceImpl
   @Override
   protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
     return Map.of(
-            "buyOrder",       getBasePath().id.asc(),
-            "date",           getBasePath().date.asc(),
-            "status",         getBasePath().status.code.asc(),
-            "customer",       getBasePath().customer.person.lastName.asc(),
-            "shipper",        getBasePath().shipper.name.asc(),
-            "totalValue",     getBasePath().totalValue.asc(),
-            "netValue",       getBasePath().netValue.asc(),
-            "totalItems",     getBasePath().totalItems.asc(),
-            "transportValue", getBasePath().transportValue.asc()
+      "buyOrder", getBasePath().id.asc(),
+      "date", getBasePath().date.asc(),
+      "status", getBasePath().status.code.asc(),
+      "customer", getBasePath().customer.person.lastName.asc(),
+      "shipper", getBasePath().shipper.name.asc(),
+      "totalValue", getBasePath().totalValue.asc(),
+      "netValue", getBasePath().netValue.asc(),
+      "totalItems", getBasePath().totalItems.asc(),
+      "transportValue", getBasePath().transportValue.asc()
     );
   }
 }

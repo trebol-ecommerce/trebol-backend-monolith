@@ -33,7 +33,6 @@ import java.util.Objects;
   })
 public class Param
   implements Serializable {
-
   private static final long serialVersionUID = 6L;
 
   @Id
@@ -50,7 +49,8 @@ public class Param
   @Column(name = "param_value", nullable = false)
   private String value;
 
-  public Param() { }
+  public Param() {
+  }
 
   public Long getId() {
     return id;
@@ -90,9 +90,9 @@ public class Param
     if (o == null || getClass() != o.getClass()) return false;
     Param param = (Param) o;
     return Objects.equals(id, param.id) &&
-        Objects.equals(category, param.category) &&
-        Objects.equals(name, param.name) &&
-        Objects.equals(value, param.value);
+      Objects.equals(category, param.category) &&
+      Objects.equals(name, param.name) &&
+      Objects.equals(value, param.value);
   }
 
   @Override
@@ -103,10 +103,10 @@ public class Param
   @Override
   public String toString() {
     return "Param{" +
-        "id=" + id +
-        ", category='" + category + '\'' +
-        ", name='" + name + '\'' +
-        ", value='" + value + '\'' +
-        '}';
+      "id=" + id +
+      ", category='" + category + '\'' +
+      ", name='" + name + '\'' +
+      ", value='" + value + '\'' +
+      '}';
   }
 }

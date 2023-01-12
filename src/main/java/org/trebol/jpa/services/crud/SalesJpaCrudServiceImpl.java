@@ -57,14 +57,14 @@ public class SalesJpaCrudServiceImpl
   private static final boolean CAN_EDIT_AFTER_PROCESS = true; // TODO refactor as part of application properties
 
   @Autowired
-  public SalesJpaCrudServiceImpl(ISalesJpaRepository repository,
-                                 IProductsJpaRepository productsRepository,
-                                 ISalesConverterJpaService converter,
-                                 ISalesDataTransportJpaService dataTransportService,
-                                 IProductsConverterJpaService productConverter) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public SalesJpaCrudServiceImpl(
+    ISalesJpaRepository repository,
+    IProductsJpaRepository productsRepository,
+    ISalesConverterJpaService converter,
+    ISalesDataTransportJpaService dataTransportService,
+    IProductsConverterJpaService productConverter
+  ) {
+    super(repository, converter, dataTransportService);
     this.salesRepository = repository;
     this.productsRepository = productsRepository;
     this.productConverter = productConverter;
@@ -79,9 +79,10 @@ public class SalesJpaCrudServiceImpl
       return this.salesRepository.findById(buyOrder);
     }
   }
+
   @Override
   public SellPojo readOne(Predicate conditions)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     Optional<Sell> matchingSell = salesRepository.findOne(conditions);
     if (matchingSell.isPresent()) {
       Sell found = matchingSell.get();
@@ -96,7 +97,7 @@ public class SalesJpaCrudServiceImpl
 
   @Override
   protected SellPojo persistEntityWithUpdatesFromPojo(SellPojo changes, Sell existingEntity)
-      throws BadInputException {
+    throws BadInputException {
     Integer statusCode = existingEntity.getStatus().getCode();
     if ((statusCode >= 3 || statusCode < 0) && !CAN_EDIT_AFTER_PROCESS) {
       throw new BadInputException("The requested transaction cannot be modified");

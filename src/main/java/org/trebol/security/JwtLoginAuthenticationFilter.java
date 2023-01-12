@@ -37,11 +37,13 @@ import java.io.IOException;
 
 public class JwtLoginAuthenticationFilter
   extends GenericJwtAuthenticationFilter {
-
   private final AuthenticationManager authenticationManager;
 
-  public JwtLoginAuthenticationFilter(SecurityProperties jwtProperties, SecretKey secretKey,
-                                      AuthenticationManager authenticationManager) {
+  public JwtLoginAuthenticationFilter(
+    SecurityProperties jwtProperties,
+    SecretKey secretKey,
+    AuthenticationManager authenticationManager
+  ) {
     super(jwtProperties, secretKey);
     this.authenticationManager = authenticationManager;
   }
@@ -55,8 +57,8 @@ public class JwtLoginAuthenticationFilter
       try {
         LoginPojo userData = new ObjectMapper().readValue(request.getInputStream(), LoginPojo.class);
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-            userData.getName(),
-            userData.getPassword());
+          userData.getName(),
+          userData.getPassword());
         return authenticationManager.authenticate(authentication);
       } catch (IOException e) {
         throw new BadCredentialsException("Request body is not a login request");

@@ -22,13 +22,13 @@ package org.trebol.operation.controllers;
 
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.crud.ISalesCrudService;
@@ -49,17 +49,19 @@ import java.util.Map;
 @PreAuthorize("isAuthenticated()")
 public class DataSalesController
   extends GenericDataCrudController<SellPojo, Sell> {
-
   private final ISalesProcessService processService;
+  @Nullable
   private final IMailingIntegrationService mailingIntegrationService;
 
   @Autowired
-  public DataSalesController(PaginationService paginationService,
-                             ISortSpecJpaService<Sell> sortService,
-                             ISalesCrudService crudService,
-                             IPredicateJpaService<Sell> predicateService,
-                             ISalesProcessService processService,
-                             @Autowired(required = false) IMailingIntegrationService mailingIntegrationService) {
+  public DataSalesController(
+    PaginationService paginationService,
+    ISortSpecJpaService<Sell> sortService,
+    ISalesCrudService crudService,
+    IPredicateJpaService<Sell> predicateService,
+    ISalesProcessService processService,
+    @Autowired(required = false) IMailingIntegrationService mailingIntegrationService
+  ) {
     super(paginationService, sortService, crudService, predicateService);
     this.processService = processService;
     this.mailingIntegrationService = mailingIntegrationService;
@@ -85,7 +87,7 @@ public class DataSalesController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:create')")
   public void create(@Valid @RequestBody SellPojo input)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -93,7 +95,7 @@ public class DataSalesController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:update')")
   public void update(@RequestBody SellPojo input, @RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     super.update(input, requestParams);
   }
 
@@ -101,14 +103,14 @@ public class DataSalesController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:delete')")
   public void delete(@RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     super.delete(requestParams);
   }
 
   @PostMapping({"/confirmation", "/confirmation/"})
   @PreAuthorize("hasAuthority('sales:update')")
   public void confirmSell(@RequestBody SellPojo sell)
-      throws BadInputException, MailingServiceException {
+    throws BadInputException, MailingServiceException {
     SellPojo updatedSell = processService.markAsConfirmed(sell);
     if (this.mailingIntegrationService != null) {
       mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
@@ -119,7 +121,7 @@ public class DataSalesController
   @PostMapping({"/rejection", "/rejection/"})
   @PreAuthorize("hasAuthority('sales:update')")
   public void rejectSell(@RequestBody SellPojo sell)
-      throws BadInputException, MailingServiceException {
+    throws BadInputException, MailingServiceException {
     SellPojo updatedSell = processService.markAsRejected(sell);
     if (this.mailingIntegrationService != null) {
       mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
@@ -129,7 +131,7 @@ public class DataSalesController
   @PostMapping({"/completion", "/completion/"})
   @PreAuthorize("hasAuthority('sales:update')")
   public void completeSell(@RequestBody SellPojo sell)
-      throws BadInputException, MailingServiceException {
+    throws BadInputException, MailingServiceException {
     SellPojo updatedSell = processService.markAsCompleted(sell);
     if (this.mailingIntegrationService != null) {
       mailingIntegrationService.notifyOrderStatusToClient(updatedSell);

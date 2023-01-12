@@ -34,7 +34,6 @@ import java.util.Map;
  * Type that creates an instance of CorsConfigurationSource using information from an instance of CorsProperties
  */
 public class CorsConfigurationSourceBuilder {
-
   private final String listDelimiter;
   private final List<String> allowedHeaders;
   private final List<String> allowedOrigins;
@@ -53,7 +52,7 @@ public class CorsConfigurationSourceBuilder {
     baseConfig.setAllowCredentials(true);
     baseConfig.setMaxAge(300L);
     UrlBasedCorsConfigurationSource cfg = new UrlBasedCorsConfigurationSource();
-    for (Map.Entry<String,String> properties : mappings.entrySet()) {
+    for (Map.Entry<String, String> properties : mappings.entrySet()) {
       List<String> methods = Arrays.asList(properties.getValue().split(","));
       CorsConfiguration pathConfig = new CorsConfiguration(baseConfig);
       pathConfig.setAllowedOrigins(this.allowedOrigins);
@@ -74,10 +73,9 @@ public class CorsConfigurationSourceBuilder {
         map.put(path, method);
       } catch (ArrayIndexOutOfBoundsException e) {
         throw new CorsMappingParseException(
-                "Could not parse '" + chunk + "', format must be 'METHOD[,METHOD2,...] /path/to/api'");
+          "Could not parse '" + chunk + "', format must be 'METHOD[,METHOD2,...] /path/to/api'");
       }
     }
     return map;
   }
-
 }

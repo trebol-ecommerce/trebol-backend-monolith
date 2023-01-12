@@ -25,7 +25,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.crud.IUsersCrudService;
@@ -47,10 +46,12 @@ public class DataUsersController
   extends GenericDataCrudController<UserPojo, User> {
 
   @Autowired
-  public DataUsersController(PaginationService paginationService,
-                             ISortSpecJpaService<User> sortService,
-                             IUsersCrudService crudService,
-                             IPredicateJpaService<User> predicateService) {
+  public DataUsersController(
+    PaginationService paginationService,
+    ISortSpecJpaService<User> sortService,
+    IUsersCrudService crudService,
+    IPredicateJpaService<User> predicateService
+  ) {
     super(paginationService, sortService, crudService, predicateService);
   }
 
@@ -65,7 +66,7 @@ public class DataUsersController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('users:create')")
   public void create(@Valid @RequestBody UserPojo input)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -73,14 +74,14 @@ public class DataUsersController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('users:update')")
   public void update(@RequestBody UserPojo input, @RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     super.update(input, requestParams);
   }
 
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('users:delete')")
   public void delete(Principal principal, @RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException, BadInputException {
+    throws EntityNotFoundException, BadInputException {
     if (requestParams.containsKey("name") && requestParams.get("name").equals(principal.getName())) {
       throw new BadInputException("A user should not be able to delete their own account");
     }

@@ -22,7 +22,7 @@ package org.trebol.integration.exceptions;
 
 public class MailingServiceException
   extends Exception {
-  
+
   public MailingServiceException() {
   }
 
@@ -37,5 +37,4 @@ public class MailingServiceException
   public MailingServiceException(Throwable throwable) {
     super(throwable);
   }
-
 }

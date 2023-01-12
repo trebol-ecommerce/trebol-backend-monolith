@@ -38,7 +38,7 @@ public class SellStatusesDataTransportJpaServiceImpl
     SellStatus target = new SellStatus(existing);
 
     Integer code = source.getCode();
-    if (code != null && !target.getCode().equals(code))  {
+    if (code != null && !target.getCode().equals(code)) {
       target.setCode(code);
     }
 

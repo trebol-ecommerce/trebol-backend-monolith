@@ -27,7 +27,7 @@ import org.trebol.pojo.ReceiptDetailPojo;
 
 @Component
 public class SellDetailEntity2ReceiptDetailPojo
-    implements Converter<SellDetail, ReceiptDetailPojo> {
+  implements Converter<SellDetail, ReceiptDetailPojo> {
 
   @Override
   public ReceiptDetailPojo convert(SellDetail source) {

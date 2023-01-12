@@ -38,7 +38,6 @@ import java.util.Objects;
   })
 public class Sell
   implements Serializable {
-
   private static final long serialVersionUID = 14L;
 
   @Id
@@ -62,7 +61,7 @@ public class Sell
   @Column(name = "sell_transaction_token")
   private String transactionToken;
   @JoinColumn(name = "customer_id")
-  @ManyToOne(optional = false, cascade = { CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+  @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
   private Customer customer;
   @JoinColumn(name = "payment_type_id", updatable = false, nullable = false)
   @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -74,25 +73,26 @@ public class Sell
   @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private BillingType billingType;
   @JoinColumn(name = "billing_company_id")
-  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
   private BillingCompany billingCompany;
   @JoinColumn(name = "billing_address_id", updatable = false)
-  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
   private Address billingAddress;
   @JoinColumn(name = "shipper_id", updatable = false)
   @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   private Shipper shipper;
   @JoinColumn(name = "shipping_address_id", updatable = false)
-  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
   private Address shippingAddress;
   @JoinColumn(name = "salesperson_id")
-  @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE }, fetch = FetchType.LAZY)
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
   private Salesperson salesperson;
   @JoinColumn(name = "sell_id", nullable = false)
   @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
   private Collection<SellDetail> details;
 
-  public Sell() { }
+  public Sell() {
+  }
 
   public Sell(Sell source) {
     this.id = source.id;
@@ -310,53 +310,53 @@ public class Sell
     if (o == null || getClass() != o.getClass()) return false;
     Sell sell = (Sell) o;
     return totalItems == sell.totalItems &&
-        netValue == sell.netValue &&
-        transportValue == sell.transportValue &&
-        taxesValue == sell.taxesValue &&
-        totalValue == sell.totalValue &&
-        Objects.equals(id, sell.id) &&
-        Objects.equals(date, sell.date) &&
-        Objects.equals(transactionToken, sell.transactionToken) &&
-        Objects.equals(customer, sell.customer) &&
-        Objects.equals(paymentType, sell.paymentType) &&
-        Objects.equals(status, sell.status) &&
-        Objects.equals(billingType, sell.billingType) &&
-        Objects.equals(billingCompany, sell.billingCompany) &&
-        Objects.equals(billingAddress, sell.billingAddress) &&
-        Objects.equals(shipper, sell.shipper) &&
-        Objects.equals(shippingAddress, sell.shippingAddress) &&
-        Objects.equals(salesperson, sell.salesperson) &&
-        Objects.equals(details, sell.details);
+      netValue == sell.netValue &&
+      transportValue == sell.transportValue &&
+      taxesValue == sell.taxesValue &&
+      totalValue == sell.totalValue &&
+      Objects.equals(id, sell.id) &&
+      Objects.equals(date, sell.date) &&
+      Objects.equals(transactionToken, sell.transactionToken) &&
+      Objects.equals(customer, sell.customer) &&
+      Objects.equals(paymentType, sell.paymentType) &&
+      Objects.equals(status, sell.status) &&
+      Objects.equals(billingType, sell.billingType) &&
+      Objects.equals(billingCompany, sell.billingCompany) &&
+      Objects.equals(billingAddress, sell.billingAddress) &&
+      Objects.equals(shipper, sell.shipper) &&
+      Objects.equals(shippingAddress, sell.shippingAddress) &&
+      Objects.equals(salesperson, sell.salesperson) &&
+      Objects.equals(details, sell.details);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id, date, totalItems, netValue, transportValue, taxesValue, totalValue, transactionToken,
-        customer, paymentType, status, billingType, billingCompany, billingAddress, shipper, shippingAddress,
-        salesperson, details);
+      customer, paymentType, status, billingType, billingCompany, billingAddress, shipper, shippingAddress,
+      salesperson, details);
   }
 
   @Override
   public String toString() {
     return "Sell{" +
-        "id=" + id +
-        ", date=" + date +
-        ", totalItems=" + totalItems +
-        ", netValue=" + netValue +
-        ", transportValue=" + transportValue +
-        ", taxesValue=" + taxesValue +
-        ", totalValue=" + totalValue +
-        ", transactionToken='" + transactionToken + '\'' +
-        ", customer=" + customer +
-        ", paymentType=" + paymentType +
-        ", status=" + status +
-        ", billingType=" + billingType +
-        ", billingCompany=" + billingCompany +
-        ", billingAddress=" + billingAddress +
-        ", shipper=" + shipper +
-        ", shippingAddress=" + shippingAddress +
-        ", salesperson=" + salesperson +
-        ", details=" + details +
-        '}';
+      "id=" + id +
+      ", date=" + date +
+      ", totalItems=" + totalItems +
+      ", netValue=" + netValue +
+      ", transportValue=" + transportValue +
+      ", taxesValue=" + taxesValue +
+      ", totalValue=" + totalValue +
+      ", transactionToken='" + transactionToken + '\'' +
+      ", customer=" + customer +
+      ", paymentType=" + paymentType +
+      ", status=" + status +
+      ", billingType=" + billingType +
+      ", billingCompany=" + billingCompany +
+      ", billingAddress=" + billingAddress +
+      ", shipper=" + shipper +
+      ", shippingAddress=" + shippingAddress +
+      ", salesperson=" + salesperson +
+      ", details=" + details +
+      '}';
   }
 }

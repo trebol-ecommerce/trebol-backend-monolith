@@ -25,7 +25,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.crud.IShippersCrudService;
@@ -45,10 +44,12 @@ public class DataShippersController
   extends GenericDataCrudController<ShipperPojo, Shipper> {
 
   @Autowired
-  public DataShippersController(PaginationService paginationService,
-                                ISortSpecJpaService<Shipper> sortService,
-                                IShippersCrudService crudService,
-                                IPredicateJpaService<Shipper> predicateService) {
+  public DataShippersController(
+    PaginationService paginationService,
+    ISortSpecJpaService<Shipper> sortService,
+    IShippersCrudService crudService,
+    IPredicateJpaService<Shipper> predicateService
+  ) {
     super(paginationService, sortService, crudService, predicateService);
   }
 
@@ -62,7 +63,7 @@ public class DataShippersController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('shippers:create')")
   public void create(@Valid @RequestBody ShipperPojo input)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -70,7 +71,7 @@ public class DataShippersController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('shippers:update')")
   public void update(@RequestBody ShipperPojo input, @RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     super.update(input, requestParams);
   }
 
@@ -78,7 +79,7 @@ public class DataShippersController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('shippers:delete')")
   public void delete(@RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     super.delete(requestParams);
   }
 }

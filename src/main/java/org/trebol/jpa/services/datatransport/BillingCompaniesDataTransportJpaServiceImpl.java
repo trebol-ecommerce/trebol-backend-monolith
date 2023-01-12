@@ -29,13 +29,12 @@ import org.trebol.pojo.BillingCompanyPojo;
 public class BillingCompaniesDataTransportJpaServiceImpl
   implements IBillingCompaniesDataTransportJpaService {
 
-  public BillingCompaniesDataTransportJpaServiceImpl(
-  ) {
+  public BillingCompaniesDataTransportJpaServiceImpl() {
   }
 
   @Override
   public BillingCompany applyChangesToExistingEntity(BillingCompanyPojo source, BillingCompany existing)
-          throws BadInputException {
+    throws BadInputException {
     BillingCompany target = new BillingCompany(existing);
 
     String name = source.getName();

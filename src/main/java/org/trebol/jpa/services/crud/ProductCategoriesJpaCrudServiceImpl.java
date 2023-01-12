@@ -36,17 +36,17 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductCategoriesJpaCrudServiceImpl
-  extends GenericCrudJpaService<ProductCategoryPojo, ProductCategory> implements IProductCategoriesCrudService {
-
+  extends GenericCrudJpaService<ProductCategoryPojo, ProductCategory>
+  implements IProductCategoriesCrudService {
   private final IProductsCategoriesJpaRepository categoriesRepository;
 
   @Autowired
-  public ProductCategoriesJpaCrudServiceImpl(IProductsCategoriesJpaRepository repository,
-                                             IProductCategoriesConverterJpaService converter,
-                                             IProductCategoriesDataTransportJpaService dataTransportService) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public ProductCategoriesJpaCrudServiceImpl(
+    IProductsCategoriesJpaRepository repository,
+    IProductCategoriesConverterJpaService converter,
+    IProductCategoriesDataTransportJpaService dataTransportService
+  ) {
+    super(repository, converter, dataTransportService);
     this.categoriesRepository = repository;
   }
 

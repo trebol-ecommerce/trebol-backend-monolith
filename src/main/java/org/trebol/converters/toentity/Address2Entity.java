@@ -27,7 +27,7 @@ import org.trebol.pojo.AddressPojo;
 
 @Component
 public class Address2Entity
-    implements Converter<AddressPojo, Address> {
+  implements Converter<AddressPojo, Address> {
 
   @Override
   public Address convert(AddressPojo source) {
@@ -38,7 +38,7 @@ public class Address2Entity
     if (source.getPostalCode() != null) {
       target.setPostalCode(source.getPostalCode());
     }
-    if (source.getNotes()!= null) {
+    if (source.getNotes() != null) {
       target.setNotes(source.getNotes());
     }
     return target;

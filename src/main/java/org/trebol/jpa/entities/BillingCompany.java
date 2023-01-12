@@ -29,7 +29,6 @@ import java.util.Objects;
 @Table(name = "billing_companies")
 public class BillingCompany
   implements Serializable {
-
   private static final long serialVersionUID = 2L;
 
   @Id
@@ -43,7 +42,8 @@ public class BillingCompany
   @Column(name = "billing_company_name", nullable = false, unique = true)
   private String name;
 
-  public BillingCompany() { }
+  public BillingCompany() {
+  }
 
   public BillingCompany(BillingCompany source) {
     this.id = source.id;
@@ -87,8 +87,8 @@ public class BillingCompany
     if (o == null || getClass() != o.getClass()) return false;
     BillingCompany that = (BillingCompany) o;
     return Objects.equals(id, that.id) &&
-        Objects.equals(idNumber, that.idNumber) &&
-        Objects.equals(name, that.name);
+      Objects.equals(idNumber, that.idNumber) &&
+      Objects.equals(name, that.name);
   }
 
   @Override
@@ -99,9 +99,9 @@ public class BillingCompany
   @Override
   public String toString() {
     return "BillingCompany{" +
-        "id=" + id +
-        ", idNumber='" + idNumber + '\'' +
-        ", name='" + name + '\'' +
-        '}';
+      "id=" + id +
+      ", idNumber='" + idNumber + '\'' +
+      ", name='" + name + '\'' +
+      '}';
   }
 }

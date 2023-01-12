@@ -38,16 +38,15 @@ import java.util.Optional;
 public class BillingCompaniesJpaCrudServiceImpl
   extends GenericCrudJpaService<BillingCompanyPojo, BillingCompany>
   implements IBillingCompaniesCrudService {
-
   private final IBillingCompaniesJpaRepository billingCompaniesRepository;
 
   @Autowired
-  public BillingCompaniesJpaCrudServiceImpl(IBillingCompaniesJpaRepository repository,
-                                            IBillingCompaniesConverterJpaService converter,
-                                            IBillingCompaniesDataTransportJpaService dataTransportService) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public BillingCompaniesJpaCrudServiceImpl(
+    IBillingCompaniesJpaRepository repository,
+    IBillingCompaniesConverterJpaService converter,
+    IBillingCompaniesDataTransportJpaService dataTransportService
+  ) {
+    super(repository, converter, dataTransportService);
     this.billingCompaniesRepository = repository;
   }
 

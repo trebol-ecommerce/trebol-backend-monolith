@@ -28,7 +28,6 @@ import java.util.Objects;
 @Table(name = "salespeople")
 public class Salesperson
   implements Serializable {
-
   private static final long serialVersionUID = 13L;
 
   @Id
@@ -39,7 +38,8 @@ public class Salesperson
   @ManyToOne(optional = false, cascade = CascadeType.ALL)
   private Person person;
 
-  public Salesperson() { }
+  public Salesperson() {
+  }
 
   public Salesperson(Salesperson source) {
     this.id = source.id;
@@ -76,7 +76,7 @@ public class Salesperson
     if (o == null || getClass() != o.getClass()) return false;
     Salesperson that = (Salesperson) o;
     return Objects.equals(id, that.id) &&
-        Objects.equals(person, that.person);
+      Objects.equals(person, that.person);
   }
 
   @Override
@@ -87,8 +87,8 @@ public class Salesperson
   @Override
   public String toString() {
     return "Salesperson{" +
-        "id=" + id +
-        ", person=" + person +
-        '}';
+      "id=" + id +
+      ", person=" + person +
+      '}';
   }
 }

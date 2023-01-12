@@ -28,7 +28,6 @@ import java.util.Objects;
 @Table(name = "app_user_role_permissions")
 public class UserRolePermission
   implements Serializable {
-
   private static final long serialVersionUID = 21L;
 
   @Id
@@ -42,7 +41,8 @@ public class UserRolePermission
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
-  public UserRolePermission() { }
+  public UserRolePermission() {
+  }
 
   public Long getId() {
     return id;
@@ -74,8 +74,8 @@ public class UserRolePermission
     if (o == null || getClass() != o.getClass()) return false;
     UserRolePermission that = (UserRolePermission) o;
     return Objects.equals(id, that.id) &&
-        Objects.equals(permission, that.permission) &&
-        Objects.equals(userRole, that.userRole);
+      Objects.equals(permission, that.permission) &&
+      Objects.equals(userRole, that.userRole);
   }
 
   @Override
@@ -86,9 +86,9 @@ public class UserRolePermission
   @Override
   public String toString() {
     return "UserRolePermission{" +
-        "id=" + id +
-        ", permission=" + permission +
-        ", userRole=" + userRole +
-        '}';
+      "id=" + id +
+      ", permission=" + permission +
+      ", userRole=" + userRole +
+      '}';
   }
 }

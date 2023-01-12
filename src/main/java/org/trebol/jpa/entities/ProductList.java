@@ -34,8 +34,8 @@ import java.util.Objects;
   })
 public class ProductList
   implements Serializable {
-
   private static final long serialVersionUID = 16L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "product_list_id", nullable = false)
@@ -118,9 +118,9 @@ public class ProductList
     if (o == null || getClass() != o.getClass()) return false;
     ProductList that = (ProductList) o;
     return disabled == that.disabled &&
-        Objects.equals(id, that.id) &&
-        Objects.equals(name, that.name) &&
-        Objects.equals(code, that.code);
+      Objects.equals(id, that.id) &&
+      Objects.equals(name, that.name) &&
+      Objects.equals(code, that.code);
   }
 
   @Override
@@ -131,10 +131,10 @@ public class ProductList
   @Override
   public String toString() {
     return "ProductList{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", code='" + code + '\'' +
-        ", disabled=" + disabled +
-        '}';
+      "id=" + id +
+      ", name='" + name + '\'' +
+      ", code='" + code + '\'' +
+      ", disabled=" + disabled +
+      '}';
   }
 }

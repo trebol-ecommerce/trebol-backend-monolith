@@ -34,24 +34,25 @@ import java.security.Principal;
 @RequestMapping("/account/profile")
 @PreAuthorize("isAuthenticated()")
 public class AccountProfileController {
-
   private final IProfileService userProfileService;
 
   @Autowired
-  public AccountProfileController(IProfileService userProfileService) {
+  public AccountProfileController(
+    IProfileService userProfileService
+  ) {
     this.userProfileService = userProfileService;
   }
 
   @GetMapping({"", "/"})
   public PersonPojo getProfile(Principal principal)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     String username = principal.getName();
     return userProfileService.getProfileFromUserName(username);
   }
 
   @PutMapping({"", "/"})
   public void updateProfile(Principal principal, @RequestBody PersonPojo newProfile)
-      throws EntityNotFoundException, BadInputException {
+    throws EntityNotFoundException, BadInputException {
     String username = principal.getName();
     userProfileService.updateProfileForUserWithName(principal.getName(), newProfile);
   }

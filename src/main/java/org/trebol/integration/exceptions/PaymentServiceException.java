@@ -22,7 +22,7 @@ package org.trebol.integration.exceptions;
 
 public class PaymentServiceException
   extends Exception {
-  
+
   public PaymentServiceException() {
   }
 
@@ -37,5 +37,4 @@ public class PaymentServiceException
   public PaymentServiceException(Throwable thrwbl) {
     super(thrwbl);
   }
-
 }

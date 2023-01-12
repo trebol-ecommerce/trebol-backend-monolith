@@ -29,7 +29,6 @@ import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.repositories.ISellDetailsJpaRepository;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
 import org.trebol.jpa.services.conversion.ISalesConverterJpaService;
 import org.trebol.jpa.services.crud.ISalesCrudService;
@@ -49,7 +48,6 @@ import static org.trebol.config.Constants.*;
 @Service
 public class SalesProcessServiceImpl
   implements ISalesProcessService {
-
   private static final String THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION = "The transaction is not in a valid state for this operation";
   private static final String NO_STATUS_MATCHES_THE = "No status matches the";
   private static final String NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT = "name - Is the database empty or corrupt?";
@@ -60,12 +58,14 @@ public class SalesProcessServiceImpl
   private final ISalesConverterJpaService converterService;
   private final IProductsConverterJpaService productConverterService;
 
-  public SalesProcessServiceImpl(ISalesCrudService crudService,
-                                 ISalesJpaRepository salesRepository,
-                                 ISellDetailsJpaRepository sellDetailsRepository,
-                                 ISellStatusesJpaRepository sellStatusesRepository,
-                                 ISalesConverterJpaService converterService,
-                                 IProductsConverterJpaService productConverterService) {
+  public SalesProcessServiceImpl(
+    ISalesCrudService crudService,
+    ISalesJpaRepository salesRepository,
+    ISellDetailsJpaRepository sellDetailsRepository,
+    ISellStatusesJpaRepository sellStatusesRepository,
+    ISalesConverterJpaService converterService,
+    IProductsConverterJpaService productConverterService
+  ) {
     this.crudService = crudService;
     this.salesRepository = salesRepository;
     this.sellDetailsRepository = sellDetailsRepository;
@@ -76,7 +76,6 @@ public class SalesProcessServiceImpl
 
   // TODO figure out how to shorten below methods
   // TODO to compare statuses use numbers, not strings
-
   @Override
   public SellPojo markAsStarted(SellPojo sell) throws BadInputException, EntityNotFoundException {
     Sell existingSell = this.fetchExistingOrThrowException(sell);
@@ -164,13 +163,13 @@ public class SalesProcessServiceImpl
     }
     target.setStatus(SELL_STATUS_PAID_UNCONFIRMED);
     target.setDetails(pojoDetails);
-    
+
     return target;
   }
 
   @Override
   public SellPojo markAsConfirmed(SellPojo sell)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     Sell existingSell = this.fetchExistingOrThrowException(sell);
 
     if (!existingSell.getStatus().getName().equals(SELL_STATUS_PAID_UNCONFIRMED)) {
@@ -205,7 +204,7 @@ public class SalesProcessServiceImpl
 
   @Override
   public SellPojo markAsRejected(SellPojo sell)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     Sell existingSell = this.fetchExistingOrThrowException(sell);
 
     if (!existingSell.getStatus().getName().equals(SELL_STATUS_PAID_UNCONFIRMED)) {
@@ -239,7 +238,7 @@ public class SalesProcessServiceImpl
 
   @Override
   public SellPojo markAsCompleted(SellPojo sell)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     Sell existingSell = this.fetchExistingOrThrowException(sell);
 
     if (!existingSell.getStatus().getName().equals(SELL_STATUS_PAID_CONFIRMED)) {

@@ -33,7 +33,6 @@ import java.util.Objects;
   })
 public class UserRole
   implements Serializable {
-
   private static final long serialVersionUID = 20L;
 
   @Id
@@ -44,7 +43,8 @@ public class UserRole
   @Column(name = "user_role_name", nullable = false, unique = true)
   private String name;
 
-  public UserRole() { }
+  public UserRole() {
+  }
 
   public UserRole(UserRole source) {
     this.id = source.id;
@@ -78,7 +78,7 @@ public class UserRole
     if (o == null || getClass() != o.getClass()) return false;
     UserRole userRole = (UserRole) o;
     return Objects.equals(id, userRole.id) &&
-        Objects.equals(name, userRole.name);
+      Objects.equals(name, userRole.name);
   }
 
   @Override
@@ -89,8 +89,8 @@ public class UserRole
   @Override
   public String toString() {
     return "UserRole{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        '}';
+      "id=" + id +
+      ", name='" + name + '\'' +
+      '}';
   }
 }

@@ -25,7 +25,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.crud.IUserRolesCrudService;
@@ -46,10 +45,12 @@ public class DataUserRolesController
   extends GenericDataCrudController<UserRolePojo, UserRole> {
 
   @Autowired
-  public DataUserRolesController(PaginationService paginationService,
-                                 ISortSpecJpaService<UserRole> sortService,
-                                 IUserRolesCrudService crudService,
-                                 IPredicateJpaService<UserRole> predicateService) {
+  public DataUserRolesController(
+    PaginationService paginationService,
+    ISortSpecJpaService<UserRole> sortService,
+    IUserRolesCrudService crudService,
+    IPredicateJpaService<UserRole> predicateService
+  ) {
     super(paginationService, sortService, crudService, predicateService);
   }
 
@@ -64,7 +65,7 @@ public class DataUserRolesController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:create')")
   public void create(@Valid @RequestBody UserRolePojo input)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -72,7 +73,7 @@ public class DataUserRolesController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:update')")
   public void update(@RequestBody UserRolePojo input, @RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     super.update(input, requestParams);
   }
 
@@ -80,7 +81,7 @@ public class DataUserRolesController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('user_roles:delete')")
   public void delete(@RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     super.delete(requestParams);
   }
 }

@@ -25,7 +25,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.crud.IProductListCrudService;
@@ -45,10 +44,12 @@ public class DataProductListsController
   extends GenericDataCrudController<ProductListPojo, ProductList> {
 
   @Autowired
-  public DataProductListsController(PaginationService paginationService,
-                                    ISortSpecJpaService<ProductList> sortService,
-                                    IProductListCrudService crudService,
-                                    IPredicateJpaService<ProductList> predicateService) {
+  public DataProductListsController(
+    PaginationService paginationService,
+    ISortSpecJpaService<ProductList> sortService,
+    IProductListCrudService crudService,
+    IPredicateJpaService<ProductList> predicateService
+  ) {
     super(paginationService, sortService, crudService, predicateService);
   }
 
@@ -62,7 +63,7 @@ public class DataProductListsController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_lists:create')")
   public void create(@Valid @RequestBody ProductListPojo input)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -70,7 +71,7 @@ public class DataProductListsController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_lists:update')")
   public void update(@RequestBody ProductListPojo input, @RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     super.update(input, requestParams);
   }
 
@@ -78,7 +79,7 @@ public class DataProductListsController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_lists:delete')")
   public void delete(@RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     super.delete(requestParams);
   }
 }

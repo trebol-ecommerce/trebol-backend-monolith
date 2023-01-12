@@ -31,7 +31,7 @@ import java.util.Set;
 
 @Service
 public class AuthorizedApiServiceImpl
-    implements IAuthorizedApiService {
+  implements IAuthorizedApiService {
 
   @Override
   public Collection<String> getAuthorizedApiRoutes(UserDetails userDetails) {
@@ -59,5 +59,4 @@ public class AuthorizedApiServiceImpl
     }
     return authorizedActions;
   }
-
 }

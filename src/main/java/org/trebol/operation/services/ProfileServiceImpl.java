@@ -30,7 +30,6 @@ import org.trebol.jpa.exceptions.PersonNotFoundException;
 import org.trebol.jpa.exceptions.UserNotFoundException;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IPeopleConverterJpaService;
 import org.trebol.jpa.services.crud.IPeopleCrudService;
 import org.trebol.jpa.services.datatransport.IPeopleDataTransportJpaService;
@@ -42,8 +41,7 @@ import java.util.Optional;
 
 @Service
 public class ProfileServiceImpl
-    implements IProfileService {
-
+  implements IProfileService {
   private final IUsersJpaRepository usersRepository;
   private final IPeopleCrudService peopleService;
   private final IPeopleConverterJpaService peopleConverter;
@@ -51,11 +49,13 @@ public class ProfileServiceImpl
   private final IPeopleJpaRepository peopleRepository;
 
   @Autowired
-  public ProfileServiceImpl(IUsersJpaRepository usersRepository,
-                            IPeopleCrudService peopleService,
-                            IPeopleConverterJpaService peopleConverter,
-                            IPeopleDataTransportJpaService peopleDataTransportService,
-                            IPeopleJpaRepository peopleRepository) {
+  public ProfileServiceImpl(
+    IUsersJpaRepository usersRepository,
+    IPeopleCrudService peopleService,
+    IPeopleConverterJpaService peopleConverter,
+    IPeopleDataTransportJpaService peopleDataTransportService,
+    IPeopleJpaRepository peopleRepository
+  ) {
     this.usersRepository = usersRepository;
     this.peopleService = peopleService;
     this.peopleConverter = peopleConverter;
@@ -65,7 +65,7 @@ public class ProfileServiceImpl
 
   @Override
   public PersonPojo getProfileFromUserName(String userName)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     User user = this.getUserFromName(userName);
     Person person = user.getPerson();
     if (person == null) {
@@ -78,7 +78,7 @@ public class ProfileServiceImpl
   @Transactional
   @Override
   public void updateProfileForUserWithName(String userName, PersonPojo profile)
-      throws BadInputException, UserNotFoundException {
+    throws BadInputException, UserNotFoundException {
     User targetUser = this.getUserFromName(userName);
     Person target = targetUser.getPerson();
     if (target == null) {
@@ -105,7 +105,7 @@ public class ProfileServiceImpl
   }
 
   private User getUserFromName(String userName)
-      throws UserNotFoundException {
+    throws UserNotFoundException {
     Optional<User> userByName = usersRepository.findByName(userName);
     if (userByName.isEmpty()) {
       throw new UserNotFoundException("There is no account with the specified username");

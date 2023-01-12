@@ -33,7 +33,6 @@ import java.util.Objects;
   })
 public class User
   implements Serializable {
-
   private static final long serialVersionUID = 19L;
 
   @Id
@@ -53,7 +52,8 @@ public class User
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
-  public User() { }
+  public User() {
+  }
 
   public User(User source) {
     this.id = source.id;
@@ -117,10 +117,10 @@ public class User
     if (o == null || getClass() != o.getClass()) return false;
     User user = (User) o;
     return Objects.equals(id, user.id) &&
-        Objects.equals(name, user.name) &&
-        Objects.equals(password, user.password) &&
-        Objects.equals(person, user.person) &&
-        Objects.equals(userRole, user.userRole);
+      Objects.equals(name, user.name) &&
+      Objects.equals(password, user.password) &&
+      Objects.equals(person, user.person) &&
+      Objects.equals(userRole, user.userRole);
   }
 
   @Override
@@ -131,11 +131,11 @@ public class User
   @Override
   public String toString() {
     return "User{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", password='" + password + '\'' +
-        ", person=" + person +
-        ", userRole=" + userRole +
-        '}';
+      "id=" + id +
+      ", name='" + name + '\'' +
+      ", password='" + password + '\'' +
+      ", person=" + person +
+      ", userRole=" + userRole +
+      '}';
   }
 }

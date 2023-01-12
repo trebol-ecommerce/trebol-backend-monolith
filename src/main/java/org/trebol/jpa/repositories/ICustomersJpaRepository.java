@@ -30,7 +30,7 @@ import java.util.Optional;
 
 @Repository
 public interface ICustomersJpaRepository
-    extends IJpaRepository<Customer> {
+  extends IJpaRepository<Customer> {
 
   @Query(value = "SELECT c FROM Customer c JOIN FETCH c.person p WHERE p.idNumber = :idNumber")
   Optional<Customer> findByPersonIdNumber(@Param("idNumber") String idNumber);

@@ -39,16 +39,15 @@ import java.util.Optional;
 public class SalespeopleJpaCrudServiceImpl
   extends GenericCrudJpaService<SalespersonPojo, Salesperson>
   implements ISalespeopleCrudService {
-
   private final ISalespeopleJpaRepository salespeopleRepository;
 
   @Autowired
-  public SalespeopleJpaCrudServiceImpl(ISalespeopleJpaRepository repository,
-                                       ISalespeopleConverterJpaService converter,
-                                       ISalespeopleDataTransportJpaService dataTransportService) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public SalespeopleJpaCrudServiceImpl(
+    ISalespeopleJpaRepository repository,
+    ISalespeopleConverterJpaService converter,
+    ISalespeopleDataTransportJpaService dataTransportService
+  ) {
+    super(repository, converter, dataTransportService);
     this.salespeopleRepository = repository;
   }
 

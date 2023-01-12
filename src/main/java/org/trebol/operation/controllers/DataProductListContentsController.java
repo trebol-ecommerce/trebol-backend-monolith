@@ -29,7 +29,6 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
 import org.trebol.jpa.repositories.IProductListsJpaRepository;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.conversion.IProductListItemsConverterJpaService;
@@ -45,9 +44,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/data/product_list_contents")
 public class DataProductListContentsController {
-
   private static final String ITEM_NOT_FOUND = "Requested item(s) not found";
-
   private final PaginationService paginationService;
   private final ISortSpecJpaService<ProductListItem> sortService;
   private final IProductListItemsJpaRepository listItemsRepository;
@@ -57,13 +54,15 @@ public class DataProductListContentsController {
   private final IProductListItemsConverterJpaService itemConverterService;
 
   @Autowired
-  public DataProductListContentsController(PaginationService paginationService,
-                                           ISortSpecJpaService<ProductListItem> sortService,
-                                           IProductListItemsJpaRepository listItemsRepository,
-                                           IProductListsJpaRepository listsRepository,
-                                           IPredicateJpaService<ProductListItem> listItemsPredicateService,
-                                           IProductsCrudService productCrudService,
-                                           IProductListItemsConverterJpaService itemConverterService) {
+  public DataProductListContentsController(
+    PaginationService paginationService,
+    ISortSpecJpaService<ProductListItem> sortService,
+    IProductListItemsJpaRepository listItemsRepository,
+    IProductListsJpaRepository listsRepository,
+    IPredicateJpaService<ProductListItem> listItemsPredicateService,
+    IProductsCrudService productCrudService,
+    IProductListItemsConverterJpaService itemConverterService
+  ) {
     this.paginationService = paginationService;
     this.sortService = sortService;
     this.listItemsRepository = listItemsRepository;
@@ -75,7 +74,7 @@ public class DataProductListContentsController {
 
   @GetMapping({"", "/"})
   public DataPagePojo<ProductPojo> readContents(@RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     Optional<ProductList> match = this.fetchProductListByCode(requestParams);
     if (match.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
@@ -108,7 +107,7 @@ public class DataProductListContentsController {
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void addToContents(@Valid @RequestBody ProductPojo input,
                             @RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
     if (listMatch.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
@@ -127,7 +126,7 @@ public class DataProductListContentsController {
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void updateContents(@RequestBody Collection<ProductPojo> input,
                              @RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
     if (listMatch.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
@@ -148,7 +147,7 @@ public class DataProductListContentsController {
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_lists:contents')")
   public void deleteFromContents(@RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
     if (listMatch.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);

@@ -34,12 +34,13 @@ import javax.crypto.SecretKey;
 
 @Service
 public class ClaimsAuthorizationHeaderParserServiceImpl
-    implements IAuthorizationHeaderParserService<Claims> {
-
+  implements IAuthorizationHeaderParserService<Claims> {
   private final SecretKey secretKey;
 
   @Autowired
-  public ClaimsAuthorizationHeaderParserServiceImpl(SecretKey secretKey) {
+  public ClaimsAuthorizationHeaderParserServiceImpl(
+    SecretKey secretKey
+  ) {
     this.secretKey = secretKey;
   }
 
@@ -47,9 +48,9 @@ public class ClaimsAuthorizationHeaderParserServiceImpl
   public Claims parseToken(String token) throws IllegalStateException {
     try {
       Jws<Claims> claimsJws = Jwts.parserBuilder()
-          .setSigningKey(secretKey)
-          .build()
-          .parseClaimsJws(token);
+        .setSigningKey(secretKey)
+        .build()
+        .parseClaimsJws(token);
 
       return claimsJws.getBody();
     } catch (JwtException e) {
@@ -63,5 +64,4 @@ public class ClaimsAuthorizationHeaderParserServiceImpl
     String authHeaderKey = HttpHeaders.AUTHORIZATION;
     return httpHeaders.containsKey(authHeaderKey) ? httpHeaders.getFirst(authHeaderKey) : null;
   }
-
 }

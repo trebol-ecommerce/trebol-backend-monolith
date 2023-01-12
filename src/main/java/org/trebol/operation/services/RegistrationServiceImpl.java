@@ -43,7 +43,6 @@ import java.util.Optional;
 @Service
 public class RegistrationServiceImpl
   implements IRegistrationService {
-
   private final Logger logger = LoggerFactory.getLogger(RegistrationServiceImpl.class);
   private final IPeopleJpaRepository peopleRepository;
   private final IUsersJpaRepository usersRepository;
@@ -53,10 +52,14 @@ public class RegistrationServiceImpl
   private final ConversionService conversionService;
 
   @Autowired
-  public RegistrationServiceImpl(IPeopleJpaRepository peopleRepository,
-    IUsersJpaRepository usersRepository, IUserRolesJpaRepository rolesRepository,
-    ICustomersJpaRepository customersRepository, PasswordEncoder passwordEncoder,
-    ConversionService conversionService) {
+  public RegistrationServiceImpl(
+    IPeopleJpaRepository peopleRepository,
+    IUsersJpaRepository usersRepository,
+    IUserRolesJpaRepository rolesRepository,
+    ICustomersJpaRepository customersRepository,
+    PasswordEncoder passwordEncoder,
+    ConversionService conversionService
+  ) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;
     this.rolesRepository = rolesRepository;
@@ -67,7 +70,7 @@ public class RegistrationServiceImpl
 
   @Override
   public void register(RegistrationPojo registration)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     String username = registration.getName();
     Predicate userWithSameName = QUser.user.name.eq(username);
     if (usersRepository.exists(userWithSameName)) {
@@ -111,5 +114,4 @@ public class RegistrationServiceImpl
     }
     return target;
   }
-
 }

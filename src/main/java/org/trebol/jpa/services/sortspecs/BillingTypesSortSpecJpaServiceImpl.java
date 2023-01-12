@@ -40,7 +40,7 @@ public class BillingTypesSortSpecJpaServiceImpl
   @Override
   protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
     return Map.of(
-              "name",  getBasePath().name.asc()
+      "name", getBasePath().name.asc()
     );
   }
 }

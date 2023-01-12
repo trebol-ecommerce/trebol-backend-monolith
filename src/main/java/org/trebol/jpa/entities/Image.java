@@ -29,7 +29,6 @@ import java.util.Objects;
 @Table(name = "images")
 public class Image
   implements Serializable {
-
   private static final long serialVersionUID = 5L;
 
   @Id
@@ -46,7 +45,8 @@ public class Image
   @Column(name = "image_url", nullable = false, unique = true)
   private String url;
 
-  public Image() { }
+  public Image() {
+  }
 
   public Image(Image source) {
     this.id = source.id;
@@ -106,9 +106,9 @@ public class Image
     if (o == null || getClass() != o.getClass()) return false;
     Image image = (Image) o;
     return Objects.equals(id, image.id) &&
-        Objects.equals(code, image.code) &&
-        Objects.equals(filename, image.filename) &&
-        Objects.equals(url, image.url);
+      Objects.equals(code, image.code) &&
+      Objects.equals(filename, image.filename) &&
+      Objects.equals(url, image.url);
   }
 
   @Override
@@ -119,10 +119,10 @@ public class Image
   @Override
   public String toString() {
     return "Image{" +
-        "id=" + id +
-        ", code='" + code + '\'' +
-        ", filename='" + filename + '\'' +
-        ", url='" + url + '\'' +
-        '}';
+      "id=" + id +
+      ", code='" + code + '\'' +
+      ", filename='" + filename + '\'' +
+      ", url='" + url + '\'' +
+      '}';
   }
 }

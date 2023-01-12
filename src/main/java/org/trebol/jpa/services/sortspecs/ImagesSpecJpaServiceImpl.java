@@ -40,9 +40,9 @@ public class ImagesSpecJpaServiceImpl
   @Override
   protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
     return Map.of(
-            "code",     getBasePath().code.asc(),
-            "filename", getBasePath().filename.asc(),
-            "url",      getBasePath().url.asc()
+      "code", getBasePath().code.asc(),
+      "filename", getBasePath().filename.asc(),
+      "url", getBasePath().url.asc()
     );
   }
 }

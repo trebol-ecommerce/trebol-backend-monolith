@@ -38,16 +38,15 @@ import java.util.Optional;
 public class UserRolesJpaCrudServiceImpl
   extends GenericCrudJpaService<UserRolePojo, UserRole>
   implements IUserRolesCrudService {
-
   private final IUserRolesJpaRepository userRolesRepository;
 
   @Autowired
-  public UserRolesJpaCrudServiceImpl(IUserRolesJpaRepository repository,
-                                     IUserRolesConverterJpaService converter,
-                                     IUserRolesDataTransportJpaService dataTransportService) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public UserRolesJpaCrudServiceImpl(
+    IUserRolesJpaRepository repository,
+    IUserRolesConverterJpaService converter,
+    IUserRolesDataTransportJpaService dataTransportService
+  ) {
+    super(repository, converter, dataTransportService);
     this.userRolesRepository = repository;
   }
 

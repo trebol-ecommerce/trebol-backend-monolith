@@ -44,18 +44,19 @@ import java.util.Optional;
  */
 @Service
 public class UserDetailsServiceImpl
-    implements UserDetailsService {
-
+  implements UserDetailsService {
   private final IUsersJpaRepository usersRepository;
   private final IUserRolePermissionsJpaRepository rolePermissionsRepository;
   private final IUserPermissionsService userPermissionsService;
   private final SecurityProperties securityProperties;
 
   @Autowired
-  public UserDetailsServiceImpl(IUsersJpaRepository usersRepository,
-                                IUserRolePermissionsJpaRepository rolePermissionsRepository,
-                                IUserPermissionsService userPermissionsService,
-                                SecurityProperties securityProperties) {
+  public UserDetailsServiceImpl(
+    IUsersJpaRepository usersRepository,
+    IUserRolePermissionsJpaRepository rolePermissionsRepository,
+    IUserPermissionsService userPermissionsService,
+    SecurityProperties securityProperties
+  ) {
     this.usersRepository = usersRepository;
     this.rolePermissionsRepository = rolePermissionsRepository;
     this.userPermissionsService = userPermissionsService;
@@ -74,7 +75,7 @@ public class UserDetailsServiceImpl
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     if (securityProperties.isGuestUserEnabled() &&
-        username.equals(securityProperties.getGuestUserName())) {
+      username.equals(securityProperties.getGuestUserName())) {
       // TODO parameterize role ID
       Iterable<UserRolePermission> rawPermissions = rolePermissionsRepository.deepFindPermissionsByUserRoleId(4L);
       List<Permission> permissions = new ArrayList<>();
@@ -83,7 +84,7 @@ public class UserDetailsServiceImpl
       }
       List<SimpleGrantedAuthority> authorities = convertPermissionList(permissions);
       return new UserDetailsPojo(authorities, username, "",
-                                 true, true, true, true);
+        true, true, true, true);
     }
     Optional<User> foundUser = usersRepository.findByNameWithRole(username);
     if (foundUser.isPresent()) {
@@ -91,10 +92,9 @@ public class UserDetailsServiceImpl
       Iterable<Permission> permissions = userPermissionsService.loadPermissionsForUser(user);
       List<SimpleGrantedAuthority> authorities = convertPermissionList(permissions);
       return new UserDetailsPojo(authorities, username, user.getPassword(),
-          true, true, true, true);
+        true, true, true, true);
     } else {
       throw new UsernameNotFoundException(username);
     }
   }
-
 }

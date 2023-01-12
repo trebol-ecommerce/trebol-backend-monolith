@@ -40,6 +40,7 @@ import java.util.Optional;
 /**
  * Simple CRUD service abstraction. Communicates with other services only through Pojos, keeping JPA entity classes only within their own scope.
  * Whenever possible, its public abstract API should not be overriden, but its protected methods instead.
+ *
  * @param <P> The pojo class
  * @param <E> The entity class
  */
@@ -53,9 +54,11 @@ public abstract class GenericCrudJpaService<P, E>
   protected final ITwoWayConverterJpaService<P, E> converter;
   protected final IDataTransportJpaService<P, E> dataTransportService;
 
-  protected GenericCrudJpaService(IJpaRepository<E> repository,
-                               ITwoWayConverterJpaService<P, E> converter,
-                               IDataTransportJpaService<P, E> dataTransportService) {
+  protected GenericCrudJpaService(
+    IJpaRepository<E> repository,
+    ITwoWayConverterJpaService<P, E> converter,
+    IDataTransportJpaService<P, E> dataTransportService
+  ) {
     this.repository = repository;
     this.converter = converter;
     this.dataTransportService = dataTransportService;
@@ -63,11 +66,12 @@ public abstract class GenericCrudJpaService<P, E>
 
   /**
    * Converts a pojo to an entity, saves it and returns it back as a brand new pojo equivalent.
+   *
    * @param inputPojo The Pojo instance to be converted and inserted.
    */
   @Override
   public P create(P inputPojo)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     this.validateInputPojoBeforeCreation(inputPojo);
     E preparedEntity = this.prepareNewEntityFromInputPojo(inputPojo);
     return this.persist(preparedEntity);
@@ -79,14 +83,14 @@ public abstract class GenericCrudJpaService<P, E>
   @Override
   public DataPagePojo<P> readMany(int pageIndex, int pageSize, @Nullable Sort order, @Nullable Predicate filters) {
     Pageable pagination = ((order == null) ?
-        PageRequest.of(pageIndex, pageSize) :
-        PageRequest.of(pageIndex, pageSize, order));
+      PageRequest.of(pageIndex, pageSize) :
+      PageRequest.of(pageIndex, pageSize, order));
     long totalCount = ((filters == null) ?
-        repository.count() :
-        repository.count(filters));
+      repository.count() :
+      repository.count(filters));
     Page<E> iterable = ((filters == null) ?
-        repository.findAll(pagination) :
-        repository.findAll(filters, pagination));
+      repository.findAll(pagination) :
+      repository.findAll(filters, pagination));
     List<P> pojoList = new ArrayList<>();
     for (E item : iterable) {
       P outputItem = converter.convertToPojo(item);
@@ -97,7 +101,7 @@ public abstract class GenericCrudJpaService<P, E>
 
   @Override
   public P update(P input)
-      throws EntityNotFoundException, BadInputException {
+    throws EntityNotFoundException, BadInputException {
     Optional<E> match = this.getExisting(input);
     if (match.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
@@ -107,7 +111,7 @@ public abstract class GenericCrudJpaService<P, E>
 
   @Override
   public P update(P input, Predicate filters)
-      throws EntityNotFoundException, BadInputException {
+    throws EntityNotFoundException, BadInputException {
     Optional<E> firstMatch = repository.findOne(filters);
     if (firstMatch.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
@@ -117,7 +121,7 @@ public abstract class GenericCrudJpaService<P, E>
 
   @Override
   public void delete(Predicate filters)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     long count = repository.count(filters);
     if (count == 0) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
@@ -127,7 +131,7 @@ public abstract class GenericCrudJpaService<P, E>
 
   @Override
   public P readOne(Predicate filters)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     Optional<E> entity = repository.findOne(filters);
     if (entity.isEmpty()) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);
@@ -145,13 +149,14 @@ public abstract class GenericCrudJpaService<P, E>
    * Copies changes from a pojo to an entity.
    * Executes right before updating (persisting) data.
    * Ideal overridable method to include cascading entity relationships.
-   * @param changes A Pojo class instance with the data that is being submitted
+   *
+   * @param changes        A Pojo class instance with the data that is being submitted
    * @param existingEntity An existing entity class instance that will be updated
    * @return The resulting Pojo class instance
    * @throws BadInputException If data in Pojo is insufficient, incorrect, malformed, etc
    */
   protected P persistEntityWithUpdatesFromPojo(P changes, E existingEntity)
-      throws BadInputException {
+    throws BadInputException {
     E updatedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
     if (existingEntity.equals(updatedEntity)) {
       return changes;
@@ -162,6 +167,7 @@ public abstract class GenericCrudJpaService<P, E>
   /**
    * Base entity-specific validation  method.
    * Should be called at the beginning of the create() method.
+   *
    * @param inputPojo A pojo to validate
    * @throws BadInputException If the pojo does not have a valid identifying property
    */
@@ -175,6 +181,7 @@ public abstract class GenericCrudJpaService<P, E>
    * Creates a new entity from a pojo.
    * Executes right before persisting data.
    * Ideal overridable method to include cascading entity relationships.
+   *
    * @param inputPojo A pojo to convert to an entity
    * @return An entity object equivalent to the provided pojo, ready for saving
    * @throws BadInputException If the pojo does not have a valid identifying property

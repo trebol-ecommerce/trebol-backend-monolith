@@ -40,10 +40,10 @@ public class ProductsSortSpecJpaServiceImpl
   @Override
   protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
     return Map.of(
-            "name",     getBasePath().name.asc(),
-            "barcode",  getBasePath().barcode.asc(),
-            "price",    getBasePath().price.asc(),
-            "category", getBasePath().productCategory.name.asc()
+      "name", getBasePath().name.asc(),
+      "barcode", getBasePath().barcode.asc(),
+      "price", getBasePath().price.asc(),
+      "category", getBasePath().productCategory.name.asc()
     );
   }
 }

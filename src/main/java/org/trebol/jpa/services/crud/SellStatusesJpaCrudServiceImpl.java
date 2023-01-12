@@ -38,16 +38,15 @@ import java.util.Optional;
 public class SellStatusesJpaCrudServiceImpl
   extends GenericCrudJpaService<SellStatusPojo, SellStatus>
   implements ISellStatusesCrudService {
-
   private final ISellStatusesJpaRepository statusesRepository;
 
   @Autowired
-  public SellStatusesJpaCrudServiceImpl(ISellStatusesJpaRepository repository,
-                                        ISellStatusesConverterJpaService converter,
-                                        ISellStatusesDataTransportJpaService dataTransportService) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public SellStatusesJpaCrudServiceImpl(
+    ISellStatusesJpaRepository repository,
+    ISellStatusesConverterJpaService converter,
+    ISellStatusesDataTransportJpaService dataTransportService
+  ) {
+    super(repository, converter, dataTransportService);
     this.statusesRepository = repository;
   }
 

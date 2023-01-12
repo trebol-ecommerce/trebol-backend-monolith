@@ -27,7 +27,7 @@ import org.trebol.pojo.ImagePojo;
 
 @Component
 public class Image2Entity
-    implements Converter<ImagePojo, Image> {
+  implements Converter<ImagePojo, Image> {
 
   @Override
   public Image convert(ImagePojo source) {

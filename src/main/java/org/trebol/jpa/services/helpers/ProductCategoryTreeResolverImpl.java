@@ -15,14 +15,14 @@ import java.util.Optional;
 @Service
 public class ProductCategoryTreeResolverImpl
   implements IProductCategoryTreeResolver {
-
   private final IProductsCategoriesJpaRepository repository;
   private final OperationProperties operationProperties;
 
   @Autowired
   public ProductCategoryTreeResolverImpl(
-          IProductsCategoriesJpaRepository repository,
-          OperationProperties operationProperties) {
+    IProductsCategoriesJpaRepository repository,
+    OperationProperties operationProperties
+  ) {
     this.repository = repository;
     this.operationProperties = operationProperties;
   }

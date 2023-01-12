@@ -33,7 +33,6 @@ import java.util.Objects;
   })
 public class Product
   implements Serializable {
-
   private static final long serialVersionUID = 10L;
 
   @Id
@@ -59,7 +58,8 @@ public class Product
   @ManyToOne(fetch = FetchType.LAZY)
   private ProductCategory productCategory;
 
-  public Product() { }
+  public Product() {
+  }
 
   public Product(Product source) {
     this.id = source.id;
@@ -178,13 +178,13 @@ public class Product
     if (o == null || getClass() != o.getClass()) return false;
     Product product = (Product) o;
     return price == product.price &&
-        stockCurrent == product.stockCurrent &&
-        stockCritical == product.stockCritical &&
-        Objects.equals(id, product.id) &&
-        Objects.equals(name, product.name) &&
-        Objects.equals(barcode, product.barcode) &&
-        Objects.equals(description, product.description) &&
-        Objects.equals(productCategory, product.productCategory);
+      stockCurrent == product.stockCurrent &&
+      stockCritical == product.stockCritical &&
+      Objects.equals(id, product.id) &&
+      Objects.equals(name, product.name) &&
+      Objects.equals(barcode, product.barcode) &&
+      Objects.equals(description, product.description) &&
+      Objects.equals(productCategory, product.productCategory);
   }
 
   @Override
@@ -195,14 +195,14 @@ public class Product
   @Override
   public String toString() {
     return "Product{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", barcode='" + barcode + '\'' +
-        ", description='" + description + '\'' +
-        ", price=" + price +
-        ", stockCurrent=" + stockCurrent +
-        ", stockCritical=" + stockCritical +
-        ", productCategory=" + productCategory +
-        '}';
+      "id=" + id +
+      ", name='" + name + '\'' +
+      ", barcode='" + barcode + '\'' +
+      ", description='" + description + '\'' +
+      ", price=" + price +
+      ", stockCurrent=" + stockCurrent +
+      ", stockCritical=" + stockCritical +
+      ", productCategory=" + productCategory +
+      '}';
   }
 }

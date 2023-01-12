@@ -36,12 +36,12 @@ import java.util.Map;
 @Service
 public class ProductListPredicateJpaServiceImpl
   implements IPredicateJpaService<ProductList> {
-
   private final Logger logger = LoggerFactory.getLogger(ProductListPredicateJpaServiceImpl.class);
 
-
   @Override
-  public QProductList getBasePath() { return QProductList.productList; }
+  public QProductList getBasePath() {
+    return QProductList.productList;
+  }
 
   @Override
   public Predicate parseMap(Map<String, String> queryParamsMap) {

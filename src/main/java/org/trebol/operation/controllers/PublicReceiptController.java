@@ -36,17 +36,18 @@ import javax.persistence.EntityNotFoundException;
 @RequestMapping("/public/receipt")
 public class PublicReceiptController {
   private final Logger LOG = LoggerFactory.getLogger(PublicReceiptController.class);
-
   private final IReceiptService receiptService;
 
   @Autowired
-  public PublicReceiptController(IReceiptService receiptService) {
+  public PublicReceiptController(
+    IReceiptService receiptService
+  ) {
     this.receiptService = receiptService;
   }
 
   @GetMapping({"/{token}", "/{token}/"})
   public ReceiptPojo fetchReceiptById(@PathVariable("token") String token)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     if (token == null) {
       throw new RuntimeException("An incorrect receipt token was provided");
     }

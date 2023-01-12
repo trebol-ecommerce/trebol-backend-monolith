@@ -28,8 +28,8 @@ import java.util.Objects;
 @Table(name = "product_list_items")
 public class ProductListItem
   implements Serializable {
-
   private static final long serialVersionUID = 17L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "product_list_item_id", nullable = false)
@@ -41,7 +41,8 @@ public class ProductListItem
   @ManyToOne(optional = false)
   private Product product;
 
-  public ProductListItem() { }
+  public ProductListItem() {
+  }
 
   public ProductListItem(ProductListItem source) {
     this.id = source.id;
@@ -84,8 +85,8 @@ public class ProductListItem
     if (o == null || getClass() != o.getClass()) return false;
     ProductListItem that = (ProductListItem) o;
     return Objects.equals(id, that.id) &&
-        Objects.equals(list, that.list) &&
-        Objects.equals(product, that.product);
+      Objects.equals(list, that.list) &&
+      Objects.equals(product, that.product);
   }
 
   @Override
@@ -96,7 +97,7 @@ public class ProductListItem
   @Override
   public String toString() {
     return "ProductListItem{id=" + id +
-        ", product=" + product +
-        '}';
+      ", product=" + product +
+      '}';
   }
 }

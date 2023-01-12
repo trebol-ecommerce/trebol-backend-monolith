@@ -28,8 +28,7 @@ import java.util.Optional;
 
 @Repository
 public interface IBillingCompaniesJpaRepository
-    extends IJpaRepository<BillingCompany> {
+  extends IJpaRepository<BillingCompany> {
 
   Optional<BillingCompany> findByIdNumber(String idNumber);
-
 }

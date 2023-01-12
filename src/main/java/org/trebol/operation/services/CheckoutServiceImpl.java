@@ -29,7 +29,6 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.operation.ICheckoutService;
@@ -48,8 +47,7 @@ import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
 
 @Service
 public class CheckoutServiceImpl
-    implements ICheckoutService {
-
+  implements ICheckoutService {
   private final Logger logger = LoggerFactory.getLogger(CheckoutServiceImpl.class);
   private final ISalesCrudService salesCrudService;
   private final ISalesProcessService salesProcessService;
@@ -57,10 +55,12 @@ public class CheckoutServiceImpl
   private final IPaymentsIntegrationService paymentIntegrationService;
 
   @Autowired
-  public CheckoutServiceImpl(ISalesCrudService salesCrudService,
-                             ISalesProcessService salesProcessService,
-                             IPredicateJpaService<Sell> salesPredicateService,
-                             IPaymentsIntegrationService paymentIntegrationService) {
+  public CheckoutServiceImpl(
+    ISalesCrudService salesCrudService,
+    ISalesProcessService salesProcessService,
+    IPredicateJpaService<Sell> salesPredicateService,
+    IPaymentsIntegrationService paymentIntegrationService
+  ) {
     this.salesCrudService = salesCrudService;
     this.salesProcessService = salesProcessService;
     this.salesPredicateService = salesPredicateService;
@@ -81,7 +81,7 @@ public class CheckoutServiceImpl
 
   @Override
   public SellPojo confirmTransaction(String transactionToken, boolean wasAborted)
-      throws EntityNotFoundException, PaymentServiceException {
+    throws EntityNotFoundException, PaymentServiceException {
     SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
     try {
       if (wasAborted) {
@@ -109,11 +109,12 @@ public class CheckoutServiceImpl
 
   /**
    * Fetches the result of a transaction from the payment integration service and updates it in the database.
+   *
    * @throws EntityNotFoundException If no transaction has a matching token.
    * @throws PaymentServiceException As raised at integration level.
    */
   private SellPojo processSellPaymentStatus(SellPojo sellByToken)
-      throws EntityNotFoundException, PaymentServiceException {
+    throws EntityNotFoundException, PaymentServiceException {
     int statusCode = paymentIntegrationService.requestPaymentResult(sellByToken.getToken());
     try {
       if (statusCode != 0) {
@@ -128,10 +129,10 @@ public class CheckoutServiceImpl
   }
 
   private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws EntityNotFoundException {
-    Map<String, String> startedWithTokenMatcher = Map.of("statusCode", SELL_STATUS_PAYMENT_STARTED,
-                                                       "token", transactionToken);
+    Map<String, String> startedWithTokenMatcher = Map.of(
+      "statusCode", SELL_STATUS_PAYMENT_STARTED,
+      "token", transactionToken);
     Predicate startedTransactionWithMatchingToken = salesPredicateService.parseMap(startedWithTokenMatcher);
     return salesCrudService.readOne(startedTransactionWithMatchingToken);
   }
-
 }

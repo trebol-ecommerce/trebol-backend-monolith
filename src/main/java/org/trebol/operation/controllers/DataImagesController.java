@@ -25,7 +25,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.crud.IImagesCrudService;
@@ -46,10 +45,12 @@ public class DataImagesController
   extends GenericDataCrudController<ImagePojo, Image> {
 
   @Autowired
-  public DataImagesController(PaginationService paginationService,
-                              ISortSpecJpaService<Image> sortService,
-                              IImagesCrudService crudService,
-                              IPredicateJpaService<Image> predicateService) {
+  public DataImagesController(
+    PaginationService paginationService,
+    ISortSpecJpaService<Image> sortService,
+    IImagesCrudService crudService,
+    IPredicateJpaService<Image> predicateService
+  ) {
     super(paginationService, sortService, crudService, predicateService);
   }
 
@@ -64,7 +65,7 @@ public class DataImagesController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('images:create')")
   public void create(@Valid @RequestBody ImagePojo input)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -72,7 +73,7 @@ public class DataImagesController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('images:update')")
   public void update(@RequestBody ImagePojo input, @RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException, BadInputException {
+    throws EntityNotFoundException, BadInputException {
     super.update(input, requestParams);
   }
 
@@ -80,7 +81,7 @@ public class DataImagesController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('images:delete')")
   public void delete(@RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     super.delete(requestParams);
   }
 }

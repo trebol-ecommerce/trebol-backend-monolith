@@ -28,9 +28,8 @@ import java.util.List;
 
 @Data
 public class UserDetailsPojo
-    implements UserDetails {
+  implements UserDetails {
   private static final long serialVersionUID = 1L;
-
   private final List<? extends GrantedAuthority> authorities;
   private final String username;
   private final String password;

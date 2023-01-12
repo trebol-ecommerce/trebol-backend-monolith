@@ -28,7 +28,6 @@ import java.util.Objects;
 @Table(name = "shippers")
 public class Shipper
   implements Serializable {
-
   private static final long serialVersionUID = 18L;
 
   @Id
@@ -38,7 +37,8 @@ public class Shipper
   @Column(name = "shipper_name", nullable = false, unique = true)
   private String name;
 
-  public Shipper() { }
+  public Shipper() {
+  }
 
   public Shipper(Shipper source) {
     this.id = source.id;
@@ -72,7 +72,7 @@ public class Shipper
     if (o == null || getClass() != o.getClass()) return false;
     Shipper shipper = (Shipper) o;
     return Objects.equals(id, shipper.id) &&
-        Objects.equals(name, shipper.name);
+      Objects.equals(name, shipper.name);
   }
 
   @Override
@@ -83,8 +83,8 @@ public class Shipper
   @Override
   public String toString() {
     return "Shipper{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        '}';
+      "id=" + id +
+      ", name='" + name + '\'' +
+      '}';
   }
 }

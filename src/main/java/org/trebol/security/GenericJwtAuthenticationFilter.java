@@ -41,18 +41,22 @@ import java.util.Date;
  */
 public abstract class GenericJwtAuthenticationFilter
   extends UsernamePasswordAuthenticationFilter {
-
   private final SecurityProperties jwtProperties;
   private final SecretKey secretKey;
 
-  public GenericJwtAuthenticationFilter(SecurityProperties jwtProperties, SecretKey secretKey) {
+  public GenericJwtAuthenticationFilter(
+    SecurityProperties jwtProperties,
+    SecretKey secretKey
+  ) {
     this.jwtProperties = jwtProperties;
     this.secretKey = secretKey;
   }
 
   @Override
-  protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-    FilterChain chain, Authentication authResult)
+  protected void successfulAuthentication(HttpServletRequest request,
+                                          HttpServletResponse response,
+                                          FilterChain chain,
+                                          Authentication authResult)
     throws IOException {
     int minutesToExpire = jwtProperties.getJwtExpirationAfterMinutes();
     int hoursToExpire = jwtProperties.getJwtExpirationAfterHours();
@@ -60,16 +64,16 @@ public abstract class GenericJwtAuthenticationFilter
 
     Instant now = Instant.now();
     Instant expiration = now.plus(Period.ofDays(daysToExpire))
-        .plus(Duration.ofHours(hoursToExpire))
-        .plus(Duration.ofMinutes(minutesToExpire));
+      .plus(Duration.ofHours(hoursToExpire))
+      .plus(Duration.ofMinutes(minutesToExpire));
 
     String token = Jwts.builder()
-        .setSubject(authResult.getName())
-        .claim("authorities", authResult.getAuthorities())
-        .setIssuedAt(Date.from(now))
-        .setExpiration(Date.from(expiration))
-        .signWith(secretKey)
-        .compact();
+      .setSubject(authResult.getName())
+      .claim("authorities", authResult.getAuthorities())
+      .setIssuedAt(Date.from(now))
+      .setExpiration(Date.from(expiration))
+      .signWith(secretKey)
+      .compact();
 
     String headerValue = "Bearer " + token;
     response.addHeader(HttpHeaders.AUTHORIZATION, headerValue);

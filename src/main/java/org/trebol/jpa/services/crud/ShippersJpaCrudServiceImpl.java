@@ -36,17 +36,17 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ShippersJpaCrudServiceImpl
-  extends GenericCrudJpaService<ShipperPojo, Shipper> implements IShippersCrudService {
-
+  extends GenericCrudJpaService<ShipperPojo, Shipper>
+  implements IShippersCrudService {
   private final IShippersJpaRepository shippersRepository;
 
   @Autowired
-  public ShippersJpaCrudServiceImpl(IShippersJpaRepository repository,
-                                    IShippersConverterJpaService converter,
-                                    IShippersDataTransportJpaService dataTransportService) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public ShippersJpaCrudServiceImpl(
+    IShippersJpaRepository repository,
+    IShippersConverterJpaService converter,
+    IShippersDataTransportJpaService dataTransportService
+  ) {
+    super(repository, converter, dataTransportService);
     this.shippersRepository = repository;
   }
 

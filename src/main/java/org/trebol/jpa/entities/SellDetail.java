@@ -29,7 +29,6 @@ import java.util.Objects;
 @Table(name = "sell_details")
 public class SellDetail
   implements Serializable {
-
   private static final long serialVersionUID = 15L;
 
   @Id
@@ -44,15 +43,16 @@ public class SellDetail
   @Size(max = 260)
   private String description;
   @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false,
-      foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
   @ManyToOne(optional = false)
   private Product product;
   @JoinColumn(name = "sell_id", referencedColumnName = "sell_id", insertable = false, updatable = false,
-      foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Sell sell;
 
-  public SellDetail() { }
+  public SellDetail() {
+  }
 
   public SellDetail(SellDetail source) {
     this.id = source.id;
@@ -68,7 +68,7 @@ public class SellDetail
     this.product = product;
     this.unitValue = product.getPrice();
     this.description = String.format("%o x %s [%s] | Unit Val: %d",
-                                     units, product.getName(), product.getBarcode(), product.getPrice());
+      units, product.getName(), product.getBarcode(), product.getPrice());
   }
 
   public SellDetail(Long id, int units, Integer unitValue, Product product) {
@@ -77,7 +77,7 @@ public class SellDetail
     this.unitValue = unitValue;
     this.product = product;
     this.description = String.format("%o x %s [%s] | Unit Val: %d",
-                                     units, product.getName(), product.getBarcode(), product.getPrice());
+      units, product.getName(), product.getBarcode(), product.getPrice());
   }
 
   public Long getId() {
@@ -134,10 +134,10 @@ public class SellDetail
     if (o == null || getClass() != o.getClass()) return false;
     SellDetail that = (SellDetail) o;
     return units == that.units &&
-        Objects.equals(id, that.id) &&
-        Objects.equals(unitValue, that.unitValue) &&
-        Objects.equals(product, that.product) &&
-        Objects.equals(description, that.description);
+      Objects.equals(id, that.id) &&
+      Objects.equals(unitValue, that.unitValue) &&
+      Objects.equals(product, that.product) &&
+      Objects.equals(description, that.description);
   }
 
   @Override
@@ -148,11 +148,11 @@ public class SellDetail
   @Override
   public String toString() {
     return "SellDetail{" +
-        "id=" + id +
-        ", units=" + units +
-        ", unitValue=" + unitValue +
-        ", product=" + product +
-        ", description=" + description +
-        '}';
+      "id=" + id +
+      ", units=" + units +
+      ", unitValue=" + unitValue +
+      ", product=" + product +
+      ", description=" + description +
+      '}';
   }
 }

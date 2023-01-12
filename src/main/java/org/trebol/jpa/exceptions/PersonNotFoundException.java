@@ -23,9 +23,10 @@ package org.trebol.jpa.exceptions;
 import javax.persistence.EntityNotFoundException;
 
 public class PersonNotFoundException
-    extends EntityNotFoundException {
+  extends EntityNotFoundException {
 
-  public PersonNotFoundException() { }
+  public PersonNotFoundException() {
+  }
 
   public PersonNotFoundException(String message) {
     super(message);

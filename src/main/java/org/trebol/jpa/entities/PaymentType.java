@@ -29,7 +29,6 @@ import java.util.Objects;
 @Table(name = "payment_types")
 public class PaymentType
   implements Serializable {
-
   private static final long serialVersionUID = 7L;
 
   @Id
@@ -40,7 +39,8 @@ public class PaymentType
   @Column(name = "payment_type_name", nullable = false, unique = true)
   private String name;
 
-  public PaymentType() { }
+  public PaymentType() {
+  }
 
   public PaymentType(Long id, String name) {
     this.id = id;
@@ -69,7 +69,7 @@ public class PaymentType
     if (o == null || getClass() != o.getClass()) return false;
     PaymentType that = (PaymentType) o;
     return Objects.equals(id, that.id) &&
-        Objects.equals(name, that.name);
+      Objects.equals(name, that.name);
   }
 
   @Override
@@ -80,8 +80,8 @@ public class PaymentType
   @Override
   public String toString() {
     return "PaymentType{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        '}';
+      "id=" + id +
+      ", name='" + name + '\'' +
+      '}';
   }
 }

@@ -41,7 +41,6 @@ import java.util.Objects;
   })
 public class Address
   implements Serializable {
-
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -66,7 +65,8 @@ public class Address
   @Column(name = "address_notes")
   private String notes;
 
-  public Address() { }
+  public Address() {
+  }
 
   public Address(Address source) {
     this.id = source.id;
@@ -140,12 +140,12 @@ public class Address
     if (o == null || getClass() != o.getClass()) return false;
     Address address = (Address) o;
     return Objects.equals(id, address.id) &&
-        Objects.equals(city, address.city) &&
-        Objects.equals(municipality, address.municipality) &&
-        Objects.equals(firstLine, address.firstLine) &&
-        Objects.equals(secondLine, address.secondLine) &&
-        Objects.equals(postalCode, address.postalCode) &&
-        Objects.equals(notes, address.notes);
+      Objects.equals(city, address.city) &&
+      Objects.equals(municipality, address.municipality) &&
+      Objects.equals(firstLine, address.firstLine) &&
+      Objects.equals(secondLine, address.secondLine) &&
+      Objects.equals(postalCode, address.postalCode) &&
+      Objects.equals(notes, address.notes);
   }
 
   @Override
@@ -156,13 +156,13 @@ public class Address
   @Override
   public String toString() {
     return "Address{" +
-        "id=" + id +
-        ", city='" + city + '\'' +
-        ", municipality='" + municipality + '\'' +
-        ", firstLine='" + firstLine + '\'' +
-        ", secondLine='" + secondLine + '\'' +
-        ", postalCode='" + postalCode + '\'' +
-        ", notes='" + notes + '\'' +
-        '}';
+      "id=" + id +
+      ", city='" + city + '\'' +
+      ", municipality='" + municipality + '\'' +
+      ", firstLine='" + firstLine + '\'' +
+      ", secondLine='" + secondLine + '\'' +
+      ", postalCode='" + postalCode + '\'' +
+      ", notes='" + notes + '\'' +
+      '}';
   }
 }

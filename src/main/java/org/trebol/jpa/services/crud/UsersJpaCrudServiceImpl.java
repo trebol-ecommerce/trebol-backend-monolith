@@ -41,18 +41,17 @@ import java.util.Optional;
 @Service
 public class UsersJpaCrudServiceImpl
   extends GenericCrudJpaService<UserPojo, User> implements IUsersCrudService {
-
   private final IUsersJpaRepository userRepository;
   private final SecurityProperties securityProperties;
 
   @Autowired
-  public UsersJpaCrudServiceImpl(IUsersJpaRepository repository,
-                                 IUsersConverterJpaService converter,
-                                 IUsersDataTransportJpaService dataTransportService,
-                                 SecurityProperties securityProperties) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public UsersJpaCrudServiceImpl(
+    IUsersJpaRepository repository,
+    IUsersConverterJpaService converter,
+    IUsersDataTransportJpaService dataTransportService,
+    SecurityProperties securityProperties
+  ) {
+    super(repository, converter, dataTransportService);
     this.userRepository = repository;
     this.securityProperties = securityProperties;
   }
@@ -80,5 +79,4 @@ public class UsersJpaCrudServiceImpl
     }
     super.delete(filters);
   }
-
 }

@@ -58,9 +58,9 @@ import static org.trebol.config.Constants.*;
 @Profile("mailgun")
 public class MailgunMailingServiceImpl
   implements IMailingIntegrationService {
-
+  private static final String CUSTOMER_MAPS_KEY_PREFIX = "customer:";
+  private static final String OWNERS_MAPS_KEY_PREFIX = "owners:";
   private final Logger logger = LoggerFactory.getLogger(MailgunMailingServiceImpl.class);
-
   private final MailingProperties internalMailingProperties;
   private final MailgunMailingProperties mailgunProperties;
   private final Map<String, String> orderStatus2MailgunTemplatesMap;
@@ -68,13 +68,12 @@ public class MailgunMailingServiceImpl
   private final ConversionService conversionService;
   private final ObjectMapper mailObjectMapper;
 
-  private static final String CUSTOMER_MAPS_KEY_PREFIX = "customer:";
-  private static final String OWNERS_MAPS_KEY_PREFIX = "owners:";
-
   @Autowired
-  public MailgunMailingServiceImpl(MailingProperties mailingProperties,
-                                   MailgunMailingProperties mailgunProperties,
-                                   ConversionService conversionService) {
+  public MailgunMailingServiceImpl(
+    MailingProperties mailingProperties,
+    MailgunMailingProperties mailgunProperties,
+    ConversionService conversionService
+  ) {
     this.internalMailingProperties = mailingProperties;
     this.mailgunProperties = mailgunProperties;
     this.conversionService = conversionService;
@@ -85,7 +84,7 @@ public class MailgunMailingServiceImpl
 
   @Override
   public void notifyOrderStatusToClient(SellPojo sell)
-      throws MailingServiceException {
+    throws MailingServiceException {
     String url = "https://api.mailgun.net/v3/" + mailgunProperties.getDomain() + "/messages";
     String mapsKey = CUSTOMER_MAPS_KEY_PREFIX + sell.getStatus();
     if (orderStatus2MailSubjectMap.containsKey(mapsKey)) {
@@ -98,29 +97,29 @@ public class MailgunMailingServiceImpl
       String variables = this.makeMailgunVariablesFrom(sell);
 
       HttpResponse<JsonNode> request = Unirest.post(url)
-          .basicAuth("api", mailgunProperties.getApiKey())
-          .field("from", internalMailingProperties.getSenderEmail())
-          .field("to", recipient)
-          .field("subject", fullSubject)
-          .field("template", mailgunTemplateName)
-          .field("h:X-Mailgun-Variables", variables)
-          .asJson();
+        .basicAuth("api", mailgunProperties.getApiKey())
+        .field("from", internalMailingProperties.getSenderEmail())
+        .field("to", recipient)
+        .field("subject", fullSubject)
+        .field("template", mailgunTemplateName)
+        .field("h:X-Mailgun-Variables", variables)
+        .asJson();
       try {
         if (((String) request.getBody().getObject().get("id")).isBlank()) {
           logger.warn("Mailgun returned the following JSON: {}", request.getBody());
           throw new MailingServiceException(
-              "Status of the sent e-mail is unknown, Mailgun did not provide an ID for this operation");
+            "Status of the sent e-mail is unknown, Mailgun did not provide an ID for this operation");
         }
       } catch (JSONException ex) {
         throw new MailingServiceException(
-            "Status of the sent e-mail is unknown, Mailgun threw an exception while validating the response", ex);
+          "Status of the sent e-mail is unknown, Mailgun threw an exception while validating the response", ex);
       }
     }
   }
 
   @Override
   public void notifyOrderStatusToOwners(SellPojo sell)
-      throws MailingServiceException {
+    throws MailingServiceException {
     String url = "https://api.mailgun.net/v3/" + mailgunProperties.getDomain() + "/messages";
     String mapsKey = OWNERS_MAPS_KEY_PREFIX + sell.getStatus();
     if (orderStatus2MailSubjectMap.containsKey(mapsKey)) {
@@ -130,47 +129,47 @@ public class MailgunMailingServiceImpl
       String variables = this.makeMailgunVariablesFrom(sell);
 
       HttpResponse<JsonNode> request = Unirest.post(url)
-          .basicAuth("api", mailgunProperties.getApiKey())
-          .field("from", internalMailingProperties.getSenderEmail())
-          .field("to", internalMailingProperties.getOwnerEmail())
-          .field("subject", fullSubject)
-          .field("template", mailgunTemplateName)
-          .field("h:X-Mailgun-Variables", variables)
-          .asJson();
+        .basicAuth("api", mailgunProperties.getApiKey())
+        .field("from", internalMailingProperties.getSenderEmail())
+        .field("to", internalMailingProperties.getOwnerEmail())
+        .field("subject", fullSubject)
+        .field("template", mailgunTemplateName)
+        .field("h:X-Mailgun-Variables", variables)
+        .asJson();
       try {
         if (((String) request.getBody().getObject().get("id")).isBlank()) {
           logger.warn("Mailgun returned the following JSON: {}", request.getBody());
           throw new MailingServiceException(
-              "Status of the sent e-mail is unknown, Mailgun did not provide an ID for this operation");
+            "Status of the sent e-mail is unknown, Mailgun did not provide an ID for this operation");
         }
       } catch (JSONException ex) {
         throw new MailingServiceException(
-            "Status of the sent e-mail is unknown, Mailgun threw an exception while validating the response", ex);
+          "Status of the sent e-mail is unknown, Mailgun threw an exception while validating the response", ex);
       }
     }
   }
 
   private Map<String, String> makeTemplatesMap() {
     return Map.of(
-        CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_UNCONFIRMED, mailgunProperties.getCustomerOrderPaymentTemplate(),
-        CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, mailgunProperties.getCustomerOrderConfirmationTemplate(),
-        CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, mailgunProperties.getCustomerOrderRejectionTemplate(),
-        CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, mailgunProperties.getCustomerOrderCompletionTemplate(),
-        OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, mailgunProperties.getOwnerOrderConfirmationTemplate(),
-        OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, mailgunProperties.getOwnerOrderRejectionTemplate(),
-        OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, mailgunProperties.getOwnerOrderCompletionTemplate()
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_UNCONFIRMED, mailgunProperties.getCustomerOrderPaymentTemplate(),
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, mailgunProperties.getCustomerOrderConfirmationTemplate(),
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, mailgunProperties.getCustomerOrderRejectionTemplate(),
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, mailgunProperties.getCustomerOrderCompletionTemplate(),
+      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, mailgunProperties.getOwnerOrderConfirmationTemplate(),
+      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, mailgunProperties.getOwnerOrderRejectionTemplate(),
+      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, mailgunProperties.getOwnerOrderCompletionTemplate()
     );
   }
 
   private Map<String, String> makeSubjectsMap() {
     return Map.of(
-        CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_UNCONFIRMED, internalMailingProperties.getCustomerOrderPaymentSubject(),
-        CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, internalMailingProperties.getCustomerOrderConfirmationSubject(),
-        CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, internalMailingProperties.getCustomerOrderRejectionSubject(),
-        CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, internalMailingProperties.getCustomerOrderCompletionSubject(),
-        OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, internalMailingProperties.getOwnerOrderConfirmationSubject(),
-        OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, internalMailingProperties.getOwnerOrderRejectionSubject(),
-        OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, internalMailingProperties.getOwnerOrderCompletionSubject()
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_UNCONFIRMED, internalMailingProperties.getCustomerOrderPaymentSubject(),
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, internalMailingProperties.getCustomerOrderConfirmationSubject(),
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, internalMailingProperties.getCustomerOrderRejectionSubject(),
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, internalMailingProperties.getCustomerOrderCompletionSubject(),
+      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, internalMailingProperties.getOwnerOrderConfirmationSubject(),
+      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, internalMailingProperties.getOwnerOrderRejectionSubject(),
+      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, internalMailingProperties.getOwnerOrderCompletionSubject()
     );
   }
 
@@ -180,10 +179,10 @@ public class MailgunMailingServiceImpl
     objectMapper.registerModule(new JavaTimeModule());
     objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     objectMapper
-        .configOverride(Instant.class)
-        .setFormat(JsonFormat.Value
-                       .forPattern(internalMailingProperties.getDateFormat())
-                       .withTimeZone(TimeZone.getTimeZone(internalMailingProperties.getDateTimezone())));
+      .configOverride(Instant.class)
+      .setFormat(JsonFormat.Value
+        .forPattern(internalMailingProperties.getDateFormat())
+        .withTimeZone(TimeZone.getTimeZone(internalMailingProperties.getDateTimezone())));
     return objectMapper;
   }
 
@@ -194,7 +193,7 @@ public class MailgunMailingServiceImpl
       String transactionJson = mailObjectMapper.writeValueAsString(receipt);
       String customerJson = mailObjectMapper.writeValueAsString(sell.getCustomer());
       variables = "{\"transaction\": " + transactionJson +
-          ", \"customer\": " + customerJson + "}";
+        ", \"customer\": " + customerJson + "}";
     } catch (JsonProcessingException e) {
       throw new IllegalStateException("Could not stringify transaction object", e);
     }

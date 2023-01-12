@@ -31,16 +31,17 @@ import java.util.Map;
  */
 @Service
 public class PaginationService {
-
   protected final OperationProperties operationProperties;
 
   @Autowired
-  public PaginationService(OperationProperties operationProperties) {
+  public PaginationService(
+    OperationProperties operationProperties
+  ) {
     this.operationProperties = operationProperties;
   }
 
   public int determineRequestedPageIndex(Map<String, String> requestParams)
-      throws NumberFormatException {
+    throws NumberFormatException {
     if (requestParams == null || !requestParams.containsKey("pageIndex")) {
       return 0;
     }
@@ -48,14 +49,14 @@ public class PaginationService {
   }
 
   public int determineRequestedPageSize(Map<String, String> requestParams)
-      throws NumberFormatException {
+    throws NumberFormatException {
     if (requestParams == null || !requestParams.containsKey("pageSize")) {
       return operationProperties.getItemsPerPage();
     }
     int pageSize = Integer.parseInt(requestParams.get("pageSize"));
     Integer maxAllowedPageSize = operationProperties.getMaxAllowedPageSize();
     return (pageSize < maxAllowedPageSize) ?
-            pageSize :
-            maxAllowedPageSize;
+      pageSize :
+      maxAllowedPageSize;
   }
 }

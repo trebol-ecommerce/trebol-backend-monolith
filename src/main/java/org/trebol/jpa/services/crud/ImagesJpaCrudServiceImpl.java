@@ -38,16 +38,15 @@ import java.util.Optional;
 public class ImagesJpaCrudServiceImpl
   extends GenericCrudJpaService<ImagePojo, Image>
   implements IImagesCrudService {
-
   private final IImagesJpaRepository imagesRepository;
 
   @Autowired
-  public ImagesJpaCrudServiceImpl(IImagesJpaRepository repository,
-                                  IImagesConverterJpaService converter,
-                                  IImagesDataTransportJpaService dataTransportService) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public ImagesJpaCrudServiceImpl(
+    IImagesJpaRepository repository,
+    IImagesConverterJpaService converter,
+    IImagesDataTransportJpaService dataTransportService
+  ) {
+    super(repository, converter, dataTransportService);
     this.imagesRepository = repository;
   }
 

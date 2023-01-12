@@ -37,7 +37,7 @@ import java.util.Optional;
 
 @Repository
 public interface IProductsJpaRepository
-    extends IJpaRepository<Product> {
+  extends IJpaRepository<Product> {
 
   @Query(value = "SELECT p FROM Product p JOIN FETCH p.productCategory", countQuery = "SELECT p FROM Product p")
   Page<Product> deepReadAll(Pageable pageable);

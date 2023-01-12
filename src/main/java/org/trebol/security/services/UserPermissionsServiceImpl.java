@@ -37,12 +37,13 @@ import java.util.Set;
  */
 @Service
 public class UserPermissionsServiceImpl
-    implements IUserPermissionsService {
-
+  implements IUserPermissionsService {
   private final IUserRolePermissionsJpaRepository userRolePermissionsRepository;
 
   @Autowired
-  public UserPermissionsServiceImpl(IUserRolePermissionsJpaRepository userRolePermissionsRepository) {
+  public UserPermissionsServiceImpl(
+    IUserRolePermissionsJpaRepository userRolePermissionsRepository
+  ) {
     this.userRolePermissionsRepository = userRolePermissionsRepository;
   }
 
@@ -51,7 +52,7 @@ public class UserPermissionsServiceImpl
     UserRole sourceUserRole = source.getUserRole();
     Long userRoleId = sourceUserRole.getId();
     Iterable<UserRolePermission> userRolePermissions = userRolePermissionsRepository
-        .deepFindPermissionsByUserRoleId(userRoleId);
+      .deepFindPermissionsByUserRoleId(userRoleId);
 
     Set<Permission> targetList = new HashSet<>();
     for (UserRolePermission rolePermission : userRolePermissions) {
@@ -61,5 +62,4 @@ public class UserPermissionsServiceImpl
 
     return targetList;
   }
-
 }

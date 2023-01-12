@@ -39,7 +39,7 @@ public class ProductCategoriesDataTransportJpaServiceImpl
 
   @Override
   public ProductCategory applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory existing)
-          throws BadInputException {
+    throws BadInputException {
     ProductCategory target = new ProductCategory(existing);
 
     String name = source.getName();

@@ -29,7 +29,6 @@ import java.util.Objects;
 @Table(name = "app_permissions")
 public class Permission
   implements Serializable {
-
   private static final long serialVersionUID = 8L;
 
   @Id
@@ -43,7 +42,8 @@ public class Permission
   @Column(name = "permission_description")
   private String description;
 
-  public Permission() { }
+  public Permission() {
+  }
 
   public Long getId() {
     return id;
@@ -75,8 +75,8 @@ public class Permission
     if (o == null || getClass() != o.getClass()) return false;
     Permission that = (Permission) o;
     return Objects.equals(id, that.id) &&
-        Objects.equals(code, that.code) &&
-        Objects.equals(description, that.description);
+      Objects.equals(code, that.code) &&
+      Objects.equals(description, that.description);
   }
 
   @Override
@@ -87,9 +87,9 @@ public class Permission
   @Override
   public String toString() {
     return "Permission{" +
-        "id=" + id +
-        ", code='" + code + '\'' +
-        ", description='" + description + '\'' +
-        '}';
+      "id=" + id +
+      ", code='" + code + '\'' +
+      ", description='" + description + '\'' +
+      '}';
   }
 }

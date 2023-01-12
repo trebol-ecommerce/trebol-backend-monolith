@@ -31,8 +31,9 @@ public interface IMailingIntegrationService {
   /**
    * Generate and send an e-mail to the customer, regarding an update on their transaction' status.<br/>
    * Should support all transaction stages
+   *
    * @param sell The transaction metadata
-   * @throws org.trebol.exceptions.BadInputException When there is a problem with the order reference
+   * @throws org.trebol.exceptions.BadInputException                   When there is a problem with the order reference
    * @throws org.trebol.integration.exceptions.MailingServiceException When any error occurs while interacting with the
    *                                                                   mail server/service provider
    */
@@ -41,6 +42,7 @@ public interface IMailingIntegrationService {
   /**
    * Generate and send an e-mail to store owners, regarding an update on a certain transaction' status.<br/>
    * It is not mandatory to support all transaction stages; owners may only need to be aware of some events.
+   *
    * @param sell The transaction metadata
    * @throws org.trebol.integration.exceptions.MailingServiceException When any error occurs while interacting with the
    *                                                                   mail server/service provider

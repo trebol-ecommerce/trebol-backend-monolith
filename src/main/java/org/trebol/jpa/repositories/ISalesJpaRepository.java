@@ -37,19 +37,19 @@ public interface ISalesJpaRepository
   Optional<Sell> findByTransactionToken(String token);
 
   @Query(value = "SELECT s FROM Sell s "
-      + "JOIN FETCH s.details "
-      + "WHERE s.id = :id")
+    + "JOIN FETCH s.details "
+    + "WHERE s.id = :id")
   Optional<Sell> findByIdWithDetails(@Param("id") Long id);
 
   @Modifying(clearAutomatically = true)
   @Query("UPDATE Sell s "
-      + "SET s.status = :status "
-      + "WHERE s.id = :id")
+    + "SET s.status = :status "
+    + "WHERE s.id = :id")
   int setStatus(@Param("id") Long id, @Param("status") SellStatus status);
 
   @Modifying
   @Query("UPDATE Sell s "
-      + "SET s.transactionToken = :token "
-      + "WHERE s.id = :id")
+    + "SET s.transactionToken = :token "
+    + "WHERE s.id = :id")
   int setTransactionToken(@Param("id") Long id, @Param("token") String token);
 }

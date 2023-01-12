@@ -33,6 +33,7 @@ public interface ICheckoutService {
   /**
    * Fetch details to redirect the requester to the payment page; mark transaction as "started";
    * save metadata required for later confirmation
+   *
    * @param transaction The "acknowledged" transaction
    * @return Details used by the requester to navigate to the payment page
    * @throws PaymentServiceException On unexpected failures
@@ -43,10 +44,11 @@ public interface ICheckoutService {
    * From a given token, assert existence of a transaction marked as "started"; fetch result of said transaction;
    * update saved metadata of that transaction<br/>
    * Usually, after this the client and the salesmanager are notified by some contact means, such as e-mail
-   * @param token Previously emitted by the payment service
+   *
+   * @param token      Previously emitted by the payment service
    * @param wasAborted Whether the transaction was aborted by the user doing the payment.
    * @return The "completed/failed" URI for requesting it later on
-   * @throws BadInputException When the transaction is not in a valid state
+   * @throws BadInputException       When the transaction is not in a valid state
    * @throws EntityNotFoundException When no transaction matches the provided hash
    * @throws PaymentServiceException On unexpected failures
    */
@@ -54,6 +56,7 @@ public interface ICheckoutService {
 
   /**
    * From a given token, generate a corresponding URL to redirect users to view their receipt
+   *
    * @param transactionToken Previously emitted by the payment service
    * @return The "completed/failed" URI to redirect consumer to
    */

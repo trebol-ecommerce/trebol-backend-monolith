@@ -29,12 +29,13 @@ import org.trebol.pojo.CompanyDetailsPojo;
 
 @Service
 public class CompanyServiceImpl
-    implements ICompanyService {
-
+  implements ICompanyService {
   private final IParamsJpaRepository paramsRepository;
 
   @Autowired
-  public CompanyServiceImpl(IParamsJpaRepository paramsRepository) {
+  public CompanyServiceImpl(
+    IParamsJpaRepository paramsRepository
+  ) {
     this.paramsRepository = paramsRepository;
   }
 
@@ -63,5 +64,4 @@ public class CompanyServiceImpl
     }
     return target;
   }
-
 }

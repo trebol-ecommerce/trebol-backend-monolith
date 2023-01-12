@@ -27,7 +27,7 @@ import org.trebol.pojo.AddressPojo;
 
 @Component
 public class Address2Pojo
-    implements Converter<Address, AddressPojo> {
+  implements Converter<Address, AddressPojo> {
 
   @Override
   public AddressPojo convert(Address source) {

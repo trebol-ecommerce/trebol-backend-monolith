@@ -36,7 +36,6 @@ import java.util.Objects;
   })
 public class Person
   implements Serializable {
-
   private static final long serialVersionUID = 9L;
 
   @Id
@@ -60,7 +59,8 @@ public class Person
   @Column(name = "person_phone2", nullable = false)
   private String phone2 = "";
 
-  public Person() { }
+  public Person() {
+  }
 
   public Person(Person source) {
     this.id = source.id;
@@ -161,12 +161,12 @@ public class Person
     if (o == null || getClass() != o.getClass()) return false;
     Person person = (Person) o;
     return Objects.equals(id, person.id) &&
-        Objects.equals(firstName, person.firstName) &&
-        Objects.equals(lastName, person.lastName) &&
-        Objects.equals(idNumber, person.idNumber) &&
-        Objects.equals(email, person.email) &&
-        Objects.equals(phone1, person.phone1) &&
-        Objects.equals(phone2, person.phone2);
+      Objects.equals(firstName, person.firstName) &&
+      Objects.equals(lastName, person.lastName) &&
+      Objects.equals(idNumber, person.idNumber) &&
+      Objects.equals(email, person.email) &&
+      Objects.equals(phone1, person.phone1) &&
+      Objects.equals(phone2, person.phone2);
   }
 
   @Override
@@ -177,13 +177,13 @@ public class Person
   @Override
   public String toString() {
     return "Person{" +
-        "id=" + id +
-        ", firstName='" + firstName + '\'' +
-        ", lastName='" + lastName + '\'' +
-        ", idNumber='" + idNumber + '\'' +
-        ", email='" + email + '\'' +
-        ", phone1='" + phone1 + '\'' +
-        ", phone2='" + phone2 + '\'' +
-        '}';
+      "id=" + id +
+      ", firstName='" + firstName + '\'' +
+      ", lastName='" + lastName + '\'' +
+      ", idNumber='" + idNumber + '\'' +
+      ", email='" + email + '\'' +
+      ", phone1='" + phone1 + '\'' +
+      ", phone2='" + phone2 + '\'' +
+      '}';
   }
 }

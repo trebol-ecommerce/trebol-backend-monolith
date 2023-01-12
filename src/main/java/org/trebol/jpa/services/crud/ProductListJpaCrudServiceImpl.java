@@ -40,25 +40,24 @@ import java.util.Optional;
 public class ProductListJpaCrudServiceImpl
   extends GenericCrudJpaService<ProductListPojo, ProductList>
   implements IProductListCrudService {
-
   private final IProductListsJpaRepository productListRepository;
   private final IProductListItemsJpaRepository productListItemRepository;
 
   @Autowired
-  public ProductListJpaCrudServiceImpl(IProductListsJpaRepository productListRepository,
-                                       IProductListItemsJpaRepository productListItemRepository,
-                                       IProductListsConverterJpaService converterService,
-                                       IProductListsDataTransportJpaService dataTransportService) {
-    super(productListRepository,
-           converterService,
-           dataTransportService);
-    this.productListRepository = productListRepository;
+  public ProductListJpaCrudServiceImpl(
+    IProductListsJpaRepository repository,
+    IProductListItemsJpaRepository productListItemRepository,
+    IProductListsConverterJpaService converterService,
+    IProductListsDataTransportJpaService dataTransportService
+  ) {
+    super(repository, converterService, dataTransportService);
+    this.productListRepository = repository;
     this.productListItemRepository = productListItemRepository;
   }
 
   @Override
   public void delete(Predicate filters)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     long count = productListRepository.count(filters);
     if (count == 0) {
       throw new EntityNotFoundException(ITEM_NOT_FOUND);

@@ -20,6 +20,7 @@
 
 package org.trebol.config;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +30,7 @@ import javax.validation.constraints.NotBlank;
 @Validated
 @Configuration
 @ConfigurationProperties(prefix = "trebol.cors")
+@Data
 public class CorsProperties {
 
   @NotBlank
@@ -39,37 +41,5 @@ public class CorsProperties {
   private String mappings;
   @NotBlank
   private String listDelimiter;
-
-  public String getAllowedHeaders() {
-    return allowedHeaders;
-  }
-
-  public void setAllowedHeaders(String allowedHeaders) {
-    this.allowedHeaders = allowedHeaders;
-  }
-
-  public String getAllowedOrigins() {
-    return allowedOrigins;
-  }
-
-  public void setAllowedOrigins(String allowedOrigins) {
-    this.allowedOrigins = allowedOrigins;
-  }
-
-  public String getMappings() {
-    return mappings;
-  }
-
-  public void setMappings(String mappings) {
-    this.mappings = mappings;
-  }
-
-  public String getListDelimiter() {
-    return listDelimiter;
-  }
-
-  public void setListDelimiter(String listDelimiter) {
-    this.listDelimiter = listDelimiter;
-  }
 
 }

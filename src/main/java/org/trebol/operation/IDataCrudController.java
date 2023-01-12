@@ -28,6 +28,7 @@ import java.util.Map;
 
 /**
  * Interface for API controllers that handle CRUD requests involving unique identifiers
+ *
  * @param <P> The Pojo class
  */
 public interface IDataCrudController<P>

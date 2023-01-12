@@ -40,8 +40,8 @@ public class UsersSortSpecJpaServiceImpl
   @Override
   protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
     return Map.of(
-            "name", QUser.user.name.asc(),
-            "role", QUser.user.userRole.name.asc()
+      "name", QUser.user.name.asc(),
+      "role", QUser.user.userRole.name.asc()
     );
   }
 }

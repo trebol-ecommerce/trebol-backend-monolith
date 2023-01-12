@@ -35,7 +35,6 @@ import java.util.Map;
 @Service
 public class SalespeoplePredicateJpaServiceImpl
   implements IPredicateJpaService<Salesperson> {
-
   private final Logger logger = LoggerFactory.getLogger(SalespeoplePredicateJpaServiceImpl.class);
 
   @Override
@@ -58,7 +57,7 @@ public class SalespeoplePredicateJpaServiceImpl
             return personPath.idNumber.eq(stringValue);
           case "name":
             predicate.and(personPath.firstName.eq(stringValue)
-                    .or(personPath.lastName.eq(stringValue)));
+              .or(personPath.lastName.eq(stringValue)));
             break;
           case "firstName":
             predicate.and(personPath.firstName.eq(stringValue));
@@ -71,7 +70,7 @@ public class SalespeoplePredicateJpaServiceImpl
             break;
           case "nameLike":
             predicate.and(personPath.firstName.likeIgnoreCase("%" + stringValue + "%")
-                    .or(personPath.lastName.likeIgnoreCase("%" + stringValue + "%")));
+              .or(personPath.lastName.likeIgnoreCase("%" + stringValue + "%")));
             break;
           case "firstNameLike":
             predicate.and(personPath.firstName.likeIgnoreCase("%" + stringValue + "%"));

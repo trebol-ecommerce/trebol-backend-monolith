@@ -29,9 +29,8 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRolesJpaRepository
-    extends IJpaRepository<UserRole> {
+  extends IJpaRepository<UserRole> {
 
   @Query
   Optional<UserRole> findByName(String name);
-
 }

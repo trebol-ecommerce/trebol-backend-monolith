@@ -40,7 +40,7 @@ public class ShippersSortSpecJpaServiceImpl
   @Override
   protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
     return Map.of(
-            "name",  QShipper.shipper.name.asc()
+      "name", QShipper.shipper.name.asc()
     );
   }
 

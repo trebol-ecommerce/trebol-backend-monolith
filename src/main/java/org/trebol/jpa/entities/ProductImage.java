@@ -28,7 +28,6 @@ import java.util.Objects;
 @Table(name = "product_images")
 public class ProductImage
   implements Serializable {
-
   private static final long serialVersionUID = 12L;
 
   @Id
@@ -42,7 +41,8 @@ public class ProductImage
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Product product;
 
-  public ProductImage() { }
+  public ProductImage() {
+  }
 
   public ProductImage(Product product, Image image) {
     this.product = product;
@@ -56,27 +56,27 @@ public class ProductImage
   }
 
   public Long getId() {
-      return id;
+    return id;
   }
 
   public void setId(Long id) {
-      this.id = id;
+    this.id = id;
   }
 
   public Image getImage() {
-      return image;
+    return image;
   }
 
   public void setImage(Image image) {
-      this.image = image;
+    this.image = image;
   }
 
   public Product getProduct() {
-      return product;
+    return product;
   }
 
   public void setProduct(Product product) {
-      this.product = product;
+    this.product = product;
   }
 
   @Override
@@ -85,8 +85,8 @@ public class ProductImage
     if (o == null || getClass() != o.getClass()) return false;
     ProductImage that = (ProductImage) o;
     return Objects.equals(id, that.id) &&
-        Objects.equals(image, that.image) &&
-        Objects.equals(product, that.product);
+      Objects.equals(image, that.image) &&
+      Objects.equals(product, that.product);
   }
 
   @Override
@@ -97,9 +97,9 @@ public class ProductImage
   @Override
   public String toString() {
     return "ProductImage{" +
-        "id=" + id +
-        ", image=" + image +
-        ", product=" + product +
-        '}';
+      "id=" + id +
+      ", image=" + image +
+      ", product=" + product +
+      '}';
   }
 }

@@ -27,6 +27,7 @@ import java.util.Map;
 
 /**
  * An interface to support parsing of Maps into sort order clauses to be used in queries at the persistence layer.
+ *
  * @param <E> The target @Entity class
  */
 public interface ISortSpecJpaService<E> {
@@ -38,6 +39,7 @@ public interface ISortSpecJpaService<E> {
 
   /**
    * Reads a Map and generates sort order constraints for a specific entity
+   *
    * @param queryParamsMap A map of keys and values
    * @return A Sort order as parsed from the input map. May be null if the input is invalid
    */

@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.conversion.IBillingCompaniesConverterJpaService;
 import org.trebol.jpa.services.conversion.ICustomersConverterJpaService;
 import org.trebol.jpa.services.crud.ICustomersCrudService;
@@ -44,7 +43,6 @@ import java.util.Set;
 @Service
 public class SalesDataTransportJpaServiceImpl
   implements ISalesDataTransportJpaService {
-
   private static final String IS_NOT_VALID = "is not valid";
   private final ISellStatusesJpaRepository statusesRepository;
   private final IBillingTypesJpaRepository billingTypesRepository;
@@ -61,19 +59,21 @@ public class SalesDataTransportJpaServiceImpl
   private final RegexMatcherAdapter regexMatcherAdapter;
 
   @Autowired
-  public SalesDataTransportJpaServiceImpl(ConversionService conversion,
-                                          ISellStatusesJpaRepository statusesRepository,
-                                          IBillingTypesJpaRepository billingTypesRepository,
-                                          IBillingCompaniesJpaRepository billingCompaniesRepository,
-                                          IPaymentTypesJpaRepository paymentTypesRepository,
-                                          IAddressesJpaRepository addressesRepository,
-                                          IShippersJpaRepository shippersRepository,
-                                          IBillingCompaniesConverterJpaService billingCompaniesConverter,
-                                          ICustomersConverterJpaService customersConverter,
-                                          ICustomersCrudService customersService,
-                                          ICustomersJpaRepository customersRepository,
-                                          Validator validator,
-                                          RegexMatcherAdapter regexMatcherAdapter) {
+  public SalesDataTransportJpaServiceImpl(
+    ConversionService conversion,
+    ISellStatusesJpaRepository statusesRepository,
+    IBillingTypesJpaRepository billingTypesRepository,
+    IBillingCompaniesJpaRepository billingCompaniesRepository,
+    IPaymentTypesJpaRepository paymentTypesRepository,
+    IAddressesJpaRepository addressesRepository,
+    IShippersJpaRepository shippersRepository,
+    IBillingCompaniesConverterJpaService billingCompaniesConverter,
+    ICustomersConverterJpaService customersConverter,
+    ICustomersCrudService customersService,
+    ICustomersJpaRepository customersRepository,
+    Validator validator,
+    RegexMatcherAdapter regexMatcherAdapter
+  ) {
     this.conversion = conversion;
     this.statusesRepository = statusesRepository;
     this.billingTypesRepository = billingTypesRepository;

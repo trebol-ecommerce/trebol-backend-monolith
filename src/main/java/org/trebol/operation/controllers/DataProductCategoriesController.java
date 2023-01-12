@@ -25,7 +25,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.crud.IProductCategoriesCrudService;
@@ -45,10 +44,12 @@ public class DataProductCategoriesController
   extends GenericDataCrudController<ProductCategoryPojo, ProductCategory> {
 
   @Autowired
-  public DataProductCategoriesController(PaginationService paginationService,
-                                         ISortSpecJpaService<ProductCategory> sortService,
-                                         IProductCategoriesCrudService crudService,
-                                         IPredicateJpaService<ProductCategory> predicateService) {
+  public DataProductCategoriesController(
+    PaginationService paginationService,
+    ISortSpecJpaService<ProductCategory> sortService,
+    IProductCategoriesCrudService crudService,
+    IPredicateJpaService<ProductCategory> predicateService
+  ) {
     super(paginationService, sortService, crudService, predicateService);
   }
 
@@ -65,7 +66,7 @@ public class DataProductCategoriesController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_categories:create')")
   public void create(@Valid @RequestBody ProductCategoryPojo input)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -73,7 +74,7 @@ public class DataProductCategoriesController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_categories:update')")
   public void update(@Valid @RequestBody ProductCategoryPojo input, @RequestParam Map<String, String> requestParams)
-      throws BadInputException, EntityNotFoundException {
+    throws BadInputException, EntityNotFoundException {
     super.update(input, requestParams);
   }
 
@@ -81,7 +82,7 @@ public class DataProductCategoriesController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('product_categories:delete')")
   public void delete(@RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     super.delete(requestParams);
   }
 }

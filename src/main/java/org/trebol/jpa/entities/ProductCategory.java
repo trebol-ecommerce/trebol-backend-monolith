@@ -33,8 +33,8 @@ import java.util.Objects;
   })
 public class ProductCategory
   implements Serializable {
-
   private static final long serialVersionUID = 11L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "product_category_id", nullable = false)
@@ -49,7 +49,8 @@ public class ProductCategory
   @ManyToOne(fetch = FetchType.LAZY)
   private ProductCategory parent;
 
-  public ProductCategory() { }
+  public ProductCategory() {
+  }
 
   public ProductCategory(ProductCategory source) {
     this.id = source.id;
@@ -109,9 +110,9 @@ public class ProductCategory
     if (o == null || getClass() != o.getClass()) return false;
     ProductCategory that = (ProductCategory) o;
     return Objects.equals(id, that.id) &&
-        Objects.equals(code, that.code) &&
-        Objects.equals(name, that.name) &&
-        Objects.equals(parent, that.parent);
+      Objects.equals(code, that.code) &&
+      Objects.equals(name, that.name) &&
+      Objects.equals(parent, that.parent);
   }
 
   @Override
@@ -122,10 +123,10 @@ public class ProductCategory
   @Override
   public String toString() {
     return "ProductCategory{" +
-        "id=" + id +
-        ", code='" + code + '\'' +
-        ", name='" + name + '\'' +
-        ", parent=" + parent +
-        '}';
+      "id=" + id +
+      ", code='" + code + '\'' +
+      ", name='" + name + '\'' +
+      ", parent=" + parent +
+      '}';
   }
 }

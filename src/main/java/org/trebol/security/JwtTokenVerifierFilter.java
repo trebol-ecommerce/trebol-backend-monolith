@@ -45,11 +45,12 @@ import java.util.Set;
 
 public class JwtTokenVerifierFilter
   extends OncePerRequestFilter {
-
   private final Logger myLogger = LoggerFactory.getLogger(JwtTokenVerifierFilter.class);
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
-  public JwtTokenVerifierFilter(IAuthorizationHeaderParserService<Claims> jwtClaimsParserService) {
+  public JwtTokenVerifierFilter(
+    IAuthorizationHeaderParserService<Claims> jwtClaimsParserService
+  ) {
     super();
     this.jwtClaimsParserService = jwtClaimsParserService;
   }
@@ -69,7 +70,7 @@ public class JwtTokenVerifierFilter
   protected void doFilterInternal(@NotNull HttpServletRequest request,
                                   @NotNull HttpServletResponse response,
                                   @NotNull FilterChain filterChain)
-      throws ServletException, IOException, IllegalStateException {
+    throws ServletException, IOException, IllegalStateException {
 
     String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -85,21 +86,20 @@ public class JwtTokenVerifierFilter
           String username = tokenBody.getSubject();
           Set<SimpleGrantedAuthority> authorities = this.extractAuthorities(tokenBody);
           Authentication authentication = new UsernamePasswordAuthenticationToken(
-              username,
-              null,
-              authorities);
+            username,
+            null,
+            authorities);
 
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
       } catch (NullPointerException | IllegalStateException exc) {
         myLogger.info("Access denied: '{}' '{}' used an invalid token '{}'",
-                      request.getMethod(),
-                      request.getRequestURI(),
-                      jwt);
+          request.getMethod(),
+          request.getRequestURI(),
+          jwt);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       }
     }
   }
-
 }

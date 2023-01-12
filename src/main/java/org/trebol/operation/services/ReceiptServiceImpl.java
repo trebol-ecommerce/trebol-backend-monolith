@@ -40,19 +40,21 @@ import java.util.Optional;
 @Service
 public class ReceiptServiceImpl
   implements IReceiptService {
-
   private final ISalesJpaRepository salesRepository;
   private final ConversionService conversionService;
 
   @Autowired
-  public ReceiptServiceImpl(ISalesJpaRepository salesRepository, ConversionService conversionService) {
+  public ReceiptServiceImpl(
+    ISalesJpaRepository salesRepository,
+    ConversionService conversionService
+  ) {
     this.salesRepository = salesRepository;
     this.conversionService = conversionService;
   }
 
   @Override
   public ReceiptPojo fetchReceiptByTransactionToken(String token)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     Optional<Sell> match = salesRepository.findByTransactionToken(token);
     if (match.isEmpty()) {
       throw new EntityNotFoundException("The transaction could not be found, no receipt can be created");

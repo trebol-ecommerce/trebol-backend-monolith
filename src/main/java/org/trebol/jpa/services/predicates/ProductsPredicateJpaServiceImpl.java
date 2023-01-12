@@ -37,12 +37,13 @@ import java.util.Map;
 @Service
 public class ProductsPredicateJpaServiceImpl
   implements IPredicateJpaService<Product> {
-
   private final Logger logger = LoggerFactory.getLogger(ProductsPredicateJpaServiceImpl.class);
   private final IProductCategoryTreeResolver categoryTreeResolver;
 
   @Autowired
-  public ProductsPredicateJpaServiceImpl(IProductCategoryTreeResolver categoryTreeResolver) {
+  public ProductsPredicateJpaServiceImpl(
+    IProductCategoryTreeResolver categoryTreeResolver
+  ) {
     this.categoryTreeResolver = categoryTreeResolver;
   }
 
@@ -74,7 +75,7 @@ public class ProductsPredicateJpaServiceImpl
           case "categoryCode":
             List<Long> branchIds = categoryTreeResolver.getBranchIdsFromRootCode(stringValue);
             predicate.and(getBasePath().productCategory.code.eq(stringValue)
-                              .or(getBasePath().productCategory.id.in(branchIds)));
+              .or(getBasePath().productCategory.id.in(branchIds)));
             break;
           case "categoryCodeLike":
             predicate.and(getBasePath().productCategory.code.likeIgnoreCase("%" + stringValue + "%"));

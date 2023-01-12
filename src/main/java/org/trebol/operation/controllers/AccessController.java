@@ -40,15 +40,16 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @RequestMapping("/access")
 @PreAuthorize("isAuthenticated()")
 public class AccessController {
-
   private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final UserDetailsService userDetailsService;
   private final IAuthorizedApiService authorizedApiService;
 
   @Autowired
-  public AccessController(IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-                          UserDetailsService userDetailsService,
-                          IAuthorizedApiService authorizedApiService) {
+  public AccessController(
+    IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+    UserDetailsService userDetailsService,
+    IAuthorizedApiService authorizedApiService
+  ) {
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.userDetailsService = userDetailsService;
     this.authorizedApiService = authorizedApiService;
@@ -81,8 +82,8 @@ public class AccessController {
 
   @GetMapping({"/{apiRoute}", "/{apiRoute}/"})
   public AuthorizedAccessPojo getApiResourceAccess(
-      @RequestHeader HttpHeaders requestHeaders,
-      @PathVariable String apiRoute)
+    @RequestHeader HttpHeaders requestHeaders,
+    @PathVariable String apiRoute)
     throws IllegalStateException {
     UserDetails userDetails = this.getUserDetails(requestHeaders);
     if (userDetails == null) {
@@ -102,5 +103,4 @@ public class AccessController {
       the consumer sent an invalid token. don't return an explanation of this. the status code should suffice.
       */
   }
-  
 }

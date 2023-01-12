@@ -52,7 +52,6 @@ import java.util.Optional;
 public class ProductsJpaCrudServiceImpl
   extends GenericCrudJpaService<ProductPojo, Product>
   implements IProductsCrudService {
-
   private final IProductsJpaRepository productsRepository;
   private final IProductImagesJpaRepository productImagesRepository;
   private final IImagesCrudService imagesCrudService;
@@ -62,17 +61,17 @@ public class ProductsJpaCrudServiceImpl
   private final Logger logger = LoggerFactory.getLogger(ProductsJpaCrudServiceImpl.class);
 
   @Autowired
-  public ProductsJpaCrudServiceImpl(IProductsJpaRepository repository,
-                                    IProductsConverterJpaService converter,
-                                    IProductsDataTransportJpaService dataTransportService,
-                                    IProductImagesJpaRepository productImagesRepository,
-                                    IImagesCrudService imagesCrudService,
-                                    IProductCategoriesCrudService categoriesService,
-                                    IProductCategoriesConverterJpaService categoriesConverter,
-                                    IImagesConverterJpaService imageConverter) {
-    super(repository,
-          converter,
-          dataTransportService);
+  public ProductsJpaCrudServiceImpl(
+    IProductsJpaRepository repository,
+    IProductsConverterJpaService converter,
+    IProductsDataTransportJpaService dataTransportService,
+    IProductImagesJpaRepository productImagesRepository,
+    IImagesCrudService imagesCrudService,
+    IProductCategoriesCrudService categoriesService,
+    IProductCategoriesConverterJpaService categoriesConverter,
+    IImagesConverterJpaService imageConverter
+  ) {
+    super(repository, converter, dataTransportService);
     this.productsRepository = repository;
     this.imagesCrudService = imagesCrudService;
     this.categoriesConverter = categoriesConverter;
@@ -84,7 +83,7 @@ public class ProductsJpaCrudServiceImpl
   @Transactional
   @Override
   public ProductPojo create(ProductPojo inputPojo)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     this.validateInputPojoBeforeCreation(inputPojo);
     Product prepared = this.prepareNewEntityFromInputPojo(inputPojo);
     Product persistent = productsRepository.saveAndFlush(prepared);
@@ -116,7 +115,7 @@ public class ProductsJpaCrudServiceImpl
 
   @Override
   public Optional<Product> getExisting(ProductPojo input)
-      throws BadInputException {
+    throws BadInputException {
     String barcode = input.getBarcode();
     if (barcode == null || barcode.isEmpty()) {
       throw new BadInputException("Invalid product barcode");
@@ -127,13 +126,13 @@ public class ProductsJpaCrudServiceImpl
 
   @Override
   protected ProductPojo persistEntityWithUpdatesFromPojo(ProductPojo changes, Product existingEntity)
-      throws BadInputException {
+    throws BadInputException {
     Product localChanges = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
     Product persistent = productsRepository.saveAndFlush(localChanges);
     ProductPojo outputPojo = converter.convertToPojo(persistent);
     if (outputPojo == null) {
       throw new IllegalStateException("Conversion service returned null when requested to convert one " +
-                                          "persisted Product to a ProductPojo");
+        "persisted Product to a ProductPojo");
     }
 
     // one-Product-to-many-Images
@@ -172,8 +171,9 @@ public class ProductsJpaCrudServiceImpl
   /**
    * Creates transient instances of the ProductImages entity (for the one-to-many relationship).
    * It does NOT persist these instances.
+   *
    * @param existingProduct The persisted entity
-   * @param inputImages The list of images to link to the aforementioned Product
+   * @param inputImages     The list of images to link to the aforementioned Product
    * @return The list of ImagePojos with normalized metadata.
    */
   private List<ProductImage> makeTransientProductImages(Product existingProduct,

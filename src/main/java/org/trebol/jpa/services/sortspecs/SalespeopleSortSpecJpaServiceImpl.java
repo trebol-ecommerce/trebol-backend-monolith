@@ -40,13 +40,13 @@ public class SalespeopleSortSpecJpaServiceImpl
   @Override
   protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
     return Map.of(
-            "idNumber",  getBasePath().person.idNumber.asc(),
-            "firstName", getBasePath().person.firstName.asc(),
-            "email",     getBasePath().person.email.asc(),
-            "phone1",    getBasePath().person.phone1.asc(),
-            "phone2",    getBasePath().person.phone2.asc(),
-            "name",      getBasePath().person.lastName.asc(),
-            "lastName",  getBasePath().person.lastName.asc()
+      "idNumber", getBasePath().person.idNumber.asc(),
+      "firstName", getBasePath().person.firstName.asc(),
+      "email", getBasePath().person.email.asc(),
+      "phone1", getBasePath().person.phone1.asc(),
+      "phone2", getBasePath().person.phone2.asc(),
+      "name", getBasePath().person.lastName.asc(),
+      "lastName", getBasePath().person.lastName.asc()
     );
   }
 }

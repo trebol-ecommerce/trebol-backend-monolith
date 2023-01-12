@@ -26,6 +26,5 @@ import org.trebol.jpa.entities.Permission;
 
 @Repository
 public interface IPermissionsJpaRepository
-    extends IJpaRepository<Permission> {
-
+  extends IJpaRepository<Permission> {
 }

@@ -28,6 +28,7 @@ import java.util.Collection;
 
 /**
  * A simple object that represents a page of data for a specific type
+ *
  * @param <T> The type of data in the page
  */
 @Data

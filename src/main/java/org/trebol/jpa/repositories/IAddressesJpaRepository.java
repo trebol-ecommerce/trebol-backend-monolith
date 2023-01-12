@@ -30,14 +30,14 @@ import java.util.Optional;
 
 @Repository
 public interface IAddressesJpaRepository
-    extends IJpaRepository<Address> {
+  extends IJpaRepository<Address> {
 
   @Query(value = "SELECT a FROM Address a WHERE a.city = :city "
-      + "AND a.municipality = :municipality "
-      + "AND a.firstLine = :firstLine "
-      + "AND a.secondLine = :secondLine "
-      + "AND a.postalCode = :postalCode "
-      + "AND a.notes = :notes")
+    + "AND a.municipality = :municipality "
+    + "AND a.firstLine = :firstLine "
+    + "AND a.secondLine = :secondLine "
+    + "AND a.postalCode = :postalCode "
+    + "AND a.notes = :notes")
   Optional<Address> findByFields(
     @Param("city") String city,
     @Param("municipality") String municipality,
@@ -45,5 +45,4 @@ public interface IAddressesJpaRepository
     @Param("secondLine") String secondLine,
     @Param("postalCode") String postalCode,
     @Param("notes") String notes);
-
 }

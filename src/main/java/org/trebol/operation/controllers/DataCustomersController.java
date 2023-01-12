@@ -25,7 +25,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.services.GenericCrudJpaService;
 import org.trebol.jpa.services.IPredicateJpaService;
 import org.trebol.jpa.services.ISortSpecJpaService;
 import org.trebol.jpa.services.crud.ICustomersCrudService;
@@ -46,12 +45,13 @@ public class DataCustomersController
   extends GenericDataCrudController<CustomerPojo, Customer> {
 
   @Autowired
-  public DataCustomersController(PaginationService paginationService,
-                                 ISortSpecJpaService<Customer> sortService,
-                                 ICustomersCrudService crudService,
-                                 IPredicateJpaService<Customer> predicateService) {
+  public DataCustomersController(
+    PaginationService paginationService,
+    ISortSpecJpaService<Customer> sortService,
+    ICustomersCrudService crudService,
+    IPredicateJpaService<Customer> predicateService
+  ) {
     super(paginationService, sortService, crudService, predicateService);
-    this.sortService = sortService;
   }
 
   @Override
@@ -65,7 +65,7 @@ public class DataCustomersController
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:create')")
   public void create(@Valid @RequestBody CustomerPojo input)
-      throws BadInputException, EntityExistsException {
+    throws BadInputException, EntityExistsException {
     super.create(input);
   }
 
@@ -73,7 +73,7 @@ public class DataCustomersController
   @PutMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:update')")
   public void update(@RequestBody CustomerPojo input, @RequestParam Map<String, String> requestParams)
-      throws EntityNotFoundException, BadInputException {
+    throws EntityNotFoundException, BadInputException {
     super.update(input, requestParams);
   }
 
@@ -81,7 +81,7 @@ public class DataCustomersController
   @DeleteMapping({"", "/"})
   @PreAuthorize("hasAuthority('customers:delete')")
   public void delete(Map<String, String> requestParams)
-      throws EntityNotFoundException {
+    throws EntityNotFoundException {
     super.delete(requestParams);
   }
 }

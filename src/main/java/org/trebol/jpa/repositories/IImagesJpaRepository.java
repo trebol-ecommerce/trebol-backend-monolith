@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @Repository
 public interface IImagesJpaRepository
-    extends IJpaRepository<Image> {
+  extends IJpaRepository<Image> {
 
   Optional<Image> findByFilename(String filename);
 }
