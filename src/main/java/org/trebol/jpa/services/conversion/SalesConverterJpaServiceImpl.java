@@ -99,7 +99,7 @@ public class SalesConverterJpaServiceImpl
   @Override
   public Sell convertToNewEntity(SellPojo source) throws BadInputException {
     Sell target = new Sell();
-
+    // the date can be null even after this method is called, since usually the underlying database can take care of it
     if (source.getDate() != null) {
       target.setDate(source.getDate());
     }
