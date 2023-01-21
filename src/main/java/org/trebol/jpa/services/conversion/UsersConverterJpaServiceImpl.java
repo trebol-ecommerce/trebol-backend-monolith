@@ -81,32 +81,22 @@ public class UsersConverterJpaServiceImpl
 
   @Override
   public User convertToNewEntity(UserPojo source) throws BadInputException {
-    PersonPojo sourcePerson = source.getPerson();
-    String sourceRole = source.getRole();
     User target = new User();
     target.setName(source.getName());
-    this.setPersonRole(target, sourceRole);
-    this.setPersonProfile(target, sourcePerson);
-    this.setPassword(source, target);
-    return target;
-  }
 
-  private void setPersonRole(User target, String role) throws BadInputException {
-    if (StringUtils.isNotBlank(role)) {
-      logger.trace("Searching user role by name '{}'...", role);
-      Optional<UserRole> roleByName = rolesRepository.findByName(role);
-      if (roleByName.isPresent()) {
-        logger.trace("User role found");
-        target.setUserRole(roleByName.get());
-      } else {
-        throw new BadInputException("The specified user role does not exist");
-      }
-    } else {
-      throw new BadInputException("The user does not have a role");
+    String sourceRole = source.getRole();
+    if (StringUtils.isBlank(sourceRole)) {
+      throw new BadInputException("The user was not given any role");
     }
-  }
+    Optional<UserRole> roleByName = rolesRepository.findByName(sourceRole);
+    if (roleByName.isPresent()) {
+      logger.trace("User role found");
+      target.setUserRole(roleByName.get());
+    } else {
+      throw new BadInputException("The specified user role does not exist");
+    }
 
-  private void setPersonProfile(User target, PersonPojo sourcePerson) {
+    PersonPojo sourcePerson = source.getPerson();
     if (sourcePerson != null && StringUtils.isNotBlank(sourcePerson.getIdNumber())) {
       logger.trace("Finding person profile...");
       Optional<Person> personByIdNumber = peopleRepository.findByIdNumber(sourcePerson.getIdNumber());
@@ -115,18 +105,13 @@ public class UsersConverterJpaServiceImpl
         target.setPerson(personByIdNumber.get());
       }
     }
-  }
 
-  private void setPassword(UserPojo source, User target) {
     if (StringUtils.isNotBlank(source.getPassword())) {
       String rawPassword = source.getPassword();
       String encodedPassword = passwordEncoder.encode(rawPassword);
       target.setPassword(encodedPassword);
-    } else if (source.getId() != null) {
-      // TODO optimize this! if the user exists and no password was provided, "reload" password from the database
-      Optional<User> userById = userRepository.findById(source.getId());
-      userById.ifPresent(user -> target.setPassword(user.getPassword()));
     }
+    return target;
   }
 
   @Override
