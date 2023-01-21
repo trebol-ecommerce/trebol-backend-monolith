@@ -33,7 +33,6 @@ import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
-import org.trebol.jpa.repositories.IUsersJpaRepository;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.UserPojo;
 
@@ -45,19 +44,18 @@ public class UsersConverterJpaServiceImpl
   implements IUsersConverterJpaService {
 
   private final Logger logger = LoggerFactory.getLogger(UsersConverterJpaServiceImpl.class);
-  private final IUsersJpaRepository userRepository;
   private final IUserRolesJpaRepository rolesRepository;
   private final IPeopleConverterJpaService peopleService;
   private final IPeopleJpaRepository peopleRepository;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UsersConverterJpaServiceImpl(IUsersJpaRepository repository,
-                                      IUserRolesJpaRepository rolesRepository,
-                                      IPeopleConverterJpaService peopleService,
-                                      IPeopleJpaRepository peopleRepository,
-                                      PasswordEncoder passwordEncoder) {
-    this.userRepository = repository;
+  public UsersConverterJpaServiceImpl(
+    IUserRolesJpaRepository rolesRepository,
+    IPeopleConverterJpaService peopleService,
+    IPeopleJpaRepository peopleRepository,
+    PasswordEncoder passwordEncoder
+  ) {
     this.rolesRepository = rolesRepository;
     this.peopleService = peopleService;
     this.peopleRepository = peopleRepository;
