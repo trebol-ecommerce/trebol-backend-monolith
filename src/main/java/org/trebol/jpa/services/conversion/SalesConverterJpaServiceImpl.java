@@ -49,7 +49,7 @@ public class SalesConverterJpaServiceImpl
     this.conversionService = conversionService;
   }
 
-  // TODO this method is expensive, please optimize it so that
+  // TODO this method can be really expensive, please optimize it when the REST API specification includes PATCH and PUT methods
   @Override
   public SellPojo convertToPojo(Sell source) {
     SellPojo target = SellPojo.builder()
