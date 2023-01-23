@@ -51,8 +51,8 @@ public abstract class GenericCrudJpaService<P, E>
 
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
-  protected final ITwoWayConverterJpaService<P, E> converter;
-  protected final IDataTransportJpaService<P, E> dataTransportService;
+  private final ITwoWayConverterJpaService<P, E> converter;
+  private final IDataTransportJpaService<P, E> dataTransportService;
 
   protected GenericCrudJpaService(
     IJpaRepository<E> repository,
