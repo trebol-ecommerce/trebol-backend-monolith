@@ -7,13 +7,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.convert.ConversionService;
 import org.trebol.jpa.entities.*;
 import org.trebol.pojo.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 import static org.trebol.constant.TestConstants.ANY;
@@ -25,7 +23,7 @@ class SalesConverterJpaServiceImplTest {
   @Mock ICustomersConverterJpaService customersConverter;
   @Mock ISalespeopleConverterJpaService salespeopleConverter;
   @Mock IBillingCompaniesConverterJpaService billingCompaniesConverter;
-  @Mock ConversionService conversion;
+  @Mock IAddressesConverterJpaService addressesConverterService;
   SellPojo sellPojo;
   Sell sell;
 
@@ -54,14 +52,14 @@ class SalesConverterJpaServiceImplTest {
     sell.setCustomer(new Customer(ANY));
     sell.setSalesperson(new Salesperson(ANY));
     when(billingCompaniesConverter.convertToPojo(any(BillingCompany.class))).thenReturn(BillingCompanyPojo.builder().build());
-    when(conversion.convert(any(Address.class), eq(AddressPojo.class))).thenReturn(AddressPojo.builder().build());
+    when(addressesConverterService.convertToPojo(any(Address.class))).thenReturn(AddressPojo.builder().build());
     when(customersConverter.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
     when(salespeopleConverter.convertToPojo(any(Salesperson.class))).thenReturn(SalespersonPojo.builder().build());
 
     SellPojo actual = sut.convertToPojo(sell);
 
     assertEquals(ANY, actual.getStatus());
-    verify(conversion, times(2)).convert(any(Address.class), eq(AddressPojo.class));
+    verify(addressesConverterService, times(2)).convertToPojo(any(Address.class));
     verify(customersConverter, times(1)).convertToPojo(any(Customer.class));
     verify(salespeopleConverter, times(1)).convertToPojo(any(Salesperson.class));
   }

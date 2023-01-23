@@ -22,12 +22,12 @@ package org.trebol.jpa.services.datatransport;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
+import org.trebol.jpa.services.conversion.IAddressesConverterJpaService;
 import org.trebol.jpa.services.conversion.IBillingCompaniesConverterJpaService;
 import org.trebol.jpa.services.conversion.ICustomersConverterJpaService;
 import org.trebol.jpa.services.crud.ICustomersCrudService;
@@ -57,13 +57,13 @@ public class SalesDataTransportJpaServiceImpl
   private final ICustomersConverterJpaService customersConverter;
   private final ICustomersCrudService customersService;
   private final ICustomersJpaRepository customersRepository;
-  private final ConversionService conversion;
+  private final IAddressesConverterJpaService addressesConverterService;
   private final Validator validator;
   private final RegexMatcherAdapter regexMatcherAdapter;
 
   @Autowired
   public SalesDataTransportJpaServiceImpl(
-    ConversionService conversion,
+    IAddressesConverterJpaService addressesConverterService,
     ISellStatusesJpaRepository statusesRepository,
     IBillingTypesJpaRepository billingTypesRepository,
     IBillingCompaniesJpaRepository billingCompaniesRepository,
@@ -77,7 +77,7 @@ public class SalesDataTransportJpaServiceImpl
     Validator validator,
     RegexMatcherAdapter regexMatcherAdapter
   ) {
-    this.conversion = conversion;
+    this.addressesConverterService = addressesConverterService;
     this.statusesRepository = statusesRepository;
     this.billingTypesRepository = billingTypesRepository;
     this.billingCompaniesRepository = billingCompaniesRepository;
@@ -247,7 +247,10 @@ public class SalesDataTransportJpaServiceImpl
         source.getSecondLine(),
         source.getPostalCode(),
         source.getNotes());
-      return matchingAddress.orElseGet(() -> conversion.convert(source, Address.class));
+      if (matchingAddress.isEmpty()) {
+        return addressesConverterService.convertToNewEntity(source);
+      }
+      return matchingAddress.get();
     }
   }
 

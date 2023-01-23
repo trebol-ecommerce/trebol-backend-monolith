@@ -21,7 +21,6 @@
 package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
@@ -38,17 +37,19 @@ public class SalesConverterJpaServiceImpl
   private final IBillingCompaniesConverterJpaService billingCompaniesConverter;
   private final ICustomersConverterJpaService customersConverter;
   private final ISalespeopleConverterJpaService salespeopleConverter;
-  private final ConversionService conversionService;
+  private final IAddressesConverterJpaService addressesConverterService;
 
   @Autowired
-  public SalesConverterJpaServiceImpl(IBillingCompaniesConverterJpaService billingCompaniesConverter,
-                                      ICustomersConverterJpaService customersConverter,
-                                      ISalespeopleConverterJpaService salespeopleConverter,
-                                      ConversionService conversionService) {
+  public SalesConverterJpaServiceImpl(
+    IBillingCompaniesConverterJpaService billingCompaniesConverter,
+    ICustomersConverterJpaService customersConverter,
+    ISalespeopleConverterJpaService salespeopleConverter,
+    IAddressesConverterJpaService addressesConverterService
+  ) {
     this.billingCompaniesConverter = billingCompaniesConverter;
     this.customersConverter = customersConverter;
     this.salespeopleConverter = salespeopleConverter;
-    this.conversionService = conversionService;
+    this.addressesConverterService = addressesConverterService;
   }
 
   // TODO this method can be really expensive, please optimize it when the REST API specification includes PATCH and PUT methods
@@ -78,12 +79,12 @@ public class SalesConverterJpaServiceImpl
     }
 
     if (source.getBillingAddress() != null) {
-      AddressPojo billingAddress = conversionService.convert(source.getBillingAddress(), AddressPojo.class);
+      AddressPojo billingAddress = addressesConverterService.convertToPojo(source.getBillingAddress());
       target.setBillingAddress(billingAddress);
     }
 
     if (source.getShippingAddress() != null) {
-      AddressPojo shippingAddress = conversionService.convert(source.getShippingAddress(), AddressPojo.class);
+      AddressPojo shippingAddress = addressesConverterService.convertToPojo(source.getShippingAddress());
       target.setShippingAddress(shippingAddress);
     }
 
