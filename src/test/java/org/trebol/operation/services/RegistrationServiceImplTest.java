@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
@@ -19,6 +18,7 @@ import org.trebol.jpa.repositories.ICustomersJpaRepository;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
+import org.trebol.jpa.services.conversion.IPeopleConverterJpaService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.RegistrationPojo;
 
@@ -34,7 +34,7 @@ import static org.mockito.Mockito.*;
 class RegistrationServiceImplTest {
   @InjectMocks RegistrationServiceImpl instance;
   @Mock IUsersJpaRepository usersRepositoryMock;
-  @Mock ConversionService conversionServiceMock;
+  @Mock IPeopleConverterJpaService peopleConverterService;
   @Mock IPeopleJpaRepository peopleRepositoryMock;
   @Mock IUserRolesJpaRepository rolesRepositoryMock;
   @Mock PasswordEncoder passwordEncoderMock;
@@ -56,22 +56,25 @@ class RegistrationServiceImplTest {
       .phone1("+123 456")
       .phone2("+123 456")
       .build();
-    regPojoMock = mockRegPojo("name", "password", personPojoMock);
-    personMock = mockPerson(1L, "firstName", "lastName", "1", "email@example.com", "+123 456", "+123 456");
+    regPojoMock = RegistrationPojo.builder()
+      .name("name")
+      .password("password")
+      .profile(personPojoMock)
+      .build();
+    personMock = new Person(1L, "firstName", "lastName", "1", "email@example.com", "+123 456", "+123 456");
     customerRoleMock = Optional.of(new UserRole(1L, "Customer"));
 
     // Reset mocks
     reset(usersRepositoryMock);
-    reset(conversionServiceMock);
     reset(peopleRepositoryMock);
     reset(rolesRepositoryMock);
   }
 
   @DisplayName("User and Id doesn't already exists, should pass")
   @Test
-  void EverythingCorrect_NoException() {
+  void EverythingCorrect_NoException() throws BadInputException {
     when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(conversionServiceMock.convert(any(PersonPojo.class), eq(Person.class))).thenReturn(personMock);
+    when(peopleConverterService.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
     when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
     when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
     // inside convertToUser method
@@ -84,7 +87,7 @@ class RegistrationServiceImplTest {
   @Test
   void SaveCalledOnRepository() throws EntityExistsException, BadInputException {
     when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(conversionServiceMock.convert(any(PersonPojo.class), eq(Person.class))).thenReturn(personMock);
+    when(peopleConverterService.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
     when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
     when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
     // inside convertToUser method
@@ -107,9 +110,9 @@ class RegistrationServiceImplTest {
 
   @DisplayName("Person with same ID already exists, EntityExistsException")
   @Test
-  void IdAlreadyExists_EntityExistsException() {
+  void IdAlreadyExists_EntityExistsException() throws BadInputException {
     when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(conversionServiceMock.convert(any(PersonPojo.class), eq(Person.class))).thenReturn(personMock);
+    when(peopleConverterService.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
     when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(true); // ID already exists
 
     assertThrows(EntityExistsException.class, () -> instance.register(regPojoMock));
@@ -117,30 +120,15 @@ class RegistrationServiceImplTest {
 
   @DisplayName("Customer Role not found, IllegalStateException")
   @Test
-  void CustomerRoleNotFound_IllegalStateException() {
+  void CustomerRoleNotFound_IllegalStateException() throws BadInputException {
     when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(conversionServiceMock.convert(any(PersonPojo.class), eq(Person.class))).thenReturn(personMock);
+    when(peopleConverterService.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
     when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
     when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
     // inside convertToUser method
     when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
     assertThrows(IllegalStateException.class, () -> instance.register(regPojoMock));
-  }
-
-  // Helper methods ---
-
-  RegistrationPojo mockRegPojo(String name, String password, PersonPojo personPojo) {
-    RegistrationPojo regPojoMock = new RegistrationPojo();
-    regPojoMock.setName(name);
-    regPojoMock.setPassword(password);
-    regPojoMock.setProfile(personPojo);
-    return regPojoMock;
-  }
-
-  Person mockPerson(Long id, String firstName, String lastName, String idNumber, String email,
-                    String phone1, String phone2) {
-    return new Person(id, firstName, lastName, idNumber, email, phone1, phone2);
   }
 
 }

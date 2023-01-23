@@ -21,12 +21,14 @@
 package org.trebol.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 @Data
+@Builder
 @JsonInclude
 public class RegistrationPojo {
   @NotBlank

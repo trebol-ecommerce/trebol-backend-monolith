@@ -24,7 +24,6 @@ import com.querydsl.core.types.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
@@ -33,6 +32,7 @@ import org.trebol.jpa.repositories.ICustomersJpaRepository;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
+import org.trebol.jpa.services.conversion.IPeopleConverterJpaService;
 import org.trebol.operation.IRegistrationService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.RegistrationPojo;
@@ -49,7 +49,7 @@ public class RegistrationServiceImpl
   private final IUserRolesJpaRepository rolesRepository;
   private final ICustomersJpaRepository customersRepository;
   private final PasswordEncoder passwordEncoder;
-  private final ConversionService conversionService;
+  private final IPeopleConverterJpaService peopleConverterService;
 
   @Autowired
   public RegistrationServiceImpl(
@@ -58,14 +58,14 @@ public class RegistrationServiceImpl
     IUserRolesJpaRepository rolesRepository,
     ICustomersJpaRepository customersRepository,
     PasswordEncoder passwordEncoder,
-    ConversionService conversionService
+    IPeopleConverterJpaService peopleConverterService
   ) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;
     this.rolesRepository = rolesRepository;
     this.customersRepository = customersRepository;
     this.passwordEncoder = passwordEncoder;
-    this.conversionService = conversionService;
+    this.peopleConverterService = peopleConverterService;
   }
 
   @Override
@@ -78,12 +78,9 @@ public class RegistrationServiceImpl
     }
 
     PersonPojo sourcePerson = registration.getProfile();
-    Person newPerson = conversionService.convert(sourcePerson, Person.class);
-    if (newPerson == null) {
-      throw new BadInputException("Input profile has insufficient or invalid data.");
-    }
+    Person newPerson = peopleConverterService.convertToNewEntity(sourcePerson);
 
-    Predicate sameProfileData = QPerson.person.idNumber.eq(newPerson.getIdNumber());
+    Predicate sameProfileData = QPerson.person.idNumber.eq(sourcePerson.getIdNumber());
     if (peopleRepository.exists(sameProfileData)) {
       throw new EntityExistsException("That ID number is already registered and associated to an account.");
     } else {
@@ -95,8 +92,7 @@ public class RegistrationServiceImpl
     usersRepository.saveAndFlush(newUser);
     logger.info("New user created with name '{}' and idNumber '{}'", newUser.getName(), newPerson.getIdNumber());
 
-    Customer newCustomer = new Customer();
-    newCustomer.setPerson(newPerson);
+    Customer newCustomer = new Customer(newPerson);
     customersRepository.saveAndFlush(newCustomer);
   }
 
