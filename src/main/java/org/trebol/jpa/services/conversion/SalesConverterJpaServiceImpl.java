@@ -29,6 +29,8 @@ import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.pojo.*;
 
+import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
+
 @Transactional
 @Service
 public class SalesConverterJpaServiceImpl
@@ -67,7 +69,7 @@ public class SalesConverterJpaServiceImpl
     target.setPaymentType(source.getPaymentType().getName());
     target.setBillingType(source.getBillingType().getName());
 
-    if (target.getBillingType().equals("Enterprise Invoice")) {
+    if (target.getBillingType().equals(BILLING_TYPE_ENTERPRISE)) {
       BillingCompany sourceBillingCompany = source.getBillingCompany();
       if (sourceBillingCompany != null) {
         BillingCompanyPojo targetBillingCompany = billingCompaniesConverter.convertToPojo(sourceBillingCompany);

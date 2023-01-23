@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 import static org.trebol.constant.TestConstants.ANY;
 import static org.trebol.constant.TestConstants.ID_1L;
 
@@ -46,7 +47,7 @@ class SalesConverterJpaServiceImplTest {
   void testConvertToPojo() {
     sell.setStatus(new SellStatus(ID_1L, 1, ANY));
     sell.setPaymentType(new PaymentType(ID_1L, ANY));
-    sell.setBillingType(new BillingType(ID_1L, "Enterprise Invoice"));
+    sell.setBillingType(new BillingType(ID_1L, BILLING_TYPE_ENTERPRISE));
     sell.setBillingCompany(new BillingCompany(ID_1L, ANY, ANY));
     sell.setBillingAddress(new Address());
     sell.setShippingAddress(new Address());
@@ -69,7 +70,7 @@ class SalesConverterJpaServiceImplTest {
   void testConvertToPojoNullProperties() {
     sell.setStatus(new SellStatus(ID_1L, 1, ANY));
     sell.setPaymentType(new PaymentType(ID_1L, ANY));
-    sell.setBillingType(new BillingType(ID_1L, "Enterprise Invoice"));
+    sell.setBillingType(new BillingType(ID_1L, BILLING_TYPE_ENTERPRISE));
     sell.setCustomer(new Customer(ANY));
     when(customersConverter.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
 

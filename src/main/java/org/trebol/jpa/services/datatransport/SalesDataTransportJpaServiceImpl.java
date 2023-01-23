@@ -39,6 +39,9 @@ import javax.validation.Validator;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
+import static org.trebol.config.Constants.BILLING_TYPE_INDIVIDUAL;
+
 @Transactional
 @Service
 public class SalesDataTransportJpaServiceImpl
@@ -154,7 +157,7 @@ public class SalesDataTransportJpaServiceImpl
   private void applyBillingTypeAndCompany(SellPojo source, Sell target) throws BadInputException {
     String billingType = source.getBillingType();
     if (StringUtils.isBlank(billingType)) {
-      billingType = "Bill";
+      billingType = BILLING_TYPE_INDIVIDUAL;
     }
 
     Optional<BillingType> existingBillingType = billingTypesRepository.findByName(billingType);
@@ -164,7 +167,7 @@ public class SalesDataTransportJpaServiceImpl
       throw new BadInputException("Billing type '" + billingType + "' " + IS_NOT_VALID);
     }
 
-    if (billingType.equals("Enterprise Invoice")) {
+    if (billingType.equals(BILLING_TYPE_ENTERPRISE)) {
       BillingCompanyPojo sourceBillingCompany = source.getBillingCompany();
       if (sourceBillingCompany == null) {
         throw new BadInputException("Billing company details are required to generate enterprise invoices");
