@@ -40,8 +40,8 @@ public interface AuthorizationHeaderParserService<T> {
   String extractAuthorizationHeader(HttpHeaders httpHeaders);
 
   /**
-   * @param authorizationHeader The Authorization header value
+   * @param token The raw token
    * @return The expected token class
    */
-  T parseToken(String authorizationHeader) throws IllegalStateException;
+  T parseToken(String token) throws IllegalStateException;
 }
