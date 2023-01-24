@@ -59,6 +59,7 @@ public class SalesCrudServiceImpl
   private final BillingTypesJpaRepository billingTypesRepository;
   private final BillingCompaniesCrudService billingCompaniesCrudService;
   private final BillingCompaniesConverterService billingCompaniesConverterService;
+  // private final PaymentTypesJpaRepository paymentTypesRepository;
   private final AddressesJpaRepository addressesRepository;
   private final ShippersCrudService shippersCrudService;
   private final AddressesConverterService addressesConverterService;
@@ -77,6 +78,7 @@ public class SalesCrudServiceImpl
     BillingTypesJpaRepository billingTypesRepository,
     BillingCompaniesCrudService billingCompaniesCrudService,
     BillingCompaniesConverterService billingCompaniesConverterService,
+    // PaymentTypesJpaRepository paymentTypesRepository,
     AddressesJpaRepository addressesRepository,
     ShippersCrudService shippersCrudService,
     AddressesConverterService addressesConverterService
@@ -92,6 +94,7 @@ public class SalesCrudServiceImpl
     this.billingTypesRepository = billingTypesRepository;
     this.billingCompaniesCrudService = billingCompaniesCrudService;
     this.billingCompaniesConverterService = billingCompaniesConverterService;
+    // this.paymentTypesRepository = paymentTypesRepository;
     this.addressesRepository = addressesRepository;
     this.shippersCrudService = shippersCrudService;
     this.addressesConverterService = addressesConverterService;
@@ -168,14 +171,12 @@ public class SalesCrudServiceImpl
     }
 
     AddressPojo pojoBillingAddress = inputPojo.getBillingAddress();
-    if (pojoBillingAddress != null) {
-      Optional<Address> existingBillingAddress = this.findAddress(pojoBillingAddress);
-      if (existingBillingAddress.isEmpty()) {
-        Address address = addressesConverterService.convertToNewEntity(pojoBillingAddress);
-        target.setBillingAddress(address);
-      } else {
-        target.setBillingAddress(existingBillingAddress.get());
-      }
+    Optional<Address> existingBillingAddress = this.findAddress(pojoBillingAddress);
+    if (existingBillingAddress.isEmpty()) {
+      Address address = addressesConverterService.convertToNewEntity(pojoBillingAddress);
+      target.setBillingAddress(address);
+    } else {
+      target.setBillingAddress(existingBillingAddress.get());
     }
 
     AddressPojo pojoShippingAddress = inputPojo.getShippingAddress();
