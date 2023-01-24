@@ -40,7 +40,7 @@ public class UserRolesSortSpecServiceImpl
   @Override
   protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
     return Map.of(
-      "name", QUserRole.userRole.name.asc()
+      "name", getBasePath().name.asc()
     );
   }
 }
