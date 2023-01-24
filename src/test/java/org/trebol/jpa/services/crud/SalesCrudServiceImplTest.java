@@ -34,8 +34,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -93,7 +92,13 @@ class SalesCrudServiceImplTest {
   }
 
   @Test
-  void does_not_create_sales_with_incomplete_data() {
+  void does_not_create_sales_with_incomplete_data() throws BadInputException {
+    Customer customer = customersHelper.customerEntityAfterCreation();
+    when(salesConverterMock.convertToNewEntity(any(SellPojo.class))).thenReturn(new Sell());
+    when(customersCrudServiceMock.getExisting(nullable(CustomerPojo.class))).thenReturn(Optional.of(customer));
+    when(billingTypesRepositoryMock.findByName(nullable(String.class))).thenReturn(Optional.of(new BillingType()));
+    when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(new Address());
+
     List.of(
       SellPojo.builder().build(),
       SellPojo.builder()
@@ -107,17 +112,28 @@ class SalesCrudServiceImplTest {
         .customer(customersHelper.customerPojoBeforeCreation())
         .billingType(ANY)
         .billingAddress(AddressPojo.builder().build())
-        .build(),
-      SellPojo.builder()
+        .build()
+    ).forEach((sellPojo) -> assertThrows(
+      NullPointerException.class,
+      () -> instance.create(sellPojo)
+    ));
+    verifyNoInteractions(salesRepositoryMock);
+
+    SellPojo valid = SellPojo.builder()
         .customer(customersHelper.customerPojoBeforeCreation())
         .billingType(ANY)
         .billingAddress(AddressPojo.builder().build())
         .details(List.of())
-        .build(),
-      salesHelper.sellPojoBeforeCreation()
-    ).forEach((sellPojo) -> {
-      assertThrows(BadInputException.class, () -> instance.create(sellPojo));
-    });
+        .build();
+    SellPojo expectedResult = SellPojo.builder()
+      .date(Instant.now())
+      .build();
+    when(salesConverterMock.convertToPojo(nullable(Sell.class))).thenReturn(expectedResult);
+
+    SellPojo result = instance.create(valid);
+
+    assertNotNull(result);
+    assertEquals(expectedResult, result);
   }
 
   @Test
@@ -135,18 +151,11 @@ class SalesCrudServiceImplTest {
       ))
       .build();
     SellPojo expectedResult = salesHelper.sellPojoAfterCreation();
-    Customer customerEntityInput = customersHelper.customerEntityBeforeCreation();
-    Sell sellEntityInput = salesHelper.sellEntityBeforeCreation();
-    Product productEntityInput = productsHelper.productEntityAfterCreation();
-    Sell sellEntityOutput = salesHelper.sellEntityAfterCreation();
-    when(salesConverterMock.convertToNewEntity(any(SellPojo.class))).thenReturn(sellEntityInput);
+    when(salesConverterMock.convertToNewEntity(any(SellPojo.class))).thenReturn(new Sell());
     when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.empty());
-    when(customersConverterServiceMock.convertToNewEntity(any(CustomerPojo.class))).thenReturn(customerEntityInput);
     when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new BillingType()));
-    when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(new Address());
-    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(productEntityInput));
-    when(salesRepositoryMock.saveAndFlush(any(Sell.class))).thenReturn(sellEntityOutput);
-    when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(expectedResult);
+    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(new Product()));
+    when(salesConverterMock.convertToPojo(nullable(Sell.class))).thenReturn(expectedResult);
 
     SellPojo result = instance.create(input);
 
