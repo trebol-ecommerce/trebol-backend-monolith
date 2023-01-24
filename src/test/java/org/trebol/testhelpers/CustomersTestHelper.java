@@ -41,7 +41,7 @@ public class CustomersTestHelper {
 
   public CustomerPojo customerPojoBeforeCreation() {
     if (this.pojoBeforeCreation == null) {
-      this.pojoForFetch = CustomerPojo.builder()
+      this.pojoBeforeCreation = CustomerPojo.builder()
         .person(PersonPojo.builder().idNumber(CUSTOMER_ID_NUMBER).build())
         .build();
     }
