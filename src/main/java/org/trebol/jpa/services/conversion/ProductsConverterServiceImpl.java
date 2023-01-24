@@ -53,7 +53,7 @@ public class ProductsConverterServiceImpl
     this.productCategoriesConverterService = productCategoriesConverterService;
   }
 
-  // TODO this method can be expensive
+  // TODO this method can be expensive, optimize it to fetch required data only according to context
   @Override
   public ProductPojo convertToPojo(Product source) {
     ProductPojo target = ProductPojo.builder()
