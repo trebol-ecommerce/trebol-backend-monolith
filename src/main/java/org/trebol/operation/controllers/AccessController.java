@@ -55,18 +55,6 @@ public class AccessController {
     this.authorizedApiService = authorizedApiService;
   }
 
-  private UserDetails getUserDetails(HttpHeaders requestHeaders)
-    throws UsernameNotFoundException, IllegalStateException {
-    String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
-    if (authorizationHeader == null || !authorizationHeader.matches("^Bearer .+$")) {
-      return null;
-    }
-    String jwt = authorizationHeader.replace("Bearer ", "");
-    Claims body = jwtClaimsParserService.parseToken(jwt);
-    String username = body.getSubject();
-    return userDetailsService.loadUserByUsername(username);
-  }
-
   @GetMapping({"", "/"})
   public AuthorizedAccessPojo getApiRoutesAccess(@RequestHeader HttpHeaders requestHeaders)
     throws UsernameNotFoundException, IllegalStateException {
@@ -102,5 +90,17 @@ public class AccessController {
       bad credentials method. whatever provided data is in token, didn't match with existing records of users.
       the consumer sent an invalid token. don't return an explanation of this. the status code should suffice.
       */
+  }
+
+  private UserDetails getUserDetails(HttpHeaders requestHeaders)
+    throws UsernameNotFoundException, IllegalStateException {
+    String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
+    if (authorizationHeader == null || !authorizationHeader.matches("^Bearer .+$")) {
+      return null;
+    }
+    String jwt = authorizationHeader.replace("Bearer ", "");
+    Claims body = jwtClaimsParserService.parseToken(jwt);
+    String username = body.getSubject();
+    return userDetailsService.loadUserByUsername(username);
   }
 }
