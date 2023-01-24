@@ -20,10 +20,10 @@ import static org.trebol.constant.TestConstants.ID_1L;
 @ExtendWith(MockitoExtension.class)
 class SalesConverterServiceImplTest {
   @InjectMocks SalesConverterServiceImpl sut;
-  @Mock ICustomersConverterService customersConverter;
-  @Mock ISalespeopleConverterService salespeopleConverter;
-  @Mock IBillingCompaniesConverterService billingCompaniesConverter;
-  @Mock IAddressesConverterService addressesConverterService;
+  @Mock CustomersConverterService customersConverter;
+  @Mock SalespeopleConverterService salespeopleConverter;
+  @Mock BillingCompaniesConverterService billingCompaniesConverter;
+  @Mock AddressesConverterService addressesConverterService;
   SellPojo sellPojo;
   Sell sell;
 

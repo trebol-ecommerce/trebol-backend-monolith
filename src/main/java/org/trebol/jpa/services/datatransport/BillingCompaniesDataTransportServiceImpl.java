@@ -27,7 +27,7 @@ import org.trebol.pojo.BillingCompanyPojo;
 
 @Service
 public class BillingCompaniesDataTransportServiceImpl
-  implements IBillingCompaniesDataTransportService {
+  implements BillingCompaniesDataTransportService {
 
   public BillingCompaniesDataTransportServiceImpl() {
   }

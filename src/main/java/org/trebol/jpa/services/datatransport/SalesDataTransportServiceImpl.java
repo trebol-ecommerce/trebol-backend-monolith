@@ -27,11 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
-import org.trebol.jpa.services.conversion.IAddressesConverterService;
-import org.trebol.jpa.services.conversion.IBillingCompaniesConverterService;
-import org.trebol.jpa.services.conversion.ICustomersConverterService;
-import org.trebol.jpa.services.crud.ICustomersCrudService;
-import org.trebol.jpa.services.helpers.RegexMatcherAdapter;
+import org.trebol.jpa.services.conversion.AddressesConverterService;
+import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
+import org.trebol.jpa.services.conversion.CustomersConverterService;
+import org.trebol.jpa.services.crud.CustomersCrudService;
+import org.trebol.jpa.services.helpers.RegexMatcherAdapterService;
 import org.trebol.pojo.*;
 
 import javax.validation.ConstraintViolation;
@@ -45,37 +45,37 @@ import static org.trebol.config.Constants.BILLING_TYPE_INDIVIDUAL;
 @Transactional
 @Service
 public class SalesDataTransportServiceImpl
-  implements ISalesDataTransportService {
+  implements SalesDataTransportService {
   private static final String IS_NOT_VALID = "is not valid";
-  private final ISellStatusesJpaRepository statusesRepository;
-  private final IBillingTypesJpaRepository billingTypesRepository;
-  private final IPaymentTypesJpaRepository paymentTypesRepository;
-  private final IBillingCompaniesJpaRepository billingCompaniesRepository;
-  private final IShippersJpaRepository shippersRepository;
-  private final IAddressesJpaRepository addressesRepository;
-  private final IBillingCompaniesConverterService billingCompaniesConverter;
-  private final ICustomersConverterService customersConverter;
-  private final ICustomersCrudService customersService;
-  private final ICustomersJpaRepository customersRepository;
-  private final IAddressesConverterService addressesConverterService;
+  private final SellStatusesJpaRepository statusesRepository;
+  private final BillingTypesJpaRepository billingTypesRepository;
+  private final PaymentTypesJpaRepository paymentTypesRepository;
+  private final BillingCompaniesJpaRepository billingCompaniesRepository;
+  private final ShippersJpaRepository shippersRepository;
+  private final AddressesJpaRepository addressesRepository;
+  private final BillingCompaniesConverterService billingCompaniesConverter;
+  private final CustomersConverterService customersConverter;
+  private final CustomersCrudService customersService;
+  private final CustomersJpaRepository customersRepository;
+  private final AddressesConverterService addressesConverterService;
   private final Validator validator;
-  private final RegexMatcherAdapter regexMatcherAdapter;
+  private final RegexMatcherAdapterService regexMatcherAdapterService;
 
   @Autowired
   public SalesDataTransportServiceImpl(
-    IAddressesConverterService addressesConverterService,
-    ISellStatusesJpaRepository statusesRepository,
-    IBillingTypesJpaRepository billingTypesRepository,
-    IBillingCompaniesJpaRepository billingCompaniesRepository,
-    IPaymentTypesJpaRepository paymentTypesRepository,
-    IAddressesJpaRepository addressesRepository,
-    IShippersJpaRepository shippersRepository,
-    IBillingCompaniesConverterService billingCompaniesConverter,
-    ICustomersConverterService customersConverter,
-    ICustomersCrudService customersService,
-    ICustomersJpaRepository customersRepository,
+    AddressesConverterService addressesConverterService,
+    SellStatusesJpaRepository statusesRepository,
+    BillingTypesJpaRepository billingTypesRepository,
+    BillingCompaniesJpaRepository billingCompaniesRepository,
+    PaymentTypesJpaRepository paymentTypesRepository,
+    AddressesJpaRepository addressesRepository,
+    ShippersJpaRepository shippersRepository,
+    BillingCompaniesConverterService billingCompaniesConverter,
+    CustomersConverterService customersConverter,
+    CustomersCrudService customersService,
+    CustomersJpaRepository customersRepository,
     Validator validator,
-    RegexMatcherAdapter regexMatcherAdapter
+    RegexMatcherAdapterService regexMatcherAdapterService
   ) {
     this.addressesConverterService = addressesConverterService;
     this.statusesRepository = statusesRepository;
@@ -89,7 +89,7 @@ public class SalesDataTransportServiceImpl
     this.customersService = customersService;
     this.customersRepository = customersRepository;
     this.validator = validator;
-    this.regexMatcherAdapter = regexMatcherAdapter;
+    this.regexMatcherAdapterService = regexMatcherAdapterService;
   }
 
   @Transactional
@@ -261,7 +261,7 @@ public class SalesDataTransportServiceImpl
       throw new BadInputException("Billing company must have an id number");
     }
 
-    if (!regexMatcherAdapter.isAValidIdNumber(idNumber)) {
+    if (!regexMatcherAdapterService.isAValidIdNumber(idNumber)) {
       throw new BadInputException("Billing company must have a correct id number");
     }
 

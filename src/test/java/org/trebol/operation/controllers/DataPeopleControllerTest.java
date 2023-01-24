@@ -5,9 +5,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.PersonPojo;
 
@@ -15,9 +15,9 @@ import org.trebol.pojo.PersonPojo;
 class DataPeopleControllerTest {
   @InjectMocks DataPeopleController instance;
   @Mock PaginationService paginationService;
-  @Mock ISortSpecService<Person> sortService;
-  @Mock GenericCrudService<PersonPojo, Person> crudService;
-  @Mock IPredicateService<Person> predicateService;
+  @Mock SortSpecService<Person> sortService;
+  @Mock CrudGenericService<PersonPojo, Person> crudService;
+  @Mock PredicateService<Person> predicateService;
 
   // TODO write a test
 }

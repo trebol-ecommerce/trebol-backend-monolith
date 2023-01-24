@@ -29,7 +29,7 @@ import org.trebol.pojo.AddressPojo;
 @NoArgsConstructor
 @Service
 public class AddressesConverterServiceImpl
-  implements IAddressesConverterService {
+  implements AddressesConverterService {
 
   @Override
   public AddressPojo convertToPojo(Address source) {

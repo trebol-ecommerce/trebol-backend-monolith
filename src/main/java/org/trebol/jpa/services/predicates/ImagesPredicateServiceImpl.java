@@ -27,13 +27,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.QImage;
-import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.PredicateService;
 
 import java.util.Map;
 
 @Service
 public class ImagesPredicateServiceImpl
-  implements IPredicateService<Image> {
+  implements PredicateService<Image> {
 
   private final Logger logger = LoggerFactory.getLogger(ImagesPredicateServiceImpl.class);
 

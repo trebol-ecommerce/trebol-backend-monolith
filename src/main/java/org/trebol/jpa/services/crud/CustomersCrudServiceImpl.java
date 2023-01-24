@@ -26,10 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.repositories.ICustomersJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.conversion.ICustomersConverterService;
-import org.trebol.jpa.services.datatransport.ICustomersDataTransportService;
+import org.trebol.jpa.repositories.CustomersJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.conversion.CustomersConverterService;
+import org.trebol.jpa.services.datatransport.CustomersDataTransportService;
 import org.trebol.pojo.CustomerPojo;
 
 import java.util.Optional;
@@ -37,15 +37,15 @@ import java.util.Optional;
 @Transactional
 @Service
 public class CustomersCrudServiceImpl
-  extends GenericCrudService<CustomerPojo, Customer>
-  implements ICustomersCrudService {
-  private final ICustomersJpaRepository customersRepository;
+  extends CrudGenericService<CustomerPojo, Customer>
+  implements CustomersCrudService {
+  private final CustomersJpaRepository customersRepository;
 
   @Autowired
   public CustomersCrudServiceImpl(
-    ICustomersJpaRepository customersRepository,
-    ICustomersConverterService customersConverterService,
-    ICustomersDataTransportService customersDataTransportService
+    CustomersJpaRepository customersRepository,
+    CustomersConverterService customersConverterService,
+    CustomersDataTransportService customersDataTransportService
   ) {
     super(customersRepository, customersConverterService, customersDataTransportService);
     this.customersRepository = customersRepository;

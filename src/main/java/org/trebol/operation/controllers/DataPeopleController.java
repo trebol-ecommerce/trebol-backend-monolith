@@ -27,10 +27,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
-import org.trebol.jpa.services.crud.IPeopleCrudService;
-import org.trebol.operation.GenericDataController;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.PeopleCrudService;
+import org.trebol.operation.DataGenericController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.PersonPojo;
@@ -41,14 +41,14 @@ import java.util.Map;
 @RequestMapping("/data/people")
 @PreAuthorize("isAuthenticated()")
 public class DataPeopleController
-  extends GenericDataController<PersonPojo, Person> {
+  extends DataGenericController<PersonPojo, Person> {
 
   @Autowired
   public DataPeopleController(
     PaginationService paginationService,
-    ISortSpecService<Person> sortService,
-    IPeopleCrudService crudService,
-    IPredicateService<Person> predicateService
+    SortSpecService<Person> sortService,
+    PeopleCrudService crudService,
+    PredicateService<Person> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

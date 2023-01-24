@@ -25,11 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
-import org.trebol.jpa.repositories.IProductListsJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.conversion.IProductListsConverterService;
-import org.trebol.jpa.services.datatransport.IProductListsDataTransportService;
+import org.trebol.jpa.repositories.ProductListItemsJpaRepository;
+import org.trebol.jpa.repositories.ProductListsJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.conversion.ProductListsConverterService;
+import org.trebol.jpa.services.datatransport.ProductListsDataTransportService;
 import org.trebol.pojo.ProductListPojo;
 
 import javax.persistence.EntityNotFoundException;
@@ -38,17 +38,17 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductListsCrudServiceImpl
-  extends GenericCrudService<ProductListPojo, ProductList>
-  implements IProductListCrudService {
-  private final IProductListsJpaRepository listsRepository;
-  private final IProductListItemsJpaRepository listItemsRepository;
+  extends CrudGenericService<ProductListPojo, ProductList>
+  implements ProductListCrudService {
+  private final ProductListsJpaRepository listsRepository;
+  private final ProductListItemsJpaRepository listItemsRepository;
 
   @Autowired
   public ProductListsCrudServiceImpl(
-    IProductListsJpaRepository listsRepository,
-    IProductListItemsJpaRepository listItemsRepository,
-    IProductListsConverterService listsConverterService,
-    IProductListsDataTransportService listsDataTransportService
+    ProductListsJpaRepository listsRepository,
+    ProductListItemsJpaRepository listItemsRepository,
+    ProductListsConverterService listsConverterService,
+    ProductListsDataTransportService listsDataTransportService
   ) {
     super(listsRepository, listsConverterService, listsDataTransportService);
     this.listsRepository = listsRepository;

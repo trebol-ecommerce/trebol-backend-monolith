@@ -28,7 +28,7 @@ import org.trebol.pojo.ProductListPojo;
 
 @Service
 public class ProductListDataTransportServiceImpl
-  implements IProductListsDataTransportService {
+  implements ProductListsDataTransportService {
 
   @Autowired
   public ProductListDataTransportServiceImpl(

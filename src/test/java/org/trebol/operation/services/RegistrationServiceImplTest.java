@@ -14,11 +14,11 @@ import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.repositories.ICustomersJpaRepository;
-import org.trebol.jpa.repositories.IPeopleJpaRepository;
-import org.trebol.jpa.repositories.IUserRolesJpaRepository;
-import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.conversion.IPeopleConverterService;
+import org.trebol.jpa.repositories.CustomersJpaRepository;
+import org.trebol.jpa.repositories.PeopleJpaRepository;
+import org.trebol.jpa.repositories.UserRolesJpaRepository;
+import org.trebol.jpa.repositories.UsersJpaRepository;
+import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.RegistrationPojo;
 
@@ -34,12 +34,12 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class RegistrationServiceImplTest {
   @InjectMocks RegistrationServiceImpl instance;
-  @Mock IUsersJpaRepository usersRepositoryMock;
-  @Mock IPeopleConverterService peopleConverterService;
-  @Mock IPeopleJpaRepository peopleRepositoryMock;
-  @Mock IUserRolesJpaRepository rolesRepositoryMock;
+  @Mock UsersJpaRepository usersRepositoryMock;
+  @Mock PeopleConverterService peopleConverterService;
+  @Mock PeopleJpaRepository peopleRepositoryMock;
+  @Mock UserRolesJpaRepository rolesRepositoryMock;
   @Mock PasswordEncoder passwordEncoderMock;
-  @Mock ICustomersJpaRepository customerRepositoryMock;
+  @Mock CustomersJpaRepository customerRepositoryMock;
   PersonPojo personPojoMock;
   RegistrationPojo regPojoMock;
   Person personMock;

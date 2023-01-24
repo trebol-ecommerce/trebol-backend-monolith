@@ -29,11 +29,11 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
-import org.trebol.jpa.services.crud.ISalesCrudService;
-import org.trebol.operation.GenericDataCrudController;
-import org.trebol.operation.ISalesProcessService;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.SalesCrudService;
+import org.trebol.operation.DataCrudGenericController;
+import org.trebol.operation.SalesProcessService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.SellPojo;
@@ -48,18 +48,18 @@ import java.util.Map;
 @RequestMapping("/data/sales")
 @PreAuthorize("isAuthenticated()")
 public class DataSalesController
-  extends GenericDataCrudController<SellPojo, Sell> {
-  private final ISalesProcessService processService;
+  extends DataCrudGenericController<SellPojo, Sell> {
+  private final SalesProcessService processService;
   @Nullable
   private final IMailingIntegrationService mailingIntegrationService;
 
   @Autowired
   public DataSalesController(
     PaginationService paginationService,
-    ISortSpecService<Sell> sortService,
-    ISalesCrudService crudService,
-    IPredicateService<Sell> predicateService,
-    ISalesProcessService processService,
+    SortSpecService<Sell> sortService,
+    SalesCrudService crudService,
+    PredicateService<Sell> predicateService,
+    SalesProcessService processService,
     @Autowired(required = false) IMailingIntegrationService mailingIntegrationService
   ) {
     super(paginationService, sortService, crudService, predicateService);

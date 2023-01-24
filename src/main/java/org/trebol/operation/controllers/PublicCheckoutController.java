@@ -34,9 +34,9 @@ import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.crud.ISalesCrudService;
-import org.trebol.operation.ICheckoutService;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.crud.SalesCrudService;
+import org.trebol.operation.CheckoutService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
 
@@ -56,17 +56,17 @@ public class PublicCheckoutController {
   private static final String WEBPAY_SUCCESS_TOKEN_HEADER_NAME = "token_ws";
   private static final String WEBPAY_ABORTION_TOKEN_HEADER_NAME = "TBK_TOKEN";
   private final Logger logger = LoggerFactory.getLogger(PublicCheckoutController.class);
-  private final ICheckoutService service;
-  private final ISalesCrudService salesCrudService;
-  private final IPredicateService<Sell> salesPredicateService;
+  private final CheckoutService service;
+  private final SalesCrudService salesCrudService;
+  private final PredicateService<Sell> salesPredicateService;
   @Nullable
   private final IMailingIntegrationService mailingIntegrationService;
 
   @Autowired
   public PublicCheckoutController(
-    ICheckoutService service,
-    ISalesCrudService salesCrudService,
-    IPredicateService<Sell> salesPredicateService,
+    CheckoutService service,
+    SalesCrudService salesCrudService,
+    PredicateService<Sell> salesPredicateService,
     @Autowired(required = false) IMailingIntegrationService mailingIntegrationService
   ) {
     this.service = service;

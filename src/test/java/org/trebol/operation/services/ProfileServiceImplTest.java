@@ -13,11 +13,11 @@ import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.exceptions.PersonNotFoundException;
 import org.trebol.jpa.exceptions.UserNotFoundException;
-import org.trebol.jpa.repositories.IPeopleJpaRepository;
-import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.conversion.IPeopleConverterService;
-import org.trebol.jpa.services.crud.IPeopleCrudService;
-import org.trebol.jpa.services.datatransport.IPeopleDataTransportService;
+import org.trebol.jpa.repositories.PeopleJpaRepository;
+import org.trebol.jpa.repositories.UsersJpaRepository;
+import org.trebol.jpa.services.conversion.PeopleConverterService;
+import org.trebol.jpa.services.crud.PeopleCrudService;
+import org.trebol.jpa.services.datatransport.PeopleDataTransportService;
 import org.trebol.pojo.PersonPojo;
 
 import java.util.Optional;
@@ -31,11 +31,11 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceImplTest {
   @InjectMocks ProfileServiceImpl instance;
-  @Mock IUsersJpaRepository usersRepositoryMock;
-  @Mock IPeopleCrudService peopleServiceMock;
-  @Mock IPeopleConverterService peopleConverterMock;
-  @Mock IPeopleDataTransportService peopleDataTransportServiceMock;
-  @Mock IPeopleJpaRepository peopleRepositoryMock;
+  @Mock UsersJpaRepository usersRepositoryMock;
+  @Mock PeopleCrudService peopleServiceMock;
+  @Mock PeopleConverterService peopleConverterMock;
+  @Mock PeopleDataTransportService peopleDataTransportServiceMock;
+  @Mock PeopleJpaRepository peopleRepositoryMock;
   UserRole userRoleMock;
   Person personMock;
   User userMock;

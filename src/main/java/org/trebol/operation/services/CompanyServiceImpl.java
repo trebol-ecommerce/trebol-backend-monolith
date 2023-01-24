@@ -23,18 +23,18 @@ package org.trebol.operation.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.Param;
-import org.trebol.jpa.repositories.IParamsJpaRepository;
-import org.trebol.operation.ICompanyService;
+import org.trebol.jpa.repositories.ParamsJpaRepository;
+import org.trebol.operation.CompanyService;
 import org.trebol.pojo.CompanyDetailsPojo;
 
 @Service
 public class CompanyServiceImpl
-  implements ICompanyService {
-  private final IParamsJpaRepository paramsRepository;
+  implements CompanyService {
+  private final ParamsJpaRepository paramsRepository;
 
   @Autowired
   public CompanyServiceImpl(
-    IParamsJpaRepository paramsRepository
+    ParamsJpaRepository paramsRepository
   ) {
     this.paramsRepository = paramsRepository;
   }

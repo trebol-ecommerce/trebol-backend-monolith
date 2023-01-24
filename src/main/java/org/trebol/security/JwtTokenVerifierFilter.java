@@ -47,10 +47,10 @@ import java.util.Set;
 public class JwtTokenVerifierFilter
   extends OncePerRequestFilter {
   private final Logger myLogger = LoggerFactory.getLogger(JwtTokenVerifierFilter.class);
-  private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
   public JwtTokenVerifierFilter(
-    IAuthorizationHeaderParserService<Claims> jwtClaimsParserService
+    AuthorizationHeaderParserService<Claims> jwtClaimsParserService
   ) {
     super();
     this.jwtClaimsParserService = jwtClaimsParserService;

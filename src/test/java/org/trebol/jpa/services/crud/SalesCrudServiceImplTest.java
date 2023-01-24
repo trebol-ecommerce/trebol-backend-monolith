@@ -11,11 +11,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.repositories.IProductsJpaRepository;
-import org.trebol.jpa.repositories.ISalesJpaRepository;
-import org.trebol.jpa.services.conversion.IProductsConverterService;
-import org.trebol.jpa.services.conversion.ISalesConverterService;
-import org.trebol.jpa.services.datatransport.ISalesDataTransportService;
+import org.trebol.jpa.repositories.ProductsJpaRepository;
+import org.trebol.jpa.repositories.SalesJpaRepository;
+import org.trebol.jpa.services.conversion.ProductsConverterService;
+import org.trebol.jpa.services.conversion.SalesConverterService;
+import org.trebol.jpa.services.datatransport.SalesDataTransportService;
 import org.trebol.pojo.SellPojo;
 import org.trebol.testhelpers.ProductsTestHelper;
 import org.trebol.testhelpers.SalesTestHelper;
@@ -35,11 +35,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class SalesCrudServiceImplTest {
   @InjectMocks SalesCrudServiceImpl instance;
-  @Mock ISalesJpaRepository salesRepositoryMock;
-  @Mock IProductsJpaRepository productsRepository;
-  @Mock ISalesConverterService salesConverterMock;
-  @Mock ISalesDataTransportService dataTransportServiceMock;
-  @Mock IProductsConverterService productsConverterMock; // TODO write an unit test that needs this mock
+  @Mock SalesJpaRepository salesRepositoryMock;
+  @Mock ProductsJpaRepository productsRepository;
+  @Mock SalesConverterService salesConverterMock;
+  @Mock SalesDataTransportService dataTransportServiceMock;
+  @Mock ProductsConverterService productsConverterMock; // TODO write an unit test that needs this mock
   ProductsTestHelper productsHelper = new ProductsTestHelper();
   SalesTestHelper salesHelper = new SalesTestHelper();
 

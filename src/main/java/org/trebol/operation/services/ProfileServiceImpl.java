@@ -28,12 +28,12 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.exceptions.PersonNotFoundException;
 import org.trebol.jpa.exceptions.UserNotFoundException;
-import org.trebol.jpa.repositories.IPeopleJpaRepository;
-import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.conversion.IPeopleConverterService;
-import org.trebol.jpa.services.crud.IPeopleCrudService;
-import org.trebol.jpa.services.datatransport.IPeopleDataTransportService;
-import org.trebol.operation.IProfileService;
+import org.trebol.jpa.repositories.PeopleJpaRepository;
+import org.trebol.jpa.repositories.UsersJpaRepository;
+import org.trebol.jpa.services.conversion.PeopleConverterService;
+import org.trebol.jpa.services.crud.PeopleCrudService;
+import org.trebol.jpa.services.datatransport.PeopleDataTransportService;
+import org.trebol.operation.ProfileService;
 import org.trebol.pojo.PersonPojo;
 
 import javax.persistence.EntityNotFoundException;
@@ -41,20 +41,20 @@ import java.util.Optional;
 
 @Service
 public class ProfileServiceImpl
-  implements IProfileService {
-  private final IUsersJpaRepository usersRepository;
-  private final IPeopleCrudService peopleService;
-  private final IPeopleConverterService peopleConverter;
-  private final IPeopleDataTransportService peopleDataTransportService;
-  private final IPeopleJpaRepository peopleRepository;
+  implements ProfileService {
+  private final UsersJpaRepository usersRepository;
+  private final PeopleCrudService peopleService;
+  private final PeopleConverterService peopleConverter;
+  private final PeopleDataTransportService peopleDataTransportService;
+  private final PeopleJpaRepository peopleRepository;
 
   @Autowired
   public ProfileServiceImpl(
-    IUsersJpaRepository usersRepository,
-    IPeopleCrudService peopleService,
-    IPeopleConverterService peopleConverter,
-    IPeopleDataTransportService peopleDataTransportService,
-    IPeopleJpaRepository peopleRepository
+    UsersJpaRepository usersRepository,
+    PeopleCrudService peopleService,
+    PeopleConverterService peopleConverter,
+    PeopleDataTransportService peopleDataTransportService,
+    PeopleJpaRepository peopleRepository
   ) {
     this.usersRepository = usersRepository;
     this.peopleService = peopleService;

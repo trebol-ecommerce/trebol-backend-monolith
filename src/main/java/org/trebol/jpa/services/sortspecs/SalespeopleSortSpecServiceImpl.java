@@ -24,13 +24,13 @@ import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.QSalesperson;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.services.GenericSortSpecService;
+import org.trebol.jpa.services.SortSpecGenericService;
 
 import java.util.Map;
 
 @Service
 public class SalespeopleSortSpecServiceImpl
-  extends GenericSortSpecService<Salesperson> {
+  extends SortSpecGenericService<Salesperson> {
 
   @Override
   public QSalesperson getBasePath() {

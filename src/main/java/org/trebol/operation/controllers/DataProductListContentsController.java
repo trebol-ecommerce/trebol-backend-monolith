@@ -28,12 +28,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
-import org.trebol.jpa.repositories.IProductListsJpaRepository;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
-import org.trebol.jpa.services.conversion.IProductListItemsConverterService;
-import org.trebol.jpa.services.crud.IProductsCrudService;
+import org.trebol.jpa.repositories.ProductListItemsJpaRepository;
+import org.trebol.jpa.repositories.ProductListsJpaRepository;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.conversion.ProductListItemsConverterService;
+import org.trebol.jpa.services.crud.ProductsCrudService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
@@ -47,22 +47,22 @@ import java.util.*;
 public class DataProductListContentsController {
   private static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   private final PaginationService paginationService;
-  private final ISortSpecService<ProductListItem> sortService;
-  private final IProductListItemsJpaRepository listItemsRepository;
-  private final IProductListsJpaRepository listsRepository;
-  private final IPredicateService<ProductListItem> listItemsPredicateService;
-  private final IProductsCrudService productCrudService;
-  private final IProductListItemsConverterService itemConverterService;
+  private final SortSpecService<ProductListItem> sortService;
+  private final ProductListItemsJpaRepository listItemsRepository;
+  private final ProductListsJpaRepository listsRepository;
+  private final PredicateService<ProductListItem> listItemsPredicateService;
+  private final ProductsCrudService productCrudService;
+  private final ProductListItemsConverterService itemConverterService;
 
   @Autowired
   public DataProductListContentsController(
     PaginationService paginationService,
-    ISortSpecService<ProductListItem> sortService,
-    IProductListItemsJpaRepository listItemsRepository,
-    IProductListsJpaRepository listsRepository,
-    IPredicateService<ProductListItem> listItemsPredicateService,
-    IProductsCrudService productCrudService,
-    IProductListItemsConverterService itemConverterService
+    SortSpecService<ProductListItem> sortService,
+    ProductListItemsJpaRepository listItemsRepository,
+    ProductListsJpaRepository listsRepository,
+    PredicateService<ProductListItem> listItemsPredicateService,
+    ProductsCrudService productCrudService,
+    ProductListItemsConverterService itemConverterService
   ) {
     this.paginationService = paginationService;
     this.sortService = sortService;

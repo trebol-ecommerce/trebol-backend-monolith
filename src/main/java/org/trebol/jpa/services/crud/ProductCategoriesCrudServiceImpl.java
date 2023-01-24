@@ -26,10 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.repositories.IProductsCategoriesJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.conversion.IProductCategoriesConverterService;
-import org.trebol.jpa.services.datatransport.IProductCategoriesDataTransportService;
+import org.trebol.jpa.repositories.ProductsCategoriesJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
+import org.trebol.jpa.services.datatransport.ProductCategoriesDataTransportService;
 import org.trebol.pojo.ProductCategoryPojo;
 
 import java.util.Optional;
@@ -37,16 +37,16 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductCategoriesCrudServiceImpl
-  extends GenericCrudService<ProductCategoryPojo, ProductCategory>
-  implements IProductCategoriesCrudService {
-  private final IProductsCategoriesJpaRepository categoriesRepository;
-  private final IProductCategoriesDataTransportService productCategoriesDataTransportService;
+  extends CrudGenericService<ProductCategoryPojo, ProductCategory>
+  implements ProductCategoriesCrudService {
+  private final ProductsCategoriesJpaRepository categoriesRepository;
+  private final ProductCategoriesDataTransportService productCategoriesDataTransportService;
 
   @Autowired
   public ProductCategoriesCrudServiceImpl(
-    IProductsCategoriesJpaRepository categoriesRepository,
-    IProductCategoriesConverterService categoriesConverterService,
-    IProductCategoriesDataTransportService categoriesDataTransportService
+    ProductsCategoriesJpaRepository categoriesRepository,
+    ProductCategoriesConverterService categoriesConverterService,
+    ProductCategoriesDataTransportService categoriesDataTransportService
   ) {
     super(categoriesRepository, categoriesConverterService, categoriesDataTransportService);
     this.categoriesRepository = categoriesRepository;

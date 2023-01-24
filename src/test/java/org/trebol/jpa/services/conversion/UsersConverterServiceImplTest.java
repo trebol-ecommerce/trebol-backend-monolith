@@ -12,9 +12,9 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.repositories.IPeopleJpaRepository;
-import org.trebol.jpa.repositories.IUserRolesJpaRepository;
-import org.trebol.jpa.repositories.IUsersJpaRepository;
+import org.trebol.jpa.repositories.PeopleJpaRepository;
+import org.trebol.jpa.repositories.UserRolesJpaRepository;
+import org.trebol.jpa.repositories.UsersJpaRepository;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.UserPojo;
 
@@ -29,10 +29,10 @@ import static org.trebol.constant.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 public class UsersConverterServiceImplTest {
   @InjectMocks UsersConverterServiceImpl sut;
-  @Mock IUsersJpaRepository userRepository;
-  @Mock IUserRolesJpaRepository rolesRepository;
-  @Mock IPeopleConverterService peopleService;
-  @Mock IPeopleJpaRepository peopleRepository;
+  @Mock UsersJpaRepository userRepository;
+  @Mock UserRolesJpaRepository rolesRepository;
+  @Mock PeopleConverterService peopleService;
+  @Mock PeopleJpaRepository peopleRepository;
   @Mock PasswordEncoder passwordEncoder;
   User user;
   UserPojo userPojo;

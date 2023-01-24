@@ -27,7 +27,7 @@ import org.trebol.pojo.UserRolePojo;
 
 @Service
 public class UserRolesDataTransportServiceImpl
-  implements IUserRolesDataTransportService {
+  implements UserRolesDataTransportService {
 
   public UserRolesDataTransportServiceImpl(
   ) {

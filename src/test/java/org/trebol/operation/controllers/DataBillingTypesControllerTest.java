@@ -5,9 +5,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.BillingTypePojo;
 
@@ -15,9 +15,9 @@ import org.trebol.pojo.BillingTypePojo;
 class DataBillingTypesControllerTest {
   @InjectMocks DataBillingTypesController instance;
   @Mock PaginationService paginationService;
-  @Mock ISortSpecService<BillingType> sortService;
-  @Mock GenericCrudService<BillingTypePojo, BillingType> crudService;
-  @Mock IPredicateService<BillingType> predicateService;
+  @Mock SortSpecService<BillingType> sortService;
+  @Mock CrudGenericService<BillingTypePojo, BillingType> crudService;
+  @Mock PredicateService<BillingType> predicateService;
 
   // TODO write a test
 }

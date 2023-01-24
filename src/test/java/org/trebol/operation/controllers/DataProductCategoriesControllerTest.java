@@ -5,9 +5,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.ProductCategoryPojo;
 
@@ -15,9 +15,9 @@ import org.trebol.pojo.ProductCategoryPojo;
 class DataProductCategoriesControllerTest {
   @InjectMocks DataProductCategoriesController instance;
   @Mock PaginationService paginationService;
-  @Mock ISortSpecService<ProductCategory> sortService;
-  @Mock GenericCrudService<ProductCategoryPojo, ProductCategory> crudService;
-  @Mock IPredicateService<ProductCategory> predicateService;
+  @Mock SortSpecService<ProductCategory> sortService;
+  @Mock CrudGenericService<ProductCategoryPojo, ProductCategory> crudService;
+  @Mock PredicateService<ProductCategory> predicateService;
 
   // TODO write a test
 }

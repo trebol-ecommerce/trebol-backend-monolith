@@ -27,13 +27,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.QSellStatus;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.PredicateService;
 
 import java.util.Map;
 
 @Service
 public class SellStatusesPredicateServiceImpl
-  implements IPredicateService<SellStatus> {
+  implements PredicateService<SellStatus> {
 
   private final Logger logger = LoggerFactory.getLogger(SellStatusesPredicateServiceImpl.class);
 

@@ -26,10 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.repositories.IShippersJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.conversion.IShippersConverterService;
-import org.trebol.jpa.services.datatransport.IShippersDataTransportService;
+import org.trebol.jpa.repositories.ShippersJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.conversion.ShippersConverterService;
+import org.trebol.jpa.services.datatransport.ShippersDataTransportService;
 import org.trebol.pojo.ShipperPojo;
 
 import java.util.Optional;
@@ -37,15 +37,15 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ShippersCrudServiceImpl
-  extends GenericCrudService<ShipperPojo, Shipper>
-  implements IShippersCrudService {
-  private final IShippersJpaRepository shippersRepository;
+  extends CrudGenericService<ShipperPojo, Shipper>
+  implements ShippersCrudService {
+  private final ShippersJpaRepository shippersRepository;
 
   @Autowired
   public ShippersCrudServiceImpl(
-    IShippersJpaRepository shippersRepository,
-    IShippersConverterService shippersConverterService,
-    IShippersDataTransportService shippersdataTransportService
+    ShippersJpaRepository shippersRepository,
+    ShippersConverterService shippersConverterService,
+    ShippersDataTransportService shippersdataTransportService
   ) {
     super(shippersRepository, shippersConverterService, shippersdataTransportService);
     this.shippersRepository = shippersRepository;

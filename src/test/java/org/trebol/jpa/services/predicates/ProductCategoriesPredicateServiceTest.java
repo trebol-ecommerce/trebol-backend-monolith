@@ -8,8 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.IProductCategoryTreeResolver;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.helpers.ProductCategoryTreeResolverService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class ProductCategoriesPredicateServiceTest {
-  @Mock IProductCategoryTreeResolver treeResolver;
-  IPredicateService<ProductCategory> instance;
+  @Mock ProductCategoryTreeResolverService treeResolver;
+  PredicateService<ProductCategory> instance;
 
   @BeforeEach
   void beforeEach() {

@@ -28,21 +28,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.QProduct;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.IProductCategoryTreeResolver;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.helpers.ProductCategoryTreeResolverService;
 
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class ProductsPredicateServiceImpl
-  implements IPredicateService<Product> {
+  implements PredicateService<Product> {
   private final Logger logger = LoggerFactory.getLogger(ProductsPredicateServiceImpl.class);
-  private final IProductCategoryTreeResolver categoryTreeResolver;
+  private final ProductCategoryTreeResolverService categoryTreeResolver;
 
   @Autowired
   public ProductsPredicateServiceImpl(
-    IProductCategoryTreeResolver categoryTreeResolver
+    ProductCategoryTreeResolverService categoryTreeResolver
   ) {
     this.categoryTreeResolver = categoryTreeResolver;
   }

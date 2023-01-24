@@ -27,7 +27,7 @@ import org.trebol.pojo.ImagePojo;
 
 @Service
 public class ImagesDataTransportServiceImpl
-  implements IImagesDataTransportService {
+  implements ImagesDataTransportService {
 
   public ImagesDataTransportServiceImpl(
   ) {

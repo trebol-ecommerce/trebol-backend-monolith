@@ -13,9 +13,9 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.crud.ISalesCrudService;
-import org.trebol.operation.ISalesProcessService;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.crud.SalesCrudService;
+import org.trebol.operation.SalesProcessService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
 import org.trebol.testhelpers.SalesTestHelper;
@@ -34,9 +34,9 @@ import static org.trebol.testhelpers.SalesTestHelper.SELL_TRANSACTION_TOKEN;
 @ExtendWith(MockitoExtension.class)
 class CheckoutServiceTest {
   @InjectMocks CheckoutServiceImpl service;
-  @Mock ISalesCrudService salesCrudService;
-  @Mock ISalesProcessService salesProcessService;
-  @Mock IPredicateService<Sell> salesPredicateService;
+  @Mock SalesCrudService salesCrudService;
+  @Mock SalesProcessService salesProcessService;
+  @Mock PredicateService<Sell> salesPredicateService;
   @Mock IPaymentsIntegrationService paymentIntegrationService;
   SalesTestHelper salesHelper = new SalesTestHelper();
   static final String PAYMENT_URL = "https://example.com/pay";

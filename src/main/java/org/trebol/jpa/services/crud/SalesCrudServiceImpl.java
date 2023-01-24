@@ -27,13 +27,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.IAddressesJpaRepository;
-import org.trebol.jpa.repositories.IBillingTypesJpaRepository;
-import org.trebol.jpa.repositories.IProductsJpaRepository;
-import org.trebol.jpa.repositories.ISalesJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
+import org.trebol.jpa.repositories.AddressesJpaRepository;
+import org.trebol.jpa.repositories.BillingTypesJpaRepository;
+import org.trebol.jpa.repositories.ProductsJpaRepository;
+import org.trebol.jpa.repositories.SalesJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.*;
-import org.trebol.jpa.services.datatransport.ISalesDataTransportService;
+import org.trebol.jpa.services.datatransport.SalesDataTransportService;
 import org.trebol.pojo.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -47,39 +47,39 @@ import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 @Transactional
 @Service
 public class SalesCrudServiceImpl
-  extends GenericCrudService<SellPojo, Sell>
-  implements ISalesCrudService {
-  private final ISalesJpaRepository salesRepository;
-  private final ISalesConverterService salesConverterService;
-  private final ISalesDataTransportService salesDataTransportService;
-  private final IProductsJpaRepository productsRepository;
-  private final IProductsConverterService productConverterService;
-  private final ICustomersCrudService customersCrudService;
-  private final ICustomersConverterService customersConverterService;
-  private final IBillingTypesJpaRepository billingTypesRepository;
-  private final IBillingCompaniesCrudService billingCompaniesCrudService;
-  private final IBillingCompaniesConverterService billingCompaniesConverterService;
-  private final IAddressesJpaRepository addressesRepository;
-  private final IShippersCrudService shippersCrudService;
-  private final IAddressesConverterService addressesConverterService;
+  extends CrudGenericService<SellPojo, Sell>
+  implements SalesCrudService {
+  private final SalesJpaRepository salesRepository;
+  private final SalesConverterService salesConverterService;
+  private final SalesDataTransportService salesDataTransportService;
+  private final ProductsJpaRepository productsRepository;
+  private final ProductsConverterService productConverterService;
+  private final CustomersCrudService customersCrudService;
+  private final CustomersConverterService customersConverterService;
+  private final BillingTypesJpaRepository billingTypesRepository;
+  private final BillingCompaniesCrudService billingCompaniesCrudService;
+  private final BillingCompaniesConverterService billingCompaniesConverterService;
+  private final AddressesJpaRepository addressesRepository;
+  private final ShippersCrudService shippersCrudService;
+  private final AddressesConverterService addressesConverterService;
   private static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
   private static final boolean CAN_EDIT_AFTER_PROCESS = true; // TODO refactor as part of application properties
 
   @Autowired
   public SalesCrudServiceImpl(
-    ISalesJpaRepository salesRepository,
-    IProductsJpaRepository productsRepository,
-    ISalesConverterService salesConverterService,
-    ISalesDataTransportService salesDataTransportService,
-    IProductsConverterService productConverterService,
-    ICustomersCrudService customersCrudService,
-    ICustomersConverterService customersConverterService,
-    IBillingTypesJpaRepository billingTypesRepository,
-    IBillingCompaniesCrudService billingCompaniesCrudService,
-    IBillingCompaniesConverterService billingCompaniesConverterService,
-    IAddressesJpaRepository addressesRepository,
-    IShippersCrudService shippersCrudService,
-    IAddressesConverterService addressesConverterService
+    SalesJpaRepository salesRepository,
+    ProductsJpaRepository productsRepository,
+    SalesConverterService salesConverterService,
+    SalesDataTransportService salesDataTransportService,
+    ProductsConverterService productConverterService,
+    CustomersCrudService customersCrudService,
+    CustomersConverterService customersConverterService,
+    BillingTypesJpaRepository billingTypesRepository,
+    BillingCompaniesCrudService billingCompaniesCrudService,
+    BillingCompaniesConverterService billingCompaniesConverterService,
+    AddressesJpaRepository addressesRepository,
+    ShippersCrudService shippersCrudService,
+    AddressesConverterService addressesConverterService
   ) {
     super(salesRepository, salesConverterService, salesDataTransportService);
     this.salesRepository = salesRepository;

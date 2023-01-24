@@ -31,7 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.trebol.config.SecurityProperties;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.services.crud.ICustomersCrudService;
+import org.trebol.jpa.services.crud.CustomersCrudService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.PersonPojo;
 
@@ -45,13 +45,13 @@ public class JwtGuestAuthenticationFilter
   extends GenericJwtAuthenticationFilter {
   private final Logger myLogger = LoggerFactory.getLogger(JwtGuestAuthenticationFilter.class);
   private final AuthenticationManager authenticationManager;
-  private final ICustomersCrudService customersService;
+  private final CustomersCrudService customersService;
 
   public JwtGuestAuthenticationFilter(
     SecurityProperties jwtProperties,
     SecretKey secretKey,
     AuthenticationManager authenticationManager,
-    ICustomersCrudService customersService
+    CustomersCrudService customersService
   ) {
     super(jwtProperties, secretKey);
     this.authenticationManager = authenticationManager;

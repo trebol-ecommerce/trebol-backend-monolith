@@ -29,10 +29,10 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.crud.ISalesCrudService;
-import org.trebol.operation.ICheckoutService;
-import org.trebol.operation.ISalesProcessService;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.crud.SalesCrudService;
+import org.trebol.operation.CheckoutService;
+import org.trebol.operation.SalesProcessService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;
 
@@ -47,18 +47,18 @@ import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
 
 @Service
 public class CheckoutServiceImpl
-  implements ICheckoutService {
+  implements CheckoutService {
   private final Logger logger = LoggerFactory.getLogger(CheckoutServiceImpl.class);
-  private final ISalesCrudService salesCrudService;
-  private final ISalesProcessService salesProcessService;
-  private final IPredicateService<Sell> salesPredicateService;
+  private final SalesCrudService salesCrudService;
+  private final SalesProcessService salesProcessService;
+  private final PredicateService<Sell> salesPredicateService;
   private final IPaymentsIntegrationService paymentIntegrationService;
 
   @Autowired
   public CheckoutServiceImpl(
-    ISalesCrudService salesCrudService,
-    ISalesProcessService salesProcessService,
-    IPredicateService<Sell> salesPredicateService,
+    SalesCrudService salesCrudService,
+    SalesProcessService salesProcessService,
+    PredicateService<Sell> salesPredicateService,
     IPaymentsIntegrationService paymentIntegrationService
   ) {
     this.salesCrudService = salesCrudService;

@@ -5,7 +5,7 @@ import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.PredicateService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserRolesPredicateServiceTest {
-  private IPredicateService<UserRole> instance;
+  private PredicateService<UserRole> instance;
 
   @BeforeEach
   void beforeEach() {

@@ -8,8 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.Product;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.IProductCategoryTreeResolver;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.helpers.ProductCategoryTreeResolverService;
 
 import java.util.*;
 
@@ -18,8 +18,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductsPredicateServiceTest {
-  @Mock IProductCategoryTreeResolver categoryTreeResolver;
-  IPredicateService<Product> instance;
+  @Mock ProductCategoryTreeResolverService categoryTreeResolver;
+  PredicateService<Product> instance;
 
   @BeforeEach
   void beforeEach() {

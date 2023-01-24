@@ -28,7 +28,7 @@ import org.trebol.pojo.SellStatusPojo;
 
 @Service
 public class SellStatusesConverterServiceImpl
-  implements ISellStatusesConverterService {
+  implements SellStatusesConverterService {
 
   @Autowired
   public SellStatusesConverterServiceImpl() {

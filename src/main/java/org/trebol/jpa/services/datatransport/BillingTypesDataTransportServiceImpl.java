@@ -27,7 +27,7 @@ import org.trebol.pojo.BillingTypePojo;
 
 @Service
 public class BillingTypesDataTransportServiceImpl
-  implements IBillingTypesDataTransportService {
+  implements BillingTypesDataTransportService {
 
   public BillingTypesDataTransportServiceImpl(
   ) {

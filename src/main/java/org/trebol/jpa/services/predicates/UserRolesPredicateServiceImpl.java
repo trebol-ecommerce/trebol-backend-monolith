@@ -27,13 +27,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.QUserRole;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.PredicateService;
 
 import java.util.Map;
 
 @Service
 public class UserRolesPredicateServiceImpl
-  implements IPredicateService<UserRole> {
+  implements PredicateService<UserRole> {
 
   private final Logger logger = LoggerFactory.getLogger(UserRolesPredicateServiceImpl.class);
 

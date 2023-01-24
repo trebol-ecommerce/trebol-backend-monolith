@@ -26,13 +26,13 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.repositories.ISalesJpaRepository;
-import org.trebol.jpa.repositories.ISellDetailsJpaRepository;
-import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
-import org.trebol.jpa.services.conversion.IProductsConverterService;
-import org.trebol.jpa.services.conversion.ISalesConverterService;
-import org.trebol.jpa.services.crud.ISalesCrudService;
-import org.trebol.operation.ISalesProcessService;
+import org.trebol.jpa.repositories.SalesJpaRepository;
+import org.trebol.jpa.repositories.SellDetailsJpaRepository;
+import org.trebol.jpa.repositories.SellStatusesJpaRepository;
+import org.trebol.jpa.services.conversion.ProductsConverterService;
+import org.trebol.jpa.services.conversion.SalesConverterService;
+import org.trebol.jpa.services.crud.SalesCrudService;
+import org.trebol.operation.SalesProcessService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
 import org.trebol.pojo.SellPojo;
@@ -47,24 +47,24 @@ import static org.trebol.config.Constants.*;
 @Transactional
 @Service
 public class SalesProcessServiceImpl
-  implements ISalesProcessService {
+  implements SalesProcessService {
   private static final String THE_TRANSACTION_IS_NOT_IN_A_VALID_STATE_FOR_THIS_OPERATION = "The transaction is not in a valid state for this operation";
   private static final String NO_STATUS_MATCHES_THE = "No status matches the";
   private static final String NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT = "name - Is the database empty or corrupt?";
-  private final ISalesCrudService crudService;
-  private final ISalesJpaRepository salesRepository;
-  private final ISellDetailsJpaRepository sellDetailsRepository;
-  private final ISellStatusesJpaRepository sellStatusesRepository;
-  private final ISalesConverterService converterService;
-  private final IProductsConverterService productConverterService;
+  private final SalesCrudService crudService;
+  private final SalesJpaRepository salesRepository;
+  private final SellDetailsJpaRepository sellDetailsRepository;
+  private final SellStatusesJpaRepository sellStatusesRepository;
+  private final SalesConverterService converterService;
+  private final ProductsConverterService productConverterService;
 
   public SalesProcessServiceImpl(
-    ISalesCrudService crudService,
-    ISalesJpaRepository salesRepository,
-    ISellDetailsJpaRepository sellDetailsRepository,
-    ISellStatusesJpaRepository sellStatusesRepository,
-    ISalesConverterService converterService,
-    IProductsConverterService productConverterService
+    SalesCrudService crudService,
+    SalesJpaRepository salesRepository,
+    SellDetailsJpaRepository sellDetailsRepository,
+    SellStatusesJpaRepository sellStatusesRepository,
+    SalesConverterService converterService,
+    ProductsConverterService productConverterService
   ) {
     this.crudService = crudService;
     this.salesRepository = salesRepository;

@@ -25,10 +25,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
-import org.trebol.jpa.services.crud.IUserRolesCrudService;
-import org.trebol.operation.GenericDataCrudController;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.UserRolesCrudService;
+import org.trebol.operation.DataCrudGenericController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.UserRolePojo;
@@ -42,14 +42,14 @@ import java.util.Map;
 @RequestMapping("/data/user_roles")
 @PreAuthorize("isAuthenticated()")
 public class DataUserRolesController
-  extends GenericDataCrudController<UserRolePojo, UserRole> {
+  extends DataCrudGenericController<UserRolePojo, UserRole> {
 
   @Autowired
   public DataUserRolesController(
     PaginationService paginationService,
-    ISortSpecService<UserRole> sortService,
-    IUserRolesCrudService crudService,
-    IPredicateService<UserRole> predicateService
+    SortSpecService<UserRole> sortService,
+    UserRolesCrudService crudService,
+    PredicateService<UserRole> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

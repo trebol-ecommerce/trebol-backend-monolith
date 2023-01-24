@@ -30,21 +30,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.QProductCategory;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.IProductCategoryTreeResolver;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.helpers.ProductCategoryTreeResolverService;
 
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class ProductCategoriesPredicateServiceImpl
-  implements IPredicateService<ProductCategory> {
+  implements PredicateService<ProductCategory> {
 
   private final Logger logger = LoggerFactory.getLogger(ProductCategoriesPredicateServiceImpl.class);
-  private final IProductCategoryTreeResolver treeResolver;
+  private final ProductCategoryTreeResolverService treeResolver;
 
   @Autowired
-  public ProductCategoriesPredicateServiceImpl(IProductCategoryTreeResolver treeResolver) {
+  public ProductCategoriesPredicateServiceImpl(ProductCategoryTreeResolverService treeResolver) {
     this.treeResolver = treeResolver;
   }
 

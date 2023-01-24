@@ -25,10 +25,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
-import org.trebol.jpa.services.crud.ICustomersCrudService;
-import org.trebol.operation.GenericDataCrudController;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.CustomersCrudService;
+import org.trebol.operation.DataCrudGenericController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.DataPagePojo;
@@ -42,14 +42,14 @@ import java.util.Map;
 @RequestMapping("/data/customers")
 @PreAuthorize("isAuthenticated()")
 public class DataCustomersController
-  extends GenericDataCrudController<CustomerPojo, Customer> {
+  extends DataCrudGenericController<CustomerPojo, Customer> {
 
   @Autowired
   public DataCustomersController(
     PaginationService paginationService,
-    ISortSpecService<Customer> sortService,
-    ICustomersCrudService crudService,
-    IPredicateService<Customer> predicateService
+    SortSpecService<Customer> sortService,
+    CustomersCrudService crudService,
+    PredicateService<Customer> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

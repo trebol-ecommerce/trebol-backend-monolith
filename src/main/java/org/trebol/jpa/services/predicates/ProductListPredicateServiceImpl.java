@@ -28,14 +28,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.entities.QProductList;
-import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.PredicateService;
 
 import java.util.Map;
 
 @Transactional
 @Service
 public class ProductListPredicateServiceImpl
-  implements IPredicateService<ProductList> {
+  implements PredicateService<ProductList> {
   private final Logger logger = LoggerFactory.getLogger(ProductListPredicateServiceImpl.class);
 
   @Override

@@ -5,9 +5,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.UserRolePojo;
 
@@ -15,9 +15,9 @@ import org.trebol.pojo.UserRolePojo;
 class DataUserRolesControllerTest {
   @InjectMocks DataUserRolesController instance;
   @Mock PaginationService paginationService;
-  @Mock ISortSpecService<UserRole> sortService;
-  @Mock GenericCrudService<UserRolePojo, UserRole> crudService;
-  @Mock IPredicateService<UserRole> predicateService;
+  @Mock SortSpecService<UserRole> sortService;
+  @Mock CrudGenericService<UserRolePojo, UserRole> crudService;
+  @Mock PredicateService<UserRole> predicateService;
 
   // TODO write a test
 }

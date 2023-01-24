@@ -12,8 +12,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.repositories.IPeopleJpaRepository;
-import org.trebol.jpa.repositories.IUserRolesJpaRepository;
+import org.trebol.jpa.repositories.PeopleJpaRepository;
+import org.trebol.jpa.repositories.UserRolesJpaRepository;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.UserPojo;
 
@@ -27,8 +27,8 @@ import static org.trebol.constant.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 public class UsersDataTransportServiceImplTest {
   @InjectMocks UsersDataTransportServiceImpl sut;
-  @Mock IUserRolesJpaRepository rolesRepository;
-  @Mock IPeopleJpaRepository peopleRepository;
+  @Mock UserRolesJpaRepository rolesRepository;
+  @Mock PeopleJpaRepository peopleRepository;
   @Mock PasswordEncoder passwordEncoder;
   User user;
   UserPojo userPojo;

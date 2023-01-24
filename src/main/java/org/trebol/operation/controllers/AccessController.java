@@ -29,8 +29,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.pojo.AuthorizedAccessPojo;
-import org.trebol.security.IAuthorizationHeaderParserService;
-import org.trebol.security.IAuthorizedApiService;
+import org.trebol.security.AuthorizationHeaderParserService;
+import org.trebol.security.AuthorizedApiService;
 
 import java.util.Collection;
 
@@ -40,15 +40,15 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @RequestMapping("/access")
 @PreAuthorize("isAuthenticated()")
 public class AccessController {
-  private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final UserDetailsService userDetailsService;
-  private final IAuthorizedApiService authorizedApiService;
+  private final AuthorizedApiService authorizedApiService;
 
   @Autowired
   public AccessController(
-    IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+    AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
     UserDetailsService userDetailsService,
-    IAuthorizedApiService authorizedApiService
+    AuthorizedApiService authorizedApiService
   ) {
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.userDetailsService = userDetailsService;

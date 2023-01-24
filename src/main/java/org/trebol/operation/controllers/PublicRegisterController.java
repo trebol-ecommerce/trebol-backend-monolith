@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.operation.IRegistrationService;
+import org.trebol.operation.RegistrationService;
 import org.trebol.pojo.RegistrationPojo;
 
 import javax.persistence.EntityExistsException;
@@ -35,11 +35,11 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/public/register")
 public class PublicRegisterController {
-  private final IRegistrationService registrationService;
+  private final RegistrationService registrationService;
 
   @Autowired
   public PublicRegisterController(
-    IRegistrationService registrationService
+    RegistrationService registrationService
   ) {
     this.registrationService = registrationService;
   }

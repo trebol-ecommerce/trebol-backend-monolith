@@ -33,18 +33,18 @@ import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 @Transactional
 @Service
 public class SalesConverterServiceImpl
-  implements ISalesConverterService {
-  private final IBillingCompaniesConverterService billingCompaniesConverter;
-  private final ICustomersConverterService customersConverter;
-  private final ISalespeopleConverterService salespeopleConverter;
-  private final IAddressesConverterService addressesConverterService;
+  implements SalesConverterService {
+  private final BillingCompaniesConverterService billingCompaniesConverter;
+  private final CustomersConverterService customersConverter;
+  private final SalespeopleConverterService salespeopleConverter;
+  private final AddressesConverterService addressesConverterService;
 
   @Autowired
   public SalesConverterServiceImpl(
-    IBillingCompaniesConverterService billingCompaniesConverter,
-    ICustomersConverterService customersConverter,
-    ISalespeopleConverterService salespeopleConverter,
-    IAddressesConverterService addressesConverterService
+    BillingCompaniesConverterService billingCompaniesConverter,
+    CustomersConverterService customersConverter,
+    SalespeopleConverterService salespeopleConverter,
+    AddressesConverterService addressesConverterService
   ) {
     this.billingCompaniesConverter = billingCompaniesConverter;
     this.customersConverter = customersConverter;

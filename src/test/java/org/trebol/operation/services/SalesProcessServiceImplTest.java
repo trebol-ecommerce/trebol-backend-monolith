@@ -11,12 +11,12 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.repositories.ISalesJpaRepository;
-import org.trebol.jpa.repositories.ISellDetailsJpaRepository;
-import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
-import org.trebol.jpa.services.conversion.IProductsConverterService;
-import org.trebol.jpa.services.conversion.ISalesConverterService;
-import org.trebol.jpa.services.crud.ISalesCrudService;
+import org.trebol.jpa.repositories.SalesJpaRepository;
+import org.trebol.jpa.repositories.SellDetailsJpaRepository;
+import org.trebol.jpa.repositories.SellStatusesJpaRepository;
+import org.trebol.jpa.services.conversion.ProductsConverterService;
+import org.trebol.jpa.services.conversion.SalesConverterService;
+import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
 import org.trebol.pojo.SellPojo;
@@ -36,12 +36,12 @@ import static org.trebol.config.Constants.*;
 @ExtendWith(MockitoExtension.class)
 class SalesProcessServiceImplTest {
   @InjectMocks SalesProcessServiceImpl instance;
-  @Mock ISalesCrudService crudService;
-  @Mock ISalesJpaRepository salesRepository;
-  @Mock ISellStatusesJpaRepository sellStatusesRepository;
-  @Mock ISellDetailsJpaRepository sellDetailsRepository;
-  @Mock ISalesConverterService sellConverterService;
-  @Mock IProductsConverterService productConverterService;
+  @Mock SalesCrudService crudService;
+  @Mock SalesJpaRepository salesRepository;
+  @Mock SellStatusesJpaRepository sellStatusesRepository;
+  @Mock SellDetailsJpaRepository sellDetailsRepository;
+  @Mock SalesConverterService sellConverterService;
+  @Mock ProductsConverterService productConverterService;
   ProductsTestHelper productsHelper = new ProductsTestHelper();
 
   @BeforeEach

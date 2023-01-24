@@ -30,7 +30,7 @@ import org.trebol.pojo.ProductCategoryPojo;
 @Transactional
 @Service
 public class ProductCategoriesConverterServiceImpl
-  implements IProductCategoriesConverterService {
+  implements ProductCategoriesConverterService {
 
   @Autowired
   public ProductCategoriesConverterServiceImpl() {

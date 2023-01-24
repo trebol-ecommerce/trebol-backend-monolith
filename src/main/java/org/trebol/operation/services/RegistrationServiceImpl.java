@@ -28,12 +28,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.ICustomersJpaRepository;
-import org.trebol.jpa.repositories.IPeopleJpaRepository;
-import org.trebol.jpa.repositories.IUserRolesJpaRepository;
-import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.conversion.IPeopleConverterService;
-import org.trebol.operation.IRegistrationService;
+import org.trebol.jpa.repositories.CustomersJpaRepository;
+import org.trebol.jpa.repositories.PeopleJpaRepository;
+import org.trebol.jpa.repositories.UserRolesJpaRepository;
+import org.trebol.jpa.repositories.UsersJpaRepository;
+import org.trebol.jpa.services.conversion.PeopleConverterService;
+import org.trebol.operation.RegistrationService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.RegistrationPojo;
 
@@ -42,23 +42,23 @@ import java.util.Optional;
 
 @Service
 public class RegistrationServiceImpl
-  implements IRegistrationService {
+  implements RegistrationService {
   private final Logger logger = LoggerFactory.getLogger(RegistrationServiceImpl.class);
-  private final IPeopleJpaRepository peopleRepository;
-  private final IUsersJpaRepository usersRepository;
-  private final IUserRolesJpaRepository rolesRepository;
-  private final ICustomersJpaRepository customersRepository;
+  private final PeopleJpaRepository peopleRepository;
+  private final UsersJpaRepository usersRepository;
+  private final UserRolesJpaRepository rolesRepository;
+  private final CustomersJpaRepository customersRepository;
   private final PasswordEncoder passwordEncoder;
-  private final IPeopleConverterService peopleConverterService;
+  private final PeopleConverterService peopleConverterService;
 
   @Autowired
   public RegistrationServiceImpl(
-    IPeopleJpaRepository peopleRepository,
-    IUsersJpaRepository usersRepository,
-    IUserRolesJpaRepository rolesRepository,
-    ICustomersJpaRepository customersRepository,
+    PeopleJpaRepository peopleRepository,
+    UsersJpaRepository usersRepository,
+    UserRolesJpaRepository rolesRepository,
+    CustomersJpaRepository customersRepository,
     PasswordEncoder passwordEncoder,
-    IPeopleConverterService peopleConverterService
+    PeopleConverterService peopleConverterService
   ) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;

@@ -31,8 +31,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.repositories.IPeopleJpaRepository;
-import org.trebol.jpa.repositories.IUserRolesJpaRepository;
+import org.trebol.jpa.repositories.PeopleJpaRepository;
+import org.trebol.jpa.repositories.UserRolesJpaRepository;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.UserPojo;
 
@@ -41,19 +41,19 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UsersConverterServiceImpl
-  implements IUsersConverterService {
+  implements UsersConverterService {
 
   private final Logger logger = LoggerFactory.getLogger(UsersConverterServiceImpl.class);
-  private final IUserRolesJpaRepository rolesRepository;
-  private final IPeopleConverterService peopleService;
-  private final IPeopleJpaRepository peopleRepository;
+  private final UserRolesJpaRepository rolesRepository;
+  private final PeopleConverterService peopleService;
+  private final PeopleJpaRepository peopleRepository;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
   public UsersConverterServiceImpl(
-    IUserRolesJpaRepository rolesRepository,
-    IPeopleConverterService peopleService,
-    IPeopleJpaRepository peopleRepository,
+    UserRolesJpaRepository rolesRepository,
+    PeopleConverterService peopleService,
+    PeopleJpaRepository peopleRepository,
     PasswordEncoder passwordEncoder
   ) {
     this.rolesRepository = rolesRepository;

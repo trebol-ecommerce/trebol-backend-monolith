@@ -28,7 +28,7 @@ import org.trebol.pojo.UserRolePojo;
 
 @Service
 public class UserRolesConverterServiceImpl
-  implements IUserRolesConverterService {
+  implements UserRolesConverterService {
 
   @Autowired
   public UserRolesConverterServiceImpl() {

@@ -28,7 +28,7 @@ import org.trebol.pojo.BillingCompanyPojo;
 
 @Service
 public class BillingCompaniesConverterServiceImpl
-  implements IBillingCompaniesConverterService {
+  implements BillingCompaniesConverterService {
 
   @Autowired
   public BillingCompaniesConverterServiceImpl() {

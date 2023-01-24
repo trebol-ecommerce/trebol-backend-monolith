@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.repositories.ICustomersJpaRepository;
+import org.trebol.jpa.repositories.CustomersJpaRepository;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.testhelpers.CustomersTestHelper;
 
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CustomersCrudServiceImplTest {
   @InjectMocks CustomersCrudServiceImpl instance;
-  @Mock ICustomersJpaRepository customersRepositoryMock;
+  @Mock CustomersJpaRepository customersRepositoryMock;
   CustomersTestHelper customersHelper = new CustomersTestHelper();
 
   @BeforeEach

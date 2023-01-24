@@ -24,13 +24,13 @@ import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.entities.QBillingType;
-import org.trebol.jpa.services.GenericSortSpecService;
+import org.trebol.jpa.services.SortSpecGenericService;
 
 import java.util.Map;
 
 @Service
 public class BillingTypesSortSpecServiceImpl
-  extends GenericSortSpecService<BillingType> {
+  extends SortSpecGenericService<BillingType> {
 
   @Override
   public QBillingType getBasePath() {

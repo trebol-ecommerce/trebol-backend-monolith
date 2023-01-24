@@ -37,8 +37,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.trebol.exceptions.CorsMappingParseException;
-import org.trebol.jpa.services.crud.ICustomersCrudService;
-import org.trebol.security.IAuthorizationHeaderParserService;
+import org.trebol.jpa.services.crud.CustomersCrudService;
+import org.trebol.security.AuthorizationHeaderParserService;
 import org.trebol.security.JwtGuestAuthenticationFilter;
 import org.trebol.security.JwtLoginAuthenticationFilter;
 import org.trebol.security.JwtTokenVerifierFilter;
@@ -54,17 +54,17 @@ public class SecurityConfig
   private final SecretKey secretKey;
   private final SecurityProperties securityProperties;
   private final CorsProperties corsProperties;
-  private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
-  private final ICustomersCrudService customersService;
+  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  private final CustomersCrudService customersService;
 
   @Autowired
   public SecurityConfig(
     UserDetailsService userDetailsService,
     SecretKey secretKey,
     SecurityProperties securityProperties,
-    IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+    AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
     CorsProperties corsProperties,
-    ICustomersCrudService customersService
+    CustomersCrudService customersService
   ) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;

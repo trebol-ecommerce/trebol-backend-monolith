@@ -28,13 +28,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.trebol.security.IAuthorizationHeaderParserService;
+import org.trebol.security.AuthorizationHeaderParserService;
 
 import javax.crypto.SecretKey;
 
 @Service
 public class ClaimsAuthorizationHeaderParserServiceImpl
-  implements IAuthorizationHeaderParserService<Claims> {
+  implements AuthorizationHeaderParserService<Claims> {
   private final SecretKey secretKey;
 
   @Autowired

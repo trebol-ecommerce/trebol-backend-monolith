@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.QSell;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.PredicateService;
 
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
@@ -35,7 +35,7 @@ import java.util.Map;
 
 @Service
 public class SalesPredicateServiceImpl
-  implements IPredicateService<Sell> {
+  implements PredicateService<Sell> {
 
   private final Logger logger = LoggerFactory.getLogger(SalesPredicateServiceImpl.class);
 

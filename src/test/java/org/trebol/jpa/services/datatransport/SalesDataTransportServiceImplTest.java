@@ -9,11 +9,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
-import org.trebol.jpa.services.conversion.IAddressesConverterService;
-import org.trebol.jpa.services.conversion.IBillingCompaniesConverterService;
-import org.trebol.jpa.services.conversion.ICustomersConverterService;
-import org.trebol.jpa.services.crud.ICustomersCrudService;
-import org.trebol.jpa.services.helpers.RegexMatcherAdapter;
+import org.trebol.jpa.services.conversion.AddressesConverterService;
+import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
+import org.trebol.jpa.services.conversion.CustomersConverterService;
+import org.trebol.jpa.services.crud.CustomersCrudService;
+import org.trebol.jpa.services.helpers.RegexMatcherAdapterService;
 import org.trebol.pojo.BillingCompanyPojo;
 import org.trebol.pojo.CustomerPojo;
 import org.trebol.pojo.PersonPojo;
@@ -33,19 +33,19 @@ import static org.trebol.constant.TestConstants.ID_1L;
 @ExtendWith(MockitoExtension.class)
 class SalesDataTransportServiceImplTest {
   @InjectMocks SalesDataTransportServiceImpl sut;
-  @Mock ISellStatusesJpaRepository statusesRepository;
-  @Mock IBillingTypesJpaRepository billingTypesRepository;
-  @Mock IPaymentTypesJpaRepository paymentTypesRepository;
-  @Mock IBillingCompaniesJpaRepository billingCompaniesRepository;
-  @Mock IShippersJpaRepository shippersRepository;
-  @Mock IAddressesJpaRepository addressesRepository;
-  @Mock IBillingCompaniesConverterService billingCompaniesConverter;
-  @Mock ICustomersConverterService customersConverter;
-  @Mock ICustomersCrudService customersService;
-  @Mock ICustomersJpaRepository customersRepository;
-  @Mock IAddressesConverterService addressesConverterService;
+  @Mock SellStatusesJpaRepository statusesRepository;
+  @Mock BillingTypesJpaRepository billingTypesRepository;
+  @Mock PaymentTypesJpaRepository paymentTypesRepository;
+  @Mock BillingCompaniesJpaRepository billingCompaniesRepository;
+  @Mock ShippersJpaRepository shippersRepository;
+  @Mock AddressesJpaRepository addressesRepository;
+  @Mock BillingCompaniesConverterService billingCompaniesConverter;
+  @Mock CustomersConverterService customersConverter;
+  @Mock CustomersCrudService customersService;
+  @Mock CustomersJpaRepository customersRepository;
+  @Mock AddressesConverterService addressesConverterService;
   @Mock Validator validator;
-  @Mock RegexMatcherAdapter regexMatcherAdapter;
+  @Mock RegexMatcherAdapterService regexMatcherAdapterService;
   SellPojo sellPojo;
   Sell sell;
   SellStatus sellStatus;
@@ -133,7 +133,7 @@ class SalesDataTransportServiceImplTest {
     sellPojo.setBillingType(BILLING_TYPE_ENTERPRISE);
     sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
     when(billingTypesRepository.findByName(anyString())).thenReturn(Optional.of(billingType));
-    when(regexMatcherAdapter.isAValidIdNumber(anyString())).thenReturn(false);
+    when(regexMatcherAdapterService.isAValidIdNumber(anyString())).thenReturn(false);
 
     BadInputException badInputException2 = assertThrows(BadInputException.class, () -> sut.applyChangesToExistingEntity(sellPojo, sell));
     assertEquals("Billing company must have a correct id number", badInputException2.getMessage());
@@ -144,7 +144,7 @@ class SalesDataTransportServiceImplTest {
     sellPojo.setBillingType(BILLING_TYPE_ENTERPRISE);
     sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
     when(billingTypesRepository.findByName(anyString())).thenReturn(Optional.of(billingType));
-    when(regexMatcherAdapter.isAValidIdNumber(anyString())).thenReturn(true);
+    when(regexMatcherAdapterService.isAValidIdNumber(anyString())).thenReturn(true);
 
     assertDoesNotThrow(() -> sut.applyChangesToExistingEntity(sellPojo, sell));
   }

@@ -28,7 +28,7 @@ import org.trebol.pojo.PersonPojo;
 
 @Service
 public class PeopleConverterServiceImpl
-  implements IPeopleConverterService {
+  implements PeopleConverterService {
 
   @Autowired
   public PeopleConverterServiceImpl() {

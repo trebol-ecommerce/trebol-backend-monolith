@@ -25,10 +25,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
-import org.trebol.jpa.services.crud.IShippersCrudService;
-import org.trebol.operation.GenericDataCrudController;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.ShippersCrudService;
+import org.trebol.operation.DataCrudGenericController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ShipperPojo;
@@ -41,14 +41,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/data/shippers")
 public class DataShippersController
-  extends GenericDataCrudController<ShipperPojo, Shipper> {
+  extends DataCrudGenericController<ShipperPojo, Shipper> {
 
   @Autowired
   public DataShippersController(
     PaginationService paginationService,
-    ISortSpecService<Shipper> sortService,
-    IShippersCrudService crudService,
-    IPredicateService<Shipper> predicateService
+    SortSpecService<Shipper> sortService,
+    ShippersCrudService crudService,
+    PredicateService<Shipper> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

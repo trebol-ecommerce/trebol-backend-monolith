@@ -27,7 +27,7 @@ import org.trebol.pojo.SellStatusPojo;
 
 @Service
 public class SellStatusesDataTransportServiceImpl
-  implements ISellStatusesDataTransportService {
+  implements SellStatusesDataTransportService {
 
   public SellStatusesDataTransportServiceImpl(
   ) {

@@ -13,7 +13,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.repositories.IUsersJpaRepository;
+import org.trebol.jpa.repositories.UsersJpaRepository;
 import org.trebol.pojo.UserPojo;
 
 import java.util.Optional;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UsersCrudServiceImplTest {
   @InjectMocks UsersCrudServiceImpl instance;
-  @Mock IUsersJpaRepository usersRepositoryMock;
+  @Mock UsersJpaRepository usersRepositoryMock;
   @Mock SecurityProperties securityPropertiesMock;
 
   @Test

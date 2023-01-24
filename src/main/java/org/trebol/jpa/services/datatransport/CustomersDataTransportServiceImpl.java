@@ -30,12 +30,12 @@ import org.trebol.pojo.PersonPojo;
 
 @Service
 public class CustomersDataTransportServiceImpl
-  implements ICustomersDataTransportService {
+  implements CustomersDataTransportService {
 
-  private final IPeopleDataTransportService peopleService;
+  private final PeopleDataTransportService peopleService;
 
   @Autowired
-  public CustomersDataTransportServiceImpl(IPeopleDataTransportService peopleService) {
+  public CustomersDataTransportServiceImpl(PeopleDataTransportService peopleService) {
     this.peopleService = peopleService;
   }
 

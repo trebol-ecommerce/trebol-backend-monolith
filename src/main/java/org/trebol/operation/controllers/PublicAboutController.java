@@ -24,17 +24,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.trebol.operation.ICompanyService;
+import org.trebol.operation.CompanyService;
 import org.trebol.pojo.CompanyDetailsPojo;
 
 @RestController
 @RequestMapping("/public/about")
 public class PublicAboutController {
 
-  private final ICompanyService companyService;
+  private final CompanyService companyService;
 
   @Autowired
-  public PublicAboutController(ICompanyService companyService) {
+  public PublicAboutController(CompanyService companyService) {
     this.companyService = companyService;
   }
 

@@ -20,7 +20,7 @@ import static org.trebol.constant.TestConstants.ID_1L;
 @ExtendWith(MockitoExtension.class)
 public class SalespeopleConverterServiceImplTest {
   @InjectMocks SalespeopleConverterServiceImpl sut;
-  @Mock IPeopleConverterService peopleService;
+  @Mock PeopleConverterService peopleService;
   Salesperson salesperson;
   SalespersonPojo salespersonPojo;
   Person person;

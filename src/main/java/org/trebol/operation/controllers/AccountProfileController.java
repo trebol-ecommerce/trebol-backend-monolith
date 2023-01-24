@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.operation.IProfileService;
+import org.trebol.operation.ProfileService;
 import org.trebol.pojo.PersonPojo;
 
 import javax.persistence.EntityNotFoundException;
@@ -34,11 +34,11 @@ import java.security.Principal;
 @RequestMapping("/account/profile")
 @PreAuthorize("isAuthenticated()")
 public class AccountProfileController {
-  private final IProfileService userProfileService;
+  private final ProfileService userProfileService;
 
   @Autowired
   public AccountProfileController(
-    IProfileService userProfileService
+    ProfileService userProfileService
   ) {
     this.userProfileService = userProfileService;
   }

@@ -29,7 +29,7 @@ import org.trebol.pojo.ProductPojo;
 @Transactional
 @Service
 public class ProductsDataTransportServiceImpl
-  implements IProductsDataTransportService {
+  implements ProductsDataTransportService {
 
   public ProductsDataTransportServiceImpl(
   ) {

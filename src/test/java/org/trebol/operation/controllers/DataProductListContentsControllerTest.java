@@ -6,12 +6,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductListItem;
-import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
-import org.trebol.jpa.repositories.IProductListsJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
-import org.trebol.jpa.services.conversion.IProductListItemsConverterService;
+import org.trebol.jpa.repositories.ProductListItemsJpaRepository;
+import org.trebol.jpa.repositories.ProductListsJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.conversion.ProductListItemsConverterService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.ProductPojo;
 
@@ -19,12 +19,12 @@ import org.trebol.pojo.ProductPojo;
 class DataProductListContentsControllerTest {
   @InjectMocks DataProductListContentsController instance;
   @Mock PaginationService paginationService;
-  @Mock ISortSpecService<ProductListItem> sortService;
-  @Mock IProductListItemsJpaRepository listItemsRepository;
-  @Mock IProductListsJpaRepository listsRepository;
-  @Mock IPredicateService<ProductListItem> listItemsPredicateService;
-  @Mock GenericCrudService<ProductPojo, Product> productCrudService;
-  @Mock IProductListItemsConverterService itemConverterService;
+  @Mock SortSpecService<ProductListItem> sortService;
+  @Mock ProductListItemsJpaRepository listItemsRepository;
+  @Mock ProductListsJpaRepository listsRepository;
+  @Mock PredicateService<ProductListItem> listItemsPredicateService;
+  @Mock CrudGenericService<ProductPojo, Product> productCrudService;
+  @Mock ProductListItemsConverterService itemConverterService;
 
 
   // TODO write a test

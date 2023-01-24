@@ -28,7 +28,7 @@ import org.trebol.pojo.PersonPojo;
 
 @Service
 public class PeopleDataTransportServiceImpl
-  implements IPeopleDataTransportService {
+  implements PeopleDataTransportService {
 
   public PeopleDataTransportServiceImpl(
   ) {

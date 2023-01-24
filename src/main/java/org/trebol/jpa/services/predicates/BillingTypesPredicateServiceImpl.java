@@ -27,13 +27,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.entities.QBillingType;
-import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.PredicateService;
 
 import java.util.Map;
 
 @Service
 public class BillingTypesPredicateServiceImpl
-  implements IPredicateService<BillingType> {
+  implements PredicateService<BillingType> {
 
   private final Logger logger = LoggerFactory.getLogger(BillingTypesPredicateServiceImpl.class);
 

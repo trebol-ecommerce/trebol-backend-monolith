@@ -26,10 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.repositories.IUserRolesJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.conversion.IUserRolesConverterService;
-import org.trebol.jpa.services.datatransport.IUserRolesDataTransportService;
+import org.trebol.jpa.repositories.UserRolesJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.conversion.UserRolesConverterService;
+import org.trebol.jpa.services.datatransport.UserRolesDataTransportService;
 import org.trebol.pojo.UserRolePojo;
 
 import java.util.Optional;
@@ -37,15 +37,15 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UserRolesCrudServiceImpl
-  extends GenericCrudService<UserRolePojo, UserRole>
-  implements IUserRolesCrudService {
-  private final IUserRolesJpaRepository rolesRepository;
+  extends CrudGenericService<UserRolePojo, UserRole>
+  implements UserRolesCrudService {
+  private final UserRolesJpaRepository rolesRepository;
 
   @Autowired
   public UserRolesCrudServiceImpl(
-    IUserRolesJpaRepository rolesRepository,
-    IUserRolesConverterService rolesConverterService,
-    IUserRolesDataTransportService rolesDataTransportService
+    UserRolesJpaRepository rolesRepository,
+    UserRolesConverterService rolesConverterService,
+    UserRolesDataTransportService rolesDataTransportService
   ) {
     super(rolesRepository, rolesConverterService, rolesDataTransportService);
     this.rolesRepository = rolesRepository;

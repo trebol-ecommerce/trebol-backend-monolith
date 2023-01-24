@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ProductListItemsConverterServiceImplTest {
   @InjectMocks ProductListItemsConverterServiceImpl sut;
-  @Mock IProductsConverterService productsConverterService;
+  @Mock ProductsConverterService productsConverterService;
 
   @Test
   void testApplyChangesToExistingEntity() {

@@ -28,13 +28,13 @@ import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.QCustomer;
 import org.trebol.jpa.entities.QPerson;
-import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.PredicateService;
 
 import java.util.Map;
 
 @Service
 public class CustomersPredicateServiceImpl
-  implements IPredicateService<Customer> {
+  implements PredicateService<Customer> {
   private final Logger logger = LoggerFactory.getLogger(CustomersPredicateServiceImpl.class);
 
   @Override

@@ -27,10 +27,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
-import org.trebol.jpa.services.crud.ISellStatusesCrudService;
-import org.trebol.operation.GenericDataController;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.SellStatusesCrudService;
+import org.trebol.operation.DataGenericController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.SellStatusPojo;
@@ -41,14 +41,14 @@ import java.util.Map;
 @RequestMapping("/data/sell_statuses")
 @PreAuthorize("isAuthenticated()")
 public class DataSellStatusesController
-  extends GenericDataController<SellStatusPojo, SellStatus> {
+  extends DataGenericController<SellStatusPojo, SellStatus> {
 
   @Autowired
   public DataSellStatusesController(
     PaginationService paginationService,
-    ISortSpecService<SellStatus> sortService,
-    ISellStatusesCrudService crudService,
-    IPredicateService<SellStatus> predicateService
+    SortSpecService<SellStatus> sortService,
+    SellStatusesCrudService crudService,
+    PredicateService<SellStatus> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

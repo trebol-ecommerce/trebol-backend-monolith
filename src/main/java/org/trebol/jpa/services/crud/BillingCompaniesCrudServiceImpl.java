@@ -26,10 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
-import org.trebol.jpa.repositories.IBillingCompaniesJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.conversion.IBillingCompaniesConverterService;
-import org.trebol.jpa.services.datatransport.IBillingCompaniesDataTransportService;
+import org.trebol.jpa.repositories.BillingCompaniesJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
+import org.trebol.jpa.services.datatransport.BillingCompaniesDataTransportService;
 import org.trebol.pojo.BillingCompanyPojo;
 
 import java.util.Optional;
@@ -37,15 +37,15 @@ import java.util.Optional;
 @Transactional
 @Service
 public class BillingCompaniesCrudServiceImpl
-  extends GenericCrudService<BillingCompanyPojo, BillingCompany>
-  implements IBillingCompaniesCrudService {
-  private final IBillingCompaniesJpaRepository companiesRepository;
+  extends CrudGenericService<BillingCompanyPojo, BillingCompany>
+  implements BillingCompaniesCrudService {
+  private final BillingCompaniesJpaRepository companiesRepository;
 
   @Autowired
   public BillingCompaniesCrudServiceImpl(
-    IBillingCompaniesJpaRepository companiesRepository,
-    IBillingCompaniesConverterService companiesConverterService,
-    IBillingCompaniesDataTransportService companiesDataTransportService
+    BillingCompaniesJpaRepository companiesRepository,
+    BillingCompaniesConverterService companiesConverterService,
+    BillingCompaniesDataTransportService companiesDataTransportService
   ) {
     super(companiesRepository, companiesConverterService, companiesDataTransportService);
     this.companiesRepository = companiesRepository;

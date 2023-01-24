@@ -25,10 +25,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
-import org.trebol.jpa.services.crud.IProductCategoriesCrudService;
-import org.trebol.operation.GenericDataCrudController;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
+import org.trebol.operation.DataCrudGenericController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
@@ -41,14 +41,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/data/product_categories")
 public class DataProductCategoriesController
-  extends GenericDataCrudController<ProductCategoryPojo, ProductCategory> {
+  extends DataCrudGenericController<ProductCategoryPojo, ProductCategory> {
 
   @Autowired
   public DataProductCategoriesController(
     PaginationService paginationService,
-    ISortSpecService<ProductCategory> sortService,
-    IProductCategoriesCrudService crudService,
-    IPredicateService<ProductCategory> predicateService
+    SortSpecService<ProductCategory> sortService,
+    ProductCategoriesCrudService crudService,
+    PredicateService<ProductCategory> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

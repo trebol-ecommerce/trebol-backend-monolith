@@ -28,7 +28,7 @@ import org.trebol.pojo.ImagePojo;
 
 @Service
 public class ImagesConverterServiceImpl
-  implements IImagesConverterService {
+  implements ImagesConverterService {
 
   @Autowired
   public ImagesConverterServiceImpl() {

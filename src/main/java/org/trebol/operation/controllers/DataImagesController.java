@@ -25,10 +25,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.services.IPredicateService;
-import org.trebol.jpa.services.ISortSpecService;
-import org.trebol.jpa.services.crud.IImagesCrudService;
-import org.trebol.operation.GenericDataCrudController;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.ImagesCrudService;
+import org.trebol.operation.DataCrudGenericController;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ImagePojo;
@@ -42,14 +42,14 @@ import java.util.Map;
 @RequestMapping("/data/images")
 @PreAuthorize("isAuthenticated()")
 public class DataImagesController
-  extends GenericDataCrudController<ImagePojo, Image> {
+  extends DataCrudGenericController<ImagePojo, Image> {
 
   @Autowired
   public DataImagesController(
     PaginationService paginationService,
-    ISortSpecService<Image> sortService,
-    IImagesCrudService crudService,
-    IPredicateService<Image> predicateService
+    SortSpecService<Image> sortService,
+    ImagesCrudService crudService,
+    PredicateService<Image> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

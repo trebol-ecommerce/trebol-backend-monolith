@@ -29,10 +29,10 @@ import org.trebol.config.SecurityProperties;
 import org.trebol.exceptions.AccountProtectionViolationException;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
-import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.conversion.IUsersConverterService;
-import org.trebol.jpa.services.datatransport.IUsersDataTransportService;
+import org.trebol.jpa.repositories.UsersJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.conversion.UsersConverterService;
+import org.trebol.jpa.services.datatransport.UsersDataTransportService;
 import org.trebol.pojo.UserPojo;
 
 import javax.persistence.EntityNotFoundException;
@@ -41,15 +41,15 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UsersCrudServiceImpl
-  extends GenericCrudService<UserPojo, User> implements IUsersCrudService {
-  private final IUsersJpaRepository usersRepository;
+  extends CrudGenericService<UserPojo, User> implements UsersCrudService {
+  private final UsersJpaRepository usersRepository;
   private final SecurityProperties securityProperties;
 
   @Autowired
   public UsersCrudServiceImpl(
-    IUsersJpaRepository usersRepository,
-    IUsersConverterService usersConverterService,
-    IUsersDataTransportService usersDataTransportService,
+    UsersJpaRepository usersRepository,
+    UsersConverterService usersConverterService,
+    UsersDataTransportService usersDataTransportService,
     SecurityProperties securityProperties
   ) {
     super(usersRepository, usersConverterService, usersDataTransportService);

@@ -26,10 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.conversion.ISellStatusesConverterService;
-import org.trebol.jpa.services.datatransport.ISellStatusesDataTransportService;
+import org.trebol.jpa.repositories.SellStatusesJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.conversion.SellStatusesConverterService;
+import org.trebol.jpa.services.datatransport.SellStatusesDataTransportService;
 import org.trebol.pojo.SellStatusPojo;
 
 import java.util.Optional;
@@ -37,15 +37,15 @@ import java.util.Optional;
 @Transactional
 @Service
 public class SellStatusesCrudServiceImpl
-  extends GenericCrudService<SellStatusPojo, SellStatus>
-  implements ISellStatusesCrudService {
-  private final ISellStatusesJpaRepository statusesRepository;
+  extends CrudGenericService<SellStatusPojo, SellStatus>
+  implements SellStatusesCrudService {
+  private final SellStatusesJpaRepository statusesRepository;
 
   @Autowired
   public SellStatusesCrudServiceImpl(
-    ISellStatusesJpaRepository statusesRepository,
-    ISellStatusesConverterService statusesConverterService,
-    ISellStatusesDataTransportService statusesDataTransportService
+    SellStatusesJpaRepository statusesRepository,
+    SellStatusesConverterService statusesConverterService,
+    SellStatusesDataTransportService statusesDataTransportService
   ) {
     super(statusesRepository, statusesConverterService, statusesDataTransportService);
     this.statusesRepository = statusesRepository;

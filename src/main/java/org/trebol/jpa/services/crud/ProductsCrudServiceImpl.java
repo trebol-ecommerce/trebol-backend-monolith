@@ -31,13 +31,13 @@ import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.ProductImage;
-import org.trebol.jpa.repositories.IProductImagesJpaRepository;
-import org.trebol.jpa.repositories.IProductsJpaRepository;
-import org.trebol.jpa.services.GenericCrudService;
-import org.trebol.jpa.services.conversion.IImagesConverterService;
-import org.trebol.jpa.services.conversion.IProductCategoriesConverterService;
-import org.trebol.jpa.services.conversion.IProductsConverterService;
-import org.trebol.jpa.services.datatransport.IProductsDataTransportService;
+import org.trebol.jpa.repositories.ProductImagesJpaRepository;
+import org.trebol.jpa.repositories.ProductsJpaRepository;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.conversion.ImagesConverterService;
+import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
+import org.trebol.jpa.services.conversion.ProductsConverterService;
+import org.trebol.jpa.services.datatransport.ProductsDataTransportService;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.pojo.ProductPojo;
@@ -51,28 +51,28 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductsCrudServiceImpl
-  extends GenericCrudService<ProductPojo, Product>
-  implements IProductsCrudService {
-  private final IProductsJpaRepository productsRepository;
-  private final IProductsConverterService productsConverterService;
-  private final IProductsDataTransportService productsDataTransportService;
-  private final IProductImagesJpaRepository productImagesRepository;
-  private final IImagesCrudService imagesCrudService;
-  private final IProductCategoriesCrudService categoriesCrudService;
-  private final IProductCategoriesConverterService categoriesConverterService;
-  private final IImagesConverterService imageConverterService;
+  extends CrudGenericService<ProductPojo, Product>
+  implements ProductsCrudService {
+  private final ProductsJpaRepository productsRepository;
+  private final ProductsConverterService productsConverterService;
+  private final ProductsDataTransportService productsDataTransportService;
+  private final ProductImagesJpaRepository productImagesRepository;
+  private final ImagesCrudService imagesCrudService;
+  private final ProductCategoriesCrudService categoriesCrudService;
+  private final ProductCategoriesConverterService categoriesConverterService;
+  private final ImagesConverterService imageConverterService;
   private final Logger logger = LoggerFactory.getLogger(ProductsCrudServiceImpl.class);
 
   @Autowired
   public ProductsCrudServiceImpl(
-    IProductsJpaRepository productsRepository,
-    IProductsConverterService productsConverterService,
-    IProductsDataTransportService productsDataTransportService,
-    IProductImagesJpaRepository productImagesRepository,
-    IImagesCrudService imagesCrudService,
-    IProductCategoriesCrudService categoriesCrudService,
-    IProductCategoriesConverterService categoriesConverterService,
-    IImagesConverterService imageConverterService
+    ProductsJpaRepository productsRepository,
+    ProductsConverterService productsConverterService,
+    ProductsDataTransportService productsDataTransportService,
+    ProductImagesJpaRepository productImagesRepository,
+    ImagesCrudService imagesCrudService,
+    ProductCategoriesCrudService categoriesCrudService,
+    ProductCategoriesConverterService categoriesConverterService,
+    ImagesConverterService imageConverterService
   ) {
     super(productsRepository, productsConverterService, productsDataTransportService);
     this.productsRepository = productsRepository;

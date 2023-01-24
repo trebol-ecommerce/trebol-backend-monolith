@@ -27,7 +27,7 @@ import org.trebol.pojo.ShipperPojo;
 
 @Service
 public class ShippersDataTransportServiceImpl
-  implements IShippersDataTransportService {
+  implements ShippersDataTransportService {
 
   public ShippersDataTransportServiceImpl(
   ) {

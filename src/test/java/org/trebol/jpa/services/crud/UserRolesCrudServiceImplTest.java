@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.repositories.IUserRolesJpaRepository;
+import org.trebol.jpa.repositories.UserRolesJpaRepository;
 import org.trebol.pojo.UserRolePojo;
 
 import java.util.Optional;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserRolesCrudServiceImplTest {
   @InjectMocks UserRolesCrudServiceImpl instance;
-  @Mock IUserRolesJpaRepository userRolesRepositoryMock;
+  @Mock UserRolesJpaRepository userRolesRepositoryMock;
 
   @Test
   void finds_by_name() throws BadInputException {

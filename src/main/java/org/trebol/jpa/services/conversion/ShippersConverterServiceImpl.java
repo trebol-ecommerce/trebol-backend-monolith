@@ -28,7 +28,7 @@ import org.trebol.pojo.ShipperPojo;
 
 @Service
 public class ShippersConverterServiceImpl
-  implements IShippersConverterService {
+  implements ShippersConverterService {
 
   @Autowired
   public ShippersConverterServiceImpl() {

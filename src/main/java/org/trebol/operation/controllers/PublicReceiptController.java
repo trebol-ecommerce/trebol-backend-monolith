@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.trebol.operation.IReceiptService;
+import org.trebol.operation.ReceiptService;
 import org.trebol.pojo.ReceiptPojo;
 
 import javax.persistence.EntityNotFoundException;
@@ -36,11 +36,11 @@ import javax.persistence.EntityNotFoundException;
 @RequestMapping("/public/receipt")
 public class PublicReceiptController {
   private final Logger LOG = LoggerFactory.getLogger(PublicReceiptController.class);
-  private final IReceiptService receiptService;
+  private final ReceiptService receiptService;
 
   @Autowired
   public PublicReceiptController(
-    IReceiptService receiptService
+    ReceiptService receiptService
   ) {
     this.receiptService = receiptService;
   }

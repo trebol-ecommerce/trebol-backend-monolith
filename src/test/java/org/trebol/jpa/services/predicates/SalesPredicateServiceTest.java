@@ -5,7 +5,7 @@ import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.PredicateService;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SalesPredicateServiceTest {
-  private IPredicateService<Sell> instance;
+  private PredicateService<Sell> instance;
 
   @BeforeEach
   void beforeEach() {
