@@ -54,6 +54,6 @@ public class AccountProfileController {
   public void updateProfile(Principal principal, @RequestBody PersonPojo newProfile)
     throws EntityNotFoundException, BadInputException {
     String username = principal.getName();
-    userProfileService.updateProfileForUserWithName(principal.getName(), newProfile);
+    userProfileService.updateProfileForUserWithName(username, newProfile);
   }
 }
