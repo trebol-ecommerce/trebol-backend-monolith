@@ -60,7 +60,7 @@ public class UsersConverterServiceImplTest {
   }
 
   @Test
-  void testConvertToPojo() {
+  void converts_to_pojo() {
     when(peopleService.convertToPojo(any(Person.class))).thenReturn(PersonPojo.builder().build());
 
     UserPojo actual = sut.convertToPojo(user);
@@ -71,19 +71,22 @@ public class UsersConverterServiceImplTest {
   }
 
   @Test
-  void testConvertToNewEntityBadInputException() {
+  void does_not_accept_empty_roles_for_new_entities() {
     BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(userPojo));
-    assertEquals("The user does not have a role", badInputException.getMessage());
-
-    userPojo.setRole(ANY);
-    when(rolesRepository.findByName(anyString())).thenReturn(Optional.empty());
-
-    BadInputException badInputException2 = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(userPojo));
-    assertEquals("The specified user role does not exist", badInputException2.getMessage());
+    assertEquals("The user was not given any role", badInputException.getMessage());
   }
 
   @Test
-  void testConvertToNewEntity() throws BadInputException {
+  void does_not_accept_unexisting_roles_for_new_entities() {
+    userPojo.setRole(ANY);
+    when(rolesRepository.findByName(anyString())).thenReturn(Optional.empty());
+
+    BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(userPojo));
+    assertEquals("The specified user role does not exist", badInputException.getMessage());
+  }
+
+  @Test
+  void converts_to_new_entity() throws BadInputException {
     final Person person = new Person();
     person.setIdNumber(ANY);
     final UserRole userRole = new UserRole();
