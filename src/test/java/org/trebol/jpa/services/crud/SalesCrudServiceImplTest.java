@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 class SalesCrudServiceImplTest {
   @InjectMocks SalesCrudServiceImpl instance;
   @Mock SalesJpaRepository salesRepositoryMock;
-  @Mock ProductsJpaRepository productsRepository;
+  @Mock ProductsJpaRepository productsRepositoryMock;
   @Mock SalesConverterService salesConverterMock;
   @Mock SalesDataTransportService dataTransportServiceMock;
   @Mock ProductsConverterService productsConverterMock; // TODO write an unit test that needs this mock
@@ -82,8 +82,9 @@ class SalesCrudServiceImplTest {
     throws BadInputException, EntityExistsException {
     SellPojo input = salesHelper.sellPojoBeforeCreation();
     SellPojo expectedResult = salesHelper.sellPojoAfterCreation();
+
     when(salesConverterMock.convertToNewEntity(any(SellPojo.class))).thenReturn(salesHelper.sellEntityBeforeCreation());
-    when(productsRepository.findByBarcode(anyString())).thenReturn(Optional.of(productsHelper.productEntityAfterCreation()));
+    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(productsHelper.productEntityAfterCreation()));
     when(salesRepositoryMock.saveAndFlush(any(Sell.class))).thenReturn(salesHelper.sellEntityAfterCreation());
     when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(expectedResult);
 
