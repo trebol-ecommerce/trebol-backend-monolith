@@ -29,7 +29,7 @@ import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
 import org.trebol.operation.DataCrudGenericController;
-import org.trebol.operation.PaginationService;
+import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 

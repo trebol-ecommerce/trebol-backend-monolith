@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.operation.ProfileService;
+import org.trebol.operation.services.ProfileService;
 import org.trebol.pojo.PersonPojo;
 
 import javax.persistence.EntityNotFoundException;

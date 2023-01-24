@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.operation;
+package org.trebol.operation.services;
 
 import org.trebol.exceptions.BadInputException;
 import org.trebol.pojo.SellPojo;

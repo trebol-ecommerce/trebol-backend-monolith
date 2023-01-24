@@ -33,7 +33,6 @@ import org.trebol.jpa.repositories.UsersJpaRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.jpa.services.crud.PeopleCrudService;
 import org.trebol.jpa.services.datatransport.PeopleDataTransportService;
-import org.trebol.operation.ProfileService;
 import org.trebol.pojo.PersonPojo;
 
 import javax.persistence.EntityNotFoundException;

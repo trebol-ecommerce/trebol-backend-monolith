@@ -31,7 +31,7 @@ import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.SellStatusesCrudService;
 import org.trebol.operation.DataGenericController;
-import org.trebol.operation.PaginationService;
+import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.SellStatusPojo;
 

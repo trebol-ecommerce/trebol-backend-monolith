@@ -33,7 +33,6 @@ import org.trebol.jpa.repositories.PeopleJpaRepository;
 import org.trebol.jpa.repositories.UserRolesJpaRepository;
 import org.trebol.jpa.repositories.UsersJpaRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
-import org.trebol.operation.RegistrationService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.RegistrationPojo;
 

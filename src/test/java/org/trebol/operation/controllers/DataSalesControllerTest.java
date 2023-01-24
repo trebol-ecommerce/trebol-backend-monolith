@@ -9,8 +9,8 @@ import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
-import org.trebol.operation.SalesProcessService;
-import org.trebol.operation.PaginationService;
+import org.trebol.operation.services.SalesProcessService;
+import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.SellPojo;
 
 @ExtendWith(MockitoExtension.class)

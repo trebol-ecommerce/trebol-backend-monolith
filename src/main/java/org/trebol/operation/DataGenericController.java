@@ -25,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.trebol.jpa.services.CrudService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
+import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 
 import javax.validation.constraints.NotNull;

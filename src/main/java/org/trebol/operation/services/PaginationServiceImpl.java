@@ -23,7 +23,6 @@ package org.trebol.operation.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.config.OperationProperties;
-import org.trebol.operation.PaginationService;
 
 import java.util.Map;
 

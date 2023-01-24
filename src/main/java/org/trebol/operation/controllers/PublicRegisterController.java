@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.operation.RegistrationService;
+import org.trebol.operation.services.RegistrationService;
 import org.trebol.pojo.RegistrationPojo;
 
 import javax.persistence.EntityExistsException;

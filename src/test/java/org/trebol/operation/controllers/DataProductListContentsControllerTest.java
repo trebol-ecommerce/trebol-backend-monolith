@@ -12,7 +12,7 @@ import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.conversion.ProductListItemsConverterService;
-import org.trebol.operation.PaginationService;
+import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.ProductPojo;
 
 @ExtendWith(MockitoExtension.class)

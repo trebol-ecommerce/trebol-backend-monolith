@@ -18,17 +18,13 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.operation;
+package org.trebol.operation.services;
 
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.exceptions.UserNotFoundException;
-import org.trebol.pojo.PersonPojo;
+import org.trebol.pojo.RegistrationPojo;
 
-import javax.persistence.EntityNotFoundException;
+import javax.persistence.EntityExistsException;
 
-public interface ProfileService {
-
-  PersonPojo getProfileFromUserName(String userName) throws EntityNotFoundException;
-
-  void updateProfileForUserWithName(String userName, PersonPojo profile) throws BadInputException, UserNotFoundException;
+public interface RegistrationService {
+  void register(RegistrationPojo registration) throws BadInputException, EntityExistsException;
 }

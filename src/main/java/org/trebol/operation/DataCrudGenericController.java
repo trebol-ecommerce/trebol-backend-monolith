@@ -25,6 +25,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.services.CrudService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
+import org.trebol.operation.services.PaginationService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;

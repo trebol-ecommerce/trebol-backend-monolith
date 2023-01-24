@@ -8,7 +8,7 @@ import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
-import org.trebol.operation.PaginationService;
+import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.ImagePojo;
 
 @ExtendWith(MockitoExtension.class)

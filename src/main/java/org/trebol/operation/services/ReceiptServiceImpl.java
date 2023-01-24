@@ -27,7 +27,6 @@ import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.repositories.SalesJpaRepository;
-import org.trebol.operation.ReceiptService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.ReceiptDetailPojo;
 import org.trebol.pojo.ReceiptPojo;

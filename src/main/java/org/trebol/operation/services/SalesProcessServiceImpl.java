@@ -32,7 +32,6 @@ import org.trebol.jpa.repositories.SellStatusesJpaRepository;
 import org.trebol.jpa.services.conversion.ProductsConverterService;
 import org.trebol.jpa.services.conversion.SalesConverterService;
 import org.trebol.jpa.services.crud.SalesCrudService;
-import org.trebol.operation.SalesProcessService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
 import org.trebol.pojo.SellPojo;

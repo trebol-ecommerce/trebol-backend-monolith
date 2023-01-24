@@ -18,10 +18,12 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.operation;
+package org.trebol.operation.services;
 
-import org.trebol.pojo.CompanyDetailsPojo;
+import org.trebol.pojo.ReceiptPojo;
 
-public interface CompanyService {
-  CompanyDetailsPojo readDetails();
+import javax.persistence.EntityNotFoundException;
+
+public interface ReceiptService {
+  ReceiptPojo fetchReceiptByTransactionToken(String token) throws EntityNotFoundException;
 }
