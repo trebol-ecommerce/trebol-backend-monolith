@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortSpecJpaService;
+import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.ISortSpecService;
 import org.trebol.jpa.services.crud.IPeopleCrudService;
 import org.trebol.operation.GenericDataController;
 import org.trebol.operation.PaginationService;
@@ -46,9 +46,9 @@ public class DataPeopleController
   @Autowired
   public DataPeopleController(
     PaginationService paginationService,
-    ISortSpecJpaService<Person> sortService,
+    ISortSpecService<Person> sortService,
     IPeopleCrudService crudService,
-    IPredicateJpaService<Person> predicateService
+    IPredicateService<Person> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

@@ -21,9 +21,9 @@
 package org.trebol.jpa.services.crud;
 
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.services.ICrudJpaService;
+import org.trebol.jpa.services.ICrudService;
 import org.trebol.pojo.ProductCategoryPojo;
 
 public interface IProductCategoriesCrudService
-  extends ICrudJpaService<ProductCategoryPojo, ProductCategory> {
+  extends ICrudService<ProductCategoryPojo, ProductCategory> {
 }

@@ -29,7 +29,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.IPredicateService;
 import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.operation.ICheckoutService;
 import org.trebol.operation.ISalesProcessService;
@@ -51,14 +51,14 @@ public class CheckoutServiceImpl
   private final Logger logger = LoggerFactory.getLogger(CheckoutServiceImpl.class);
   private final ISalesCrudService salesCrudService;
   private final ISalesProcessService salesProcessService;
-  private final IPredicateJpaService<Sell> salesPredicateService;
+  private final IPredicateService<Sell> salesPredicateService;
   private final IPaymentsIntegrationService paymentIntegrationService;
 
   @Autowired
   public CheckoutServiceImpl(
     ISalesCrudService salesCrudService,
     ISalesProcessService salesProcessService,
-    IPredicateJpaService<Sell> salesPredicateService,
+    IPredicateService<Sell> salesPredicateService,
     IPaymentsIntegrationService paymentIntegrationService
   ) {
     this.salesCrudService = salesCrudService;

@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortSpecJpaService;
+import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.ISortSpecService;
 import org.trebol.jpa.services.crud.IBillingTypesCrudService;
 import org.trebol.operation.GenericDataController;
 import org.trebol.operation.PaginationService;
@@ -44,9 +44,9 @@ public class DataBillingTypesController
   @Autowired
   public DataBillingTypesController(
     PaginationService paginationService,
-    ISortSpecJpaService<BillingType> sortService,
+    ISortSpecService<BillingType> sortService,
     IBillingTypesCrudService crudService,
-    IPredicateJpaService<BillingType> predicateService
+    IPredicateService<BillingType> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

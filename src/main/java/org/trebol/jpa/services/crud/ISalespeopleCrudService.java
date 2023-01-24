@@ -21,9 +21,9 @@
 package org.trebol.jpa.services.crud;
 
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.services.ICrudJpaService;
+import org.trebol.jpa.services.ICrudService;
 import org.trebol.pojo.SalespersonPojo;
 
 public interface ISalespeopleCrudService
-  extends ICrudJpaService<SalespersonPojo, Salesperson> {
+  extends ICrudService<SalespersonPojo, Salesperson> {
 }

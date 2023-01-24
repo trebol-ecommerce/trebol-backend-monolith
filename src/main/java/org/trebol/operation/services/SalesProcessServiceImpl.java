@@ -29,8 +29,8 @@ import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.repositories.ISellDetailsJpaRepository;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
-import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
-import org.trebol.jpa.services.conversion.ISalesConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductsConverterService;
+import org.trebol.jpa.services.conversion.ISalesConverterService;
 import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.operation.ISalesProcessService;
 import org.trebol.pojo.ProductPojo;
@@ -55,16 +55,16 @@ public class SalesProcessServiceImpl
   private final ISalesJpaRepository salesRepository;
   private final ISellDetailsJpaRepository sellDetailsRepository;
   private final ISellStatusesJpaRepository sellStatusesRepository;
-  private final ISalesConverterJpaService converterService;
-  private final IProductsConverterJpaService productConverterService;
+  private final ISalesConverterService converterService;
+  private final IProductsConverterService productConverterService;
 
   public SalesProcessServiceImpl(
     ISalesCrudService crudService,
     ISalesJpaRepository salesRepository,
     ISellDetailsJpaRepository sellDetailsRepository,
     ISellStatusesJpaRepository sellStatusesRepository,
-    ISalesConverterJpaService converterService,
-    IProductsConverterJpaService productConverterService
+    ISalesConverterService converterService,
+    IProductsConverterService productConverterService
   ) {
     this.crudService = crudService;
     this.salesRepository = salesRepository;

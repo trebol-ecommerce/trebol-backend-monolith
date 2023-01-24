@@ -25,8 +25,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortSpecJpaService;
+import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.ISortSpecService;
 import org.trebol.jpa.services.crud.IShippersCrudService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.PaginationService;
@@ -46,9 +46,9 @@ public class DataShippersController
   @Autowired
   public DataShippersController(
     PaginationService paginationService,
-    ISortSpecJpaService<Shipper> sortService,
+    ISortSpecService<Shipper> sortService,
     IShippersCrudService crudService,
-    IPredicateJpaService<Shipper> predicateService
+    IPredicateService<Shipper> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

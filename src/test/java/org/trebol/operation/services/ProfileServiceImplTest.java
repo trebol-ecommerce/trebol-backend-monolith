@@ -15,9 +15,9 @@ import org.trebol.jpa.exceptions.PersonNotFoundException;
 import org.trebol.jpa.exceptions.UserNotFoundException;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.conversion.IPeopleConverterJpaService;
+import org.trebol.jpa.services.conversion.IPeopleConverterService;
 import org.trebol.jpa.services.crud.IPeopleCrudService;
-import org.trebol.jpa.services.datatransport.IPeopleDataTransportJpaService;
+import org.trebol.jpa.services.datatransport.IPeopleDataTransportService;
 import org.trebol.pojo.PersonPojo;
 
 import java.util.Optional;
@@ -33,8 +33,8 @@ class ProfileServiceImplTest {
   @InjectMocks ProfileServiceImpl instance;
   @Mock IUsersJpaRepository usersRepositoryMock;
   @Mock IPeopleCrudService peopleServiceMock;
-  @Mock IPeopleConverterJpaService peopleConverterMock;
-  @Mock IPeopleDataTransportJpaService peopleDataTransportServiceMock;
+  @Mock IPeopleConverterService peopleConverterMock;
+  @Mock IPeopleDataTransportService peopleDataTransportServiceMock;
   @Mock IPeopleJpaRepository peopleRepositoryMock;
   UserRole userRoleMock;
   Person personMock;

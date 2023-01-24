@@ -29,8 +29,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortSpecJpaService;
+import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.ISortSpecService;
 import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.ISalesProcessService;
@@ -56,9 +56,9 @@ public class DataSalesController
   @Autowired
   public DataSalesController(
     PaginationService paginationService,
-    ISortSpecJpaService<Sell> sortService,
+    ISortSpecService<Sell> sortService,
     ISalesCrudService crudService,
-    IPredicateJpaService<Sell> predicateService,
+    IPredicateService<Sell> predicateService,
     ISalesProcessService processService,
     @Autowired(required = false) IMailingIntegrationService mailingIntegrationService
   ) {

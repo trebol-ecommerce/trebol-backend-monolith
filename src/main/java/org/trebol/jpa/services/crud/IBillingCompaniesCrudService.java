@@ -21,9 +21,9 @@
 package org.trebol.jpa.services.crud;
 
 import org.trebol.jpa.entities.BillingCompany;
-import org.trebol.jpa.services.ICrudJpaService;
+import org.trebol.jpa.services.ICrudService;
 import org.trebol.pojo.BillingCompanyPojo;
 
 public interface IBillingCompaniesCrudService
-  extends ICrudJpaService<BillingCompanyPojo, BillingCompany> {
+  extends ICrudService<BillingCompanyPojo, BillingCompany> {
 }

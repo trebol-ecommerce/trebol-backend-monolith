@@ -34,7 +34,7 @@ import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.IPredicateJpaService;
+import org.trebol.jpa.services.IPredicateService;
 import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.operation.ICheckoutService;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
@@ -58,7 +58,7 @@ public class PublicCheckoutController {
   private final Logger logger = LoggerFactory.getLogger(PublicCheckoutController.class);
   private final ICheckoutService service;
   private final ISalesCrudService salesCrudService;
-  private final IPredicateJpaService<Sell> salesPredicateService;
+  private final IPredicateService<Sell> salesPredicateService;
   @Nullable
   private final IMailingIntegrationService mailingIntegrationService;
 
@@ -66,7 +66,7 @@ public class PublicCheckoutController {
   public PublicCheckoutController(
     ICheckoutService service,
     ISalesCrudService salesCrudService,
-    IPredicateJpaService<Sell> salesPredicateService,
+    IPredicateService<Sell> salesPredicateService,
     @Autowired(required = false) IMailingIntegrationService mailingIntegrationService
   ) {
     this.service = service;

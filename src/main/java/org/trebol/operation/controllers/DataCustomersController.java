@@ -25,8 +25,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortSpecJpaService;
+import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.ISortSpecService;
 import org.trebol.jpa.services.crud.ICustomersCrudService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.PaginationService;
@@ -47,9 +47,9 @@ public class DataCustomersController
   @Autowired
   public DataCustomersController(
     PaginationService paginationService,
-    ISortSpecJpaService<Customer> sortService,
+    ISortSpecService<Customer> sortService,
     ICustomersCrudService crudService,
-    IPredicateJpaService<Customer> predicateService
+    IPredicateService<Customer> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

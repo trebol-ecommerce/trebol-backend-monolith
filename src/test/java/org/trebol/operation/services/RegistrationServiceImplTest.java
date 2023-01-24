@@ -18,7 +18,7 @@ import org.trebol.jpa.repositories.ICustomersJpaRepository;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.conversion.IPeopleConverterJpaService;
+import org.trebol.jpa.services.conversion.IPeopleConverterService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.RegistrationPojo;
 
@@ -27,14 +27,15 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RegistrationServiceImplTest {
   @InjectMocks RegistrationServiceImpl instance;
   @Mock IUsersJpaRepository usersRepositoryMock;
-  @Mock IPeopleConverterJpaService peopleConverterService;
+  @Mock IPeopleConverterService peopleConverterService;
   @Mock IPeopleJpaRepository peopleRepositoryMock;
   @Mock IUserRolesJpaRepository rolesRepositoryMock;
   @Mock PasswordEncoder passwordEncoderMock;

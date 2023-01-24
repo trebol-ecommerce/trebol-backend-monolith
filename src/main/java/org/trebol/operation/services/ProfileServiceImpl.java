@@ -30,9 +30,9 @@ import org.trebol.jpa.exceptions.PersonNotFoundException;
 import org.trebol.jpa.exceptions.UserNotFoundException;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.conversion.IPeopleConverterJpaService;
+import org.trebol.jpa.services.conversion.IPeopleConverterService;
 import org.trebol.jpa.services.crud.IPeopleCrudService;
-import org.trebol.jpa.services.datatransport.IPeopleDataTransportJpaService;
+import org.trebol.jpa.services.datatransport.IPeopleDataTransportService;
 import org.trebol.operation.IProfileService;
 import org.trebol.pojo.PersonPojo;
 
@@ -44,16 +44,16 @@ public class ProfileServiceImpl
   implements IProfileService {
   private final IUsersJpaRepository usersRepository;
   private final IPeopleCrudService peopleService;
-  private final IPeopleConverterJpaService peopleConverter;
-  private final IPeopleDataTransportJpaService peopleDataTransportService;
+  private final IPeopleConverterService peopleConverter;
+  private final IPeopleDataTransportService peopleDataTransportService;
   private final IPeopleJpaRepository peopleRepository;
 
   @Autowired
   public ProfileServiceImpl(
     IUsersJpaRepository usersRepository,
     IPeopleCrudService peopleService,
-    IPeopleConverterJpaService peopleConverter,
-    IPeopleDataTransportJpaService peopleDataTransportService,
+    IPeopleConverterService peopleConverter,
+    IPeopleDataTransportService peopleDataTransportService,
     IPeopleJpaRepository peopleRepository
   ) {
     this.usersRepository = usersRepository;

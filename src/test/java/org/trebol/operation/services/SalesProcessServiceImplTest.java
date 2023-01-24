@@ -14,8 +14,8 @@ import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.ISalesJpaRepository;
 import org.trebol.jpa.repositories.ISellDetailsJpaRepository;
 import org.trebol.jpa.repositories.ISellStatusesJpaRepository;
-import org.trebol.jpa.services.conversion.IProductsConverterJpaService;
-import org.trebol.jpa.services.conversion.ISalesConverterJpaService;
+import org.trebol.jpa.services.conversion.IProductsConverterService;
+import org.trebol.jpa.services.conversion.ISalesConverterService;
 import org.trebol.jpa.services.crud.ISalesCrudService;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.SellDetailPojo;
@@ -40,8 +40,8 @@ class SalesProcessServiceImplTest {
   @Mock ISalesJpaRepository salesRepository;
   @Mock ISellStatusesJpaRepository sellStatusesRepository;
   @Mock ISellDetailsJpaRepository sellDetailsRepository;
-  @Mock ISalesConverterJpaService sellConverterService;
-  @Mock IProductsConverterJpaService productConverterService;
+  @Mock ISalesConverterService sellConverterService;
+  @Mock IProductsConverterService productConverterService;
   ProductsTestHelper productsHelper = new ProductsTestHelper();
 
   @BeforeEach

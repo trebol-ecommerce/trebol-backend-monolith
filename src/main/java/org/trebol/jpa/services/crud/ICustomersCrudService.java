@@ -21,9 +21,9 @@
 package org.trebol.jpa.services.crud;
 
 import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.services.ICrudJpaService;
+import org.trebol.jpa.services.ICrudService;
 import org.trebol.pojo.CustomerPojo;
 
 public interface ICustomersCrudService
-  extends ICrudJpaService<CustomerPojo, Customer> {
+  extends ICrudService<CustomerPojo, Customer> {
 }

@@ -25,8 +25,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortSpecJpaService;
+import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.ISortSpecService;
 import org.trebol.jpa.services.crud.IImagesCrudService;
 import org.trebol.operation.GenericDataCrudController;
 import org.trebol.operation.PaginationService;
@@ -47,9 +47,9 @@ public class DataImagesController
   @Autowired
   public DataImagesController(
     PaginationService paginationService,
-    ISortSpecJpaService<Image> sortService,
+    ISortSpecService<Image> sortService,
     IImagesCrudService crudService,
-    IPredicateJpaService<Image> predicateService
+    IPredicateService<Image> predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

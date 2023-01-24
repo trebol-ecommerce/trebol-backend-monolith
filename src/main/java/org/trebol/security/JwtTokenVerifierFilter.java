@@ -21,6 +21,7 @@
 package org.trebol.security;
 
 import io.jsonwebtoken.Claims;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -74,7 +75,7 @@ public class JwtTokenVerifierFilter
 
     String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-    if (authorizationHeader == null || authorizationHeader.isBlank()) {
+    if (StringUtils.isBlank(authorizationHeader)) {
       filterChain.doFilter(request, response);
     } else {
       String jwt = authorizationHeader.replace("Bearer ", "");

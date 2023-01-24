@@ -32,7 +32,7 @@ import org.trebol.jpa.repositories.ICustomersJpaRepository;
 import org.trebol.jpa.repositories.IPeopleJpaRepository;
 import org.trebol.jpa.repositories.IUserRolesJpaRepository;
 import org.trebol.jpa.repositories.IUsersJpaRepository;
-import org.trebol.jpa.services.conversion.IPeopleConverterJpaService;
+import org.trebol.jpa.services.conversion.IPeopleConverterService;
 import org.trebol.operation.IRegistrationService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.RegistrationPojo;
@@ -49,7 +49,7 @@ public class RegistrationServiceImpl
   private final IUserRolesJpaRepository rolesRepository;
   private final ICustomersJpaRepository customersRepository;
   private final PasswordEncoder passwordEncoder;
-  private final IPeopleConverterJpaService peopleConverterService;
+  private final IPeopleConverterService peopleConverterService;
 
   @Autowired
   public RegistrationServiceImpl(
@@ -58,7 +58,7 @@ public class RegistrationServiceImpl
     IUserRolesJpaRepository rolesRepository,
     ICustomersJpaRepository customersRepository,
     PasswordEncoder passwordEncoder,
-    IPeopleConverterJpaService peopleConverterService
+    IPeopleConverterService peopleConverterService
   ) {
     this.peopleRepository = peopleRepository;
     this.usersRepository = usersRepository;

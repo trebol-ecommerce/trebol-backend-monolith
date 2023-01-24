@@ -21,6 +21,7 @@
 package org.trebol.operation.controllers;
 
 import com.querydsl.core.types.Predicate;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,9 +30,9 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.IProductListItemsJpaRepository;
 import org.trebol.jpa.repositories.IProductListsJpaRepository;
-import org.trebol.jpa.services.IPredicateJpaService;
-import org.trebol.jpa.services.ISortSpecJpaService;
-import org.trebol.jpa.services.conversion.IProductListItemsConverterJpaService;
+import org.trebol.jpa.services.IPredicateService;
+import org.trebol.jpa.services.ISortSpecService;
+import org.trebol.jpa.services.conversion.IProductListItemsConverterService;
 import org.trebol.jpa.services.crud.IProductsCrudService;
 import org.trebol.operation.PaginationService;
 import org.trebol.pojo.DataPagePojo;
@@ -46,22 +47,22 @@ import java.util.*;
 public class DataProductListContentsController {
   private static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   private final PaginationService paginationService;
-  private final ISortSpecJpaService<ProductListItem> sortService;
+  private final ISortSpecService<ProductListItem> sortService;
   private final IProductListItemsJpaRepository listItemsRepository;
   private final IProductListsJpaRepository listsRepository;
-  private final IPredicateJpaService<ProductListItem> listItemsPredicateService;
+  private final IPredicateService<ProductListItem> listItemsPredicateService;
   private final IProductsCrudService productCrudService;
-  private final IProductListItemsConverterJpaService itemConverterService;
+  private final IProductListItemsConverterService itemConverterService;
 
   @Autowired
   public DataProductListContentsController(
     PaginationService paginationService,
-    ISortSpecJpaService<ProductListItem> sortService,
+    ISortSpecService<ProductListItem> sortService,
     IProductListItemsJpaRepository listItemsRepository,
     IProductListsJpaRepository listsRepository,
-    IPredicateJpaService<ProductListItem> listItemsPredicateService,
+    IPredicateService<ProductListItem> listItemsPredicateService,
     IProductsCrudService productCrudService,
-    IProductListItemsConverterJpaService itemConverterService
+    IProductListItemsConverterService itemConverterService
   ) {
     this.paginationService = paginationService;
     this.sortService = sortService;
@@ -159,7 +160,7 @@ public class DataProductListContentsController {
 
   private Optional<ProductList> fetchProductListByCode(Map<String, String> requestParams) throws BadInputException {
     String listCode = requestParams.get("listCode");
-    if (listCode == null || listCode.isBlank()) {
+    if (StringUtils.isBlank(listCode)) {
       throw new BadInputException("listCode query param is required");
     }
     return listsRepository.findOne(QProductList.productList.code.eq(listCode));
