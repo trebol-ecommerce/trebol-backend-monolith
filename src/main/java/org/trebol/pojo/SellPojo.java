@@ -29,6 +29,7 @@ import lombok.Data;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Collection;
 
@@ -62,6 +63,8 @@ public class SellPojo {
   private SalespersonPojo salesperson;
   private ShipperPojo shipper;
   private BillingCompanyPojo billingCompany;
+  @Valid
+  @NotNull
   private AddressPojo billingAddress;
   private AddressPojo shippingAddress;
 }
