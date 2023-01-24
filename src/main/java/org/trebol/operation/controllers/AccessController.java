@@ -60,7 +60,7 @@ public class AccessController {
     throws UsernameNotFoundException, IllegalStateException {
     UserDetails userDetails = this.getUserDetails(requestHeaders);
     if (userDetails == null) {
-      throw new IllegalStateException("");
+      return null;
     }
     Collection<String> routes = authorizedApiService.getAuthorizedApiRoutes(userDetails);
     return AuthorizedAccessPojo.builder()
