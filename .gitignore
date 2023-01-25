@@ -32,3 +32,5 @@ Thumbs.db
 /index
 /ORIG_HEAD
 /COMMIT_EDITMSG
+/REBASE_HEAD
+rebase-merge/
