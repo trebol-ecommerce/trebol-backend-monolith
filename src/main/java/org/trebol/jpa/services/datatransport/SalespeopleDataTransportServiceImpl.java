@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.SalespersonPojo;
 
 @Service
@@ -42,13 +41,7 @@ public class SalespeopleDataTransportServiceImpl
   @Override
   public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson existing) throws BadInputException {
     Salesperson target = new Salesperson(existing);
-    Person existingPerson = existing.getPerson();
-
-    PersonPojo sourcePerson = source.getPerson();
-    if (sourcePerson == null) {
-      throw new BadInputException("Salesperson must have a person profile");
-    }
-    Person person = peopleService.applyChangesToExistingEntity(sourcePerson, existingPerson);
+    Person person = peopleService.applyChangesToExistingEntity(source.getPerson(), existing.getPerson());
     target.setPerson(person);
 
     return target;
