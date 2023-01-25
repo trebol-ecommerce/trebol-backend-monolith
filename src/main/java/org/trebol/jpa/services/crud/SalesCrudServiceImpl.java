@@ -27,10 +27,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.AddressesJpaRepository;
-import org.trebol.jpa.repositories.BillingTypesJpaRepository;
-import org.trebol.jpa.repositories.ProductsJpaRepository;
-import org.trebol.jpa.repositories.SalesJpaRepository;
+import org.trebol.jpa.repositories.AddressesRepository;
+import org.trebol.jpa.repositories.BillingTypesRepository;
+import org.trebol.jpa.repositories.ProductsRepository;
+import org.trebol.jpa.repositories.SalesRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.*;
 import org.trebol.jpa.services.datatransport.SalesDataTransportService;
@@ -49,18 +49,18 @@ import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 public class SalesCrudServiceImpl
   extends CrudGenericService<SellPojo, Sell>
   implements SalesCrudService {
-  private final SalesJpaRepository salesRepository;
+  private final SalesRepository salesRepository;
   private final SalesConverterService salesConverterService;
   private final SalesDataTransportService salesDataTransportService;
-  private final ProductsJpaRepository productsRepository;
+  private final ProductsRepository productsRepository;
   private final ProductsConverterService productConverterService;
   private final CustomersCrudService customersCrudService;
   private final CustomersConverterService customersConverterService;
-  private final BillingTypesJpaRepository billingTypesRepository;
+  private final BillingTypesRepository billingTypesRepository;
   private final BillingCompaniesCrudService billingCompaniesCrudService;
   private final BillingCompaniesConverterService billingCompaniesConverterService;
   // private final PaymentTypesJpaRepository paymentTypesRepository;
-  private final AddressesJpaRepository addressesRepository;
+  private final AddressesRepository addressesRepository;
   private final ShippersCrudService shippersCrudService;
   private final AddressesConverterService addressesConverterService;
   private static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
@@ -68,18 +68,18 @@ public class SalesCrudServiceImpl
 
   @Autowired
   public SalesCrudServiceImpl(
-    SalesJpaRepository salesRepository,
-    ProductsJpaRepository productsRepository,
+    SalesRepository salesRepository,
+    ProductsRepository productsRepository,
     SalesConverterService salesConverterService,
     SalesDataTransportService salesDataTransportService,
     ProductsConverterService productConverterService,
     CustomersCrudService customersCrudService,
     CustomersConverterService customersConverterService,
-    BillingTypesJpaRepository billingTypesRepository,
+    BillingTypesRepository billingTypesRepository,
     BillingCompaniesCrudService billingCompaniesCrudService,
     BillingCompaniesConverterService billingCompaniesConverterService,
     // PaymentTypesJpaRepository paymentTypesRepository,
-    AddressesJpaRepository addressesRepository,
+    AddressesRepository addressesRepository,
     ShippersCrudService shippersCrudService,
     AddressesConverterService addressesConverterService
   ) {

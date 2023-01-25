@@ -8,8 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.repositories.ProductListItemsJpaRepository;
-import org.trebol.jpa.repositories.ProductListsJpaRepository;
+import org.trebol.jpa.repositories.ProductListItemsRepository;
+import org.trebol.jpa.repositories.ProductListsRepository;
 import org.trebol.pojo.ProductListPojo;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,8 +22,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ProductListCrudServiceImplTest {
   @InjectMocks ProductListsCrudServiceImpl instance;
-  @Mock ProductListsJpaRepository productListRepository;
-  @Mock ProductListItemsJpaRepository productListItemRepository;
+  @Mock ProductListsRepository productListRepository;
+  @Mock ProductListItemsRepository productListItemRepository;
 
   @Test
   void delete_whenProductListNotFound_throwsEntityNotFoundException() {

@@ -20,18 +20,14 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.Customer;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.Shipper;
 
 import java.util.Optional;
 
-@Repository
-public interface CustomersJpaRepository
-  extends JpaRepository<Customer> {
+@org.springframework.stereotype.Repository
+public interface ShippersRepository
+  extends Repository<Shipper> {
 
-  @Query(value = "SELECT c FROM Customer c JOIN FETCH c.person p WHERE p.idNumber = :idNumber")
-  Optional<Customer> findByPersonIdNumber(@Param("idNumber") String idNumber);
+  Optional<Shipper> findByName(String name);
 }

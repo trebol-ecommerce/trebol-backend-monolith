@@ -20,18 +20,35 @@
 
 package org.trebol.jpa.repositories;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.Salesperson;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.entities.SellStatus;
 
 import java.util.Optional;
 
-@Repository
-public interface SalespeopleJpaRepository
-  extends JpaRepository<Salesperson> {
+@org.springframework.stereotype.Repository
+public interface SalesRepository
+  extends Repository<Sell> {
 
-  @Query(value = "SELECT s FROM Salesperson s JOIN FETCH s.person p WHERE p.idNumber = :idNumber")
-  Optional<Salesperson> findByPersonIdNumber(@Param("idNumber") String idNumber);
+  Optional<Sell> findByTransactionToken(String token);
+
+  @Query(value = "SELECT s FROM Sell s "
+    + "JOIN FETCH s.details "
+    + "WHERE s.id = :id")
+  Optional<Sell> findByIdWithDetails(@Param("id") Long id);
+
+  @Modifying(clearAutomatically = true)
+  @Query("UPDATE Sell s "
+    + "SET s.status = :status "
+    + "WHERE s.id = :id")
+  int setStatus(@Param("id") Long id, @Param("status") SellStatus status);
+
+  @Modifying
+  @Query("UPDATE Sell s "
+    + "SET s.transactionToken = :token "
+    + "WHERE s.id = :id")
+  int setTransactionToken(@Param("id") Long id, @Param("token") String token);
 }

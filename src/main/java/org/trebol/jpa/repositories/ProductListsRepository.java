@@ -20,15 +20,14 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
+import org.trebol.jpa.Repository;
 import org.trebol.jpa.entities.ProductList;
 
 import java.util.Optional;
 
-@Repository
-public interface ProductListsJpaRepository
-  extends JpaRepository<ProductList> {
+@org.springframework.stereotype.Repository
+public interface ProductListsRepository
+  extends Repository<ProductList> {
 
   Optional<ProductList> findByName(String name);
 }

@@ -28,7 +28,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.JpaRepository;
+import org.trebol.jpa.Repository;
 import org.trebol.pojo.DataPagePojo;
 
 import javax.persistence.EntityExistsException;
@@ -47,7 +47,7 @@ import java.util.Optional;
 @Transactional
 public abstract class CrudGenericService<P, E>
   implements CrudService<P, E> {
-  private final JpaRepository<E> repository;
+  private final Repository<E> repository;
 
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
@@ -55,7 +55,7 @@ public abstract class CrudGenericService<P, E>
   private final DataTransportService<P, E> dataTransportService;
 
   protected CrudGenericService(
-    JpaRepository<E> repository,
+    Repository<E> repository,
     ConverterService<P, E> converter,
     DataTransportService<P, E> dataTransportService
   ) {

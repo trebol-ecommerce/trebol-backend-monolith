@@ -20,15 +20,17 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.PaymentType;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.SellDetail;
 
-import java.util.Optional;
+import java.util.List;
 
-@Repository
-public interface PaymentTypesJpaRepository
-  extends JpaRepository<PaymentType> {
+@org.springframework.stereotype.Repository
+public interface SellDetailsRepository
+  extends Repository<SellDetail> {
 
-  Optional<PaymentType> findByName(String name);
+  @Query(value = "SELECT d FROM SellDetail d WHERE d.sell.id = :sellId")
+  List<SellDetail> findBySellId(@Param("sellId") Long sellId);
 }

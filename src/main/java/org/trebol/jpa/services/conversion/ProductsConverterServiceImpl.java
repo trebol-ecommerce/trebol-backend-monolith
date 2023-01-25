@@ -27,7 +27,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.ProductImage;
-import org.trebol.jpa.repositories.ProductImagesJpaRepository;
+import org.trebol.jpa.repositories.ProductImagesRepository;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.pojo.ProductPojo;
@@ -40,12 +40,12 @@ import java.util.Set;
 public class ProductsConverterServiceImpl
   implements ProductsConverterService {
 
-  private final ProductImagesJpaRepository productImagesRepository;
+  private final ProductImagesRepository productImagesRepository;
   private final ImagesConverterService imagesConverterService;
   private final ProductCategoriesConverterService productCategoriesConverterService;
 
   @Autowired
-  public ProductsConverterServiceImpl(ProductImagesJpaRepository productImagesRepository,
+  public ProductsConverterServiceImpl(ProductImagesRepository productImagesRepository,
                                       ImagesConverterService imagesConverterService,
                                       ProductCategoriesConverterService productCategoriesConverterService) {
     this.productImagesRepository = productImagesRepository;

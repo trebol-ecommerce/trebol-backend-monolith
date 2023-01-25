@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.config.OperationProperties;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.repositories.ProductsCategoriesJpaRepository;
+import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,12 +14,12 @@ import java.util.Optional;
 @Service
 public class ProductCategoryTreeResolverServiceImpl
   implements ProductCategoryTreeResolverService {
-  private final ProductsCategoriesJpaRepository repository;
+  private final ProductsCategoriesRepository repository;
   private final OperationProperties operationProperties;
 
   @Autowired
   public ProductCategoryTreeResolverServiceImpl(
-    ProductsCategoriesJpaRepository repository,
+    ProductsCategoriesRepository repository,
     OperationProperties operationProperties
   ) {
     this.repository = repository;

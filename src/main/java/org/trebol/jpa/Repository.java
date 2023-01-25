@@ -18,17 +18,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.repositories;
+package org.trebol.jpa;
 
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.BillingType;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-import java.util.Optional;
-
-@Repository
-public interface BillingTypesJpaRepository
-  extends JpaRepository<BillingType> {
-
-  Optional<BillingType> findByName(String name);
+/**
+ * Interface for JPA repositories with QueryDSL support
+ *
+ * @param <E> The entity class
+ */
+public interface Repository<E>
+  extends JpaRepository<E, Long>, QuerydslPredicateExecutor<E> {
 }

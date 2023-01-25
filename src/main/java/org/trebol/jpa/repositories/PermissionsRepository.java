@@ -20,15 +20,10 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.Image;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.Permission;
 
-import java.util.Optional;
-
-@Repository
-public interface ImagesJpaRepository
-  extends JpaRepository<Image> {
-
-  Optional<Image> findByFilename(String filename);
+@org.springframework.stereotype.Repository
+public interface PermissionsRepository
+  extends Repository<Permission> {
 }

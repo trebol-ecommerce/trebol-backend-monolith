@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
-import org.trebol.jpa.repositories.BillingCompaniesJpaRepository;
+import org.trebol.jpa.repositories.BillingCompaniesRepository;
 import org.trebol.pojo.BillingCompanyPojo;
 
 import java.util.Optional;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class BillingCompaniesCrudServiceImplTest {
   @InjectMocks BillingCompaniesCrudServiceImpl instance;
-  @Mock BillingCompaniesJpaRepository billingCompaniesRepositoryMock;
+  @Mock BillingCompaniesRepository billingCompaniesRepositoryMock;
 
   @Test
   void finds_by_id_number() throws BadInputException {

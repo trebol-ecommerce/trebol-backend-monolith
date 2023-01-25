@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.repositories.PeopleJpaRepository;
+import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.jpa.services.datatransport.PeopleDataTransportService;
@@ -39,11 +39,11 @@ import java.util.Optional;
 public class PeopleCrudServiceImpl
   extends CrudGenericService<PersonPojo, Person>
   implements PeopleCrudService {
-  private final PeopleJpaRepository peopleRepository;
+  private final PeopleRepository peopleRepository;
 
   @Autowired
   public PeopleCrudServiceImpl(
-    PeopleJpaRepository peopleRepository,
+    PeopleRepository peopleRepository,
     PeopleConverterService peopleConverterService,
     PeopleDataTransportService peopleDataTransportService
   ) {

@@ -30,8 +30,8 @@ import org.trebol.config.SecurityProperties;
 import org.trebol.jpa.entities.Permission;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRolePermission;
-import org.trebol.jpa.repositories.UserRolePermissionsJpaRepository;
-import org.trebol.jpa.repositories.UsersJpaRepository;
+import org.trebol.jpa.repositories.UserRolePermissionsRepository;
+import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.pojo.UserDetailsPojo;
 import org.trebol.security.UserPermissionsService;
 
@@ -45,15 +45,15 @@ import java.util.Optional;
 @Service
 public class UserDetailsServiceImpl
   implements UserDetailsService {
-  private final UsersJpaRepository usersRepository;
-  private final UserRolePermissionsJpaRepository rolePermissionsRepository;
+  private final UsersRepository usersRepository;
+  private final UserRolePermissionsRepository rolePermissionsRepository;
   private final UserPermissionsService userPermissionsService;
   private final SecurityProperties securityProperties;
 
   @Autowired
   public UserDetailsServiceImpl(
-    UsersJpaRepository usersRepository,
-    UserRolePermissionsJpaRepository rolePermissionsRepository,
+    UsersRepository usersRepository,
+    UserRolePermissionsRepository rolePermissionsRepository,
     UserPermissionsService userPermissionsService,
     SecurityProperties securityProperties
   ) {

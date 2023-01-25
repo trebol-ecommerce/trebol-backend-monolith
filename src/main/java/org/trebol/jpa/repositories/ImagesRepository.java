@@ -20,15 +20,14 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.BillingCompany;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.Image;
 
 import java.util.Optional;
 
-@Repository
-public interface BillingCompaniesJpaRepository
-  extends JpaRepository<BillingCompany> {
+@org.springframework.stereotype.Repository
+public interface ImagesRepository
+  extends Repository<Image> {
 
-  Optional<BillingCompany> findByIdNumber(String idNumber);
+  Optional<Image> findByFilename(String filename);
 }

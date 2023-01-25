@@ -11,7 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.repositories.ProductListItemsJpaRepository;
+import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.pojo.ProductListPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,7 +21,7 @@ import static org.trebol.constant.TestConstants.ID_1L;
 @ExtendWith(MockitoExtension.class)
 class ProductListConverterServiceImplTest {
   @InjectMocks ProductListConverterServiceImpl sut;
-  @Mock ProductListItemsJpaRepository productListItemRepository;
+  @Mock ProductListItemsRepository productListItemRepository;
 
   private ProductList productList;
   private ProductListPojo productListPojo;

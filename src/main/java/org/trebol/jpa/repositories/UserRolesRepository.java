@@ -21,17 +21,15 @@
 package org.trebol.jpa.repositories;
 
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.SellDetail;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.UserRole;
 
-import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface SellDetailsJpaRepository
-  extends JpaRepository<SellDetail> {
+@org.springframework.stereotype.Repository
+public interface UserRolesRepository
+  extends Repository<UserRole> {
 
-  @Query(value = "SELECT d FROM SellDetail d WHERE d.sell.id = :sellId")
-  List<SellDetail> findBySellId(@Param("sellId") Long sellId);
+  @Query
+  Optional<UserRole> findByName(String name);
 }

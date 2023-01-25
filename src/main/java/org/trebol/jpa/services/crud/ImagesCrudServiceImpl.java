@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.repositories.ImagesJpaRepository;
+import org.trebol.jpa.repositories.ImagesRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.ImagesConverterService;
 import org.trebol.jpa.services.datatransport.ImagesDataTransportService;
@@ -39,11 +39,11 @@ import java.util.Optional;
 public class ImagesCrudServiceImpl
   extends CrudGenericService<ImagePojo, Image>
   implements ImagesCrudService {
-  private final ImagesJpaRepository imagesRepository;
+  private final ImagesRepository imagesRepository;
 
   @Autowired
   public ImagesCrudServiceImpl(
-    ImagesJpaRepository imagesRepository,
+    ImagesRepository imagesRepository,
     ImagesConverterService imagesConverterService,
     ImagesDataTransportService imagesDataTransportService
   ) {

@@ -18,15 +18,19 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa;
+package org.trebol.jpa.repositories;
 
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.Customer;
 
-/**
- * Interface for JPA repositories with QueryDSL support
- *
- * @param <E> The entity class
- */
-public interface JpaRepository<E>
-  extends org.springframework.data.jpa.repository.JpaRepository<E, Long>, QuerydslPredicateExecutor<E> {
+import java.util.Optional;
+
+@org.springframework.stereotype.Repository
+public interface CustomersRepository
+  extends Repository<Customer> {
+
+  @Query(value = "SELECT c FROM Customer c JOIN FETCH c.person p WHERE p.idNumber = :idNumber")
+  Optional<Customer> findByPersonIdNumber(@Param("idNumber") String idNumber);
 }

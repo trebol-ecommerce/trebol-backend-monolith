@@ -20,16 +20,24 @@
 
 package org.trebol.jpa.repositories;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.ProductImage;
 
-@Repository
-public interface ParamsJpaRepository
-  extends JpaRepository<org.trebol.jpa.entities.Param> {
+import java.util.List;
 
-  @Query("SELECT p FROM Param p WHERE p.category = :category")
-  Iterable<org.trebol.jpa.entities.Param> findParamsByCategory(
-    @Param("category") String category);
+@org.springframework.stereotype.Repository
+public interface ProductImagesRepository
+  extends Repository<ProductImage> {
+
+  List<ProductImage> findByProductId(long productId);
+
+  @Query("SELECT pi FROM ProductImage pi JOIN FETCH pi.image WHERE pi.product.id = :id")
+  List<ProductImage> deepFindProductImagesByProductId(@Param("id") long id);
+
+  @Modifying
+  @Query("DELETE FROM ProductImage pi WHERE pi.product.id = :id")
+  int deleteByProductId(@Param("id") long id);
 }

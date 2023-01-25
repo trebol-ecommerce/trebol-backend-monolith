@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.repositories.SellStatusesJpaRepository;
+import org.trebol.jpa.repositories.SellStatusesRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.SellStatusesConverterService;
 import org.trebol.jpa.services.datatransport.SellStatusesDataTransportService;
@@ -39,11 +39,11 @@ import java.util.Optional;
 public class SellStatusesCrudServiceImpl
   extends CrudGenericService<SellStatusPojo, SellStatus>
   implements SellStatusesCrudService {
-  private final SellStatusesJpaRepository statusesRepository;
+  private final SellStatusesRepository statusesRepository;
 
   @Autowired
   public SellStatusesCrudServiceImpl(
-    SellStatusesJpaRepository statusesRepository,
+    SellStatusesRepository statusesRepository,
     SellStatusesConverterService statusesConverterService,
     SellStatusesDataTransportService statusesDataTransportService
   ) {

@@ -20,15 +20,24 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.SellStatus;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.ProductCategory;
 
+import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface SellStatusesJpaRepository
-  extends JpaRepository<SellStatus> {
+@org.springframework.stereotype.Repository
+public interface ProductsCategoriesRepository
+  extends Repository<ProductCategory> {
 
-  Optional<SellStatus> findByName(String name);
+  Optional<ProductCategory> findByCode(String code);
+
+  List<ProductCategory> findByName(String code);
+
+  List<ProductCategory> findByParent(ProductCategory parent);
+
+  @Query("SELECT r.id FROM ProductCategory r WHERE r.parent.id = :parentId")
+  List<Long> findIdsByParentId(@Param("parentId") Long parentId);
 }

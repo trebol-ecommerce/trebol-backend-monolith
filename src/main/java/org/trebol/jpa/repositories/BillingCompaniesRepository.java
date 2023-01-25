@@ -20,17 +20,14 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.UserRole;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.BillingCompany;
 
 import java.util.Optional;
 
-@Repository
-public interface UserRolesJpaRepository
-  extends JpaRepository<UserRole> {
+@org.springframework.stereotype.Repository
+public interface BillingCompaniesRepository
+  extends Repository<BillingCompany> {
 
-  @Query
-  Optional<UserRole> findByName(String name);
+  Optional<BillingCompany> findByIdNumber(String idNumber);
 }

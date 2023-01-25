@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
-import org.trebol.jpa.repositories.SalesJpaRepository;
+import org.trebol.jpa.repositories.SalesRepository;
 import org.trebol.pojo.ProductPojo;
 import org.trebol.pojo.ReceiptDetailPojo;
 import org.trebol.pojo.ReceiptPojo;
@@ -39,12 +39,12 @@ import java.util.Optional;
 @Service
 public class ReceiptServiceImpl
   implements ReceiptService {
-  private final SalesJpaRepository salesRepository;
+  private final SalesRepository salesRepository;
   private final ConversionService conversionService;
 
   @Autowired
   public ReceiptServiceImpl(
-    SalesJpaRepository salesRepository,
+    SalesRepository salesRepository,
     ConversionService conversionService
   ) {
     this.salesRepository = salesRepository;

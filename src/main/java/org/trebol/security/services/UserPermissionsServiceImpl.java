@@ -26,7 +26,7 @@ import org.trebol.jpa.entities.Permission;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.entities.UserRolePermission;
-import org.trebol.jpa.repositories.UserRolePermissionsJpaRepository;
+import org.trebol.jpa.repositories.UserRolePermissionsRepository;
 import org.trebol.security.UserPermissionsService;
 
 import java.util.HashSet;
@@ -38,11 +38,11 @@ import java.util.Set;
 @Service
 public class UserPermissionsServiceImpl
   implements UserPermissionsService {
-  private final UserRolePermissionsJpaRepository userRolePermissionsRepository;
+  private final UserRolePermissionsRepository userRolePermissionsRepository;
 
   @Autowired
   public UserPermissionsServiceImpl(
-    UserRolePermissionsJpaRepository userRolePermissionsRepository
+    UserRolePermissionsRepository userRolePermissionsRepository
   ) {
     this.userRolePermissionsRepository = userRolePermissionsRepository;
   }

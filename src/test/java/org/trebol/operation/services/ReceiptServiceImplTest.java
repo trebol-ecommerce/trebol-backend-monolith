@@ -11,7 +11,7 @@ import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.repositories.SalesJpaRepository;
+import org.trebol.jpa.repositories.SalesRepository;
 import org.trebol.pojo.ReceiptDetailPojo;
 import org.trebol.pojo.ReceiptPojo;
 
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ReceiptServiceImplTest {
   @InjectMocks ReceiptServiceImpl instance;
-  @Mock SalesJpaRepository salesRepository;
+  @Mock SalesRepository salesRepository;
   @Mock ConversionService conversionService;
 
   @Test

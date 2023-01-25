@@ -20,15 +20,14 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.Shipper;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.PaymentType;
 
 import java.util.Optional;
 
-@Repository
-public interface ShippersJpaRepository
-  extends JpaRepository<Shipper> {
+@org.springframework.stereotype.Repository
+public interface PaymentTypesRepository
+  extends Repository<PaymentType> {
 
-  Optional<Shipper> findByName(String name);
+  Optional<PaymentType> findByName(String name);
 }

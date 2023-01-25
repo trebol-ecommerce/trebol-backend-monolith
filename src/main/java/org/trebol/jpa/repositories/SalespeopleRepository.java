@@ -20,25 +20,17 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.ProductListItem;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.Salesperson;
 
-@Repository
-public interface ProductListItemsJpaRepository
-  extends JpaRepository<ProductListItem> {
+import java.util.Optional;
 
-  @Modifying
-  @Transactional
-  @Query("DELETE FROM ProductListItem pi WHERE pi.list.id = :id")
-  void deleteByListId(@Param("id") Long id);
+@org.springframework.stereotype.Repository
+public interface SalespeopleRepository
+  extends Repository<Salesperson> {
 
-  @Modifying
-  @Transactional
-  @Query("DELETE FROM ProductListItem pi WHERE pi.product.id = :id")
-  void deleteByProductId(@Param("id") Long id);
+  @Query(value = "SELECT s FROM Salesperson s JOIN FETCH s.person p WHERE p.idNumber = :idNumber")
+  Optional<Salesperson> findByPersonIdNumber(@Param("idNumber") String idNumber);
 }

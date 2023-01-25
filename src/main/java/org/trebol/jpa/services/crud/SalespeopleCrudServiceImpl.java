@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.repositories.SalespeopleJpaRepository;
+import org.trebol.jpa.repositories.SalespeopleRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.SalespeopleConverterService;
 import org.trebol.jpa.services.datatransport.SalespeopleDataTransportService;
@@ -39,11 +39,11 @@ import java.util.Optional;
 public class SalespeopleCrudServiceImpl
   extends CrudGenericService<SalespersonPojo, Salesperson>
   implements SalespeopleCrudService {
-  private final SalespeopleJpaRepository salespeopleRepository;
+  private final SalespeopleRepository salespeopleRepository;
 
   @Autowired
   public SalespeopleCrudServiceImpl(
-    SalespeopleJpaRepository salespeopleRepository,
+    SalespeopleRepository salespeopleRepository,
     SalespeopleConverterService salespeopleConverterService,
     SalespeopleDataTransportService salespeopleDataTransportService
   ) {

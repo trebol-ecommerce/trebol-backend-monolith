@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.repositories.ProductsCategoriesJpaRepository;
+import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
 import org.trebol.jpa.services.datatransport.ProductCategoriesDataTransportService;
@@ -39,12 +39,12 @@ import java.util.Optional;
 public class ProductCategoriesCrudServiceImpl
   extends CrudGenericService<ProductCategoryPojo, ProductCategory>
   implements ProductCategoriesCrudService {
-  private final ProductsCategoriesJpaRepository categoriesRepository;
+  private final ProductsCategoriesRepository categoriesRepository;
   private final ProductCategoriesDataTransportService productCategoriesDataTransportService;
 
   @Autowired
   public ProductCategoriesCrudServiceImpl(
-    ProductsCategoriesJpaRepository categoriesRepository,
+    ProductsCategoriesRepository categoriesRepository,
     ProductCategoriesConverterService categoriesConverterService,
     ProductCategoriesDataTransportService categoriesDataTransportService
   ) {

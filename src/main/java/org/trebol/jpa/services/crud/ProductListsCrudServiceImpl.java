@@ -25,8 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.repositories.ProductListItemsJpaRepository;
-import org.trebol.jpa.repositories.ProductListsJpaRepository;
+import org.trebol.jpa.repositories.ProductListItemsRepository;
+import org.trebol.jpa.repositories.ProductListsRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.ProductListsConverterService;
 import org.trebol.jpa.services.datatransport.ProductListsDataTransportService;
@@ -40,13 +40,13 @@ import java.util.Optional;
 public class ProductListsCrudServiceImpl
   extends CrudGenericService<ProductListPojo, ProductList>
   implements ProductListCrudService {
-  private final ProductListsJpaRepository listsRepository;
-  private final ProductListItemsJpaRepository listItemsRepository;
+  private final ProductListsRepository listsRepository;
+  private final ProductListItemsRepository listItemsRepository;
 
   @Autowired
   public ProductListsCrudServiceImpl(
-    ProductListsJpaRepository listsRepository,
-    ProductListItemsJpaRepository listItemsRepository,
+    ProductListsRepository listsRepository,
+    ProductListItemsRepository listItemsRepository,
     ProductListsConverterService listsConverterService,
     ProductListsDataTransportService listsDataTransportService
   ) {

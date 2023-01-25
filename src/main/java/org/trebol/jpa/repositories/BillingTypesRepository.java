@@ -20,11 +20,14 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.Permission;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.BillingType;
 
-@Repository
-public interface PermissionsJpaRepository
-  extends JpaRepository<Permission> {
+import java.util.Optional;
+
+@org.springframework.stereotype.Repository
+public interface BillingTypesRepository
+  extends Repository<BillingType> {
+
+  Optional<BillingType> findByName(String name);
 }

@@ -26,9 +26,9 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.repositories.SalesJpaRepository;
-import org.trebol.jpa.repositories.SellDetailsJpaRepository;
-import org.trebol.jpa.repositories.SellStatusesJpaRepository;
+import org.trebol.jpa.repositories.SalesRepository;
+import org.trebol.jpa.repositories.SellDetailsRepository;
+import org.trebol.jpa.repositories.SellStatusesRepository;
 import org.trebol.jpa.services.conversion.ProductsConverterService;
 import org.trebol.jpa.services.conversion.SalesConverterService;
 import org.trebol.jpa.services.crud.SalesCrudService;
@@ -51,17 +51,17 @@ public class SalesProcessServiceImpl
   private static final String NO_STATUS_MATCHES_THE = "No status matches the";
   private static final String NAME_IS_THE_DATABASE_EMPTY_OR_CORRUPT = "name - Is the database empty or corrupt?";
   private final SalesCrudService crudService;
-  private final SalesJpaRepository salesRepository;
-  private final SellDetailsJpaRepository sellDetailsRepository;
-  private final SellStatusesJpaRepository sellStatusesRepository;
+  private final SalesRepository salesRepository;
+  private final SellDetailsRepository sellDetailsRepository;
+  private final SellStatusesRepository sellStatusesRepository;
   private final SalesConverterService converterService;
   private final ProductsConverterService productConverterService;
 
   public SalesProcessServiceImpl(
     SalesCrudService crudService,
-    SalesJpaRepository salesRepository,
-    SellDetailsJpaRepository sellDetailsRepository,
-    SellStatusesJpaRepository sellStatusesRepository,
+    SalesRepository salesRepository,
+    SellDetailsRepository sellDetailsRepository,
+    SellStatusesRepository sellStatusesRepository,
     SalesConverterService converterService,
     ProductsConverterService productConverterService
   ) {

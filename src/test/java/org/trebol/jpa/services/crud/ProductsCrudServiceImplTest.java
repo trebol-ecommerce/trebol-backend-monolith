@@ -10,8 +10,8 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.repositories.ProductImagesJpaRepository;
-import org.trebol.jpa.repositories.ProductsJpaRepository;
+import org.trebol.jpa.repositories.ProductImagesRepository;
+import org.trebol.jpa.repositories.ProductsRepository;
 import org.trebol.jpa.services.conversion.ImagesConverterService;
 import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
 import org.trebol.jpa.services.conversion.ProductsConverterService;
@@ -34,9 +34,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ProductsCrudServiceImplTest {
   @InjectMocks ProductsCrudServiceImpl instance;
-  @Mock ProductsJpaRepository productsRepositoryMock;
+  @Mock ProductsRepository productsRepositoryMock;
   @Mock ProductsConverterService productsConverterMock;
-  @Mock ProductImagesJpaRepository productImagesRepositoryMock;
+  @Mock ProductImagesRepository productImagesRepositoryMock;
   @Mock ImagesCrudService imagesCrudServiceMock;
   @Mock ProductCategoriesCrudService categoriesCrudServiceMock;
   @Mock ProductCategoriesConverterService categoriesConverterMock;

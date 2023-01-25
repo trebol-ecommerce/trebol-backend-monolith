@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.repositories.PeopleJpaRepository;
+import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.testhelpers.PeopleTestHelper;
 
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class PeopleCrudServiceImplTest {
   @InjectMocks PeopleCrudServiceImpl instance;
-  @Mock PeopleJpaRepository peopleRepositoryMock;
+  @Mock PeopleRepository peopleRepositoryMock;
   PeopleTestHelper peopleHelper = new PeopleTestHelper();
 
   @BeforeEach

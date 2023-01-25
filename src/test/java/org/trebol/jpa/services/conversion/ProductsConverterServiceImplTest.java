@@ -10,7 +10,7 @@ import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.ProductImage;
-import org.trebol.jpa.repositories.ProductImagesJpaRepository;
+import org.trebol.jpa.repositories.ProductImagesRepository;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.pojo.ProductCategoryPojo;
 import org.trebol.pojo.ProductPojo;
@@ -27,7 +27,7 @@ import static org.trebol.constant.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 public class ProductsConverterServiceImplTest {
   @InjectMocks ProductsConverterServiceImpl sut;
-  @Mock ProductImagesJpaRepository productImagesRepository;
+  @Mock ProductImagesRepository productImagesRepository;
   @Mock ImagesConverterService imagesConverterService;
   @Mock ProductCategoriesConverterService productCategoriesConverterService;
   Product product;

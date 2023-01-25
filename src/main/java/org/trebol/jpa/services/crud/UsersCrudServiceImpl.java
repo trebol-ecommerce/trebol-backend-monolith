@@ -29,7 +29,7 @@ import org.trebol.config.SecurityProperties;
 import org.trebol.exceptions.AccountProtectionViolationException;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
-import org.trebol.jpa.repositories.UsersJpaRepository;
+import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.UsersConverterService;
 import org.trebol.jpa.services.datatransport.UsersDataTransportService;
@@ -42,12 +42,12 @@ import java.util.Optional;
 @Service
 public class UsersCrudServiceImpl
   extends CrudGenericService<UserPojo, User> implements UsersCrudService {
-  private final UsersJpaRepository usersRepository;
+  private final UsersRepository usersRepository;
   private final SecurityProperties securityProperties;
 
   @Autowired
   public UsersCrudServiceImpl(
-    UsersJpaRepository usersRepository,
+    UsersRepository usersRepository,
     UsersConverterService usersConverterService,
     UsersDataTransportService usersDataTransportService,
     SecurityProperties securityProperties

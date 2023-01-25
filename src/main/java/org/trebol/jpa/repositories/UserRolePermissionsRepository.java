@@ -20,36 +20,15 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.entities.SellStatus;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.UserRolePermission;
 
-import java.util.Optional;
+@org.springframework.stereotype.Repository
+public interface UserRolePermissionsRepository
+  extends Repository<UserRolePermission> {
 
-@Repository
-public interface SalesJpaRepository
-  extends JpaRepository<Sell> {
-
-  Optional<Sell> findByTransactionToken(String token);
-
-  @Query(value = "SELECT s FROM Sell s "
-    + "JOIN FETCH s.details "
-    + "WHERE s.id = :id")
-  Optional<Sell> findByIdWithDetails(@Param("id") Long id);
-
-  @Modifying(clearAutomatically = true)
-  @Query("UPDATE Sell s "
-    + "SET s.status = :status "
-    + "WHERE s.id = :id")
-  int setStatus(@Param("id") Long id, @Param("status") SellStatus status);
-
-  @Modifying
-  @Query("UPDATE Sell s "
-    + "SET s.transactionToken = :token "
-    + "WHERE s.id = :id")
-  int setTransactionToken(@Param("id") Long id, @Param("token") String token);
+  @Query("SELECT urp FROM UserRolePermission urp JOIN FETCH urp.permission WHERE urp.userRole.id = :userRoleId")
+  Iterable<UserRolePermission> deepFindPermissionsByUserRoleId(@Param("userRoleId") Long userRoleId);
 }

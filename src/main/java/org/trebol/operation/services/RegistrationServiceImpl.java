@@ -28,10 +28,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.CustomersJpaRepository;
-import org.trebol.jpa.repositories.PeopleJpaRepository;
-import org.trebol.jpa.repositories.UserRolesJpaRepository;
-import org.trebol.jpa.repositories.UsersJpaRepository;
+import org.trebol.jpa.repositories.CustomersRepository;
+import org.trebol.jpa.repositories.PeopleRepository;
+import org.trebol.jpa.repositories.UserRolesRepository;
+import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.RegistrationPojo;
@@ -43,19 +43,19 @@ import java.util.Optional;
 public class RegistrationServiceImpl
   implements RegistrationService {
   private final Logger logger = LoggerFactory.getLogger(RegistrationServiceImpl.class);
-  private final PeopleJpaRepository peopleRepository;
-  private final UsersJpaRepository usersRepository;
-  private final UserRolesJpaRepository rolesRepository;
-  private final CustomersJpaRepository customersRepository;
+  private final PeopleRepository peopleRepository;
+  private final UsersRepository usersRepository;
+  private final UserRolesRepository rolesRepository;
+  private final CustomersRepository customersRepository;
   private final PasswordEncoder passwordEncoder;
   private final PeopleConverterService peopleConverterService;
 
   @Autowired
   public RegistrationServiceImpl(
-    PeopleJpaRepository peopleRepository,
-    UsersJpaRepository usersRepository,
-    UserRolesJpaRepository rolesRepository,
-    CustomersJpaRepository customersRepository,
+    PeopleRepository peopleRepository,
+    UsersRepository usersRepository,
+    UserRolesRepository rolesRepository,
+    CustomersRepository customersRepository,
     PasswordEncoder passwordEncoder,
     PeopleConverterService peopleConverterService
   ) {

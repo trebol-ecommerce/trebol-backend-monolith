@@ -22,27 +22,13 @@ package org.trebol.jpa.repositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.User;
+import org.trebol.jpa.Repository;
 
-import java.util.Optional;
+@org.springframework.stereotype.Repository
+public interface ParamsRepository
+  extends Repository<org.trebol.jpa.entities.Param> {
 
-@Repository
-public interface UsersJpaRepository
-  extends JpaRepository<User> {
-
-  Optional<User> findByName(String name);
-
-  @Query("SELECT u FROM User u JOIN FETCH u.userRole WHERE u.name = :name")
-  Optional<User> findByNameWithRole(@Param("name") String name);
-
-  @Query("SELECT u FROM User u JOIN FETCH u.person WHERE u.name = :name")
-  Optional<User> findByNameWithProfile(@Param("name") String name);
-
-  @Query("SELECT u FROM User u JOIN FETCH u.person WHERE u.id = :id")
-  Optional<User> findByIdWithProfile(@Param("id") Long id);
-
-  @Query("SELECT u FROM User u JOIN FETCH u.person p WHERE p.idNumber = :idNumber")
-  Optional<User> findByPersonIdNumber(@Param("idNumber") String idNumber);
+  @Query("SELECT p FROM Param p WHERE p.category = :category")
+  Iterable<org.trebol.jpa.entities.Param> findParamsByCategory(
+    @Param("category") String category);
 }

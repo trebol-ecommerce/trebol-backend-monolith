@@ -20,16 +20,14 @@
 
 package org.trebol.jpa.repositories;
 
-import org.springframework.stereotype.Repository;
-import org.trebol.jpa.JpaRepository;
-import org.trebol.jpa.entities.Person;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.SellStatus;
 
 import java.util.Optional;
 
-@Repository
-public interface PeopleJpaRepository
-  extends JpaRepository<Person> {
+@org.springframework.stereotype.Repository
+public interface SellStatusesRepository
+  extends Repository<SellStatus> {
 
-  Optional<Person> findByIdNumber(String idNumber);
-
+  Optional<SellStatus> findByName(String name);
 }

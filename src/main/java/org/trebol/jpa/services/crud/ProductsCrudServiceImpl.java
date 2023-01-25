@@ -31,8 +31,8 @@ import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.ProductImage;
-import org.trebol.jpa.repositories.ProductImagesJpaRepository;
-import org.trebol.jpa.repositories.ProductsJpaRepository;
+import org.trebol.jpa.repositories.ProductImagesRepository;
+import org.trebol.jpa.repositories.ProductsRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.ImagesConverterService;
 import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
@@ -53,10 +53,10 @@ import java.util.Optional;
 public class ProductsCrudServiceImpl
   extends CrudGenericService<ProductPojo, Product>
   implements ProductsCrudService {
-  private final ProductsJpaRepository productsRepository;
+  private final ProductsRepository productsRepository;
   private final ProductsConverterService productsConverterService;
   private final ProductsDataTransportService productsDataTransportService;
-  private final ProductImagesJpaRepository productImagesRepository;
+  private final ProductImagesRepository productImagesRepository;
   private final ImagesCrudService imagesCrudService;
   private final ProductCategoriesCrudService categoriesCrudService;
   private final ProductCategoriesConverterService categoriesConverterService;
@@ -65,10 +65,10 @@ public class ProductsCrudServiceImpl
 
   @Autowired
   public ProductsCrudServiceImpl(
-    ProductsJpaRepository productsRepository,
+    ProductsRepository productsRepository,
     ProductsConverterService productsConverterService,
     ProductsDataTransportService productsDataTransportService,
-    ProductImagesJpaRepository productImagesRepository,
+    ProductImagesRepository productImagesRepository,
     ImagesCrudService imagesCrudService,
     ProductCategoriesCrudService categoriesCrudService,
     ProductCategoriesConverterService categoriesConverterService,

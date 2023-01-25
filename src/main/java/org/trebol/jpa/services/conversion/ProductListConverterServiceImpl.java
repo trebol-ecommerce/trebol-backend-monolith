@@ -25,17 +25,17 @@ import org.springframework.stereotype.Service;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.entities.QProductListItem;
-import org.trebol.jpa.repositories.ProductListItemsJpaRepository;
+import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.pojo.ProductListPojo;
 
 @Service
 public class ProductListConverterServiceImpl
   implements ProductListsConverterService {
 
-  private final ProductListItemsJpaRepository productListItemRepository;
+  private final ProductListItemsRepository productListItemRepository;
 
   @Autowired
-  public ProductListConverterServiceImpl(ProductListItemsJpaRepository productListItemRepository) {
+  public ProductListConverterServiceImpl(ProductListItemsRepository productListItemRepository) {
     this.productListItemRepository = productListItemRepository;
   }
 

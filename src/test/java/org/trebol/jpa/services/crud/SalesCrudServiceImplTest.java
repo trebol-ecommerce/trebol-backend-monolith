@@ -11,10 +11,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.AddressesJpaRepository;
-import org.trebol.jpa.repositories.BillingTypesJpaRepository;
-import org.trebol.jpa.repositories.ProductsJpaRepository;
-import org.trebol.jpa.repositories.SalesJpaRepository;
+import org.trebol.jpa.repositories.AddressesRepository;
+import org.trebol.jpa.repositories.BillingTypesRepository;
+import org.trebol.jpa.repositories.ProductsRepository;
+import org.trebol.jpa.repositories.SalesRepository;
 import org.trebol.jpa.services.conversion.*;
 import org.trebol.jpa.services.datatransport.SalesDataTransportService;
 import org.trebol.pojo.AddressPojo;
@@ -40,17 +40,17 @@ import static org.trebol.constant.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 class SalesCrudServiceImplTest {
   @InjectMocks SalesCrudServiceImpl instance;
-  @Mock SalesJpaRepository salesRepositoryMock;
-  @Mock ProductsJpaRepository productsRepositoryMock;
+  @Mock SalesRepository salesRepositoryMock;
+  @Mock ProductsRepository productsRepositoryMock;
   @Mock SalesConverterService salesConverterMock;
   @Mock SalesDataTransportService salesDataTransportServiceMock;
   @Mock ProductsConverterService productsConverterServiceMock; // TODO write an unit test that needs this mock
   @Mock CustomersCrudService customersCrudServiceMock;
   @Mock CustomersConverterService customersConverterServiceMock;
-  @Mock BillingTypesJpaRepository billingTypesRepositoryMock;
+  @Mock BillingTypesRepository billingTypesRepositoryMock;
   @Mock BillingCompaniesCrudService billingCompaniesCrudServiceMock;
   @Mock BillingCompaniesConverterService billingCompaniesConverterServiceMock;
-  @Mock AddressesJpaRepository addressesRepositoryMock;
+  @Mock AddressesRepository addressesRepositoryMock;
   @Mock ShippersCrudService shippersCrudServiceMock;
   @Mock AddressesConverterService addressesConverterServiceMock;
   ProductsTestHelper productsHelper = new ProductsTestHelper();

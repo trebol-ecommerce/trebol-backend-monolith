@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.JpaRepository;
+import org.trebol.jpa.Repository;
 import org.trebol.pojo.DataPagePojo;
 
 import javax.persistence.EntityExistsException;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CrudGenericServiceTest {
-  @Mock JpaRepository<GenericEntity> genericRepositoryMock;
+  @Mock Repository<GenericEntity> genericRepositoryMock;
   @Mock ConverterService<GenericPojo, GenericEntity> genericConverterMock;
   @Mock DataTransportService<GenericPojo, GenericEntity> genericDataTransportServiceMock;
   final GenericPojo newPojo = new GenericPojo(null, "test");

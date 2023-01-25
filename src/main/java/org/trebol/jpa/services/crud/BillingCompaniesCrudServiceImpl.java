@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
-import org.trebol.jpa.repositories.BillingCompaniesJpaRepository;
+import org.trebol.jpa.repositories.BillingCompaniesRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
 import org.trebol.jpa.services.datatransport.BillingCompaniesDataTransportService;
@@ -39,11 +39,11 @@ import java.util.Optional;
 public class BillingCompaniesCrudServiceImpl
   extends CrudGenericService<BillingCompanyPojo, BillingCompany>
   implements BillingCompaniesCrudService {
-  private final BillingCompaniesJpaRepository companiesRepository;
+  private final BillingCompaniesRepository companiesRepository;
 
   @Autowired
   public BillingCompaniesCrudServiceImpl(
-    BillingCompaniesJpaRepository companiesRepository,
+    BillingCompaniesRepository companiesRepository,
     BillingCompaniesConverterService companiesConverterService,
     BillingCompaniesDataTransportService companiesDataTransportService
   ) {

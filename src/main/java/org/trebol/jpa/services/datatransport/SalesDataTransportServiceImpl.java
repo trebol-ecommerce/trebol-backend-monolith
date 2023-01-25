@@ -47,16 +47,16 @@ import static org.trebol.config.Constants.BILLING_TYPE_INDIVIDUAL;
 public class SalesDataTransportServiceImpl
   implements SalesDataTransportService {
   private static final String IS_NOT_VALID = "is not valid";
-  private final SellStatusesJpaRepository statusesRepository;
-  private final BillingTypesJpaRepository billingTypesRepository;
-  private final PaymentTypesJpaRepository paymentTypesRepository;
-  private final BillingCompaniesJpaRepository billingCompaniesRepository;
-  private final ShippersJpaRepository shippersRepository;
-  private final AddressesJpaRepository addressesRepository;
+  private final SellStatusesRepository statusesRepository;
+  private final BillingTypesRepository billingTypesRepository;
+  private final PaymentTypesRepository paymentTypesRepository;
+  private final BillingCompaniesRepository billingCompaniesRepository;
+  private final ShippersRepository shippersRepository;
+  private final AddressesRepository addressesRepository;
   private final BillingCompaniesConverterService billingCompaniesConverter;
   private final CustomersConverterService customersConverter;
   private final CustomersCrudService customersService;
-  private final CustomersJpaRepository customersRepository;
+  private final CustomersRepository customersRepository;
   private final AddressesConverterService addressesConverterService;
   private final Validator validator;
   private final RegexMatcherAdapterService regexMatcherAdapterService;
@@ -64,16 +64,16 @@ public class SalesDataTransportServiceImpl
   @Autowired
   public SalesDataTransportServiceImpl(
     AddressesConverterService addressesConverterService,
-    SellStatusesJpaRepository statusesRepository,
-    BillingTypesJpaRepository billingTypesRepository,
-    BillingCompaniesJpaRepository billingCompaniesRepository,
-    PaymentTypesJpaRepository paymentTypesRepository,
-    AddressesJpaRepository addressesRepository,
-    ShippersJpaRepository shippersRepository,
+    SellStatusesRepository statusesRepository,
+    BillingTypesRepository billingTypesRepository,
+    BillingCompaniesRepository billingCompaniesRepository,
+    PaymentTypesRepository paymentTypesRepository,
+    AddressesRepository addressesRepository,
+    ShippersRepository shippersRepository,
     BillingCompaniesConverterService billingCompaniesConverter,
     CustomersConverterService customersConverter,
     CustomersCrudService customersService,
-    CustomersJpaRepository customersRepository,
+    CustomersRepository customersRepository,
     Validator validator,
     RegexMatcherAdapterService regexMatcherAdapterService
   ) {

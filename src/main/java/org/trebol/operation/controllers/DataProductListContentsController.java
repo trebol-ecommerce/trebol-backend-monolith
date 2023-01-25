@@ -28,8 +28,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.ProductListItemsJpaRepository;
-import org.trebol.jpa.repositories.ProductListsJpaRepository;
+import org.trebol.jpa.repositories.ProductListItemsRepository;
+import org.trebol.jpa.repositories.ProductListsRepository;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.conversion.ProductListItemsConverterService;
@@ -48,8 +48,8 @@ public class DataProductListContentsController {
   private static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   private final PaginationService paginationService;
   private final SortSpecService<ProductListItem> sortService;
-  private final ProductListItemsJpaRepository listItemsRepository;
-  private final ProductListsJpaRepository listsRepository;
+  private final ProductListItemsRepository listItemsRepository;
+  private final ProductListsRepository listsRepository;
   private final PredicateService<ProductListItem> listItemsPredicateService;
   private final ProductsCrudService productCrudService;
   private final ProductListItemsConverterService itemConverterService;
@@ -58,8 +58,8 @@ public class DataProductListContentsController {
   public DataProductListContentsController(
     PaginationService paginationService,
     SortSpecService<ProductListItem> sortService,
-    ProductListItemsJpaRepository listItemsRepository,
-    ProductListsJpaRepository listsRepository,
+    ProductListItemsRepository listItemsRepository,
+    ProductListsRepository listsRepository,
     PredicateService<ProductListItem> listItemsPredicateService,
     ProductsCrudService productCrudService,
     ProductListItemsConverterService itemConverterService

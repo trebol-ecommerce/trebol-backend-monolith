@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.repositories.ShippersJpaRepository;
+import org.trebol.jpa.repositories.ShippersRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.ShippersConverterService;
 import org.trebol.jpa.services.datatransport.ShippersDataTransportService;
@@ -39,11 +39,11 @@ import java.util.Optional;
 public class ShippersCrudServiceImpl
   extends CrudGenericService<ShipperPojo, Shipper>
   implements ShippersCrudService {
-  private final ShippersJpaRepository shippersRepository;
+  private final ShippersRepository shippersRepository;
 
   @Autowired
   public ShippersCrudServiceImpl(
-    ShippersJpaRepository shippersRepository,
+    ShippersRepository shippersRepository,
     ShippersConverterService shippersConverterService,
     ShippersDataTransportService shippersdataTransportService
   ) {

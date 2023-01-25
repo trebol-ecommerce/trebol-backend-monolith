@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.repositories.ShippersJpaRepository;
+import org.trebol.jpa.repositories.ShippersRepository;
 import org.trebol.pojo.ShipperPojo;
 
 import java.util.Optional;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ShippersCrudServiceImplTest {
   @InjectMocks ShippersCrudServiceImpl instance;
-  @Mock ShippersJpaRepository shippersRepositoryMock;
+  @Mock ShippersRepository shippersRepositoryMock;
 
   @Test
   void finds_by_name() throws BadInputException {

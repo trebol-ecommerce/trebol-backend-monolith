@@ -33,16 +33,16 @@ import static org.trebol.constant.TestConstants.ID_1L;
 @ExtendWith(MockitoExtension.class)
 class SalesDataTransportServiceImplTest {
   @InjectMocks SalesDataTransportServiceImpl sut;
-  @Mock SellStatusesJpaRepository statusesRepository;
-  @Mock BillingTypesJpaRepository billingTypesRepository;
-  @Mock PaymentTypesJpaRepository paymentTypesRepository;
-  @Mock BillingCompaniesJpaRepository billingCompaniesRepository;
-  @Mock ShippersJpaRepository shippersRepository;
-  @Mock AddressesJpaRepository addressesRepository;
+  @Mock SellStatusesRepository statusesRepository;
+  @Mock BillingTypesRepository billingTypesRepository;
+  @Mock PaymentTypesRepository paymentTypesRepository;
+  @Mock BillingCompaniesRepository billingCompaniesRepository;
+  @Mock ShippersRepository shippersRepository;
+  @Mock AddressesRepository addressesRepository;
   @Mock BillingCompaniesConverterService billingCompaniesConverter;
   @Mock CustomersConverterService customersConverter;
   @Mock CustomersCrudService customersService;
-  @Mock CustomersJpaRepository customersRepository;
+  @Mock CustomersRepository customersRepository;
   @Mock AddressesConverterService addressesConverterService;
   @Mock Validator validator;
   @Mock RegexMatcherAdapterService regexMatcherAdapterService;

@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.repositories.ImagesJpaRepository;
+import org.trebol.jpa.repositories.ImagesRepository;
 import org.trebol.pojo.ImagePojo;
 import org.trebol.testhelpers.ImagesTestHelper;
 
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ImagesCrudServiceImplTest {
   @InjectMocks ImagesCrudServiceImpl instance;
-  @Mock ImagesJpaRepository imagesRepositoryMock;
+  @Mock ImagesRepository imagesRepositoryMock;
   ImagesTestHelper imagesHelper = new ImagesTestHelper();
 
   @BeforeEach
