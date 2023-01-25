@@ -30,7 +30,17 @@ import java.util.Map;
 
 @Service
 public class ImagesSpecServiceImpl
-  extends SortSpecGenericService<Image> {
+  extends SortSpecGenericService<Image>
+  implements ImagesSpecService {
+  private final Map<String, OrderSpecifier<?>> orderSpecMap;
+
+  public ImagesSpecServiceImpl() {
+    this.orderSpecMap = Map.of(
+      "code", getBasePath().code.asc(),
+      "filename", getBasePath().filename.asc(),
+      "url", getBasePath().url.asc()
+    );
+  }
 
   @Override
   public QImage getBasePath() {
@@ -38,11 +48,7 @@ public class ImagesSpecServiceImpl
   }
 
   @Override
-  protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
-    return Map.of(
-      "code", getBasePath().code.asc(),
-      "filename", getBasePath().filename.asc(),
-      "url", getBasePath().url.asc()
-    );
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return this.orderSpecMap;
   }
 }

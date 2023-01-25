@@ -29,9 +29,7 @@ import java.util.Map;
 public abstract class SortSpecGenericService<E>
   implements SortSpecService<E> {
 
-  private Map<String, OrderSpecifier<?>> orderSpecMap;
-
-  protected abstract Map<String, OrderSpecifier<?>> createOrderSpecMap();
+  protected abstract Map<String, OrderSpecifier<?>> getOrderSpecMap();
 
   @Override
   public Sort parseMap(Map<String, String> queryParamsMap) {
@@ -49,12 +47,5 @@ public abstract class SortSpecGenericService<E>
       default:
         return sortBy;
     }
-  }
-
-  private Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    if (this.orderSpecMap == null) {
-      this.orderSpecMap = this.createOrderSpecMap();
-    }
-    return this.orderSpecMap;
   }
 }

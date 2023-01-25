@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -16,33 +16,14 @@
  * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
  */
 
 package org.trebol.jpa.services.sortspecs;
 
-import com.querydsl.core.types.OrderSpecifier;
-import org.springframework.stereotype.Service;
-import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.entities.QProductList;
-import org.trebol.jpa.services.SortSpecGenericService;
+import org.trebol.jpa.entities.Shipper;
+import org.trebol.jpa.services.SortSpecService;
 
-import java.util.Map;
-
-@Service
-public class ProductListsSpecServiceImpl
-  extends SortSpecGenericService<ProductList> {
-
-  @Override
-  public QProductList getBasePath() {
-    return QProductList.productList;
-  }
-
-  @Override
-  protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
-    return Map.of(
-      "name", getBasePath().name.asc(),
-      "code", getBasePath().code.asc(),
-      "totalCount", getBasePath().items.size().asc()
-    );
-  }
+public interface ShippersSortSpecService
+  extends SortSpecService<Shipper> {
 }

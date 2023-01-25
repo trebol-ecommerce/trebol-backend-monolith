@@ -30,16 +30,12 @@ import java.util.Map;
 
 @Service
 public class PeopleSortSpecServiceImpl
-  extends SortSpecGenericService<Person> {
+  extends SortSpecGenericService<Person>
+  implements PeopleSortSpecService {
+  private final Map<String, OrderSpecifier<?>> orderSpecMap;
 
-  @Override
-  public QPerson getBasePath() {
-    return QPerson.person;
-  }
-
-  @Override
-  protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
-    return Map.of(
+  public PeopleSortSpecServiceImpl() {
+    this.orderSpecMap = Map.of(
       "idNumber", getBasePath().idNumber.asc(),
       "firstName", getBasePath().firstName.asc(),
       "email", getBasePath().email.asc(),
@@ -48,6 +44,16 @@ public class PeopleSortSpecServiceImpl
       "name", getBasePath().lastName.asc(),
       "lastName", getBasePath().lastName.asc()
     );
+  }
+
+  @Override
+  public QPerson getBasePath() {
+    return QPerson.person;
+  }
+
+  @Override
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return this.orderSpecMap;
   }
 
 }

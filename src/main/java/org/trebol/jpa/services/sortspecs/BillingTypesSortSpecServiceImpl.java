@@ -30,7 +30,15 @@ import java.util.Map;
 
 @Service
 public class BillingTypesSortSpecServiceImpl
-  extends SortSpecGenericService<BillingType> {
+  extends SortSpecGenericService<BillingType>
+  implements BillingTypesSortSpecService {
+  private final Map<String, OrderSpecifier<?>> orderSpecMap;
+
+  public BillingTypesSortSpecServiceImpl() {
+    this.orderSpecMap = Map.of(
+      "name", getBasePath().name.asc()
+    );;
+  }
 
   @Override
   public QBillingType getBasePath() {
@@ -38,9 +46,7 @@ public class BillingTypesSortSpecServiceImpl
   }
 
   @Override
-  protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
-    return Map.of(
-      "name", getBasePath().name.asc()
-    );
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return this.orderSpecMap;
   }
 }

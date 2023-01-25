@@ -30,7 +30,16 @@ import java.util.Map;
 
 @Service
 public class UsersSortSpecServiceImpl
-  extends SortSpecGenericService<User> {
+  extends SortSpecGenericService<User>
+  implements UsersSortSpecService {
+  private final Map<String, OrderSpecifier<?>> orderSpecMap;
+
+  public UsersSortSpecServiceImpl() {
+    orderSpecMap = Map.of(
+      "name", getBasePath().name.asc(),
+      "role", getBasePath().userRole.name.asc()
+    );
+  }
 
   @Override
   public QUser getBasePath() {
@@ -38,10 +47,7 @@ public class UsersSortSpecServiceImpl
   }
 
   @Override
-  protected Map<String, OrderSpecifier<?>> createOrderSpecMap() {
-    return Map.of(
-      "name", getBasePath().name.asc(),
-      "role", getBasePath().userRole.name.asc()
-    );
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return this.orderSpecMap;
   }
 }
