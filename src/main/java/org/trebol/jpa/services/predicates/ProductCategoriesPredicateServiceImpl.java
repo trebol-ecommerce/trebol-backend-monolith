@@ -77,7 +77,7 @@ public class ProductCategoriesPredicateServiceImpl
             }
             break;
           case "parentId":
-            if (StringUtils.isNotBlank(stringValue)) {
+            if (StringUtils.isBlank(stringValue)) {
               predicate.and(getBasePath().parent.isNull());
             } else {
               predicate.and(getBasePath().parent.id.eq(Long.valueOf(stringValue)));

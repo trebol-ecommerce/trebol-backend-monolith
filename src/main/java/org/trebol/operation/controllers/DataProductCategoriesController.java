@@ -57,7 +57,7 @@ public class DataProductCategoriesController
   @GetMapping({"", "/"})
   public DataPagePojo<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     if (allRequestParams.isEmpty()) {
-      allRequestParams.put("parentId", null);
+      allRequestParams = Map.of("parentId", "");
     }
     return super.readMany(allRequestParams);
   }

@@ -16,8 +16,7 @@ import org.trebol.pojo.ProductCategoryPojo;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,7 +31,10 @@ class DataProductCategoriesControllerTest {
   void reads_categories() {
     DataPagePojo<ProductCategoryPojo> pagePojo = new DataPagePojo<>(0, 0);
     when(crudServiceMock.readMany(anyInt(), anyInt(), eq(null), eq(null))).thenReturn(pagePojo);
+    when(predicateServiceMock.parseMap(anyMap())).thenReturn(null);
+
     DataPagePojo<ProductCategoryPojo> result = instance.readMany(Map.of());
+
     assertNotNull(result);
     assertEquals(0, result.getTotalCount());
     assertTrue(result.getItems().isEmpty());
