@@ -20,6 +20,7 @@
 
 package org.trebol.jpa.services.crud;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,6 @@ import org.trebol.jpa.repositories.SalespeopleRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.SalespeopleConverterService;
 import org.trebol.jpa.services.datatransport.SalespeopleDataTransportService;
-import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.SalespersonPojo;
 
 import java.util.Optional;
@@ -53,16 +53,11 @@ public class SalespeopleCrudServiceImpl
 
   @Override
   public Optional<Salesperson> getExisting(SalespersonPojo input) throws BadInputException {
-    PersonPojo person = input.getPerson();
-    if (person == null) {
-      throw new BadInputException("Salesperson does not have profile information");
+    String idNumber = input.getPerson().getIdNumber();
+    if (StringUtils.isBlank(idNumber)) {
+      throw new BadInputException("Salesperson does not have an ID card");
     } else {
-      String idNumber = person.getIdNumber();
-      if (idNumber == null) {
-        throw new BadInputException("Salesperson does not have an ID card");
-      } else {
-        return salespeopleRepository.findByPersonIdNumber(idNumber);
-      }
+      return salespeopleRepository.findByPersonIdNumber(idNumber);
     }
   }
 }
