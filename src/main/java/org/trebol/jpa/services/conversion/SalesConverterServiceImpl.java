@@ -66,6 +66,9 @@ public class SalesConverterServiceImpl
       .token(source.getTransactionToken())
       .build();
 
+    CustomerPojo customer = customersConverter.convertToPojo(source.getCustomer());
+    target.setCustomer(customer);
+
     target.setStatus(source.getStatus().getName());
     target.setPaymentType(source.getPaymentType().getName());
     target.setBillingType(source.getBillingType().getName());
@@ -78,18 +81,14 @@ public class SalesConverterServiceImpl
       }
     }
 
-    if (source.getBillingAddress() != null) {
-      AddressPojo billingAddress = addressesConverterService.convertToPojo(source.getBillingAddress());
-      target.setBillingAddress(billingAddress);
-    }
+    AddressPojo billingAddress = addressesConverterService.convertToPojo(source.getBillingAddress());
+    target.setBillingAddress(billingAddress);
 
     if (source.getShippingAddress() != null) {
       AddressPojo shippingAddress = addressesConverterService.convertToPojo(source.getShippingAddress());
       target.setShippingAddress(shippingAddress);
     }
 
-    CustomerPojo customer = customersConverter.convertToPojo(source.getCustomer());
-    target.setCustomer(customer);
 
     if (source.getSalesperson() != null) {
       SalespersonPojo salesperson = salespeopleConverter.convertToPojo(source.getSalesperson());
