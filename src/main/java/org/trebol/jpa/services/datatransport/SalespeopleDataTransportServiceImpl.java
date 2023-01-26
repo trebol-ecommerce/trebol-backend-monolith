@@ -30,18 +30,20 @@ import org.trebol.pojo.SalespersonPojo;
 @Service
 public class SalespeopleDataTransportServiceImpl
   implements SalespeopleDataTransportService {
-
-  private final PeopleDataTransportService peopleService;
+  private final PeopleDataTransportService peopleDataTransportService;
 
   @Autowired
-  public SalespeopleDataTransportServiceImpl(PeopleDataTransportService peopleService) {
-    this.peopleService = peopleService;
+  public SalespeopleDataTransportServiceImpl(
+    PeopleDataTransportService peopleDataTransportService
+  ) {
+    this.peopleDataTransportService = peopleDataTransportService;
   }
 
   @Override
   public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson existing) throws BadInputException {
     Salesperson target = new Salesperson(existing);
-    Person person = peopleService.applyChangesToExistingEntity(source.getPerson(), existing.getPerson());
+
+    Person person = peopleDataTransportService.applyChangesToExistingEntity(source.getPerson(), existing.getPerson());
     target.setPerson(person);
 
     return target;
