@@ -37,7 +37,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,7 +51,7 @@ class DataBillingTypesControllerTest {
   @Test
   void reads_billing_types() {
     DataPagePojo<BillingTypePojo> pagePojo = new DataPagePojo<>(0, 0);
-    when(crudServiceMock.readMany(anyInt(), anyInt(), eq(null), eq(null))).thenReturn(pagePojo);
+    when(crudServiceMock.readMany(anyInt(), anyInt(), isNull(), isNull())).thenReturn(pagePojo);
     DataPagePojo<BillingTypePojo> result = instance.readMany(Map.of());
     assertNotNull(result);
     assertEquals(0, result.getTotalCount());
