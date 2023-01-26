@@ -32,16 +32,15 @@ import org.trebol.jpa.entities.Salesperson;
 import org.trebol.pojo.PersonPojo;
 import org.trebol.pojo.SalespersonPojo;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 import static org.trebol.constant.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class SalespeopleDataTransportServiceImplTest {
   @InjectMocks SalespeopleDataTransportServiceImpl sut;
-  @Mock PeopleDataTransportService peopleDataTransportService;
+  @Mock PeopleDataTransportService peopleDataTransportServiceMock;
   Salesperson salesperson;
   SalespersonPojo salespersonPojo;
   Person person;
@@ -58,19 +57,22 @@ public class SalespeopleDataTransportServiceImplTest {
       .build();
   }
 
-
   @Test
-  void testApplyChangesToExistingEntityThrowsBadInputException() {
-    salespersonPojo.setPerson(null);
-    BadInputException badInputException = assertThrows(BadInputException.class, ()
-      -> sut.applyChangesToExistingEntity(salespersonPojo, salesperson));
-    assertEquals("Salesperson must have a person profile", badInputException.getMessage());
+  void passes_person_profile_data() throws BadInputException {
+    when(peopleDataTransportServiceMock.applyChangesToExistingEntity(nullable(PersonPojo.class), nullable(Person.class))).thenReturn(person);
+
+    Salesperson actual = sut.applyChangesToExistingEntity(salespersonPojo, salesperson);
+
+    assertNotNull(actual.getPerson());
+    assertEquals(person, actual.getPerson());
   }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
-    when(peopleDataTransportService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
-    Salesperson actual = sut.applyChangesToExistingEntity(salespersonPojo, salesperson);
-    assertEquals(person.getId(), actual.getPerson().getId());
+  void passes_null_person_profile() throws BadInputException {
+    salespersonPojo.setPerson(null);
+
+    Salesperson result = sut.applyChangesToExistingEntity(salespersonPojo, salesperson);
+
+    assertNull(result.getPerson());
   }
 }
