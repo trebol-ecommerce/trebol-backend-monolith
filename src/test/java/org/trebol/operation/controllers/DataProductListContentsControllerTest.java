@@ -20,6 +20,7 @@
 
 package org.trebol.operation.controllers;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductList;
@@ -43,6 +46,7 @@ import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ProductPojo;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -66,6 +70,7 @@ class DataProductListContentsControllerTest {
   ProductList listExample;
   ProductListItem listItemExample;
   Product productExample;
+  Map<String, String> simpleQueryParamsMap;
 
   @BeforeEach
   void beforeEach() {
@@ -77,6 +82,7 @@ class DataProductListContentsControllerTest {
     listExample.setName(ANY);
     listExample.setCode(ANY);
     listItemExample = new ProductListItem(listExample, productExample);
+    simpleQueryParamsMap = Map.of("listCode", ANY);
   }
 
   @Test
@@ -88,13 +94,34 @@ class DataProductListContentsControllerTest {
     when(listItemsRepositoryMock.count(nullable(Predicate.class))).thenReturn(1L);
     when(listItemConverterServiceMock.convertToPojo(any(ProductListItem.class))).thenReturn(expectedProduct);
 
-    DataPagePojo<ProductPojo> result = instance.readContents(Map.of("listCode", ANY));
+    DataPagePojo<ProductPojo> result = instance.readContents(simpleQueryParamsMap);
 
     assertNotNull(result);
     assertEquals(1, result.getTotalCount());
     assertFalse(result.getItems().isEmpty());
     assertEquals(1, result.getItems().size());
     assertEquals(expectedProduct, result.getItems().iterator().next());
+  }
+
+  @Test
+  void accepts_sorting_order() throws BadInputException {
+    Map<String, String> queryParams = Map.of("listCode", ANY, "sortBy", ANY);
+    Sort sortingOrder = Sort.by(ANY);
+    BooleanBuilder expectedPredicate = new BooleanBuilder();
+    Pageable expectedPagination = PageRequest.of(0, 1, sortingOrder);
+    ProductPojo expectedProduct = ProductPojo.builder().build();
+    when(paginationServiceMock.determineRequestedPageSize(anyMap())).thenReturn(1);
+    when(listsRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(listExample));
+    when(sortServiceMock.parseMap(anyMap())).thenReturn(sortingOrder);
+    when(listItemsPredicateServiceMock.parseMap(anyMap())).thenReturn(expectedPredicate);
+    when(listItemsRepositoryMock.findAll(nullable(Predicate.class), any(Pageable.class))).thenReturn(new PageImpl<>(List.of(listItemExample)));
+    when(listItemsRepositoryMock.count(nullable(Predicate.class))).thenReturn(1L);
+    when(listItemConverterServiceMock.convertToPojo(any(ProductListItem.class))).thenReturn(expectedProduct);
+
+    DataPagePojo<ProductPojo> result = instance.readContents(queryParams);
+
+    assertNotNull(result);
+    verify(listItemsRepositoryMock).findAll(expectedPredicate, expectedPagination);
   }
 
   @Test
@@ -109,10 +136,61 @@ class DataProductListContentsControllerTest {
     when(listsRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(listExample));
     when(productsCrudServiceMock.getExisting(any(ProductPojo.class))).thenReturn(Optional.of(productExample));
 
-    instance.addToContents(newProduct, Map.of("listCode", ANY));
+    instance.addToContents(newProduct, simpleQueryParamsMap);
 
     verify(listItemsRepositoryMock).save(newListItemEntity);
   }
 
-  // TODO add test for updating list contents
+  @Test
+  void updates_list_contents() throws BadInputException {
+    ProductPojo newProduct = ProductPojo.builder()
+      .barcode(ANY)
+      .name(ANY)
+      .build();
+    List<ProductPojo> inputProductList = List.of(newProduct);
+    ProductListItem newListItemEntity = new ProductListItem();
+    newListItemEntity.setProduct(productExample);
+    newListItemEntity.setList(listExample);
+    when(listsRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(listExample));
+    when(productsCrudServiceMock.getExisting(any(ProductPojo.class))).thenReturn(Optional.of(productExample));
+
+    instance.updateContents(inputProductList, simpleQueryParamsMap);
+
+    verify(listItemsRepositoryMock).deleteByListId(listExample.getId());
+    verify(listItemsRepositoryMock).save(newListItemEntity);
+  }
+
+  @Test
+  void deletes_from_list_contents() throws BadInputException {
+    List<ProductListItem> contents = List.of(listItemExample);
+    when(listsRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(listExample));
+    when(listItemsRepositoryMock.findAll(nullable(Predicate.class))).thenReturn(contents);
+
+    instance.deleteFromContents(simpleQueryParamsMap);
+
+    verify(listItemsRepositoryMock).deleteAll(contents);
+  }
+
+  @Test
+  void fails_when_target_list_is_not_specified() {
+    Map<String, String> mapWithoutATargetList = Map.of("listCode", "");
+    List.of(
+      assertThrows(BadInputException.class, () -> instance.readContents(mapWithoutATargetList)),
+      assertThrows(BadInputException.class, () -> instance.addToContents(null, mapWithoutATargetList)),
+      assertThrows(BadInputException.class, () -> instance.updateContents(null, mapWithoutATargetList)),
+      assertThrows(BadInputException.class, () -> instance.deleteFromContents(mapWithoutATargetList))
+    ).forEach(exception -> assertEquals("listCode query param is required", exception.getMessage()));
+  }
+
+  @Test
+  void fails_when_target_list_does_not_exist_or_cannot_be_found() {
+    when(listsRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.empty());
+
+    List.of(
+      assertThrows(EntityNotFoundException.class, () -> instance.readContents(simpleQueryParamsMap)),
+      assertThrows(EntityNotFoundException.class, () -> instance.addToContents(null, simpleQueryParamsMap)),
+      assertThrows(EntityNotFoundException.class, () -> instance.updateContents(null, simpleQueryParamsMap)),
+      assertThrows(EntityNotFoundException.class, () -> instance.deleteFromContents(simpleQueryParamsMap))
+    ).forEach(exception -> assertEquals("Requested item(s) not found", exception.getMessage()));
+  }
 }
