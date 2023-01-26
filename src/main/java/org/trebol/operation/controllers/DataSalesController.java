@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -33,8 +33,8 @@ import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.operation.DataCrudGenericController;
-import org.trebol.operation.services.SalesProcessService;
 import org.trebol.operation.services.PaginationService;
+import org.trebol.operation.services.SalesProcessService;
 import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.SellPojo;
 
