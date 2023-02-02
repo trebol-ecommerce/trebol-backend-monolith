@@ -64,7 +64,9 @@ public abstract class DataCrudGenericController<P, E>
   @Override
   public void delete(Map<String, String> requestParams)
     throws EntityNotFoundException {
-    Predicate predicate = predicateService.parseMap(requestParams);
-    crudService.delete(predicate);
+    if (!requestParams.isEmpty()) {
+      Predicate predicate = predicateService.parseMap(requestParams);
+      crudService.delete(predicate);
+    }
   }
 }

@@ -32,8 +32,7 @@ import org.trebol.operation.services.PaginationService;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.trebol.constant.TestConstants.ANY;
 
 public abstract class DataCrudGenericControllerTest<P, E>
@@ -84,5 +83,10 @@ public abstract class DataCrudGenericControllerTest<P, E>
 
     verify(predicateServiceMock).parseMap(predicateFiltersMap);
     verify(crudServiceMock).delete(predicate);
+  }
+
+  protected void does_not_delete_data_when_predicate_filters_map_is_empty() {
+    instance.delete(Map.of());
+    verify(crudServiceMock, never()).delete(any(Predicate.class));
   }
 }

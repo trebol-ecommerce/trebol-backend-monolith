@@ -98,4 +98,9 @@ class DataImagesControllerTest
   void deletes_images() throws BadInputException {
     super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
   }
+
+  @Test
+  void does_not_delete_images_when_predicate_filters_map_is_empty() {
+    super.does_not_delete_data_when_predicate_filters_map_is_empty();
+  }
 }
