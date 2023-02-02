@@ -20,41 +20,67 @@
 
 package org.trebol.operation.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
+import org.trebol.jpa.services.sortspecs.CustomersSortSpecService;
+import org.trebol.operation.DataCrudGenericControllerTest;
 import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.CustomerPojo;
-import org.trebol.pojo.DataPagePojo;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
-class DataCustomersControllerTest {
+class DataCustomersControllerTest
+  extends DataCrudGenericControllerTest<CustomerPojo, Customer> {
   @InjectMocks DataCustomersController instance;
   @Mock PaginationService paginationServiceMock;
-  @Mock SortSpecService<Customer> sortServiceMock;
+  @Mock CustomersSortSpecService sortServiceMock;
   @Mock CustomersCrudService crudServiceMock;
   @Mock PredicateService<Customer> predicateServiceMock;
 
+  @Override
+  @BeforeEach
+  protected void beforeEach() {
+    super.instance = instance;
+    super.crudServiceMock = crudServiceMock;
+    super.predicateServiceMock = predicateServiceMock;
+    super.sortServiceMock = sortServiceMock;
+    super.paginationServiceMock = paginationServiceMock;
+    super.beforeEach();
+  }
+
   @Test
   void reads_customers() {
-    DataPagePojo<CustomerPojo> pagePojo = new DataPagePojo<>(0, 0);
-    when(crudServiceMock.readMany(anyInt(), anyInt(), eq(null), eq(null))).thenReturn(pagePojo);
-    DataPagePojo<CustomerPojo> result = instance.readMany(Map.of());
-    assertNotNull(result);
-    assertEquals(0, result.getTotalCount());
-    assertTrue(result.getItems().isEmpty());
+    super.reads_data();
+  }
+
+  @Test
+  void creates_customers() throws BadInputException {
+    super.creates_data(CustomerPojo.builder().build());
+  }
+
+  @Test
+  void updates_customers() throws BadInputException {
+    super.updates_data_using_only_a_pojo(CustomerPojo.builder().build());
+  }
+
+  @Test
+  void updates_customers_using_predicate_filters_map() throws BadInputException {
+    super.updates_data_parsing_predicate_filters_from_map(CustomerPojo.builder().build(), null);
+  }
+
+  @Test
+  void deletes_customers() throws BadInputException {
+    super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
   }
 }
