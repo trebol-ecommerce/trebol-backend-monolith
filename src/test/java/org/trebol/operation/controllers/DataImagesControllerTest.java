@@ -20,41 +20,82 @@
 
 package org.trebol.operation.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
+import org.trebol.jpa.services.sortspecs.ImagesSpecService;
+import org.trebol.operation.DataCrudGenericControllerTest;
 import org.trebol.operation.services.PaginationService;
-import org.trebol.pojo.DataPagePojo;
 import org.trebol.pojo.ImagePojo;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
-class DataImagesControllerTest {
+class DataImagesControllerTest
+  extends DataCrudGenericControllerTest<ImagePojo, Image> {
   @InjectMocks DataImagesController instance;
-  @Mock PaginationService paginationService;
-  @Mock SortSpecService<Image> sortService;
+  @Mock PaginationService paginationServiceMock;
+  @Mock ImagesSpecService sortServiceMock;
   @Mock ImagesCrudService crudServiceMock;
-  @Mock PredicateService<Image> predicateService;
+  @Mock PredicateService<Image> predicateServiceMock;
+
+  @Override
+  @BeforeEach
+  protected void beforeEach() {
+    super.instance = instance;
+    super.crudServiceMock = crudServiceMock;
+    super.predicateServiceMock = predicateServiceMock;
+    super.sortServiceMock = sortServiceMock;
+    super.paginationServiceMock = paginationServiceMock;
+    super.beforeEach();
+  }
 
   @Test
   void reads_images() {
-    DataPagePojo<ImagePojo> pagePojo = new DataPagePojo<>(0, 0);
-    when(crudServiceMock.readMany(anyInt(), anyInt(), eq(null), eq(null))).thenReturn(pagePojo);
-    DataPagePojo<ImagePojo> result = instance.readMany(Map.of());
-    assertNotNull(result);
-    assertEquals(0, result.getTotalCount());
-    assertTrue(result.getItems().isEmpty());
+    super.reads_data();
+  }
+
+  @Test
+  void creates_images() throws BadInputException {
+    ImagePojo input = ImagePojo.builder()
+      .url(ANY)
+      .filename(ANY)
+      .code(ANY)
+      .build();
+    super.creates_data(input);
+  }
+
+  @Test
+  void updates_images() throws BadInputException {
+    ImagePojo input = ImagePojo.builder()
+      .url(ANY)
+      .filename(ANY)
+      .code(ANY)
+      .build();
+    super.updates_data_using_only_a_pojo(input);
+  }
+
+  @Test
+  void updates_images_using_predicate_filters_map() throws BadInputException {
+    ImagePojo input = ImagePojo.builder()
+      .url(ANY)
+      .filename(ANY)
+      .code(ANY)
+      .build();
+    super.updates_data_parsing_predicate_filters_from_map(input, null);
+  }
+
+  @Test
+  void deletes_images() throws BadInputException {
+    super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
   }
 }
