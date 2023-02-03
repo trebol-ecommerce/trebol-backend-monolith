@@ -41,6 +41,7 @@ import org.trebol.pojo.SellPojo;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,14 +72,17 @@ public class DataSalesController
   @GetMapping({"", "/"})
   @PreAuthorize("hasAuthority('sales:read')")
   public DataPagePojo<SellPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    if (allRequestParams.containsKey("buyOrder")) {
-      Predicate predicate = predicateService.parseMap(allRequestParams);
-      SellPojo sellPojo = crudService.readOne(predicate);
-      return new DataPagePojo<>(List.of(sellPojo), 0, 1, 1);
-    }
-    if (!allRequestParams.containsKey("sortBy") && !allRequestParams.containsKey("order")) {
-      allRequestParams.put("sortBy", "buyOrder");
-      allRequestParams.put("order", "desc");
+    if (allRequestParams != null) {
+      if (allRequestParams.containsKey("buyOrder")) {
+        Predicate predicate = predicateService.parseMap(allRequestParams);
+        SellPojo sellPojo = crudService.readOne(predicate);
+        return new DataPagePojo<>(List.of(sellPojo), 0, 1, 1);
+      }
+      if (!allRequestParams.containsKey("sortBy") && !allRequestParams.containsKey("order")) {
+        allRequestParams = new HashMap<>(allRequestParams);
+        allRequestParams.put("sortBy", "buyOrder");
+        allRequestParams.put("order", "desc");
+      }
     }
     return super.readMany(allRequestParams);
   }

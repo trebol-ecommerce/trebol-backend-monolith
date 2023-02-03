@@ -20,28 +20,78 @@
 
 package org.trebol.operation.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.SortSpecService;
-import org.trebol.operation.services.SalesProcessService;
+import org.trebol.jpa.services.crud.SalesCrudService;
+import org.trebol.jpa.services.sortspecs.SalesSortSpecService;
+import org.trebol.operation.DataCrudGenericControllerTest;
 import org.trebol.operation.services.PaginationService;
+import org.trebol.operation.services.SalesProcessService;
 import org.trebol.pojo.SellPojo;
 
-@ExtendWith(MockitoExtension.class)
-class DataSalesControllerTest {
-  @InjectMocks DataSalesController instance;
-  @Mock PaginationService paginationService;
-  @Mock SortSpecService<Sell> sortService;
-  @Mock CrudGenericService<SellPojo, Sell> crudService;
-  @Mock PredicateService<Sell> predicateService;
-  @Mock SalesProcessService salesProcessService;
-  @Mock IMailingIntegrationService mailingIntegrationService;
+import java.util.Map;
 
-  // TODO write a test
+import static org.trebol.constant.TestConstants.ANY;
+
+@ExtendWith(MockitoExtension.class)
+class DataSalesControllerTest
+  extends DataCrudGenericControllerTest<SellPojo, Sell> {
+  @InjectMocks DataSalesController instance;
+  @Mock PaginationService paginationServiceMock;
+  @Mock SalesSortSpecService sortServiceMock;
+  @Mock SalesCrudService crudServiceMock;
+  @Mock PredicateService<Sell> predicateServiceMock;
+  @Mock SalesProcessService salesProcessServiceMock;
+  @Mock IMailingIntegrationService mailingIntegrationServiceMock;
+
+  @Override
+  @BeforeEach
+  protected void beforeEach() {
+    super.instance = instance;
+    super.crudServiceMock = crudServiceMock;
+    super.predicateServiceMock = predicateServiceMock;
+    super.sortServiceMock = sortServiceMock;
+    super.paginationServiceMock = paginationServiceMock;
+    super.beforeEach();
+  }
+
+  @Test
+  void reads_sales() {
+    super.reads_data(null);
+    super.reads_data(Map.of());
+    super.reads_data(Map.of(ANY, ANY));
+  }
+
+  @Test
+  void creates_sales() throws BadInputException {
+    super.creates_data(SellPojo.builder().build());
+  }
+
+  @Test
+  void updates_sales() throws BadInputException {
+    super.updates_data_using_only_a_pojo(SellPojo.builder().build());
+  }
+
+  @Test
+  void updates_sales_using_predicate_filters_map() throws BadInputException {
+    super.updates_data_parsing_predicate_filters_from_map(SellPojo.builder().build(), null);
+  }
+
+  @Test
+  void deletes_sales() throws BadInputException {
+    super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
+  }
+
+  @Test
+  void does_not_delete_sales_when_predicate_filters_map_is_empty() {
+    super.does_not_delete_data_when_predicate_filters_map_is_empty();
+  }
 }
