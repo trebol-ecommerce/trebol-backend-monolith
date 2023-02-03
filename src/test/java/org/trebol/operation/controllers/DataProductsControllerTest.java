@@ -27,26 +27,26 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.entities.ProductList;
+import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.crud.ProductListCrudService;
-import org.trebol.jpa.services.sortspecs.ProductListsSortSpecService;
+import org.trebol.jpa.services.crud.ProductsCrudService;
+import org.trebol.jpa.services.sortspecs.ProductsSortSpecService;
 import org.trebol.operation.DataCrudGenericControllerTest;
 import org.trebol.operation.services.PaginationService;
-import org.trebol.pojo.ProductListPojo;
+import org.trebol.pojo.ProductPojo;
 
 import java.util.Map;
 
 import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
-class DataProductListsControllerTest
-  extends DataCrudGenericControllerTest<ProductListPojo, ProductList> {
-  @InjectMocks DataProductListsController instance;
+class DataProductsControllerTest
+  extends DataCrudGenericControllerTest<ProductPojo, Product> {
+  @InjectMocks DataProductsController instance;
   @Mock PaginationService paginationServiceMock;
-  @Mock ProductListsSortSpecService sortServiceMock;
-  @Mock ProductListCrudService crudServiceMock;
-  @Mock PredicateService<ProductList> predicateServiceMock;
+  @Mock ProductsSortSpecService sortServiceMock;
+  @Mock ProductsCrudService crudServiceMock;
+  @Mock PredicateService<Product> predicateServiceMock;
 
   @Override
   @BeforeEach
@@ -60,32 +60,32 @@ class DataProductListsControllerTest
   }
 
   @Test
-  void reads_lists() {
+  void reads_products() {
     super.reads_data();
   }
 
   @Test
-  void creates_lists() throws BadInputException {
-    super.creates_data(ProductListPojo.builder().build());
+  void creates_products() throws BadInputException {
+    super.creates_data(ProductPojo.builder().build());
   }
 
   @Test
-  void updates_lists() throws BadInputException {
-    super.updates_data_using_only_a_pojo(ProductListPojo.builder().build());
+  void updates_products() throws BadInputException {
+    super.updates_data_using_only_a_pojo(ProductPojo.builder().build());
   }
 
   @Test
-  void updates_lists_using_predicate_filters_map() throws BadInputException {
-    super.updates_data_parsing_predicate_filters_from_map(ProductListPojo.builder().build(), null);
+  void updates_products_using_predicate_filters_map() throws BadInputException {
+    super.updates_data_parsing_predicate_filters_from_map(ProductPojo.builder().build(), null);
   }
 
   @Test
-  void deletes_lists() throws BadInputException {
+  void deletes_products() throws BadInputException {
     super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
   }
 
   @Test
-  void does_not_delete_lists_when_predicate_filters_map_is_empty() {
+  void does_not_delete_products_when_predicate_filters_map_is_empty() {
     super.does_not_delete_data_when_predicate_filters_map_is_empty();
   }
 }
