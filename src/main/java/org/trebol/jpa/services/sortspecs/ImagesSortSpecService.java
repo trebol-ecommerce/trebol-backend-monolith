@@ -23,6 +23,6 @@ package org.trebol.jpa.services.sortspecs;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.SortSpecService;
 
-public interface ImagesSpecService
+public interface ImagesSortSpecService
   extends SortSpecService<Image> {
 }

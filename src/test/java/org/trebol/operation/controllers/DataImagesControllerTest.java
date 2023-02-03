@@ -30,7 +30,7 @@ import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
-import org.trebol.jpa.services.sortspecs.ImagesSpecService;
+import org.trebol.jpa.services.sortspecs.ImagesSortSpecService;
 import org.trebol.operation.DataCrudGenericControllerTest;
 import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.ImagePojo;
@@ -44,7 +44,7 @@ class DataImagesControllerTest
   extends DataCrudGenericControllerTest<ImagePojo, Image> {
   @InjectMocks DataImagesController instance;
   @Mock PaginationService paginationServiceMock;
-  @Mock ImagesSpecService sortServiceMock;
+  @Mock ImagesSortSpecService sortServiceMock;
   @Mock ImagesCrudService crudServiceMock;
   @Mock PredicateService<Image> predicateServiceMock;
 

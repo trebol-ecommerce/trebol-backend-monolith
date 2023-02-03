@@ -29,12 +29,12 @@ import org.trebol.jpa.services.SortSpecGenericService;
 import java.util.Map;
 
 @Service
-public class ImagesSpecServiceImpl
+public class ImagesSortSpecServiceImpl
   extends SortSpecGenericService<Image>
-  implements ImagesSpecService {
+  implements ImagesSortSpecService {
   private final Map<String, OrderSpecifier<?>> orderSpecMap;
 
-  public ImagesSpecServiceImpl() {
+  public ImagesSortSpecServiceImpl() {
     this.orderSpecMap = Map.of(
       "code", getBasePath().code.asc(),
       "filename", getBasePath().filename.asc(),
