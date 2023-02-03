@@ -20,24 +20,74 @@
 
 package org.trebol.operation.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.SalespeopleCrudService;
+import org.trebol.jpa.services.sortspecs.SalespeopleSortSpecService;
+import org.trebol.operation.DataCrudGenericControllerTest;
 import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.SalespersonPojo;
 
-@ExtendWith(MockitoExtension.class)
-class DataSalespeopleControllerTest {
-  @InjectMocks DataSalespeopleController instance;
-  @Mock PaginationService paginationService;
-  @Mock SortSpecService<Salesperson> sortService;
-  @Mock CrudGenericService<SalespersonPojo, Salesperson> crudService;
-  @Mock PredicateService<Salesperson> predicateService;
+import java.util.Map;
 
-  // TODO write a test
+import static org.trebol.constant.TestConstants.ANY;
+
+@ExtendWith(MockitoExtension.class)
+class DataSalespeopleControllerTest
+  extends DataCrudGenericControllerTest<SalespersonPojo, Salesperson> {
+  @InjectMocks DataSalespeopleController instance;
+  @Mock PaginationService paginationServiceMock;
+  @Mock SalespeopleSortSpecService sortServiceMock;
+  @Mock SalespeopleCrudService crudServiceMock;
+  @Mock PredicateService<Salesperson> predicateServiceMock;
+
+  @Override
+  @BeforeEach
+  protected void beforeEach() {
+    super.instance = instance;
+    super.crudServiceMock = crudServiceMock;
+    super.predicateServiceMock = predicateServiceMock;
+    super.sortServiceMock = sortServiceMock;
+    super.paginationServiceMock = paginationServiceMock;
+    super.beforeEach();
+  }
+
+  @Test
+  void reads_products() {
+    super.reads_data(null);
+    super.reads_data(Map.of());
+    super.reads_data(Map.of(ANY, ANY));
+  }
+
+  @Test
+  void creates_salespeople() throws BadInputException {
+    super.creates_data(SalespersonPojo.builder().build());
+  }
+
+  @Test
+  void updates_salespeople() throws BadInputException {
+    super.updates_data_using_only_a_pojo(SalespersonPojo.builder().build());
+  }
+
+  @Test
+  void updates_salespeople_using_predicate_filters_map() throws BadInputException {
+    super.updates_data_parsing_predicate_filters_from_map(SalespersonPojo.builder().build(), null);
+  }
+
+  @Test
+  void deletes_salespeople() throws BadInputException {
+    super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
+  }
+
+  @Test
+  void does_not_delete_salespeople_when_predicate_filters_map_is_empty() {
+    super.does_not_delete_data_when_predicate_filters_map_is_empty();
+  }
 }

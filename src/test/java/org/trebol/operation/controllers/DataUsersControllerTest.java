@@ -20,24 +20,74 @@
 
 package org.trebol.operation.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
-import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.UsersCrudService;
+import org.trebol.jpa.services.sortspecs.UsersSortSpecService;
+import org.trebol.operation.DataCrudGenericControllerTest;
 import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.UserPojo;
 
-@ExtendWith(MockitoExtension.class)
-class DataUsersControllerTest {
-  @InjectMocks DataUsersController instance;
-  @Mock PaginationService paginationService;
-  @Mock SortSpecService<User> sortService;
-  @Mock CrudGenericService<UserPojo, User> crudService;
-  @Mock PredicateService<User> predicateService;
+import java.util.Map;
 
-  // TODO write a test
+import static org.trebol.constant.TestConstants.ANY;
+
+@ExtendWith(MockitoExtension.class)
+class DataUsersControllerTest
+  extends DataCrudGenericControllerTest<UserPojo, User> {
+  @InjectMocks DataUsersController instance;
+  @Mock PaginationService paginationServiceMock;
+  @Mock UsersSortSpecService sortServiceMock;
+  @Mock UsersCrudService crudServiceMock;
+  @Mock PredicateService<User> predicateServiceMock;
+
+  @Override
+  @BeforeEach
+  protected void beforeEach() {
+    super.instance = instance;
+    super.crudServiceMock = crudServiceMock;
+    super.predicateServiceMock = predicateServiceMock;
+    super.sortServiceMock = sortServiceMock;
+    super.paginationServiceMock = paginationServiceMock;
+    super.beforeEach();
+  }
+
+  @Test
+  void reads_products() {
+    super.reads_data(null);
+    super.reads_data(Map.of());
+    super.reads_data(Map.of(ANY, ANY));
+  }
+
+  @Test
+  void creates_salespeople() throws BadInputException {
+    super.creates_data(UserPojo.builder().build());
+  }
+
+  @Test
+  void updates_salespeople() throws BadInputException {
+    super.updates_data_using_only_a_pojo(UserPojo.builder().build());
+  }
+
+  @Test
+  void updates_salespeople_using_predicate_filters_map() throws BadInputException {
+    super.updates_data_parsing_predicate_filters_from_map(UserPojo.builder().build(), null);
+  }
+
+  @Test
+  void deletes_salespeople() throws BadInputException {
+    super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
+  }
+
+  @Test
+  void does_not_delete_salespeople_when_predicate_filters_map_is_empty() {
+    super.does_not_delete_data_when_predicate_filters_map_is_empty();
+  }
 }
