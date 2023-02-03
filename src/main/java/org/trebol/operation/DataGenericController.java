@@ -22,13 +22,13 @@ package org.trebol.operation;
 
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.trebol.jpa.services.CrudService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.DataPagePojo;
 
-import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 /**
@@ -64,7 +64,7 @@ public abstract class DataGenericController<P, E>
    * @return A paged collection of Pojos.
    */
   @Override
-  public DataPagePojo<P> readMany(@NotNull Map<String, String> requestParams) {
+  public DataPagePojo<P> readMany(@Nullable Map<String, String> requestParams) {
 
     int pageIndex = paginationService.determineRequestedPageIndex(requestParams);
     int pageSize = paginationService.determineRequestedPageSize(requestParams);
