@@ -20,6 +20,8 @@
 
 package org.trebol.operation.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,16 +30,27 @@ import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
+import org.trebol.operation.DataGenericControllerTest;
 import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.SellStatusPojo;
 
 @ExtendWith(MockitoExtension.class)
-class DataSellStatusesControllerTest {
+class DataSellStatusesControllerTest
+  extends DataGenericControllerTest<SellStatusPojo, SellStatus> {
   @InjectMocks DataSellStatusesController instance;
-  @Mock PaginationService paginationService;
-  @Mock SortSpecService<SellStatus> sortService;
-  @Mock CrudGenericService<SellStatusPojo, SellStatus> crudService;
-  @Mock PredicateService<SellStatus> predicateService;
+  @Mock PaginationService paginationServiceMock;
+  @Mock SortSpecService<SellStatus> sortServiceMock;
+  @Mock CrudGenericService<SellStatusPojo, SellStatus> crudServiceMock;
+  @Mock PredicateService<SellStatus> predicateServiceMock;
 
-  // TODO write a test
+  @BeforeEach
+  protected void beforeEach() {
+    super.instance = instance;
+    super.crudServiceMock = crudServiceMock;
+  }
+
+  @Test
+  void reads_people_data() {
+    super.reads_data();
+  }
 }
