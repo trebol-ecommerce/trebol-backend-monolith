@@ -61,7 +61,9 @@ class DataProductCategoriesControllerTest
 
   @Test
   void reads_categories() {
-    super.reads_data();
+    super.reads_data(null);
+    super.reads_data(Map.of());
+    super.reads_data(Map.of(ANY, ANY));
   }
 
   @Test

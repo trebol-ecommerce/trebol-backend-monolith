@@ -61,7 +61,9 @@ class DataCustomersControllerTest
 
   @Test
   void reads_customers() {
-    super.reads_data();
+    super.reads_data(null);
+    super.reads_data(Map.of());
+    super.reads_data(Map.of(ANY, ANY));
   }
 
   @Test

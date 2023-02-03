@@ -20,12 +20,14 @@
 
 package org.trebol.operation;
 
+import org.springframework.lang.Nullable;
 import org.trebol.jpa.services.CrudService;
 import org.trebol.pojo.DataPagePojo;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
@@ -34,12 +36,11 @@ public abstract class DataGenericControllerTest<P, E> {
   protected DataGenericController<P, E> instance;
   protected CrudService<P, E> crudServiceMock;
 
-  protected void reads_data() {
+  protected void reads_data(@Nullable Map<String, String> requestParams) {
     DataPagePojo<P> pagePojo = new DataPagePojo<>(0, 0);
     when(crudServiceMock.readMany(anyInt(), anyInt(), isNull(), isNull())).thenReturn(pagePojo);
-    DataPagePojo<P> result = instance.readMany(Map.of());
+    DataPagePojo<P> result = instance.readMany(requestParams);
     assertNotNull(result);
-    assertEquals(0, result.getTotalCount());
-    assertTrue(result.getItems().isEmpty());
+    assertEquals(pagePojo, result);
   }
 }

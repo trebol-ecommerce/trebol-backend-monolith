@@ -27,20 +27,24 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.crud.SellStatusesCrudService;
+import org.trebol.jpa.services.sortspecs.SellStatusesSortSpecService;
 import org.trebol.operation.DataGenericControllerTest;
 import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.SellStatusPojo;
+
+import java.util.Map;
+
+import static org.trebol.constant.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class DataSellStatusesControllerTest
   extends DataGenericControllerTest<SellStatusPojo, SellStatus> {
   @InjectMocks DataSellStatusesController instance;
   @Mock PaginationService paginationServiceMock;
-  @Mock SortSpecService<SellStatus> sortServiceMock;
-  @Mock CrudGenericService<SellStatusPojo, SellStatus> crudServiceMock;
+  @Mock SellStatusesSortSpecService sortServiceMock;
+  @Mock SellStatusesCrudService crudServiceMock;
   @Mock PredicateService<SellStatus> predicateServiceMock;
 
   @BeforeEach
@@ -51,6 +55,8 @@ class DataSellStatusesControllerTest
 
   @Test
   void reads_people_data() {
-    super.reads_data();
+    super.reads_data(null);
+    super.reads_data(Map.of());
+    super.reads_data(Map.of(ANY, ANY));
   }
 }

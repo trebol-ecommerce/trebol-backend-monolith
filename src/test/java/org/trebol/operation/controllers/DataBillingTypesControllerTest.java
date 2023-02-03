@@ -34,6 +34,10 @@ import org.trebol.operation.DataGenericControllerTest;
 import org.trebol.operation.services.PaginationService;
 import org.trebol.pojo.BillingTypePojo;
 
+import java.util.Map;
+
+import static org.trebol.constant.TestConstants.ANY;
+
 @ExtendWith(MockitoExtension.class)
 class DataBillingTypesControllerTest
   extends DataGenericControllerTest<BillingTypePojo, BillingType> {
@@ -51,6 +55,8 @@ class DataBillingTypesControllerTest
 
   @Test
   void reads_billing_types() {
-    super.reads_data();
+    super.reads_data(null);
+    super.reads_data(Map.of());
+    super.reads_data(Map.of(ANY, ANY));
   }
 }

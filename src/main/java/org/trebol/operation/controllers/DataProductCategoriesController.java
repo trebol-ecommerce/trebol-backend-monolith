@@ -56,7 +56,7 @@ public class DataProductCategoriesController
   @Override
   @GetMapping({"", "/"})
   public DataPagePojo<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    if (allRequestParams.isEmpty()) {
+    if (allRequestParams == null || allRequestParams.isEmpty()) {
       allRequestParams = Map.of("parentId", "");
     }
     return super.readMany(allRequestParams);

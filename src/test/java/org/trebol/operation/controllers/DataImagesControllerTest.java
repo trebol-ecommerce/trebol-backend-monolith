@@ -61,7 +61,9 @@ class DataImagesControllerTest
 
   @Test
   void reads_images() {
-    super.reads_data();
+    super.reads_data(null);
+    super.reads_data(Map.of());
+    super.reads_data(Map.of(ANY, ANY));
   }
 
   @Test
