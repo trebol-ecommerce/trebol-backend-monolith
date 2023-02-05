@@ -22,7 +22,6 @@ package org.trebol.jpa.services.sortspecs.impl;
 
 import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Service;
-import org.trebol.jpa.entities.QUserRole;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.sortspecs.SortSpecGenericService;
 import org.trebol.jpa.services.sortspecs.UserRolesSortSpecService;
@@ -37,13 +36,8 @@ public class UserRolesSortSpecServiceImpl
 
   public UserRolesSortSpecServiceImpl() {
     orderSpecMap = Map.of(
-      "name", getBasePath().name.asc()
+      "name", basePath.name.asc()
     );
-  }
-
-  @Override
-  public QUserRole getBasePath() {
-    return QUserRole.userRole;
   }
 
   @Override

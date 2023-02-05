@@ -20,9 +20,11 @@
 
 package org.trebol.jpa.services.sortspecs;
 
+import org.trebol.jpa.entities.QSalesperson;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.SortSpecService;
 
 public interface SalespeopleSortSpecService
   extends SortSpecService<Salesperson> {
+  QSalesperson basePath = QSalesperson.salesperson;
 }

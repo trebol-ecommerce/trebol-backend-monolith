@@ -34,9 +34,9 @@ import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.services.MailingService;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.predicates.SalesPredicateService;
+import org.trebol.jpa.services.sortspecs.SalesSortSpecService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -57,7 +57,7 @@ public class DataSalesController
   @Autowired
   public DataSalesController(
     PaginationService paginationService,
-    SortSpecService<Sell> sortService,
+    SalesSortSpecService sortService,
     SalesCrudService crudService,
     SalesPredicateService predicateService,
     SalesProcessService processService,

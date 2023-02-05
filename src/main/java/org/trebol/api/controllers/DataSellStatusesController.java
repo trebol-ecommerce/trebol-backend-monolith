@@ -31,9 +31,9 @@ import org.trebol.api.models.DataPagePojo;
 import org.trebol.api.models.SellStatusPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.SellStatusesCrudService;
 import org.trebol.jpa.services.predicates.SellStatusesPredicateService;
+import org.trebol.jpa.services.sortspecs.SellStatusesSortSpecService;
 
 import java.util.Map;
 
@@ -46,7 +46,7 @@ public class DataSellStatusesController
   @Autowired
   public DataSellStatusesController(
     PaginationService paginationService,
-    SortSpecService<SellStatus> sortService,
+    SellStatusesSortSpecService sortService,
     SellStatusesCrudService crudService,
     SellStatusesPredicateService predicateService
   ) {

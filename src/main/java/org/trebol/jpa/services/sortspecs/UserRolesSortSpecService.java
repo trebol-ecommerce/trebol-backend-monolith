@@ -20,9 +20,11 @@
 
 package org.trebol.jpa.services.sortspecs;
 
+import org.trebol.jpa.entities.QUserRole;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.SortSpecService;
 
 public interface UserRolesSortSpecService
   extends SortSpecService<UserRole> {
+  QUserRole basePath = QUserRole.userRole;
 }

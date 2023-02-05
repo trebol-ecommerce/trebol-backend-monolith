@@ -22,7 +22,6 @@ package org.trebol.jpa.services.sortspecs.impl;
 
 import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Service;
-import org.trebol.jpa.entities.QSell;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.sortspecs.SalesSortSpecService;
 import org.trebol.jpa.services.sortspecs.SortSpecGenericService;
@@ -37,21 +36,16 @@ public class SalesSortSpecServiceImpl
 
   public SalesSortSpecServiceImpl() {
     orderSpecMap = Map.of(
-      "buyOrder", getBasePath().id.asc(),
-      "date", getBasePath().date.asc(),
-      "status", getBasePath().status.code.asc(),
-      "customer", getBasePath().customer.person.lastName.asc(),
-      "shipper", getBasePath().shipper.name.asc(),
-      "totalValue", getBasePath().totalValue.asc(),
-      "netValue", getBasePath().netValue.asc(),
-      "totalItems", getBasePath().totalItems.asc(),
-      "transportValue", getBasePath().transportValue.asc()
+      "buyOrder", basePath.id.asc(),
+      "date", basePath.date.asc(),
+      "status", basePath.status.code.asc(),
+      "customer", basePath.customer.person.lastName.asc(),
+      "shipper", basePath.shipper.name.asc(),
+      "totalValue", basePath.totalValue.asc(),
+      "netValue", basePath.netValue.asc(),
+      "totalItems", basePath.totalItems.asc(),
+      "transportValue", basePath.transportValue.asc()
     );
-  }
-
-  @Override
-  public QSell getBasePath() {
-    return QSell.sell;
   }
 
   @Override

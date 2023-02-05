@@ -20,7 +20,6 @@
 
 package org.trebol.jpa.services;
 
-import com.querydsl.core.types.dsl.EntityPathBase;
 import org.springframework.data.domain.Sort;
 
 import java.util.Map;
@@ -31,12 +30,6 @@ import java.util.Map;
  * @param <E> The target @Entity class
  */
 public interface SortSpecService<E> {
-
-  /**
-   * Get base QueryDSL type for building OrderSpecifiers
-   */
-  EntityPathBase<E> getBasePath();
-
   /**
    * Reads a Map and generates sort order constraints for a specific entity
    *

@@ -29,9 +29,9 @@ import org.trebol.api.models.ProductListPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.ProductListCrudService;
 import org.trebol.jpa.services.predicates.ProductListsPredicateService;
+import org.trebol.jpa.services.sortspecs.ProductListsSortSpecService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -46,7 +46,7 @@ public class DataProductListsController
   @Autowired
   public DataProductListsController(
     PaginationService paginationService,
-    SortSpecService<ProductList> sortService,
+    ProductListsSortSpecService sortService,
     ProductListCrudService crudService,
     ProductListsPredicateService predicateService
   ) {

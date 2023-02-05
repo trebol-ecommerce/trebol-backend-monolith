@@ -29,9 +29,9 @@ import org.trebol.api.models.SalespersonPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.SalespeopleCrudService;
 import org.trebol.jpa.services.predicates.SalespeoplePredicateService;
+import org.trebol.jpa.services.sortspecs.SalespeopleSortSpecService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -47,7 +47,7 @@ public class DataSalespeopleController
   @Autowired
   public DataSalespeopleController(
     PaginationService paginationService,
-    SortSpecService<Salesperson> sortService,
+    SalespeopleSortSpecService sortService,
     SalespeopleCrudService crudService,
     SalespeoplePredicateService predicateService
   ) {

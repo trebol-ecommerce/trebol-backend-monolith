@@ -21,8 +21,10 @@
 package org.trebol.jpa.services.sortspecs;
 
 import org.trebol.jpa.entities.ProductListItem;
+import org.trebol.jpa.entities.QProductListItem;
 import org.trebol.jpa.services.SortSpecService;
 
 public interface ProductListItemsSortSpecService
   extends SortSpecService<ProductListItem> {
+  QProductListItem basePath = QProductListItem.productListItem;
 }

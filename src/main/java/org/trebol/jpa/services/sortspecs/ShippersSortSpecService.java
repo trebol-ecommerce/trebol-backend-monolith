@@ -20,9 +20,11 @@
 
 package org.trebol.jpa.services.sortspecs;
 
+import org.trebol.jpa.entities.QShipper;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.services.SortSpecService;
 
 public interface ShippersSortSpecService
   extends SortSpecService<Shipper> {
+  QShipper basePath = QShipper.shipper;
 }

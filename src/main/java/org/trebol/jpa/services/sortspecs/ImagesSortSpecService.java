@@ -21,8 +21,10 @@
 package org.trebol.jpa.services.sortspecs;
 
 import org.trebol.jpa.entities.Image;
+import org.trebol.jpa.entities.QImage;
 import org.trebol.jpa.services.SortSpecService;
 
 public interface ImagesSortSpecService
   extends SortSpecService<Image> {
+  QImage basePath = QImage.image;
 }

@@ -29,9 +29,9 @@ import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
-import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
 import org.trebol.jpa.services.predicates.ProductCategoriesPredicateService;
+import org.trebol.jpa.services.sortspecs.ProductCategoriesSortSpecService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -46,7 +46,7 @@ public class DataProductCategoriesController
   @Autowired
   public DataProductCategoriesController(
     PaginationService paginationService,
-    SortSpecService<ProductCategory> sortService,
+    ProductCategoriesSortSpecService sortService,
     ProductCategoriesCrudService crudService,
     ProductCategoriesPredicateService predicateService
   ) {

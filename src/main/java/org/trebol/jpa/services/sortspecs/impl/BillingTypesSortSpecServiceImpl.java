@@ -23,7 +23,6 @@ package org.trebol.jpa.services.sortspecs.impl;
 import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.entities.QBillingType;
 import org.trebol.jpa.services.sortspecs.BillingTypesSortSpecService;
 import org.trebol.jpa.services.sortspecs.SortSpecGenericService;
 
@@ -37,13 +36,8 @@ public class BillingTypesSortSpecServiceImpl
 
   public BillingTypesSortSpecServiceImpl() {
     this.orderSpecMap = Map.of(
-      "name", getBasePath().name.asc()
+      "name", basePath.name.asc()
     );;
-  }
-
-  @Override
-  public QBillingType getBasePath() {
-    return QBillingType.billingType;
   }
 
   @Override

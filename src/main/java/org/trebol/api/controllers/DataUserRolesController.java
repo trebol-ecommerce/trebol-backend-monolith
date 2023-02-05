@@ -29,9 +29,9 @@ import org.trebol.api.models.UserRolePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.UserRolesCrudService;
 import org.trebol.jpa.services.predicates.UserRolesPredicateService;
+import org.trebol.jpa.services.sortspecs.UserRolesSortSpecService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -47,7 +47,7 @@ public class DataUserRolesController
   @Autowired
   public DataUserRolesController(
     PaginationService paginationService,
-    SortSpecService<UserRole> sortService,
+    UserRolesSortSpecService sortService,
     UserRolesCrudService crudService,
     UserRolesPredicateService predicateService
   ) {

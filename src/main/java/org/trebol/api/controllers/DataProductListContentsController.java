@@ -33,10 +33,10 @@ import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
-import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.conversion.ProductListItemsConverterService;
 import org.trebol.jpa.services.crud.ProductsCrudService;
 import org.trebol.jpa.services.predicates.ProductListItemsPredicateService;
+import org.trebol.jpa.services.sortspecs.ProductListItemsSortSpecService;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -47,7 +47,7 @@ import java.util.*;
 public class DataProductListContentsController {
   private static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   private final PaginationService paginationService;
-  private final SortSpecService<ProductListItem> sortService;
+  private final ProductListItemsSortSpecService sortService;
   private final ProductListItemsRepository listItemsRepository;
   private final ProductListsRepository listsRepository;
   private final ProductListItemsPredicateService listItemsPredicateService;
@@ -57,7 +57,7 @@ public class DataProductListContentsController {
   @Autowired
   public DataProductListContentsController(
     PaginationService paginationService,
-    SortSpecService<ProductListItem> sortService,
+    ProductListItemsSortSpecService sortService,
     ProductListItemsRepository listItemsRepository,
     ProductListsRepository listsRepository,
     ProductListItemsPredicateService listItemsPredicateService,

@@ -23,7 +23,6 @@ package org.trebol.jpa.services.sortspecs.impl;
 import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.entities.QImage;
 import org.trebol.jpa.services.sortspecs.ImagesSortSpecService;
 import org.trebol.jpa.services.sortspecs.SortSpecGenericService;
 
@@ -37,15 +36,10 @@ public class ImagesSortSpecServiceImpl
 
   public ImagesSortSpecServiceImpl() {
     this.orderSpecMap = Map.of(
-      "code", getBasePath().code.asc(),
-      "filename", getBasePath().filename.asc(),
-      "url", getBasePath().url.asc()
+      "code", basePath.code.asc(),
+      "filename", basePath.filename.asc(),
+      "url", basePath.url.asc()
     );
-  }
-
-  @Override
-  public QImage getBasePath() {
-    return QImage.image;
   }
 
   @Override

@@ -20,9 +20,11 @@
 
 package org.trebol.jpa.services.sortspecs;
 
+import org.trebol.jpa.entities.QSell;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.SortSpecService;
 
 public interface SalesSortSpecService
   extends SortSpecService<Sell> {
+  QSell basePath = QSell.sell;
 }

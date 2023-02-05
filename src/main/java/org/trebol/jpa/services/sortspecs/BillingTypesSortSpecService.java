@@ -21,8 +21,10 @@
 package org.trebol.jpa.services.sortspecs;
 
 import org.trebol.jpa.entities.BillingType;
+import org.trebol.jpa.entities.QBillingType;
 import org.trebol.jpa.services.SortSpecService;
 
 public interface BillingTypesSortSpecService
   extends SortSpecService<BillingType> {
+  QBillingType basePath = QBillingType.billingType;
 }
