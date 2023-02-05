@@ -31,8 +31,8 @@ import org.trebol.api.models.UserRolePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.UserRolesCrudService;
+import org.trebol.jpa.services.predicates.UserRolesPredicateService;
 import org.trebol.jpa.services.sortspecs.UserRolesSortSpecService;
 
 import java.util.Map;
@@ -46,7 +46,7 @@ class DataUserRolesControllerTest
   @Mock PaginationService paginationServiceMock;
   @Mock UserRolesSortSpecService sortServiceMock;
   @Mock UserRolesCrudService crudServiceMock;
-  @Mock PredicateService<UserRole> predicateServiceMock;
+  @Mock UserRolesPredicateService predicateServiceMock;
 
   @Override
   @BeforeEach

@@ -39,7 +39,7 @@ public abstract class DataCrudGenericController<P, E>
     PaginationService paginationService,
     SortSpecService<E> sortService,
     CrudService<P, E> crudService,
-    PredicateService<E> predicateService
+    PredicateService predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

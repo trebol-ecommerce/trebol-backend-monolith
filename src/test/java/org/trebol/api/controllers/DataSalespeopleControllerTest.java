@@ -31,8 +31,8 @@ import org.trebol.api.models.SalespersonPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalespeopleCrudService;
+import org.trebol.jpa.services.predicates.SalespeoplePredicateService;
 import org.trebol.jpa.services.sortspecs.SalespeopleSortSpecService;
 
 import java.util.Map;
@@ -46,7 +46,7 @@ class DataSalespeopleControllerTest
   @Mock PaginationService paginationServiceMock;
   @Mock SalespeopleSortSpecService sortServiceMock;
   @Mock SalespeopleCrudService crudServiceMock;
-  @Mock PredicateService<Salesperson> predicateServiceMock;
+  @Mock SalespeoplePredicateService predicateServiceMock;
 
   @Override
   @BeforeEach

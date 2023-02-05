@@ -28,15 +28,15 @@ import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.CheckoutService;
 import org.trebol.integration.services.MailingService;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.CrudGenericService;
+import org.trebol.jpa.services.predicates.SalesPredicateService;
 
 @ExtendWith(MockitoExtension.class)
 class PublicCheckoutControllerTest {
   @InjectMocks PublicCheckoutController instance;
   @Mock CheckoutService service;
   @Mock CrudGenericService<SellPojo, Sell> salesCrudService;
-  @Mock PredicateService<Sell> salesPredicateService;
+  @Mock SalesPredicateService salesPredicateService;
   @Mock MailingService mailingServiceMock;
 
   // TODO write a test

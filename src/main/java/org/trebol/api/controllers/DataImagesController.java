@@ -29,9 +29,9 @@ import org.trebol.api.models.ImagePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
+import org.trebol.jpa.services.predicates.ImagesPredicateService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -49,7 +49,7 @@ public class DataImagesController
     PaginationService paginationService,
     SortSpecService<Image> sortService,
     ImagesCrudService crudService,
-    PredicateService<Image> predicateService
+    ImagesPredicateService predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

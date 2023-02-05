@@ -29,9 +29,9 @@ import org.trebol.api.models.DataPagePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
+import org.trebol.jpa.services.predicates.CustomersPredicateService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -49,7 +49,7 @@ public class DataCustomersController
     PaginationService paginationService,
     SortSpecService<Customer> sortService,
     CustomersCrudService crudService,
-    PredicateService<Customer> predicateService
+    CustomersPredicateService predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

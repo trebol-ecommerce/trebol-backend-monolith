@@ -36,9 +36,8 @@ import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.integration.services.MailingService;
-import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
+import org.trebol.jpa.services.predicates.SalesPredicateService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -58,7 +57,7 @@ public class PublicCheckoutController {
   private final Logger logger = LoggerFactory.getLogger(PublicCheckoutController.class);
   private final CheckoutService service;
   private final SalesCrudService salesCrudService;
-  private final PredicateService<Sell> salesPredicateService;
+  private final SalesPredicateService salesPredicateService;
   @Nullable
   private final MailingService mailingService;
 
@@ -66,7 +65,7 @@ public class PublicCheckoutController {
   public PublicCheckoutController(
     CheckoutService service,
     SalesCrudService salesCrudService,
-    PredicateService<Sell> salesPredicateService,
+    SalesPredicateService salesPredicateService,
     @Autowired(required = false) MailingService mailingService
   ) {
     this.service = service;

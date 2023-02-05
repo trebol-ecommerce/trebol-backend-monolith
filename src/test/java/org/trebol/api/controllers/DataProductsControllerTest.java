@@ -31,8 +31,8 @@ import org.trebol.api.models.ProductPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.ProductsCrudService;
+import org.trebol.jpa.services.predicates.ProductsPredicateService;
 import org.trebol.jpa.services.sortspecs.ProductsSortSpecService;
 
 import java.util.Map;
@@ -46,7 +46,7 @@ class DataProductsControllerTest
   @Mock PaginationService paginationServiceMock;
   @Mock ProductsSortSpecService sortServiceMock;
   @Mock ProductsCrudService crudServiceMock;
-  @Mock PredicateService<Product> predicateServiceMock;
+  @Mock ProductsPredicateService predicateServiceMock;
 
   @Override
   @BeforeEach

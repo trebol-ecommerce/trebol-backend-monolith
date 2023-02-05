@@ -31,8 +31,8 @@ import org.trebol.api.models.ImagePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
+import org.trebol.jpa.services.predicates.ImagesPredicateService;
 import org.trebol.jpa.services.sortspecs.ImagesSortSpecService;
 
 import java.util.Map;
@@ -46,7 +46,7 @@ class DataImagesControllerTest
   @Mock PaginationService paginationServiceMock;
   @Mock ImagesSortSpecService sortServiceMock;
   @Mock ImagesCrudService crudServiceMock;
-  @Mock PredicateService<Image> predicateServiceMock;
+  @Mock ImagesPredicateService predicateServiceMock;
 
   @Override
   @BeforeEach

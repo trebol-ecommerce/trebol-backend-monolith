@@ -30,9 +30,9 @@ import org.trebol.api.DataGenericControllerTest;
 import org.trebol.api.models.BillingTypePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.BillingTypesCrudService;
+import org.trebol.jpa.services.predicates.BillingTypesPredicateService;
 
 import java.util.Map;
 
@@ -45,7 +45,7 @@ class DataBillingTypesControllerTest
   @Mock PaginationService paginationServiceMock;
   @Mock SortSpecService<BillingType> sortServiceMock;
   @Mock BillingTypesCrudService crudServiceMock;
-  @Mock PredicateService<BillingType> predicateServiceMock;
+  @Mock BillingTypesPredicateService predicateServiceMock;
 
   @BeforeEach
   protected void beforeEach() {

@@ -41,10 +41,10 @@ import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.entities.ProductListItem;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.conversion.ProductListItemsConverterService;
 import org.trebol.jpa.services.crud.ProductsCrudService;
+import org.trebol.jpa.services.predicates.ProductListItemsPredicateService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -64,7 +64,7 @@ class DataProductListContentsControllerTest {
   @Mock SortSpecService<ProductListItem> sortServiceMock;
   @Mock ProductListItemsRepository listItemsRepositoryMock;
   @Mock ProductListsRepository listsRepositoryMock;
-  @Mock PredicateService<ProductListItem> listItemsPredicateServiceMock;
+  @Mock ProductListItemsPredicateService listItemsPredicateServiceMock;
   @Mock ProductsCrudService productsCrudServiceMock;
   @Mock ProductListItemsConverterService listItemConverterServiceMock;
   ProductList listExample;

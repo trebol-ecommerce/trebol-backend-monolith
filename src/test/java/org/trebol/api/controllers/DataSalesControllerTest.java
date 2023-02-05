@@ -33,8 +33,8 @@ import org.trebol.api.services.SalesProcessService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.services.MailingService;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
+import org.trebol.jpa.services.predicates.SalesPredicateService;
 import org.trebol.jpa.services.sortspecs.SalesSortSpecService;
 
 import java.util.Map;
@@ -48,7 +48,7 @@ class DataSalesControllerTest
   @Mock PaginationService paginationServiceMock;
   @Mock SalesSortSpecService sortServiceMock;
   @Mock SalesCrudService crudServiceMock;
-  @Mock PredicateService<Sell> predicateServiceMock;
+  @Mock SalesPredicateService predicateServiceMock;
   @Mock SalesProcessService salesProcessServiceMock;
   @Mock MailingService mailingServiceMock;
 

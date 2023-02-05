@@ -32,9 +32,8 @@ import org.trebol.api.services.SalesProcessService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.integration.services.PaymentService;
-import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
+import org.trebol.jpa.services.predicates.SalesPredicateService;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.MalformedURLException;
@@ -51,14 +50,14 @@ public class CheckoutServiceImpl
   private final Logger logger = LoggerFactory.getLogger(CheckoutServiceImpl.class);
   private final SalesCrudService salesCrudService;
   private final SalesProcessService salesProcessService;
-  private final PredicateService<Sell> salesPredicateService;
+  private final SalesPredicateService salesPredicateService;
   private final PaymentService paymentIntegrationService;
 
   @Autowired
   public CheckoutServiceImpl(
     SalesCrudService salesCrudService,
     SalesProcessService salesProcessService,
-    PredicateService<Sell> salesPredicateService,
+    SalesPredicateService salesPredicateService,
     PaymentService paymentIntegrationService
   ) {
     this.salesCrudService = salesCrudService;

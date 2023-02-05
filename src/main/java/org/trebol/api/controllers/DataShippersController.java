@@ -29,9 +29,9 @@ import org.trebol.api.models.ShipperPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.ShippersCrudService;
+import org.trebol.jpa.services.predicates.ShippersPredicateService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -48,7 +48,7 @@ public class DataShippersController
     PaginationService paginationService,
     SortSpecService<Shipper> sortService,
     ShippersCrudService crudService,
-    PredicateService<Shipper> predicateService
+    ShippersPredicateService predicateService
   ) {
     super(paginationService, sortService, crudService, predicateService);
   }

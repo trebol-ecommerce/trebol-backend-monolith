@@ -41,7 +41,7 @@ public abstract class DataCrudGenericControllerTest<P, E>
   protected PaginationService paginationServiceMock;
   protected SortSpecService<E> sortServiceMock;
   protected CrudService<P, E> crudServiceMock;
-  protected PredicateService<E> predicateServiceMock;
+  protected PredicateService predicateServiceMock;
 
   protected void beforeEach() {
     super.instance = instance;

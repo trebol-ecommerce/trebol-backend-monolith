@@ -30,9 +30,9 @@ import org.trebol.api.DataGenericControllerTest;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.PeopleCrudService;
+import org.trebol.jpa.services.predicates.PeoplePredicateService;
 
 import java.util.Map;
 
@@ -45,7 +45,7 @@ class DataPeopleControllerTest
   @Mock PaginationService paginationServiceMock;
   @Mock SortSpecService<Person> sortServiceMock;
   @Mock PeopleCrudService crudServiceMock;
-  @Mock PredicateService<Person> predicateServiceMock;
+  @Mock PeoplePredicateService predicateServiceMock;
 
   @BeforeEach
   protected void beforeEach() {

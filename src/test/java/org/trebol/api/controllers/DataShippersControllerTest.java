@@ -31,8 +31,8 @@ import org.trebol.api.models.ShipperPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.ShippersCrudService;
+import org.trebol.jpa.services.predicates.ShippersPredicateService;
 import org.trebol.jpa.services.sortspecs.ShippersSortSpecService;
 
 import java.util.Map;
@@ -46,7 +46,7 @@ class DataShippersControllerTest
   @Mock PaginationService paginationServiceMock;
   @Mock ShippersSortSpecService sortServiceMock;
   @Mock ShippersCrudService crudServiceMock;
-  @Mock PredicateService<Shipper> predicateServiceMock;
+  @Mock ShippersPredicateService predicateServiceMock;
 
   @Override
   @BeforeEach

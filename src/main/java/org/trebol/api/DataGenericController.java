@@ -42,13 +42,13 @@ public abstract class DataGenericController<P, E>
   protected final PaginationService paginationService;
   protected final SortSpecService<E> sortService;
   protected final CrudService<P, E> crudService;
-  protected final PredicateService<E> predicateService;
+  protected final PredicateService predicateService;
 
   public DataGenericController(
     PaginationService paginationService,
     SortSpecService<E> sortService,
     CrudService<P, E> crudService,
-    PredicateService<E> predicateService
+    PredicateService predicateService
   ) {
     this.paginationService = paginationService;
     this.sortService = sortService;

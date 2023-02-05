@@ -21,21 +21,13 @@
 package org.trebol.jpa.services;
 
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.EntityPathBase;
 
 import java.util.Map;
 
 /**
  * An interface for parsing Predicates for use in JPA queries
- *
- * @param <E> The Entity class
  */
-public interface PredicateService<E> {
-
-  /**
-   * Get base QueryDSL type for building Predicates
-   */
-  EntityPathBase<E> getBasePath();
+public interface PredicateService {
 
   /**
    * Reads Map and creates filtering conditions based on its data
