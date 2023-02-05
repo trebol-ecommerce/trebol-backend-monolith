@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.testhelpers;
+package org.trebol.testing;
 
 import org.trebol.api.models.PersonPojo;
 import org.trebol.jpa.entities.Person;

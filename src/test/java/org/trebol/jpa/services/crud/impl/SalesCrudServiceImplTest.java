@@ -43,11 +43,10 @@ import org.trebol.jpa.services.conversion.*;
 import org.trebol.jpa.services.crud.BillingCompaniesCrudService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
 import org.trebol.jpa.services.crud.ShippersCrudService;
-import org.trebol.jpa.services.crud.impl.SalesCrudServiceImpl;
 import org.trebol.jpa.services.datatransport.SalesDataTransportService;
-import org.trebol.testhelpers.CustomersTestHelper;
-import org.trebol.testhelpers.ProductsTestHelper;
-import org.trebol.testhelpers.SalesTestHelper;
+import org.trebol.testing.CustomersTestHelper;
+import org.trebol.testing.ProductsTestHelper;
+import org.trebol.testing.SalesTestHelper;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -59,7 +58,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-import static org.trebol.constant.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class SalesCrudServiceImplTest {

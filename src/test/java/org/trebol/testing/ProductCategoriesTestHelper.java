@@ -18,27 +18,26 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.testhelpers;
+package org.trebol.testing;
 
-import org.trebol.api.models.ImagePojo;
-import org.trebol.jpa.entities.Image;
+import org.trebol.api.models.ProductCategoryPojo;
+import org.trebol.jpa.entities.ProductCategory;
 
 /**
- * Builds & caches reusable instances of Image and ImagePojo
+ * Builds & caches reusable instances of ProductCategory and ProductCategoryPojo
  */
-public class ImagesTestHelper {
+public class ProductCategoriesTestHelper {
 
-  public static long IMAGE_ID = 1L;
-  public static String IMAGE_CODE = "test-img";
-  public static String IMAGE_FILENAME = "testimg.jpg";
-  public static String IMAGE_URL = "http://example.com/img/testimg.jpg";
-  private ImagePojo pojoForFetch;
-  private ImagePojo pojoBeforeCreation;
-  private ImagePojo pojoAfterCreation;
-  private Image entityBeforeCreation;
-  private Image entityAfterCreation;
+  public static final long PRODUCT_ID = 1L;
+  public static final String CATEGORY_NAME = "test product name";
+  public static final String CATEGORY_CODE = "TESTPROD1";
+  private ProductCategoryPojo pojoForFetch;
+  private ProductCategoryPojo pojoBeforeCreation;
+  private ProductCategoryPojo pojoAfterCreation;
+  private ProductCategory entityBeforeCreation;
+  private ProductCategory entityAfterCreation;
 
-  public void resetImages() {
+  public void resetProductCategories() {
     this.pojoForFetch = null;
     this.pojoBeforeCreation = null;
     this.pojoAfterCreation = null;
@@ -46,46 +45,44 @@ public class ImagesTestHelper {
     this.entityAfterCreation = null;
   }
 
-  public ImagePojo imagePojoForFetch() {
+  public ProductCategoryPojo productCategoryPojoForFetch() {
     if (this.pojoForFetch == null) {
-      this.pojoForFetch = ImagePojo.builder().filename(IMAGE_FILENAME).build();
+      this.pojoForFetch = ProductCategoryPojo.builder().code(CATEGORY_CODE).build();
     }
     return this.pojoForFetch;
   }
 
-  public ImagePojo imagePojoBeforeCreation() {
+  public ProductCategoryPojo productCategoryPojoBeforeCreation() {
     if (this.pojoBeforeCreation == null) {
-      this.pojoBeforeCreation = ImagePojo.builder()
-        .code(IMAGE_CODE)
-        .filename(IMAGE_FILENAME)
-        .url(IMAGE_URL)
+      this.pojoBeforeCreation = ProductCategoryPojo.builder()
+        .code(CATEGORY_CODE)
+        .name(CATEGORY_NAME)
         .build();
     }
     return this.pojoBeforeCreation;
   }
 
-  public ImagePojo imagePojoAfterCreation() {
+  public ProductCategoryPojo productCategoryPojoAfterCreation() {
     if (this.pojoAfterCreation == null) {
-      this.pojoAfterCreation = ImagePojo.builder()
-        .id(IMAGE_ID)
-        .code(IMAGE_CODE)
-        .filename(IMAGE_FILENAME)
-        .url(IMAGE_URL)
+      this.pojoAfterCreation = ProductCategoryPojo.builder()
+        .id(PRODUCT_ID)
+        .code(CATEGORY_CODE)
+        .name(CATEGORY_NAME)
         .build();
     }
     return this.pojoAfterCreation;
   }
 
-  public Image imageEntityBeforeCreation() {
+  public ProductCategory productCategoryEntityBeforeCreation() {
     if (this.entityBeforeCreation == null) {
-      this.entityBeforeCreation = new Image(IMAGE_CODE, IMAGE_FILENAME, IMAGE_URL);
+      this.entityBeforeCreation = new ProductCategory(CATEGORY_CODE, CATEGORY_NAME, null);
     }
     return this.entityBeforeCreation;
   }
 
-  public Image imageEntityAfterCreation() {
+  public ProductCategory productCategoryEntityAfterCreation() {
     if (this.entityAfterCreation == null) {
-      this.entityAfterCreation = new Image(IMAGE_ID, IMAGE_CODE, IMAGE_FILENAME, IMAGE_URL);
+      this.entityAfterCreation = new ProductCategory(PRODUCT_ID, CATEGORY_CODE, CATEGORY_NAME, null);
     }
     return this.entityAfterCreation;
   }

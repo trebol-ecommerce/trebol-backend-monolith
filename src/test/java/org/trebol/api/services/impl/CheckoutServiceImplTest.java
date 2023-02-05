@@ -38,7 +38,7 @@ import org.trebol.integration.services.PaymentService;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
-import org.trebol.testhelpers.SalesTestHelper;
+import org.trebol.testing.SalesTestHelper;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
@@ -47,9 +47,9 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
-import static org.trebol.constant.TestConstants.ANY;
-import static org.trebol.constant.TestConstants.ONE;
-import static org.trebol.testhelpers.SalesTestHelper.SELL_TRANSACTION_TOKEN;
+import static org.trebol.testing.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.ONE;
+import static org.trebol.testing.SalesTestHelper.SELL_TRANSACTION_TOKEN;
 
 @ExtendWith(MockitoExtension.class)
 class CheckoutServiceImplTest {

@@ -40,10 +40,9 @@ import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
 import org.trebol.jpa.services.conversion.ProductsConverterService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
-import org.trebol.jpa.services.crud.impl.ProductsCrudServiceImpl;
-import org.trebol.testhelpers.ImagesTestHelper;
-import org.trebol.testhelpers.ProductCategoriesTestHelper;
-import org.trebol.testhelpers.ProductsTestHelper;
+import org.trebol.testing.ImagesTestHelper;
+import org.trebol.testing.ProductCategoriesTestHelper;
+import org.trebol.testing.ProductsTestHelper;
 
 import javax.persistence.EntityExistsException;
 import java.util.List;

@@ -28,7 +28,7 @@ import java.time.Instant;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.trebol.constant.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.ANY;
 
 public class SellEntity2ReceiptPojoTest {
   SellEntity2ReceiptPojo instance = new SellEntity2ReceiptPojo();

@@ -36,7 +36,7 @@ import org.trebol.jpa.services.sortspecs.SellStatusesSortSpecService;
 
 import java.util.Map;
 
-import static org.trebol.constant.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class DataSellStatusesControllerTest

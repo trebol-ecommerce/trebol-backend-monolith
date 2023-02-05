@@ -38,7 +38,6 @@ import org.trebol.jpa.services.conversion.AddressesConverterService;
 import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
 import org.trebol.jpa.services.conversion.CustomersConverterService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
-import org.trebol.jpa.services.datatransport.impl.SalesDataTransportServiceImpl;
 
 import javax.validation.Validator;
 import java.util.Optional;
@@ -48,8 +47,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
-import static org.trebol.constant.TestConstants.ANY;
-import static org.trebol.constant.TestConstants.ID_1L;
+import static org.trebol.testing.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class SalesDataTransportServiceImplTest {

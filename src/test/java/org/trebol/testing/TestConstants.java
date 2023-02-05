@@ -19,7 +19,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.constant;
+package org.trebol.testing;
 
 public class TestConstants {
   public static final String ANY = "ANY";

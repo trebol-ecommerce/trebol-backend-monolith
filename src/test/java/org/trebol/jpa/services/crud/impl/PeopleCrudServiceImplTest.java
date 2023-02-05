@@ -31,8 +31,7 @@ import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.repositories.PeopleRepository;
-import org.trebol.jpa.services.crud.impl.PeopleCrudServiceImpl;
-import org.trebol.testhelpers.PeopleTestHelper;
+import org.trebol.testing.PeopleTestHelper;
 
 import java.util.Optional;
 

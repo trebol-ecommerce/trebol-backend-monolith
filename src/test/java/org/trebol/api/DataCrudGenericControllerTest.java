@@ -33,7 +33,7 @@ import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.*;
-import static org.trebol.constant.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.ANY;
 
 public abstract class DataCrudGenericControllerTest<P, E>
   extends DataGenericControllerTest<P, E> {

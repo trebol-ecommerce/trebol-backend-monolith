@@ -32,12 +32,11 @@ import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.datatransport.PeopleDataTransportService;
-import org.trebol.jpa.services.datatransport.impl.SalespeopleDataTransportServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
-import static org.trebol.constant.TestConstants.ID_1L;
+import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class SalespeopleDataTransportServiceImplTest {

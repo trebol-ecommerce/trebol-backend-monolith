@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.testhelpers;
+package org.trebol.testing;
 
 import org.trebol.api.models.SellDetailPojo;
 import org.trebol.api.models.SellPojo;

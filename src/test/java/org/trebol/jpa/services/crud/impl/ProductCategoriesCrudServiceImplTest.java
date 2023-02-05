@@ -31,8 +31,7 @@ import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.ProductsCategoriesRepository;
-import org.trebol.jpa.services.crud.impl.ProductCategoriesCrudServiceImpl;
-import org.trebol.testhelpers.ProductCategoriesTestHelper;
+import org.trebol.testing.ProductCategoriesTestHelper;
 
 import java.util.Optional;
 

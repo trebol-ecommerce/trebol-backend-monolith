@@ -31,8 +31,7 @@ import org.trebol.api.models.ImagePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.repositories.ImagesRepository;
-import org.trebol.jpa.services.crud.impl.ImagesCrudServiceImpl;
-import org.trebol.testhelpers.ImagesTestHelper;
+import org.trebol.testing.ImagesTestHelper;
 
 import java.util.Optional;
 

@@ -28,7 +28,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.trebol.constant.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.ANY;
 
 public class SellDetailEntity2ReceiptDetailPojoTest {
   SellDetailEntity2ReceiptDetailPojo instance = new SellDetailEntity2ReceiptDetailPojo();
