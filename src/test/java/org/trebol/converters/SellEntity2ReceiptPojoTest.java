@@ -27,17 +27,15 @@ import org.trebol.pojo.ReceiptPojo;
 import java.time.Instant;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.trebol.constant.TestConstants.ANY;
 
 public class SellEntity2ReceiptPojoTest {
   SellEntity2ReceiptPojo instance = new SellEntity2ReceiptPojo();
 
   @Test
-  void converts_selldetail_entities_to_receiptdetail_pojos() {
+  void converts_sell_entities_to_receipt_pojos() {
     List.of(
-      new Sell(),
       sellWithId(),
       sellWithIdAndDate(),
       sellWithIdAndDateAndTotalItems(),
@@ -53,6 +51,14 @@ public class SellEntity2ReceiptPojoTest {
       assertEquals(sell.getTaxesValue(), result.getTaxValue());
       assertEquals(sell.getTotalValue(), result.getTotalValue());
       assertEquals(sell.getTransactionToken(), result.getToken());
+    });
+  }
+  @Test
+  void cannot_convert_incomplete_sell_entities_to_receipt_pojos() {
+    List.of(
+      new Sell()
+    ).forEach(sell -> {
+      assertThrows(Exception.class, () -> instance.convert(sell));
     });
   }
 
