@@ -20,7 +20,7 @@
 
 package org.trebol.operation;
 
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;

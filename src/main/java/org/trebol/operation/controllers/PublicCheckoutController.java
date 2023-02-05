@@ -29,7 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.exceptions.PaymentServiceException;
@@ -80,7 +80,7 @@ public class PublicCheckoutController {
    *
    * @param transactionRequest The checkout details
    * @return An object wrapping the URL and token to redirect the user with, towards their payment page.
-   * @throws org.trebol.exceptions.BadInputException                   If the input pojo class contains invalid data
+   * @throws BadInputException                   If the input pojo class contains invalid data
    * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during the payment
    *                                                                   integration process
    */
@@ -97,7 +97,7 @@ public class PublicCheckoutController {
    *
    * @param transactionData The HTTP headers
    * @return A 303 SEE OTHER response
-   * @throws org.trebol.exceptions.BadInputException                   If the expected token is not present in the request
+   * @throws BadInputException                   If the expected token is not present in the request
    * @throws EntityNotFoundException                                   If the token does not match that of any "pending" transaction
    * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during internal API calls
    */
@@ -124,7 +124,7 @@ public class PublicCheckoutController {
    *
    * @param transactionData The HTTP headers
    * @return A 303 SEE OTHER response
-   * @throws org.trebol.exceptions.BadInputException                   If the expected token is not present in the request
+   * @throws BadInputException                   If the expected token is not present in the request
    * @throws EntityNotFoundException                                   If the token does not match that of any "pending" transaction
    * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during internal API calls
    */

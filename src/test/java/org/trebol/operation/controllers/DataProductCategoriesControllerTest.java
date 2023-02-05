@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;

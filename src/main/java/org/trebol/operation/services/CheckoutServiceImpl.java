@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;

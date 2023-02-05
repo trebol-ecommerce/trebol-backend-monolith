@@ -18,19 +18,27 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.exceptions;
+package org.trebol.common.converters;
 
-public class CorsMappingParseException
-  extends Exception {
-  private final String corsMapping;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
+import org.trebol.jpa.entities.Sell;
+import org.trebol.pojo.ReceiptPojo;
 
-  public CorsMappingParseException(String corsMapping) {
-    super();
-    this.corsMapping = corsMapping;
-  }
+@Component
+public class SellEntity2ReceiptPojo
+  implements Converter<Sell, ReceiptPojo> {
 
   @Override
-  public String getMessage() {
-    return "Could not parse CORS mapping. Format must be 'METHODS /path', provided value was '" + corsMapping + "'";
+  public ReceiptPojo convert(Sell source) {
+    ReceiptPojo target = new ReceiptPojo();
+    target.setBuyOrder(source.getId());
+    target.setDate(source.getDate());
+    target.setTransportValue(source.getTransportValue());
+    target.setTaxValue(source.getTaxesValue());
+    target.setTotalItems(source.getTotalItems());
+    target.setTotalValue(source.getTotalValue());
+    target.setToken(source.getTransactionToken());
+    return target;
   }
 }

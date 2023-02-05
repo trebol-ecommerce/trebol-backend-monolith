@@ -18,27 +18,25 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.converters;
+package org.trebol.common.annotations;
 
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
-import org.trebol.jpa.entities.Sell;
-import org.trebol.pojo.ReceiptPojo;
+import org.trebol.common.annotations.validator.PhoneNumberValidator;
 
-@Component
-public class SellEntity2ReceiptPojo
-  implements Converter<Sell, ReceiptPojo> {
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-  @Override
-  public ReceiptPojo convert(Sell source) {
-    ReceiptPojo target = new ReceiptPojo();
-    target.setBuyOrder(source.getId());
-    target.setDate(source.getDate());
-    target.setTransportValue(source.getTransportValue());
-    target.setTaxValue(source.getTaxesValue());
-    target.setTotalItems(source.getTotalItems());
-    target.setTotalValue(source.getTotalValue());
-    target.setToken(source.getTransactionToken());
-    return target;
-  }
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = PhoneNumberValidator.class)
+public @interface PhoneNumber {
+
+  String message() default "Phone number is not valid";
+
+  Class<?>[] groups() default {};
+
+  Class<? extends Payload>[] payload() default {};
 }

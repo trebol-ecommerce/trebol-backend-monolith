@@ -22,7 +22,7 @@ package org.trebol.operation.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.entities.SellStatus;

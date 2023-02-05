@@ -23,7 +23,7 @@ package org.trebol.jpa.services;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.pojo.DataPagePojo;
 
 import javax.persistence.EntityExistsException;
@@ -44,7 +44,7 @@ public interface CrudService<P, E> {
    * @param dto The item to be created.
    * @return The created item, with updated properties (most importantly its ID),
    * or null if the item could not be created.
-   * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid or is insufficient.
+   * @throws BadInputException When the data in the input object is not valid or is insufficient.
    * @throws EntityExistsException                   When the data collides with an existing registry.
    */
   P create(P dto) throws BadInputException, EntityExistsException;
@@ -86,7 +86,7 @@ public interface CrudService<P, E> {
    *            present, and can be different from the second method param.
    * @return The saved item, with updated properties
    * @throws EntityNotFoundException                 When no item matches the given item
-   * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
+   * @throws BadInputException When the data in the input object is not valid.
    */
   P update(P dto) throws EntityNotFoundException, BadInputException;
 
@@ -97,7 +97,7 @@ public interface CrudService<P, E> {
    * @param filters Filtering conditions
    * @return The saved item, with updated properties
    * @throws EntityNotFoundException                 When no item matches given filters.
-   * @throws org.trebol.exceptions.BadInputException When the data in the input object is not valid.
+   * @throws BadInputException When the data in the input object is not valid.
    */
   P update(P dto, Predicate filters) throws EntityNotFoundException, BadInputException;
 

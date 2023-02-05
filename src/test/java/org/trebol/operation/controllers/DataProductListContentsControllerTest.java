@@ -32,7 +32,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.entities.ProductListItem;

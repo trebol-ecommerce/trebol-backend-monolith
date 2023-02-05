@@ -21,7 +21,7 @@
 package org.trebol.jpa.services.datatransport;
 
 import org.springframework.stereotype.Service;
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.pojo.SellStatusPojo;
 

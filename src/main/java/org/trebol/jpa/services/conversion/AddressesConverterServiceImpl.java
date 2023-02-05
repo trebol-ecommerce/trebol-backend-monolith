@@ -22,7 +22,7 @@ package org.trebol.jpa.services.conversion;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Address;
 import org.trebol.pojo.AddressPojo;
 

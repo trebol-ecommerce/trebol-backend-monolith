@@ -18,32 +18,19 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.annotations.validator;
+package org.trebol.common.exceptions;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.trebol.annotations.PhoneNumber;
-import org.trebol.config.ValidationProperties;
+public class CorsMappingParseException
+  extends Exception {
+  private final String corsMapping;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
-
-  @Autowired
-  private ValidationProperties validationProperties;
-
-  private Pattern pattern;
-
-  @Override
-  public void initialize(PhoneNumber constraintAnnotation) {
-    pattern = Pattern.compile(validationProperties.getPhoneNumberRegexp());
+  public CorsMappingParseException(String corsMapping) {
+    super();
+    this.corsMapping = corsMapping;
   }
 
   @Override
-  public boolean isValid(String value, ConstraintValidatorContext context) {
-    Matcher matcher = pattern.matcher(value);
-    return matcher.matches();
+  public String getMessage() {
+    return "Could not parse CORS mapping. Format must be 'METHODS /path', provided value was '" + corsMapping + "'";
   }
 }

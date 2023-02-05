@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.converters;
+package org.trebol.common.converters;
 
 import org.junit.jupiter.api.Test;
 import org.trebol.jpa.entities.Sell;

@@ -20,7 +20,7 @@
 
 package org.trebol.operation.services;
 
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.pojo.PaymentRedirectionDetailsPojo;
 import org.trebol.pojo.SellPojo;

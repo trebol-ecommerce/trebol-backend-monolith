@@ -20,7 +20,7 @@
 
 package org.trebol.jpa.services;
 
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 
 /**
  * Type-safe interface for passing data from Pojos to Entities in order to

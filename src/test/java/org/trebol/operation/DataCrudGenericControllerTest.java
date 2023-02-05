@@ -23,7 +23,7 @@ package org.trebol.operation;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.springframework.lang.Nullable;
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.services.CrudService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;

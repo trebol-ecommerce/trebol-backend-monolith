@@ -20,7 +20,7 @@
 
 package org.trebol.integration;
 
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.pojo.SellPojo;
 
@@ -33,7 +33,7 @@ public interface IMailingIntegrationService {
    * Should support all transaction stages
    *
    * @param sell The transaction metadata
-   * @throws org.trebol.exceptions.BadInputException                   When there is a problem with the order reference
+   * @throws BadInputException                   When there is a problem with the order reference
    * @throws org.trebol.integration.exceptions.MailingServiceException When any error occurs while interacting with the
    *                                                                   mail server/service provider
    */

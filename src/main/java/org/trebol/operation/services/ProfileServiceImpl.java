@@ -23,7 +23,7 @@ package org.trebol.operation.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.trebol.exceptions.BadInputException;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.exceptions.PersonNotFoundException;

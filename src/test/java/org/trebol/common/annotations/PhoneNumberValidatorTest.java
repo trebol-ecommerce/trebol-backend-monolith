@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.annotations;
+package org.trebol.common.annotations;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +30,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.trebol.annotations.validator.PhoneNumberValidator;
+import org.trebol.common.annotations.validator.PhoneNumberValidator;
 import org.trebol.config.ValidationProperties;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
