@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.mailing.mailgun;
+package org.trebol.integration.impl.mailgun;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -36,7 +36,7 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "trebol.integration.mailing.mailgun")
 @Profile("mailgun")
 @Data
-public class MailgunMailingProperties {
+public class MailgunMailingIntegrationProperties {
   private String apiKey;
   private String domain;
   private String customerOrderPaymentTemplate;

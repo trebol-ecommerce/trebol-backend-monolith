@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.mailing.mailgun;
+package org.trebol.integration.impl.mailgun;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,9 +37,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.*;
-import org.trebol.integration.IMailingIntegrationService;
+import org.trebol.integration.MailingIntegrationProperties;
 import org.trebol.integration.exceptions.MailingServiceException;
-import org.trebol.integration.mailing.MailingProperties;
+import org.trebol.integration.services.MailingService;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -57,12 +57,12 @@ import static org.trebol.config.Constants.*;
 @Service
 @Profile("mailgun")
 public class MailgunMailingServiceImpl
-  implements IMailingIntegrationService {
+  implements MailingService {
   private static final String CUSTOMER_MAPS_KEY_PREFIX = "customer:";
   private static final String OWNERS_MAPS_KEY_PREFIX = "owners:";
   private final Logger logger = LoggerFactory.getLogger(MailgunMailingServiceImpl.class);
-  private final MailingProperties internalMailingProperties;
-  private final MailgunMailingProperties mailgunProperties;
+  private final MailingIntegrationProperties internalMailingIntegrationProperties;
+  private final MailgunMailingIntegrationProperties mailgunProperties;
   private final Map<String, String> orderStatus2MailgunTemplatesMap;
   private final Map<String, String> orderStatus2MailSubjectMap;
   private final ConversionService conversionService;
@@ -70,11 +70,11 @@ public class MailgunMailingServiceImpl
 
   @Autowired
   public MailgunMailingServiceImpl(
-    MailingProperties mailingProperties,
-    MailgunMailingProperties mailgunProperties,
+    MailingIntegrationProperties mailingIntegrationProperties,
+    MailgunMailingIntegrationProperties mailgunProperties,
     ConversionService conversionService
   ) {
-    this.internalMailingProperties = mailingProperties;
+    this.internalMailingIntegrationProperties = mailingIntegrationProperties;
     this.mailgunProperties = mailgunProperties;
     this.conversionService = conversionService;
     this.orderStatus2MailgunTemplatesMap = this.makeTemplatesMap();
@@ -98,7 +98,7 @@ public class MailgunMailingServiceImpl
 
       HttpResponse<JsonNode> request = Unirest.post(url)
         .basicAuth("api", mailgunProperties.getApiKey())
-        .field("from", internalMailingProperties.getSenderEmail())
+        .field("from", internalMailingIntegrationProperties.getSenderEmail())
         .field("to", recipient)
         .field("subject", fullSubject)
         .field("template", mailgunTemplateName)
@@ -130,8 +130,8 @@ public class MailgunMailingServiceImpl
 
       HttpResponse<JsonNode> request = Unirest.post(url)
         .basicAuth("api", mailgunProperties.getApiKey())
-        .field("from", internalMailingProperties.getSenderEmail())
-        .field("to", internalMailingProperties.getOwnerEmail())
+        .field("from", internalMailingIntegrationProperties.getSenderEmail())
+        .field("to", internalMailingIntegrationProperties.getOwnerEmail())
         .field("subject", fullSubject)
         .field("template", mailgunTemplateName)
         .field("h:X-Mailgun-Variables", variables)
@@ -163,13 +163,13 @@ public class MailgunMailingServiceImpl
 
   private Map<String, String> makeSubjectsMap() {
     return Map.of(
-      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_UNCONFIRMED, internalMailingProperties.getCustomerOrderPaymentSubject(),
-      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, internalMailingProperties.getCustomerOrderConfirmationSubject(),
-      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, internalMailingProperties.getCustomerOrderRejectionSubject(),
-      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, internalMailingProperties.getCustomerOrderCompletionSubject(),
-      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, internalMailingProperties.getOwnerOrderConfirmationSubject(),
-      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, internalMailingProperties.getOwnerOrderRejectionSubject(),
-      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, internalMailingProperties.getOwnerOrderCompletionSubject()
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_UNCONFIRMED, internalMailingIntegrationProperties.getCustomerOrderPaymentSubject(),
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, internalMailingIntegrationProperties.getCustomerOrderConfirmationSubject(),
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, internalMailingIntegrationProperties.getCustomerOrderRejectionSubject(),
+      CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, internalMailingIntegrationProperties.getCustomerOrderCompletionSubject(),
+      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, internalMailingIntegrationProperties.getOwnerOrderConfirmationSubject(),
+      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, internalMailingIntegrationProperties.getOwnerOrderRejectionSubject(),
+      OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, internalMailingIntegrationProperties.getOwnerOrderCompletionSubject()
     );
   }
 
@@ -181,8 +181,8 @@ public class MailgunMailingServiceImpl
     objectMapper
       .configOverride(Instant.class)
       .setFormat(JsonFormat.Value
-        .forPattern(internalMailingProperties.getDateFormat())
-        .withTimeZone(TimeZone.getTimeZone(internalMailingProperties.getDateTimezone())));
+        .forPattern(internalMailingIntegrationProperties.getDateFormat())
+        .withTimeZone(TimeZone.getTimeZone(internalMailingIntegrationProperties.getDateTimezone())));
     return objectMapper;
   }
 

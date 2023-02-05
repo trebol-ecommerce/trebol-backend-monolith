@@ -18,31 +18,26 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.mailing;
+package org.trebol.integration.impl.webpayplus;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
-/**
- * General, implementation-agnostic properties for mailing services
- */
+import javax.validation.constraints.NotBlank;
+
 @Validated
 @Configuration
-@ConfigurationProperties(prefix = "trebol.integration.mailing")
+@ConfigurationProperties(prefix = "trebol.integration.payment.webpayplus")
 @Data
-public class MailingProperties {
-  private String dateFormat;
-  private String dateTimezone;
-  private String ownerName;
-  private String ownerEmail;
-  private String senderEmail;
-  private String customerOrderPaymentSubject;
-  private String customerOrderConfirmationSubject;
-  private String customerOrderRejectionSubject;
-  private String customerOrderCompletionSubject;
-  private String ownerOrderConfirmationSubject;
-  private String ownerOrderRejectionSubject;
-  private String ownerOrderCompletionSubject;
+public class WebpayplusPaymentIntegrationProperties {
+  private boolean production;
+  private String commerceCode;
+  private String apiKey;
+  @NotBlank
+  private String callbackUrl;
+  @NotBlank
+  private String browserRedirectionUrl;
+
 }

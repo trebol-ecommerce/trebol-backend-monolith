@@ -30,8 +30,8 @@ import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.CheckoutService;
 import org.trebol.api.services.SalesProcessService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
+import org.trebol.integration.services.PaymentService;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
@@ -52,14 +52,14 @@ public class CheckoutServiceImpl
   private final SalesCrudService salesCrudService;
   private final SalesProcessService salesProcessService;
   private final PredicateService<Sell> salesPredicateService;
-  private final IPaymentsIntegrationService paymentIntegrationService;
+  private final PaymentService paymentIntegrationService;
 
   @Autowired
   public CheckoutServiceImpl(
     SalesCrudService salesCrudService,
     SalesProcessService salesProcessService,
     PredicateService<Sell> salesPredicateService,
-    IPaymentsIntegrationService paymentIntegrationService
+    PaymentService paymentIntegrationService
   ) {
     this.salesCrudService = salesCrudService;
     this.salesProcessService = salesProcessService;

@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration;
+package org.trebol.integration.services;
 
 import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
@@ -27,7 +27,7 @@ import org.trebol.integration.exceptions.MailingServiceException;
 /**
  * Point of entry for services to send mail to customers and owners alike
  */
-public interface IMailingIntegrationService {
+public interface MailingService {
   /**
    * Generate and send an e-mail to the customer, regarding an update on their transaction' status.<br/>
    * Should support all transaction stages

@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.payments.webpayplus;
+package org.trebol.integration.impl.webpayplus;
 
 import cl.transbank.common.IntegrationApiKeys;
 import cl.transbank.common.IntegrationCommerceCodes;
@@ -34,20 +34,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
-import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
+import org.trebol.integration.services.PaymentService;
 
 import java.io.IOException;
 
 @Service
 public class WebpayplusPaymentServiceImpl
-  implements IPaymentsIntegrationService {
+  implements PaymentService {
   private final Logger logger = LoggerFactory.getLogger(WebpayplusPaymentServiceImpl.class);
-  private final WebpayplusPaymentProperties properties;
+  private final WebpayplusPaymentIntegrationProperties properties;
 
   @Autowired
   public WebpayplusPaymentServiceImpl(
-    WebpayplusPaymentProperties properties
+    WebpayplusPaymentIntegrationProperties properties
   ) {
     this.properties = properties;
   }

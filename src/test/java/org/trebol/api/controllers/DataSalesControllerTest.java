@@ -31,7 +31,7 @@ import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.api.services.SalesProcessService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.integration.IMailingIntegrationService;
+import org.trebol.integration.services.MailingService;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
@@ -50,7 +50,7 @@ class DataSalesControllerTest
   @Mock SalesCrudService crudServiceMock;
   @Mock PredicateService<Sell> predicateServiceMock;
   @Mock SalesProcessService salesProcessServiceMock;
-  @Mock IMailingIntegrationService mailingIntegrationServiceMock;
+  @Mock MailingService mailingServiceMock;
 
   @Override
   @BeforeEach

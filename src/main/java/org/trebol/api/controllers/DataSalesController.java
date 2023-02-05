@@ -31,8 +31,8 @@ import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.api.services.SalesProcessService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.integration.exceptions.MailingServiceException;
+import org.trebol.integration.services.MailingService;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
@@ -52,7 +52,7 @@ public class DataSalesController
   extends DataCrudGenericController<SellPojo, Sell> {
   private final SalesProcessService processService;
   @Nullable
-  private final IMailingIntegrationService mailingIntegrationService;
+  private final MailingService mailingService;
 
   @Autowired
   public DataSalesController(
@@ -61,11 +61,11 @@ public class DataSalesController
     SalesCrudService crudService,
     PredicateService<Sell> predicateService,
     SalesProcessService processService,
-    @Autowired(required = false) IMailingIntegrationService mailingIntegrationService
+    @Autowired(required = false) MailingService mailingService
   ) {
     super(paginationService, sortService, crudService, predicateService);
     this.processService = processService;
-    this.mailingIntegrationService = mailingIntegrationService;
+    this.mailingService = mailingService;
   }
 
   @Override
@@ -116,9 +116,9 @@ public class DataSalesController
   public void confirmSell(@RequestBody SellPojo sell)
     throws BadInputException, MailingServiceException {
     SellPojo updatedSell = processService.markAsConfirmed(sell);
-    if (this.mailingIntegrationService != null) {
-      mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
-      mailingIntegrationService.notifyOrderStatusToOwners(updatedSell);
+    if (this.mailingService != null) {
+      mailingService.notifyOrderStatusToClient(updatedSell);
+      mailingService.notifyOrderStatusToOwners(updatedSell);
     }
   }
 
@@ -127,8 +127,8 @@ public class DataSalesController
   public void rejectSell(@RequestBody SellPojo sell)
     throws BadInputException, MailingServiceException {
     SellPojo updatedSell = processService.markAsRejected(sell);
-    if (this.mailingIntegrationService != null) {
-      mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
+    if (this.mailingService != null) {
+      mailingService.notifyOrderStatusToClient(updatedSell);
     }
   }
 
@@ -137,8 +137,8 @@ public class DataSalesController
   public void completeSell(@RequestBody SellPojo sell)
     throws BadInputException, MailingServiceException {
     SellPojo updatedSell = processService.markAsCompleted(sell);
-    if (this.mailingIntegrationService != null) {
-      mailingIntegrationService.notifyOrderStatusToClient(updatedSell);
+    if (this.mailingService != null) {
+      mailingService.notifyOrderStatusToClient(updatedSell);
     }
   }
 }

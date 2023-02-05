@@ -32,10 +32,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.SalesProcessService;
-import org.trebol.api.services.impl.CheckoutServiceImpl;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
+import org.trebol.integration.services.PaymentService;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
@@ -58,7 +57,7 @@ class CheckoutServiceImplTest {
   @Mock SalesCrudService salesCrudService;
   @Mock SalesProcessService salesProcessService;
   @Mock PredicateService<Sell> salesPredicateService;
-  @Mock IPaymentsIntegrationService paymentIntegrationService;
+  @Mock PaymentService paymentServiceMock;
   SalesTestHelper salesHelper = new SalesTestHelper();
   static final String PAYMENT_URL = "https://example.com/pay";
   static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
@@ -75,11 +74,11 @@ class CheckoutServiceImplTest {
       .url(PAYMENT_URL)
       .token(SELL_TRANSACTION_TOKEN)
       .build();
-    when(paymentIntegrationService.requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation())).thenReturn(payload);
+    when(paymentServiceMock.requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation())).thenReturn(payload);
 
     PaymentRedirectionDetailsPojo result = service.requestTransactionStart(salesHelper.sellPojoAfterCreation());
 
-    verify(paymentIntegrationService).requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation());
+    verify(paymentServiceMock).requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation());
     verify(salesProcessService).markAsStarted(salesHelper.sellPojoAfterCreation());
     assertEquals(result.getUrl(), PAYMENT_URL);
     assertEquals(result.getToken(), SELL_TRANSACTION_TOKEN);
@@ -93,14 +92,14 @@ class CheckoutServiceImplTest {
       "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
-    when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(0);
+    when(paymentServiceMock.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(0);
     when(salesProcessService.markAsPaid(salesHelper.sellPojoAfterCreation())).thenReturn(null);
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, false);
 
     verify(salesPredicateService).parseMap(matcherMap);
     verify(salesCrudService).readOne(MATCHER_PREDICATE);
-    verify(paymentIntegrationService).requestPaymentResult(SELL_TRANSACTION_TOKEN);
+    verify(paymentServiceMock).requestPaymentResult(SELL_TRANSACTION_TOKEN);
     verify(salesProcessService).markAsPaid(salesHelper.sellPojoAfterCreation());
     assertNull(result);
   }
@@ -114,14 +113,14 @@ class CheckoutServiceImplTest {
       "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
-    when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(1);
+    when(paymentServiceMock.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(1);
     when(salesProcessService.markAsFailed(salesHelper.sellPojoAfterCreation())).thenReturn(null);
 
     SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, false);
 
     verify(salesPredicateService).parseMap(matcherMap);
     verify(salesCrudService).readOne(MATCHER_PREDICATE);
-    verify(paymentIntegrationService).requestPaymentResult(SELL_TRANSACTION_TOKEN);
+    verify(paymentServiceMock).requestPaymentResult(SELL_TRANSACTION_TOKEN);
     verify(salesProcessService).markAsFailed(salesHelper.sellPojoAfterCreation());
     assertNull(result);
   }
@@ -135,14 +134,14 @@ class CheckoutServiceImplTest {
       "token", SELL_TRANSACTION_TOKEN);
     when(salesPredicateService.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
     when(salesCrudService.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
-    when(paymentIntegrationService.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(1);
+    when(paymentServiceMock.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(1);
     when(salesProcessService.markAsFailed(salesHelper.sellPojoAfterCreation())).thenThrow(BadInputException.class);
 
     assertThrows(IllegalStateException.class, () -> service.confirmTransaction(SELL_TRANSACTION_TOKEN, false));
 
     verify(salesPredicateService, times(ONE)).parseMap(matcherMap);
     verify(salesCrudService, times(ONE)).readOne(MATCHER_PREDICATE);
-    verify(paymentIntegrationService, times(ONE)).requestPaymentResult(SELL_TRANSACTION_TOKEN);
+    verify(paymentServiceMock, times(ONE)).requestPaymentResult(SELL_TRANSACTION_TOKEN);
     verify(salesProcessService, times(ONE)).markAsFailed(salesHelper.sellPojoAfterCreation());
   }
 
@@ -190,7 +189,7 @@ class CheckoutServiceImplTest {
       .token(SELL_TRANSACTION_TOKEN)
       .build();
     String exceptionMessage = "No match";
-    when(paymentIntegrationService.requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation())).thenReturn(payload);
+    when(paymentServiceMock.requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation())).thenReturn(payload);
     doThrow(new EntityNotFoundException(exceptionMessage)).
       when(salesProcessService).markAsStarted(salesHelper.sellPojoAfterCreation());
 
@@ -198,7 +197,7 @@ class CheckoutServiceImplTest {
     try {
       result = service.requestTransactionStart(salesHelper.sellPojoAfterCreation());
     } catch (Exception ex) {
-      verify(paymentIntegrationService).requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation());
+      verify(paymentServiceMock).requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation());
     }
 
     assertNull(result);
@@ -228,22 +227,22 @@ class CheckoutServiceImplTest {
   @DisplayName("Generate result page proper url to URI")
   @Test
   void generate_result_page_url() {
-    when(paymentIntegrationService.getPaymentResultPageUrl()).thenReturn("http://www.any.com");
+    when(paymentServiceMock.getPaymentResultPageUrl()).thenReturn("http://www.any.com");
 
     URI actual = service.generateResultPageUrl(ANY);
 
     assertEquals("http://www.any.com?token=ANY", actual.toString());
-    verify(paymentIntegrationService, times(ONE)).getPaymentResultPageUrl();
+    verify(paymentServiceMock, times(ONE)).getPaymentResultPageUrl();
   }
 
   @DisplayName("Generate result page proper url to URI when result page generates malformed url then catch " +
     "MalformedURLException and throw IllegalArgumentException")
   @Test
   void generate_result_page_url_throws_illegal_argument_exception() {
-    when(paymentIntegrationService.getPaymentResultPageUrl()).thenReturn(ANY);
+    when(paymentServiceMock.getPaymentResultPageUrl()).thenReturn(ANY);
 
     assertThrows(IllegalStateException.class, () -> service.generateResultPageUrl(ANY), "Transaction was confirmed, but server had an unexpected malfunction");
 
-    verify(paymentIntegrationService, times(ONE)).getPaymentResultPageUrl();
+    verify(paymentServiceMock, times(ONE)).getPaymentResultPageUrl();
   }
 }

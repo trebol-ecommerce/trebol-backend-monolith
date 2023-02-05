@@ -33,9 +33,9 @@ import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.CheckoutService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.exceptions.PaymentServiceException;
+import org.trebol.integration.services.MailingService;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
@@ -60,19 +60,19 @@ public class PublicCheckoutController {
   private final SalesCrudService salesCrudService;
   private final PredicateService<Sell> salesPredicateService;
   @Nullable
-  private final IMailingIntegrationService mailingIntegrationService;
+  private final MailingService mailingService;
 
   @Autowired
   public PublicCheckoutController(
     CheckoutService service,
     SalesCrudService salesCrudService,
     PredicateService<Sell> salesPredicateService,
-    @Autowired(required = false) IMailingIntegrationService mailingIntegrationService
+    @Autowired(required = false) MailingService mailingService
   ) {
     this.service = service;
     this.salesCrudService = salesCrudService;
     this.salesPredicateService = salesPredicateService;
-    this.mailingIntegrationService = mailingIntegrationService;
+    this.mailingService = mailingService;
   }
 
   /**
@@ -109,8 +109,8 @@ public class PublicCheckoutController {
     }
     String token = transactionData.get(WEBPAY_SUCCESS_TOKEN_HEADER_NAME);
     SellPojo sellPojo = service.confirmTransaction(token, false);
-    if (this.mailingIntegrationService != null) {
-      mailingIntegrationService.notifyOrderStatusToClient(sellPojo);
+    if (this.mailingService != null) {
+      mailingService.notifyOrderStatusToClient(sellPojo);
     }
     URI transactionUri = service.generateResultPageUrl(token);
     return ResponseEntity
