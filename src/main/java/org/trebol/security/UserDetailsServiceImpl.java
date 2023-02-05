@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.security.services.impl;
+package org.trebol.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,7 +32,6 @@ import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRolePermission;
 import org.trebol.jpa.repositories.UserRolePermissionsRepository;
 import org.trebol.jpa.repositories.UsersRepository;
-import org.trebol.security.UserDetailsPojo;
 import org.trebol.security.services.UserPermissionsService;
 
 import java.util.ArrayList;
