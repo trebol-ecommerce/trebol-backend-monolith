@@ -18,9 +18,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.annotation;
+package org.trebol.annotations;
 
-import org.trebol.annotation.validator.PhoneNumberValidator;
+import org.trebol.annotations.validator.PhoneNumberValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

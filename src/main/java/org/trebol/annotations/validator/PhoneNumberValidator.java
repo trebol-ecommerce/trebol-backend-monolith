@@ -18,10 +18,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.annotation.validator;
+package org.trebol.annotations.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.trebol.annotation.PhoneNumber;
+import org.trebol.annotations.PhoneNumber;
 import org.trebol.config.ValidationProperties;
 
 import javax.validation.ConstraintValidator;
