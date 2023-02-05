@@ -29,7 +29,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.DataCrudGenericControllerTest;
 import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.api.services.PaginationService;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
@@ -37,6 +36,7 @@ import org.trebol.jpa.services.predicates.ProductCategoriesPredicateService;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,33 +61,35 @@ class DataProductCategoriesControllerTest
 
   @Test
   void reads_categories() {
-    super.reads_data(null);
-    super.reads_data(Map.of());
-    super.reads_data(Map.of(ANY, ANY));
+    assertDoesNotThrow(() -> {
+      super.reads_data(null);
+      super.reads_data(Map.of());
+      super.reads_data(Map.of(ANY, ANY));
+    });
   }
 
   @Test
-  void creates_categories() throws BadInputException {
-    super.creates_data(ProductCategoryPojo.builder().build());
+  void creates_categories() {
+    assertDoesNotThrow(() -> super.creates_data(ProductCategoryPojo.builder().build()));
   }
 
   @Test
-  void updates_categories() throws BadInputException {
-    super.updates_data_using_only_a_pojo(ProductCategoryPojo.builder().build());
+  void updates_categories() {
+    assertDoesNotThrow(() -> super.updates_data_using_only_a_pojo(ProductCategoryPojo.builder().build()));
   }
 
   @Test
-  void updates_categories_using_predicate_filters_map() throws BadInputException {
-    super.updates_data_parsing_predicate_filters_from_map(ProductCategoryPojo.builder().build(), null);
+  void updates_categories_using_predicate_filters_map() {
+    assertDoesNotThrow(() -> super.updates_data_parsing_predicate_filters_from_map(ProductCategoryPojo.builder().build(), null));
   }
 
   @Test
-  void deletes_categories() throws BadInputException {
-    super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
+  void deletes_categories() {
+    assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
   }
 
   @Test
   void does_not_delete_categories_when_predicate_filters_map_is_empty() {
-    super.does_not_delete_data_when_predicate_filters_map_is_empty();
+    assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
   }
 }

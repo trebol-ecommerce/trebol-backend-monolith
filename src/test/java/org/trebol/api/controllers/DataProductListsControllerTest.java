@@ -29,7 +29,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.DataCrudGenericControllerTest;
 import org.trebol.api.models.ProductListPojo;
 import org.trebol.api.services.PaginationService;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.ProductListCrudService;
@@ -37,6 +36,7 @@ import org.trebol.jpa.services.predicates.ProductListsPredicateService;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,33 +61,35 @@ class DataProductListsControllerTest
 
   @Test
   void reads_lists() {
-    super.reads_data(null);
-    super.reads_data(Map.of());
-    super.reads_data(Map.of(ANY, ANY));
+    assertDoesNotThrow(() -> {
+      super.reads_data(null);
+      super.reads_data(Map.of());
+      super.reads_data(Map.of(ANY, ANY));
+    });
   }
 
   @Test
-  void creates_lists() throws BadInputException {
-    super.creates_data(ProductListPojo.builder().build());
+  void creates_lists() {
+    assertDoesNotThrow(() -> super.creates_data(ProductListPojo.builder().build()));
   }
 
   @Test
-  void updates_lists() throws BadInputException {
-    super.updates_data_using_only_a_pojo(ProductListPojo.builder().build());
+  void updates_lists() {
+    assertDoesNotThrow(() -> super.updates_data_using_only_a_pojo(ProductListPojo.builder().build()));
   }
 
   @Test
-  void updates_lists_using_predicate_filters_map() throws BadInputException {
-    super.updates_data_parsing_predicate_filters_from_map(ProductListPojo.builder().build(), null);
+  void updates_lists_using_predicate_filters_map() {
+    assertDoesNotThrow(() -> super.updates_data_parsing_predicate_filters_from_map(ProductListPojo.builder().build(), null));
   }
 
   @Test
-  void deletes_lists() throws BadInputException {
-    super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
+  void deletes_lists() {
+    assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
   }
 
   @Test
   void does_not_delete_lists_when_predicate_filters_map_is_empty() {
-    super.does_not_delete_data_when_predicate_filters_map_is_empty();
+    assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
   }
 }

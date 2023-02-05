@@ -29,7 +29,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.DataCrudGenericControllerTest;
 import org.trebol.api.models.ImagePojo;
 import org.trebol.api.services.PaginationService;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
@@ -37,6 +36,7 @@ import org.trebol.jpa.services.predicates.ImagesPredicateService;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,48 +61,56 @@ class DataImagesControllerTest
 
   @Test
   void reads_images() {
-    super.reads_data(null);
-    super.reads_data(Map.of());
-    super.reads_data(Map.of(ANY, ANY));
+    assertDoesNotThrow(() -> {
+      super.reads_data(null);
+      super.reads_data(Map.of());
+      super.reads_data(Map.of(ANY, ANY));
+    });
   }
 
   @Test
-  void creates_images() throws BadInputException {
-    ImagePojo input = ImagePojo.builder()
-      .url(ANY)
-      .filename(ANY)
-      .code(ANY)
-      .build();
-    super.creates_data(input);
+  void creates_images() {
+    assertDoesNotThrow(() -> {
+      ImagePojo input = ImagePojo.builder()
+        .url(ANY)
+        .filename(ANY)
+        .code(ANY)
+        .build();
+      super.creates_data(input);
+    });
   }
 
   @Test
-  void updates_images() throws BadInputException {
-    ImagePojo input = ImagePojo.builder()
-      .url(ANY)
-      .filename(ANY)
-      .code(ANY)
-      .build();
-    super.updates_data_using_only_a_pojo(input);
+  void updates_images() {
+    assertDoesNotThrow(() -> {
+      ImagePojo input = ImagePojo.builder()
+        .url(ANY)
+        .filename(ANY)
+        .code(ANY)
+        .build();
+      super.updates_data_using_only_a_pojo(input);
+    });
   }
 
   @Test
-  void updates_images_using_predicate_filters_map() throws BadInputException {
-    ImagePojo input = ImagePojo.builder()
-      .url(ANY)
-      .filename(ANY)
-      .code(ANY)
-      .build();
-    super.updates_data_parsing_predicate_filters_from_map(input, null);
+  void updates_images_using_predicate_filters_map() {
+    assertDoesNotThrow(() -> {
+      ImagePojo input = ImagePojo.builder()
+        .url(ANY)
+        .filename(ANY)
+        .code(ANY)
+        .build();
+      super.updates_data_parsing_predicate_filters_from_map(input, null);
+    });
   }
 
   @Test
-  void deletes_images() throws BadInputException {
-    super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
+  void deletes_images() {
+    assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
   }
 
   @Test
   void does_not_delete_images_when_predicate_filters_map_is_empty() {
-    super.does_not_delete_data_when_predicate_filters_map_is_empty();
+    assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
   }
 }

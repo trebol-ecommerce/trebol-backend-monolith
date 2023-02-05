@@ -30,7 +30,6 @@ import org.trebol.api.DataCrudGenericControllerTest;
 import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.api.services.SalesProcessService;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.services.MailingService;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.SortSpecParserService;
@@ -39,6 +38,7 @@ import org.trebol.jpa.services.predicates.SalesPredicateService;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -65,33 +65,35 @@ class DataSalesControllerTest
 
   @Test
   void reads_sales() {
-    super.reads_data(null);
-    super.reads_data(Map.of());
-    super.reads_data(Map.of(ANY, ANY));
+    assertDoesNotThrow(() -> {
+      super.reads_data(null);
+      super.reads_data(Map.of());
+      super.reads_data(Map.of(ANY, ANY));
+    });
   }
 
   @Test
-  void creates_sales() throws BadInputException {
-    super.creates_data(SellPojo.builder().build());
+  void creates_sales() {
+    assertDoesNotThrow(() -> super.creates_data(SellPojo.builder().build()));
   }
 
   @Test
-  void updates_sales() throws BadInputException {
-    super.updates_data_using_only_a_pojo(SellPojo.builder().build());
+  void updates_sales() {
+    assertDoesNotThrow(() -> super.updates_data_using_only_a_pojo(SellPojo.builder().build()));
   }
 
   @Test
-  void updates_sales_using_predicate_filters_map() throws BadInputException {
-    super.updates_data_parsing_predicate_filters_from_map(SellPojo.builder().build(), null);
+  void updates_sales_using_predicate_filters_map() {
+    assertDoesNotThrow(() -> super.updates_data_parsing_predicate_filters_from_map(SellPojo.builder().build(), null));
   }
 
   @Test
-  void deletes_sales() throws BadInputException {
-    super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
+  void deletes_sales() {
+    assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
   }
 
   @Test
   void does_not_delete_sales_when_predicate_filters_map_is_empty() {
-    super.does_not_delete_data_when_predicate_filters_map_is_empty();
+    assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
   }
 }

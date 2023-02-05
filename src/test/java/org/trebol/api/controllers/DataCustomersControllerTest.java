@@ -29,7 +29,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.DataCrudGenericControllerTest;
 import org.trebol.api.models.CustomerPojo;
 import org.trebol.api.services.PaginationService;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
@@ -37,6 +36,7 @@ import org.trebol.jpa.services.predicates.CustomersPredicateService;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,33 +61,35 @@ class DataCustomersControllerTest
 
   @Test
   void reads_customers() {
-    super.reads_data(null);
-    super.reads_data(Map.of());
-    super.reads_data(Map.of(ANY, ANY));
+    assertDoesNotThrow(() -> {
+      super.reads_data(null);
+      super.reads_data(Map.of());
+      super.reads_data(Map.of(ANY, ANY));
+    });
   }
 
   @Test
-  void creates_customers() throws BadInputException {
-    super.creates_data(CustomerPojo.builder().build());
+  void creates_customers() {
+    assertDoesNotThrow(() -> super.creates_data(CustomerPojo.builder().build()));
   }
 
   @Test
-  void updates_customers() throws BadInputException {
-    super.updates_data_using_only_a_pojo(CustomerPojo.builder().build());
+  void updates_customers() {
+    assertDoesNotThrow(() -> super.updates_data_using_only_a_pojo(CustomerPojo.builder().build()));
   }
 
   @Test
-  void updates_customers_using_predicate_filters_map() throws BadInputException {
-    super.updates_data_parsing_predicate_filters_from_map(CustomerPojo.builder().build(), null);
+  void updates_customers_using_predicate_filters_map() {
+    assertDoesNotThrow(() -> super.updates_data_parsing_predicate_filters_from_map(CustomerPojo.builder().build(), null));
   }
 
   @Test
-  void deletes_customers() throws BadInputException {
-    super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY));
+  void deletes_customers() {
+    assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
   }
 
   @Test
   void does_not_delete_customers_when_predicate_filters_map_is_empty() {
-    super.does_not_delete_data_when_predicate_filters_map_is_empty();
+    assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
   }
 }
