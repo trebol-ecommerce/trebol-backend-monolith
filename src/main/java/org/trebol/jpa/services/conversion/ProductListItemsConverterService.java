@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.conversion;
 
+import org.trebol.api.models.ProductPojo;
 import org.trebol.jpa.entities.ProductListItem;
 import org.trebol.jpa.services.ConverterService;
-import org.trebol.pojo.ProductPojo;
 
 public interface ProductListItemsConverterService
   extends ConverterService<ProductPojo, ProductListItem> {

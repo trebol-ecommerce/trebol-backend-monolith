@@ -18,33 +18,19 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.pojo;
+package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-
+/**
+ * Wrapper class for data needed to redirect towards payment page
+ */
 @Data
 @Builder
-@JsonInclude(NON_NULL)
-public class PersonPojo {
-  @JsonIgnore
-  private Long id;
-  @NotBlank
-  private String firstName;
-  @NotBlank
-  private String lastName;
-  @NotBlank
-  private String idNumber;
-  @NotBlank
-  private String email;
-  // @Pattern(regexp = "^(((\\(\\+?[0-9]{3}\\))|(\\+?[0-9]{3})) ?)?[0-9]{3,4}[ -]?[0-9]{4}$")
-  private String phone1;
-  // @Pattern(regexp = "^(((\\(\\+?[0-9]{3}\\))|(\\+?[0-9]{3})) ?)?[0-9]{3,4}[ -]?[0-9]{4}$")
-  private String phone2;
+@JsonInclude
+public class PaymentRedirectionDetailsPojo {
+  private String url;
+  private String token;
 }

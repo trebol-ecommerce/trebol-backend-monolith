@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.crud;
 
+import org.trebol.api.models.SellStatusPojo;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.services.CrudService;
-import org.trebol.pojo.SellStatusPojo;
 
 public interface SellStatusesCrudService
   extends CrudService<SellStatusPojo, SellStatus> {

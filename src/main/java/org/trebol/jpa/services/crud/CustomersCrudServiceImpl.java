@@ -24,13 +24,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.models.CustomerPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.repositories.CustomersRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.CustomersConverterService;
 import org.trebol.jpa.services.datatransport.CustomersDataTransportService;
-import org.trebol.pojo.CustomerPojo;
 
 import java.util.Optional;
 

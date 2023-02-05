@@ -24,13 +24,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.models.UserRolePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.UserRolesRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.UserRolesConverterService;
 import org.trebol.jpa.services.datatransport.UserRolesDataTransportService;
-import org.trebol.pojo.UserRolePojo;
 
 import java.util.Optional;
 

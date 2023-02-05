@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.datatransport;
 
+import org.trebol.api.models.ShipperPojo;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.services.DataTransportService;
-import org.trebol.pojo.ShipperPojo;
 
 public interface ShippersDataTransportService
   extends DataTransportService<ShipperPojo, Shipper> {

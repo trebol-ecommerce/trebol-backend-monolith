@@ -26,9 +26,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.CompanyDetailsPojo;
 import org.trebol.jpa.entities.Param;
 import org.trebol.jpa.repositories.ParamsRepository;
-import org.trebol.pojo.CompanyDetailsPojo;
 
 import java.util.List;
 

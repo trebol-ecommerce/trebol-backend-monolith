@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.conversion;
 
+import org.trebol.api.models.ImagePojo;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.ConverterService;
-import org.trebol.pojo.ImagePojo;
 
 public interface ImagesConverterService
   extends ConverterService<ImagePojo, Image> {

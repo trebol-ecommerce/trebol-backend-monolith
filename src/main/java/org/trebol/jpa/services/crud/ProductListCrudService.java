@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.crud;
 
+import org.trebol.api.models.ProductListPojo;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.services.CrudService;
-import org.trebol.pojo.ProductListPojo;
 
 public interface ProductListCrudService
   extends CrudService<ProductListPojo, ProductList> {

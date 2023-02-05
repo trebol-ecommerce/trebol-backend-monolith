@@ -26,8 +26,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.BillingTypePojo;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.pojo.BillingTypePojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.constant.TestConstants.ANY;

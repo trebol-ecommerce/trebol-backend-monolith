@@ -20,8 +20,8 @@
 
 package org.trebol.testhelpers;
 
+import org.trebol.api.models.ImagePojo;
 import org.trebol.jpa.entities.Image;
-import org.trebol.pojo.ImagePojo;
 
 /**
  * Builds & caches reusable instances of Image and ImagePojo

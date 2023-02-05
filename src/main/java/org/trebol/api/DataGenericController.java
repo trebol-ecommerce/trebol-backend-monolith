@@ -23,11 +23,11 @@ package org.trebol.api;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
+import org.trebol.api.models.DataPagePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.services.CrudService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
-import org.trebol.pojo.DataPagePojo;
 
 import java.util.Map;
 

@@ -21,8 +21,8 @@
 package org.trebol.common.converters;
 
 import org.junit.jupiter.api.Test;
+import org.trebol.api.models.ReceiptDetailPojo;
 import org.trebol.jpa.entities.SellDetail;
-import org.trebol.pojo.ReceiptDetailPojo;
 
 import java.util.List;
 

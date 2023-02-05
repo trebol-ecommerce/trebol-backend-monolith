@@ -23,13 +23,13 @@ package org.trebol.api.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.trebol.api.models.ProductPojo;
+import org.trebol.api.models.ReceiptDetailPojo;
+import org.trebol.api.models.ReceiptPojo;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.repositories.SalesRepository;
-import org.trebol.pojo.ProductPojo;
-import org.trebol.pojo.ReceiptDetailPojo;
-import org.trebol.pojo.ReceiptPojo;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;

@@ -18,26 +18,33 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.pojo;
+package org.trebol.api.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
 @Builder
-@JsonInclude
-public class SellDetailPojo {
+@JsonInclude(NON_NULL)
+public class PersonPojo {
   @JsonIgnore
   private Long id;
-  @Min(1)
-  private int units;
-  private int unitValue;
-  private String description;
-  @NotNull
-  private ProductPojo product;
+  @NotBlank
+  private String firstName;
+  @NotBlank
+  private String lastName;
+  @NotBlank
+  private String idNumber;
+  @NotBlank
+  private String email;
+  // @Pattern(regexp = "^(((\\(\\+?[0-9]{3}\\))|(\\+?[0-9]{3})) ?)?[0-9]{3,4}[ -]?[0-9]{4}$")
+  private String phone1;
+  // @Pattern(regexp = "^(((\\(\\+?[0-9]{3}\\))|(\\+?[0-9]{3})) ?)?[0-9]{3,4}[ -]?[0-9]{4}$")
+  private String phone2;
 }

@@ -20,10 +20,10 @@
 
 package org.trebol.testhelpers;
 
+import org.trebol.api.models.PersonPojo;
+import org.trebol.api.models.SalespersonPojo;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.pojo.PersonPojo;
-import org.trebol.pojo.SalespersonPojo;
 
 /**
  * Builds & caches reusable instances of Salesperson and SalespersonPojo

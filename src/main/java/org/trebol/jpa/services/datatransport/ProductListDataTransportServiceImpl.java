@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
-import org.trebol.pojo.ProductListPojo;
+import org.trebol.api.models.ProductListPojo;
 
 @Service
 public class ProductListDataTransportServiceImpl

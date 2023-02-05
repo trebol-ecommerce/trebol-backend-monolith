@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.datatransport;
 
+import org.trebol.api.models.UserPojo;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.services.DataTransportService;
-import org.trebol.pojo.UserPojo;
 
 public interface UsersDataTransportService
   extends DataTransportService<UserPojo, User> {

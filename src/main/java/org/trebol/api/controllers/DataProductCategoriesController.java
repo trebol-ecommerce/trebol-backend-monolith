@@ -24,14 +24,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.api.DataCrudGenericController;
+import org.trebol.api.models.DataPagePojo;
+import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
-import org.trebol.pojo.DataPagePojo;
-import org.trebol.pojo.ProductCategoryPojo;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;

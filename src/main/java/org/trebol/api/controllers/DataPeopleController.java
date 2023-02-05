@@ -27,13 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.DataGenericController;
+import org.trebol.api.models.DataPagePojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.PeopleCrudService;
-import org.trebol.pojo.DataPagePojo;
-import org.trebol.pojo.PersonPojo;
 
 import java.util.Map;
 

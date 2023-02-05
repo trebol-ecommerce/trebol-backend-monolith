@@ -18,18 +18,20 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.pojo;
+package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
+import javax.validation.constraints.NotBlank;
 
 @Data
-@JsonInclude(ALWAYS)
-public class CompanyDetailsPojo {
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginPojo {
+  @NotBlank
   private String name;
-  private String description;
-  private String bannerImageURL;
-  private String logoImageURL;
+  @NotBlank
+  private String password;
 }

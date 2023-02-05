@@ -20,8 +20,8 @@
 
 package org.trebol.testhelpers;
 
+import org.trebol.api.models.PersonPojo;
 import org.trebol.jpa.entities.Person;
-import org.trebol.pojo.PersonPojo;
 
 /**
  * Builds & caches reusable instances of Person and PersonPojo

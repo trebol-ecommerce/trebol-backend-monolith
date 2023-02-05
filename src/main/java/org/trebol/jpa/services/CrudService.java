@@ -23,8 +23,8 @@ package org.trebol.jpa.services;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
+import org.trebol.api.models.DataPagePojo;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.pojo.DataPagePojo;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -34,7 +34,7 @@ import java.util.Optional;
 /**
  * Interface for wrapping basic CRUD service operations by using Pojo classes
  *
- * @param <P> The pojo type class
+ * @param <P> The models type class
  */
 public interface CrudService<P, E> {
 
@@ -70,12 +70,12 @@ public interface CrudService<P, E> {
   P readOne(Predicate filters) throws EntityNotFoundException;
 
   /**
-   * Attempts to match the given pojo class instance to an existing entity.
-   * This method is also useful to assert bare-minimum pojo validity for using it to update data.
+   * Attempts to match the given models class instance to an existing entity.
+   * This method is also useful to assert bare-minimum models validity for using it to update data.
    *
-   * @param example The pojo class instance that should hold a valid identifying property
+   * @param example The models class instance that should hold a valid identifying property
    * @return A possible entity match that may have succeeded or not
-   * @throws BadInputException When the pojo doesn't have its identifying property.
+   * @throws BadInputException When the models doesn't have its identifying property.
    */
   Optional<E> getExisting(P example) throws BadInputException;
 

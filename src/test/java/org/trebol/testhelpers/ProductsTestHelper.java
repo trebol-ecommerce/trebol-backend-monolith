@@ -20,8 +20,8 @@
 
 package org.trebol.testhelpers;
 
+import org.trebol.api.models.ProductPojo;
 import org.trebol.jpa.entities.Product;
-import org.trebol.pojo.ProductPojo;
 
 /**
  * Builds & caches reusable instances of Product and ProductPojo

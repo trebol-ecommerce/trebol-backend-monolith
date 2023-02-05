@@ -27,12 +27,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.DataGenericControllerTest;
+import org.trebol.api.models.SellStatusPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SellStatusesCrudService;
 import org.trebol.jpa.services.sortspecs.SellStatusesSortSpecService;
-import org.trebol.pojo.SellStatusPojo;
 
 import java.util.Map;
 

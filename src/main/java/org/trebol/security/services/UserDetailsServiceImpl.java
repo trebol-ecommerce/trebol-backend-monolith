@@ -32,7 +32,7 @@ import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRolePermission;
 import org.trebol.jpa.repositories.UserRolePermissionsRepository;
 import org.trebol.jpa.repositories.UsersRepository;
-import org.trebol.pojo.UserDetailsPojo;
+import org.trebol.security.UserDetailsPojo;
 import org.trebol.security.UserPermissionsService;
 
 import java.util.ArrayList;

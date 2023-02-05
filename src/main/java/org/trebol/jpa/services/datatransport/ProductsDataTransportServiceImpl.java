@@ -22,9 +22,9 @@ package org.trebol.jpa.services.datatransport;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.models.ProductPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
-import org.trebol.pojo.ProductPojo;
 
 @Transactional
 @Service

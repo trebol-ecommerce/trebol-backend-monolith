@@ -18,53 +18,27 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.pojo;
+package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.time.Instant;
-import java.util.Collection;
 
-import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
 @Builder
-@JsonInclude
-public class SellPojo {
-  private Long buyOrder;
+@JsonInclude(NON_NULL)
+public class ImagePojo {
   @JsonIgnore
-  private String token;
-  @JsonFormat(shape = STRING, pattern = "yyyy/MM/dd HH:mm:ss OOOO", timezone = "UTC")
-  private Instant date;
-  @Valid
-  @NotEmpty
-  @JsonInclude(NON_EMPTY)
-  private Collection<SellDetailPojo> details;
-  private int netValue;
-  private int taxValue;
-  private int transportValue;
-  private int totalValue;
-  private int totalItems;
-  private String status;
-  private String billingType;
+  private Long id;
   @NotBlank
-  private String paymentType;
-  @Valid
-  private CustomerPojo customer;
-  private SalespersonPojo salesperson;
-  private ShipperPojo shipper;
-  private BillingCompanyPojo billingCompany;
-  @Valid
-  @NotNull
-  private AddressPojo billingAddress;
-  private AddressPojo shippingAddress;
+  private String code;
+  @NotBlank
+  private String filename;
+  @NotBlank
+  private String url;
 }

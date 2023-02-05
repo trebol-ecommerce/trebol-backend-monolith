@@ -26,14 +26,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.ImagePojo;
+import org.trebol.api.models.ProductCategoryPojo;
+import org.trebol.api.models.ProductPojo;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.repositories.ProductImagesRepository;
-import org.trebol.pojo.ImagePojo;
-import org.trebol.pojo.ProductCategoryPojo;
-import org.trebol.pojo.ProductPojo;
 
 import java.util.List;
 

@@ -26,13 +26,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.DataGenericController;
+import org.trebol.api.models.BillingTypePojo;
+import org.trebol.api.models.DataPagePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.BillingTypesCrudService;
-import org.trebol.pojo.BillingTypePojo;
-import org.trebol.pojo.DataPagePojo;
 
 import java.util.Map;
 

@@ -22,7 +22,7 @@ package org.trebol.jpa.services.datatransport;
 
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.DataTransportService;
-import org.trebol.pojo.ImagePojo;
+import org.trebol.api.models.ImagePojo;
 
 public interface ImagesDataTransportService
   extends DataTransportService<ImagePojo, Image> {

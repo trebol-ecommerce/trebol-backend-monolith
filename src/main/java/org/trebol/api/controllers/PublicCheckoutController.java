@@ -29,6 +29,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.trebol.api.models.PaymentRedirectionDetailsPojo;
+import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.CheckoutService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.IMailingIntegrationService;
@@ -37,8 +39,6 @@ import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
-import org.trebol.pojo.PaymentRedirectionDetailsPojo;
-import org.trebol.pojo.SellPojo;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -80,7 +80,7 @@ public class PublicCheckoutController {
    *
    * @param transactionRequest The checkout details
    * @return An object wrapping the URL and token to redirect the user with, towards their payment page.
-   * @throws BadInputException                   If the input pojo class contains invalid data
+   * @throws BadInputException                   If the input models class contains invalid data
    * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during the payment
    *                                                                   integration process
    */

@@ -21,9 +21,9 @@
 package org.trebol.jpa.services.datatransport;
 
 import org.springframework.stereotype.Service;
+import org.trebol.api.models.ShipperPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.pojo.ShipperPojo;
 
 @Service
 public class ShippersDataTransportServiceImpl

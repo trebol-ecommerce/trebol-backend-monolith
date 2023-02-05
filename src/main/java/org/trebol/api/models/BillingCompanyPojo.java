@@ -18,21 +18,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.pojo;
+package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-
 @Data
 @Builder
 @JsonInclude
-public class ShipperPojo {
-  @JsonIgnore
-  private Long id;
-  @NotBlank
+public class BillingCompanyPojo {
+  private String idNumber;
   private String name;
 }

@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.conversion;
 
+import org.trebol.api.models.UserRolePojo;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.ConverterService;
-import org.trebol.pojo.UserRolePojo;
 
 public interface UserRolesConverterService
   extends ConverterService<UserRolePojo, UserRole> {

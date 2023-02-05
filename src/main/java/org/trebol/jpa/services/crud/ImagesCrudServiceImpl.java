@@ -24,13 +24,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.models.ImagePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.repositories.ImagesRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.ImagesConverterService;
 import org.trebol.jpa.services.datatransport.ImagesDataTransportService;
-import org.trebol.pojo.ImagePojo;
 
 import java.util.Optional;
 

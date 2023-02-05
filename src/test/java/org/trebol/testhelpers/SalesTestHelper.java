@@ -20,9 +20,9 @@
 
 package org.trebol.testhelpers;
 
+import org.trebol.api.models.SellDetailPojo;
+import org.trebol.api.models.SellPojo;
 import org.trebol.jpa.entities.*;
-import org.trebol.pojo.SellDetailPojo;
-import org.trebol.pojo.SellPojo;
 
 import java.time.Instant;
 import java.util.List;

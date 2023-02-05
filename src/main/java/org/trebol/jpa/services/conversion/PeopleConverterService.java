@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.conversion;
 
+import org.trebol.api.models.PersonPojo;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.services.ConverterService;
-import org.trebol.pojo.PersonPojo;
 
 public interface PeopleConverterService
   extends ConverterService<PersonPojo, Person> {

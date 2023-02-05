@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.crud;
 
+import org.trebol.api.models.ImagePojo;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.CrudService;
-import org.trebol.pojo.ImagePojo;
 
 public interface ImagesCrudService
   extends CrudService<ImagePojo, Image> {

@@ -27,13 +27,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.DataCrudGenericControllerTest;
+import org.trebol.api.models.ImagePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
 import org.trebol.jpa.services.sortspecs.ImagesSortSpecService;
-import org.trebol.pojo.ImagePojo;
 
 import java.util.Map;
 

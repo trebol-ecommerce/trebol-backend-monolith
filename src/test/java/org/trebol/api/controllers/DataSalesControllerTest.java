@@ -27,6 +27,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.DataCrudGenericControllerTest;
+import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.api.services.SalesProcessService;
 import org.trebol.common.exceptions.BadInputException;
@@ -35,7 +36,6 @@ import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.sortspecs.SalesSortSpecService;
-import org.trebol.pojo.SellPojo;
 
 import java.util.Map;
 

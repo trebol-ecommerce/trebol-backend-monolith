@@ -20,7 +20,7 @@
 
 package org.trebol.api;
 
-import org.trebol.pojo.DataPagePojo;
+import org.trebol.api.models.DataPagePojo;
 
 import javax.validation.constraints.NotNull;
 import java.util.Map;

@@ -21,9 +21,9 @@
 package org.trebol.jpa.services.datatransport;
 
 import org.springframework.stereotype.Service;
+import org.trebol.api.models.UserRolePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.pojo.UserRolePojo;
 
 @Service
 public class UserRolesDataTransportServiceImpl

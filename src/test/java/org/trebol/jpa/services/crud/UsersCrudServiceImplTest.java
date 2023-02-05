@@ -27,6 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.UserPojo;
 import org.trebol.common.exceptions.AccountProtectionViolationException;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.config.SecurityProperties;
@@ -34,7 +35,6 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.UsersRepository;
-import org.trebol.pojo.UserPojo;
 
 import java.util.Optional;
 

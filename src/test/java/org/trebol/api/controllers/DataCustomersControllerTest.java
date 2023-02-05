@@ -27,13 +27,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.DataCrudGenericControllerTest;
+import org.trebol.api.models.CustomerPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
 import org.trebol.jpa.services.sortspecs.CustomersSortSpecService;
-import org.trebol.pojo.CustomerPojo;
 
 import java.util.Map;
 

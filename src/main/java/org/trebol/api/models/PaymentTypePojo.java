@@ -18,24 +18,18 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.pojo;
+package org.trebol.api.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
-import java.time.Instant;
-import java.util.Collection;
+import javax.validation.constraints.NotBlank;
 
 @Data
+@Builder
 @JsonInclude
-public class ReceiptPojo {
-  private long buyOrder;
-  private Collection<ReceiptDetailPojo> details;
-  private Instant date;
-  private String status;
-  private String token;
-  private int totalValue;
-  private int taxValue;
-  private int transportValue;
-  private int totalItems;
+public class PaymentTypePojo {
+  @NotBlank
+  private String name;
 }

@@ -28,7 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.trebol.pojo.AuthorizedAccessPojo;
+import org.trebol.api.models.AuthorizedAccessPojo;
 import org.trebol.security.AuthorizationHeaderParserService;
 import org.trebol.security.AuthorizedApiService;
 

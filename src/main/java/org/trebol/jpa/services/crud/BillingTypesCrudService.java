@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.crud;
 
+import org.trebol.api.models.BillingTypePojo;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.services.CrudService;
-import org.trebol.pojo.BillingTypePojo;
 
 public interface BillingTypesCrudService
   extends CrudService<BillingTypePojo, BillingType> {

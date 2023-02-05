@@ -20,8 +20,8 @@
 
 package org.trebol.api.services;
 
+import org.trebol.api.models.RegistrationPojo;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.pojo.RegistrationPojo;
 
 import javax.persistence.EntityExistsException;
 

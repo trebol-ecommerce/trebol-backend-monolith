@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.crud;
 
+import org.trebol.api.models.UserRolePojo;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.CrudService;
-import org.trebol.pojo.UserRolePojo;
 
 public interface UserRolesCrudService
   extends CrudService<UserRolePojo, UserRole> {

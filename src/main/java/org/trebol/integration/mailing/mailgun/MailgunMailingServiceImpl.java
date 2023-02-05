@@ -36,10 +36,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.trebol.api.models.*;
 import org.trebol.integration.IMailingIntegrationService;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.mailing.MailingProperties;
-import org.trebol.pojo.*;
 
 import java.time.Instant;
 import java.util.ArrayList;

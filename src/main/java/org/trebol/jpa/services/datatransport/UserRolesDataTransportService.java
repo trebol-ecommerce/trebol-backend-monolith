@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.datatransport;
 
+import org.trebol.api.models.UserRolePojo;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.DataTransportService;
-import org.trebol.pojo.UserRolePojo;
 
 public interface UserRolesDataTransportService
   extends DataTransportService<UserRolePojo, UserRole> {

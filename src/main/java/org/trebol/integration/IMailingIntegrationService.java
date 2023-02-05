@@ -20,9 +20,9 @@
 
 package org.trebol.integration;
 
+import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.exceptions.MailingServiceException;
-import org.trebol.pojo.SellPojo;
 
 /**
  * Point of entry for services to send mail to customers and owners alike

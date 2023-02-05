@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.conversion;
 
+import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.ConverterService;
-import org.trebol.pojo.ProductCategoryPojo;
 
 public interface ProductCategoriesConverterService
   extends ConverterService<ProductCategoryPojo, ProductCategory> {

@@ -27,12 +27,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.DataGenericControllerTest;
+import org.trebol.api.models.BillingTypePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.BillingTypesCrudService;
-import org.trebol.pojo.BillingTypePojo;
 
 import java.util.Map;
 

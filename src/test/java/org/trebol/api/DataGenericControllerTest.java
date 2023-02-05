@@ -21,8 +21,8 @@
 package org.trebol.api;
 
 import org.springframework.lang.Nullable;
+import org.trebol.api.models.DataPagePojo;
 import org.trebol.jpa.services.CrudService;
-import org.trebol.pojo.DataPagePojo;
 
 import java.util.Map;
 

@@ -26,10 +26,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.SellStatusPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.SellStatusesRepository;
-import org.trebol.pojo.SellStatusPojo;
 
 import java.util.Optional;
 

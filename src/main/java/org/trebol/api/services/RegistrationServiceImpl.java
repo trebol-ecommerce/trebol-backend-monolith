@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.trebol.api.models.PersonPojo;
+import org.trebol.api.models.RegistrationPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.CustomersRepository;
@@ -33,8 +35,6 @@ import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.jpa.repositories.UserRolesRepository;
 import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
-import org.trebol.pojo.PersonPojo;
-import org.trebol.pojo.RegistrationPojo;
 
 import javax.persistence.EntityExistsException;
 import java.util.Optional;

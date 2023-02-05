@@ -18,20 +18,27 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.pojo;
+package org.trebol.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Collection;
+import javax.validation.constraints.NotEmpty;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
 @Builder
 @JsonInclude(NON_NULL)
-public class AuthorizedAccessPojo {
-  private Collection<String> routes;
-  private Collection<String> permissions;
+public class ProductListPojo {
+  @JsonIgnore
+  private Long id;
+  private String name;
+  @NotEmpty
+  private String code;
+  @JsonInclude(NON_DEFAULT)
+  private long totalCount;
 }

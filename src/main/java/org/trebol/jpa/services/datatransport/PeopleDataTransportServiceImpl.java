@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
-import org.trebol.pojo.PersonPojo;
+import org.trebol.api.models.PersonPojo;
 
 @Service
 public class PeopleDataTransportServiceImpl

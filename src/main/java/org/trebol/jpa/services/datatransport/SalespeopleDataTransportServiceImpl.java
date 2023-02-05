@@ -22,10 +22,10 @@ package org.trebol.jpa.services.datatransport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.trebol.api.models.SalespersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
-import org.trebol.pojo.SalespersonPojo;
 
 @Service
 public class SalespeopleDataTransportServiceImpl

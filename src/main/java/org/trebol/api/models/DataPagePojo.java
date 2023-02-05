@@ -18,27 +18,32 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.pojo;
+package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-
+/**
+ * A simple object that represents a page of data for a specific type
+ *
+ * @param <T> The type of data in the page
+ */
 @Data
-@Builder
-@JsonInclude(NON_NULL)
-public class ProductListPojo {
-  @JsonIgnore
-  private Long id;
-  private String name;
-  @NotEmpty
-  private String code;
-  @JsonInclude(NON_DEFAULT)
+@AllArgsConstructor
+@JsonInclude
+public class DataPagePojo<T> {
+  private Collection<T> items;
+  private int pageIndex;
   private long totalCount;
+  private int pageSize;
+
+  public DataPagePojo(int pageIndex, int pageSize) {
+    this.items = new ArrayList<>();
+    this.pageIndex = pageIndex;
+    this.pageSize = pageSize;
+  }
 }

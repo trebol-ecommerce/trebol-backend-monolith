@@ -22,7 +22,7 @@ package org.trebol.jpa.services.datatransport;
 
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.DataTransportService;
-import org.trebol.pojo.ProductCategoryPojo;
+import org.trebol.api.models.ProductCategoryPojo;
 
 public interface ProductCategoriesDataTransportService
   extends DataTransportService<ProductCategoryPojo, ProductCategory> {

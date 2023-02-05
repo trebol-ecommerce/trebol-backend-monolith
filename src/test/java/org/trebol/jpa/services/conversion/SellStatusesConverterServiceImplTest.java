@@ -26,8 +26,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.SellStatusPojo;
 import org.trebol.jpa.entities.SellStatus;
-import org.trebol.pojo.SellStatusPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.constant.TestConstants.ANY;

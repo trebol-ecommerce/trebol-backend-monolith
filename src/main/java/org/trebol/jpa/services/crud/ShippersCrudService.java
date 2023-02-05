@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.crud;
 
+import org.trebol.api.models.ShipperPojo;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.services.CrudService;
-import org.trebol.pojo.ShipperPojo;
 
 public interface ShippersCrudService
   extends CrudService<ShipperPojo, Shipper> {

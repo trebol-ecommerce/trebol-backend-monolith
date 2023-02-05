@@ -24,13 +24,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.models.ShipperPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.repositories.ShippersRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.ShippersConverterService;
 import org.trebol.jpa.services.datatransport.ShippersDataTransportService;
-import org.trebol.pojo.ShipperPojo;
 
 import java.util.Optional;
 

@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.pojo;
+package org.trebol.api.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,30 +26,19 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.Collection;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
 @Builder
-@JsonInclude(NON_NULL)
-public class ProductPojo {
+@JsonInclude
+public class ProductCategoryPojo {
   @JsonIgnore
   private Long id;
   @NotBlank
-  private String name;
+  private String code;
   @NotBlank
-  private String barcode;
-  @JsonInclude(NON_EMPTY)
-  private String description;
-  @NotNull
-  private Integer price;
-  @JsonIgnore
-  private Integer currentStock;
-  @JsonIgnore
-  private Integer criticalStock;
-  private ProductCategoryPojo category;
-  private Collection<ImagePojo> images;
+  private String name;
+  @JsonInclude(NON_NULL)
+  private ProductCategoryPojo parent;
 }

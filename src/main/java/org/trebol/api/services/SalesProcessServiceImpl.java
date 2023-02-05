@@ -22,6 +22,9 @@ package org.trebol.api.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.models.ProductPojo;
+import org.trebol.api.models.SellDetailPojo;
+import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
@@ -32,9 +35,6 @@ import org.trebol.jpa.repositories.SellStatusesRepository;
 import org.trebol.jpa.services.conversion.ProductsConverterService;
 import org.trebol.jpa.services.conversion.SalesConverterService;
 import org.trebol.jpa.services.crud.SalesCrudService;
-import org.trebol.pojo.ProductPojo;
-import org.trebol.pojo.SellDetailPojo;
-import org.trebol.pojo.SellPojo;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;

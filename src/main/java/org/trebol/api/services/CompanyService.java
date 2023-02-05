@@ -20,7 +20,7 @@
 
 package org.trebol.api.services;
 
-import org.trebol.pojo.CompanyDetailsPojo;
+import org.trebol.api.models.CompanyDetailsPojo;
 
 public interface CompanyService {
   CompanyDetailsPojo readDetails();

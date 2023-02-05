@@ -29,14 +29,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.PaymentRedirectionDetailsPojo;
+import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.IPaymentsIntegrationService;
 import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.crud.SalesCrudService;
-import org.trebol.pojo.PaymentRedirectionDetailsPojo;
-import org.trebol.pojo.SellPojo;
 import org.trebol.testhelpers.SalesTestHelper;
 
 import javax.persistence.EntityNotFoundException;

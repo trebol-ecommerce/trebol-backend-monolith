@@ -20,7 +20,7 @@
 
 package org.trebol.api.services;
 
-import org.trebol.pojo.ReceiptPojo;
+import org.trebol.api.models.ReceiptPojo;
 
 import javax.persistence.EntityNotFoundException;
 

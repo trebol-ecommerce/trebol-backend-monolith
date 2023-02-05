@@ -26,6 +26,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.api.DataCrudGenericController;
+import org.trebol.api.models.DataPagePojo;
+import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.api.services.SalesProcessService;
 import org.trebol.common.exceptions.BadInputException;
@@ -35,8 +37,6 @@ import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecService;
 import org.trebol.jpa.services.crud.SalesCrudService;
-import org.trebol.pojo.DataPagePojo;
-import org.trebol.pojo.SellPojo;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;

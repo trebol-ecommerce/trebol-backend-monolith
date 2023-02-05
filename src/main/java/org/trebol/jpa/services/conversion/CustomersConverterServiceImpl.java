@@ -22,11 +22,11 @@ package org.trebol.jpa.services.conversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.trebol.api.models.CustomerPojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
-import org.trebol.pojo.CustomerPojo;
-import org.trebol.pojo.PersonPojo;
 
 @Service
 public class CustomersConverterServiceImpl

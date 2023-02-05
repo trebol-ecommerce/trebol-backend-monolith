@@ -25,9 +25,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.ProductPojo;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductListItem;
-import org.trebol.pojo.ProductPojo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

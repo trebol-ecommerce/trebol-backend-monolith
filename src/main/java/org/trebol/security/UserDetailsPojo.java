@@ -18,23 +18,23 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.pojo;
+package org.trebol.security;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
-@Builder
-@JsonInclude
-public class SalespersonPojo {
-  @JsonIgnore
-  private Long id;
-  @NotNull
-  @Valid
-  private PersonPojo person;
+public class UserDetailsPojo
+  implements UserDetails {
+  private static final long serialVersionUID = 1L;
+  private final List<? extends GrantedAuthority> authorities;
+  private final String username;
+  private final String password;
+  private final boolean accountNonExpired;
+  private final boolean accountNonLocked;
+  private final boolean credentialsNonExpired;
+  private final boolean enabled;
 }

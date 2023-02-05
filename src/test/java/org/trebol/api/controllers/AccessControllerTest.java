@@ -32,10 +32,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.trebol.pojo.AuthorizedAccessPojo;
-import org.trebol.pojo.UserDetailsPojo;
+import org.trebol.api.models.AuthorizedAccessPojo;
 import org.trebol.security.AuthorizationHeaderParserService;
 import org.trebol.security.AuthorizedApiService;
+import org.trebol.security.UserDetailsPojo;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -22,9 +22,9 @@ package org.trebol.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.trebol.api.models.CompanyDetailsPojo;
 import org.trebol.jpa.entities.Param;
 import org.trebol.jpa.repositories.ParamsRepository;
-import org.trebol.pojo.CompanyDetailsPojo;
 
 @Service
 public class CompanyServiceImpl

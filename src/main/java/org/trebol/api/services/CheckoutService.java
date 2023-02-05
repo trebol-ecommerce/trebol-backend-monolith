@@ -20,10 +20,10 @@
 
 package org.trebol.api.services;
 
+import org.trebol.api.models.PaymentRedirectionDetailsPojo;
+import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.exceptions.PaymentServiceException;
-import org.trebol.pojo.PaymentRedirectionDetailsPojo;
-import org.trebol.pojo.SellPojo;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;

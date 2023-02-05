@@ -23,6 +23,7 @@ package org.trebol.api.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
@@ -33,7 +34,6 @@ import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.jpa.services.crud.PeopleCrudService;
 import org.trebol.jpa.services.datatransport.PeopleDataTransportService;
-import org.trebol.pojo.PersonPojo;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;

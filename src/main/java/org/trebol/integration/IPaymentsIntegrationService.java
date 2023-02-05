@@ -20,9 +20,9 @@
 
 package org.trebol.integration;
 
+import org.trebol.api.models.PaymentRedirectionDetailsPojo;
+import org.trebol.api.models.SellPojo;
 import org.trebol.integration.exceptions.PaymentServiceException;
-import org.trebol.pojo.PaymentRedirectionDetailsPojo;
-import org.trebol.pojo.SellPojo;
 
 /**
  * Interface for requesting and validating payments through an external integration

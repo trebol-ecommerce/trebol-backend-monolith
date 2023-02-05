@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.conversion;
 
+import org.trebol.api.models.BillingTypePojo;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.services.ConverterService;
-import org.trebol.pojo.BillingTypePojo;
 
 public interface BillingTypesConverterService
   extends ConverterService<BillingTypePojo, BillingType> {

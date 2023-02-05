@@ -27,10 +27,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.SalespersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.repositories.SalespeopleRepository;
-import org.trebol.pojo.SalespersonPojo;
 import org.trebol.testhelpers.SalespeopleTestHelper;
 
 import java.util.Optional;

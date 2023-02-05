@@ -24,13 +24,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.models.BillingTypePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.repositories.BillingTypesRepository;
 import org.trebol.jpa.services.CrudGenericService;
 import org.trebol.jpa.services.conversion.BillingTypesConverterService;
 import org.trebol.jpa.services.datatransport.BillingTypesDataTransportService;
-import org.trebol.pojo.BillingTypePojo;
 
 import java.util.Optional;
 

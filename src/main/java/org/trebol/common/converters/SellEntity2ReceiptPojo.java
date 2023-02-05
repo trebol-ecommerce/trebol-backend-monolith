@@ -22,8 +22,8 @@ package org.trebol.common.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import org.trebol.api.models.ReceiptPojo;
 import org.trebol.jpa.entities.Sell;
-import org.trebol.pojo.ReceiptPojo;
 
 @Component
 public class SellEntity2ReceiptPojo

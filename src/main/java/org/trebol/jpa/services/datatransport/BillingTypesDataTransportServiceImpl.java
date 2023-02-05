@@ -21,9 +21,9 @@
 package org.trebol.jpa.services.datatransport;
 
 import org.springframework.stereotype.Service;
+import org.trebol.api.models.BillingTypePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.pojo.BillingTypePojo;
 
 @Service
 public class BillingTypesDataTransportServiceImpl

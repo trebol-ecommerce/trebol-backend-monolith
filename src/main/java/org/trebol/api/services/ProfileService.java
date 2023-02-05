@@ -20,9 +20,9 @@
 
 package org.trebol.api.services;
 
+import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.exceptions.UserNotFoundException;
-import org.trebol.pojo.PersonPojo;
 
 import javax.persistence.EntityNotFoundException;
 

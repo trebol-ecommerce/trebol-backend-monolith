@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.datatransport;
 
+import org.trebol.api.models.SellStatusPojo;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.services.DataTransportService;
-import org.trebol.pojo.SellStatusPojo;
 
 public interface SellStatusesDataTransportService
   extends DataTransportService<SellStatusPojo, SellStatus> {

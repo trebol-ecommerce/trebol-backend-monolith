@@ -27,8 +27,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.trebol.api.models.LoginPojo;
 import org.trebol.config.SecurityProperties;
-import org.trebol.pojo.LoginPojo;
 
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;

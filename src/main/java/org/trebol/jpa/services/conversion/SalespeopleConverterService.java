@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.conversion;
 
+import org.trebol.api.models.SalespersonPojo;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.ConverterService;
-import org.trebol.pojo.SalespersonPojo;
 
 public interface SalespeopleConverterService
   extends ConverterService<SalespersonPojo, Salesperson> {

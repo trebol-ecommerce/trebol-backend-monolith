@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.conversion;
 
+import org.trebol.api.models.SellPojo;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.ConverterService;
-import org.trebol.pojo.SellPojo;
 
 public interface SalesConverterService
   extends ConverterService<SellPojo, Sell> {

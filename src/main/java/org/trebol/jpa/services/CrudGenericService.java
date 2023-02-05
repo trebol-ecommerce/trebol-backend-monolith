@@ -27,9 +27,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.models.DataPagePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.Repository;
-import org.trebol.pojo.DataPagePojo;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -41,7 +41,7 @@ import java.util.Optional;
  * Simple CRUD service abstraction. Communicates with other services only through Pojos, keeping JPA entity classes only within their own scope.
  * Whenever possible, its public abstract API should not be overriden, but its protected methods instead.
  *
- * @param <P> The pojo class
+ * @param <P> The models class
  * @param <E> The entity class
  */
 @Transactional
@@ -65,7 +65,7 @@ public abstract class CrudGenericService<P, E>
   }
 
   /**
-   * Converts a pojo to an entity, saves it and returns it back as a brand new pojo equivalent.
+   * Converts a models to an entity, saves it and returns it back as a brand new models equivalent.
    *
    * @param inputPojo The Pojo instance to be converted and inserted.
    */
@@ -146,7 +146,7 @@ public abstract class CrudGenericService<P, E>
   }
 
   /**
-   * Copies changes from a pojo to an entity.
+   * Copies changes from a models to an entity.
    * Executes right before updating (persisting) data.
    * Ideal overridable method to include cascading entity relationships.
    *
@@ -168,8 +168,8 @@ public abstract class CrudGenericService<P, E>
    * Base entity-specific validation  method.
    * Should be called at the beginning of the create() method.
    *
-   * @param inputPojo A pojo to validate
-   * @throws BadInputException If the pojo does not have a valid identifying property
+   * @param inputPojo A models to validate
+   * @throws BadInputException If the models does not have a valid identifying property
    */
   protected void validateInputPojoBeforeCreation(P inputPojo) throws BadInputException {
     if (this.getExisting(inputPojo).isPresent()) {
@@ -178,13 +178,13 @@ public abstract class CrudGenericService<P, E>
   }
 
   /**
-   * Creates a new entity from a pojo.
+   * Creates a new entity from a models.
    * Executes right before persisting data.
    * Ideal overridable method to include cascading entity relationships.
    *
-   * @param inputPojo A pojo to convert to an entity
-   * @return An entity object equivalent to the provided pojo, ready for saving
-   * @throws BadInputException If the pojo does not have a valid identifying property
+   * @param inputPojo A models to convert to an entity
+   * @return An entity object equivalent to the provided models, ready for saving
+   * @throws BadInputException If the models does not have a valid identifying property
    */
   protected E prepareNewEntityFromInputPojo(P inputPojo) throws BadInputException {
     return converter.convertToNewEntity(inputPojo);
