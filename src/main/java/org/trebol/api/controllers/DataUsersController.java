@@ -20,6 +20,7 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,10 @@ import org.trebol.api.models.UserPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.UsersCrudService;
 import org.trebol.jpa.services.predicates.UsersPredicateService;
-import org.trebol.jpa.services.sortspecs.UsersSortSpecService;
+import org.trebol.jpa.sortspecs.UsersSortSpec;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -48,7 +50,7 @@ public class DataUsersController
   @Autowired
   public DataUsersController(
     PaginationService paginationService,
-    UsersSortSpecService sortService,
+    SortSpecParserService sortService,
     UsersCrudService crudService,
     UsersPredicateService predicateService
   ) {
@@ -86,5 +88,10 @@ public class DataUsersController
       throw new BadInputException("A user should not be able to delete their own account");
     }
     super.delete(requestParams);
+  }
+
+  @Override
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return UsersSortSpec.orderSpecMap;
   }
 }

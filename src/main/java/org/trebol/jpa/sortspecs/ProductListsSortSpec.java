@@ -18,13 +18,18 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.sortspecs;
+package org.trebol.jpa.sortspecs;
 
-import org.trebol.jpa.entities.Product;
-import org.trebol.jpa.entities.QProduct;
-import org.trebol.jpa.services.SortSpecService;
+import com.querydsl.core.types.OrderSpecifier;
+import org.trebol.jpa.entities.QProductList;
 
-public interface ProductsSortSpecService
-  extends SortSpecService<Product> {
-  QProduct basePath = QProduct.product;
+import java.util.Map;
+
+public interface ProductListsSortSpec {
+  QProductList basePath = QProductList.productList;
+  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
+    "name", basePath.name.asc(),
+    "code", basePath.code.asc(),
+    "totalCount", basePath.items.size().asc()
+  );
 }

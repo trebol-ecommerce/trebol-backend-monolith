@@ -20,6 +20,7 @@
 
 package org.trebol.api;
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
@@ -27,7 +28,7 @@ import org.trebol.api.models.DataPagePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.services.CrudService;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.SortSpecParserService;
 
 import java.util.Map;
 
@@ -40,13 +41,15 @@ import java.util.Map;
 public abstract class DataGenericController<P, E>
   implements DataController<P> {
   protected final PaginationService paginationService;
-  protected final SortSpecService<E> sortService;
+  protected final SortSpecParserService sortService;
   protected final CrudService<P, E> crudService;
   protected final PredicateService predicateService;
 
+  protected abstract Map<String, OrderSpecifier<?>> getOrderSpecMap();
+
   public DataGenericController(
     PaginationService paginationService,
-    SortSpecService<E> sortService,
+    SortSpecParserService sortService,
     CrudService<P, E> crudService,
     PredicateService predicateService
   ) {
@@ -71,7 +74,7 @@ public abstract class DataGenericController<P, E>
 
     Sort order = null;
     if (requestParams != null && !requestParams.isEmpty()) {
-      order = sortService.parseMap(requestParams);
+      order = sortService.parse(getOrderSpecMap(), requestParams);
     }
 
     Predicate filters = null;

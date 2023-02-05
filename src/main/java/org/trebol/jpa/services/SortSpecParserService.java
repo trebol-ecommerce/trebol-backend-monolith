@@ -18,30 +18,22 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.sortspecs.impl;
+package org.trebol.jpa.services;
 
 import com.querydsl.core.types.OrderSpecifier;
-import org.springframework.stereotype.Service;
-import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.services.sortspecs.BillingTypesSortSpecService;
-import org.trebol.jpa.services.sortspecs.SortSpecGenericService;
+import org.springframework.data.domain.Sort;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
-@Service
-public class BillingTypesSortSpecServiceImpl
-  extends SortSpecGenericService<BillingType>
-  implements BillingTypesSortSpecService {
-  private final Map<String, OrderSpecifier<?>> orderSpecMap;
-
-  public BillingTypesSortSpecServiceImpl() {
-    this.orderSpecMap = Map.of(
-      "name", basePath.name.asc()
-    );;
-  }
-
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return this.orderSpecMap;
-  }
+public interface SortSpecParserService {
+  /**
+   * Resolves sort order constraints for queries
+   *
+   * @param orderSpecMap Sort specifiers relevant to one specific entity type
+   * @param queryMap Sort specifiers as requested by an user from a query params map
+   * @return A Sort order as parsed from the pair of maps
+   */
+  Sort parse(@NotNull @NotEmpty Map<String, OrderSpecifier<?>> orderSpecMap, @NotNull Map<String, String> queryMap);
 }

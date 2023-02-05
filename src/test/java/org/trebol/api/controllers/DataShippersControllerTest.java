@@ -31,9 +31,9 @@ import org.trebol.api.models.ShipperPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.ShippersCrudService;
 import org.trebol.jpa.services.predicates.ShippersPredicateService;
-import org.trebol.jpa.services.sortspecs.ShippersSortSpecService;
 
 import java.util.Map;
 
@@ -44,7 +44,7 @@ class DataShippersControllerTest
   extends DataCrudGenericControllerTest<ShipperPojo, Shipper> {
   @InjectMocks DataShippersController instance;
   @Mock PaginationService paginationServiceMock;
-  @Mock ShippersSortSpecService sortServiceMock;
+  @Mock SortSpecParserService sortServiceMock;
   @Mock ShippersCrudService crudServiceMock;
   @Mock ShippersPredicateService predicateServiceMock;
 

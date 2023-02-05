@@ -18,29 +18,33 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.sortspecs;
+package org.trebol.jpa.services.impl;
 
 import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QSort;
-import org.trebol.jpa.services.SortSpecService;
+import org.springframework.stereotype.Service;
+import org.trebol.jpa.services.SortSpecParserService;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
-public abstract class SortSpecGenericService<E>
-  implements SortSpecService<E> {
-
-  protected abstract Map<String, OrderSpecifier<?>> getOrderSpecMap();
-
+/**
+ * An interface to support parsing of Maps into sort order clauses to be used in queries at the persistence layer.
+ */
+@Service
+public class SortSpecParserServiceImpl
+  implements SortSpecParserService {
   @Override
-  public Sort parseMap(Map<String, String> queryParamsMap) {
-    if (!queryParamsMap.containsKey("sortBy")) {
+  public Sort parse(@NotNull @NotEmpty Map<String, OrderSpecifier<?>> orderSpecMap, @NotNull Map<String, String> queryMap) {
+    if (!queryMap.containsKey("sortBy")) {
       return Sort.unsorted();
     }
-    String propertyName = queryParamsMap.get("sortBy");
-    OrderSpecifier<?> orderSpecifier = this.getOrderSpecMap().get(propertyName);
+    String propertyName = queryMap.get("sortBy");
+    OrderSpecifier<?> orderSpecifier = orderSpecMap.get(propertyName);
     Sort sortBy = QSort.by(orderSpecifier);
-    switch (queryParamsMap.get("order")) {
+    switch (queryMap.get("order")) {
       case "asc":
         return sortBy.ascending();
       case "desc":

@@ -20,6 +20,7 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,10 @@ import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
 import org.trebol.jpa.services.predicates.ProductCategoriesPredicateService;
-import org.trebol.jpa.services.sortspecs.ProductCategoriesSortSpecService;
+import org.trebol.jpa.sortspecs.ProductCategoriesSortSpec;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -46,7 +48,7 @@ public class DataProductCategoriesController
   @Autowired
   public DataProductCategoriesController(
     PaginationService paginationService,
-    ProductCategoriesSortSpecService sortService,
+    SortSpecParserService sortService,
     ProductCategoriesCrudService crudService,
     ProductCategoriesPredicateService predicateService
   ) {
@@ -84,5 +86,10 @@ public class DataProductCategoriesController
   public void delete(@RequestParam Map<String, String> requestParams)
     throws EntityNotFoundException {
     super.delete(requestParams);
+  }
+
+  @Override
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return ProductCategoriesSortSpec.orderSpecMap;
   }
 }

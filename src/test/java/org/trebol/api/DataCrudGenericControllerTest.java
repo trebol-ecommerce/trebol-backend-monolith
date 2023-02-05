@@ -27,7 +27,7 @@ import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.services.CrudService;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.SortSpecParserService;
 
 import java.util.Map;
 
@@ -39,7 +39,7 @@ public abstract class DataCrudGenericControllerTest<P, E>
   extends DataGenericControllerTest<P, E> {
   protected DataCrudGenericController<P, E> instance;
   protected PaginationService paginationServiceMock;
-  protected SortSpecService<E> sortServiceMock;
+  protected SortSpecParserService sortServiceMock;
   protected CrudService<P, E> crudServiceMock;
   protected PredicateService predicateServiceMock;
 

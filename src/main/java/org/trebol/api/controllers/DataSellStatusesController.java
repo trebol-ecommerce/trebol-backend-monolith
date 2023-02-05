@@ -20,6 +20,7 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +32,10 @@ import org.trebol.api.models.DataPagePojo;
 import org.trebol.api.models.SellStatusPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.SellStatus;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.SellStatusesCrudService;
 import org.trebol.jpa.services.predicates.SellStatusesPredicateService;
-import org.trebol.jpa.services.sortspecs.SellStatusesSortSpecService;
+import org.trebol.jpa.sortspecs.SellStatusesSortSpec;
 
 import java.util.Map;
 
@@ -46,7 +48,7 @@ public class DataSellStatusesController
   @Autowired
   public DataSellStatusesController(
     PaginationService paginationService,
-    SellStatusesSortSpecService sortService,
+    SortSpecParserService sortService,
     SellStatusesCrudService crudService,
     SellStatusesPredicateService predicateService
   ) {
@@ -58,5 +60,10 @@ public class DataSellStatusesController
   @PreAuthorize("hasAuthority('sell_statuses:read')")
   public DataPagePojo<SellStatusPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(allRequestParams);
+  }
+
+  @Override
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return SellStatusesSortSpec.orderSpecMap;
   }
 }

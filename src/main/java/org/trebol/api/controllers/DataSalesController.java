@@ -20,6 +20,7 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -34,9 +35,10 @@ import org.trebol.common.exceptions.BadInputException;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.services.MailingService;
 import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.predicates.SalesPredicateService;
-import org.trebol.jpa.services.sortspecs.SalesSortSpecService;
+import org.trebol.jpa.sortspecs.SalesSortSpec;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -57,7 +59,7 @@ public class DataSalesController
   @Autowired
   public DataSalesController(
     PaginationService paginationService,
-    SalesSortSpecService sortService,
+    SortSpecParserService sortService,
     SalesCrudService crudService,
     SalesPredicateService predicateService,
     SalesProcessService processService,
@@ -140,5 +142,10 @@ public class DataSalesController
     if (this.mailingService != null) {
       mailingService.notifyOrderStatusToClient(updatedSell);
     }
+  }
+
+  @Override
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return SalesSortSpec.orderSpecMap;
   }
 }

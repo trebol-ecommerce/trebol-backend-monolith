@@ -31,9 +31,9 @@ import org.trebol.api.models.UserPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.UsersCrudService;
 import org.trebol.jpa.services.predicates.UsersPredicateService;
-import org.trebol.jpa.services.sortspecs.UsersSortSpecService;
 
 import java.util.Map;
 
@@ -44,7 +44,7 @@ class DataUsersControllerTest
   extends DataCrudGenericControllerTest<UserPojo, User> {
   @InjectMocks DataUsersController instance;
   @Mock PaginationService paginationServiceMock;
-  @Mock UsersSortSpecService sortServiceMock;
+  @Mock SortSpecParserService sortServiceMock;
   @Mock UsersCrudService crudServiceMock;
   @Mock UsersPredicateService predicateServiceMock;
 

@@ -18,37 +18,17 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.sortspecs.impl;
+package org.trebol.jpa.sortspecs;
 
 import com.querydsl.core.types.OrderSpecifier;
-import org.springframework.stereotype.Service;
-import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.services.sortspecs.PeopleSortSpecService;
-import org.trebol.jpa.services.sortspecs.SortSpecGenericService;
+import org.trebol.jpa.entities.QProductCategory;
 
 import java.util.Map;
 
-@Service
-public class PeopleSortSpecServiceImpl
-  extends SortSpecGenericService<Person>
-  implements PeopleSortSpecService {
-  private final Map<String, OrderSpecifier<?>> orderSpecMap;
-
-  public PeopleSortSpecServiceImpl() {
-    this.orderSpecMap = Map.of(
-      "idNumber", basePath.idNumber.asc(),
-      "firstName", basePath.firstName.asc(),
-      "email", basePath.email.asc(),
-      "phone1", basePath.phone1.asc(),
-      "phone2", basePath.phone2.asc(),
-      "name", basePath.lastName.asc(),
-      "lastName", basePath.lastName.asc()
-    );
-  }
-
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return this.orderSpecMap;
-  }
-
+public interface ProductCategoriesSortSpec {
+  QProductCategory basePath = QProductCategory.productCategory;
+  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
+    "name", basePath.name.asc(),
+    "code", basePath.code.asc()
+  );
 }

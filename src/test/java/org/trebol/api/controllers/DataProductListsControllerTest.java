@@ -31,9 +31,9 @@ import org.trebol.api.models.ProductListPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.ProductListCrudService;
 import org.trebol.jpa.services.predicates.ProductListsPredicateService;
-import org.trebol.jpa.services.sortspecs.ProductListsSortSpecService;
 
 import java.util.Map;
 
@@ -44,7 +44,7 @@ class DataProductListsControllerTest
   extends DataCrudGenericControllerTest<ProductListPojo, ProductList> {
   @InjectMocks DataProductListsController instance;
   @Mock PaginationService paginationServiceMock;
-  @Mock ProductListsSortSpecService sortServiceMock;
+  @Mock SortSpecParserService sortServiceMock;
   @Mock ProductListCrudService crudServiceMock;
   @Mock ProductListsPredicateService predicateServiceMock;
 

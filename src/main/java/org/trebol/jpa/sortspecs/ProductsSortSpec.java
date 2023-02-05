@@ -18,23 +18,19 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services;
+package org.trebol.jpa.sortspecs;
 
-import org.springframework.data.domain.Sort;
+import com.querydsl.core.types.OrderSpecifier;
+import org.trebol.jpa.entities.QProduct;
 
 import java.util.Map;
 
-/**
- * An interface to support parsing of Maps into sort order clauses to be used in queries at the persistence layer.
- *
- * @param <E> The target @Entity class
- */
-public interface SortSpecService<E> {
-  /**
-   * Reads a Map and generates sort order constraints for a specific entity
-   *
-   * @param queryParamsMap A map of keys and values
-   * @return A Sort order as parsed from the input map. May be null if the input is invalid
-   */
-  Sort parseMap(Map<String, String> queryParamsMap);
+public interface ProductsSortSpec {
+  QProduct basePath = QProduct.product;
+  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
+    "name", basePath.name.asc(),
+    "barcode", basePath.barcode.asc(),
+    "price", basePath.price.asc(),
+    "category", basePath.productCategory.name.asc()
+  );
 }

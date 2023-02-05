@@ -25,7 +25,7 @@ import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.services.CrudService;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.SortSpecService;
+import org.trebol.jpa.services.SortSpecParserService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -37,11 +37,11 @@ public abstract class DataCrudGenericController<P, E>
 
   public DataCrudGenericController(
     PaginationService paginationService,
-    SortSpecService<E> sortService,
+    SortSpecParserService sortSpecParserService,
     CrudService<P, E> crudService,
     PredicateService predicateService
   ) {
-    super(paginationService, sortService, crudService, predicateService);
+    super(paginationService, sortSpecParserService, crudService, predicateService);
   }
 
   @Override

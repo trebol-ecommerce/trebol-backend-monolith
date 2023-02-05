@@ -18,32 +18,18 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.sortspecs.impl;
+package org.trebol.jpa.sortspecs;
 
 import com.querydsl.core.types.OrderSpecifier;
-import org.springframework.stereotype.Service;
-import org.trebol.jpa.entities.ProductList;
-import org.trebol.jpa.services.sortspecs.ProductListsSortSpecService;
-import org.trebol.jpa.services.sortspecs.SortSpecGenericService;
+import org.trebol.jpa.entities.QImage;
 
 import java.util.Map;
 
-@Service
-public class ProductListsSortSpecServiceImpl
-  extends SortSpecGenericService<ProductList>
-  implements ProductListsSortSpecService {
-  private final Map<String, OrderSpecifier<?>> orderSpecMap;
-
-  public ProductListsSortSpecServiceImpl() {
-    orderSpecMap = Map.of(
-      "name", basePath.name.asc(),
-      "code", basePath.code.asc(),
-      "totalCount", basePath.items.size().asc()
-    );
-  }
-
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return this.orderSpecMap;
-  }
+public interface ImagesSortSpec {
+  QImage basePath = QImage.image;
+  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
+    "code", basePath.code.asc(),
+    "filename", basePath.filename.asc(),
+    "url", basePath.url.asc()
+  );
 }

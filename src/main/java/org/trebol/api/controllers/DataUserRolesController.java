@@ -20,6 +20,7 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,10 @@ import org.trebol.api.models.UserRolePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.UserRolesCrudService;
 import org.trebol.jpa.services.predicates.UserRolesPredicateService;
-import org.trebol.jpa.services.sortspecs.UserRolesSortSpecService;
+import org.trebol.jpa.sortspecs.UserRolesSortSpec;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -47,7 +49,7 @@ public class DataUserRolesController
   @Autowired
   public DataUserRolesController(
     PaginationService paginationService,
-    UserRolesSortSpecService sortService,
+    SortSpecParserService sortService,
     UserRolesCrudService crudService,
     UserRolesPredicateService predicateService
   ) {
@@ -83,5 +85,10 @@ public class DataUserRolesController
   public void delete(@RequestParam Map<String, String> requestParams)
     throws EntityNotFoundException {
     super.delete(requestParams);
+  }
+
+  @Override
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return UserRolesSortSpec.orderSpecMap;
   }
 }

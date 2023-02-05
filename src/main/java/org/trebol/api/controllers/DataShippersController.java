@@ -20,6 +20,7 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,10 @@ import org.trebol.api.models.ShipperPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.ShippersCrudService;
 import org.trebol.jpa.services.predicates.ShippersPredicateService;
-import org.trebol.jpa.services.sortspecs.ShippersSortSpecService;
+import org.trebol.jpa.sortspecs.ShippersSortSpec;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -46,7 +48,7 @@ public class DataShippersController
   @Autowired
   public DataShippersController(
     PaginationService paginationService,
-    ShippersSortSpecService sortService,
+    SortSpecParserService sortService,
     ShippersCrudService crudService,
     ShippersPredicateService predicateService
   ) {
@@ -81,5 +83,10 @@ public class DataShippersController
   public void delete(@RequestParam Map<String, String> requestParams)
     throws EntityNotFoundException {
     super.delete(requestParams);
+  }
+
+  @Override
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return ShippersSortSpec.orderSpecMap;
   }
 }

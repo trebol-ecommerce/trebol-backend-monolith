@@ -20,6 +20,7 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +32,10 @@ import org.trebol.api.models.DataPagePojo;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.Person;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.PeopleCrudService;
 import org.trebol.jpa.services.predicates.PeoplePredicateService;
-import org.trebol.jpa.services.sortspecs.PeopleSortSpecService;
+import org.trebol.jpa.sortspecs.PeopleSortSpec;
 
 import java.util.Map;
 
@@ -46,7 +48,7 @@ public class DataPeopleController
   @Autowired
   public DataPeopleController(
     PaginationService paginationService,
-    PeopleSortSpecService sortService,
+    SortSpecParserService sortService,
     PeopleCrudService crudService,
     PeoplePredicateService predicateService
   ) {
@@ -58,5 +60,10 @@ public class DataPeopleController
   @PreAuthorize("hasAuthority('people:read')")
   public DataPagePojo<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(allRequestParams);
+  }
+
+  @Override
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return PeopleSortSpec.orderSpecMap;
   }
 }

@@ -20,6 +20,7 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +31,10 @@ import org.trebol.api.models.BillingTypePojo;
 import org.trebol.api.models.DataPagePojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.BillingType;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.BillingTypesCrudService;
 import org.trebol.jpa.services.predicates.BillingTypesPredicateService;
-import org.trebol.jpa.services.sortspecs.BillingTypesSortSpecService;
+import org.trebol.jpa.sortspecs.BillingTypesSortSpec;
 
 import java.util.Map;
 
@@ -44,16 +46,21 @@ public class DataBillingTypesController
   @Autowired
   public DataBillingTypesController(
     PaginationService paginationService,
-    BillingTypesSortSpecService sortService,
+    SortSpecParserService sortSpecParserService,
     BillingTypesCrudService crudService,
     BillingTypesPredicateService predicateService
   ) {
-    super(paginationService, sortService, crudService, predicateService);
+    super(paginationService, sortSpecParserService, crudService, predicateService);
   }
 
   @Override
   @GetMapping({"", "/"})
   public DataPagePojo<BillingTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
     return super.readMany(allRequestParams);
+  }
+
+  @Override
+  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+    return BillingTypesSortSpec.orderSpecMap;
   }
 }

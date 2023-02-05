@@ -18,30 +18,17 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.sortspecs.impl;
+package org.trebol.jpa.sortspecs;
 
 import com.querydsl.core.types.OrderSpecifier;
-import org.springframework.stereotype.Service;
-import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.sortspecs.SortSpecGenericService;
-import org.trebol.jpa.services.sortspecs.UserRolesSortSpecService;
+import org.trebol.jpa.entities.QUser;
 
 import java.util.Map;
 
-@Service
-public class UserRolesSortSpecServiceImpl
-  extends SortSpecGenericService<UserRole>
-  implements UserRolesSortSpecService {
-  private final Map<String, OrderSpecifier<?>> orderSpecMap;
-
-  public UserRolesSortSpecServiceImpl() {
-    orderSpecMap = Map.of(
-      "name", basePath.name.asc()
-    );
-  }
-
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return this.orderSpecMap;
-  }
+public interface UsersSortSpec {
+  QUser basePath = QUser.user;
+  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
+    "name", basePath.name.asc(),
+    "role", basePath.userRole.name.asc()
+  );
 }

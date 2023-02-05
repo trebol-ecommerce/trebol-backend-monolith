@@ -18,13 +18,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.sortspecs;
+package org.trebol.jpa.sortspecs;
 
-import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.entities.QBillingType;
-import org.trebol.jpa.services.SortSpecService;
+import com.querydsl.core.types.OrderSpecifier;
+import org.trebol.jpa.entities.QUserRole;
 
-public interface BillingTypesSortSpecService
-  extends SortSpecService<BillingType> {
-  QBillingType basePath = QBillingType.billingType;
+import java.util.Map;
+
+public interface UserRolesSortSpec {
+  QUserRole basePath = QUserRole.userRole;
+  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
+    "name", basePath.name.asc()
+  );
 }

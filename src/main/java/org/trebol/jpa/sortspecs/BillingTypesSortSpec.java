@@ -18,13 +18,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.sortspecs;
+package org.trebol.jpa.sortspecs;
 
-import org.trebol.jpa.entities.QShipper;
-import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.services.SortSpecService;
+import com.querydsl.core.types.OrderSpecifier;
+import org.trebol.jpa.entities.QBillingType;
 
-public interface ShippersSortSpecService
-  extends SortSpecService<Shipper> {
-  QShipper basePath = QShipper.shipper;
+import java.util.Map;
+
+public interface BillingTypesSortSpec {
+  QBillingType basePath = QBillingType.billingType;
+  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
+    "name", basePath.name.asc()
+  );
 }

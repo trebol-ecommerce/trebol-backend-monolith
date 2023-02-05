@@ -41,10 +41,10 @@ import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.entities.ProductListItem;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
+import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.conversion.ProductListItemsConverterService;
 import org.trebol.jpa.services.crud.ProductsCrudService;
 import org.trebol.jpa.services.predicates.ProductListItemsPredicateService;
-import org.trebol.jpa.services.sortspecs.ProductListItemsSortSpecService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -61,7 +61,7 @@ import static org.trebol.testing.TestConstants.ANY;
 class DataProductListContentsControllerTest {
   @InjectMocks DataProductListContentsController instance;
   @Mock PaginationService paginationServiceMock;
-  @Mock ProductListItemsSortSpecService sortServiceMock;
+  @Mock SortSpecParserService sortServiceMock;
   @Mock ProductListItemsRepository listItemsRepositoryMock;
   @Mock ProductListsRepository listsRepositoryMock;
   @Mock ProductListItemsPredicateService listItemsPredicateServiceMock;
@@ -112,7 +112,7 @@ class DataProductListContentsControllerTest {
     ProductPojo expectedProduct = ProductPojo.builder().build();
     when(paginationServiceMock.determineRequestedPageSize(anyMap())).thenReturn(1);
     when(listsRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(listExample));
-    when(sortServiceMock.parseMap(anyMap())).thenReturn(sortingOrder);
+    when(sortServiceMock.parse(anyMap(), anyMap())).thenReturn(sortingOrder);
     when(listItemsPredicateServiceMock.parseMap(anyMap())).thenReturn(expectedPredicate);
     when(listItemsRepositoryMock.findAll(nullable(Predicate.class), any(Pageable.class))).thenReturn(new PageImpl<>(List.of(listItemExample)));
     when(listItemsRepositoryMock.count(nullable(Predicate.class))).thenReturn(1L);

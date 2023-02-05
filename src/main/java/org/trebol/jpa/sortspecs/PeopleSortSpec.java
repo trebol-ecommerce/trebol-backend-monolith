@@ -18,13 +18,22 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.sortspecs;
+package org.trebol.jpa.sortspecs;
 
-import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.entities.QCustomer;
-import org.trebol.jpa.services.SortSpecService;
+import com.querydsl.core.types.OrderSpecifier;
+import org.trebol.jpa.entities.QPerson;
 
-public interface CustomersSortSpecService
-  extends SortSpecService<Customer> {
-  QCustomer basePath = QCustomer.customer;
+import java.util.Map;
+
+public interface PeopleSortSpec {
+  QPerson basePath = QPerson.person;
+  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
+    "idNumber", basePath.idNumber.asc(),
+    "firstName", basePath.firstName.asc(),
+    "email", basePath.email.asc(),
+    "phone1", basePath.phone1.asc(),
+    "phone2", basePath.phone2.asc(),
+    "name", basePath.lastName.asc(),
+    "lastName", basePath.lastName.asc()
+  );
 }
