@@ -38,6 +38,7 @@ import org.trebol.jpa.repositories.ProductsRepository;
 import org.trebol.jpa.services.conversion.ImagesConverterService;
 import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
 import org.trebol.jpa.services.conversion.ProductsConverterService;
+import org.trebol.jpa.services.crud.impl.ProductsCrudServiceImpl;
 import org.trebol.testhelpers.ImagesTestHelper;
 import org.trebol.testhelpers.ProductCategoriesTestHelper;
 import org.trebol.testhelpers.ProductsTestHelper;

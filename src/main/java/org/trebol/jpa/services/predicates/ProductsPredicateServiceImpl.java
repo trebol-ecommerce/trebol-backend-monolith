@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.QProduct;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.helpers.ProductCategoryTreeResolverService;
+import org.trebol.jpa.services.ProductCategoryTreeResolverService;
 
 import java.util.List;
 import java.util.Map;

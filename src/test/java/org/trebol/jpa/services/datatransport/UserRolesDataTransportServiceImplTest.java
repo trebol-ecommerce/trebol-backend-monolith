@@ -29,6 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.UserRolePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
+import org.trebol.jpa.services.datatransport.impl.UserRolesDataTransportServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

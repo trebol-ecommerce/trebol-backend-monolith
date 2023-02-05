@@ -33,9 +33,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.trebol.api.models.AuthorizedAccessPojo;
-import org.trebol.security.AuthorizationHeaderParserService;
-import org.trebol.security.AuthorizedApiService;
 import org.trebol.security.UserDetailsPojo;
+import org.trebol.security.services.AuthorizationHeaderParserService;
+import org.trebol.security.services.AuthorizedApiService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -27,6 +27,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.CompanyDetailsPojo;
+import org.trebol.api.services.impl.CompanyServiceImpl;
 import org.trebol.jpa.entities.Param;
 import org.trebol.jpa.repositories.ParamsRepository;
 

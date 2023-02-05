@@ -40,6 +40,7 @@ import org.trebol.jpa.repositories.BillingTypesRepository;
 import org.trebol.jpa.repositories.ProductsRepository;
 import org.trebol.jpa.repositories.SalesRepository;
 import org.trebol.jpa.services.conversion.*;
+import org.trebol.jpa.services.crud.impl.SalesCrudServiceImpl;
 import org.trebol.jpa.services.datatransport.SalesDataTransportService;
 import org.trebol.testhelpers.CustomersTestHelper;
 import org.trebol.testhelpers.ProductsTestHelper;

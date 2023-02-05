@@ -30,6 +30,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ProductPojo;
 import org.trebol.api.models.SellDetailPojo;
 import org.trebol.api.models.SellPojo;
+import org.trebol.api.services.impl.SalesProcessServiceImpl;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;

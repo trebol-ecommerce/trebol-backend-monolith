@@ -29,6 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.BillingTypePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
+import org.trebol.jpa.services.datatransport.impl.BillingTypesDataTransportServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.constant.TestConstants.ANY;

@@ -28,6 +28,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ShipperPojo;
 import org.trebol.jpa.entities.Shipper;
+import org.trebol.jpa.services.conversion.impl.ShippersConverterServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.constant.TestConstants.ANY;

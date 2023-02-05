@@ -33,11 +33,12 @@ import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
+import org.trebol.jpa.services.RegexMatcherAdapterService;
 import org.trebol.jpa.services.conversion.AddressesConverterService;
 import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
 import org.trebol.jpa.services.conversion.CustomersConverterService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
-import org.trebol.jpa.services.helpers.RegexMatcherAdapterService;
+import org.trebol.jpa.services.datatransport.impl.SalesDataTransportServiceImpl;
 
 import javax.validation.Validator;
 import java.util.Optional;

@@ -34,6 +34,7 @@ import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.repositories.ProductImagesRepository;
+import org.trebol.jpa.services.conversion.impl.ProductsConverterServiceImpl;
 
 import java.util.List;
 

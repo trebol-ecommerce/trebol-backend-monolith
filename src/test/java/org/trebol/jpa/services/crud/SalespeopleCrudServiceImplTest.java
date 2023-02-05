@@ -31,6 +31,7 @@ import org.trebol.api.models.SalespersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.repositories.SalespeopleRepository;
+import org.trebol.jpa.services.crud.impl.SalespeopleCrudServiceImpl;
 import org.trebol.testhelpers.SalespeopleTestHelper;
 
 import java.util.Optional;

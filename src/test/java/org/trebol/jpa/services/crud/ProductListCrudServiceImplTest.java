@@ -31,6 +31,7 @@ import org.trebol.api.models.ProductListPojo;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
+import org.trebol.jpa.services.crud.impl.ProductListsCrudServiceImpl;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;

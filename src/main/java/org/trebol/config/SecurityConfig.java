@@ -38,10 +38,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.trebol.common.exceptions.CorsMappingParseException;
 import org.trebol.jpa.services.crud.CustomersCrudService;
-import org.trebol.security.AuthorizationHeaderParserService;
 import org.trebol.security.JwtGuestAuthenticationFilter;
 import org.trebol.security.JwtLoginAuthenticationFilter;
 import org.trebol.security.JwtTokenVerifierFilter;
+import org.trebol.security.services.AuthorizationHeaderParserService;
 
 import javax.crypto.SecretKey;
 

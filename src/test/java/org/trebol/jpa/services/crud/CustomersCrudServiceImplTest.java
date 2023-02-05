@@ -30,6 +30,7 @@ import org.trebol.api.models.CustomerPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.repositories.CustomersRepository;
+import org.trebol.jpa.services.crud.impl.CustomersCrudServiceImpl;
 import org.trebol.testhelpers.CustomersTestHelper;
 
 import java.util.Optional;

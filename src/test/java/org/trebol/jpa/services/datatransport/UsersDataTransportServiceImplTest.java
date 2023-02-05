@@ -36,6 +36,7 @@ import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.jpa.repositories.UserRolesRepository;
+import org.trebol.jpa.services.datatransport.impl.UsersDataTransportServiceImpl;
 
 import java.util.Optional;
 

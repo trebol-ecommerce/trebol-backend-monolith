@@ -29,6 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ProductListPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
+import org.trebol.jpa.services.datatransport.impl.ProductListDataTransportServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.constant.TestConstants.ANY;

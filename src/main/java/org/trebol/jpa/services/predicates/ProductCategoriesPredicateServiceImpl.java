@@ -31,7 +31,7 @@ import org.springframework.util.CollectionUtils;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.QProductCategory;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.helpers.ProductCategoryTreeResolverService;
+import org.trebol.jpa.services.ProductCategoryTreeResolverService;
 
 import java.util.List;
 import java.util.Map;

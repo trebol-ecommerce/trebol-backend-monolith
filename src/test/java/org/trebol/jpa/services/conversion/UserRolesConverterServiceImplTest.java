@@ -28,6 +28,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.UserRolePojo;
 import org.trebol.jpa.entities.UserRole;
+import org.trebol.jpa.services.conversion.impl.UserRolesConverterServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.constant.TestConstants.ANY;

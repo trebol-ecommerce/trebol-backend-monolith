@@ -37,6 +37,7 @@ import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.jpa.repositories.UserRolesRepository;
 import org.trebol.jpa.repositories.UsersRepository;
+import org.trebol.jpa.services.conversion.impl.UsersConverterServiceImpl;
 
 import java.util.Optional;
 

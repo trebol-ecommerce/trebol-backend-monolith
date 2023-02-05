@@ -29,7 +29,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.PredicateService;
-import org.trebol.jpa.services.helpers.ProductCategoryTreeResolverService;
+import org.trebol.jpa.services.ProductCategoryTreeResolverService;
 
 import java.util.HashSet;
 import java.util.List;

@@ -31,6 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.api.models.RegistrationPojo;
+import org.trebol.api.services.impl.RegistrationServiceImpl;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
