@@ -43,16 +43,16 @@ public class SellEntity2ReceiptPojoTest {
       sellWithIdAndDateAndTotalItems(),
       sellWithIdAndDateAndTotalItemsAndMonetaryValues(),
       sellWithIdAndDateAndTotalItemsAndMonetaryValuesAndToken()
-    ).forEach(selldetail -> {
-      ReceiptPojo result = instance.convert(selldetail);
+    ).forEach(sell -> {
+      ReceiptPojo result = instance.convert(sell);
       assertNotNull(result);
-      assertEquals(selldetail.getId(), result.getBuyOrder());
-      assertEquals(selldetail.getDate(), result.getDate());
-      assertEquals(selldetail.getTotalItems(), result.getTotalItems());
-      assertEquals(selldetail.getTransportValue(), result.getTransportValue());
-      assertEquals(selldetail.getTaxesValue(), result.getTaxValue());
-      assertEquals(selldetail.getTotalValue(), result.getTotalValue());
-      assertEquals(selldetail.getTransactionToken(), result.getToken());
+      assertEquals(sell.getId(), result.getBuyOrder());
+      assertEquals(sell.getDate(), result.getDate());
+      assertEquals(sell.getTotalItems(), result.getTotalItems());
+      assertEquals(sell.getTransportValue(), result.getTransportValue());
+      assertEquals(sell.getTaxesValue(), result.getTaxValue());
+      assertEquals(sell.getTotalValue(), result.getTotalValue());
+      assertEquals(sell.getTransactionToken(), result.getToken());
     });
   }
 
@@ -75,16 +75,16 @@ public class SellEntity2ReceiptPojoTest {
   }
 
   Sell sellWithIdAndDateAndTotalItemsAndMonetaryValues() {
-    Sell sellDetail = sellWithIdAndDateAndTotalItems();
-    sellDetail.setTransportValue(0);
-    sellDetail.setTaxesValue(150);
-    sellDetail.setTotalValue(2500);
-    return sellDetail;
+    Sell sell = sellWithIdAndDateAndTotalItems();
+    sell.setTransportValue(0);
+    sell.setTaxesValue(150);
+    sell.setTotalValue(2500);
+    return sell;
   }
 
   Sell sellWithIdAndDateAndTotalItemsAndMonetaryValuesAndToken() {
-    Sell sellDetail = sellWithIdAndDateAndTotalItemsAndMonetaryValues();
-    sellDetail.setTransactionToken(ANY);
-    return sellDetail;
+    Sell sell = sellWithIdAndDateAndTotalItemsAndMonetaryValues();
+    sell.setTransactionToken(ANY);
+    return sell;
   }
 }
