@@ -33,6 +33,7 @@ public class SellDetailEntity2ReceiptDetailPojo
   public ReceiptDetailPojo convert(SellDetail source) {
     ReceiptDetailPojo target = new ReceiptDetailPojo();
     target.setUnits(source.getUnits());
+    target.setUnitValue(source.getUnitValue());
     target.setDescription(source.getDescription());
     return target;
   }
