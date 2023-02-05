@@ -33,4 +33,5 @@ Thumbs.db
 /ORIG_HEAD
 /COMMIT_EDITMSG
 /REBASE_HEAD
+FETCH_HEAD
 rebase-merge/
