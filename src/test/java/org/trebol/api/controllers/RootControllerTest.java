@@ -18,22 +18,22 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.api.controllers;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
-import javax.validation.constraints.Positive;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 
-@Configuration
-@ConfigurationProperties(prefix = "trebol.api")
-@Data
-public class OperationProperties {
-  @Positive
-  private Integer itemsPerPage;
-  @Positive
-  private Integer maxAllowedPageSize;
-  @Positive
-  private int maxCategoryFetchingRecursionDepth;
+class RootControllerTest {
+  @Test
+  void return_200OK() {
+    given().
+        standaloneSetup(new RootController()).
+    when().
+        get("/").
+    then().
+        assertThat().
+        status(HttpStatus.OK);
+  }
 }

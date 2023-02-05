@@ -18,22 +18,18 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.api.controllers;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.services.RegistrationService;
 
-import javax.validation.constraints.Positive;
+@ExtendWith(MockitoExtension.class)
+class PublicRegisterControllerTest {
+  @InjectMocks PublicRegisterController instance;
+  @Mock RegistrationService registrationService;
 
-@Configuration
-@ConfigurationProperties(prefix = "trebol.api")
-@Data
-public class OperationProperties {
-  @Positive
-  private Integer itemsPerPage;
-  @Positive
-  private Integer maxAllowedPageSize;
-  @Positive
-  private int maxCategoryFetchingRecursionDepth;
+  // TODO write a test
 }

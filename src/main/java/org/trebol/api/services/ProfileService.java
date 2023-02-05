@@ -18,22 +18,17 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.api.services;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.trebol.common.exceptions.BadInputException;
+import org.trebol.jpa.exceptions.UserNotFoundException;
+import org.trebol.pojo.PersonPojo;
 
-import javax.validation.constraints.Positive;
+import javax.persistence.EntityNotFoundException;
 
-@Configuration
-@ConfigurationProperties(prefix = "trebol.api")
-@Data
-public class OperationProperties {
-  @Positive
-  private Integer itemsPerPage;
-  @Positive
-  private Integer maxAllowedPageSize;
-  @Positive
-  private int maxCategoryFetchingRecursionDepth;
+public interface ProfileService {
+
+  PersonPojo getProfileFromUserName(String userName) throws EntityNotFoundException;
+
+  void updateProfileForUserWithName(String userName, PersonPojo profile) throws BadInputException, UserNotFoundException;
 }

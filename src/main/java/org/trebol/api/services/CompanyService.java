@@ -18,22 +18,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.api.services;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.trebol.pojo.CompanyDetailsPojo;
 
-import javax.validation.constraints.Positive;
-
-@Configuration
-@ConfigurationProperties(prefix = "trebol.api")
-@Data
-public class OperationProperties {
-  @Positive
-  private Integer itemsPerPage;
-  @Positive
-  private Integer maxAllowedPageSize;
-  @Positive
-  private int maxCategoryFetchingRecursionDepth;
+public interface CompanyService {
+  CompanyDetailsPojo readDetails();
 }

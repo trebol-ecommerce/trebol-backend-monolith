@@ -18,22 +18,27 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.api;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.trebol.pojo.DataPagePojo;
 
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.NotNull;
+import java.util.Map;
 
-@Configuration
-@ConfigurationProperties(prefix = "trebol.api")
-@Data
-public class OperationProperties {
-  @Positive
-  private Integer itemsPerPage;
-  @Positive
-  private Integer maxAllowedPageSize;
-  @Positive
-  private int maxCategoryFetchingRecursionDepth;
+/**
+ * Interface for API controllers that handle reading of data stored in a persistence context and
+ * return it converted to the parameterized class, presumably a Pojo
+ *
+ * @param <P> The Pojo class
+ */
+public interface DataController<P> {
+
+  /**
+   * Get a paged collection of Pojos.
+   *
+   * @param requestParams A map of key/value String pairs, that may be parsed as sorting, pagination and filtering
+   *                      conditions.
+   * @return An instance of DataPagePojo, with the items and page information.
+   */
+  DataPagePojo<P> readMany(@NotNull Map<String, String> requestParams);
 }

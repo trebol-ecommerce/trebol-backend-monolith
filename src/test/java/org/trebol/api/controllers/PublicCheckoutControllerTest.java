@@ -18,22 +18,26 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.api.controllers;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.services.CheckoutService;
+import org.trebol.integration.IMailingIntegrationService;
+import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.services.CrudGenericService;
+import org.trebol.jpa.services.PredicateService;
+import org.trebol.pojo.SellPojo;
 
-import javax.validation.constraints.Positive;
+@ExtendWith(MockitoExtension.class)
+class PublicCheckoutControllerTest {
+  @InjectMocks PublicCheckoutController instance;
+  @Mock CheckoutService service;
+  @Mock CrudGenericService<SellPojo, Sell> salesCrudService;
+  @Mock PredicateService<Sell> salesPredicateService;
+  @Mock IMailingIntegrationService mailingIntegrationService;
 
-@Configuration
-@ConfigurationProperties(prefix = "trebol.api")
-@Data
-public class OperationProperties {
-  @Positive
-  private Integer itemsPerPage;
-  @Positive
-  private Integer maxAllowedPageSize;
-  @Positive
-  private int maxCategoryFetchingRecursionDepth;
+  // TODO write a test
 }

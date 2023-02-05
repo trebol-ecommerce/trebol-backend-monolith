@@ -18,22 +18,49 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol;
+package org.trebol.api.services;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.trebol.api.controllers.RootController;
+import org.springframework.stereotype.Service;
+import org.trebol.jpa.entities.Param;
+import org.trebol.jpa.repositories.ParamsRepository;
+import org.trebol.pojo.CompanyDetailsPojo;
 
-import static org.assertj.core.api.Assertions.assertThat;
+@Service
+public class CompanyServiceImpl
+  implements CompanyService {
+  private final ParamsRepository paramsRepository;
 
-@SpringBootTest
-public class BackendAppTest {
+  @Autowired
+  public CompanyServiceImpl(
+    ParamsRepository paramsRepository
+  ) {
+    this.paramsRepository = paramsRepository;
+  }
 
-  @Autowired RootController rootController;
-
-  @Test
-  void contextLoads() {
-    assertThat(rootController).isNotNull();
+  @Override
+  public CompanyDetailsPojo readDetails() {
+    Iterable<Param> it = paramsRepository.findParamsByCategory("company");
+    CompanyDetailsPojo target = new CompanyDetailsPojo();
+    for (Param p : it) {
+      String v = p.getValue();
+      switch (p.getName()) {
+        case "name":
+          target.setName(v);
+          break;
+        case "description":
+          target.setDescription(v);
+          break;
+        case "bannerImageURL":
+          target.setBannerImageURL(v);
+          break;
+        case "logoImageURL":
+          target.setLogoImageURL(v);
+          break;
+        default:
+          break;
+      }
+    }
+    return target;
   }
 }

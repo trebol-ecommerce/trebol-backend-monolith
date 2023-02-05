@@ -108,7 +108,7 @@ public class MailgunMailingServiceImpl
         if (((String) request.getBody().getObject().get("id")).isBlank()) {
           logger.warn("Mailgun returned the following JSON: {}", request.getBody());
           throw new MailingServiceException(
-            "Status of the sent e-mail is unknown, Mailgun did not provide an ID for this operation");
+            "Status of the sent e-mail is unknown, Mailgun did not provide an ID for this api");
         }
       } catch (JSONException ex) {
         throw new MailingServiceException(
@@ -140,7 +140,7 @@ public class MailgunMailingServiceImpl
         if (((String) request.getBody().getObject().get("id")).isBlank()) {
           logger.warn("Mailgun returned the following JSON: {}", request.getBody());
           throw new MailingServiceException(
-            "Status of the sent e-mail is unknown, Mailgun did not provide an ID for this operation");
+            "Status of the sent e-mail is unknown, Mailgun did not provide an ID for this api");
         }
       } catch (JSONException ex) {
         throw new MailingServiceException(

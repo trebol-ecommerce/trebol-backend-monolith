@@ -18,22 +18,25 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.api;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.trebol.common.exceptions.BadInputException;
 
-import javax.validation.constraints.Positive;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import java.util.Map;
 
-@Configuration
-@ConfigurationProperties(prefix = "trebol.api")
-@Data
-public class OperationProperties {
-  @Positive
-  private Integer itemsPerPage;
-  @Positive
-  private Integer maxAllowedPageSize;
-  @Positive
-  private int maxCategoryFetchingRecursionDepth;
+/**
+ * Interface for API controllers that handle CRUD requests involving unique identifiers
+ *
+ * @param <P> The Pojo class
+ */
+public interface DataCrudController<P>
+  extends DataController<P> {
+
+  void create(P input) throws BadInputException, EntityExistsException;
+
+  void update(P input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException;
+
+  void delete(Map<String, String> requestParams) throws EntityNotFoundException;
 }

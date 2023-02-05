@@ -18,22 +18,29 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.api;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.Nullable;
+import org.trebol.jpa.services.CrudService;
+import org.trebol.pojo.DataPagePojo;
 
-import javax.validation.constraints.Positive;
+import java.util.Map;
 
-@Configuration
-@ConfigurationProperties(prefix = "trebol.api")
-@Data
-public class OperationProperties {
-  @Positive
-  private Integer itemsPerPage;
-  @Positive
-  private Integer maxAllowedPageSize;
-  @Positive
-  private int maxCategoryFetchingRecursionDepth;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.when;
+
+public abstract class DataGenericControllerTest<P, E> {
+  protected DataGenericController<P, E> instance;
+  protected CrudService<P, E> crudServiceMock;
+
+  protected void reads_data(@Nullable Map<String, String> requestParams) {
+    DataPagePojo<P> pagePojo = new DataPagePojo<>(0, 0);
+    when(crudServiceMock.readMany(anyInt(), anyInt(), isNull(), isNull())).thenReturn(pagePojo);
+    DataPagePojo<P> result = instance.readMany(requestParams);
+    assertNotNull(result);
+    assertEquals(pagePojo, result);
+  }
 }

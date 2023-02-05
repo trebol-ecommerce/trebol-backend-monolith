@@ -23,7 +23,7 @@ In such situations, an ideal summary would look like this:
 
 ```md
 
-### `org.trebol.operation.services.CheckoutServiceImpl`
+### `org.trebol.apices.CheckoutServiceImpl`
 
 #### Improve edge cases for method `requestTransactionStart(SellPojo transaction)`
 
@@ -33,7 +33,7 @@ In such situations, an ideal summary would look like this:
 - Redundant stubbing
   - Calls to JPA repositories such as `.findById()` will not be called unless the order is processed first, no need to stub before it happens.
 - Incorrectly tested behavior
-  - A mock service in `org.trebol.operation.services` was confused with a service in `org.trebol.jpa.services` due to their similar method names and signatures. The correct service type must be used.
+  - A mock service in `org.trebol.apices` was confused with a service in `org.trebol.jpa.services` due to their similar method names and signatures. The correct service type must be used.
 
 ```
 

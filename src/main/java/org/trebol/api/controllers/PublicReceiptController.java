@@ -18,22 +18,39 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol;
+package org.trebol.api.controllers;
 
-import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.trebol.api.controllers.RootController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.trebol.api.services.ReceiptService;
+import org.trebol.pojo.ReceiptPojo;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import javax.persistence.EntityNotFoundException;
 
-@SpringBootTest
-public class BackendAppTest {
+@RestController
+@RequestMapping("/public/receipt")
+public class PublicReceiptController {
+  private final Logger LOG = LoggerFactory.getLogger(PublicReceiptController.class);
+  private final ReceiptService receiptService;
 
-  @Autowired RootController rootController;
+  @Autowired
+  public PublicReceiptController(
+    ReceiptService receiptService
+  ) {
+    this.receiptService = receiptService;
+  }
 
-  @Test
-  void contextLoads() {
-    assertThat(rootController).isNotNull();
+  @GetMapping({"/{token}", "/{token}/"})
+  public ReceiptPojo fetchReceiptById(@PathVariable("token") String token)
+    throws EntityNotFoundException {
+    if (token == null) {
+      throw new RuntimeException("An incorrect receipt token was provided");
+    }
+    return this.receiptService.fetchReceiptByTransactionToken(token);
   }
 }

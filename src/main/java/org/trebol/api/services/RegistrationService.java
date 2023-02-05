@@ -18,22 +18,13 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.api.services;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.trebol.common.exceptions.BadInputException;
+import org.trebol.pojo.RegistrationPojo;
 
-import javax.validation.constraints.Positive;
+import javax.persistence.EntityExistsException;
 
-@Configuration
-@ConfigurationProperties(prefix = "trebol.api")
-@Data
-public class OperationProperties {
-  @Positive
-  private Integer itemsPerPage;
-  @Positive
-  private Integer maxAllowedPageSize;
-  @Positive
-  private int maxCategoryFetchingRecursionDepth;
+public interface RegistrationService {
+  void register(RegistrationPojo registration) throws BadInputException, EntityExistsException;
 }
