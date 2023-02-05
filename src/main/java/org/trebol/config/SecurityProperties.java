@@ -49,4 +49,5 @@ public class SecurityProperties {
   private String guestUserName;
   private boolean accountProtectionEnabled;
   private long protectedAccountId;
+  private long guestUserRoleId;
 }

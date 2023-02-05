@@ -75,8 +75,7 @@ public class UserDetailsServiceImpl
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     if (securityProperties.isGuestUserEnabled() &&
       username.equals(securityProperties.getGuestUserName())) {
-      // TODO parameterize role ID
-      Iterable<UserRolePermission> rawPermissions = rolePermissionsRepository.deepFindPermissionsByUserRoleId(4L);
+      Iterable<UserRolePermission> rawPermissions = rolePermissionsRepository.deepFindPermissionsByUserRoleId(securityProperties.getGuestUserRoleId());
       List<Permission> permissions = new ArrayList<>();
       for (UserRolePermission rp : rawPermissions) {
         permissions.add(rp.getPermission());
