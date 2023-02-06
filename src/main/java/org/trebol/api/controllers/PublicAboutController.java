@@ -40,7 +40,6 @@ public class PublicAboutController {
 
   @GetMapping({"", "/"})
   public CompanyDetailsPojo readCompanyDetails() {
-    CompanyDetailsPojo companyDetailsPojo = companyService.readDetails();
-    return companyDetailsPojo;
+    return companyService.readDetails();
   }
 }
