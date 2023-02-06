@@ -34,19 +34,18 @@ import java.security.Principal;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class AccountProfileControllerTest {
   @InjectMocks AccountProfileController instance;
-  @Mock ProfileService userProfileService;
+  @Mock ProfileService userProfileServiceMock;
 
   @Test
   void fetches_profile() {
     PersonPojo expectedResult = PersonPojo.builder().build();
-    when(userProfileService.getProfileFromUserName(anyString())).thenReturn(expectedResult);
+    when(userProfileServiceMock.getProfileFromUserName(anyString())).thenReturn(expectedResult);
 
     PersonPojo result = instance.getProfile(new SimplePrincipal());
 
@@ -55,26 +54,29 @@ class AccountProfileControllerTest {
   }
 
   @Test
-  void updates_profile() throws BadInputException {
+  void updates_profile() {
     PersonPojo changes = PersonPojo.builder()
       .idNumber(ANY)
       .firstName(ANY)
       .lastName(ANY)
       .email(ANY)
       .build();
-    instance.updateProfile(new SimplePrincipal(), changes);
+    assertDoesNotThrow(() -> instance.updateProfile(new SimplePrincipal(), changes));
   }
 
   @Test
-  void may_fail_to_update_profile() throws BadInputException {
+  void may_fail_to_update_profile() {
     PersonPojo changes = PersonPojo.builder()
       .idNumber(ANY)
       .firstName(ANY)
       .lastName(ANY)
       .email(ANY)
       .build();
-    doThrow(BadInputException.class).when(userProfileService).updateProfileForUserWithName(anyString(), any(PersonPojo.class));
-    assertThrows(BadInputException.class, () -> instance.updateProfile(new SimplePrincipal(), changes));
+    assertThrows(BadInputException.class, () -> {
+      doThrow(BadInputException.class).when(userProfileServiceMock).updateProfileForUserWithName(anyString(), any(PersonPojo.class));
+      instance.updateProfile(new SimplePrincipal(), changes);
+      verify(userProfileServiceMock).updateProfileForUserWithName(ANY, changes);
+    });
   }
 
   static class SimplePrincipal
