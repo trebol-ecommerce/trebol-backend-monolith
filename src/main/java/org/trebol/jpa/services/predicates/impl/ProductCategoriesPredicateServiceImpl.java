@@ -38,6 +38,7 @@ import java.util.Map;
 @Service
 public class ProductCategoriesPredicateServiceImpl
   implements ProductCategoriesPredicateService {
+  private static final QProductCategory parentPath = basePath.parent;
   private final Logger logger = LoggerFactory.getLogger(ProductCategoriesPredicateServiceImpl.class);
   private final ProductCategoryTreeResolverService treeResolver;
 
@@ -47,7 +48,6 @@ public class ProductCategoriesPredicateServiceImpl
   }
   @Override
   public Predicate parseMap(Map<String, String> queryParamsMap) {
-    QProductCategory parentPath = basePath.parent;
     BooleanBuilder predicate = new BooleanBuilder();
     for (Map.Entry<String, String> entry : queryParamsMap.entrySet()) {
       String paramName = entry.getKey();

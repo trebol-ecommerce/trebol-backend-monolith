@@ -33,7 +33,7 @@ import java.util.Map;
 @Service
 public class CustomersPredicateServiceImpl
   implements CustomersPredicateService {
-  public static QPerson personPath = basePath.person;
+  public static final QPerson personPath = basePath.person;
   private final Logger logger = LoggerFactory.getLogger(CustomersPredicateServiceImpl.class);
 
   @Override
