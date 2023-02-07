@@ -29,7 +29,7 @@ import javax.validation.constraints.Positive;
 @Configuration
 @ConfigurationProperties(prefix = "trebol.api")
 @Data
-public class OperationProperties {
+public class ApiProperties {
   @Positive
   private Integer itemsPerPage;
   @Positive

@@ -22,7 +22,7 @@ package org.trebol.jpa.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.trebol.config.OperationProperties;
+import org.trebol.config.ApiProperties;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 import org.trebol.jpa.services.ProductCategoryTreeResolverService;
@@ -36,20 +36,20 @@ import java.util.Optional;
 public class ProductCategoryTreeResolverServiceImpl
   implements ProductCategoryTreeResolverService {
   private final ProductsCategoriesRepository repository;
-  private final OperationProperties operationProperties;
+  private final ApiProperties apiProperties;
 
   @Autowired
   public ProductCategoryTreeResolverServiceImpl(
     ProductsCategoriesRepository repository,
-    OperationProperties operationProperties
+    ApiProperties apiProperties
   ) {
     this.repository = repository;
-    this.operationProperties = operationProperties;
+    this.apiProperties = apiProperties;
   }
 
   @Override
   public List<ProductCategory> getBranchesFromRoot(ProductCategory rootBranch) {
-    int depth = operationProperties.getMaxCategoryFetchingRecursionDepth();
+    int depth = apiProperties.getMaxCategoryFetchingRecursionDepth();
     List<ProductCategory> immediateDescendants = repository.findByParent(rootBranch);
     List<ProductCategory> allBranches = new ArrayList<>(immediateDescendants);
     for (ProductCategory b : immediateDescendants) {
@@ -60,7 +60,7 @@ public class ProductCategoryTreeResolverServiceImpl
 
   @Override
   public List<Long> getBranchIdsFromRootId(Long rootId) {
-    int depth = operationProperties.getMaxCategoryFetchingRecursionDepth();
+    int depth = apiProperties.getMaxCategoryFetchingRecursionDepth();
     List<Long> immediateDescendantIds = repository.findIdsByParentId(rootId);
     List<Long> allBranches = new ArrayList<>(immediateDescendantIds);
     for (Long bId : immediateDescendantIds) {

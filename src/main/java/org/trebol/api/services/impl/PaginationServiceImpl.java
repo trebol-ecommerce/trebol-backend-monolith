@@ -23,7 +23,7 @@ package org.trebol.api.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.api.services.PaginationService;
-import org.trebol.config.OperationProperties;
+import org.trebol.config.ApiProperties;
 
 import java.util.Map;
 
@@ -33,13 +33,13 @@ import java.util.Map;
 @Service
 public class PaginationServiceImpl
   implements PaginationService {
-  protected final OperationProperties operationProperties;
+  protected final ApiProperties apiProperties;
 
   @Autowired
   public PaginationServiceImpl(
-    OperationProperties operationProperties
+    ApiProperties apiProperties
   ) {
-    this.operationProperties = operationProperties;
+    this.apiProperties = apiProperties;
   }
 
   @Override
@@ -55,10 +55,10 @@ public class PaginationServiceImpl
   public int determineRequestedPageSize(Map<String, String> requestParams)
     throws NumberFormatException {
     if (requestParams == null || !requestParams.containsKey("pageSize")) {
-      return operationProperties.getItemsPerPage();
+      return apiProperties.getItemsPerPage();
     }
     int pageSize = Integer.parseInt(requestParams.get("pageSize"));
-    Integer maxAllowedPageSize = operationProperties.getMaxAllowedPageSize();
+    Integer maxAllowedPageSize = apiProperties.getMaxAllowedPageSize();
     return (pageSize < maxAllowedPageSize) ?
       pageSize :
       maxAllowedPageSize;
