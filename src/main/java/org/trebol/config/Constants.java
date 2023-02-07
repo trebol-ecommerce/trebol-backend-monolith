@@ -20,9 +20,14 @@
 
 package org.trebol.config;
 
+import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PRIVATE;
+
 /**
  * A temporary helper class to hold on to some name keys
  */
+@NoArgsConstructor(access = PRIVATE)
 public final class Constants {
   public static final String SELL_STATUS_PENDING = "Pending";
   public static final String SELL_STATUS_PAYMENT_STARTED = "Payment Started";
@@ -36,7 +41,4 @@ public final class Constants {
   public static final String BILLING_TYPE_ENTERPRISE = "Enterprise Invoice";
   public static final String WEBPAY_SUCCESS_TOKEN_HEADER_NAME = "token_ws";
   public static final String WEBPAY_ABORTION_TOKEN_HEADER_NAME = "TBK_TOKEN";
-
-  private Constants() {
-  }
 }

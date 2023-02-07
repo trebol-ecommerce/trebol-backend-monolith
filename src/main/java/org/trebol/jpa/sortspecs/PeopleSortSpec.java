@@ -21,10 +21,14 @@
 package org.trebol.jpa.sortspecs;
 
 import com.querydsl.core.types.OrderSpecifier;
+import lombok.NoArgsConstructor;
 import org.trebol.jpa.entities.QPerson;
 
 import java.util.Map;
 
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
 public class PeopleSortSpec {
   private static final QPerson BASE_PATH = QPerson.person;
   public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(

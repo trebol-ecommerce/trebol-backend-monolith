@@ -21,11 +21,15 @@
 package org.trebol.jpa.sortspecs;
 
 import com.querydsl.core.types.OrderSpecifier;
+import lombok.NoArgsConstructor;
 import org.trebol.jpa.entities.QPerson;
 import org.trebol.jpa.entities.QSalesperson;
 
 import java.util.Map;
 
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
 public class SalespeopleSortSpec {
   private static final QSalesperson BASE_PATH = QSalesperson.salesperson;
   private static final QPerson PERSON_PATH = BASE_PATH.person;
