@@ -43,7 +43,7 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
 import org.trebol.jpa.services.crud.ProductsCrudService;
-import org.trebol.jpa.services.datatransport.ProductsDataTransportService;
+import org.trebol.jpa.services.patch.ProductsPatchService;
 
 import javax.persistence.EntityExistsException;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class ProductsCrudServiceImpl
   implements ProductsCrudService {
   private final ProductsRepository productsRepository;
   private final ProductsConverterService productsConverterService;
-  private final ProductsDataTransportService productsDataTransportService;
+  private final ProductsPatchService productsPatchService;
   private final ProductImagesRepository productImagesRepository;
   private final ImagesCrudService imagesCrudService;
   private final ProductCategoriesCrudService categoriesCrudService;
@@ -70,17 +70,17 @@ public class ProductsCrudServiceImpl
   public ProductsCrudServiceImpl(
     ProductsRepository productsRepository,
     ProductsConverterService productsConverterService,
-    ProductsDataTransportService productsDataTransportService,
+    ProductsPatchService productsPatchService,
     ProductImagesRepository productImagesRepository,
     ImagesCrudService imagesCrudService,
     ProductCategoriesCrudService categoriesCrudService,
     ProductCategoriesConverterService categoriesConverterService,
     ImagesConverterService imageConverterService
   ) {
-    super(productsRepository, productsConverterService, productsDataTransportService);
+    super(productsRepository, productsConverterService, productsPatchService);
     this.productsRepository = productsRepository;
     this.productsConverterService = productsConverterService;
-    this.productsDataTransportService = productsDataTransportService;
+    this.productsPatchService = productsPatchService;
     this.imagesCrudService = imagesCrudService;
     this.categoriesConverterService = categoriesConverterService;
     this.productImagesRepository = productImagesRepository;
@@ -135,7 +135,7 @@ public class ProductsCrudServiceImpl
   @Override
   protected ProductPojo persistEntityWithUpdatesFromPojo(ProductPojo changes, Product existingEntity)
     throws BadInputException {
-    Product localChanges = productsDataTransportService.applyChangesToExistingEntity(changes, existingEntity);
+    Product localChanges = productsPatchService.patchExistingEntity(changes, existingEntity);
     Product persistent = productsRepository.saveAndFlush(localChanges);
     ProductPojo outputPojo = productsConverterService.convertToPojo(persistent);
     if (outputPojo == null) {

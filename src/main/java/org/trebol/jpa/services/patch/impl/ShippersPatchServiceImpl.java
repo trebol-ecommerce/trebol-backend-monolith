@@ -18,47 +18,29 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.crud.impl;
+package org.trebol.jpa.services.patch.impl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.ShipperPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
-import org.trebol.jpa.repositories.ShippersRepository;
-import org.trebol.jpa.services.conversion.ShippersConverterService;
-import org.trebol.jpa.services.crud.CrudGenericService;
-import org.trebol.jpa.services.crud.ShippersCrudService;
 import org.trebol.jpa.services.patch.ShippersPatchService;
 
-import java.util.Optional;
-
-@Transactional
 @Service
-public class ShippersCrudServiceImpl
-  extends CrudGenericService<ShipperPojo, Shipper>
-  implements ShippersCrudService {
-  private final ShippersRepository shippersRepository;
-
-  @Autowired
-  public ShippersCrudServiceImpl(
-    ShippersRepository shippersRepository,
-    ShippersConverterService shippersConverterService,
-    ShippersPatchService shippersPatchService
-  ) {
-    super(shippersRepository, shippersConverterService, shippersPatchService);
-    this.shippersRepository = shippersRepository;
-  }
+@NoArgsConstructor
+public class ShippersPatchServiceImpl
+  implements ShippersPatchService {
 
   @Override
-  public Optional<Shipper> getExisting(ShipperPojo input) throws BadInputException {
-    String name = input.getName();
-    if (StringUtils.isBlank(name)) {
-      throw new BadInputException("Billing type has no name");
-    } else {
-      return shippersRepository.findByName(name);
+  public Shipper patchExistingEntity(ShipperPojo changes, Shipper existing) throws BadInputException {
+    Shipper target = new Shipper(existing);
+
+    String name = changes.getName();
+    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
     }
+
+    return target;
   }
 }

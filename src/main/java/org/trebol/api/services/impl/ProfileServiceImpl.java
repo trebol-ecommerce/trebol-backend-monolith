@@ -34,7 +34,7 @@ import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.jpa.services.crud.PeopleCrudService;
-import org.trebol.jpa.services.datatransport.PeopleDataTransportService;
+import org.trebol.jpa.services.patch.PeoplePatchService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -45,7 +45,7 @@ public class ProfileServiceImpl
   private final UsersRepository usersRepository;
   private final PeopleCrudService peopleService;
   private final PeopleConverterService peopleConverter;
-  private final PeopleDataTransportService peopleDataTransportService;
+  private final PeoplePatchService peoplePatchService;
   private final PeopleRepository peopleRepository;
 
   @Autowired
@@ -53,13 +53,13 @@ public class ProfileServiceImpl
     UsersRepository usersRepository,
     PeopleCrudService peopleService,
     PeopleConverterService peopleConverter,
-    PeopleDataTransportService peopleDataTransportService,
+    PeoplePatchService peoplePatchService,
     PeopleRepository peopleRepository
   ) {
     this.usersRepository = usersRepository;
     this.peopleService = peopleService;
     this.peopleConverter = peopleConverter;
-    this.peopleDataTransportService = peopleDataTransportService;
+    this.peoplePatchService = peoplePatchService;
     this.peopleRepository = peopleRepository;
   }
 
@@ -99,7 +99,7 @@ public class ProfileServiceImpl
         usersRepository.saveAndFlush(targetUser);
       }
     } else {
-      target = peopleDataTransportService.applyChangesToExistingEntity(profile, target);
+      target = peoplePatchService.patchExistingEntity(profile, target);
       peopleRepository.saveAndFlush(target);
     }
   }

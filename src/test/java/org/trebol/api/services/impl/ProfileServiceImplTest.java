@@ -38,7 +38,7 @@ import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.jpa.services.crud.PeopleCrudService;
-import org.trebol.jpa.services.datatransport.PeopleDataTransportService;
+import org.trebol.jpa.services.patch.PeoplePatchService;
 
 import java.util.Optional;
 
@@ -54,7 +54,7 @@ class ProfileServiceImplTest {
   @Mock UsersRepository usersRepositoryMock;
   @Mock PeopleCrudService peopleServiceMock;
   @Mock PeopleConverterService peopleConverterMock;
-  @Mock PeopleDataTransportService peopleDataTransportServiceMock;
+  @Mock PeoplePatchService peoplePatchService;
   @Mock PeopleRepository peopleRepositoryMock;
   UserRole userRoleMock;
   Person personMock;
@@ -123,7 +123,7 @@ class ProfileServiceImplTest {
   @Test
   void updateProfileForUserWithName_UserHasProfile_UpdateProfile_NoException() throws BadInputException {
     when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userMock)); // in getUserFromName
-    when(peopleDataTransportServiceMock.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class)))
+    when(peoplePatchService.patchExistingEntity(any(PersonPojo.class), any(Person.class)))
       .thenReturn(personMock);
 
     assertDoesNotThrow(() -> instance.updateProfileForUserWithName("userName", personPojoMock));

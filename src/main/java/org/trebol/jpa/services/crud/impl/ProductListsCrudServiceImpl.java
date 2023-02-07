@@ -31,7 +31,7 @@ import org.trebol.jpa.repositories.ProductListsRepository;
 import org.trebol.jpa.services.conversion.ProductListsConverterService;
 import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.ProductListCrudService;
-import org.trebol.jpa.services.datatransport.ProductListsDataTransportService;
+import org.trebol.jpa.services.patch.ProductListsPatchService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -49,9 +49,9 @@ public class ProductListsCrudServiceImpl
     ProductListsRepository listsRepository,
     ProductListItemsRepository listItemsRepository,
     ProductListsConverterService listsConverterService,
-    ProductListsDataTransportService listsDataTransportService
+    ProductListsPatchService listsPatchService
   ) {
-    super(listsRepository, listsConverterService, listsDataTransportService);
+    super(listsRepository, listsConverterService, listsPatchService);
     this.listsRepository = listsRepository;
     this.listItemsRepository = listItemsRepository;
   }

@@ -32,7 +32,7 @@ import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.Repository;
 import org.trebol.jpa.services.ConverterService;
 import org.trebol.jpa.services.CrudService;
-import org.trebol.jpa.services.DataTransportService;
+import org.trebol.jpa.services.PatchService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -54,16 +54,16 @@ public abstract class CrudGenericService<P, E>
   protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
   private final Repository<E> repository;
   private final ConverterService<P, E> converter;
-  private final DataTransportService<P, E> dataTransportService;
+  private final PatchService<P, E> patchService;
 
   protected CrudGenericService(
     Repository<E> repository,
     ConverterService<P, E> converter,
-    DataTransportService<P, E> dataTransportService
+    PatchService<P, E> patchService
   ) {
     this.repository = repository;
     this.converter = converter;
-    this.dataTransportService = dataTransportService;
+    this.patchService = patchService;
   }
 
   /**
@@ -159,7 +159,7 @@ public abstract class CrudGenericService<P, E>
    */
   protected P persistEntityWithUpdatesFromPojo(P changes, E existingEntity)
     throws BadInputException {
-    E updatedEntity = dataTransportService.applyChangesToExistingEntity(changes, existingEntity);
+    E updatedEntity = patchService.patchExistingEntity(changes, existingEntity);
     if (existingEntity.equals(updatedEntity)) {
       return changes;
     }

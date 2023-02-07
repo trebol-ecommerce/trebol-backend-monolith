@@ -46,7 +46,7 @@ import static org.mockito.Mockito.when;
 class CrudGenericServiceTest {
   @Mock Repository<GenericEntity> genericRepositoryMock;
   @Mock ConverterService<GenericPojo, GenericEntity> genericConverterMock;
-  @Mock DataTransportService<GenericPojo, GenericEntity> genericDataTransportServiceMock;
+  @Mock PatchService<GenericPojo, GenericEntity> genericPatchServiceMock;
   final GenericPojo newPojo = new GenericPojo(null, "test");
   final GenericEntity newEntity = new GenericEntity(null, "test");
   final GenericEntity persistedEntity = new GenericEntity(1L, "test");
@@ -136,7 +136,7 @@ class CrudGenericServiceTest {
     throws BadInputException, EntityNotFoundException {
     GenericPojo updatingPojo = new GenericPojo(1L, "test2");
     GenericEntity updatedEntity = new GenericEntity(1L, "test2");
-    when(genericDataTransportServiceMock.applyChangesToExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
+    when(genericPatchServiceMock.patchExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
     when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
     when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatingPojo);
     CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
@@ -145,7 +145,7 @@ class CrudGenericServiceTest {
 
     assertNotNull(result);
     assertEquals(updatingPojo, result);
-    verify(genericDataTransportServiceMock).applyChangesToExistingEntity(updatingPojo, persistedEntity);
+    verify(genericPatchServiceMock).patchExistingEntity(updatingPojo, persistedEntity);
     verify(genericRepositoryMock).saveAndFlush(updatedEntity);
     verify(genericConverterMock).convertToPojo(updatedEntity);
   }
@@ -157,7 +157,7 @@ class CrudGenericServiceTest {
     GenericPojo updatingPojo = new GenericPojo(1L, "test2");
     GenericEntity updatedEntity = new GenericEntity(1L, "test2");
     when(genericRepositoryMock.findOne(filters)).thenReturn(Optional.of(persistedEntity));
-    when(genericDataTransportServiceMock.applyChangesToExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
+    when(genericPatchServiceMock.patchExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
     when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
     when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatingPojo);
 
@@ -166,7 +166,7 @@ class CrudGenericServiceTest {
 
     assertEquals(result, updatingPojo);
     verify(genericRepositoryMock).findOne(filters);
-    verify(genericDataTransportServiceMock).applyChangesToExistingEntity(updatingPojo, persistedEntity);
+    verify(genericPatchServiceMock).patchExistingEntity(updatingPojo, persistedEntity);
     verify(genericRepositoryMock).saveAndFlush(updatedEntity);
     verify(genericConverterMock).convertToPojo(updatedEntity);
   }
@@ -208,7 +208,7 @@ class CrudGenericServiceTest {
     return new CrudGenericService<>(
       genericRepositoryMock,
       genericConverterMock,
-      genericDataTransportServiceMock) {
+      genericPatchServiceMock) {
       @Override
       public Optional<GenericEntity> getExisting(GenericPojo example) {
         return Optional.empty();
@@ -220,7 +220,7 @@ class CrudGenericServiceTest {
     return new CrudGenericService<>(
       genericRepositoryMock,
       genericConverterMock,
-      genericDataTransportServiceMock) {
+      genericPatchServiceMock) {
       @Override
       public Optional<GenericEntity> getExisting(GenericPojo example) {
         return Optional.of(persistedEntity);

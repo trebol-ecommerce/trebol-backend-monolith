@@ -34,7 +34,7 @@ import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.UsersConverterService;
 import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.UsersCrudService;
-import org.trebol.jpa.services.datatransport.UsersDataTransportService;
+import org.trebol.jpa.services.patch.UsersPatchService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -50,10 +50,10 @@ public class UsersCrudServiceImpl
   public UsersCrudServiceImpl(
     UsersRepository usersRepository,
     UsersConverterService usersConverterService,
-    UsersDataTransportService usersDataTransportService,
+    UsersPatchService usersPatchService,
     SecurityProperties securityProperties
   ) {
-    super(usersRepository, usersConverterService, usersDataTransportService);
+    super(usersRepository, usersConverterService, usersPatchService);
     this.usersRepository = usersRepository;
     this.securityProperties = securityProperties;
   }

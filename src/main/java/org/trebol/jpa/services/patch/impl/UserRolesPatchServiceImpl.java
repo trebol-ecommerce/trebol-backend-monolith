@@ -18,47 +18,29 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.crud.impl;
+package org.trebol.jpa.services.patch.impl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.UserRolePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.repositories.UserRolesRepository;
-import org.trebol.jpa.services.conversion.UserRolesConverterService;
-import org.trebol.jpa.services.crud.CrudGenericService;
-import org.trebol.jpa.services.crud.UserRolesCrudService;
 import org.trebol.jpa.services.patch.UserRolesPatchService;
 
-import java.util.Optional;
-
-@Transactional
 @Service
-public class UserRolesCrudServiceImpl
-  extends CrudGenericService<UserRolePojo, UserRole>
-  implements UserRolesCrudService {
-  private final UserRolesRepository rolesRepository;
-
-  @Autowired
-  public UserRolesCrudServiceImpl(
-    UserRolesRepository rolesRepository,
-    UserRolesConverterService rolesConverterService,
-    UserRolesPatchService rolesPatchService
-  ) {
-    super(rolesRepository, rolesConverterService, rolesPatchService);
-    this.rolesRepository = rolesRepository;
-  }
+@NoArgsConstructor
+public class UserRolesPatchServiceImpl
+  implements UserRolesPatchService {
 
   @Override
-  public Optional<UserRole> getExisting(UserRolePojo input) throws BadInputException {
-    String name = input.getName();
-    if (StringUtils.isBlank(name)) {
-      throw new BadInputException("Invalid user role name");
-    } else {
-      return rolesRepository.findByName(name);
+  public UserRole patchExistingEntity(UserRolePojo changes, UserRole existing) throws BadInputException {
+    UserRole target = new UserRole(existing);
+
+    String name = changes.getName();
+    if (name != null && !name.isBlank() && target.getName().equals(name)) {
+      target.setName(name);
     }
+
+    return target;
   }
 }

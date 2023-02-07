@@ -34,7 +34,7 @@ import org.trebol.jpa.repositories.ProductsRepository;
 import org.trebol.jpa.repositories.SalesRepository;
 import org.trebol.jpa.services.conversion.*;
 import org.trebol.jpa.services.crud.*;
-import org.trebol.jpa.services.datatransport.SalesDataTransportService;
+import org.trebol.jpa.services.patch.SalesPatchService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class SalesCrudServiceImpl
   implements SalesCrudService {
   private final SalesRepository salesRepository;
   private final SalesConverterService salesConverterService;
-  private final SalesDataTransportService salesDataTransportService;
+  private final SalesPatchService salesPatchService;
   private final ProductsRepository productsRepository;
   private final ProductsConverterService productConverterService;
   private final CustomersCrudService customersCrudService;
@@ -71,7 +71,7 @@ public class SalesCrudServiceImpl
     SalesRepository salesRepository,
     ProductsRepository productsRepository,
     SalesConverterService salesConverterService,
-    SalesDataTransportService salesDataTransportService,
+    SalesPatchService salesPatchService,
     ProductsConverterService productConverterService,
     CustomersCrudService customersCrudService,
     CustomersConverterService customersConverterService,
@@ -83,11 +83,11 @@ public class SalesCrudServiceImpl
     ShippersCrudService shippersCrudService,
     AddressesConverterService addressesConverterService
   ) {
-    super(salesRepository, salesConverterService, salesDataTransportService);
+    super(salesRepository, salesConverterService, salesPatchService);
     this.salesRepository = salesRepository;
     this.productsRepository = productsRepository;
     this.salesConverterService = salesConverterService;
-    this.salesDataTransportService = salesDataTransportService;
+    this.salesPatchService = salesPatchService;
     this.productConverterService = productConverterService;
     this.customersCrudService = customersCrudService;
     this.customersConverterService = customersConverterService;
@@ -132,7 +132,7 @@ public class SalesCrudServiceImpl
     if ((statusCode >= 3 || statusCode < 0) && !CAN_EDIT_AFTER_PROCESS) {
       throw new BadInputException("The requested transaction cannot be modified");
     }
-    Sell updatedEntity = salesDataTransportService.applyChangesToExistingEntity(changes, existingEntity);
+    Sell updatedEntity = salesPatchService.patchExistingEntity(changes, existingEntity);
     if (updatedEntity.equals(existingEntity)) {
       return changes;
     }

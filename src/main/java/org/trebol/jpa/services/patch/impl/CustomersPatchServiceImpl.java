@@ -18,47 +18,39 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.crud.impl;
+package org.trebol.jpa.services.patch.impl;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.trebol.api.models.CustomerPojo;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
+import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.repositories.PeopleRepository;
-import org.trebol.jpa.services.conversion.PeopleConverterService;
-import org.trebol.jpa.services.crud.CrudGenericService;
-import org.trebol.jpa.services.crud.PeopleCrudService;
+import org.trebol.jpa.services.patch.CustomersPatchService;
 import org.trebol.jpa.services.patch.PeoplePatchService;
 
-import java.util.Optional;
-
-@Transactional
 @Service
-public class PeopleCrudServiceImpl
-  extends CrudGenericService<PersonPojo, Person>
-  implements PeopleCrudService {
-  private final PeopleRepository peopleRepository;
+public class CustomersPatchServiceImpl
+  implements CustomersPatchService {
+  private final PeoplePatchService peoplePatchService;
 
   @Autowired
-  public PeopleCrudServiceImpl(
-    PeopleRepository peopleRepository,
-    PeopleConverterService peopleConverterService,
+  public CustomersPatchServiceImpl(
     PeoplePatchService peoplePatchService
   ) {
-    super(peopleRepository, peopleConverterService, peoplePatchService);
-    this.peopleRepository = peopleRepository;
+    this.peoplePatchService = peoplePatchService;
   }
 
   @Override
-  public Optional<Person> getExisting(PersonPojo input) throws BadInputException {
-    String idCard = input.getIdNumber();
-    if (StringUtils.isBlank(idCard)) {
-      throw new BadInputException("Customer does not have ID card");
-    } else {
-      return peopleRepository.findByIdNumber(idCard);
-    }
+  public Customer patchExistingEntity(CustomerPojo changes, Customer existing) throws BadInputException {
+    Customer target = new Customer(existing);
+    Person existingPerson = existing.getPerson();
+
+    PersonPojo sourcePerson = changes.getPerson();
+    Person person = peoplePatchService.patchExistingEntity(sourcePerson, existingPerson);
+    target.setPerson(person);
+
+    return target;
   }
 }

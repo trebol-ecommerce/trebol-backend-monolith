@@ -31,7 +31,7 @@ import org.trebol.jpa.repositories.CustomersRepository;
 import org.trebol.jpa.services.conversion.CustomersConverterService;
 import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
-import org.trebol.jpa.services.datatransport.CustomersDataTransportService;
+import org.trebol.jpa.services.patch.CustomersPatchService;
 
 import java.util.Optional;
 
@@ -46,9 +46,9 @@ public class CustomersCrudServiceImpl
   public CustomersCrudServiceImpl(
     CustomersRepository customersRepository,
     CustomersConverterService customersConverterService,
-    CustomersDataTransportService customersDataTransportService
+    CustomersPatchService customersPatchService
   ) {
-    super(customersRepository, customersConverterService, customersDataTransportService);
+    super(customersRepository, customersConverterService, customersPatchService);
     this.customersRepository = customersRepository;
   }
 

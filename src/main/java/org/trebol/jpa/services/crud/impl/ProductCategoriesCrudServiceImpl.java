@@ -31,7 +31,7 @@ import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
 import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
-import org.trebol.jpa.services.datatransport.ProductCategoriesDataTransportService;
+import org.trebol.jpa.services.patch.ProductCategoriesPatchService;
 
 import java.util.Optional;
 
@@ -41,17 +41,17 @@ public class ProductCategoriesCrudServiceImpl
   extends CrudGenericService<ProductCategoryPojo, ProductCategory>
   implements ProductCategoriesCrudService {
   private final ProductsCategoriesRepository categoriesRepository;
-  private final ProductCategoriesDataTransportService productCategoriesDataTransportService;
+  private final ProductCategoriesPatchService categoriesPatchService;
 
   @Autowired
   public ProductCategoriesCrudServiceImpl(
     ProductsCategoriesRepository categoriesRepository,
     ProductCategoriesConverterService categoriesConverterService,
-    ProductCategoriesDataTransportService categoriesDataTransportService
+    ProductCategoriesPatchService categoriesPatchService
   ) {
-    super(categoriesRepository, categoriesConverterService, categoriesDataTransportService);
+    super(categoriesRepository, categoriesConverterService, categoriesPatchService);
     this.categoriesRepository = categoriesRepository;
-    this.productCategoriesDataTransportService = categoriesDataTransportService;
+    this.categoriesPatchService = categoriesPatchService;
   }
 
   @Override
@@ -75,7 +75,7 @@ public class ProductCategoriesCrudServiceImpl
 
   @Override
   protected final ProductCategoryPojo persistEntityWithUpdatesFromPojo(ProductCategoryPojo changes, ProductCategory existingEntity) throws BadInputException {
-    ProductCategory preparedEntity = productCategoriesDataTransportService.applyChangesToExistingEntity(changes, existingEntity);
+    ProductCategory preparedEntity = categoriesPatchService.patchExistingEntity(changes, existingEntity);
     this.passParentIfMatchingEntityExists(preparedEntity, changes.getParent());
     if (!existingEntity.equals(preparedEntity)) {
       return changes;

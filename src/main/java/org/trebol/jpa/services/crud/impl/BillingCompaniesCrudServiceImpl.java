@@ -31,7 +31,7 @@ import org.trebol.jpa.repositories.BillingCompaniesRepository;
 import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
 import org.trebol.jpa.services.crud.BillingCompaniesCrudService;
 import org.trebol.jpa.services.crud.CrudGenericService;
-import org.trebol.jpa.services.datatransport.BillingCompaniesDataTransportService;
+import org.trebol.jpa.services.patch.BillingCompaniesPatchService;
 
 import java.util.Optional;
 
@@ -46,9 +46,9 @@ public class BillingCompaniesCrudServiceImpl
   public BillingCompaniesCrudServiceImpl(
     BillingCompaniesRepository companiesRepository,
     BillingCompaniesConverterService companiesConverterService,
-    BillingCompaniesDataTransportService companiesDataTransportService
+    BillingCompaniesPatchService companiesPatchService
   ) {
-    super(companiesRepository, companiesConverterService, companiesDataTransportService);
+    super(companiesRepository, companiesConverterService, companiesPatchService);
     this.companiesRepository = companiesRepository;
   }
 

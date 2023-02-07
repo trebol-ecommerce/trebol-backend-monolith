@@ -18,47 +18,53 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.crud.impl;
+package org.trebol.jpa.services.patch.impl;
 
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
-import org.trebol.jpa.repositories.PeopleRepository;
-import org.trebol.jpa.services.conversion.PeopleConverterService;
-import org.trebol.jpa.services.crud.CrudGenericService;
-import org.trebol.jpa.services.crud.PeopleCrudService;
 import org.trebol.jpa.services.patch.PeoplePatchService;
 
-import java.util.Optional;
-
-@Transactional
 @Service
-public class PeopleCrudServiceImpl
-  extends CrudGenericService<PersonPojo, Person>
-  implements PeopleCrudService {
-  private final PeopleRepository peopleRepository;
-
-  @Autowired
-  public PeopleCrudServiceImpl(
-    PeopleRepository peopleRepository,
-    PeopleConverterService peopleConverterService,
-    PeoplePatchService peoplePatchService
-  ) {
-    super(peopleRepository, peopleConverterService, peoplePatchService);
-    this.peopleRepository = peopleRepository;
-  }
+@NoArgsConstructor
+public class PeoplePatchServiceImpl
+  implements PeoplePatchService {
 
   @Override
-  public Optional<Person> getExisting(PersonPojo input) throws BadInputException {
-    String idCard = input.getIdNumber();
-    if (StringUtils.isBlank(idCard)) {
-      throw new BadInputException("Customer does not have ID card");
-    } else {
-      return peopleRepository.findByIdNumber(idCard);
+  public Person patchExistingEntity(PersonPojo changes, Person existing) throws BadInputException {
+    Person target = new Person(existing);
+
+    String firstName = changes.getFirstName();
+    if (firstName != null && !firstName.isBlank() && !target.getFirstName().equals(firstName)) {
+      target.setFirstName(firstName);
     }
+
+    String lastName = changes.getLastName();
+    if (lastName != null && !lastName.isBlank() && !target.getLastName().equals(lastName)) {
+      target.setLastName(lastName);
+    }
+
+    String email = changes.getEmail();
+    if (email != null && !email.isBlank() && !target.getEmail().equals(email)) {
+      target.setEmail(email);
+    }
+
+    // phones may be empty, but not null
+    String phone1 = changes.getPhone1();
+    if (!StringUtils.equals(target.getPhone1(), phone1)) {
+      target.setPhone1(phone1);
+    }
+
+    String phone2 = changes.getPhone2();
+    if (phone2 != null) {
+      if (!target.getPhone2().equals(phone2)) {
+        target.setPhone2(phone2);
+      }
+    }
+
+    return target;
   }
 }

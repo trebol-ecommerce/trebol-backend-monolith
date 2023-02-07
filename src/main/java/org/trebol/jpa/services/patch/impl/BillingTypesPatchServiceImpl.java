@@ -18,47 +18,29 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.crud.impl;
+package org.trebol.jpa.services.patch.impl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.BillingTypePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
-import org.trebol.jpa.repositories.BillingTypesRepository;
-import org.trebol.jpa.services.conversion.BillingTypesConverterService;
-import org.trebol.jpa.services.crud.BillingTypesCrudService;
-import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.patch.BillingTypesPatchService;
 
-import java.util.Optional;
-
-@Transactional
 @Service
-public class BillingTypesCrudServiceImpl
-  extends CrudGenericService<BillingTypePojo, BillingType>
-  implements BillingTypesCrudService {
-  private final BillingTypesRepository typesRepository;
-
-  @Autowired
-  public BillingTypesCrudServiceImpl(
-    BillingTypesRepository typesRepository,
-    BillingTypesConverterService typesConverterService,
-    BillingTypesPatchService typesPatchService
-  ) {
-    super(typesRepository, typesConverterService, typesPatchService);
-    this.typesRepository = typesRepository;
-  }
+@NoArgsConstructor
+public class BillingTypesPatchServiceImpl
+  implements BillingTypesPatchService {
 
   @Override
-  public Optional<BillingType> getExisting(BillingTypePojo input) throws BadInputException {
-    String name = input.getName();
-    if (StringUtils.isBlank(name)) {
-      throw new BadInputException("Billing type has no name");
-    } else {
-      return typesRepository.findByName(name);
+  public BillingType patchExistingEntity(BillingTypePojo changes, BillingType existing) throws BadInputException {
+    BillingType target = new BillingType(existing);
+
+    String name = changes.getName();
+    if (!name.isBlank() && !target.getName().equals(name)) {
+      target.setName(name);
     }
+
+    return target;
   }
 }

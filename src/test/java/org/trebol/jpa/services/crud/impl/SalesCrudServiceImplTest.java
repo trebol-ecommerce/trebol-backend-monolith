@@ -43,7 +43,7 @@ import org.trebol.jpa.services.conversion.*;
 import org.trebol.jpa.services.crud.BillingCompaniesCrudService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
 import org.trebol.jpa.services.crud.ShippersCrudService;
-import org.trebol.jpa.services.datatransport.SalesDataTransportService;
+import org.trebol.jpa.services.patch.SalesPatchService;
 import org.trebol.testing.CustomersTestHelper;
 import org.trebol.testing.ProductsTestHelper;
 import org.trebol.testing.SalesTestHelper;
@@ -66,7 +66,7 @@ class SalesCrudServiceImplTest {
   @Mock SalesRepository salesRepositoryMock;
   @Mock ProductsRepository productsRepositoryMock;
   @Mock SalesConverterService salesConverterMock;
-  @Mock SalesDataTransportService salesDataTransportServiceMock;
+  @Mock SalesPatchService salesPatchServiceMock;
   @Mock ProductsConverterService productsConverterServiceMock; // TODO write an unit test that needs this mock
   @Mock CustomersCrudService customersCrudServiceMock;
   @Mock CustomersConverterService customersConverterServiceMock;
@@ -195,7 +195,7 @@ class SalesCrudServiceImplTest {
     Sell internalResult = new Sell(salesHelper.sellEntityAfterCreation());
     internalResult.setDate(updatedDate);
     when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
-    when(salesDataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(internalResult);
+    when(salesPatchServiceMock.patchExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(internalResult);
     when(salesRepositoryMock.saveAndFlush(any(Sell.class))).thenReturn(internalResult);
     when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(input);
 
@@ -211,11 +211,11 @@ class SalesCrudServiceImplTest {
     SellPojo input = salesHelper.sellPojoAfterCreation();
     Sell matchingEntity = salesHelper.sellEntityAfterCreation();
     when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(matchingEntity));
-    when(salesDataTransportServiceMock.applyChangesToExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(matchingEntity);
+    when(salesPatchServiceMock.patchExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(matchingEntity);
 
     SellPojo result = instance.update(input, new BooleanBuilder());
 
-    verify(salesDataTransportServiceMock).applyChangesToExistingEntity(input, matchingEntity);
+    verify(salesPatchServiceMock).patchExistingEntity(input, matchingEntity);
     assertEquals(input, result);
   }
 
