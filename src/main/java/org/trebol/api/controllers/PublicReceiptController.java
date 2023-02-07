@@ -20,6 +20,7 @@
 
 package org.trebol.api.controllers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.models.ReceiptPojo;
 import org.trebol.api.services.ReceiptService;
+import org.trebol.common.exceptions.BadInputException;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -47,9 +49,9 @@ public class PublicReceiptController {
 
   @GetMapping({"/{token}", "/{token}/"})
   public ReceiptPojo fetchReceiptById(@PathVariable("token") String token)
-    throws EntityNotFoundException {
-    if (token == null) {
-      throw new RuntimeException("An incorrect receipt token was provided");
+    throws BadInputException, EntityNotFoundException {
+    if (StringUtils.isBlank(token)) {
+      throw new BadInputException("An incorrect receipt token was provided");
     }
     return this.receiptService.fetchReceiptByTransactionToken(token);
   }

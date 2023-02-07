@@ -52,8 +52,8 @@ import static org.springframework.http.HttpStatus.SEE_OTHER;
 @RestController
 @RequestMapping("/public/checkout")
 public class PublicCheckoutController {
-  private static final String WEBPAY_SUCCESS_TOKEN_HEADER_NAME = "token_ws";
-  private static final String WEBPAY_ABORTION_TOKEN_HEADER_NAME = "TBK_TOKEN";
+  public static final String WEBPAY_SUCCESS_TOKEN_HEADER_NAME = "token_ws";
+  public static final String WEBPAY_ABORTION_TOKEN_HEADER_NAME = "TBK_TOKEN";
   private final Logger logger = LoggerFactory.getLogger(PublicCheckoutController.class);
   private final CheckoutService service;
   private final SalesCrudService salesCrudService;

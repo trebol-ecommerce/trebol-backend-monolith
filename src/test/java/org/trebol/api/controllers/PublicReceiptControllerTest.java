@@ -20,16 +20,37 @@
 
 package org.trebol.api.controllers;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.ReceiptPojo;
 import org.trebol.api.services.ReceiptService;
+import org.trebol.common.exceptions.BadInputException;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class PublicReceiptControllerTest {
   @InjectMocks PublicReceiptController instance;
-  @Mock ReceiptService receiptService;
+  @Mock ReceiptService serviceMock;
 
-  // TODO write a test
+  @Test
+  void reads_data_from_service_by_token() throws BadInputException {
+    String token = ANY;
+    when(serviceMock.fetchReceiptByTransactionToken(anyString())).thenReturn(null);
+    ReceiptPojo result = instance.fetchReceiptById(token);
+    assertNull(result);
+    verify(serviceMock).fetchReceiptByTransactionToken(token);
+  }
+  @Test
+  void does_not_accept_empty_tokens() {
+    assertThrows(BadInputException.class, () -> instance.fetchReceiptById(""));
+  }
 }

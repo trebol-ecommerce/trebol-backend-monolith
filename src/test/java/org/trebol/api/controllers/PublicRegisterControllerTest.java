@@ -20,16 +20,28 @@
 
 package org.trebol.api.controllers;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.trebol.api.models.RegistrationPojo;
 import org.trebol.api.services.RegistrationService;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class PublicRegisterControllerTest {
   @InjectMocks PublicRegisterController instance;
-  @Mock RegistrationService registrationService;
+  @Mock RegistrationService serviceMock;
 
-  // TODO write a test
+  @Test
+  void registers_new_users() {
+    RegistrationPojo input = RegistrationPojo.builder().build();
+    assertDoesNotThrow(() -> {
+      instance.register(input);
+      verify(serviceMock).register(input);
+    });
+  }
 }

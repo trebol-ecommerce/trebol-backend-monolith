@@ -20,24 +20,88 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.types.Predicate;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
+import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.CheckoutService;
+import org.trebol.common.exceptions.BadInputException;
+import org.trebol.integration.exceptions.MailingServiceException;
+import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.integration.services.MailingService;
-import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.services.crud.CrudGenericService;
+import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.predicates.SalesPredicateService;
+import org.trebol.testing.SalesTestHelper;
+
+import java.net.URI;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.SEE_OTHER;
+import static org.trebol.api.controllers.PublicCheckoutController.WEBPAY_ABORTION_TOKEN_HEADER_NAME;
+import static org.trebol.api.controllers.PublicCheckoutController.WEBPAY_SUCCESS_TOKEN_HEADER_NAME;
+import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class PublicCheckoutControllerTest {
   @InjectMocks PublicCheckoutController instance;
-  @Mock CheckoutService service;
-  @Mock CrudGenericService<SellPojo, Sell> salesCrudService;
-  @Mock SalesPredicateService salesPredicateService;
+  @Mock CheckoutService serviceMock;
+  @Mock SalesCrudService salesCrudServiceMock;
+  @Mock SalesPredicateService salesPredicateServiceMock;
   @Mock MailingService mailingServiceMock;
+  SalesTestHelper salesHelper = new SalesTestHelper();
+  private final static Map<String, String> HEADERS_MAP_WITH_SUCCESS_TOKEN = Map.of(WEBPAY_SUCCESS_TOKEN_HEADER_NAME, ANY);
+  private final static Map<String, String> HEADERS_MAP_WITH_ABORTED_TOKEN = Map.of(WEBPAY_ABORTION_TOKEN_HEADER_NAME, ANY);
 
-  // TODO write a test
+  @Test
+  void creates_redirection_data_from_cart_data() throws BadInputException, PaymentServiceException {
+    PaymentRedirectionDetailsPojo expectedResult = PaymentRedirectionDetailsPojo.builder()
+      .token(ANY)
+      .url(ANY)
+      .build();
+    SellPojo input = salesHelper.sellPojoBeforeCreation();
+    when(serviceMock.requestTransactionStart(nullable(SellPojo.class))).thenReturn(expectedResult);
+    PaymentRedirectionDetailsPojo result = instance.submitCart(input);
+    assertNotNull(result);
+    assertEquals(expectedResult, result);
+  }
+
+  @Test
+  void redirects_to_success_page() throws BadInputException, MailingServiceException, PaymentServiceException {
+    mailingServiceMock = null;
+    URI successPageUri = URI.create(ANY);
+    when(serviceMock.generateResultPageUrl(anyString())).thenReturn(successPageUri);
+    ResponseEntity<Void> response = instance.validateSuccesfulTransaction(HEADERS_MAP_WITH_SUCCESS_TOKEN);
+    assertNotNull(response);
+    assertEquals(SEE_OTHER, response.getStatusCode());
+    assertEquals(successPageUri, response.getHeaders().getLocation());
+  }
+
+  @Test
+  void redirects_to_failure_page() throws BadInputException, PaymentServiceException {
+    URI failurePageUri = URI.create(ANY);
+    when(serviceMock.generateResultPageUrl(anyString())).thenReturn(failurePageUri);
+    ResponseEntity<Void> response = instance.validateAbortedTransaction(HEADERS_MAP_WITH_ABORTED_TOKEN);
+    assertNotNull(response);
+    assertEquals(SEE_OTHER, response.getStatusCode());
+    assertEquals(failurePageUri, response.getHeaders().getLocation());
+  }
+
+  @Test
+  void reads_result_of_transaction() {
+    SellPojo expectedResult = SellPojo.builder().build();
+    when(salesCrudServiceMock.readOne(nullable(Predicate.class))).thenReturn(expectedResult);
+    SellPojo result = instance.getTransactionResultFor(ANY);
+    assertNotNull(result);
+    assertEquals(expectedResult, result);
+  }
 }
