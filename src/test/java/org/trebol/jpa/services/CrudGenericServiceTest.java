@@ -84,7 +84,7 @@ class CrudGenericServiceTest {
 
   @Test
   void reads_plural_data_without_items() {
-    DataPagePojo<GenericPojo> expectedResult = new DataPagePojo<>(0, 10);
+    DataPagePojo<GenericPojo> expectedResult = new DataPagePojo<>();
 
     when(genericRepositoryMock.findAll(simplePageRequest)).thenReturn(new PageImpl<>(emptyEntityList));
 
@@ -99,7 +99,7 @@ class CrudGenericServiceTest {
   @Test
   void reads_plural_data_with_items() {
     Predicate filters = new BooleanBuilder();
-    DataPagePojo<GenericPojo> expectedResult = new DataPagePojo<>(persistedPojoList, 0, 1, 10);
+    DataPagePojo<GenericPojo> expectedResult = new DataPagePojo<>();
 
     when(genericRepositoryMock.count(filters)).thenReturn(1L);
     when(genericRepositoryMock.findAll(filters, simplePageRequest)).thenReturn(new PageImpl<>(persistedEntityList));

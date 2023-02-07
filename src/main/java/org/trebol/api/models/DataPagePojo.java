@@ -41,9 +41,10 @@ public class DataPagePojo<T> {
   private long totalCount;
   private int pageSize;
 
-  public DataPagePojo(int pageIndex, int pageSize) {
+  public DataPagePojo() {
     this.items = new ArrayList<>();
-    this.pageIndex = pageIndex;
-    this.pageSize = pageSize;
+    this.pageIndex = 0;
+    this.totalCount = 0;
+    this.pageSize = 0;
   }
 }

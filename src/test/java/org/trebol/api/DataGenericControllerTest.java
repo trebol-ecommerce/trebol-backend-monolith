@@ -37,7 +37,7 @@ public abstract class DataGenericControllerTest<P, E> {
   protected CrudService<P, E> crudServiceMock;
 
   protected void reads_data(@Nullable Map<String, String> requestParams) {
-    DataPagePojo<P> pagePojo = new DataPagePojo<>(0, 0);
+    DataPagePojo<P> pagePojo = new DataPagePojo<>();
     when(crudServiceMock.readMany(anyInt(), anyInt(), isNull(), isNull())).thenReturn(pagePojo);
     DataPagePojo<P> result = instance.readMany(requestParams);
     assertNotNull(result);

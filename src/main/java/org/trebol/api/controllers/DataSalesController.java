@@ -78,7 +78,11 @@ public class DataSalesController
       if (allRequestParams.containsKey("buyOrder")) {
         Predicate predicate = predicateService.parseMap(allRequestParams);
         SellPojo sellPojo = crudService.readOne(predicate);
-        return new DataPagePojo<>(List.of(sellPojo), 0, 1, 1);
+        DataPagePojo<SellPojo> singleItemPage = new DataPagePojo<>();
+        singleItemPage.setItems(List.of(sellPojo));
+        singleItemPage.setTotalCount(1);
+        singleItemPage.setPageSize(1);
+        return singleItemPage;
       }
       if (!allRequestParams.containsKey("sortBy") && !allRequestParams.containsKey("order")) {
         allRequestParams = new HashMap<>(allRequestParams);
