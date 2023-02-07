@@ -47,8 +47,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.SEE_OTHER;
-import static org.trebol.api.controllers.PublicCheckoutController.WEBPAY_ABORTION_TOKEN_HEADER_NAME;
-import static org.trebol.api.controllers.PublicCheckoutController.WEBPAY_SUCCESS_TOKEN_HEADER_NAME;
+import static org.trebol.config.Constants.WEBPAY_ABORTION_TOKEN_HEADER_NAME;
+import static org.trebol.config.Constants.WEBPAY_SUCCESS_TOKEN_HEADER_NAME;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)

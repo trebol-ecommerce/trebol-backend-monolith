@@ -48,12 +48,12 @@ import java.util.Map;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.SEE_OTHER;
+import static org.trebol.config.Constants.WEBPAY_ABORTION_TOKEN_HEADER_NAME;
+import static org.trebol.config.Constants.WEBPAY_SUCCESS_TOKEN_HEADER_NAME;
 
 @RestController
 @RequestMapping("/public/checkout")
 public class PublicCheckoutController {
-  public static final String WEBPAY_SUCCESS_TOKEN_HEADER_NAME = "token_ws";
-  public static final String WEBPAY_ABORTION_TOKEN_HEADER_NAME = "TBK_TOKEN";
   private final Logger logger = LoggerFactory.getLogger(PublicCheckoutController.class);
   private final CheckoutService service;
   private final SalesCrudService salesCrudService;
