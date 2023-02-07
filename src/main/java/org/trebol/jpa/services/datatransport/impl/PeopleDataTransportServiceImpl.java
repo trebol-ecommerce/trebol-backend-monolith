@@ -20,6 +20,7 @@
 
 package org.trebol.jpa.services.datatransport.impl;
 
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.PersonPojo;
@@ -28,12 +29,9 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.services.datatransport.PeopleDataTransportService;
 
 @Service
+@NoArgsConstructor
 public class PeopleDataTransportServiceImpl
   implements PeopleDataTransportService {
-
-  public PeopleDataTransportServiceImpl(
-  ) {
-  }
 
   @Override
   public Person applyChangesToExistingEntity(PersonPojo source, Person existing) throws BadInputException {

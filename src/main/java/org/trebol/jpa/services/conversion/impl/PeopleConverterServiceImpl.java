@@ -20,7 +20,7 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
@@ -28,12 +28,9 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 
 @Service
+@NoArgsConstructor
 public class PeopleConverterServiceImpl
   implements PeopleConverterService {
-
-  @Autowired
-  public PeopleConverterServiceImpl() {
-  }
 
   @Override
   public PersonPojo convertToPojo(Person source) {

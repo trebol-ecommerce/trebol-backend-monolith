@@ -20,6 +20,7 @@
 
 package org.trebol.jpa.services.datatransport.impl;
 
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.ImagePojo;
 import org.trebol.common.exceptions.BadInputException;
@@ -27,12 +28,9 @@ import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.datatransport.ImagesDataTransportService;
 
 @Service
+@NoArgsConstructor
 public class ImagesDataTransportServiceImpl
   implements ImagesDataTransportService {
-
-  public ImagesDataTransportServiceImpl(
-  ) {
-  }
 
   @Override
   public Image applyChangesToExistingEntity(ImagePojo source, Image existing) throws BadInputException {

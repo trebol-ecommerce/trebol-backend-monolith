@@ -20,7 +20,7 @@
 
 package org.trebol.jpa.services.datatransport.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.ProductListPojo;
 import org.trebol.common.exceptions.BadInputException;
@@ -28,13 +28,9 @@ import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.services.datatransport.ProductListsDataTransportService;
 
 @Service
+@NoArgsConstructor
 public class ProductListDataTransportServiceImpl
   implements ProductListsDataTransportService {
-
-  @Autowired
-  public ProductListDataTransportServiceImpl(
-  ) {
-  }
 
   @Override
   public ProductList applyChangesToExistingEntity(ProductListPojo source, ProductList existing) throws BadInputException {

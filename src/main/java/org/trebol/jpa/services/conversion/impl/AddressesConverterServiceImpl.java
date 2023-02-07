@@ -27,8 +27,8 @@ import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Address;
 import org.trebol.jpa.services.conversion.AddressesConverterService;
 
-@NoArgsConstructor
 @Service
+@NoArgsConstructor
 public class AddressesConverterServiceImpl
   implements AddressesConverterService {
 

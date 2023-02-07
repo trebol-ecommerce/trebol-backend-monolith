@@ -20,7 +20,7 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.BillingTypePojo;
 import org.trebol.common.exceptions.BadInputException;
@@ -28,12 +28,9 @@ import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.services.conversion.BillingTypesConverterService;
 
 @Service
+@NoArgsConstructor
 public class BillingTypesConverterServiceImpl
   implements BillingTypesConverterService {
-
-  @Autowired
-  public BillingTypesConverterServiceImpl() {
-  }
 
   @Override
   public BillingTypePojo convertToPojo(BillingType source) {

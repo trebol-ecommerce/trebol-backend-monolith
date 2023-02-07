@@ -20,13 +20,13 @@
 
 package org.trebol.jpa.exceptions;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.EntityNotFoundException;
 
+@NoArgsConstructor
 public class UserNotFoundException
   extends EntityNotFoundException {
-
-  public UserNotFoundException() {
-  }
 
   public UserNotFoundException(String message) {
     super(message);

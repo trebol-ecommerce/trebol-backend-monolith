@@ -20,23 +20,17 @@
 
 package org.trebol.jpa.services.datatransport.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.datatransport.ProductCategoriesDataTransportService;
 
-@Transactional
 @Service
+@NoArgsConstructor
 public class ProductCategoriesDataTransportServiceImpl
   implements ProductCategoriesDataTransportService {
-
-  @Autowired
-  public ProductCategoriesDataTransportServiceImpl(
-  ) {
-  }
 
   @Override
   public ProductCategory applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory existing)

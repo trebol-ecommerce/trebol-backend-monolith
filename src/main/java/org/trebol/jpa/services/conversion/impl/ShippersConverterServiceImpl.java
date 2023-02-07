@@ -20,7 +20,7 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.ShipperPojo;
 import org.trebol.common.exceptions.BadInputException;
@@ -28,12 +28,9 @@ import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.services.conversion.ShippersConverterService;
 
 @Service
+@NoArgsConstructor
 public class ShippersConverterServiceImpl
   implements ShippersConverterService {
-
-  @Autowired
-  public ShippersConverterServiceImpl() {
-  }
 
   @Override
   public ShipperPojo convertToPojo(Shipper source) {

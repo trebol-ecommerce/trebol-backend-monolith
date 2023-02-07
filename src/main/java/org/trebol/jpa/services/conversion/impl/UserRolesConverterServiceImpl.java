@@ -20,7 +20,7 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.UserRolePojo;
 import org.trebol.common.exceptions.BadInputException;
@@ -28,12 +28,9 @@ import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.conversion.UserRolesConverterService;
 
 @Service
+@NoArgsConstructor
 public class UserRolesConverterServiceImpl
   implements UserRolesConverterService {
-
-  @Autowired
-  public UserRolesConverterServiceImpl() {
-  }
 
   @Override
   public UserRolePojo convertToPojo(UserRole source) {

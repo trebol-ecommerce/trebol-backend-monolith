@@ -20,7 +20,7 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.SellStatusPojo;
 import org.trebol.common.exceptions.BadInputException;
@@ -28,12 +28,9 @@ import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.services.conversion.SellStatusesConverterService;
 
 @Service
+@NoArgsConstructor
 public class SellStatusesConverterServiceImpl
   implements SellStatusesConverterService {
-
-  @Autowired
-  public SellStatusesConverterServiceImpl() {
-  }
 
   @Override
   public SellStatusPojo convertToPojo(SellStatus source) {
