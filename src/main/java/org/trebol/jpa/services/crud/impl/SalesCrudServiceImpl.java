@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.*;
 import org.trebol.common.exceptions.BadInputException;
+import org.trebol.config.ApiProperties;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.AddressesRepository;
 import org.trebol.jpa.repositories.BillingTypesRepository;
@@ -63,8 +64,8 @@ public class SalesCrudServiceImpl
   private final AddressesRepository addressesRepository;
   private final ShippersCrudService shippersCrudService;
   private final AddressesConverterService addressesConverterService;
+  private final ApiProperties apiProperties;
   private static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
-  private static final boolean CAN_EDIT_AFTER_PROCESS = true; // TODO refactor as part of application properties
 
   @Autowired
   public SalesCrudServiceImpl(
@@ -81,7 +82,8 @@ public class SalesCrudServiceImpl
     // PaymentTypesJpaRepository paymentTypesRepository,
     AddressesRepository addressesRepository,
     ShippersCrudService shippersCrudService,
-    AddressesConverterService addressesConverterService
+    AddressesConverterService addressesConverterService,
+    ApiProperties apiProperties
   ) {
     super(salesRepository, salesConverterService, salesPatchService);
     this.salesRepository = salesRepository;
@@ -98,6 +100,7 @@ public class SalesCrudServiceImpl
     this.addressesRepository = addressesRepository;
     this.shippersCrudService = shippersCrudService;
     this.addressesConverterService = addressesConverterService;
+    this.apiProperties = apiProperties;
   }
 
   @Override
@@ -129,7 +132,7 @@ public class SalesCrudServiceImpl
   protected SellPojo persistEntityWithUpdatesFromPojo(SellPojo changes, Sell existingEntity)
     throws BadInputException {
     Integer statusCode = existingEntity.getStatus().getCode();
-    if ((statusCode >= 3 || statusCode < 0) && !CAN_EDIT_AFTER_PROCESS) {
+    if ((statusCode >= 3 || statusCode < 0) && !apiProperties.isAbleToEditSalesAfterBeingProcessed()) {
       throw new BadInputException("The requested transaction cannot be modified");
     }
     Sell updatedEntity = salesPatchService.patchExistingEntity(changes, existingEntity);

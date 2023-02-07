@@ -36,4 +36,5 @@ public class ApiProperties {
   private Integer maxAllowedPageSize;
   @Positive
   private int maxCategoryFetchingRecursionDepth;
+  private boolean ableToEditSalesAfterBeingProcessed;
 }
