@@ -44,7 +44,7 @@ public abstract class GenericJwtAuthenticationFilter
   private final SecurityProperties jwtProperties;
   private final SecretKey secretKey;
 
-  public GenericJwtAuthenticationFilter(
+  protected GenericJwtAuthenticationFilter(
     SecurityProperties jwtProperties,
     SecretKey secretKey
   ) {
