@@ -33,7 +33,7 @@ public class ImagesPatchServiceImpl
   implements ImagesPatchService {
 
   @Override
-  public Image patchExistingEntity(ImagePojo changes, Image existing) throws BadInputException {
+  public Image patchExistingEntity(ImagePojo changes, Image existing) {
     Image target = new Image(existing);
 
     String code = changes.getCode();

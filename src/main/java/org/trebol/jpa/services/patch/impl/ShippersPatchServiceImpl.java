@@ -33,7 +33,7 @@ public class ShippersPatchServiceImpl
   implements ShippersPatchService {
 
   @Override
-  public Shipper patchExistingEntity(ShipperPojo changes, Shipper existing) throws BadInputException {
+  public Shipper patchExistingEntity(ShipperPojo changes, Shipper existing) {
     Shipper target = new Shipper(existing);
 
     String name = changes.getName();

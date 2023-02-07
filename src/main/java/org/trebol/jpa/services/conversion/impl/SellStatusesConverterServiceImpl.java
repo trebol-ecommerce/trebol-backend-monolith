@@ -49,7 +49,7 @@ public class SellStatusesConverterServiceImpl
   }
 
   @Override
-  public SellStatus applyChangesToExistingEntity(SellStatusPojo source, SellStatus target) throws BadInputException {
+  public SellStatus applyChangesToExistingEntity(SellStatusPojo source, SellStatus target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

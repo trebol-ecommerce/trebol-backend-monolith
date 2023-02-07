@@ -33,7 +33,7 @@ public class UserRolesPatchServiceImpl
   implements UserRolesPatchService {
 
   @Override
-  public UserRole patchExistingEntity(UserRolePojo changes, UserRole existing) throws BadInputException {
+  public UserRole patchExistingEntity(UserRolePojo changes, UserRole existing) {
     UserRole target = new UserRole(existing);
 
     String name = changes.getName();

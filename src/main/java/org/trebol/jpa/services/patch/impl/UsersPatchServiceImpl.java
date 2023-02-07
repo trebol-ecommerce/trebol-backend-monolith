@@ -54,7 +54,7 @@ public class UsersPatchServiceImpl
   }
 
   @Override
-  public User patchExistingEntity(UserPojo changes, User existing) throws BadInputException {
+  public User patchExistingEntity(UserPojo changes, User existing) {
     User target = new User(existing);
 
     String name = changes.getName();

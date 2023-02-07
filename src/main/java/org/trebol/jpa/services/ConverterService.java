@@ -49,11 +49,10 @@ public interface ConverterService<P, E> {
    * @param source The Pojo containing data updates.
    * @param target The target entity.
    * @return An updated instance of the @Entity, prepared to be saved to the database.
-   * @throws BadInputException If the object with changes has invalid values
    * @deprecated Please use {@link PatchService}'s method instead
    */
   @Deprecated
-  E applyChangesToExistingEntity(P source, E target) throws BadInputException;
+  E applyChangesToExistingEntity(P source, E target);
 
   /**
    * Converts an existing @Entity to its complete Pojo equivalent, including all relationships to other entities.

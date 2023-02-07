@@ -101,7 +101,7 @@ public class ProductsConverterServiceImpl
   }
 
   @Override
-  public Product applyChangesToExistingEntity(ProductPojo source, Product target) throws BadInputException {
+  public Product applyChangesToExistingEntity(ProductPojo source, Product target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

@@ -33,7 +33,7 @@ public class ProductListPatchServiceImpl
   implements ProductListsPatchService {
 
   @Override
-  public ProductList patchExistingEntity(ProductListPojo changes, ProductList existing) throws BadInputException {
+  public ProductList patchExistingEntity(ProductListPojo changes, ProductList existing) {
     ProductList target = new ProductList(existing);
 
     if (changes.getName() != null && !changes.getName().isEmpty() && !changes.getName().equals(target.getName())) {

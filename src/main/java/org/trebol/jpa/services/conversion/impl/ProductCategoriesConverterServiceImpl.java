@@ -50,7 +50,7 @@ public class ProductCategoriesConverterServiceImpl
   }
 
   @Override
-  public ProductCategory applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory target) throws BadInputException {
+  public ProductCategory applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

@@ -47,7 +47,7 @@ public class BillingTypesConverterServiceImpl
   }
 
   @Override
-  public BillingType applyChangesToExistingEntity(BillingTypePojo source, BillingType target) throws BadInputException {
+  public BillingType applyChangesToExistingEntity(BillingTypePojo source, BillingType target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

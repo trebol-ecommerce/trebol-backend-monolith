@@ -67,7 +67,7 @@ public class AddressesConverterServiceImpl
   }
 
   @Override
-  public Address applyChangesToExistingEntity(AddressPojo source, Address target) throws BadInputException {
+  public Address applyChangesToExistingEntity(AddressPojo source, Address target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

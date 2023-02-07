@@ -114,7 +114,7 @@ public class UsersConverterServiceImpl
   }
 
   @Override
-  public User applyChangesToExistingEntity(UserPojo source, User target) throws BadInputException {
+  public User applyChangesToExistingEntity(UserPojo source, User target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

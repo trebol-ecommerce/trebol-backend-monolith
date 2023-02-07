@@ -33,8 +33,7 @@ public class ProductCategoriesPatchServiceImpl
   implements ProductCategoriesPatchService {
 
   @Override
-  public ProductCategory patchExistingEntity(ProductCategoryPojo changes, ProductCategory existing)
-    throws BadInputException {
+  public ProductCategory patchExistingEntity(ProductCategoryPojo changes, ProductCategory existing) {
     ProductCategory target = new ProductCategory(existing);
 
     String name = changes.getName();

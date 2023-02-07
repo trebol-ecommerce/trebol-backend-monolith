@@ -48,7 +48,7 @@ public class ShippersConverterServiceImpl
   }
 
   @Override
-  public Shipper applyChangesToExistingEntity(ShipperPojo source, Shipper target) throws BadInputException {
+  public Shipper applyChangesToExistingEntity(ShipperPojo source, Shipper target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

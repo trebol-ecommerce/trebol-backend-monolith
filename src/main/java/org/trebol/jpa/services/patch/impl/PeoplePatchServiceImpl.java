@@ -34,7 +34,7 @@ public class PeoplePatchServiceImpl
   implements PeoplePatchService {
 
   @Override
-  public Person patchExistingEntity(PersonPojo changes, Person existing) throws BadInputException {
+  public Person patchExistingEntity(PersonPojo changes, Person existing) {
     Person target = new Person(existing);
 
     String firstName = changes.getFirstName();

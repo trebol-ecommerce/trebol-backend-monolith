@@ -33,8 +33,7 @@ public class BillingCompaniesPatchServiceImpl
   implements BillingCompaniesPatchService {
 
   @Override
-  public BillingCompany patchExistingEntity(BillingCompanyPojo changes, BillingCompany existing)
-    throws BadInputException {
+  public BillingCompany patchExistingEntity(BillingCompanyPojo changes, BillingCompany existing) {
     BillingCompany target = new BillingCompany(existing);
 
     String name = changes.getName();

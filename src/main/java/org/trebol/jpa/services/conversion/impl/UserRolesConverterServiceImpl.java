@@ -48,7 +48,7 @@ public class UserRolesConverterServiceImpl
   }
 
   @Override
-  public UserRole applyChangesToExistingEntity(UserRolePojo source, UserRole target) throws BadInputException {
+  public UserRole applyChangesToExistingEntity(UserRolePojo source, UserRole target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

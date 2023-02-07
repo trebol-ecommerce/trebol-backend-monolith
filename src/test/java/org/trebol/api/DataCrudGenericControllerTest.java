@@ -72,7 +72,7 @@ public abstract class DataCrudGenericControllerTest<P, E>
     verify(crudServiceMock).update(input, predicate);
   }
 
-  protected void deletes_data_parsing_predicate_filters_from_map(@Nullable Map<String, String> predicateFiltersMap) throws BadInputException {
+  protected void deletes_data_parsing_predicate_filters_from_map(@Nullable Map<String, String> predicateFiltersMap) {
     if (predicateFiltersMap == null) {
       predicateFiltersMap = Map.of(ANY, ANY);
     }

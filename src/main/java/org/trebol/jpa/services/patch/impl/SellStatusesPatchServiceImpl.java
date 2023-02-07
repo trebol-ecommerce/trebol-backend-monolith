@@ -33,7 +33,7 @@ public class SellStatusesPatchServiceImpl
   implements SellStatusesPatchService {
 
   @Override
-  public SellStatus patchExistingEntity(SellStatusPojo changes, SellStatus existing) throws BadInputException {
+  public SellStatus patchExistingEntity(SellStatusPojo changes, SellStatus existing) {
     SellStatus target = new SellStatus(existing);
 
     Integer code = changes.getCode();

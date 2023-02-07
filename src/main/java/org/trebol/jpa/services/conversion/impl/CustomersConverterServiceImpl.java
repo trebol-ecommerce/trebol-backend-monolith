@@ -60,7 +60,7 @@ public class CustomersConverterServiceImpl
   }
 
   @Override
-  public Customer applyChangesToExistingEntity(CustomerPojo source, Customer target) throws BadInputException {
+  public Customer applyChangesToExistingEntity(CustomerPojo source, Customer target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

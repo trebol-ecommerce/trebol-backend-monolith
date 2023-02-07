@@ -54,12 +54,12 @@ public class ProductListConverterServiceImpl
   }
 
   @Override
-  public ProductList convertToNewEntity(ProductListPojo source) throws BadInputException {
+  public ProductList convertToNewEntity(ProductListPojo source) {
     return new ProductList(source.getName(), source.getCode());
   }
 
   @Override
-  public ProductList applyChangesToExistingEntity(ProductListPojo source, ProductList target) throws BadInputException {
+  public ProductList applyChangesToExistingEntity(ProductListPojo source, ProductList target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

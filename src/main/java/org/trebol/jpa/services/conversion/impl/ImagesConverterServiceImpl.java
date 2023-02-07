@@ -52,7 +52,7 @@ public class ImagesConverterServiceImpl
   }
 
   @Override
-  public Image applyChangesToExistingEntity(ImagePojo source, Image target) throws BadInputException {
+  public Image applyChangesToExistingEntity(ImagePojo source, Image target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

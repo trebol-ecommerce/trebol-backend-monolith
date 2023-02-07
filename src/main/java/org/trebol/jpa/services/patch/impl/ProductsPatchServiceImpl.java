@@ -33,7 +33,7 @@ public class ProductsPatchServiceImpl
   implements ProductsPatchService {
 
   @Override
-  public Product patchExistingEntity(ProductPojo changes, Product existing) throws BadInputException {
+  public Product patchExistingEntity(ProductPojo changes, Product existing) {
     Product target = new Product(existing);
 
     String barcode = changes.getBarcode();

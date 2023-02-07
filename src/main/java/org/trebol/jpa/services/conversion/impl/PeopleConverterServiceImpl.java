@@ -67,7 +67,7 @@ public class PeopleConverterServiceImpl
   }
 
   @Override
-  public Person applyChangesToExistingEntity(PersonPojo source, Person target) throws BadInputException {
+  public Person applyChangesToExistingEntity(PersonPojo source, Person target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

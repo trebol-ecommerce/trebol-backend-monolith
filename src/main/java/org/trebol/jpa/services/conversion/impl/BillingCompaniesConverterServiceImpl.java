@@ -49,7 +49,7 @@ public class BillingCompaniesConverterServiceImpl
   }
 
   @Override
-  public BillingCompany applyChangesToExistingEntity(BillingCompanyPojo source, BillingCompany target) throws BadInputException {
+  public BillingCompany applyChangesToExistingEntity(BillingCompanyPojo source, BillingCompany target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

@@ -100,7 +100,7 @@ public class SalesConverterServiceImpl
 
   @Transactional
   @Override
-  public Sell convertToNewEntity(SellPojo source) throws BadInputException {
+  public Sell convertToNewEntity(SellPojo source) {
     Sell target = new Sell();
     // the date can be null even after this method is called, since usually the underlying database can take care of it
     if (source.getDate() != null) {
@@ -111,7 +111,7 @@ public class SalesConverterServiceImpl
   }
 
   @Override
-  public Sell applyChangesToExistingEntity(SellPojo source, Sell target) throws BadInputException {
+  public Sell applyChangesToExistingEntity(SellPojo source, Sell target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

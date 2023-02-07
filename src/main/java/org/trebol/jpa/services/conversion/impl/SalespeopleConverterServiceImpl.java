@@ -60,7 +60,7 @@ public class SalespeopleConverterServiceImpl
   }
 
   @Override
-  public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson target) throws BadInputException {
+  public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }

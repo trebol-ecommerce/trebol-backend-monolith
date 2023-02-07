@@ -48,11 +48,10 @@ public interface CheckoutService {
    * @param token      Previously emitted by the payment service
    * @param wasAborted Whether the transaction was aborted by the user doing the payment.
    * @return The "completed/failed" URI for requesting it later on
-   * @throws BadInputException       When the transaction is not in a valid state
    * @throws EntityNotFoundException When no transaction matches the provided hash
    * @throws PaymentServiceException On unexpected failures
    */
-  SellPojo confirmTransaction(String token, boolean wasAborted) throws BadInputException, EntityNotFoundException, PaymentServiceException;
+  SellPojo confirmTransaction(String token, boolean wasAborted) throws EntityNotFoundException, PaymentServiceException;
 
   /**
    * From a given token, generate a corresponding URL to redirect users to view their receipt

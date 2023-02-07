@@ -48,12 +48,12 @@ public class ProductListItemsConverterServiceImpl
   }
 
   @Override
-  public ProductListItem convertToNewEntity(ProductPojo source) throws BadInputException {
+  public ProductListItem convertToNewEntity(ProductPojo source) {
     throw new UnsupportedOperationException("Not implemented");
   }
 
   @Override
-  public ProductListItem applyChangesToExistingEntity(ProductPojo source, ProductListItem target) throws BadInputException {
+  public ProductListItem applyChangesToExistingEntity(ProductPojo source, ProductListItem target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
 }
