@@ -25,9 +25,9 @@ import org.trebol.jpa.entities.QUserRole;
 
 import java.util.Map;
 
-public interface UserRolesSortSpec {
-  QUserRole basePath = QUserRole.userRole;
-  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
-    "name", basePath.name.asc()
+public class UserRolesSortSpec {
+  private static final QUserRole BASE_PATH = QUserRole.userRole;
+  public static final Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
+    "name", BASE_PATH.name.asc()
   );
 }

@@ -25,9 +25,9 @@ import org.trebol.jpa.entities.QBillingType;
 
 import java.util.Map;
 
-public interface BillingTypesSortSpec {
-  QBillingType basePath = QBillingType.billingType;
-  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
-    "name", basePath.name.asc()
+public class BillingTypesSortSpec {
+  private static final QBillingType BASE_PATH = QBillingType.billingType;
+  public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
+    "name", BASE_PATH.name.asc()
   );
 }

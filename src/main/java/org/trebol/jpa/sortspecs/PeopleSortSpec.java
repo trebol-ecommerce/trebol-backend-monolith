@@ -25,15 +25,15 @@ import org.trebol.jpa.entities.QPerson;
 
 import java.util.Map;
 
-public interface PeopleSortSpec {
-  QPerson basePath = QPerson.person;
-  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
-    "idNumber", basePath.idNumber.asc(),
-    "firstName", basePath.firstName.asc(),
-    "email", basePath.email.asc(),
-    "phone1", basePath.phone1.asc(),
-    "phone2", basePath.phone2.asc(),
-    "name", basePath.lastName.asc(),
-    "lastName", basePath.lastName.asc()
+public class PeopleSortSpec {
+  private static final QPerson BASE_PATH = QPerson.person;
+  public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
+    "idNumber", BASE_PATH.idNumber.asc(),
+    "firstName", BASE_PATH.firstName.asc(),
+    "email", BASE_PATH.email.asc(),
+    "phone1", BASE_PATH.phone1.asc(),
+    "phone2", BASE_PATH.phone2.asc(),
+    "name", BASE_PATH.lastName.asc(),
+    "lastName", BASE_PATH.lastName.asc()
   );
 }

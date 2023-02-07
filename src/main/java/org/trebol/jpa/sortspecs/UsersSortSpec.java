@@ -25,10 +25,10 @@ import org.trebol.jpa.entities.QUser;
 
 import java.util.Map;
 
-public interface UsersSortSpec {
-  QUser basePath = QUser.user;
-  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
-    "name", basePath.name.asc(),
-    "role", basePath.userRole.name.asc()
+public class UsersSortSpec {
+  private static final QUser BASE_PATH = QUser.user;
+  public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
+    "name", BASE_PATH.name.asc(),
+    "role", BASE_PATH.userRole.name.asc()
   );
 }

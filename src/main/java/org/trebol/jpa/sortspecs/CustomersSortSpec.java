@@ -26,16 +26,16 @@ import org.trebol.jpa.entities.QPerson;
 
 import java.util.Map;
 
-public interface CustomersSortSpec {
-  QCustomer basePath = QCustomer.customer;
-  QPerson personPath = basePath.person;
-  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
-    "idNumber", personPath.idNumber.asc(),
-    "firstName", personPath.firstName.asc(),
-    "email", personPath.email.asc(),
-    "phone1", personPath.phone1.asc(),
-    "phone2", personPath.phone2.asc(),
-    "name", personPath.lastName.asc(),
-    "lastName", personPath.lastName.asc()
+public class CustomersSortSpec {
+  private static final QCustomer BASE_PATH = QCustomer.customer;
+  private static final QPerson PERSON_PATH = BASE_PATH.person;
+  public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
+    "idNumber", PERSON_PATH.idNumber.asc(),
+    "firstName", PERSON_PATH.firstName.asc(),
+    "email", PERSON_PATH.email.asc(),
+    "phone1", PERSON_PATH.phone1.asc(),
+    "phone2", PERSON_PATH.phone2.asc(),
+    "name", PERSON_PATH.lastName.asc(),
+    "lastName", PERSON_PATH.lastName.asc()
   );
 }

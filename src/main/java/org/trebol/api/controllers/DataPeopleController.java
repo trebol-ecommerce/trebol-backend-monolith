@@ -64,6 +64,6 @@ public class DataPeopleController
 
   @Override
   protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return PeopleSortSpec.orderSpecMap;
+    return PeopleSortSpec.ORDER_SPEC_MAP;
   }
 }

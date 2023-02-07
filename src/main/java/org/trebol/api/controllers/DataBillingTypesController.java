@@ -61,6 +61,6 @@ public class DataBillingTypesController
 
   @Override
   protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return BillingTypesSortSpec.orderSpecMap;
+    return BillingTypesSortSpec.ORDER_SPEC_MAP;
   }
 }

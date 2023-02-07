@@ -87,7 +87,7 @@ public class DataProductListContentsController {
 
     Pageable pagination;
     if (requestParams.containsKey("sortBy")) {
-      Sort order = sortService.parse(ProductListItemsSortSpec.orderSpecMap, requestParams);
+      Sort order = sortService.parse(ProductListItemsSortSpec.ORDER_SPEC_MAP, requestParams);
       pagination = PageRequest.of(pageIndex, pageSize, order);
     } else {
       pagination = PageRequest.of(pageIndex, pageSize);

@@ -26,11 +26,11 @@ import org.trebol.jpa.entities.QProductListItem;
 
 import java.util.Map;
 
-public interface ProductListItemsSortSpec {
-  QProductListItem basePath = QProductListItem.productListItem;
-  QProduct productPath = basePath.product;
-  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
-    "name", productPath.name.asc(),
-    "barcode", productPath.barcode.asc()
+public class ProductListItemsSortSpec {
+  private static final QProductListItem BASE_PATH = QProductListItem.productListItem;
+  private static final QProduct PRODUCT_PATH = BASE_PATH.product;
+  public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
+    "name", PRODUCT_PATH.name.asc(),
+    "barcode", PRODUCT_PATH.barcode.asc()
   );
 }

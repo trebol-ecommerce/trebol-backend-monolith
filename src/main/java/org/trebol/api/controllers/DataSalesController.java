@@ -146,6 +146,6 @@ public class DataSalesController
 
   @Override
   protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return SalesSortSpec.orderSpecMap;
+    return SalesSortSpec.ORDER_SPEC_MAP;
   }
 }

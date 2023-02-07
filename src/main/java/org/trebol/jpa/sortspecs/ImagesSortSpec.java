@@ -25,11 +25,11 @@ import org.trebol.jpa.entities.QImage;
 
 import java.util.Map;
 
-public interface ImagesSortSpec {
-  QImage basePath = QImage.image;
-  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
-    "code", basePath.code.asc(),
-    "filename", basePath.filename.asc(),
-    "url", basePath.url.asc()
+public class ImagesSortSpec {
+  private static final QImage BASE_PATH = QImage.image;
+  public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
+    "code", BASE_PATH.code.asc(),
+    "filename", BASE_PATH.filename.asc(),
+    "url", BASE_PATH.url.asc()
   );
 }

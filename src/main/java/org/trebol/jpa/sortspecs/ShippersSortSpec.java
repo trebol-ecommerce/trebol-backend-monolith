@@ -25,9 +25,9 @@ import org.trebol.jpa.entities.QShipper;
 
 import java.util.Map;
 
-public interface ShippersSortSpec {
-  QShipper basePath = QShipper.shipper;
-  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
-    "name", basePath.name.asc()
+public class ShippersSortSpec {
+  private static final QShipper BASE_PATH = QShipper.shipper;
+  public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
+    "name", BASE_PATH.name.asc()
   );
 }

@@ -87,6 +87,6 @@ public class DataProductsController
 
   @Override
   protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return ProductsSortSpec.orderSpecMap;
+    return ProductsSortSpec.ORDER_SPEC_MAP;
   }
 }

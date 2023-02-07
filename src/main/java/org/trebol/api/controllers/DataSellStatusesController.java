@@ -64,6 +64,6 @@ public class DataSellStatusesController
 
   @Override
   protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return SellStatusesSortSpec.orderSpecMap;
+    return SellStatusesSortSpec.ORDER_SPEC_MAP;
   }
 }

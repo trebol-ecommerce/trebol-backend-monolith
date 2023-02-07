@@ -89,6 +89,6 @@ public class DataImagesController
 
   @Override
   protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return ImagesSortSpec.orderSpecMap;
+    return ImagesSortSpec.ORDER_SPEC_MAP;
   }
 }

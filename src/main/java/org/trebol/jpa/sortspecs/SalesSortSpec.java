@@ -26,18 +26,18 @@ import org.trebol.jpa.entities.QSell;
 
 import java.util.Map;
 
-public interface SalesSortSpec {
-  QSell basePath = QSell.sell;
-  QPerson customerPath = basePath.customer.person;
-  Map<String, OrderSpecifier<?>> orderSpecMap = Map.of(
-    "buyOrder", basePath.id.asc(),
-    "date", basePath.date.asc(),
-    "status", basePath.status.code.asc(),
-    "customer", customerPath.lastName.asc(),
-    "shipper", basePath.shipper.name.asc(),
-    "totalValue", basePath.totalValue.asc(),
-    "netValue", basePath.netValue.asc(),
-    "totalItems", basePath.totalItems.asc(),
-    "transportValue", basePath.transportValue.asc()
+public class SalesSortSpec {
+  private static final QSell BASE_PATH = QSell.sell;
+  private static final QPerson CUSTOMER_PATH = BASE_PATH.customer.person;
+  public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
+    "buyOrder", BASE_PATH.id.asc(),
+    "date", BASE_PATH.date.asc(),
+    "status", BASE_PATH.status.code.asc(),
+    "customer", CUSTOMER_PATH.lastName.asc(),
+    "shipper", BASE_PATH.shipper.name.asc(),
+    "totalValue", BASE_PATH.totalValue.asc(),
+    "netValue", BASE_PATH.netValue.asc(),
+    "totalItems", BASE_PATH.totalItems.asc(),
+    "transportValue", BASE_PATH.transportValue.asc()
   );
 }

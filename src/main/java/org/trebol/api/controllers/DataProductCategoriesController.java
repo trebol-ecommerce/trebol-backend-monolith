@@ -90,6 +90,6 @@ public class DataProductCategoriesController
 
   @Override
   protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return ProductCategoriesSortSpec.orderSpecMap;
+    return ProductCategoriesSortSpec.ORDER_SPEC_MAP;
   }
 }
