@@ -79,8 +79,8 @@ class CheckoutServiceImplTest {
 
     verify(paymentServiceMock).requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation());
     verify(salesProcessServiceMock).markAsStarted(salesHelper.sellPojoAfterCreation());
-    assertEquals(result.getUrl(), PAYMENT_URL);
-    assertEquals(result.getToken(), SELL_TRANSACTION_TOKEN);
+    assertEquals(PAYMENT_URL, result.getUrl());
+    assertEquals(SELL_TRANSACTION_TOKEN, result.getToken());
   }
 
   @Test
@@ -217,7 +217,7 @@ class CheckoutServiceImplTest {
     try {
       result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, true);
     } catch (EntityNotFoundException e) {
-      assertEquals(e.getMessage(), exceptionMessage);
+      assertEquals(exceptionMessage, e.getMessage());
     }
 
     assertNull(result);

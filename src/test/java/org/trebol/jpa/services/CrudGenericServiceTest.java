@@ -76,7 +76,7 @@ class CrudGenericServiceTest {
     GenericPojo result = service.create(newPojo);
 
     assertNotNull(result);
-    assertEquals(result, persistedPojo);
+    assertEquals(persistedPojo, result);
     verify(genericConverterMock).convertToNewEntity(newPojo);
     verify(genericRepositoryMock).saveAndFlush(newEntity);
     verify(genericConverterMock).convertToPojo(persistedEntity);
@@ -164,7 +164,7 @@ class CrudGenericServiceTest {
     CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
     GenericPojo result = service.update(updatingPojo, filters);
 
-    assertEquals(result, updatingPojo);
+    assertEquals(updatingPojo, result);
     verify(genericRepositoryMock).findOne(filters);
     verify(genericPatchServiceMock).patchExistingEntity(updatingPojo, persistedEntity);
     verify(genericRepositoryMock).saveAndFlush(updatedEntity);
