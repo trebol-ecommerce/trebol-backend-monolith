@@ -76,9 +76,9 @@ class SalesCrudServiceImplTest {
   @Mock AddressesRepository addressesRepositoryMock;
   @Mock ShippersCrudService shippersCrudServiceMock;
   @Mock AddressesConverterService addressesConverterServiceMock;
-  ProductsTestHelper productsHelper = new ProductsTestHelper();
-  SalesTestHelper salesHelper = new SalesTestHelper();
-  CustomersTestHelper customersHelper = new CustomersTestHelper();
+  final ProductsTestHelper productsHelper = new ProductsTestHelper();
+  final SalesTestHelper salesHelper = new SalesTestHelper();
+  final CustomersTestHelper customersHelper = new CustomersTestHelper();
 
   @BeforeEach
   void beforeEach() {

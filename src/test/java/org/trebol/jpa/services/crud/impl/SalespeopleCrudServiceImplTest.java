@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
 class SalespeopleCrudServiceImplTest {
   @InjectMocks SalespeopleCrudServiceImpl instance;
   @Mock SalespeopleRepository salespeopleRepositoryMock;
-  SalespeopleTestHelper salespeopleHelper = new SalespeopleTestHelper();
+  final SalespeopleTestHelper salespeopleHelper = new SalespeopleTestHelper();
 
   @BeforeEach
   void beforeEach() {

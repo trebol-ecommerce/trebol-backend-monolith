@@ -33,7 +33,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SalesPredicateServiceImplTest {
-  SalesPredicateServiceImpl instance = new SalesPredicateServiceImpl();
+  final SalesPredicateServiceImpl instance = new SalesPredicateServiceImpl();
   ;
 
   @Test

@@ -63,9 +63,9 @@ class ProductsCrudServiceImplTest {
   @Mock ProductCategoriesCrudService categoriesCrudServiceMock;
   @Mock ProductCategoriesConverterService categoriesConverterMock;
   @Mock ImagesConverterService imagesConverterMock;
-  ProductsTestHelper productsHelper = new ProductsTestHelper();
-  ProductCategoriesTestHelper categoriesHelper = new ProductCategoriesTestHelper();
-  ImagesTestHelper imagesHelper = new ImagesTestHelper();
+  final ProductsTestHelper productsHelper = new ProductsTestHelper();
+  final ProductCategoriesTestHelper categoriesHelper = new ProductCategoriesTestHelper();
+  final ImagesTestHelper imagesHelper = new ImagesTestHelper();
 
   @BeforeEach
   void beforeEach() {

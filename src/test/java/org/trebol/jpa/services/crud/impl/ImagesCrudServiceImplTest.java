@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
 class ImagesCrudServiceImplTest {
   @InjectMocks ImagesCrudServiceImpl instance;
   @Mock ImagesRepository imagesRepositoryMock;
-  ImagesTestHelper imagesHelper = new ImagesTestHelper();
+  final ImagesTestHelper imagesHelper = new ImagesTestHelper();
 
   @BeforeEach
   void beforeEach() {

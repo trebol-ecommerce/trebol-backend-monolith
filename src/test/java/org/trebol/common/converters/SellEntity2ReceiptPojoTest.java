@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.trebol.testing.TestConstants.ANY;
 
 class SellEntity2ReceiptPojoTest {
-  SellEntity2ReceiptPojo instance = new SellEntity2ReceiptPojo();
+  final SellEntity2ReceiptPojo instance = new SellEntity2ReceiptPojo();
 
   @Test
   void converts_sell_entities_to_receipt_pojos() {

@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
 class PeopleCrudServiceImplTest {
   @InjectMocks PeopleCrudServiceImpl instance;
   @Mock PeopleRepository peopleRepositoryMock;
-  PeopleTestHelper peopleHelper = new PeopleTestHelper();
+  final PeopleTestHelper peopleHelper = new PeopleTestHelper();
 
   @BeforeEach
   void beforeEach() {

@@ -28,10 +28,10 @@ import org.trebol.jpa.entities.Image;
  */
 public class ImagesTestHelper {
 
-  public static long IMAGE_ID = 1L;
-  public static String IMAGE_CODE = "test-img";
-  public static String IMAGE_FILENAME = "testimg.jpg";
-  public static String IMAGE_URL = "http://example.com/img/testimg.jpg";
+  public static final long IMAGE_ID = 1L;
+  public static final String IMAGE_CODE = "test-img";
+  public static final String IMAGE_FILENAME = "testimg.jpg";
+  public static final String IMAGE_URL = "http://example.com/img/testimg.jpg";
   private ImagePojo pojoForFetch;
   private ImagePojo pojoBeforeCreation;
   private ImagePojo pojoAfterCreation;

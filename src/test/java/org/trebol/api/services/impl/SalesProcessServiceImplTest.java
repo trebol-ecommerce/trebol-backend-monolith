@@ -62,7 +62,7 @@ class SalesProcessServiceImplTest {
   @Mock SellDetailsRepository sellDetailsRepositoryMock;
   @Mock SalesConverterService sellConverterServiceMock;
   @Mock ProductsConverterService productConverterServiceMock;
-  ProductsTestHelper productsHelper = new ProductsTestHelper();
+  final ProductsTestHelper productsHelper = new ProductsTestHelper();
 
   @BeforeEach
   void beforeEach() {

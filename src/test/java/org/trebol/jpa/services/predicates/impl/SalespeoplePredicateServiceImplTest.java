@@ -32,7 +32,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SalespeoplePredicateServiceImplTest {
-  SalespeoplePredicateServiceImpl instance = new SalespeoplePredicateServiceImpl();
+  final SalespeoplePredicateServiceImpl instance = new SalespeoplePredicateServiceImpl();
 
   @Test
   void parses_map() {

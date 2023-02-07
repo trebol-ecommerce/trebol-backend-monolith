@@ -49,8 +49,8 @@ public class SalesTestHelper {
   private SellPojo pojoAfterCreation;
   private Sell entityBeforeCreation;
   private Sell entityAfterCreation;
-  ProductsTestHelper productsHelper = new ProductsTestHelper();
-  CustomersTestHelper customersHelper = new CustomersTestHelper();
+  final ProductsTestHelper productsHelper = new ProductsTestHelper();
+  final CustomersTestHelper customersHelper = new CustomersTestHelper();
 
   public void resetSales() {
     pojoForFetch = null;

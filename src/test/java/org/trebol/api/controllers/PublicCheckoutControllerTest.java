@@ -58,7 +58,7 @@ class PublicCheckoutControllerTest {
   @Mock SalesCrudService salesCrudServiceMock;
   @Mock SalesPredicateService salesPredicateServiceMock;
   @Mock MailingService mailingServiceMock;
-  SalesTestHelper salesHelper = new SalesTestHelper();
+  final SalesTestHelper salesHelper = new SalesTestHelper();
   private final static Map<String, String> HEADERS_MAP_WITH_SUCCESS_TOKEN = Map.of(WEBPAY_SUCCESS_TOKEN_HEADER_NAME, ANY);
   private final static Map<String, String> HEADERS_MAP_WITH_ABORTED_TOKEN = Map.of(WEBPAY_ABORTION_TOKEN_HEADER_NAME, ANY);
 

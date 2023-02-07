@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
 class ProductCategoriesCrudServiceImplTest {
   @InjectMocks ProductCategoriesCrudServiceImpl instance;
   @Mock ProductsCategoriesRepository categoriesRepositoryMock;
-  ProductCategoriesTestHelper categoriesHelper = new ProductCategoriesTestHelper();
+  final ProductCategoriesTestHelper categoriesHelper = new ProductCategoriesTestHelper();
 
   @BeforeEach
   void beforeEach() {

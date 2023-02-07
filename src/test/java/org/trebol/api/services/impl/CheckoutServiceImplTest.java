@@ -57,7 +57,7 @@ class CheckoutServiceImplTest {
   @Mock SalesProcessService salesProcessServiceMock;
   @Mock SalesPredicateService salesPredicateServiceMock;
   @Mock PaymentService paymentServiceMock;
-  SalesTestHelper salesHelper = new SalesTestHelper();
+  final SalesTestHelper salesHelper = new SalesTestHelper();
   static final String PAYMENT_URL = "https://example.com/pay";
   static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
 
