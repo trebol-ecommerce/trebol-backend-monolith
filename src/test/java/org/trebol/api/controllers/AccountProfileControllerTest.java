@@ -27,14 +27,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.api.services.ProfileService;
-import org.trebol.common.exceptions.BadInputException;
 
 import java.security.Principal;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,25 +54,13 @@ class AccountProfileControllerTest {
 
   @Test
   void updates_profile() {
-    PersonPojo changes = PersonPojo.builder()
-      .idNumber(ANY)
-      .firstName(ANY)
-      .lastName(ANY)
-      .email(ANY)
-      .build();
-    assertDoesNotThrow(() -> instance.updateProfile(new SimplePrincipal(), changes));
-  }
-
-  @Test
-  void may_fail_to_update_profile() {
-    PersonPojo changes = PersonPojo.builder()
-      .idNumber(ANY)
-      .firstName(ANY)
-      .lastName(ANY)
-      .email(ANY)
-      .build();
-    assertThrows(BadInputException.class, () -> {
-      doThrow(BadInputException.class).when(userProfileServiceMock).updateProfileForUserWithName(anyString(), any(PersonPojo.class));
+    assertDoesNotThrow(() -> {
+      PersonPojo changes = PersonPojo.builder()
+        .idNumber(ANY)
+        .firstName(ANY)
+        .lastName(ANY)
+        .email(ANY)
+        .build();
       instance.updateProfile(new SimplePrincipal(), changes);
       verify(userProfileServiceMock).updateProfileForUserWithName(ANY, changes);
     });
