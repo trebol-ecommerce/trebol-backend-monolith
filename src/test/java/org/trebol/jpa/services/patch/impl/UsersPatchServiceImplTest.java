@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
-public class UsersPatchServiceImplTest {
+class UsersPatchServiceImplTest {
   @InjectMocks UsersPatchServiceImpl instance;
   @Mock UserRolesRepository rolesRepositoryMock;
   @Mock PeopleRepository peopleRepositoryMock;

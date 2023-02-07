@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductsPatchServiceImplTest {
+class ProductsPatchServiceImplTest {
   @InjectMocks ProductsPatchServiceImpl instance;
   Product product;
   ProductPojo productPojo;

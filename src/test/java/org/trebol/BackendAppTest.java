@@ -28,7 +28,7 @@ import org.trebol.api.controllers.RootController;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class BackendAppTest {
+class BackendAppTest {
   @Autowired RootController rootController;
 
   @Test

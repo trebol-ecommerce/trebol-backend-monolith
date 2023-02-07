@@ -47,7 +47,7 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductsConverterServiceImplTest {
+class ProductsConverterServiceImplTest {
   @InjectMocks ProductsConverterServiceImpl instance;
   @Mock ProductImagesRepository productImagesRepositoryMock;
   @Mock ImagesConverterService imagesConverterServiceMock;

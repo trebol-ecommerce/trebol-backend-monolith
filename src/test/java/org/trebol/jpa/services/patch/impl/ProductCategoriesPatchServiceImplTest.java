@@ -35,7 +35,7 @@ import static org.trebol.testing.TestConstants.ANY;
 import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductCategoriesPatchServiceImplTest {
+class ProductCategoriesPatchServiceImplTest {
   @InjectMocks ProductCategoriesPatchServiceImpl instance;
   ProductCategory productCategory;
   ProductCategoryPojo productCategoryPojo;

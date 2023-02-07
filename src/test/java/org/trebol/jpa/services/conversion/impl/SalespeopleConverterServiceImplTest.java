@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
-public class SalespeopleConverterServiceImplTest {
+class SalespeopleConverterServiceImplTest {
   @InjectMocks SalespeopleConverterServiceImpl instance;
   @Mock PeopleConverterService peopleServiceMock;
   Salesperson salesperson;
