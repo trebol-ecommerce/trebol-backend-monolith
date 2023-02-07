@@ -68,7 +68,6 @@ public abstract class DataGenericController<P, E>
    */
   @Override
   public DataPagePojo<P> readMany(@Nullable Map<String, String> requestParams) {
-
     int pageIndex = paginationService.determineRequestedPageIndex(requestParams);
     int pageSize = paginationService.determineRequestedPageSize(requestParams);
 

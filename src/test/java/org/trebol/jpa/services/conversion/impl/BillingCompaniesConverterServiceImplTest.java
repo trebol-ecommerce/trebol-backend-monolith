@@ -34,7 +34,7 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class BillingCompaniesConverterServiceImplTest {
-  @InjectMocks BillingCompaniesConverterServiceImpl sut;
+  @InjectMocks BillingCompaniesConverterServiceImpl instance;
   BillingCompany billingCompany;
   BillingCompanyPojo billingCompanyPojo;
 
@@ -59,14 +59,14 @@ class BillingCompaniesConverterServiceImplTest {
 
   @Test
   void testConvertToPojo() {
-    BillingCompanyPojo actual = sut.convertToPojo(billingCompany);
+    BillingCompanyPojo actual = instance.convertToPojo(billingCompany);
     assertEquals(billingCompany.getIdNumber(), actual.getIdNumber());
     assertEquals(billingCompany.getName(), actual.getName());
   }
 
   @Test
   void testConvertToNewEntity() {
-    BillingCompany actual = sut.convertToNewEntity(billingCompanyPojo);
+    BillingCompany actual = instance.convertToNewEntity(billingCompanyPojo);
     assertEquals(billingCompanyPojo.getIdNumber(), actual.getIdNumber());
     assertEquals(billingCompanyPojo.getName(), actual.getName());
   }

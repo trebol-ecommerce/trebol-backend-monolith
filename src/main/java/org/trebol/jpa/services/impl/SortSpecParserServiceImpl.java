@@ -36,6 +36,7 @@ import java.util.Map;
 @Service
 public class SortSpecParserServiceImpl
   implements SortSpecParserService {
+
   @Override
   public Sort parse(@NotNull @NotEmpty Map<String, OrderSpecifier<?>> orderSpecMap, @NotNull Map<String, String> queryMap) {
     if (!queryMap.containsKey("sortBy")) {

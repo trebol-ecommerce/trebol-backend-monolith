@@ -40,11 +40,10 @@ import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListConverterServiceImplTest {
-  @InjectMocks ProductListConverterServiceImpl sut;
-  @Mock ProductListItemsRepository productListItemRepository;
-
-  private ProductList productList;
-  private ProductListPojo productListPojo;
+  @InjectMocks ProductListConverterServiceImpl instance;
+  @Mock ProductListItemsRepository productListItemRepositoryMock;
+  ProductList productList;
+  ProductListPojo productListPojo;
 
   @BeforeEach
   void beforeEach() {
@@ -67,14 +66,14 @@ class ProductListConverterServiceImplTest {
 
   @Test
   void testConvertToPojo() {
-    Mockito.when(productListItemRepository.count(Mockito.any(Predicate.class))).thenReturn(ID_1L);
-    ProductListPojo actual = sut.convertToPojo(productList);
+    Mockito.when(productListItemRepositoryMock.count(Mockito.any(Predicate.class))).thenReturn(ID_1L);
+    ProductListPojo actual = instance.convertToPojo(productList);
     assertEquals(ANY, actual.getName());
   }
 
   @Test
   void testConvertToNewEntity() throws BadInputException {
-    ProductList actual = sut.convertToNewEntity(productListPojo);
+    ProductList actual = instance.convertToNewEntity(productListPojo);
     assertEquals(ANY + " ", actual.getName());
   }
 }

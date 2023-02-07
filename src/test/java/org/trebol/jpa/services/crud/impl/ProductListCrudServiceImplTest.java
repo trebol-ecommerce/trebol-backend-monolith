@@ -31,7 +31,6 @@ import org.trebol.api.models.ProductListPojo;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
-import org.trebol.jpa.services.crud.impl.ProductListsCrudServiceImpl;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -43,14 +42,12 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ProductListCrudServiceImplTest {
   @InjectMocks ProductListsCrudServiceImpl instance;
-  @Mock ProductListsRepository productListRepository;
-  @Mock ProductListItemsRepository productListItemRepository;
+  @Mock ProductListsRepository productListRepositoryMock;
+  @Mock ProductListItemsRepository productListItemRepositoryMock;
 
   @Test
   void delete_whenProductListNotFound_throwsEntityNotFoundException() {
-
-    when(productListRepository.count(any(Predicate.class))).thenReturn(0L);
-
+    when(productListRepositoryMock.count(any(Predicate.class))).thenReturn(0L);
     assertThrows(EntityNotFoundException.class, () -> instance.delete(new BooleanBuilder()));
   }
 
@@ -59,13 +56,11 @@ class ProductListCrudServiceImplTest {
     ProductList productListMock = new ProductList();
     productListMock.setId(1L);
     List<ProductList> productListsMock = List.of(productListMock);
-    when(productListRepository.count(any(Predicate.class))).thenReturn(1L);
-    when(productListRepository.findAll(any(Predicate.class))).thenReturn(productListsMock);
-
+    when(productListRepositoryMock.count(any(Predicate.class))).thenReturn(1L);
+    when(productListRepositoryMock.findAll(any(Predicate.class))).thenReturn(productListsMock);
     instance.delete(new BooleanBuilder());
-
-    verify(productListItemRepository, times(productListsMock.size())).deleteByListId(1L);
-    verify(productListRepository).deleteAll(productListsMock);
+    verify(productListItemRepositoryMock, times(productListsMock.size())).deleteByListId(1L);
+    verify(productListRepositoryMock).deleteAll(productListsMock);
   }
 
   @Test
@@ -74,18 +69,14 @@ class ProductListCrudServiceImplTest {
       .id(null)
       .name("productListPojoName")
       .build();
-
     Optional<ProductList> actualProductListOptional = instance.getExisting(productListPojoMock);
-
     assertTrue(actualProductListOptional.isEmpty());
   }
 
   @Test
   void getExisting_whenNameNull_shouldReturnEmptyOptional() {
     ProductListPojo productListPojoMock = ProductListPojo.builder().build();
-
     Optional<ProductList> actualProductListOptional = instance.getExisting(productListPojoMock);
-
     assertTrue(actualProductListOptional.isEmpty());
   }
 
@@ -96,13 +87,10 @@ class ProductListCrudServiceImplTest {
       .build();
     ProductList productListMock = new ProductList();
     productListMock.setName("productListName");
-    when(productListRepository.findByName(anyString())).thenReturn(Optional.of(productListMock));
-
+    when(productListRepositoryMock.findByName(anyString())).thenReturn(Optional.of(productListMock));
     Optional<ProductList> actualProductListOptional = instance.getExisting(productListPojoMock);
-
-    verify(productListRepository).findByName(productListPojoMock.getName());
+    verify(productListRepositoryMock).findByName(productListPojoMock.getName());
     assertTrue(actualProductListOptional.isPresent());
     assertEquals(productListMock, actualProductListOptional.get());
   }
-
 }

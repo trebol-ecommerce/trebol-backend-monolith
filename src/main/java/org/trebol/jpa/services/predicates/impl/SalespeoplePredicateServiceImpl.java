@@ -38,7 +38,6 @@ public class SalespeoplePredicateServiceImpl
 
   @Override
   public Predicate parseMap(Map<String, String> queryParamsMap) {
-    QPerson personPath = basePath.person;
     BooleanBuilder predicate = new BooleanBuilder();
     for (Map.Entry<String, String> entry : queryParamsMap.entrySet()) {
       String paramName = entry.getKey();

@@ -34,7 +34,9 @@ public class RegexMatcherAdapterServiceImpl
   private Pattern idNumberPattern = null;
 
   @Autowired
-  public RegexMatcherAdapterServiceImpl(ValidationProperties validationProperties) {
+  public RegexMatcherAdapterServiceImpl(
+    ValidationProperties validationProperties
+  ) {
     this.validationProperties = validationProperties;
   }
 

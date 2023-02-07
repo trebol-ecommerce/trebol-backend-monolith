@@ -31,7 +31,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.api.models.RegistrationPojo;
-import org.trebol.api.services.impl.RegistrationServiceImpl;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
@@ -56,7 +55,7 @@ import static org.mockito.Mockito.*;
 class RegistrationServiceImplTest {
   @InjectMocks RegistrationServiceImpl instance;
   @Mock UsersRepository usersRepositoryMock;
-  @Mock PeopleConverterService peopleConverterService;
+  @Mock PeopleConverterService peopleConverterServiceMock;
   @Mock PeopleRepository peopleRepositoryMock;
   @Mock UserRolesRepository rolesRepositoryMock;
   @Mock PasswordEncoder passwordEncoderMock;
@@ -96,7 +95,7 @@ class RegistrationServiceImplTest {
   @Test
   void EverythingCorrect_NoException() throws BadInputException {
     when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleConverterService.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
+    when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
     when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
     when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
     // inside convertToUser method
@@ -109,7 +108,7 @@ class RegistrationServiceImplTest {
   @Test
   void SaveCalledOnRepository() throws EntityExistsException, BadInputException {
     when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleConverterService.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
+    when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
     when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
     when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
     // inside convertToUser method
@@ -134,7 +133,7 @@ class RegistrationServiceImplTest {
   @Test
   void IdAlreadyExists_EntityExistsException() throws BadInputException {
     when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleConverterService.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
+    when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
     when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(true); // ID already exists
 
     assertThrows(EntityExistsException.class, () -> instance.register(regPojoMock));
@@ -144,7 +143,7 @@ class RegistrationServiceImplTest {
   @Test
   void CustomerRoleNotFound_IllegalStateException() throws BadInputException {
     when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleConverterService.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
+    when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
     when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
     when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
     // inside convertToUser method

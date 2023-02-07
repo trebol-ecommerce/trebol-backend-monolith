@@ -46,10 +46,10 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 public class UsersDataTransportServiceImplTest {
-  @InjectMocks UsersDataTransportServiceImpl sut;
-  @Mock UserRolesRepository rolesRepository;
-  @Mock PeopleRepository peopleRepository;
-  @Mock PasswordEncoder passwordEncoder;
+  @InjectMocks UsersDataTransportServiceImpl instance;
+  @Mock UserRolesRepository rolesRepositoryMock;
+  @Mock PeopleRepository peopleRepositoryMock;
+  @Mock PasswordEncoder passwordEncoderMock;
   User user;
   UserPojo userPojo;
 
@@ -92,12 +92,10 @@ public class UsersDataTransportServiceImplTest {
     final Person person = new Person();
     person.setIdNumber(ANY + " ");
     user.setPerson(person);
-    when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(role));
-    when(passwordEncoder.encode(anyString())).thenReturn(ANY);
-    when(peopleRepository.findByIdNumber(anyString())).thenReturn(Optional.of(person));
-
-    User actual = sut.applyChangesToExistingEntity(userPojo, user);
-
+    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(role));
+    when(passwordEncoderMock.encode(anyString())).thenReturn(ANY);
+    when(peopleRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(person));
+    User actual = instance.applyChangesToExistingEntity(userPojo, user);
     assertEquals(ANY + " ", actual.getPerson().getIdNumber());
   }
 }

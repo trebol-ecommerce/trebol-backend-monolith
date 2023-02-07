@@ -53,6 +53,7 @@ public class SellEntity2ReceiptPojoTest {
       assertEquals(sell.getTransactionToken(), result.getToken());
     });
   }
+
   @Test
   void cannot_convert_incomplete_sell_entities_to_receipt_pojos() {
     List.of(

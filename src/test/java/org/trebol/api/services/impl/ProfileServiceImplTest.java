@@ -28,7 +28,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.PersonPojo;
-import org.trebol.api.services.impl.ProfileServiceImpl;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;

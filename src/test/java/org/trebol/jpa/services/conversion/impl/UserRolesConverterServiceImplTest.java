@@ -34,7 +34,7 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class UserRolesConverterServiceImplTest {
-  @InjectMocks UserRolesConverterServiceImpl sut;
+  @InjectMocks UserRolesConverterServiceImpl instance;
   UserRole userRole;
   UserRolePojo userRolePojo;
 
@@ -57,13 +57,13 @@ class UserRolesConverterServiceImplTest {
 
   @Test
   void testConvertToPojo() {
-    UserRolePojo actual = sut.convertToPojo(userRole);
+    UserRolePojo actual = instance.convertToPojo(userRole);
     assertEquals(userRole.getName(), actual.getName());
   }
 
   @Test
   void testConvertToNewEntity() {
-    UserRole actual = sut.convertToNewEntity(userRolePojo);
+    UserRole actual = instance.convertToNewEntity(userRolePojo);
     assertEquals(userRolePojo.getName(), actual.getName());
   }
 }

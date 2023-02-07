@@ -33,11 +33,12 @@ import org.trebol.jpa.services.conversion.SalespeopleConverterService;
 @Service
 public class SalespeopleConverterServiceImpl
   implements SalespeopleConverterService {
-
   private final PeopleConverterService peopleService;
 
   @Autowired
-  public SalespeopleConverterServiceImpl(PeopleConverterService peopleService) {
+  public SalespeopleConverterServiceImpl(
+    PeopleConverterService peopleService
+  ) {
     this.peopleService = peopleService;
   }
 

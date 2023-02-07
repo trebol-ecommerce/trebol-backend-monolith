@@ -35,7 +35,7 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ImagesDataTransportServiceImplTest {
-  @InjectMocks ImagesDataTransportServiceImpl sut;
+  @InjectMocks ImagesDataTransportServiceImpl instance;
   Image image;
   ImagePojo imagePojo;
 
@@ -58,7 +58,7 @@ class ImagesDataTransportServiceImplTest {
 
   @Test
   void testApplyChangesToExistingEntity() throws BadInputException {
-    Image actual = sut.applyChangesToExistingEntity(imagePojo, image);
+    Image actual = instance.applyChangesToExistingEntity(imagePojo, image);
     assertEquals(1L, actual.getId());
 
     image.setFilename(ANY);
@@ -69,7 +69,7 @@ class ImagesDataTransportServiceImplTest {
     imagePojo.setCode(ANY + " ");
     imagePojo.setFilename(ANY + " ");
 
-    actual = sut.applyChangesToExistingEntity(imagePojo, image);
+    actual = instance.applyChangesToExistingEntity(imagePojo, image);
 
     assertEquals(ANY + " ", actual.getUrl());
     assertEquals(ANY + " ", actual.getCode());

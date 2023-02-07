@@ -32,7 +32,6 @@ import java.util.Map;
 @Service
 public class UserRolesPredicateServiceImpl
   implements UserRolesPredicateService {
-
   private final Logger logger = LoggerFactory.getLogger(UserRolesPredicateServiceImpl.class);
 
   @Override

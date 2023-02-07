@@ -33,9 +33,8 @@ public interface MailingService {
    * Should support all transaction stages
    *
    * @param sell The transaction metadata
-   * @throws BadInputException                   When there is a problem with the order reference
-   * @throws org.trebol.integration.exceptions.MailingServiceException When any error occurs while interacting with the
-   *                                                                   mail server/service provider
+   * @throws BadInputException       When there is a problem with the order reference
+   * @throws MailingServiceException When any error occurs while interacting with the mail server/service provider
    */
   void notifyOrderStatusToClient(SellPojo sell) throws BadInputException, MailingServiceException;
 
@@ -44,8 +43,7 @@ public interface MailingService {
    * It is not mandatory to support all transaction stages; owners may only need to be aware of some events.
    *
    * @param sell The transaction metadata
-   * @throws org.trebol.integration.exceptions.MailingServiceException When any error occurs while interacting with the
-   *                                                                   mail server/service provider
+   * @throws MailingServiceException When any error occurs while interacting with the mail server/service provider
    */
   void notifyOrderStatusToOwners(SellPojo sell) throws MailingServiceException;
 }

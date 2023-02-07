@@ -34,7 +34,7 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class PeopleConverterServiceImplTest {
-  @InjectMocks PeopleConverterServiceImpl sut;
+  @InjectMocks PeopleConverterServiceImpl instance;
   Person person;
   PersonPojo personPojo;
 
@@ -57,7 +57,7 @@ class PeopleConverterServiceImplTest {
     person.setFirstName(ANY);
     person.setLastName(ANY);
     person.setEmail(ANY);
-    PersonPojo actual = sut.convertToPojo(person);
+    PersonPojo actual = instance.convertToPojo(person);
     assertEquals(person.getIdNumber(), actual.getIdNumber());
     assertEquals(person.getFirstName(), actual.getFirstName());
     assertEquals(person.getLastName(), actual.getLastName());
@@ -74,7 +74,7 @@ class PeopleConverterServiceImplTest {
     personPojo.setEmail(ANY);
     personPojo.setPhone1("");
     personPojo.setPhone2("");
-    Person actual = sut.convertToNewEntity(personPojo);
+    Person actual = instance.convertToNewEntity(personPojo);
     assertEquals(personPojo.getIdNumber(), actual.getIdNumber());
     assertEquals(personPojo.getFirstName(), actual.getFirstName());
     assertEquals(personPojo.getLastName(), actual.getLastName());

@@ -42,18 +42,15 @@ import static org.mockito.Mockito.when;
 @TestPropertySource("classpath:application.properties")
 class PhoneNumberValidatorTest {
   @InjectMocks PhoneNumberValidator phoneNumberValidator;
-  @Mock ValidationProperties validationProperties;
-
+  @Mock ValidationProperties validationPropertiesMock;
   @Value("${trebol.validation.phonenumber-regexp}")
-  private String phoneNumberRegex;
-
-
-  private String phoneNumber;
+  String phoneNumberRegex;
+  String phoneNumber;
 
   @BeforeEach
   void beforeEach() {
     phoneNumber = "";
-    when(validationProperties.getPhoneNumberRegexp()).thenReturn(phoneNumberRegex);
+    when(validationPropertiesMock.getPhoneNumberRegexp()).thenReturn(phoneNumberRegex);
     phoneNumberValidator.initialize(null);
   }
 

@@ -35,7 +35,7 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class PeopleDataTransportServiceImplTest {
-  @InjectMocks PeopleDataTransportServiceImpl sut;
+  @InjectMocks PeopleDataTransportServiceImpl instance;
   Person person;
   PersonPojo personPojo;
 
@@ -54,7 +54,7 @@ class PeopleDataTransportServiceImplTest {
 
   @Test
   void testApplyChangesToExistingEntity() throws BadInputException {
-    Person actual = sut.applyChangesToExistingEntity(personPojo, person);
+    Person actual = instance.applyChangesToExistingEntity(personPojo, person);
 
     assertEquals(1L, actual.getId());
 
@@ -71,7 +71,7 @@ class PeopleDataTransportServiceImplTest {
     personPojo.setPhone1(ANY + " ");
     personPojo.setPhone2(ANY + " ");
 
-    actual = sut.applyChangesToExistingEntity(personPojo, person);
+    actual = instance.applyChangesToExistingEntity(personPojo, person);
 
     assertEquals(ANY + " ", actual.getEmail());
     assertEquals(ANY + " ", actual.getFirstName());

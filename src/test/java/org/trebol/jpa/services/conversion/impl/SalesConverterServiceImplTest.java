@@ -43,11 +43,11 @@ import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class SalesConverterServiceImplTest {
-  @InjectMocks SalesConverterServiceImpl sut;
-  @Mock CustomersConverterService customersConverter;
-  @Mock SalespeopleConverterService salespeopleConverter;
-  @Mock BillingCompaniesConverterService billingCompaniesConverter;
-  @Mock AddressesConverterService addressesConverterService;
+  @InjectMocks SalesConverterServiceImpl instance;
+  @Mock CustomersConverterService customersConverterMock;
+  @Mock SalespeopleConverterService salespeopleConverterMock;
+  @Mock BillingCompaniesConverterService billingCompaniesConverterMock;
+  @Mock AddressesConverterService addressesConverterServiceMock;
   SellPojo sellPojo;
   Sell sell;
 
@@ -60,7 +60,7 @@ class SalesConverterServiceImplTest {
   @AfterEach
   public void setUpAfter() {
 
-    sut = null;
+    instance = null;
     sellPojo = null;
     sell = null;
   }
@@ -75,17 +75,17 @@ class SalesConverterServiceImplTest {
     sell.setShippingAddress(new Address());
     sell.setCustomer(new Customer(ANY));
     sell.setSalesperson(new Salesperson(ANY));
-    when(billingCompaniesConverter.convertToPojo(any(BillingCompany.class))).thenReturn(BillingCompanyPojo.builder().build());
-    when(addressesConverterService.convertToPojo(any(Address.class))).thenReturn(AddressPojo.builder().build());
-    when(customersConverter.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
-    when(salespeopleConverter.convertToPojo(any(Salesperson.class))).thenReturn(SalespersonPojo.builder().build());
+    when(billingCompaniesConverterMock.convertToPojo(any(BillingCompany.class))).thenReturn(BillingCompanyPojo.builder().build());
+    when(addressesConverterServiceMock.convertToPojo(any(Address.class))).thenReturn(AddressPojo.builder().build());
+    when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
+    when(salespeopleConverterMock.convertToPojo(any(Salesperson.class))).thenReturn(SalespersonPojo.builder().build());
 
-    SellPojo actual = sut.convertToPojo(sell);
+    SellPojo actual = instance.convertToPojo(sell);
 
     assertEquals(ANY, actual.getStatus());
-    verify(addressesConverterService, times(2)).convertToPojo(any(Address.class));
-    verify(customersConverter, times(1)).convertToPojo(any(Customer.class));
-    verify(salespeopleConverter, times(1)).convertToPojo(any(Salesperson.class));
+    verify(addressesConverterServiceMock, times(2)).convertToPojo(any(Address.class));
+    verify(customersConverterMock, times(1)).convertToPojo(any(Customer.class));
+    verify(salespeopleConverterMock, times(1)).convertToPojo(any(Salesperson.class));
   }
 
   @Test
@@ -94,12 +94,12 @@ class SalesConverterServiceImplTest {
     sell.setPaymentType(new PaymentType(ID_1L, ANY));
     sell.setBillingType(new BillingType(ID_1L, BILLING_TYPE_ENTERPRISE));
     sell.setCustomer(new Customer(ANY));
-    when(customersConverter.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
+    when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
 
-    SellPojo actual = sut.convertToPojo(sell);
+    SellPojo actual = instance.convertToPojo(sell);
 
     assertEquals(ANY, actual.getStatus());
-    verify(customersConverter, times(1)).convertToPojo(any(Customer.class));
+    verify(customersConverterMock, times(1)).convertToPojo(any(Customer.class));
   }
 
   @Test
@@ -108,11 +108,11 @@ class SalesConverterServiceImplTest {
     sell.setPaymentType(new PaymentType(ID_1L, ANY));
     sell.setBillingType(new BillingType(ID_1L, "Enterprise Invoicesss"));
     sell.setCustomer(new Customer(ANY));
-    when(customersConverter.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
+    when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
 
-    SellPojo actual = sut.convertToPojo(sell);
+    SellPojo actual = instance.convertToPojo(sell);
 
     assertEquals(ANY, actual.getStatus());
-    verify(customersConverter, times(1)).convertToPojo(any(Customer.class));
+    verify(customersConverterMock, times(1)).convertToPojo(any(Customer.class));
   }
 }

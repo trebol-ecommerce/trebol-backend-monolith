@@ -40,7 +40,7 @@ import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class SalespeopleDataTransportServiceImplTest {
-  @InjectMocks SalespeopleDataTransportServiceImpl sut;
+  @InjectMocks SalespeopleDataTransportServiceImpl instance;
   @Mock PeopleDataTransportService peopleDataTransportServiceMock;
   Salesperson salesperson;
   SalespersonPojo salespersonPojo;
@@ -62,7 +62,7 @@ public class SalespeopleDataTransportServiceImplTest {
   void passes_person_profile_data() throws BadInputException {
     when(peopleDataTransportServiceMock.applyChangesToExistingEntity(nullable(PersonPojo.class), nullable(Person.class))).thenReturn(person);
 
-    Salesperson actual = sut.applyChangesToExistingEntity(salespersonPojo, salesperson);
+    Salesperson actual = instance.applyChangesToExistingEntity(salespersonPojo, salesperson);
 
     assertNotNull(actual.getPerson());
     assertEquals(person, actual.getPerson());
@@ -72,7 +72,7 @@ public class SalespeopleDataTransportServiceImplTest {
   void passes_null_person_profile() throws BadInputException {
     salespersonPojo.setPerson(null);
 
-    Salesperson result = sut.applyChangesToExistingEntity(salespersonPojo, salesperson);
+    Salesperson result = instance.applyChangesToExistingEntity(salespersonPojo, salesperson);
 
     assertNull(result.getPerson());
   }

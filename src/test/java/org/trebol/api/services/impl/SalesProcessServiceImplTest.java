@@ -56,12 +56,12 @@ import static org.trebol.config.Constants.*;
 @ExtendWith(MockitoExtension.class)
 class SalesProcessServiceImplTest {
   @InjectMocks SalesProcessServiceImpl instance;
-  @Mock SalesCrudService crudService;
-  @Mock SalesRepository salesRepository;
-  @Mock SellStatusesRepository sellStatusesRepository;
-  @Mock SellDetailsRepository sellDetailsRepository;
-  @Mock SalesConverterService sellConverterService;
-  @Mock ProductsConverterService productConverterService;
+  @Mock SalesCrudService crudServiceMock;
+  @Mock SalesRepository salesRepositoryMock;
+  @Mock SellStatusesRepository sellStatusesRepositoryMock;
+  @Mock SellDetailsRepository sellDetailsRepositoryMock;
+  @Mock SalesConverterService sellConverterServiceMock;
+  @Mock ProductsConverterService productConverterServiceMock;
   ProductsTestHelper productsHelper = new ProductsTestHelper();
 
   @BeforeEach
@@ -84,7 +84,7 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock));
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock));
 
       assertThrows(BadInputException.class, () -> instance.markAsStarted(sellPojoMock));
     }
@@ -101,8 +101,8 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.empty());
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
       assertThrows(IllegalStateException.class, () -> instance.markAsStarted(sellPojoMock));
     }
@@ -119,9 +119,9 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
 
       assertEquals(SELL_STATUS_PAYMENT_STARTED, instance.markAsStarted(sellPojoMock).getStatus());
     }
@@ -142,7 +142,7 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
 
       assertThrows(BadInputException.class, () -> instance.markAsAborted(sellPojoMock));
     }
@@ -159,8 +159,8 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.empty());
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
       assertThrows(IllegalStateException.class, () -> instance.markAsAborted(sellPojoMock));
     }
@@ -177,9 +177,9 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
 
       assertEquals(SELL_STATUS_PAYMENT_CANCELLED, instance.markAsAborted(sellPojoMock).getStatus());
     }
@@ -200,7 +200,7 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
 
       assertThrows(BadInputException.class, () -> instance.markAsFailed(sellPojoMock));
     }
@@ -217,8 +217,8 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.empty());
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
       assertThrows(IllegalStateException.class, () -> instance.markAsFailed(sellPojoMock));
     }
@@ -235,9 +235,9 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
 
       assertEquals(SELL_STATUS_PAYMENT_FAILED, instance.markAsFailed(sellPojoMock).getStatus());
     }
@@ -258,7 +258,7 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
 
       assertThrows(BadInputException.class, () -> instance.markAsPaid(sellPojoMock));
     }
@@ -275,8 +275,8 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.empty());
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
       assertThrows(IllegalStateException.class, () -> instance.markAsPaid(sellPojoMock));
     }
@@ -293,9 +293,9 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
 
       assertEquals(SELL_STATUS_PAID_UNCONFIRMED, instance.markAsPaid(sellPojoMock).getStatus());
     }
@@ -320,11 +320,11 @@ class SalesProcessServiceImplTest {
       ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-      when(sellDetailsRepository.findBySellId(any())).thenReturn(sellDetailsMock);
-      when(productConverterService.convertToPojo(any())).thenReturn(productPojoMock);
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
+      when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
 
       Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsPaid(sellPojoMock).getDetails();
       SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
@@ -352,7 +352,7 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
 
       assertThrows(BadInputException.class, () -> instance.markAsConfirmed(sellPojoMock));
     }
@@ -369,8 +369,8 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.empty());
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
       assertThrows(IllegalStateException.class, () -> instance.markAsConfirmed(sellPojoMock));
     }
@@ -387,9 +387,9 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
 
       assertEquals(SELL_STATUS_PAID_CONFIRMED, instance.markAsConfirmed(sellPojoMock).getStatus());
     }
@@ -414,11 +414,11 @@ class SalesProcessServiceImplTest {
       ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-      when(sellDetailsRepository.findBySellId(any())).thenReturn(sellDetailsMock);
-      when(productConverterService.convertToPojo(any())).thenReturn(productPojoMock);
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
+      when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
 
       Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsConfirmed(sellPojoMock).getDetails();
       SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
@@ -446,7 +446,7 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
 
       assertThrows(BadInputException.class, () -> instance.markAsRejected(sellPojoMock));
     }
@@ -463,8 +463,8 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.empty());
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
       assertThrows(IllegalStateException.class, () -> instance.markAsRejected(sellPojoMock));
     }
@@ -481,9 +481,9 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
 
       assertEquals(SELL_STATUS_REJECTED, instance.markAsRejected(sellPojoMock).getStatus());
     }
@@ -508,11 +508,11 @@ class SalesProcessServiceImplTest {
       ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-      when(sellDetailsRepository.findBySellId(any())).thenReturn(sellDetailsMock);
-      when(productConverterService.convertToPojo(any())).thenReturn(productPojoMock);
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
+      when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
 
       Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsRejected(sellPojoMock).getDetails();
       SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
@@ -540,7 +540,7 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
 
       assertThrows(BadInputException.class, () -> instance.markAsCompleted(sellPojoMock));
     }
@@ -557,8 +557,8 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.empty());
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
       assertThrows(IllegalStateException.class, () -> instance.markAsCompleted(sellPojoMock));
     }
@@ -575,9 +575,9 @@ class SalesProcessServiceImplTest {
       sellMock.setStatus(sellStatusMock);
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
 
       assertEquals(SELL_STATUS_COMPLETED, instance.markAsCompleted(sellPojoMock).getStatus());
     }
@@ -602,11 +602,11 @@ class SalesProcessServiceImplTest {
       ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
 
       // Stubbing
-      when(crudService.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterService.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-      when(sellDetailsRepository.findBySellId(any())).thenReturn(sellDetailsMock);
-      when(productConverterService.convertToPojo(any())).thenReturn(productPojoMock);
+      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+      when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
+      when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
 
       Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsCompleted(sellPojoMock).getDetails();
       SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();

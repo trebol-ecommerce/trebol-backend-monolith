@@ -29,7 +29,6 @@ import org.trebol.api.models.ProductPojo;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductListItem;
 import org.trebol.jpa.services.conversion.ProductsConverterService;
-import org.trebol.jpa.services.conversion.impl.ProductListItemsConverterServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,13 +37,13 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListItemsConverterServiceImplTest {
-  @InjectMocks ProductListItemsConverterServiceImpl sut;
-  @Mock ProductsConverterService productsConverterService;
+  @InjectMocks ProductListItemsConverterServiceImpl instance;
+  @Mock ProductsConverterService productsConverterServiceMock;
 
   @Test
   void testApplyChangesToExistingEntity() {
     UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
-      () -> sut.convertToNewEntity(ProductPojo.builder().build()));
+      () -> instance.convertToNewEntity(ProductPojo.builder().build()));
     assertEquals("Not implemented", unsupportedOperationException.getMessage());
   }
 
@@ -54,9 +53,9 @@ class ProductListItemsConverterServiceImplTest {
     final Product product = new Product();
     productListItem.setProduct(product);
     ProductPojo expectedResult = ProductPojo.builder().id(1L).build();
-    when(productsConverterService.convertToPojo(any(Product.class))).thenReturn(expectedResult);
+    when(productsConverterServiceMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
 
-    ProductPojo actual = sut.convertToPojo(productListItem);
+    ProductPojo actual = instance.convertToPojo(productListItem);
 
     assertEquals(expectedResult, actual);
   }

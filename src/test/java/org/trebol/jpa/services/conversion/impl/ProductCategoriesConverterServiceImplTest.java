@@ -35,7 +35,7 @@ import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductCategoriesConverterServiceImplTest {
-  @InjectMocks ProductCategoriesConverterServiceImpl sut;
+  @InjectMocks ProductCategoriesConverterServiceImpl instance;
   ProductCategory productCategory;
   ProductCategoryPojo productCategoryPojo;
 
@@ -58,14 +58,14 @@ public class ProductCategoriesConverterServiceImplTest {
 
   @Test
   void testConvertToPojo() {
-    ProductCategoryPojo actual = sut.convertToPojo(productCategory);
+    ProductCategoryPojo actual = instance.convertToPojo(productCategory);
     assertEquals(productCategory.getName(), actual.getName());
     assertEquals(productCategory.getCode(), actual.getCode());
   }
 
   @Test
   void testConvertToNewEntity() {
-    ProductCategory actual = sut.convertToNewEntity(productCategoryPojo);
+    ProductCategory actual = instance.convertToNewEntity(productCategoryPojo);
     assertEquals(productCategoryPojo.getName(), actual.getName());
     assertEquals(productCategoryPojo.getCode(), actual.getCode());
   }

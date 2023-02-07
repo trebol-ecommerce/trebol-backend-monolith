@@ -48,10 +48,10 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductsConverterServiceImplTest {
-  @InjectMocks ProductsConverterServiceImpl sut;
-  @Mock ProductImagesRepository productImagesRepository;
-  @Mock ImagesConverterService imagesConverterService;
-  @Mock ProductCategoriesConverterService productCategoriesConverterService;
+  @InjectMocks ProductsConverterServiceImpl instance;
+  @Mock ProductImagesRepository productImagesRepositoryMock;
+  @Mock ImagesConverterService imagesConverterServiceMock;
+  @Mock ProductCategoriesConverterService productCategoriesConverterServiceMock;
   Product product;
   ProductPojo productPojo;
 
@@ -73,11 +73,11 @@ public class ProductsConverterServiceImplTest {
     final Image image = new Image();
     productImage.setImage(image);
     product.setProductCategory(productCategory);
-    when(productImagesRepository.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
-    when(imagesConverterService.convertToPojo(any(Image.class))).thenReturn(ImagePojo.builder().build());
-    when(productCategoriesConverterService.convertToPojo(any(ProductCategory.class))).thenReturn(ProductCategoryPojo.builder().build());
+    when(productImagesRepositoryMock.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
+    when(imagesConverterServiceMock.convertToPojo(any(Image.class))).thenReturn(ImagePojo.builder().build());
+    when(productCategoriesConverterServiceMock.convertToPojo(any(ProductCategory.class))).thenReturn(ProductCategoryPojo.builder().build());
 
-    ProductPojo actual = sut.convertToPojo(product);
+    ProductPojo actual = instance.convertToPojo(product);
 
     assertEquals(product.getName(), actual.getName());
     assertEquals(product.getBarcode(), actual.getBarcode());
@@ -91,7 +91,7 @@ public class ProductsConverterServiceImplTest {
     productPojo.setBarcode(ANY);
     productPojo.setPrice(1);
 
-    Product actual = sut.convertToNewEntity(productPojo);
+    Product actual = instance.convertToNewEntity(productPojo);
 
     assertEquals(productPojo.getName(), actual.getName());
     assertEquals(productPojo.getBarcode(), actual.getBarcode());

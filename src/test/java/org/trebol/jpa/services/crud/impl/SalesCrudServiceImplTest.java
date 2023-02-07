@@ -143,11 +143,11 @@ class SalesCrudServiceImplTest {
     verifyNoInteractions(salesRepositoryMock);
 
     SellPojo valid = SellPojo.builder()
-        .customer(customersHelper.customerPojoBeforeCreation())
-        .billingType(ANY)
-        .billingAddress(AddressPojo.builder().build())
-        .details(List.of())
-        .build();
+      .customer(customersHelper.customerPojoBeforeCreation())
+      .billingType(ANY)
+      .billingAddress(AddressPojo.builder().build())
+      .details(List.of())
+      .build();
     SellPojo expectedResult = SellPojo.builder()
       .date(Instant.now())
       .build();

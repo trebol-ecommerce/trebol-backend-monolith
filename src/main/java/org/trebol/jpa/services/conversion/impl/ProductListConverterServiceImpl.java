@@ -32,11 +32,12 @@ import org.trebol.jpa.services.conversion.ProductListsConverterService;
 @Service
 public class ProductListConverterServiceImpl
   implements ProductListsConverterService {
-
   private final ProductListItemsRepository productListItemRepository;
 
   @Autowired
-  public ProductListConverterServiceImpl(ProductListItemsRepository productListItemRepository) {
+  public ProductListConverterServiceImpl(
+    ProductListItemsRepository productListItemRepository
+  ) {
     this.productListItemRepository = productListItemRepository;
   }
 

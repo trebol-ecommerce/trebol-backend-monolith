@@ -52,20 +52,20 @@ import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class SalesDataTransportServiceImplTest {
-  @InjectMocks SalesDataTransportServiceImpl sut;
-  @Mock SellStatusesRepository statusesRepository;
-  @Mock BillingTypesRepository billingTypesRepository;
-  @Mock PaymentTypesRepository paymentTypesRepository;
-  @Mock BillingCompaniesRepository billingCompaniesRepository;
-  @Mock ShippersRepository shippersRepository;
-  @Mock AddressesRepository addressesRepository;
-  @Mock BillingCompaniesConverterService billingCompaniesConverter;
-  @Mock CustomersConverterService customersConverter;
-  @Mock CustomersCrudService customersService;
-  @Mock CustomersRepository customersRepository;
-  @Mock AddressesConverterService addressesConverterService;
-  @Mock Validator validator;
-  @Mock RegexMatcherAdapterService regexMatcherAdapterService;
+  @InjectMocks SalesDataTransportServiceImpl instance;
+  @Mock SellStatusesRepository statusesRepositoryMock;
+  @Mock BillingTypesRepository billingTypesRepositoryMock;
+  @Mock PaymentTypesRepository paymentTypesRepositoryMock;
+  @Mock BillingCompaniesRepository billingCompaniesRepositoryMock;
+  @Mock ShippersRepository shippersRepositoryMock;
+  @Mock AddressesRepository addressesRepositoryMock;
+  @Mock BillingCompaniesConverterService billingCompaniesConverterMock;
+  @Mock CustomersConverterService customersConverterMock;
+  @Mock CustomersCrudService customersServiceMock;
+  @Mock CustomersRepository customersRepositoryMock;
+  @Mock AddressesConverterService addressesConverterServiceMock;
+  @Mock Validator validatorMock;
+  @Mock RegexMatcherAdapterService regexMatcherAdapterServiceMock;
   SellPojo sellPojo;
   Sell sell;
   SellStatus sellStatus;
@@ -85,56 +85,44 @@ class SalesDataTransportServiceImplTest {
 
   @Test
   void accepts_empty_object() {
-    assertDoesNotThrow(() -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    assertDoesNotThrow(() -> instance.applyChangesToExistingEntity(sellPojo, sell));
   }
 
   @Test
   void only_accepts_sell_statuses_stored_in_persistence_layer() {
     sellPojo.setStatus("ANY");
-    when(statusesRepository.findByName(anyString())).thenReturn(Optional.empty());
-
-    BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(statusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+    BadInputException badInputException = assertThrows(BadInputException.class, () -> instance.applyChangesToExistingEntity(sellPojo, sell));
     assertEquals("Status 'ANY' is not valid", badInputException.getMessage());
-
-    when(statusesRepository.findByName(anyString())).thenReturn(Optional.of(sellStatus));
-
-    assertDoesNotThrow(() -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(statusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatus));
+    assertDoesNotThrow(() -> instance.applyChangesToExistingEntity(sellPojo, sell));
   }
-
 
   @Test
   void only_accepts_payment_types_stored_in_persistence_layer() {
     sellPojo.setPaymentType("ANY");
-    when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.empty());
-
-    BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(paymentTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+    BadInputException badInputException = assertThrows(BadInputException.class, () -> instance.applyChangesToExistingEntity(sellPojo, sell));
     assertEquals("Payment type 'ANY' is not valid", badInputException.getMessage());
-
-    when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(paymentType));
-
-    assertDoesNotThrow(() -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(paymentTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(paymentType));
+    assertDoesNotThrow(() -> instance.applyChangesToExistingEntity(sellPojo, sell));
   }
-
 
   @Test
   void only_accepts_billing_types_stored_in_persistence_layer() {
     sellPojo.setBillingType("ANY");
-    when(billingTypesRepository.findByName(anyString())).thenReturn(Optional.empty());
-
-    BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+    BadInputException badInputException = assertThrows(BadInputException.class, () -> instance.applyChangesToExistingEntity(sellPojo, sell));
     assertEquals("Billing type 'ANY' is not valid", badInputException.getMessage());
-
-    when(billingTypesRepository.findByName(anyString())).thenReturn(Optional.of(billingType));
-
-    assertDoesNotThrow(() -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(billingType));
+    assertDoesNotThrow(() -> instance.applyChangesToExistingEntity(sellPojo, sell));
   }
 
   @Test
   void does_not_process_enterprise_invoices_without_company_data() {
     sellPojo.setBillingType(BILLING_TYPE_ENTERPRISE);
-    when(billingTypesRepository.findByName(anyString())).thenReturn(Optional.of(billingType));
-
-    BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(billingType));
+    BadInputException badInputException = assertThrows(BadInputException.class, () -> instance.applyChangesToExistingEntity(sellPojo, sell));
     assertEquals("Billing company details are required to generate enterprise invoices", badInputException.getMessage());
   }
 
@@ -142,9 +130,8 @@ class SalesDataTransportServiceImplTest {
   void does_not_process_enterprise_invoices_with_empty_company_data() {
     sellPojo.setBillingType(BILLING_TYPE_ENTERPRISE);
     sellPojo.setBillingCompany(BillingCompanyPojo.builder().build());
-    when(billingTypesRepository.findByName(anyString())).thenReturn(Optional.of(billingType));
-
-    BadInputException badInputException1 = assertThrows(BadInputException.class, () -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(billingType));
+    BadInputException badInputException1 = assertThrows(BadInputException.class, () -> instance.applyChangesToExistingEntity(sellPojo, sell));
     assertEquals("Billing company must have an id number", badInputException1.getMessage());
   }
 
@@ -152,10 +139,9 @@ class SalesDataTransportServiceImplTest {
   void does_not_process_enterprise_invoices_with_invalid_company_data() {
     sellPojo.setBillingType(BILLING_TYPE_ENTERPRISE);
     sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
-    when(billingTypesRepository.findByName(anyString())).thenReturn(Optional.of(billingType));
-    when(regexMatcherAdapterService.isAValidIdNumber(anyString())).thenReturn(false);
-
-    BadInputException badInputException2 = assertThrows(BadInputException.class, () -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(billingType));
+    when(regexMatcherAdapterServiceMock.isAValidIdNumber(anyString())).thenReturn(false);
+    BadInputException badInputException2 = assertThrows(BadInputException.class, () -> instance.applyChangesToExistingEntity(sellPojo, sell));
     assertEquals("Billing company must have a correct id number", badInputException2.getMessage());
   }
 
@@ -163,22 +149,19 @@ class SalesDataTransportServiceImplTest {
   void processes_enterprise_invoices_with_valid_company_data() {
     sellPojo.setBillingType(BILLING_TYPE_ENTERPRISE);
     sellPojo.setBillingCompany(BillingCompanyPojo.builder().idNumber(ANY).build());
-    when(billingTypesRepository.findByName(anyString())).thenReturn(Optional.of(billingType));
-    when(regexMatcherAdapterService.isAValidIdNumber(anyString())).thenReturn(true);
-
-    assertDoesNotThrow(() -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(billingType));
+    when(regexMatcherAdapterServiceMock.isAValidIdNumber(anyString())).thenReturn(true);
+    assertDoesNotThrow(() -> instance.applyChangesToExistingEntity(sellPojo, sell));
   }
 
   @Test
   void only_accepts_valid_customer_data() throws BadInputException {
     sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().build()).build());
-    BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    BadInputException badInputException = assertThrows(BadInputException.class, () -> instance.applyChangesToExistingEntity(sellPojo, sell));
     assertEquals("Customer must possess valid personal information", badInputException.getMessage());
-
     sellPojo.setCustomer(CustomerPojo.builder().person(PersonPojo.builder().idNumber(ANY).build()).build());
     Customer customer = new Customer(new Person());
-    when(customersService.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(customer));
-
-    assertDoesNotThrow(() -> sut.applyChangesToExistingEntity(sellPojo, sell));
+    when(customersServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(customer));
+    assertDoesNotThrow(() -> instance.applyChangesToExistingEntity(sellPojo, sell));
   }
 }

@@ -36,7 +36,9 @@ public class ProductListItemsConverterServiceImpl
   private final ProductsConverterService productsConverterService;
 
   @Autowired
-  public ProductListItemsConverterServiceImpl(ProductsConverterService productsConverterService) {
+  public ProductListItemsConverterServiceImpl(
+    ProductsConverterService productsConverterService
+  ) {
     this.productsConverterService = productsConverterService;
   }
 

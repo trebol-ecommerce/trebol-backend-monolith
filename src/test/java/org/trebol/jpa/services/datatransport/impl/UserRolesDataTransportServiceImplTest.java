@@ -29,13 +29,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.UserRolePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.services.datatransport.impl.UserRolesDataTransportServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class UserRolesDataTransportServiceImplTest {
-  @InjectMocks UserRolesDataTransportServiceImpl sut;
+  @InjectMocks UserRolesDataTransportServiceImpl instance;
   UserRole userRole;
   UserRolePojo userRolePojo;
 
@@ -58,7 +57,7 @@ class UserRolesDataTransportServiceImplTest {
 
   @Test
   void testApplyChangesToExistingEntity() throws BadInputException {
-    UserRole actual = sut.applyChangesToExistingEntity(userRolePojo, userRole);
+    UserRole actual = instance.applyChangesToExistingEntity(userRolePojo, userRole);
     assertEquals(1L, actual.getId());
   }
 }

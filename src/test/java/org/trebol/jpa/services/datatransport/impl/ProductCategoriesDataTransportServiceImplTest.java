@@ -36,7 +36,7 @@ import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductCategoriesDataTransportServiceImplTest {
-  @InjectMocks ProductCategoriesDataTransportServiceImpl sut;
+  @InjectMocks ProductCategoriesDataTransportServiceImpl instance;
   ProductCategory productCategory;
   ProductCategoryPojo productCategoryPojo;
 
@@ -60,7 +60,7 @@ public class ProductCategoriesDataTransportServiceImplTest {
   @Test
   void testApplyChangesToExistingEntity() throws BadInputException {
     productCategory.setName(ANY + " ");
-    ProductCategory actual = sut.applyChangesToExistingEntity(productCategoryPojo, productCategory);
+    ProductCategory actual = instance.applyChangesToExistingEntity(productCategoryPojo, productCategory);
     assertEquals(ANY, actual.getName());
   }
 }

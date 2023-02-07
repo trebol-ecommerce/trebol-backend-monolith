@@ -40,8 +40,8 @@ import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class CustomersDataTransportServiceImplTest {
-  @InjectMocks CustomersDataTransportServiceImpl sut;
-  @Mock PeopleDataTransportService peopleService;
+  @InjectMocks CustomersDataTransportServiceImpl instance;
+  @Mock PeopleDataTransportService peopleServiceMock;
   Customer customer;
   Person person;
   CustomerPojo customerPojo;
@@ -58,11 +58,10 @@ class CustomersDataTransportServiceImplTest {
       .build();
   }
 
-
   @Test
   void testApplyChangesToExistingEntity() throws BadInputException {
-    when(peopleService.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
-    Customer actual = sut.applyChangesToExistingEntity(customerPojo, customer);
+    when(peopleServiceMock.applyChangesToExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
+    Customer actual = instance.applyChangesToExistingEntity(customerPojo, customer);
     assertEquals(person, actual.getPerson());
   }
 }

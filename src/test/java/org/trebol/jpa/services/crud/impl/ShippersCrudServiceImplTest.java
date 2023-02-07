@@ -30,7 +30,6 @@ import org.trebol.api.models.ShipperPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.repositories.ShippersRepository;
-import org.trebol.jpa.services.crud.impl.ShippersCrudServiceImpl;
 
 import java.util.Optional;
 

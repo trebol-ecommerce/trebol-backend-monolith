@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class BackendAppTest {
-
   @Autowired RootController rootController;
 
   @Test

@@ -42,15 +42,16 @@ import java.util.Set;
 @Service
 public class ProductsConverterServiceImpl
   implements ProductsConverterService {
-
   private final ProductImagesRepository productImagesRepository;
   private final ImagesConverterService imagesConverterService;
   private final ProductCategoriesConverterService productCategoriesConverterService;
 
   @Autowired
-  public ProductsConverterServiceImpl(ProductImagesRepository productImagesRepository,
-                                      ImagesConverterService imagesConverterService,
-                                      ProductCategoriesConverterService productCategoriesConverterService) {
+  public ProductsConverterServiceImpl(
+    ProductImagesRepository productImagesRepository,
+    ImagesConverterService imagesConverterService,
+    ProductCategoriesConverterService productCategoriesConverterService
+  ) {
     this.productImagesRepository = productImagesRepository;
     this.imagesConverterService = imagesConverterService;
     this.productCategoriesConverterService = productCategoriesConverterService;

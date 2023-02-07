@@ -49,12 +49,12 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 public class UsersConverterServiceImplTest {
-  @InjectMocks UsersConverterServiceImpl sut;
-  @Mock UsersRepository userRepository;
-  @Mock UserRolesRepository rolesRepository;
-  @Mock PeopleConverterService peopleService;
-  @Mock PeopleRepository peopleRepository;
-  @Mock PasswordEncoder passwordEncoder;
+  @InjectMocks UsersConverterServiceImpl instance;
+  @Mock UsersRepository userRepositoryMock;
+  @Mock UserRolesRepository rolesRepositoryMock;
+  @Mock PeopleConverterService peopleServiceMock;
+  @Mock PeopleRepository peopleRepositoryMock;
+  @Mock PasswordEncoder passwordEncoderMock;
   User user;
   UserPojo userPojo;
 
@@ -82,9 +82,9 @@ public class UsersConverterServiceImplTest {
 
   @Test
   void converts_to_pojo() {
-    when(peopleService.convertToPojo(any(Person.class))).thenReturn(PersonPojo.builder().build());
+    when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(PersonPojo.builder().build());
 
-    UserPojo actual = sut.convertToPojo(user);
+    UserPojo actual = instance.convertToPojo(user);
 
     assertNotNull(actual.getPerson());
     assertEquals(user.getId(), actual.getId());
@@ -93,16 +93,16 @@ public class UsersConverterServiceImplTest {
 
   @Test
   void does_not_accept_empty_roles_for_new_entities() {
-    BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(userPojo));
+    BadInputException badInputException = assertThrows(BadInputException.class, () -> instance.convertToNewEntity(userPojo));
     assertEquals("The user was not given any role", badInputException.getMessage());
   }
 
   @Test
   void does_not_accept_unexisting_roles_for_new_entities() {
     userPojo.setRole(ANY);
-    when(rolesRepository.findByName(anyString())).thenReturn(Optional.empty());
+    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
-    BadInputException badInputException = assertThrows(BadInputException.class, () -> sut.convertToNewEntity(userPojo));
+    BadInputException badInputException = assertThrows(BadInputException.class, () -> instance.convertToNewEntity(userPojo));
     assertEquals("The specified user role does not exist", badInputException.getMessage());
   }
 
@@ -116,11 +116,11 @@ public class UsersConverterServiceImplTest {
     userPojo.setPassword(ANY);
     userPojo.setRole(ANY);
     userPojo.setPerson(personPojo);
-    when(passwordEncoder.encode(anyString())).thenReturn(ANY);
-    when(peopleRepository.findByIdNumber(anyString())).thenReturn(Optional.of(person));
-    when(rolesRepository.findByName(anyString())).thenReturn(Optional.of(userRole));
+    when(passwordEncoderMock.encode(anyString())).thenReturn(ANY);
+    when(peopleRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(person));
+    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userRole));
 
-    User actual = sut.convertToNewEntity(userPojo);
+    User actual = instance.convertToNewEntity(userPojo);
 
     assertNotNull(actual.getPerson());
     assertEquals(userPojo.getPerson().getIdNumber(), actual.getPerson().getIdNumber());

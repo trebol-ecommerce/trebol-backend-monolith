@@ -44,7 +44,6 @@ import java.util.Optional;
 @Service
 public class UsersConverterServiceImpl
   implements UsersConverterService {
-
   private final Logger logger = LoggerFactory.getLogger(UsersConverterServiceImpl.class);
   private final UserRolesRepository rolesRepository;
   private final PeopleConverterService peopleService;

@@ -33,11 +33,12 @@ import org.trebol.jpa.services.datatransport.PeopleDataTransportService;
 @Service
 public class CustomersDataTransportServiceImpl
   implements CustomersDataTransportService {
-
   private final PeopleDataTransportService peopleService;
 
   @Autowired
-  public CustomersDataTransportServiceImpl(PeopleDataTransportService peopleService) {
+  public CustomersDataTransportServiceImpl(
+    PeopleDataTransportService peopleService
+  ) {
     this.peopleService = peopleService;
   }
 

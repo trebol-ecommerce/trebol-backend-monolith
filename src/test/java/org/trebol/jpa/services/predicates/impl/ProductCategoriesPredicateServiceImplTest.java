@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 class ProductCategoriesPredicateServiceImplTest {
   @InjectMocks ProductCategoriesPredicateServiceImpl instance;
-  @Mock ProductCategoryTreeResolverService treeResolver;
+  @Mock ProductCategoryTreeResolverService treeResolverMock;
 
   @Test
   void parses_map() {

@@ -32,7 +32,7 @@ public interface SortSpecParserService {
    * Resolves sort order constraints for queries
    *
    * @param orderSpecMap Sort specifiers relevant to one specific entity type
-   * @param queryMap Sort specifiers as requested by an user from a query params map
+   * @param queryMap     Sort specifiers as requested by an user from a query params map
    * @return A Sort order as parsed from the pair of maps
    */
   Sort parse(@NotNull @NotEmpty Map<String, OrderSpecifier<?>> orderSpecMap, @NotNull Map<String, String> queryMap);

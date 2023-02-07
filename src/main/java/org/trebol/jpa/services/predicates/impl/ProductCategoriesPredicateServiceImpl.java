@@ -43,9 +43,12 @@ public class ProductCategoriesPredicateServiceImpl
   private final ProductCategoryTreeResolverService treeResolver;
 
   @Autowired
-  public ProductCategoriesPredicateServiceImpl(ProductCategoryTreeResolverService treeResolver) {
+  public ProductCategoriesPredicateServiceImpl(
+    ProductCategoryTreeResolverService treeResolver
+  ) {
     this.treeResolver = treeResolver;
   }
+
   @Override
   public Predicate parseMap(Map<String, String> queryParamsMap) {
     BooleanBuilder predicate = new BooleanBuilder();

@@ -20,9 +20,9 @@
 
 package org.trebol.jpa.services.datatransport;
 
+import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.DataTransportService;
-import org.trebol.api.models.ProductCategoryPojo;
 
 public interface ProductCategoriesDataTransportService
   extends DataTransportService<ProductCategoryPojo, ProductCategory> {

@@ -34,7 +34,7 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ImagesConverterServiceImplTest {
-  @InjectMocks ImagesConverterServiceImpl sut;
+  @InjectMocks ImagesConverterServiceImpl instance;
   Image image;
   ImagePojo imagePojo;
 
@@ -57,14 +57,14 @@ class ImagesConverterServiceImplTest {
 
   @Test
   void testConvertToPojo() {
-    ImagePojo actual = sut.convertToPojo(image);
+    ImagePojo actual = instance.convertToPojo(image);
     assertEquals(image.getFilename(), actual.getFilename());
     assertEquals(image.getCode(), actual.getCode());
   }
 
   @Test
   void testConvertToNewEntity() {
-    Image actual = sut.convertToNewEntity(imagePojo);
+    Image actual = instance.convertToNewEntity(imagePojo);
     assertEquals(imagePojo.getFilename(), actual.getFilename());
     assertEquals(imagePojo.getCode(), actual.getCode());
   }

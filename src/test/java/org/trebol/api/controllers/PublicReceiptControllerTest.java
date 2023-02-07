@@ -49,6 +49,7 @@ class PublicReceiptControllerTest {
     assertNull(result);
     verify(serviceMock).fetchReceiptByTransactionToken(token);
   }
+
   @Test
   void does_not_accept_empty_tokens() {
     assertThrows(BadInputException.class, () -> instance.fetchReceiptById(""));

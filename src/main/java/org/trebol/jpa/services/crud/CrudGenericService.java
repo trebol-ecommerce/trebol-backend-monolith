@@ -50,10 +50,9 @@ import java.util.Optional;
 @Transactional
 public abstract class CrudGenericService<P, E>
   implements CrudService<P, E> {
-  private final Repository<E> repository;
-
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
+  private final Repository<E> repository;
   private final ConverterService<P, E> converter;
   private final DataTransportService<P, E> dataTransportService;
 

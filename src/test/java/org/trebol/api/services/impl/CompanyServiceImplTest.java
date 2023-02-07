@@ -27,7 +27,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.CompanyDetailsPojo;
-import org.trebol.api.services.impl.CompanyServiceImpl;
 import org.trebol.jpa.entities.Param;
 import org.trebol.jpa.repositories.ParamsRepository;
 
@@ -38,8 +37,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CompanyServiceImplTest {
-  @InjectMocks CompanyServiceImpl sut;
-  @Mock ParamsRepository paramsRepository;
+  @InjectMocks CompanyServiceImpl instance;
+  @Mock ParamsRepository paramsRepositoryMock;
 
   @DisplayName("It should read get params which contains name and value by category of company map it " +
     "to CompanyDetailsPojo")
@@ -60,12 +59,12 @@ class CompanyServiceImplTest {
     param4.setValue("anyLogoImageURL");
     Iterable<Param> params = List.of(param, param2, param3, param4);
 
-    when(paramsRepository.findParamsByCategory("company")).thenReturn(params);
+    when(paramsRepositoryMock.findParamsByCategory("company")).thenReturn(params);
 
-    CompanyDetailsPojo actual = sut.readDetails();
+    CompanyDetailsPojo actual = instance.readDetails();
 
 
-    verify(paramsRepository, times(1)).findParamsByCategory("company");
+    verify(paramsRepositoryMock, times(1)).findParamsByCategory("company");
 
     assertEquals("Piolo", actual.getName());
     assertEquals("guwapo", actual.getDescription());

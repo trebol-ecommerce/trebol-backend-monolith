@@ -78,15 +78,17 @@ public class SecurityConfig
   protected void configure(HttpSecurity http) throws Exception {
     http
       .headers()
-      .frameOptions().sameOrigin().and()
-      .cors().and()
-      .csrf().disable()
+        .frameOptions().sameOrigin().and()
+        .cors().and()
+        .csrf().disable()
       .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
       .addFilter(this.loginFilterForUrl("/public/login"))
-      .addFilterAfter(this.guestFilterForUrl("/public/guest"),
+      .addFilterAfter(
+        this.guestFilterForUrl("/public/guest"),
         JwtLoginAuthenticationFilter.class)
-      .addFilterAfter(new JwtTokenVerifierFilter(jwtClaimsParserService),
+      .addFilterAfter(
+        new JwtTokenVerifierFilter(jwtClaimsParserService),
         JwtGuestAuthenticationFilter.class);
   }
 

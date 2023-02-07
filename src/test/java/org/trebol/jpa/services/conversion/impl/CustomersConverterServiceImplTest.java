@@ -40,8 +40,8 @@ import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class CustomersConverterServiceImplTest {
-  @InjectMocks CustomersConverterServiceImpl sut;
-  @Mock PeopleConverterService peopleService;
+  @InjectMocks CustomersConverterServiceImpl instance;
+  @Mock PeopleConverterService peopleServiceMock;
   Customer customer;
   CustomerPojo customerPojo;
   Person person;
@@ -65,15 +65,15 @@ class CustomersConverterServiceImplTest {
 
   @Test
   void testConvertToPojo() {
-    when(peopleService.convertToPojo(any(Person.class))).thenReturn(personPojo);
-    CustomerPojo actual = sut.convertToPojo(customer);
+    when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(personPojo);
+    CustomerPojo actual = instance.convertToPojo(customer);
     assertEquals(personPojo.getId(), actual.getPerson().getId());
   }
 
   @Test
   void testConvertToNewEntity() throws BadInputException {
-    when(peopleService.convertToNewEntity(any(PersonPojo.class))).thenReturn(person);
-    Customer actual = sut.convertToNewEntity(customerPojo);
+    when(peopleServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(person);
+    Customer actual = instance.convertToNewEntity(customerPojo);
     assertEquals(person.getId(), actual.getPerson().getId());
   }
 }

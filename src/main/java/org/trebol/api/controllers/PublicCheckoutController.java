@@ -79,9 +79,9 @@ public class PublicCheckoutController {
    *
    * @param transactionRequest The checkout details
    * @return An object wrapping the URL and token to redirect the user with, towards their payment page.
-   * @throws BadInputException                   If the input models class contains invalid data
-   * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during the payment
-   *                                                                   integration process
+   * @throws BadInputException       If the input models class contains invalid data
+   * @throws PaymentServiceException If an error happens during the payment
+   *                                 integration process
    */
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('checkout')")
@@ -96,9 +96,9 @@ public class PublicCheckoutController {
    *
    * @param transactionData The HTTP headers
    * @return A 303 SEE OTHER response
-   * @throws BadInputException                   If the expected token is not present in the request
-   * @throws EntityNotFoundException                                   If the token does not match that of any "pending" transaction
-   * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during internal API calls
+   * @throws BadInputException       If the expected token is not present in the request
+   * @throws EntityNotFoundException If the token does not match that of any "pending" transaction
+   * @throws PaymentServiceException If an error happens during internal API calls
    */
   @GetMapping({"/validate", "/validate/"})
   public ResponseEntity<Void> validateSuccesfulTransaction(@RequestParam Map<String, String> transactionData)
@@ -123,9 +123,9 @@ public class PublicCheckoutController {
    *
    * @param transactionData The HTTP headers
    * @return A 303 SEE OTHER response
-   * @throws BadInputException                   If the expected token is not present in the request
-   * @throws EntityNotFoundException                                   If the token does not match that of any "pending" transaction
-   * @throws org.trebol.integration.exceptions.PaymentServiceException If an error happens during internal API calls
+   * @throws BadInputException       If the expected token is not present in the request
+   * @throws EntityNotFoundException If the token does not match that of any "pending" transaction
+   * @throws PaymentServiceException If an error happens during internal API calls
    */
   @PostMapping({"/validate", "/validate/"})
   public ResponseEntity<Void> validateAbortedTransaction(@RequestParam Map<String, String> transactionData)

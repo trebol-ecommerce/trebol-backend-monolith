@@ -29,7 +29,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 import org.trebol.api.models.ReceiptDetailPojo;
 import org.trebol.api.models.ReceiptPojo;
-import org.trebol.api.services.impl.ReceiptServiceImpl;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
@@ -48,13 +47,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ReceiptServiceImplTest {
   @InjectMocks ReceiptServiceImpl instance;
-  @Mock SalesRepository salesRepository;
-  @Mock ConversionService conversionService;
+  @Mock SalesRepository salesRepositoryMock;
+  @Mock ConversionService conversionServiceMock;
 
   @Test
   @DisplayName("When Sale not found by token, throw EntityNotFoundException")
   void fetchReceiptByTransactionToken_SaleNotFound_EntityNotFoundException() {
-    when(salesRepository.findByTransactionToken(anyString())).thenReturn(Optional.empty());
+    when(salesRepositoryMock.findByTransactionToken(anyString())).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> instance.fetchReceiptByTransactionToken("token"));
   }
@@ -81,9 +80,9 @@ class ReceiptServiceImplTest {
     ReceiptPojo receiptPojoMock = new ReceiptPojo();
     ReceiptDetailPojo receiptDetailPojoMock = new ReceiptDetailPojo();
 
-    when(salesRepository.findByTransactionToken(anyString())).thenReturn(Optional.of(sellMock));
-    when(conversionService.convert(any(Sell.class), eq(ReceiptPojo.class))).thenReturn(receiptPojoMock);
-    when(conversionService.convert(any(SellDetail.class), eq(ReceiptDetailPojo.class))).thenReturn(receiptDetailPojoMock);
+    when(salesRepositoryMock.findByTransactionToken(anyString())).thenReturn(Optional.of(sellMock));
+    when(conversionServiceMock.convert(any(Sell.class), eq(ReceiptPojo.class))).thenReturn(receiptPojoMock);
+    when(conversionServiceMock.convert(any(SellDetail.class), eq(ReceiptDetailPojo.class))).thenReturn(receiptDetailPojoMock);
 
     assertDoesNotThrow(() -> instance.fetchReceiptByTransactionToken("token"));
   }
@@ -110,9 +109,9 @@ class ReceiptServiceImplTest {
     ReceiptPojo receiptPojoMock = new ReceiptPojo();
     ReceiptDetailPojo receiptDetailPojoMock = new ReceiptDetailPojo();
 
-    when(salesRepository.findByTransactionToken(anyString())).thenReturn(Optional.of(sellMock));
-    when(conversionService.convert(any(Sell.class), eq(ReceiptPojo.class))).thenReturn(receiptPojoMock);
-    when(conversionService.convert(any(SellDetail.class), eq(ReceiptDetailPojo.class))).thenReturn(receiptDetailPojoMock);
+    when(salesRepositoryMock.findByTransactionToken(anyString())).thenReturn(Optional.of(sellMock));
+    when(conversionServiceMock.convert(any(Sell.class), eq(ReceiptPojo.class))).thenReturn(receiptPojoMock);
+    when(conversionServiceMock.convert(any(SellDetail.class), eq(ReceiptDetailPojo.class))).thenReturn(receiptDetailPojoMock);
 
     ReceiptPojo actualReceiptPojo = instance.fetchReceiptByTransactionToken("token");
 

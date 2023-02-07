@@ -30,7 +30,6 @@ import org.trebol.api.models.BillingTypePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.repositories.BillingTypesRepository;
-import org.trebol.jpa.services.crud.impl.BillingTypesCrudServiceImpl;
 
 import java.util.Optional;
 

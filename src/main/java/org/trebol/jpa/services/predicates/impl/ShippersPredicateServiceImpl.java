@@ -32,7 +32,6 @@ import java.util.Map;
 @Service
 public class ShippersPredicateServiceImpl
   implements ShippersPredicateService {
-
   private final Logger logger = LoggerFactory.getLogger(ShippersPredicateServiceImpl.class);
 
   @Override

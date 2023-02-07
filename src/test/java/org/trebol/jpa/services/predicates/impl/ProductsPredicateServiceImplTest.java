@@ -37,11 +37,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ProductsPredicateServiceImplTest {
   @InjectMocks ProductsPredicateServiceImpl instance;
-  @Mock ProductCategoryTreeResolverService categoryTreeResolver;
+  @Mock ProductCategoryTreeResolverService categoryTreeResolverMock;
 
   @Test
   void parses_map() {
-    when(categoryTreeResolver.getBranchIdsFromRootCode("category-code")).thenReturn(new ArrayList<>());
+    when(categoryTreeResolverMock.getBranchIdsFromRootCode("category-code")).thenReturn(new ArrayList<>());
     Predicate emptyPredicate = new BooleanBuilder();
     List<Predicate> predicates = List.of(emptyPredicate,
       instance.parseMap(Map.of("id", "1")),

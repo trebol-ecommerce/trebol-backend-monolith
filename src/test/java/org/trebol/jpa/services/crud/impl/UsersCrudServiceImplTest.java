@@ -35,7 +35,6 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.UsersRepository;
-import org.trebol.jpa.services.crud.impl.UsersCrudServiceImpl;
 
 import java.util.Optional;
 

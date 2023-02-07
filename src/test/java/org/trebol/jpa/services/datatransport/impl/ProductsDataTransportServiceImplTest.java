@@ -35,7 +35,7 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductsDataTransportServiceImplTest {
-  @InjectMocks ProductsDataTransportServiceImpl sut;
+  @InjectMocks ProductsDataTransportServiceImpl instance;
   Product product;
   ProductPojo productPojo;
 
@@ -68,7 +68,7 @@ public class ProductsDataTransportServiceImplTest {
     product.setPrice(2);
     product.setDescription(ANY + " ");
 
-    Product actual = sut.applyChangesToExistingEntity(productPojo, product);
+    Product actual = instance.applyChangesToExistingEntity(productPojo, product);
 
     assertEquals(ANY, actual.getBarcode());
   }
