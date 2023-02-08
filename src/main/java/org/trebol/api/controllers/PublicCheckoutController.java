@@ -22,8 +22,6 @@ package org.trebol.api.controllers;
 
 import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -54,7 +52,6 @@ import static org.trebol.config.Constants.WEBPAY_SUCCESS_TOKEN_HEADER_NAME;
 @RestController
 @RequestMapping("/public/checkout")
 public class PublicCheckoutController {
-  private final Logger logger = LoggerFactory.getLogger(PublicCheckoutController.class);
   private final CheckoutService service;
   private final SalesCrudService salesCrudService;
   private final SalesPredicateService salesPredicateService;
