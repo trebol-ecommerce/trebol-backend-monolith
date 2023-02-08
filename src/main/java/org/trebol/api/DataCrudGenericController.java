@@ -35,7 +35,7 @@ public abstract class DataCrudGenericController<P, E>
   extends DataGenericController<P, E>
   implements DataCrudController<P> {
 
-  public DataCrudGenericController(
+  protected DataCrudGenericController(
     PaginationService paginationService,
     SortSpecParserService sortSpecParserService,
     CrudService<P, E> crudService,

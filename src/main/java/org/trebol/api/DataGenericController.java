@@ -47,7 +47,7 @@ public abstract class DataGenericController<P, E>
 
   protected abstract Map<String, OrderSpecifier<?>> getOrderSpecMap();
 
-  public DataGenericController(
+  protected DataGenericController(
     PaginationService paginationService,
     SortSpecParserService sortService,
     CrudService<P, E> crudService,
