@@ -23,7 +23,6 @@ package org.trebol.jpa.services.patch.impl;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.BillingTypePojo;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.services.patch.BillingTypesPatchService;
 

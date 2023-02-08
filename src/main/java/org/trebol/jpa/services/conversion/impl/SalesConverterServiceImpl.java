@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.*;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.conversion.*;

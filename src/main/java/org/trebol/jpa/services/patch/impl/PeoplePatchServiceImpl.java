@@ -24,7 +24,6 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.PersonPojo;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.services.patch.PeoplePatchService;
 

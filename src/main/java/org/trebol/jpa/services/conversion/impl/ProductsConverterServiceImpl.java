@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.ImagePojo;
 import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.api.models.ProductPojo;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.ProductImage;
