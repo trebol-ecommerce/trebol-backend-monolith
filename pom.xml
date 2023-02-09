@@ -48,6 +48,7 @@
     <project-lombok.version>1.18.24</project-lombok.version>
     <jjwt.version>0.11.5</jjwt.version>
     <mockito.version>4.0.0</mockito.version>
+    <unirest.version>3.13.8</unirest.version>
 
     <!-- Plugins configuration -->
     <java.endorsed-api.dir>${project.build.directory}/endorsed</java.endorsed-api.dir>
@@ -162,7 +163,13 @@
     <dependency>
       <groupId>com.konghq</groupId>
       <artifactId>unirest-java</artifactId>
-      <version>3.13.8</version>
+      <version>${unirest.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.konghq</groupId>
+      <artifactId>unirest-mocks</artifactId>
+      <version>${unirest.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <!-- REST Assured -->
