@@ -36,4 +36,16 @@ class PaymentServiceExceptionTest {
     assertNotNull(instance.getMessage());
     assertEquals(errorMessage, instance.getMessage());
   }
+
+  @Test
+  void can_contain_an_error_message_and_reference_its_own_cause() {
+    Throwable cause = new RuntimeException(ANY);
+    PaymentServiceException instance = assertThrows(PaymentServiceException.class, () -> {
+      throw new PaymentServiceException(errorMessage, cause);
+    });
+    assertNotNull(instance.getMessage());
+    assertNotNull(instance.getCause());
+    assertEquals(errorMessage, instance.getMessage());
+    assertEquals(cause, instance.getCause());
+  }
 }
