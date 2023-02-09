@@ -26,9 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
-import kong.unirest.Unirest;
+import kong.unirest.*;
 import kong.unirest.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +39,7 @@ import org.trebol.integration.MailingIntegrationProperties;
 import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.services.MailingService;
 
+import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +57,7 @@ import static org.trebol.config.Constants.*;
 @Profile("mailgun")
 public class MailgunMailingServiceImpl
   implements MailingService {
+  public static final String MAILGUN_HOST = "https://api.mailgun.net/v3/";
   private static final String CUSTOMER_MAPS_KEY_PREFIX = "customer:";
   private static final String OWNERS_MAPS_KEY_PREFIX = "owners:";
   private final Logger logger = LoggerFactory.getLogger(MailgunMailingServiceImpl.class);
@@ -67,6 +67,7 @@ public class MailgunMailingServiceImpl
   private final Map<String, String> orderStatus2MailSubjectMap;
   private final ConversionService conversionService;
   private final ObjectMapper mailObjectMapper;
+  private final HttpRequestWithBody baseRequestWithBody;
 
   @Autowired
   public MailgunMailingServiceImpl(
@@ -80,12 +81,12 @@ public class MailgunMailingServiceImpl
     this.orderStatus2MailgunTemplatesMap = this.makeTemplatesMap();
     this.orderStatus2MailSubjectMap = this.makeSubjectsMap();
     this.mailObjectMapper = this.mailObjectMapper();
+    this.baseRequestWithBody = this.prepareBaseApiRequest();
   }
 
   @Override
   public void notifyOrderStatusToClient(SellPojo sell)
     throws MailingServiceException {
-    String url = "https://api.mailgun.net/v3/" + mailgunProperties.getDomain() + "/messages";
     String mapsKey = CUSTOMER_MAPS_KEY_PREFIX + sell.getStatus();
     if (!orderStatus2MailSubjectMap.containsKey(mapsKey)) {
       return;
@@ -98,13 +99,11 @@ public class MailgunMailingServiceImpl
     String mailgunTemplateName = orderStatus2MailgunTemplatesMap.get(mapsKey);
     String fullSubject = messageSubject + " [#" + sell.getBuyOrder() + "]";
     String variables = this.makeMailgunVariablesFrom(sell);
-    HttpResponse<JsonNode> request = Unirest.post(url)
-      .basicAuth("api", mailgunProperties.getApiKey())
-      .field("from", internalMailingIntegrationProperties.getSenderEmail())
-      .field("to", recipient)
-      .field("subject", fullSubject)
-      .field("template", mailgunTemplateName)
-      .field("h:X-Mailgun-Variables", variables)
+    HttpResponse<JsonNode> request = this.preparePOST(
+        recipient,
+        fullSubject,
+        mailgunTemplateName,
+        variables)
       .asJson();
     try {
       if (((String) request.getBody().getObject().get("id")).isBlank()) {
@@ -119,7 +118,6 @@ public class MailgunMailingServiceImpl
   @Override
   public void notifyOrderStatusToOwners(SellPojo sell)
     throws MailingServiceException {
-    String url = "https://api.mailgun.net/v3/" + mailgunProperties.getDomain() + "/messages";
     String mapsKey = OWNERS_MAPS_KEY_PREFIX + sell.getStatus();
     if (!orderStatus2MailSubjectMap.containsKey(mapsKey)) {
       return;
@@ -129,22 +127,29 @@ public class MailgunMailingServiceImpl
     String mailgunTemplateName = orderStatus2MailgunTemplatesMap.get(mapsKey);
     String fullSubject = messageSubject + " [#" + sell.getBuyOrder() + "]";
     String variables = this.makeMailgunVariablesFrom(sell);
-    HttpResponse<JsonNode> request = Unirest.post(url)
-      .basicAuth("api", mailgunProperties.getApiKey())
-      .field("from", internalMailingIntegrationProperties.getSenderEmail())
-      .field("to", internalMailingIntegrationProperties.getOwnerEmail())
-      .field("subject", fullSubject)
-      .field("template", mailgunTemplateName)
-      .field("h:X-Mailgun-Variables", variables)
+    HttpResponse<JsonNode> response = this.preparePOST(
+        internalMailingIntegrationProperties.getOwnerEmail(),
+        fullSubject,
+        mailgunTemplateName,
+        variables)
       .asJson();
     try {
-      if (((String) request.getBody().getObject().get("id")).isBlank()) {
-        logger.warn("Mailgun returned the following JSON: {}", request.getBody());
+      if (((String) response.getBody().getObject().get("id")).isBlank()) {
+        logger.warn("Mailgun returned the following JSON: {}", response.getBody());
         throw new MailingServiceException("Status of the sent e-mail is unknown, Mailgun did not provide an ID for this api");
       }
     } catch (JSONException ex) {
       throw new MailingServiceException("Status of the sent e-mail is unknown, Mailgun threw an exception while validating the response", ex);
     }
+  }
+
+  private MultipartBody preparePOST(String to, String subject, String templateName, String templateVariables) {
+    return baseRequestWithBody
+      .field("from", internalMailingIntegrationProperties.getSenderEmail())
+      .field("to", to)
+      .field("subject", subject)
+      .field("template", templateName)
+      .field("h:X-Mailgun-Variables", templateVariables);
   }
 
   private Map<String, String> makeTemplatesMap() {
@@ -182,6 +187,12 @@ public class MailgunMailingServiceImpl
         .forPattern(internalMailingIntegrationProperties.getDateFormat())
         .withTimeZone(TimeZone.getTimeZone(internalMailingIntegrationProperties.getDateTimezone())));
     return objectMapper;
+  }
+
+  private HttpRequestWithBody prepareBaseApiRequest() {
+    URI targetApiUrl = URI.create(MAILGUN_HOST + this.mailgunProperties.getDomain() + "/messages");
+    return Unirest.post(targetApiUrl.toString())
+      .basicAuth("api", this.mailgunProperties.getApiKey());
   }
 
   private String makeMailgunVariablesFrom(SellPojo sell) {
