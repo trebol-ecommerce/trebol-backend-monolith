@@ -20,20 +20,30 @@
 
 package org.trebol.common.exceptions;
 
-import lombok.Getter;
+import org.junit.jupiter.api.Test;
 
-public class CorsMappingParseException
-  extends Exception {
-  public static final String BASE_MESSAGE = "Could not parse CORS mapping. Format must be 'METHODS /path'.";
-  @Getter
-  private final String corsMapping;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.trebol.testing.TestConstants.ANY;
 
-  public CorsMappingParseException(String corsMapping) {
-    this.corsMapping = corsMapping;
+public class CorsMappingParseExceptionTest {
+
+  @Test
+  void has_a_default_error_message() {
+    CorsMappingParseException instance = assertThrows(CorsMappingParseException.class, () -> {
+      throw new CorsMappingParseException(null);
+    });
+    assertNull(instance.getCorsMapping());
+    assertNotNull(instance.getMessage());
+    assertEquals(CorsMappingParseException.BASE_MESSAGE, instance.getMessage());
   }
 
-  @Override
-  public String getMessage() {
-    return BASE_MESSAGE;
+  @Test
+  void holds_the_failing_cors_mapping_which_triggered_the_exception() {
+    String corsMapping = ANY;
+    CorsMappingParseException instance = assertThrows(CorsMappingParseException.class, () -> {
+      throw new CorsMappingParseException(corsMapping);
+    });
+    assertNotNull(instance.getCorsMapping());
+    assertEquals(corsMapping, instance.getCorsMapping());
   }
 }

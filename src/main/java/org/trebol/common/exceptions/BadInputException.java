@@ -23,9 +23,6 @@ package org.trebol.common.exceptions;
 public class BadInputException
   extends Exception {
 
-  public BadInputException() {
-  }
-
   public BadInputException(String string) {
     super(string);
   }
