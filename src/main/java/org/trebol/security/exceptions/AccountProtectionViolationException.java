@@ -18,22 +18,13 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.common.exceptions;
+package org.trebol.security.exceptions;
 
-import lombok.Getter;
+public class AccountProtectionViolationException
+  extends RuntimeException {
 
-public class CorsMappingParseException
-  extends Exception {
-  public static final String BASE_MESSAGE = "Could not parse CORS mapping. Format must be 'METHODS /path'.";
-  @Getter
-  private final String corsMapping;
-
-  public CorsMappingParseException(String corsMapping) {
-    this.corsMapping = corsMapping;
+  public AccountProtectionViolationException(String message) {
+    super(message);
   }
 
-  @Override
-  public String getMessage() {
-    return BASE_MESSAGE;
-  }
 }

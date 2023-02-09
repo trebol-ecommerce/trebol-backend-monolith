@@ -36,7 +36,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.trebol.common.exceptions.CorsMappingParseException;
+import org.trebol.config.exceptions.CorsMappingParseException;
 import org.trebol.jpa.services.crud.CustomersCrudService;
 import org.trebol.security.JwtGuestAuthenticationFilter;
 import org.trebol.security.JwtLoginAuthenticationFilter;

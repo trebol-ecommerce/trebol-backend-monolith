@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.UserPojo;
-import org.trebol.common.exceptions.AccountProtectionViolationException;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.config.SecurityProperties;
 import org.trebol.jpa.entities.User;
@@ -35,6 +34,7 @@ import org.trebol.jpa.services.conversion.UsersConverterService;
 import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.UsersCrudService;
 import org.trebol.jpa.services.patch.UsersPatchService;
+import org.trebol.security.exceptions.AccountProtectionViolationException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;

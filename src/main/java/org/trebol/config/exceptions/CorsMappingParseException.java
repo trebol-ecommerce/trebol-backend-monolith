@@ -18,22 +18,22 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.common.exceptions;
+package org.trebol.config.exceptions;
 
-import org.junit.jupiter.api.Test;
+import lombok.Getter;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.trebol.testing.TestConstants.ANY;
+public class CorsMappingParseException
+  extends Exception {
+  public static final String BASE_MESSAGE = "Could not parse CORS mapping. Format must be 'METHODS /path'.";
+  @Getter
+  private final String corsMapping;
 
-public class AccountProtectionViolationExceptionTest {
-  final String errorMessage = ANY;
+  public CorsMappingParseException(String corsMapping) {
+    this.corsMapping = corsMapping;
+  }
 
-  @Test
-  void can_contain_an_error_message() {
-    AccountProtectionViolationException instance = assertThrows(AccountProtectionViolationException.class, () -> {
-      throw new AccountProtectionViolationException(errorMessage);
-    });
-    assertNotNull(instance.getMessage());
-    assertEquals(errorMessage, instance.getMessage());
+  @Override
+  public String getMessage() {
+    return BASE_MESSAGE;
   }
 }

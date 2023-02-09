@@ -18,13 +18,22 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.common.exceptions;
+package org.trebol.security.exceptions;
 
-public class AccountProtectionViolationException
-  extends RuntimeException {
+import org.junit.jupiter.api.Test;
 
-  public AccountProtectionViolationException(String message) {
-    super(message);
+import static org.junit.jupiter.api.Assertions.*;
+import static org.trebol.testing.TestConstants.ANY;
+
+public class AccountProtectionViolationExceptionTest {
+  final String errorMessage = ANY;
+
+  @Test
+  void can_contain_an_error_message() {
+    AccountProtectionViolationException instance = assertThrows(AccountProtectionViolationException.class, () -> {
+      throw new AccountProtectionViolationException(errorMessage);
+    });
+    assertNotNull(instance.getMessage());
+    assertEquals(errorMessage, instance.getMessage());
   }
-
 }

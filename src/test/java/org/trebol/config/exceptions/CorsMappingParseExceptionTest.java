@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.common.exceptions;
+package org.trebol.config.exceptions;
 
 import org.junit.jupiter.api.Test;
 
