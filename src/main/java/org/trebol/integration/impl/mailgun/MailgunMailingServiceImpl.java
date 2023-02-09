@@ -87,33 +87,32 @@ public class MailgunMailingServiceImpl
     throws MailingServiceException {
     String url = "https://api.mailgun.net/v3/" + mailgunProperties.getDomain() + "/messages";
     String mapsKey = CUSTOMER_MAPS_KEY_PREFIX + sell.getStatus();
-    if (orderStatus2MailSubjectMap.containsKey(mapsKey)) {
-      PersonPojo customer = sell.getCustomer().getPerson();
-      String customerName = customer.getFirstName() + " " + customer.getLastName();
-      String recipient = customerName + " <" + customer.getEmail() + ">";
-      String messageSubject = orderStatus2MailSubjectMap.get(mapsKey);
-      String mailgunTemplateName = orderStatus2MailgunTemplatesMap.get(mapsKey);
-      String fullSubject = messageSubject + " [#" + sell.getBuyOrder() + "]";
-      String variables = this.makeMailgunVariablesFrom(sell);
+    if (!orderStatus2MailSubjectMap.containsKey(mapsKey)) {
+      return;
+    }
 
-      HttpResponse<JsonNode> request = Unirest.post(url)
-        .basicAuth("api", mailgunProperties.getApiKey())
-        .field("from", internalMailingIntegrationProperties.getSenderEmail())
-        .field("to", recipient)
-        .field("subject", fullSubject)
-        .field("template", mailgunTemplateName)
-        .field("h:X-Mailgun-Variables", variables)
-        .asJson();
-      try {
-        if (((String) request.getBody().getObject().get("id")).isBlank()) {
-          logger.warn("Mailgun returned the following JSON: {}", request.getBody());
-          throw new MailingServiceException(
-            "Status of the sent e-mail is unknown, Mailgun did not provide an ID for this api");
-        }
-      } catch (JSONException ex) {
-        throw new MailingServiceException(
-          "Status of the sent e-mail is unknown, Mailgun threw an exception while validating the response", ex);
+    PersonPojo customer = sell.getCustomer().getPerson();
+    String customerName = customer.getFirstName() + " " + customer.getLastName();
+    String recipient = customerName + " <" + customer.getEmail() + ">";
+    String messageSubject = orderStatus2MailSubjectMap.get(mapsKey);
+    String mailgunTemplateName = orderStatus2MailgunTemplatesMap.get(mapsKey);
+    String fullSubject = messageSubject + " [#" + sell.getBuyOrder() + "]";
+    String variables = this.makeMailgunVariablesFrom(sell);
+    HttpResponse<JsonNode> request = Unirest.post(url)
+      .basicAuth("api", mailgunProperties.getApiKey())
+      .field("from", internalMailingIntegrationProperties.getSenderEmail())
+      .field("to", recipient)
+      .field("subject", fullSubject)
+      .field("template", mailgunTemplateName)
+      .field("h:X-Mailgun-Variables", variables)
+      .asJson();
+    try {
+      if (((String) request.getBody().getObject().get("id")).isBlank()) {
+        logger.warn("Mailgun returned the following JSON: {}", request.getBody());
+        throw new MailingServiceException("Status of the sent e-mail is unknown, Mailgun did not provide an ID for this api");
       }
+    } catch (JSONException ex) {
+      throw new MailingServiceException("Status of the sent e-mail is unknown, Mailgun threw an exception while validating the response", ex);
     }
   }
 
@@ -122,30 +121,29 @@ public class MailgunMailingServiceImpl
     throws MailingServiceException {
     String url = "https://api.mailgun.net/v3/" + mailgunProperties.getDomain() + "/messages";
     String mapsKey = OWNERS_MAPS_KEY_PREFIX + sell.getStatus();
-    if (orderStatus2MailSubjectMap.containsKey(mapsKey)) {
-      String messageSubject = orderStatus2MailSubjectMap.get(mapsKey);
-      String mailgunTemplateName = orderStatus2MailgunTemplatesMap.get(mapsKey);
-      String fullSubject = messageSubject + " [#" + sell.getBuyOrder() + "]";
-      String variables = this.makeMailgunVariablesFrom(sell);
+    if (!orderStatus2MailSubjectMap.containsKey(mapsKey)) {
+      return;
+    }
 
-      HttpResponse<JsonNode> request = Unirest.post(url)
-        .basicAuth("api", mailgunProperties.getApiKey())
-        .field("from", internalMailingIntegrationProperties.getSenderEmail())
-        .field("to", internalMailingIntegrationProperties.getOwnerEmail())
-        .field("subject", fullSubject)
-        .field("template", mailgunTemplateName)
-        .field("h:X-Mailgun-Variables", variables)
-        .asJson();
-      try {
-        if (((String) request.getBody().getObject().get("id")).isBlank()) {
-          logger.warn("Mailgun returned the following JSON: {}", request.getBody());
-          throw new MailingServiceException(
-            "Status of the sent e-mail is unknown, Mailgun did not provide an ID for this api");
-        }
-      } catch (JSONException ex) {
-        throw new MailingServiceException(
-          "Status of the sent e-mail is unknown, Mailgun threw an exception while validating the response", ex);
+    String messageSubject = orderStatus2MailSubjectMap.get(mapsKey);
+    String mailgunTemplateName = orderStatus2MailgunTemplatesMap.get(mapsKey);
+    String fullSubject = messageSubject + " [#" + sell.getBuyOrder() + "]";
+    String variables = this.makeMailgunVariablesFrom(sell);
+    HttpResponse<JsonNode> request = Unirest.post(url)
+      .basicAuth("api", mailgunProperties.getApiKey())
+      .field("from", internalMailingIntegrationProperties.getSenderEmail())
+      .field("to", internalMailingIntegrationProperties.getOwnerEmail())
+      .field("subject", fullSubject)
+      .field("template", mailgunTemplateName)
+      .field("h:X-Mailgun-Variables", variables)
+      .asJson();
+    try {
+      if (((String) request.getBody().getObject().get("id")).isBlank()) {
+        logger.warn("Mailgun returned the following JSON: {}", request.getBody());
+        throw new MailingServiceException("Status of the sent e-mail is unknown, Mailgun did not provide an ID for this api");
       }
+    } catch (JSONException ex) {
+      throw new MailingServiceException("Status of the sent e-mail is unknown, Mailgun threw an exception while validating the response", ex);
     }
   }
 
