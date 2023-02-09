@@ -22,11 +22,11 @@ package org.trebol.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Positive;
 
-@Configuration
+@Component
 @ConfigurationProperties(prefix = "trebol.api")
 @Data
 public class ApiProperties {
