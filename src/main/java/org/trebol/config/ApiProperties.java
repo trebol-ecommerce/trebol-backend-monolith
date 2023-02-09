@@ -23,12 +23,14 @@ package org.trebol.config;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Positive;
 
+@Data
 @Component
 @ConfigurationProperties(prefix = "trebol.api")
-@Data
+@Validated
 public class ApiProperties {
   @Positive
   private Integer itemsPerPage;

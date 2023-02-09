@@ -27,10 +27,10 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 
-@Validated
+@Data
 @Component
 @ConfigurationProperties(prefix = "trebol.cors")
-@Data
+@Validated
 public class CorsProperties {
 
   @NotBlank

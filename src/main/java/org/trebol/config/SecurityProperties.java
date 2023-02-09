@@ -29,10 +29,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
-@Validated
+@Data
 @Component
 @ConfigurationProperties(prefix = "trebol.security")
-@Data
+@Validated
 public class SecurityProperties {
 
   @NotBlank
