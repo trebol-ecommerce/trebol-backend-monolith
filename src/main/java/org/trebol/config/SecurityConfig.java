@@ -115,7 +115,11 @@ public class SecurityConfig
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() throws CorsMappingParseException {
-    return new CorsConfigurationSourceBuilder(corsProperties).build();
+    return new CorsConfigurationSourceBuilder(corsProperties.getListDelimiter())
+      .allowedHeaders(corsProperties.getAllowedHeaders())
+      .allowedOrigins(corsProperties.getAllowedOrigins())
+      .corsMappings(corsProperties.getMappings())
+      .build();
   }
 
   @Bean
