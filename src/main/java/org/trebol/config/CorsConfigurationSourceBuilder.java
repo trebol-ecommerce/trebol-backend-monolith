@@ -72,8 +72,7 @@ public class CorsConfigurationSourceBuilder {
         String path = mapping[1];
         map.put(path, method);
       } catch (ArrayIndexOutOfBoundsException e) {
-        throw new CorsMappingParseException(
-          "Could not parse '" + chunk + "', format must be 'METHOD[,METHOD2,...] /path/to/api'");
+        throw new CorsMappingParseException(chunk);
       }
     }
     return map;
