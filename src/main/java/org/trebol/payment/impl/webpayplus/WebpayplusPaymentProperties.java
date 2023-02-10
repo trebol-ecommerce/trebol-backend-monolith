@@ -18,16 +18,26 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.exceptions;
+package org.trebol.payment.impl.webpayplus;
 
-public class PaymentServiceException
-  extends Exception {
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.annotation.Validated;
 
-  public PaymentServiceException(String string) {
-    super(string);
-  }
+import javax.validation.constraints.NotBlank;
 
-  public PaymentServiceException(String string, Throwable thrwbl) {
-    super(string, thrwbl);
-  }
+@Validated
+@Configuration
+@ConfigurationProperties(prefix = "trebol.payment.webpayplus")
+@Data
+public class WebpayplusPaymentProperties {
+  private boolean production;
+  private String commerceCode;
+  private String apiKey;
+  @NotBlank
+  private String callbackUrl;
+  @NotBlank
+  private String browserRedirectionUrl;
+
 }

@@ -33,10 +33,10 @@ import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.SalesProcessService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.integration.exceptions.PaymentServiceException;
-import org.trebol.integration.services.PaymentService;
 import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.predicates.SalesPredicateService;
+import org.trebol.payment.PaymentService;
+import org.trebol.payment.PaymentServiceException;
 import org.trebol.testing.SalesTestHelper;
 
 import javax.persistence.EntityNotFoundException;

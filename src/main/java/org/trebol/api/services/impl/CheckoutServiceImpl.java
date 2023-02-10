@@ -30,10 +30,10 @@ import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.CheckoutService;
 import org.trebol.api.services.SalesProcessService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.integration.exceptions.PaymentServiceException;
-import org.trebol.integration.services.PaymentService;
 import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.predicates.SalesPredicateService;
+import org.trebol.payment.PaymentService;
+import org.trebol.payment.PaymentServiceException;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.MalformedURLException;
@@ -107,10 +107,10 @@ public class CheckoutServiceImpl
   }
 
   /**
-   * Fetches the result of a transaction from the payment integration service and updates it in the database.
+   * Fetches the result of a transaction from the payment payment service and updates it in the database.
    *
    * @throws EntityNotFoundException If no transaction has a matching token.
-   * @throws PaymentServiceException As raised at integration level.
+   * @throws PaymentServiceException As raised at payment level.
    */
   private SellPojo processSellPaymentStatus(SellPojo sellByToken)
     throws EntityNotFoundException, PaymentServiceException {

@@ -18,26 +18,35 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.impl.webpayplus;
+package org.trebol.payment.exceptions;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.validation.annotation.Validated;
+import org.junit.jupiter.api.Test;
+import org.trebol.payment.PaymentServiceException;
 
-import javax.validation.constraints.NotBlank;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.trebol.testing.TestConstants.ANY;
 
-@Validated
-@Configuration
-@ConfigurationProperties(prefix = "trebol.integration.payment.webpayplus")
-@Data
-public class WebpayplusPaymentIntegrationProperties {
-  private boolean production;
-  private String commerceCode;
-  private String apiKey;
-  @NotBlank
-  private String callbackUrl;
-  @NotBlank
-  private String browserRedirectionUrl;
+class PaymentServiceExceptionTest {
+  final String errorMessage = ANY;
 
+  @Test
+  void can_contain_an_error_message() {
+    PaymentServiceException instance = assertThrows(PaymentServiceException.class, () -> {
+      throw new PaymentServiceException(errorMessage);
+    });
+    assertNotNull(instance.getMessage());
+    assertEquals(errorMessage, instance.getMessage());
+  }
+
+  @Test
+  void can_contain_an_error_message_and_reference_its_own_cause() {
+    Throwable cause = new RuntimeException(ANY);
+    PaymentServiceException instance = assertThrows(PaymentServiceException.class, () -> {
+      throw new PaymentServiceException(errorMessage, cause);
+    });
+    assertNotNull(instance.getMessage());
+    assertNotNull(instance.getCause());
+    assertEquals(errorMessage, instance.getMessage());
+    assertEquals(cause, instance.getCause());
+  }
 }

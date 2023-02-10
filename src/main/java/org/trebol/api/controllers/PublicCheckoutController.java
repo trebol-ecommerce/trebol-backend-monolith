@@ -31,11 +31,11 @@ import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.CheckoutService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.integration.exceptions.PaymentServiceException;
 import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.predicates.SalesPredicateService;
 import org.trebol.mailing.MailingService;
 import org.trebol.mailing.MailingServiceException;
+import org.trebol.payment.PaymentServiceException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -78,7 +78,7 @@ public class PublicCheckoutController {
    * @return An object wrapping the URL and token to redirect the user with, towards their payment page.
    * @throws BadInputException       If the input models class contains invalid data
    * @throws PaymentServiceException If an error happens during the payment
-   *                                 integration process
+   *                                 payment process
    */
   @PostMapping({"", "/"})
   @PreAuthorize("hasAuthority('checkout')")

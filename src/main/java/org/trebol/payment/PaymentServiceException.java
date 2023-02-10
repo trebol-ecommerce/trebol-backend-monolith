@@ -18,34 +18,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.exceptions;
+package org.trebol.payment;
 
-import org.junit.jupiter.api.Test;
+public class PaymentServiceException
+  extends Exception {
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.trebol.testing.TestConstants.ANY;
-
-class PaymentServiceExceptionTest {
-  final String errorMessage = ANY;
-
-  @Test
-  void can_contain_an_error_message() {
-    PaymentServiceException instance = assertThrows(PaymentServiceException.class, () -> {
-      throw new PaymentServiceException(errorMessage);
-    });
-    assertNotNull(instance.getMessage());
-    assertEquals(errorMessage, instance.getMessage());
+  public PaymentServiceException(String string) {
+    super(string);
   }
 
-  @Test
-  void can_contain_an_error_message_and_reference_its_own_cause() {
-    Throwable cause = new RuntimeException(ANY);
-    PaymentServiceException instance = assertThrows(PaymentServiceException.class, () -> {
-      throw new PaymentServiceException(errorMessage, cause);
-    });
-    assertNotNull(instance.getMessage());
-    assertNotNull(instance.getCause());
-    assertEquals(errorMessage, instance.getMessage());
-    assertEquals(cause, instance.getCause());
+  public PaymentServiceException(String string, Throwable thrwbl) {
+    super(string, thrwbl);
   }
 }

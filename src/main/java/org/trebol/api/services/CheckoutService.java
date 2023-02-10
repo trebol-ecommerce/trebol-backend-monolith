@@ -22,7 +22,7 @@ package org.trebol.api.services;
 
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
-import org.trebol.integration.exceptions.PaymentServiceException;
+import org.trebol.payment.PaymentServiceException;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;

@@ -18,14 +18,13 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.services;
+package org.trebol.payment;
 
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
-import org.trebol.integration.exceptions.PaymentServiceException;
 
 /**
- * Interface for requesting and validating payments through an external integration
+ * Interface for requesting and validating payments through an external payment
  */
 public interface PaymentService {
   /**
