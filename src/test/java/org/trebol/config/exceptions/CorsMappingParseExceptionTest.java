@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.trebol.testing.TestConstants.ANY;
 
-public class CorsMappingParseExceptionTest {
+class CorsMappingParseExceptionTest {
 
   @Test
   void has_a_default_error_message() {

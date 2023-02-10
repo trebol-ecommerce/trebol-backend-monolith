@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.trebol.testing.TestConstants.ANY;
 
-public class AccountProtectionViolationExceptionTest {
+class AccountProtectionViolationExceptionTest {
   final String errorMessage = ANY;
 
   @Test

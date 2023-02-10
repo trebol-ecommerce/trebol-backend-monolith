@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.trebol.testing.TestConstants.ANY;
 
-public class BadInputExceptionTest {
+class BadInputExceptionTest {
   final String errorMessage = ANY;
   final Throwable cause = new RuntimeException(ANY);
 
