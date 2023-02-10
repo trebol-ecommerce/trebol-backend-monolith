@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.impl.mailgun;
+package org.trebol.mailing.impl.mailgun;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,9 +34,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource("/application-mailgun.empty.properties")
-@EnableConfigurationProperties(MailgunMailingIntegrationProperties.class)
-class MailgunMailingIntegrationPropertiesTest {
-  @Autowired MailgunMailingIntegrationProperties integrationProperties;
+@EnableConfigurationProperties(MailgunMailingProperties.class)
+class MailgunMailingPropertiesTest {
+  @Autowired MailgunMailingProperties integrationProperties;
 
   @Test
   void sanity_check() {

@@ -18,32 +18,34 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.impl.mailgun;
+package org.trebol.mailing;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+import org.junit.jupiter.api.Test;
 
-/**
- * Holds configuration properties for using Mailgun as a mail service provider.<br/>
- * A Mailgun account is required to use this.<br/>
- * Read about Mailgun on their website https://www.mailgun.com/
- */
-@Validated
-@Component
-@ConfigurationProperties(prefix = "trebol.integration.mailing.mailgun")
-@Profile("mailgun")
-@Data
-public class MailgunMailingIntegrationProperties {
-  private String apiKey;
-  private String domain;
-  private String customerOrderPaymentTemplate;
-  private String customerOrderConfirmationTemplate;
-  private String customerOrderRejectionTemplate;
-  private String customerOrderCompletionTemplate;
-  private String ownerOrderConfirmationTemplate;
-  private String ownerOrderRejectionTemplate;
-  private String ownerOrderCompletionTemplate;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.trebol.testing.TestConstants.ANY;
+
+class MailingServiceExceptionTest {
+  final String errorMessage = ANY;
+
+  @Test
+  void can_contain_an_error_message() {
+    MailingServiceException instance = assertThrows(MailingServiceException.class, () -> {
+      throw new MailingServiceException(errorMessage);
+    });
+    assertNotNull(instance.getMessage());
+    assertEquals(errorMessage, instance.getMessage());
+  }
+
+  @Test
+  void can_contain_an_error_message_and_reference_its_own_cause() {
+    Throwable cause = new RuntimeException(ANY);
+    MailingServiceException instance = assertThrows(MailingServiceException.class, () -> {
+      throw new MailingServiceException(errorMessage, cause);
+    });
+    assertNotNull(instance.getMessage());
+    assertNotNull(instance.getCause());
+    assertEquals(errorMessage, instance.getMessage());
+    assertEquals(cause, instance.getCause());
+  }
 }

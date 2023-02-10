@@ -31,11 +31,11 @@ import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.CheckoutService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.integration.exceptions.MailingServiceException;
 import org.trebol.integration.exceptions.PaymentServiceException;
-import org.trebol.integration.services.MailingService;
 import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.predicates.SalesPredicateService;
+import org.trebol.mailing.MailingService;
+import org.trebol.mailing.MailingServiceException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;

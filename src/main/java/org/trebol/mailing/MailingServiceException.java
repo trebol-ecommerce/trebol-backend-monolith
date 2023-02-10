@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.exceptions;
+package org.trebol.mailing;
 
 public class MailingServiceException
   extends Exception {

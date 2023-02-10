@@ -18,30 +18,31 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.services;
+package org.trebol.mailing;
 
-import org.trebol.api.models.SellPojo;
-import org.trebol.integration.exceptions.MailingServiceException;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.annotation.Validated;
 
 /**
- * Point of entry for services to send mail to customers and owners alike
+ * General, implementation-agnostic properties for mailing services
  */
-public interface MailingService {
-  /**
-   * Generate and send an e-mail to the customer, regarding an update on their transaction' status.<br/>
-   * Should support all transaction stages
-   *
-   * @param sell The transaction metadata
-   * @throws MailingServiceException When any error occurs while interacting with the mail server/service provider
-   */
-  void notifyOrderStatusToClient(SellPojo sell) throws MailingServiceException;
-
-  /**
-   * Generate and send an e-mail to store owners, regarding an update on a certain transaction' status.<br/>
-   * It is not mandatory to support all transaction stages; owners may only need to be aware of some events.
-   *
-   * @param sell The transaction metadata
-   * @throws MailingServiceException When any error occurs while interacting with the mail server/service provider
-   */
-  void notifyOrderStatusToOwners(SellPojo sell) throws MailingServiceException;
+@Validated
+@Configuration
+@ConfigurationProperties(prefix = "trebol.mailing")
+@Data
+public class MailingProperties {
+  private String dateFormat;
+  private String dateTimezone;
+  private String ownerName;
+  private String ownerEmail;
+  private String senderEmail;
+  private String customerOrderPaymentSubject;
+  private String customerOrderConfirmationSubject;
+  private String customerOrderRejectionSubject;
+  private String customerOrderCompletionSubject;
+  private String ownerOrderConfirmationSubject;
+  private String ownerOrderRejectionSubject;
+  private String ownerOrderCompletionSubject;
 }

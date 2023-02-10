@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.impl.mailgun;
+package org.trebol.mailing.impl.mailgun;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,9 +35,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.*;
-import org.trebol.integration.MailingIntegrationProperties;
-import org.trebol.integration.exceptions.MailingServiceException;
-import org.trebol.integration.services.MailingService;
+import org.trebol.mailing.MailingProperties;
+import org.trebol.mailing.MailingService;
+import org.trebol.mailing.MailingServiceException;
 
 import java.net.URI;
 import java.time.Instant;
@@ -61,8 +61,8 @@ public class MailgunMailingServiceImpl
   private static final String CUSTOMER_MAPS_KEY_PREFIX = "customer:";
   private static final String OWNERS_MAPS_KEY_PREFIX = "owners:";
   private final Logger logger = LoggerFactory.getLogger(MailgunMailingServiceImpl.class);
-  private final MailingIntegrationProperties internalMailingIntegrationProperties;
-  private final MailgunMailingIntegrationProperties mailgunProperties;
+  private final MailingProperties internalMailingIntegrationProperties;
+  private final MailgunMailingProperties mailgunProperties;
   private final Map<String, String> orderStatus2MailgunTemplatesMap;
   private final Map<String, String> orderStatus2MailSubjectMap;
   private final ConversionService conversionService;
@@ -71,8 +71,8 @@ public class MailgunMailingServiceImpl
 
   @Autowired
   public MailgunMailingServiceImpl(
-    MailingIntegrationProperties mailingIntegrationProperties,
-    MailgunMailingIntegrationProperties mailgunProperties,
+    MailingProperties mailingIntegrationProperties,
+    MailgunMailingProperties mailgunProperties,
     ConversionService conversionService
   ) {
     this.internalMailingIntegrationProperties = mailingIntegrationProperties;

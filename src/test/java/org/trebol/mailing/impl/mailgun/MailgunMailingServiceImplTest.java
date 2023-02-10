@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.integration.impl.mailgun;
+package org.trebol.mailing.impl.mailgun;
 
 import kong.unirest.HttpMethod;
 import kong.unirest.MockClient;
@@ -31,7 +31,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 import org.trebol.api.models.*;
-import org.trebol.integration.MailingIntegrationProperties;
+import org.trebol.mailing.MailingProperties;
 
 import java.util.List;
 
@@ -40,14 +40,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.trebol.config.Constants.*;
-import static org.trebol.integration.impl.mailgun.MailgunMailingServiceImpl.MAILGUN_HOST;
+import static org.trebol.mailing.impl.mailgun.MailgunMailingServiceImpl.MAILGUN_HOST;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class MailgunMailingServiceImplTest {
   MailgunMailingServiceImpl instance;
-  @Mock MailingIntegrationProperties integrationPropertiesMock;
-  @Mock MailgunMailingIntegrationProperties mailgunPropertiesMock;
+  @Mock MailingProperties integrationPropertiesMock;
+  @Mock MailgunMailingProperties mailgunPropertiesMock;
   @Mock ConversionService conversionServiceMock;
   private static final String MOCK_VALID_MAILGUN_JSON_RESPONSE = "{ \"id\": \"ffad4d-3a8abe\" }";
   private static final String MOCK_DATE_FORMAT = "M/d/y z";

@@ -30,11 +30,11 @@ import org.trebol.api.DataCrudGenericControllerTest;
 import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.api.services.SalesProcessService;
-import org.trebol.integration.services.MailingService;
 import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.SortSpecParserService;
 import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.predicates.SalesPredicateService;
+import org.trebol.mailing.MailingService;
 
 import java.util.Map;
 
