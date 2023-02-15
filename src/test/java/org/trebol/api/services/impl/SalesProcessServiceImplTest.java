@@ -317,7 +317,7 @@ class SalesProcessServiceImplTest {
       sellDetailMock.setUnitValue(111);
       List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
 
-      ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
+      ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
 
       // Stubbing
       when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
@@ -411,7 +411,7 @@ class SalesProcessServiceImplTest {
       sellDetailMock.setUnitValue(111);
       List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
 
-      ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
+      ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
 
       // Stubbing
       when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
@@ -505,7 +505,7 @@ class SalesProcessServiceImplTest {
       sellDetailMock.setUnitValue(111);
       List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
 
-      ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
+      ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
 
       // Stubbing
       when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
@@ -599,7 +599,7 @@ class SalesProcessServiceImplTest {
       sellDetailMock.setUnitValue(111);
       List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
 
-      ProductPojo productPojoMock = productsHelper.productPojoAfterCreation();
+      ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
 
       // Stubbing
       when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException

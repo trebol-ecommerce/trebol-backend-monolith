@@ -36,7 +36,6 @@ import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.jpa.services.crud.PeopleCrudService;
 import org.trebol.jpa.services.patch.PeoplePatchService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -65,9 +64,12 @@ public class ProfileServiceImpl
 
   @Override
   public PersonPojo getProfileFromUserName(String userName)
-    throws EntityNotFoundException {
-    User user = this.getUserFromName(userName);
-    Person person = user.getPerson();
+    throws UserNotFoundException, PersonNotFoundException {
+    Optional<User> byName = usersRepository.findByName(userName);
+    if (byName.isEmpty()) {
+      throw new UserNotFoundException("There is no account with the specified username");
+    }
+    Person person = byName.get().getPerson();
     if (person == null) {
       throw new PersonNotFoundException("The account does not have an associated profile");
     } else {

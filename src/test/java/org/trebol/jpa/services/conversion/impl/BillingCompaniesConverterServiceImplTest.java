@@ -20,54 +20,45 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.BillingCompanyPojo;
 import org.trebol.jpa.entities.BillingCompany;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
-@ExtendWith(MockitoExtension.class)
 class BillingCompaniesConverterServiceImplTest {
-  @InjectMocks BillingCompaniesConverterServiceImpl instance;
-  BillingCompany billingCompany;
-  BillingCompanyPojo billingCompanyPojo;
+  BillingCompaniesConverterServiceImpl instance;
 
   @BeforeEach
   void beforeEach() {
-    billingCompany = new BillingCompany();
-    billingCompany.setName(ANY);
-    billingCompany.setId(1L);
-    billingCompany.setIdNumber(ANY);
+    instance = new BillingCompaniesConverterServiceImpl();
+  }
 
-    billingCompanyPojo = BillingCompanyPojo.builder()
+  @Test
+  void converts_to_pojo() {
+    BillingCompany input = BillingCompany.builder()
+      .id(1L)
+      .name(ANY)
+      .idNumber(ANY)
+      .build();
+    BillingCompanyPojo result = instance.convertToPojo(input);
+    assertNotNull(result);
+    assertEquals(input.getIdNumber(), result.getIdNumber());
+    assertEquals(input.getName(), result.getName());
+  }
+
+  @Test
+  void converts_to_new_entity() {
+    BillingCompanyPojo input = BillingCompanyPojo.builder()
       .idNumber(ANY)
       .name(ANY)
       .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    billingCompany = null;
-    billingCompanyPojo = null;
-  }
-
-  @Test
-  void testConvertToPojo() {
-    BillingCompanyPojo actual = instance.convertToPojo(billingCompany);
-    assertEquals(billingCompany.getIdNumber(), actual.getIdNumber());
-    assertEquals(billingCompany.getName(), actual.getName());
-  }
-
-  @Test
-  void testConvertToNewEntity() {
-    BillingCompany actual = instance.convertToNewEntity(billingCompanyPojo);
-    assertEquals(billingCompanyPojo.getIdNumber(), actual.getIdNumber());
-    assertEquals(billingCompanyPojo.getName(), actual.getName());
+    BillingCompany result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertEquals(input.getIdNumber(), result.getIdNumber());
+    assertEquals(input.getName(), result.getName());
   }
 }

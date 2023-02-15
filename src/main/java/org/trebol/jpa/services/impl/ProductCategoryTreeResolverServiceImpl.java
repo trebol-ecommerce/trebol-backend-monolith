@@ -49,11 +49,11 @@ public class ProductCategoryTreeResolverServiceImpl
 
   @Override
   public List<ProductCategory> getBranchesFromRoot(ProductCategory rootBranch) {
-    int depth = apiProperties.getMaxCategoryFetchingRecursionDepth();
+    int maxAllowedDepth = apiProperties.getMaxCategoryFetchingRecursionDepth();
     List<ProductCategory> immediateDescendants = repository.findByParent(rootBranch);
     List<ProductCategory> allBranches = new ArrayList<>(immediateDescendants);
-    for (ProductCategory b : immediateDescendants) {
-      this.recursivelyAddBranches(allBranches, b, depth);
+    for (ProductCategory branch : immediateDescendants) {
+      this.recursivelyAddBranches(allBranches, branch, maxAllowedDepth);
     }
     return allBranches;
   }
@@ -62,11 +62,11 @@ public class ProductCategoryTreeResolverServiceImpl
   public List<Long> getBranchIdsFromRootId(Long rootId) {
     int depth = apiProperties.getMaxCategoryFetchingRecursionDepth();
     List<Long> immediateDescendantIds = repository.findIdsByParentId(rootId);
-    List<Long> allBranches = new ArrayList<>(immediateDescendantIds);
+    List<Long> allBranchIds = new ArrayList<>(immediateDescendantIds);
     for (Long bId : immediateDescendantIds) {
-      this.recursivelyAddBranchIds(allBranches, bId, depth);
+      this.recursivelyAddBranchIds(allBranchIds, bId, depth);
     }
-    return allBranches;
+    return allBranchIds;
   }
 
   @Override
@@ -78,24 +78,22 @@ public class ProductCategoryTreeResolverServiceImpl
     return this.getBranchIdsFromRootId(byCode.get().getId());
   }
 
-  private void recursivelyAddBranches(Collection<ProductCategory> branchIds, ProductCategory bId, int depth) {
-    int currentDepth = (depth - 1);
-    List<ProductCategory> subBranchIds = repository.findByParent(bId);
-    for (ProductCategory bId2 : subBranchIds) {
-      branchIds.add(bId2);
-      if (currentDepth > 0) {
-        this.recursivelyAddBranches(branchIds, bId2, currentDepth);
+  private void recursivelyAddBranches(Collection<ProductCategory> allBranches, ProductCategory branch, int deepnessLeft) {
+    if (deepnessLeft > 0) {
+      List<ProductCategory> subBranchIds = repository.findByParent(branch);
+      for (ProductCategory bId2 : subBranchIds) {
+        allBranches.add(bId2);
+        this.recursivelyAddBranches(allBranches, bId2, deepnessLeft - 1);
       }
     }
   }
 
-  private void recursivelyAddBranchIds(Collection<Long> branchIds, Long bId, int depth) {
-    int currentDepth = (depth - 1);
-    List<Long> subBranchIds = repository.findIdsByParentId(bId);
-    for (Long bId2 : subBranchIds) {
-      branchIds.add(bId2);
-      if (currentDepth > 0) {
-        this.recursivelyAddBranchIds(branchIds, bId2, currentDepth);
+  private void recursivelyAddBranchIds(Collection<Long> branchIds, Long bId, int deepnessLeft) {
+    if (deepnessLeft > 0) {
+      List<Long> subBranchIds = repository.findIdsByParentId(bId);
+      for (Long bId2 : subBranchIds) {
+        branchIds.add(bId2);
+        this.recursivelyAddBranchIds(branchIds, bId2, deepnessLeft - 1);
       }
     }
   }

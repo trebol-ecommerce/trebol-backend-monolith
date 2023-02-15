@@ -47,7 +47,9 @@ public class ProductCategoriesTestHelper {
 
   public ProductCategoryPojo productCategoryPojoForFetch() {
     if (this.pojoForFetch == null) {
-      this.pojoForFetch = ProductCategoryPojo.builder().code(CATEGORY_CODE).build();
+      this.pojoForFetch = ProductCategoryPojo.builder()
+        .code(CATEGORY_CODE)
+        .build();
     }
     return this.pojoForFetch;
   }
@@ -75,14 +77,22 @@ public class ProductCategoriesTestHelper {
 
   public ProductCategory productCategoryEntityBeforeCreation() {
     if (this.entityBeforeCreation == null) {
-      this.entityBeforeCreation = new ProductCategory(CATEGORY_CODE, CATEGORY_NAME, null);
+      this.entityBeforeCreation = ProductCategory.builder()
+        .code(CATEGORY_CODE)
+        .name(CATEGORY_NAME)
+        .build();
     }
     return this.entityBeforeCreation;
   }
 
   public ProductCategory productCategoryEntityAfterCreation() {
     if (this.entityAfterCreation == null) {
-      this.entityAfterCreation = new ProductCategory(PRODUCT_ID, CATEGORY_CODE, CATEGORY_NAME, null);
+      this.entityAfterCreation = ProductCategory.builder()
+        .id(PRODUCT_ID)
+        .code(CATEGORY_CODE)
+        .name(CATEGORY_NAME)
+        .parent(null)
+        .build();
     }
     return this.entityAfterCreation;
   }

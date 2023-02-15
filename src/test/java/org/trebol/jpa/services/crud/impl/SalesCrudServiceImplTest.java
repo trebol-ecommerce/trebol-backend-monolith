@@ -84,6 +84,7 @@ class SalesCrudServiceImplTest {
   void beforeEach() {
     productsHelper.resetProducts();
     salesHelper.resetSales();
+    customersHelper.resetCustomers();
   }
 
   @Test
@@ -169,7 +170,7 @@ class SalesCrudServiceImplTest {
       .details(List.of(
         SellDetailPojo.builder()
           .units(1)
-          .product(productsHelper.productPojoBeforeCreation())
+          .product(productsHelper.productPojoBeforeCreationWithoutCategory())
           .build()
       ))
       .build();
@@ -221,8 +222,8 @@ class SalesCrudServiceImplTest {
 
   @Test
   void throws_exception_when_not_found_using_predicates() {
+    BooleanBuilder anyPredicate = new BooleanBuilder();
     when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.empty());
-
-    assertThrows(EntityNotFoundException.class, () -> instance.readOne(new BooleanBuilder()));
+    assertThrows(EntityNotFoundException.class, () -> instance.readOne(anyPredicate));
   }
 }

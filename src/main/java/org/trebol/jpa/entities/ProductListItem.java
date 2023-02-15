@@ -20,19 +20,20 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "product_list_items")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class ProductListItem
   implements Serializable {
   private static final long serialVersionUID = 17L;
@@ -47,37 +48,4 @@ public class ProductListItem
   @JoinColumn(name = "product_id", nullable = false)
   @ManyToOne(optional = false)
   private Product product;
-
-  public ProductListItem(ProductListItem source) {
-    this.id = source.id;
-    this.list = source.list;
-    this.product = source.product;
-  }
-
-  public ProductListItem(ProductList list, Product product) {
-    this.list = list;
-    this.product = product;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    ProductListItem that = (ProductListItem) o;
-    return Objects.equals(id, that.id) &&
-      Objects.equals(list, that.list) &&
-      Objects.equals(product, that.product);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, list, product);
-  }
-
-  @Override
-  public String toString() {
-    return "ProductListItem{id=" + id +
-      ", product=" + product +
-      '}';
-  }
 }

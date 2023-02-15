@@ -41,10 +41,10 @@ public class BillingCompaniesConverterServiceImpl
 
   @Override
   public BillingCompany convertToNewEntity(BillingCompanyPojo source) {
-    BillingCompany target = new BillingCompany();
-    target.setIdNumber(source.getIdNumber());
-    target.setName(source.getName());
-    return target;
+    return BillingCompany.builder()
+      .idNumber(source.getIdNumber())
+      .name(source.getName())
+      .build();
   }
 
   @Override

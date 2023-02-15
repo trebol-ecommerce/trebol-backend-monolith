@@ -20,66 +20,48 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.jpa.entities.Person;
+import org.trebol.testing.PeopleTestHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.trebol.testing.TestConstants.ANY;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(MockitoExtension.class)
 class PeopleConverterServiceImplTest {
-  @InjectMocks PeopleConverterServiceImpl instance;
-  Person person;
-  PersonPojo personPojo;
+  PeopleConverterServiceImpl instance;
+  final PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    person = new Person();
-    person.setId(1L);
-    personPojo = PersonPojo.builder().id(1L).build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    person = null;
-    personPojo = null;
+    instance = new PeopleConverterServiceImpl();
+    peopleTestHelper.resetPeople();
   }
 
   @Test
   void testConvertToPojo() {
-    person.setIdNumber(ANY);
-    person.setFirstName(ANY);
-    person.setLastName(ANY);
-    person.setEmail(ANY);
-    PersonPojo actual = instance.convertToPojo(person);
-    assertEquals(person.getIdNumber(), actual.getIdNumber());
-    assertEquals(person.getFirstName(), actual.getFirstName());
-    assertEquals(person.getLastName(), actual.getLastName());
-    assertEquals(person.getEmail(), actual.getEmail());
-    assertEquals(person.getPhone1(), actual.getPhone1());
-    assertEquals(person.getPhone2(), actual.getPhone2());
+    Person input = peopleTestHelper.personEntityAfterCreation();
+    PersonPojo result = instance.convertToPojo(input);
+    assertNotNull(result);
+    assertEquals(input.getIdNumber(), result.getIdNumber());
+    assertEquals(input.getFirstName(), result.getFirstName());
+    assertEquals(input.getLastName(), result.getLastName());
+    assertEquals(input.getEmail(), result.getEmail());
+    assertEquals(input.getPhone1(), result.getPhone1());
+    assertEquals(input.getPhone2(), result.getPhone2());
   }
 
   @Test
   void testConvertToNewEntity() {
-    personPojo.setIdNumber(ANY);
-    personPojo.setFirstName(ANY);
-    personPojo.setLastName(ANY);
-    personPojo.setEmail(ANY);
-    personPojo.setPhone1("");
-    personPojo.setPhone2("");
-    Person actual = instance.convertToNewEntity(personPojo);
-    assertEquals(personPojo.getIdNumber(), actual.getIdNumber());
-    assertEquals(personPojo.getFirstName(), actual.getFirstName());
-    assertEquals(personPojo.getLastName(), actual.getLastName());
-    assertEquals(personPojo.getEmail(), actual.getEmail());
-    assertEquals(personPojo.getPhone1(), actual.getPhone1());
-    assertEquals(personPojo.getPhone2(), actual.getPhone2());
+    PersonPojo input = peopleTestHelper.personPojoBeforeCreation();
+    Person result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertEquals(input.getIdNumber(), result.getIdNumber());
+    assertEquals(input.getFirstName(), result.getFirstName());
+    assertEquals(input.getLastName(), result.getLastName());
+    assertEquals(input.getEmail(), result.getEmail());
+    assertEquals(input.getPhone1(), result.getPhone1());
+    assertEquals(input.getPhone2(), result.getPhone2());
   }
 }

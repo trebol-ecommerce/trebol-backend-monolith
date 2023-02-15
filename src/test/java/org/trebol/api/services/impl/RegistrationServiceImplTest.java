@@ -41,6 +41,7 @@ import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.jpa.repositories.UserRolesRepository;
 import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
+import org.trebol.testing.PeopleTestHelper;
 
 import javax.persistence.EntityExistsException;
 import java.util.Optional;
@@ -60,30 +61,26 @@ class RegistrationServiceImplTest {
   @Mock UserRolesRepository rolesRepositoryMock;
   @Mock PasswordEncoder passwordEncoderMock;
   @Mock CustomersRepository customerRepositoryMock;
+  PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
   PersonPojo personPojoMock;
   RegistrationPojo regPojoMock;
   Person personMock;
-  Optional<UserRole> customerRoleMock;
+  UserRole customerRoleMock;
 
   @BeforeEach
   void beforeEach() {
     // Default mock objects
-    personPojoMock = PersonPojo.builder()
-      .id(1L)
-      .firstName("firstName")
-      .lastName("lastName")
-      .idNumber("1")
-      .email("email@example.com")
-      .phone1("+123 456")
-      .phone2("+123 456")
-      .build();
+    personPojoMock = peopleTestHelper.personPojoBeforeCreation();
     regPojoMock = RegistrationPojo.builder()
       .name("name")
       .password("password")
       .profile(personPojoMock)
       .build();
-    personMock = new Person(1L, "firstName", "lastName", "1", "email@example.com", "+123 456", "+123 456");
-    customerRoleMock = Optional.of(new UserRole(1L, "Customer"));
+    personMock = peopleTestHelper.personEntityBeforeCreation();
+    customerRoleMock = UserRole.builder()
+      .id(1L)
+      .name("Customer")
+      .build();
 
     // Reset mocks
     reset(usersRepositoryMock);
@@ -99,7 +96,7 @@ class RegistrationServiceImplTest {
     when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
     when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
     // inside convertToUser method
-    when(rolesRepositoryMock.findByName(anyString())).thenReturn(customerRoleMock);
+    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(customerRoleMock));
 
     assertDoesNotThrow(() -> instance.register(regPojoMock));
   }
@@ -112,7 +109,7 @@ class RegistrationServiceImplTest {
     when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
     when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
     // inside convertToUser method
-    when(rolesRepositoryMock.findByName(anyString())).thenReturn(customerRoleMock);
+    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(customerRoleMock));
 
     instance.register(regPojoMock);
 

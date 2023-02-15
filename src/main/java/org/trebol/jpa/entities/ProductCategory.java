@@ -20,14 +20,11 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -35,9 +32,12 @@ import java.util.Objects;
   uniqueConstraints = {
     @UniqueConstraint(columnNames = {"parent_product_category_id", "product_category_name"})
   })
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class ProductCategory
   implements Serializable {
   private static final long serialVersionUID = 11L;
@@ -60,45 +60,25 @@ public class ProductCategory
     this.id = source.id;
     this.code = source.code;
     this.name = source.name;
-    this.parent = source.parent;
-  }
-
-  public ProductCategory(String code, String name, ProductCategory parent) {
-    this.code = code;
-    this.name = name;
-    this.parent = parent;
-  }
-
-  public ProductCategory(Long id, String code, String name, ProductCategory parent) {
-    this.id = id;
-    this.code = code;
-    this.name = name;
-    this.parent = parent;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    ProductCategory that = (ProductCategory) o;
-    return Objects.equals(id, that.id) &&
-      Objects.equals(code, that.code) &&
-      Objects.equals(name, that.name) &&
-      Objects.equals(parent, that.parent);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, code, name, parent);
+    if (source.parent != null) {
+      this.parent = new ProductCategory(source.parent);
+    }
   }
 
   @Override
   public String toString() {
-    return "ProductCategory{" +
+    return "ProductCategory(" +
       "id=" + id +
       ", code='" + code + '\'' +
       ", name='" + name + '\'' +
-      ", parent=" + parent +
-      '}';
+      ((parent != null) ?
+        (", parent=ProductCategory(" +
+          "id=" + parent.id +
+          ", code=" + parent.code +
+          ", name=" + parent.name +
+          ')'
+        ) :
+        ", parent=null") +
+      ')';
   }
 }

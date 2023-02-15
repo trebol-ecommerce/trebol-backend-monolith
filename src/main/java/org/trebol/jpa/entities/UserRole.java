@@ -20,14 +20,11 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -35,9 +32,13 @@ import java.util.Objects;
   indexes = {
     @Index(columnList = "user_role_name")
   })
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class UserRole
   implements Serializable {
   private static final long serialVersionUID = 20L;
@@ -53,32 +54,5 @@ public class UserRole
   public UserRole(UserRole source) {
     this.id = source.id;
     this.name = source.name;
-  }
-
-  public UserRole(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    UserRole userRole = (UserRole) o;
-    return Objects.equals(id, userRole.id) &&
-      Objects.equals(name, userRole.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, name);
-  }
-
-  @Override
-  public String toString() {
-    return "UserRole{" +
-      "id=" + id +
-      ", name='" + name + '\'' +
-      '}';
   }
 }

@@ -20,14 +20,11 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -35,9 +32,13 @@ import java.util.Objects;
   indexes = {
     @Index(columnList = "product_name")
   })
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Product
   implements Serializable {
   private static final long serialVersionUID = 10L;
@@ -73,76 +74,8 @@ public class Product
     this.price = source.price;
     this.stockCurrent = source.stockCurrent;
     this.stockCritical = source.stockCritical;
-    this.productCategory = source.productCategory;
-  }
-
-  public Product(String barcode) {
-    this.barcode = barcode;
-  }
-
-  public Product(Long id,
-                 String name,
-                 String barcode,
-                 String description,
-                 int price,
-                 int stockCurrent,
-                 int stockCritical,
-                 ProductCategory productCategory) {
-    this.id = id;
-    this.name = name;
-    this.barcode = barcode;
-    this.description = description;
-    this.price = price;
-    this.stockCurrent = stockCurrent;
-    this.stockCritical = stockCritical;
-    this.productCategory = productCategory;
-  }
-
-  public Product(String name,
-                 String barcode,
-                 String description,
-                 int price,
-                 int stockCurrent,
-                 int stockCritical) {
-    this.name = name;
-    this.barcode = barcode;
-    this.description = description;
-    this.price = price;
-    this.stockCurrent = stockCurrent;
-    this.stockCritical = stockCritical;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Product product = (Product) o;
-    return price == product.price &&
-      stockCurrent == product.stockCurrent &&
-      stockCritical == product.stockCritical &&
-      Objects.equals(id, product.id) &&
-      Objects.equals(name, product.name) &&
-      Objects.equals(barcode, product.barcode) &&
-      Objects.equals(description, product.description) &&
-      Objects.equals(productCategory, product.productCategory);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, name, barcode, description, price, stockCurrent, stockCritical, productCategory);
-  }
-
-  @Override
-  public String toString() {
-    return "Product{" +
-      "id=" + id +
-      ", name='" + name + '\'' +
-      ", barcode='" + barcode + '\'' +
-      ", description='" + description + '\'' +
-      ", price=" + price +
-      ", stockCurrent=" + stockCurrent +
-      ", stockCritical=" + stockCritical +
-      ", productCategory=" + productCategory +
-      '}';
+    if (source.productCategory != null) {
+      this.productCategory = source.productCategory;
+    }
   }
 }

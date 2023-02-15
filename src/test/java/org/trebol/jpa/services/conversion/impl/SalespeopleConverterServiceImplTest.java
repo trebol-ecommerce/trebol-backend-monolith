@@ -32,47 +32,47 @@ import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
+import org.trebol.testing.SalespeopleTestHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class SalespeopleConverterServiceImplTest {
   @InjectMocks SalespeopleConverterServiceImpl instance;
   @Mock PeopleConverterService peopleServiceMock;
-  Salesperson salesperson;
-  SalespersonPojo salespersonPojo;
-  Person person;
-  PersonPojo personPojo;
+  final SalespeopleTestHelper salespeopleTestHelper = new SalespeopleTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    personPojo = PersonPojo.builder()
-      .id(ID_1L)
-      .build();
-    person = new Person();
-    person.setId(ID_1L);
-    salesperson = new Salesperson();
-    salesperson.setId(ID_1L);
-    salesperson.setPerson(person);
-    salespersonPojo = SalespersonPojo.builder()
-      .person(personPojo)
-      .build();
+    salespeopleTestHelper.resetSalespeople();
   }
 
   @Test
-  void testConvertToPojo() {
-    when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(personPojo);
-    SalespersonPojo actual = instance.convertToPojo(salesperson);
-    assertEquals(personPojo.getId(), actual.getPerson().getId());
+  void converts_to_pojo() {
+    PersonPojo expectedPersonPojo = PersonPojo.builder()
+      .id(1L)
+      .build();
+    Salesperson input = salespeopleTestHelper.salespersonEntityAfterCreation();
+    when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
+    SalespersonPojo result = instance.convertToPojo(input);
+    assertNotNull(result);
+    assertEquals(input.getId(), result.getId());
+    assertEquals(expectedPersonPojo, result.getPerson());
   }
 
   @Test
-  void testConvertToNewEntity() throws BadInputException {
-    when(peopleServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(person);
-    Salesperson actual = instance.convertToNewEntity(salespersonPojo);
-    assertEquals(person.getId(), actual.getPerson().getId());
+  void converts_to_new_entity() throws BadInputException {
+    Person expectedPerson = Person.builder()
+      .id(1L)
+      .build();
+    SalespersonPojo input = salespeopleTestHelper.salespersonPojoBeforeCreation();
+    when(peopleServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(expectedPerson);
+    Salesperson result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertEquals(input.getId(), result.getId());
+    assertEquals(expectedPerson, result.getPerson());
   }
 }

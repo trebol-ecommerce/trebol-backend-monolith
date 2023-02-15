@@ -74,14 +74,19 @@ class DataProductListContentsControllerTest {
 
   @BeforeEach
   void beforeEach() {
-    productExample = new Product();
-    productExample.setBarcode(ANY);
-    productExample.setName(ANY);
-    listExample = new ProductList();
-    listExample.setId(1L);
-    listExample.setName(ANY);
-    listExample.setCode(ANY);
-    listItemExample = new ProductListItem(listExample, productExample);
+    productExample = Product.builder()
+      .barcode(ANY)
+      .name(ANY)
+      .build();
+    listExample = ProductList.builder()
+      .id(1L)
+      .name(ANY)
+      .code(ANY)
+      .build();
+    listItemExample = ProductListItem.builder()
+      .list(listExample)
+      .product(productExample)
+      .build();
     simpleQueryParamsMap = Map.of("listCode", ANY);
   }
 
@@ -130,9 +135,10 @@ class DataProductListContentsControllerTest {
       .barcode(ANY)
       .name(ANY)
       .build();
-    ProductListItem newListItemEntity = new ProductListItem();
-    newListItemEntity.setProduct(productExample);
-    newListItemEntity.setList(listExample);
+    ProductListItem newListItemEntity = ProductListItem.builder()
+      .product(productExample)
+      .list(listExample)
+      .build();
     when(listsRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(listExample));
     when(productsCrudServiceMock.getExisting(any(ProductPojo.class))).thenReturn(Optional.of(productExample));
 
@@ -148,9 +154,10 @@ class DataProductListContentsControllerTest {
       .name(ANY)
       .build();
     List<ProductPojo> inputProductList = List.of(newProduct);
-    ProductListItem newListItemEntity = new ProductListItem();
-    newListItemEntity.setProduct(productExample);
-    newListItemEntity.setList(listExample);
+    ProductListItem newListItemEntity = ProductListItem.builder()
+      .product(productExample)
+      .list(listExample)
+      .build();
     when(listsRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(listExample));
     when(productsCrudServiceMock.getExisting(any(ProductPojo.class))).thenReturn(Optional.of(productExample));
 

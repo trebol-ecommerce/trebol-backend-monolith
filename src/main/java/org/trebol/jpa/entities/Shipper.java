@@ -20,19 +20,20 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "shippers")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Shipper
   implements Serializable {
   private static final long serialVersionUID = 18L;
@@ -47,32 +48,5 @@ public class Shipper
   public Shipper(Shipper source) {
     this.id = source.id;
     this.name = source.name;
-  }
-
-  public Shipper(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Shipper shipper = (Shipper) o;
-    return Objects.equals(id, shipper.id) &&
-      Objects.equals(name, shipper.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, name);
-  }
-
-  @Override
-  public String toString() {
-    return "Shipper{" +
-      "id=" + id +
-      ", name='" + name + '\'' +
-      '}';
   }
 }

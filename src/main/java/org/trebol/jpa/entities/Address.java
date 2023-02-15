@@ -20,14 +20,11 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -43,9 +40,13 @@ import java.util.Objects;
       "address_second_line", "address_postal_code", "address_notes"
     })
   })
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Address
   implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -72,35 +73,13 @@ public class Address
   @Column(name = "address_notes")
   private String notes;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Address address = (Address) o;
-    return Objects.equals(id, address.id) &&
-      Objects.equals(city, address.city) &&
-      Objects.equals(municipality, address.municipality) &&
-      Objects.equals(firstLine, address.firstLine) &&
-      Objects.equals(secondLine, address.secondLine) &&
-      Objects.equals(postalCode, address.postalCode) &&
-      Objects.equals(notes, address.notes);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, city, municipality, firstLine, secondLine, postalCode, notes);
-  }
-
-  @Override
-  public String toString() {
-    return "Address{" +
-      "id=" + id +
-      ", city='" + city + '\'' +
-      ", municipality='" + municipality + '\'' +
-      ", firstLine='" + firstLine + '\'' +
-      ", secondLine='" + secondLine + '\'' +
-      ", postalCode='" + postalCode + '\'' +
-      ", notes='" + notes + '\'' +
-      '}';
+  public Address(Address source) {
+    this.id = source.id;
+    this.city = source.city;
+    this.municipality = source.municipality;
+    this.firstLine = source.firstLine;
+    this.secondLine = source.secondLine;
+    this.postalCode = source.postalCode;
+    this.notes = source.notes;
   }
 }

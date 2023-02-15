@@ -78,7 +78,7 @@ class ProductsCrudServiceImplTest {
   void finds_by_barcode()
     throws BadInputException {
     ProductPojo input = productsHelper.productPojoForFetch();
-    Product expectedResult = productsHelper.productEntityAfterCreation();
+    Product expectedResult = productsHelper.productEntityAfterCreationWithoutCategory();
     when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(expectedResult));
 
     Optional<Product> match = instance.getExisting(input);
@@ -91,10 +91,10 @@ class ProductsCrudServiceImplTest {
   @Test
   void creates_product()
     throws BadInputException, EntityExistsException {
-    ProductPojo input = productsHelper.productPojoBeforeCreation();
-    ProductPojo expectedResult = productsHelper.productPojoAfterCreation();
-    Product inputEntity = productsHelper.productEntityBeforeCreation();
-    Product resultEntity = productsHelper.productEntityAfterCreation();
+    ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
+    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
+    Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
+    Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
@@ -111,11 +111,11 @@ class ProductsCrudServiceImplTest {
   @Test
   void creates_product_with_nonexistent_image()
     throws BadInputException {
-    ProductPojo input = productsHelper.productPojoBeforeCreation();
+    ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
     input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
-    Product inputEntity = productsHelper.productEntityBeforeCreation();
-    Product resultEntity = productsHelper.productEntityAfterCreation();
-    ProductPojo expectedResult = productsHelper.productPojoAfterCreation();
+    Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
+    Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
+    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
@@ -133,13 +133,13 @@ class ProductsCrudServiceImplTest {
   @Test
   void creates_product_with_existing_image()
     throws BadInputException {
-    ProductPojo input = productsHelper.productPojoBeforeCreation();
+    ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
     input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
-    ProductPojo expectedResult = productsHelper.productPojoAfterCreation();
+    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
     ImagePojo expectedResultImage = imagesHelper.imagePojoAfterCreation();
     expectedResult.setImages(List.of(expectedResultImage));
-    Product inputEntity = productsHelper.productEntityBeforeCreation();
-    Product resultEntity = productsHelper.productEntityAfterCreation();
+    Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
+    Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
     Image imageEntity = imagesHelper.imageEntityAfterCreation();
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
@@ -161,11 +161,11 @@ class ProductsCrudServiceImplTest {
   @Test
   void creates_product_with_nonexistent_category()
     throws BadInputException {
-    ProductPojo input = productsHelper.productPojoBeforeCreation();
+    ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
     input.setCategory(categoriesHelper.productCategoryPojoBeforeCreation());
-    ProductPojo expectedResult = productsHelper.productPojoAfterCreation();
-    Product inputEntity = productsHelper.productEntityBeforeCreation();
-    Product resultEntity = productsHelper.productEntityAfterCreation();
+    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
+    Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
+    Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
@@ -183,13 +183,13 @@ class ProductsCrudServiceImplTest {
   @Test
   void creates_product_with_existing_category()
     throws BadInputException {
-    ProductPojo input = productsHelper.productPojoBeforeCreation();
+    ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
     input.setCategory(categoriesHelper.productCategoryPojoBeforeCreation());
-    ProductPojo expectedResult = productsHelper.productPojoAfterCreation();
+    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
     ProductCategoryPojo expectedResultCategory = categoriesHelper.productCategoryPojoAfterCreation();
     expectedResult.setCategory(expectedResultCategory);
-    Product inputEntity = productsHelper.productEntityBeforeCreation();
-    Product resultEntity = productsHelper.productEntityAfterCreation();
+    Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
+    Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
     ProductCategory categoryEntity = categoriesHelper.productCategoryEntityAfterCreation();
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);

@@ -43,11 +43,11 @@ public class ImagesConverterServiceImpl
 
   @Override
   public Image convertToNewEntity(ImagePojo source) {
-    Image target = new Image();
-    target.setCode(source.getCode());
-    target.setFilename(source.getFilename());
-    target.setUrl(source.getUrl());
-    return target;
+    return Image.builder()
+      .code(source.getCode())
+      .filename(source.getFilename())
+      .url(source.getUrl())
+      .build();
   }
 
   @Override

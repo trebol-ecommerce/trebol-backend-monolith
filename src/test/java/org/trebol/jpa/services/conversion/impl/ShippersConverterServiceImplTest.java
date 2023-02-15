@@ -20,50 +20,42 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ShipperPojo;
 import org.trebol.jpa.entities.Shipper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
-@ExtendWith(MockitoExtension.class)
 class ShippersConverterServiceImplTest {
-  @InjectMocks ShippersConverterServiceImpl instance;
-  Shipper shipper;
-  ShipperPojo shipperPojo;
+  ShippersConverterServiceImpl instance;
 
   @BeforeEach
   void beforeEach() {
-    shipper = new Shipper();
-    shipper.setName(ANY);
-    shipper.setId(1L);
-    shipper.setName(ANY);
-    shipperPojo = ShipperPojo.builder()
+    instance = new ShippersConverterServiceImpl();
+  }
+
+  @Test
+  void converts_to_pojo() {
+    Shipper input = Shipper.builder()
+      .id(1L)
       .name(ANY)
       .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    shipper = null;
-    shipperPojo = null;
-  }
-
-  @Test
-  void testConvertToPojo() {
-    ShipperPojo actual = instance.convertToPojo(shipper);
-    assertEquals(shipper.getName(), actual.getName());
+    ShipperPojo result = instance.convertToPojo(input);
+    assertNotNull(result);
+    assertEquals(input.getId(), result.getId());
+    assertEquals(input.getName(), result.getName());
   }
 
   @Test
-  void testConvertToNewEntity() {
-    Shipper actual = instance.convertToNewEntity(shipperPojo);
-    assertEquals(shipperPojo.getName(), actual.getName());
+  void converts_to_new_entity() {
+    ShipperPojo input = ShipperPojo.builder()
+      .name(ANY)
+      .build();
+    Shipper result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertEquals(input.getName(), result.getName());
   }
 }

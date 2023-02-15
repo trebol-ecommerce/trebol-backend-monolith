@@ -38,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class BillingCompaniesCrudServiceImplTest {
@@ -46,17 +47,18 @@ class BillingCompaniesCrudServiceImplTest {
 
   @Test
   void finds_by_id_number() throws BadInputException {
-    String companyIdNumber = "11111111";
     BillingCompanyPojo input = BillingCompanyPojo.builder()
-      .idNumber(companyIdNumber)
+      .idNumber(ANY)
       .build();
-    BillingCompany expectedResult = new BillingCompany(1L, companyIdNumber, "test company");
+    BillingCompany expectedResult = BillingCompany.builder()
+      .id(1L)
+      .idNumber(ANY)
+      .name(ANY)
+      .build();
     when(billingCompaniesRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(expectedResult));
-
     Optional<BillingCompany> match = instance.getExisting(input);
-
-    verify(billingCompaniesRepositoryMock).findByIdNumber(companyIdNumber);
     assertTrue(match.isPresent());
     assertEquals(expectedResult, match.get());
+    verify(billingCompaniesRepositoryMock).findByIdNumber(input.getIdNumber());
   }
 }

@@ -20,17 +20,18 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 
 @Entity
 @Table(
@@ -39,9 +40,13 @@ import java.util.Objects;
     @Index(columnList = "sell_date"),
     @Index(columnList = "sell_transaction_token"),
   })
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Sell
   implements Serializable {
   private static final long serialVersionUID = 14L;
@@ -99,123 +104,32 @@ public class Sell
 
   public Sell(Sell source) {
     this.id = source.id;
-    this.date = source.date;
+    this.date = Instant.from(source.date);
     this.totalItems = source.totalItems;
     this.netValue = source.netValue;
     this.transportValue = source.transportValue;
     this.taxesValue = source.taxesValue;
     this.totalValue = source.totalValue;
     this.transactionToken = source.transactionToken;
-    this.customer = source.customer;
     this.paymentType = source.paymentType;
     this.status = source.status;
     this.billingType = source.billingType;
-    this.billingCompany = source.billingCompany;
-    this.billingAddress = source.billingAddress;
-    this.shipper = source.shipper;
-    this.shippingAddress = source.shippingAddress;
-    this.salesperson = source.salesperson;
-    this.details = source.details;
-  }
-
-  public Sell(Customer customer, PaymentType paymentType, BillingType billingType, Collection<SellDetail> details) {
-    this.customer = customer;
-    this.paymentType = paymentType;
-    this.billingType = billingType;
-    this.details = details;
-  }
-
-  public Sell(Long id,
-              Instant date,
-              int totalItems,
-              int netValue,
-              int transportValue,
-              int taxesValue,
-              int totalValue,
-              String transactionToken,
-              Customer customer,
-              PaymentType paymentType,
-              SellStatus status,
-              BillingType billingType,
-              BillingCompany billingCompany,
-              Address billingAddress,
-              Shipper shipper,
-              Address shippingAddress,
-              Salesperson salesperson,
-              Collection<SellDetail> details) {
-    this.id = id;
-    this.date = date;
-    this.totalItems = totalItems;
-    this.netValue = netValue;
-    this.transportValue = transportValue;
-    this.taxesValue = taxesValue;
-    this.totalValue = totalValue;
-    this.transactionToken = transactionToken;
-    this.customer = customer;
-    this.paymentType = paymentType;
-    this.status = status;
-    this.billingType = billingType;
-    this.billingCompany = billingCompany;
-    this.billingAddress = billingAddress;
-    this.shipper = shipper;
-    this.shippingAddress = shippingAddress;
-    this.salesperson = salesperson;
-    this.details = details;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Sell sell = (Sell) o;
-    return totalItems == sell.totalItems &&
-      netValue == sell.netValue &&
-      transportValue == sell.transportValue &&
-      taxesValue == sell.taxesValue &&
-      totalValue == sell.totalValue &&
-      Objects.equals(id, sell.id) &&
-      Objects.equals(date, sell.date) &&
-      Objects.equals(transactionToken, sell.transactionToken) &&
-      Objects.equals(customer, sell.customer) &&
-      Objects.equals(paymentType, sell.paymentType) &&
-      Objects.equals(status, sell.status) &&
-      Objects.equals(billingType, sell.billingType) &&
-      Objects.equals(billingCompany, sell.billingCompany) &&
-      Objects.equals(billingAddress, sell.billingAddress) &&
-      Objects.equals(shipper, sell.shipper) &&
-      Objects.equals(shippingAddress, sell.shippingAddress) &&
-      Objects.equals(salesperson, sell.salesperson) &&
-      Objects.equals(details, sell.details);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, date, totalItems, netValue, transportValue, taxesValue, totalValue, transactionToken,
-      customer, paymentType, status, billingType, billingCompany, billingAddress, shipper, shippingAddress,
-      salesperson, details);
-  }
-
-  @Override
-  public String toString() {
-    return "Sell{" +
-      "id=" + id +
-      ", date=" + date +
-      ", totalItems=" + totalItems +
-      ", netValue=" + netValue +
-      ", transportValue=" + transportValue +
-      ", taxesValue=" + taxesValue +
-      ", totalValue=" + totalValue +
-      ", transactionToken='" + transactionToken + '\'' +
-      ", customer=" + customer +
-      ", paymentType=" + paymentType +
-      ", status=" + status +
-      ", billingType=" + billingType +
-      ", billingCompany=" + billingCompany +
-      ", billingAddress=" + billingAddress +
-      ", shipper=" + shipper +
-      ", shippingAddress=" + shippingAddress +
-      ", salesperson=" + salesperson +
-      ", details=" + details +
-      '}';
+    this.billingAddress = new Address(source.billingAddress);
+    this.customer = new Customer(source.customer);
+    this.details = new ArrayList<>();
+    this.details.addAll(source.details.stream()
+      .map(SellDetail::new)
+      .collect(Collectors.toList())
+    );
+    if (source.billingType.getName().equals(BILLING_TYPE_ENTERPRISE)) {
+      this.billingCompany = new BillingCompany(source.billingCompany);
+    }
+    if (source.shipper != null && source.shippingAddress != null) {
+      this.shipper = new Shipper(source.shipper);
+      this.shippingAddress = new Address(source.shippingAddress);
+    }
+    if (source.salesperson != null) {
+      this.salesperson = new Salesperson(source.salesperson);
+    }
   }
 }

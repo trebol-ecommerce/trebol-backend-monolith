@@ -20,53 +20,58 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.testing.ProductCategoriesTestHelper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.trebol.testing.TestConstants.ANY;
 import static org.trebol.testing.TestConstants.ID_1L;
 
-@ExtendWith(MockitoExtension.class)
 class ProductCategoriesConverterServiceImplTest {
-  @InjectMocks ProductCategoriesConverterServiceImpl instance;
-  ProductCategory productCategory;
-  ProductCategoryPojo productCategoryPojo;
+  ProductCategoriesConverterServiceImpl instance;
+  final ProductCategoriesTestHelper productCategoriesTestHelper = new ProductCategoriesTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    productCategory = new ProductCategory();
-    productCategory.setId(ID_1L);
-    productCategoryPojo = ProductCategoryPojo.builder()
+    instance = new ProductCategoriesConverterServiceImpl();
+    productCategoriesTestHelper.resetProductCategories();
+  }
+
+  @Test
+  void converts_to_pojo() {
+    ProductCategory input = productCategoriesTestHelper.productCategoryEntityAfterCreation();
+    ProductCategoryPojo result = instance.convertToPojo(input);
+    assertNotNull(result);
+    assertEquals(input.getId(), result.getId());
+    assertEquals(input.getName(), result.getName());
+    assertEquals(input.getCode(), result.getCode());
+  }
+
+  @Test
+  void converting_to_pojo_does_not_include_parent() {
+    ProductCategory input = ProductCategory.builder()
       .id(ID_1L)
       .name(ANY)
       .code(ANY)
+      .parent(ProductCategory.builder()
+        .name("ANY2")
+        .code("ANY2")
+        .build())
       .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    productCategory = null;
-    productCategoryPojo = null;
+    ProductCategoryPojo result = instance.convertToPojo(input);
+    assertNotNull(result);
+    assertNull(result.getParent());
   }
 
   @Test
-  void testConvertToPojo() {
-    ProductCategoryPojo actual = instance.convertToPojo(productCategory);
-    assertEquals(productCategory.getName(), actual.getName());
-    assertEquals(productCategory.getCode(), actual.getCode());
-  }
-
-  @Test
-  void testConvertToNewEntity() {
-    ProductCategory actual = instance.convertToNewEntity(productCategoryPojo);
-    assertEquals(productCategoryPojo.getName(), actual.getName());
-    assertEquals(productCategoryPojo.getCode(), actual.getCode());
+  void converts_to_new_entity() {
+    ProductCategoryPojo input = productCategoriesTestHelper.productCategoryPojoBeforeCreation();
+    ProductCategory result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertEquals(input.getName(), result.getName());
+    assertEquals(input.getCode(), result.getCode());
   }
 }

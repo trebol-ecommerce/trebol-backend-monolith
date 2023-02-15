@@ -46,19 +46,19 @@ public class UsersConverterServiceImpl
   implements UsersConverterService {
   private final Logger logger = LoggerFactory.getLogger(UsersConverterServiceImpl.class);
   private final UserRolesRepository rolesRepository;
-  private final PeopleConverterService peopleService;
+  private final PeopleConverterService peopleConverterService;
   private final PeopleRepository peopleRepository;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
   public UsersConverterServiceImpl(
     UserRolesRepository rolesRepository,
-    PeopleConverterService peopleService,
+    PeopleConverterService peopleConverterService,
     PeopleRepository peopleRepository,
     PasswordEncoder passwordEncoder
   ) {
     this.rolesRepository = rolesRepository;
-    this.peopleService = peopleService;
+    this.peopleConverterService = peopleConverterService;
     this.peopleRepository = peopleRepository;
     this.passwordEncoder = passwordEncoder;
   }
@@ -72,7 +72,7 @@ public class UsersConverterServiceImpl
       .build();
     Person sourcePerson = source.getPerson();
     if (sourcePerson != null) {
-      PersonPojo personPojo = peopleService.convertToPojo(sourcePerson);
+      PersonPojo personPojo = peopleConverterService.convertToPojo(sourcePerson);
       target.setPerson(personPojo);
     }
     return target;
@@ -80,8 +80,9 @@ public class UsersConverterServiceImpl
 
   @Override
   public User convertToNewEntity(UserPojo source) throws BadInputException {
-    User target = new User();
-    target.setName(source.getName());
+    User target = User.builder()
+      .name(source.getName())
+      .build();
 
     String sourceRole = source.getRole();
     if (StringUtils.isBlank(sourceRole)) {

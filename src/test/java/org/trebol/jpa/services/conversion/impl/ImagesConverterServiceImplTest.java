@@ -20,52 +20,49 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ImagePojo;
 import org.trebol.jpa.entities.Image;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
-@ExtendWith(MockitoExtension.class)
 class ImagesConverterServiceImplTest {
-  @InjectMocks ImagesConverterServiceImpl instance;
-  Image image;
-  ImagePojo imagePojo;
+  ImagesConverterServiceImpl instance;
 
   @BeforeEach
   void beforeEach() {
-    image = new Image();
-    image.setId(1L);
-    image.setFilename(ANY);
-    imagePojo = ImagePojo.builder()
-      .id(1L)
-      .filename(ANY)
-      .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    image = null;
-    imagePojo = null;
+    instance = new ImagesConverterServiceImpl();
   }
 
   @Test
   void testConvertToPojo() {
-    ImagePojo actual = instance.convertToPojo(image);
-    assertEquals(image.getFilename(), actual.getFilename());
-    assertEquals(image.getCode(), actual.getCode());
+    Image input = Image.builder()
+      .id(1L)
+      .code(ANY)
+      .filename(ANY)
+      .url(ANY)
+      .build();
+    ImagePojo result = instance.convertToPojo(input);
+    assertNotNull(result);
+    assertEquals(input.getId(), result.getId());
+    assertEquals(input.getFilename(), result.getFilename());
+    assertEquals(input.getCode(), result.getCode());
   }
 
   @Test
   void testConvertToNewEntity() {
-    Image actual = instance.convertToNewEntity(imagePojo);
-    assertEquals(imagePojo.getFilename(), actual.getFilename());
-    assertEquals(imagePojo.getCode(), actual.getCode());
+    ImagePojo input = ImagePojo.builder()
+      .code(ANY)
+      .filename(ANY)
+      .url(ANY)
+      .build();
+    Image result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertEquals(input.getFilename(), result.getFilename());
+    assertEquals(input.getCode(), result.getCode());
+    assertEquals(input.getUrl(), result.getUrl());
   }
 }

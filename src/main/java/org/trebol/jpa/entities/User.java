@@ -20,14 +20,11 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -35,9 +32,13 @@ import java.util.Objects;
   indexes = {
     @Index(columnList = "user_name")
   })
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class User
   implements Serializable {
   private static final long serialVersionUID = 19L;
@@ -63,43 +64,9 @@ public class User
     this.id = source.id;
     this.name = source.name;
     this.password = source.password;
-    this.person = source.person;
+    if (source.person != null) {
+      this.person = new Person(source.person);
+    }
     this.userRole = source.userRole;
-  }
-
-  public User(Long id, String name, String password, Person person, UserRole userRole) {
-    this.id = id;
-    this.name = name;
-    this.password = password;
-    this.person = person;
-    this.userRole = userRole;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    User user = (User) o;
-    return Objects.equals(id, user.id) &&
-      Objects.equals(name, user.name) &&
-      Objects.equals(password, user.password) &&
-      Objects.equals(person, user.person) &&
-      Objects.equals(userRole, user.userRole);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, name, password, person, userRole);
-  }
-
-  @Override
-  public String toString() {
-    return "User{" +
-      "id=" + id +
-      ", name='" + name + '\'' +
-      ", password='" + password + '\'' +
-      ", person=" + person +
-      ", userRole=" + userRole +
-      '}';
   }
 }

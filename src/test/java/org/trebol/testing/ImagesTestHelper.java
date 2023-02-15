@@ -48,7 +48,9 @@ public class ImagesTestHelper {
 
   public ImagePojo imagePojoForFetch() {
     if (this.pojoForFetch == null) {
-      this.pojoForFetch = ImagePojo.builder().filename(IMAGE_FILENAME).build();
+      this.pojoForFetch = ImagePojo.builder()
+        .filename(IMAGE_FILENAME)
+        .build();
     }
     return this.pojoForFetch;
   }
@@ -78,14 +80,23 @@ public class ImagesTestHelper {
 
   public Image imageEntityBeforeCreation() {
     if (this.entityBeforeCreation == null) {
-      this.entityBeforeCreation = new Image(IMAGE_CODE, IMAGE_FILENAME, IMAGE_URL);
+      this.entityBeforeCreation = Image.builder()
+        .code(IMAGE_CODE)
+        .filename(IMAGE_FILENAME)
+        .url(IMAGE_URL)
+        .build();
     }
     return this.entityBeforeCreation;
   }
 
   public Image imageEntityAfterCreation() {
     if (this.entityAfterCreation == null) {
-      this.entityAfterCreation = new Image(IMAGE_ID, IMAGE_CODE, IMAGE_FILENAME, IMAGE_URL);
+      this.entityAfterCreation = Image.builder()
+        .id(IMAGE_ID)
+        .code(IMAGE_CODE)
+        .filename(IMAGE_FILENAME)
+        .url(IMAGE_URL)
+        .build();
     }
     return this.entityAfterCreation;
   }

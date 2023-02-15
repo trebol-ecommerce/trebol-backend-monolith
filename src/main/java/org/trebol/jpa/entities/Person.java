@@ -20,14 +20,11 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -38,9 +35,13 @@ import java.util.Objects;
     @Index(columnList = "person_last_name"),
     @Index(columnList = "person_email")
   })
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Person
   implements Serializable {
   private static final long serialVersionUID = 9L;
@@ -62,8 +63,10 @@ public class Person
   @Column(name = "person_email", nullable = false)
   private String email;
   @Column(name = "person_phone1", nullable = false)
+  @Builder.Default
   private String phone1 = "";
   @Column(name = "person_phone2", nullable = false)
+  @Builder.Default
   private String phone2 = "";
 
   public Person(Person source) {
@@ -74,64 +77,5 @@ public class Person
     this.email = source.email;
     this.phone1 = source.phone1;
     this.phone2 = source.phone2;
-  }
-
-  public Person(String idNumber) {
-    this.idNumber = idNumber;
-  }
-
-  public Person(String firstName, String lastName, String idNumber, String email) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.idNumber = idNumber;
-    this.email = email;
-  }
-
-  public Person(Long id,
-                String firstName,
-                String lastName,
-                String idNumber,
-                String email,
-                String phone1,
-                String phone2) {
-    this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.idNumber = idNumber;
-    this.email = email;
-    this.phone1 = phone1;
-    this.phone2 = phone2;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Person person = (Person) o;
-    return Objects.equals(id, person.id) &&
-      Objects.equals(firstName, person.firstName) &&
-      Objects.equals(lastName, person.lastName) &&
-      Objects.equals(idNumber, person.idNumber) &&
-      Objects.equals(email, person.email) &&
-      Objects.equals(phone1, person.phone1) &&
-      Objects.equals(phone2, person.phone2);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, firstName, lastName, idNumber, email, phone1, phone2);
-  }
-
-  @Override
-  public String toString() {
-    return "Person{" +
-      "id=" + id +
-      ", firstName='" + firstName + '\'' +
-      ", lastName='" + lastName + '\'' +
-      ", idNumber='" + idNumber + '\'' +
-      ", email='" + email + '\'' +
-      ", phone1='" + phone1 + '\'' +
-      ", phone2='" + phone2 + '\'' +
-      '}';
   }
 }

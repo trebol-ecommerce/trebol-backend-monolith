@@ -42,10 +42,10 @@ public class ProductCategoriesConverterServiceImpl
 
   @Override
   public ProductCategory convertToNewEntity(ProductCategoryPojo source) {
-    ProductCategory target = new ProductCategory();
-    target.setCode(source.getCode());
-    target.setName(source.getName());
-    return target;
+    return ProductCategory.builder()
+      .code(source.getCode())
+      .name(source.getName())
+      .build();
   }
 
   @Override

@@ -54,7 +54,10 @@ public class ProductListConverterServiceImpl
 
   @Override
   public ProductList convertToNewEntity(ProductListPojo source) {
-    return new ProductList(source.getName(), source.getCode());
+    return ProductList.builder()
+      .name(source.getName())
+      .code(source.getCode())
+      .build();
   }
 
   @Override

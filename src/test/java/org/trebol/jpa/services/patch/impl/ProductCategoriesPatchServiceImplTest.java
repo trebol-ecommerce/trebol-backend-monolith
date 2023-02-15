@@ -20,47 +20,35 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ProductCategoryPojo;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.testing.ProductCategoriesTestHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.testing.TestConstants.ANY;
-import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class ProductCategoriesPatchServiceImplTest {
   @InjectMocks ProductCategoriesPatchServiceImpl instance;
-  ProductCategory productCategory;
-  ProductCategoryPojo productCategoryPojo;
+  ProductCategoriesTestHelper categoriesTestHelper = new ProductCategoriesTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    productCategory = new ProductCategory();
-    productCategory.setId(ID_1L);
-    productCategoryPojo = ProductCategoryPojo.builder()
-      .id(ID_1L)
-      .name(ANY)
-      .code(ANY)
-      .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    productCategory = null;
-    productCategoryPojo = null;
+    categoriesTestHelper.resetProductCategories();
   }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
-    productCategory.setName(ANY + " ");
-    ProductCategory actual = instance.patchExistingEntity(productCategoryPojo, productCategory);
-    assertEquals(ANY, actual.getName());
+  void patches_entity_data() {
+    ProductCategory existingCategory = categoriesTestHelper.productCategoryEntityAfterCreation();
+    ProductCategoryPojo input = ProductCategoryPojo.builder()
+      .name(ANY + " ")
+      .build();
+    ProductCategory result = instance.patchExistingEntity(input, existingCategory);
+    assertEquals(input.getName(), result.getName());
   }
 }

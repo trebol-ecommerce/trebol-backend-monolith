@@ -34,22 +34,25 @@ import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 @Service
 public class SalesConverterServiceImpl
   implements SalesConverterService {
-  private final BillingCompaniesConverterService billingCompaniesConverter;
-  private final CustomersConverterService customersConverter;
-  private final SalespeopleConverterService salespeopleConverter;
+  private final BillingCompaniesConverterService billingCompaniesConverterService;
+  private final CustomersConverterService customersConverterService;
+  private final SalespeopleConverterService salespeopleConverterService;
   private final AddressesConverterService addressesConverterService;
+  private final ShippersConverterService shippersConverterService;
 
   @Autowired
   public SalesConverterServiceImpl(
-    BillingCompaniesConverterService billingCompaniesConverter,
-    CustomersConverterService customersConverter,
-    SalespeopleConverterService salespeopleConverter,
-    AddressesConverterService addressesConverterService
+    BillingCompaniesConverterService billingCompaniesConverterService,
+    CustomersConverterService customersConverterService,
+    SalespeopleConverterService salespeopleConverterService,
+    AddressesConverterService addressesConverterService,
+    ShippersConverterService shippersConverterService
   ) {
-    this.billingCompaniesConverter = billingCompaniesConverter;
-    this.customersConverter = customersConverter;
-    this.salespeopleConverter = salespeopleConverter;
+    this.billingCompaniesConverterService = billingCompaniesConverterService;
+    this.customersConverterService = customersConverterService;
+    this.salespeopleConverterService = salespeopleConverterService;
     this.addressesConverterService = addressesConverterService;
+    this.shippersConverterService = shippersConverterService;
   }
 
   // TODO this method can be really expensive, please optimize it when the REST API specification includes PATCH and PUT methods
@@ -66,7 +69,7 @@ public class SalesConverterServiceImpl
       .token(source.getTransactionToken())
       .build();
 
-    CustomerPojo customer = customersConverter.convertToPojo(source.getCustomer());
+    CustomerPojo customer = customersConverterService.convertToPojo(source.getCustomer());
     target.setCustomer(customer);
 
     target.setStatus(source.getStatus().getName());
@@ -76,7 +79,7 @@ public class SalesConverterServiceImpl
     if (target.getBillingType().equals(BILLING_TYPE_ENTERPRISE)) {
       BillingCompany sourceBillingCompany = source.getBillingCompany();
       if (sourceBillingCompany != null) {
-        BillingCompanyPojo targetBillingCompany = billingCompaniesConverter.convertToPojo(sourceBillingCompany);
+        BillingCompanyPojo targetBillingCompany = billingCompaniesConverterService.convertToPojo(sourceBillingCompany);
         target.setBillingCompany(targetBillingCompany);
       }
     }
@@ -89,15 +92,18 @@ public class SalesConverterServiceImpl
       target.setShippingAddress(shippingAddress);
     }
 
+    if (source.getShipper() != null) {
+      ShipperPojo shipper = shippersConverterService.convertToPojo(source.getShipper());
+      target.setShipper(shipper);
+    }
 
     if (source.getSalesperson() != null) {
-      SalespersonPojo salesperson = salespeopleConverter.convertToPojo(source.getSalesperson());
+      SalespersonPojo salesperson = salespeopleConverterService.convertToPojo(source.getSalesperson());
       target.setSalesperson(salesperson);
     }
     return target;
   }
 
-  @Transactional
   @Override
   public Sell convertToNewEntity(SellPojo source) {
     Sell target = new Sell();

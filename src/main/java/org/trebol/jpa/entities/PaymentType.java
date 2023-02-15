@@ -20,20 +20,21 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "payment_types")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class PaymentType
   implements Serializable {
   private static final long serialVersionUID = 7L;
@@ -45,31 +46,4 @@ public class PaymentType
   @Size(min = 1, max = 100)
   @Column(name = "payment_type_name", nullable = false, unique = true)
   private String name;
-
-  public PaymentType(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    PaymentType that = (PaymentType) o;
-    return Objects.equals(id, that.id) &&
-      Objects.equals(name, that.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, name);
-  }
-
-  @Override
-  public String toString() {
-    return "PaymentType{" +
-      "id=" + id +
-      ", name='" + name + '\'' +
-      '}';
-  }
 }

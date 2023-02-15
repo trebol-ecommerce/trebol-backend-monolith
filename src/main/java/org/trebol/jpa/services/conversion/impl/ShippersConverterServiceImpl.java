@@ -41,9 +41,9 @@ public class ShippersConverterServiceImpl
 
   @Override
   public Shipper convertToNewEntity(ShipperPojo source) {
-    Shipper target = new Shipper();
-    target.setName(source.getName());
-    return target;
+    return Shipper.builder()
+      .name(source.getName())
+      .build();
   }
 
   @Override

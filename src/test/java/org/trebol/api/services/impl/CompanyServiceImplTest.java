@@ -45,18 +45,22 @@ class CompanyServiceImplTest {
   @Test
   void testReadDetails() {
 
-    Param param = new Param();
-    param.setName("name");
-    param.setValue("Piolo");
-    Param param2 = new Param();
-    param2.setName("description");
-    param2.setValue("guwapo");
-    Param param3 = new Param();
-    param3.setName("bannerImageURL");
-    param3.setValue("anyBannerImageURL");
-    Param param4 = new Param();
-    param4.setName("logoImageURL");
-    param4.setValue("anyLogoImageURL");
+    Param param = Param.builder()
+      .name("name")
+      .value("Piolo")
+      .build();
+    Param param2 = Param.builder()
+      .name("description")
+      .value("guwapo")
+      .build();
+    Param param3 = Param.builder()
+      .name("bannerImageURL")
+      .value("anyBannerImageURL")
+      .build();
+    Param param4 = Param.builder()
+      .name("logoImageURL")
+      .value("anyLogoImageURL")
+      .build();
     Iterable<Param> params = List.of(param, param2, param3, param4);
 
     when(paramsRepositoryMock.findParamsByCategory("company")).thenReturn(params);

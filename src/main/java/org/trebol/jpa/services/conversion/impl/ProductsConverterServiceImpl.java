@@ -64,6 +64,7 @@ public class ProductsConverterServiceImpl
       .name(source.getName())
       .barcode(source.getBarcode())
       .price(source.getPrice())
+      .description(source.getDescription())
       .currentStock(source.getStockCurrent())
       .criticalStock(source.getStockCritical())
       .build();
@@ -86,17 +87,14 @@ public class ProductsConverterServiceImpl
 
   @Override
   public Product convertToNewEntity(ProductPojo source) {
-    Product target = new Product();
-    target.setName(source.getName());
-    target.setBarcode(source.getBarcode());
-    target.setPrice(source.getPrice());
-    if (source.getCurrentStock() != null) {
-      target.setStockCurrent(source.getCurrentStock());
-    }
-    if (source.getCriticalStock() != null) {
-      target.setStockCritical(source.getCriticalStock());
-    }
-    return target;
+    return Product.builder()
+      .name(source.getName())
+      .barcode(source.getBarcode())
+      .price(source.getPrice())
+      .description(source.getDescription())
+      .stockCurrent(source.getCurrentStock())
+      .stockCritical(source.getCriticalStock())
+      .build();
   }
 
   @Override

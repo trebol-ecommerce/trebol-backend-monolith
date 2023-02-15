@@ -27,6 +27,10 @@ import org.trebol.jpa.entities.*;
 import java.time.Instant;
 import java.util.List;
 
+import static org.trebol.config.Constants.BILLING_TYPE_INDIVIDUAL;
+import static org.trebol.config.Constants.SELL_STATUS_PENDING;
+import static org.trebol.testing.TestConstants.ANY;
+
 /**
  * Builds & caches reusable instances of Sell and SellPojo
  */
@@ -34,10 +38,8 @@ public class SalesTestHelper {
   public static final long GENERIC_ID = 1L;
   public static final Instant GENERIC_DATE = Instant.now();
   public static final int SELL_DETAIL_UNITS = 1;
-  public static final String SELL_BILLING_TYPE_NAME_PERSON = "Bill";
   public static final String SELL_PAYMENT_TYPE_NAME = "WebPay Plus";
   public static final int SELL_STATUS_CODE = 0;
-  public static final String SELL_STATUS_NAME = "Requested";
   public static final int SELL_TOTAL_ITEMS = 1;
   public static final int SELL_NET_VALUE = 100;
   public static final int SELL_TRANSPORT_VALUE = 0;
@@ -49,8 +51,21 @@ public class SalesTestHelper {
   private SellPojo pojoAfterCreation;
   private Sell entityBeforeCreation;
   private Sell entityAfterCreation;
+  private final PaymentType paymentType;
+  private final BillingType billingType;
   final ProductsTestHelper productsHelper = new ProductsTestHelper();
   final CustomersTestHelper customersHelper = new CustomersTestHelper();
+
+  public SalesTestHelper() {
+     paymentType = PaymentType.builder()
+       .id(GENERIC_ID)
+       .name(SELL_PAYMENT_TYPE_NAME)
+       .build();
+     billingType = BillingType.builder()
+       .id(GENERIC_ID)
+       .name(BILLING_TYPE_INDIVIDUAL)
+       .build();
+  }
 
   public void resetSales() {
     pojoForFetch = null;
@@ -71,11 +86,12 @@ public class SalesTestHelper {
     if (pojoBeforeCreation == null) {
       SellDetailPojo newDetailPojo = SellDetailPojo.builder()
         .units(SELL_DETAIL_UNITS)
-        .product(productsHelper.productPojoBeforeCreation())
+        .product(productsHelper.productPojoBeforeCreationWithoutCategory())
         .build();
       pojoBeforeCreation = SellPojo.builder()
+        .status(SELL_STATUS_PENDING)
         .details(List.of(newDetailPojo))
-        .billingType(SELL_BILLING_TYPE_NAME_PERSON)
+        .billingType(BILLING_TYPE_INDIVIDUAL)
         .paymentType(SELL_PAYMENT_TYPE_NAME)
         .customer(customersHelper.customerPojoBeforeCreation())
         .build();
@@ -85,26 +101,27 @@ public class SalesTestHelper {
 
   public SellPojo sellPojoAfterCreation() {
     if (pojoAfterCreation == null) {
-      SellDetailPojo persistedDetailPojo = SellDetailPojo.builder()
-        .id(GENERIC_ID)
-        .units(SELL_DETAIL_UNITS)
-        .unitValue(productsHelper.productPojoAfterCreation().getPrice())
-        .product(productsHelper.productPojoAfterCreation())
-        .build();
       pojoAfterCreation = SellPojo.builder()
         .buyOrder(GENERIC_ID)
         .token(SELL_TRANSACTION_TOKEN)
         .date(GENERIC_DATE)
-        .details(List.of(persistedDetailPojo))
+        .status(SELL_STATUS_PENDING)
+        .customer(customersHelper.customerPojoAfterCreation())
+        .billingType(BILLING_TYPE_INDIVIDUAL)
+        .paymentType(SELL_PAYMENT_TYPE_NAME)
+        .details(List.of(
+          SellDetailPojo.builder()
+            .id(GENERIC_ID)
+            .units(SELL_DETAIL_UNITS)
+            .unitValue(productsHelper.productPojoAfterCreationWithoutCategory().getPrice())
+            .product(productsHelper.productPojoAfterCreationWithoutCategory())
+            .build()
+        ))
         .netValue(SELL_NET_VALUE)
         .taxValue(SELL_TAXES_VALUE)
         .transportValue(SELL_TRANSPORT_VALUE)
         .totalValue(SELL_TOTAL_VALUE)
         .totalValue(SELL_TOTAL_ITEMS)
-        .status(SELL_STATUS_NAME)
-        .billingType(SELL_BILLING_TYPE_NAME_PERSON)
-        .paymentType(SELL_PAYMENT_TYPE_NAME)
-        .customer(customersHelper.customerPojoAfterCreation())
         .build();
     }
     return pojoAfterCreation;
@@ -112,30 +129,65 @@ public class SalesTestHelper {
 
   public Sell sellEntityBeforeCreation() {
     if (entityBeforeCreation == null) {
-      PaymentType paymentTypeEntity = new PaymentType(GENERIC_ID, SELL_PAYMENT_TYPE_NAME);
-      BillingType billingTypeEntity = new BillingType(GENERIC_ID, SELL_BILLING_TYPE_NAME_PERSON);
-      SellDetail newDetailEntity = new SellDetail(SELL_DETAIL_UNITS, productsHelper.productEntityBeforeCreation());
-      newDetailEntity.setUnitValue(productsHelper.productEntityBeforeCreation().getPrice());
-      entityBeforeCreation = new Sell(customersHelper.customerEntityBeforeCreation(),
-        paymentTypeEntity,
-        billingTypeEntity,
-        List.of(newDetailEntity));
+      entityBeforeCreation = Sell.builder()
+        .customer(customersHelper.customerEntityBeforeCreation())
+        .status(SellStatus.builder()
+          .id(1L)
+          .code(1)
+          .name("sellStatusName")
+          .build())
+        .paymentType(paymentType)
+        .billingType(billingType)
+        .billingAddress(Address.builder()
+          .firstLine(ANY)
+          .build())
+        .details(List.of(
+          SellDetail.builder()
+            .product(productsHelper.productEntityBeforeCreationWithoutCategory())
+            .units(SELL_DETAIL_UNITS)
+            .unitValue(productsHelper.productEntityBeforeCreationWithoutCategory().getPrice())
+            .build()
+        ))
+        .build();
     }
     return entityBeforeCreation;
   }
 
   public Sell sellEntityAfterCreation() {
     if (entityAfterCreation == null) {
-      PaymentType paymentTypeEntity = new PaymentType(GENERIC_ID, SELL_PAYMENT_TYPE_NAME);
-      BillingType billingTypeEntity = new BillingType(GENERIC_ID, SELL_BILLING_TYPE_NAME_PERSON);
-      SellDetail persistedDetailEntity = new SellDetail(GENERIC_ID, SELL_DETAIL_UNITS,
-        productsHelper.productEntityAfterCreation().getPrice(),
-        productsHelper.productEntityAfterCreation());
-      SellStatus sellStatusEntity = new SellStatus(GENERIC_ID, SELL_STATUS_CODE, SELL_STATUS_NAME);
-      entityAfterCreation = new Sell(GENERIC_ID, GENERIC_DATE, SELL_TOTAL_ITEMS, SELL_NET_VALUE, SELL_TRANSPORT_VALUE,
-        SELL_TAXES_VALUE, SELL_TOTAL_VALUE, SELL_TRANSACTION_TOKEN,
-        customersHelper.customerEntityAfterCreation(), paymentTypeEntity, sellStatusEntity,
-        billingTypeEntity, null, null, null, null, null, List.of(persistedDetailEntity));
+      entityAfterCreation = Sell.builder()
+        .id(GENERIC_ID)
+        .date(GENERIC_DATE)
+        .transactionToken(SELL_TRANSACTION_TOKEN)
+        .customer(customersHelper.customerEntityAfterCreation())
+        .billingType(billingType)
+        .paymentType(paymentType)
+        .status(SellStatus.builder()
+          .id(GENERIC_ID)
+          .code(SELL_STATUS_CODE)
+          .name("sellStatusName")
+          .build())
+        .billingAddress(Address.builder()
+          .firstLine("billingAddressFirstLine")
+          .city("billingAddressCity")
+          .municipality("billingAddressMunicipality")
+          .build())
+        .shippingAddress(null)
+        .shipper(null)
+        .salesperson(null)
+        .details(List.of(
+          SellDetail.builder()
+            .id(GENERIC_ID)
+            .units(1)
+            .unitValue(productsHelper.productEntityAfterCreationWithoutCategory().getPrice())
+            .product(productsHelper.productEntityAfterCreationWithoutCategory())
+            .build()))
+        .totalItems(1)
+        .netValue(SELL_NET_VALUE)
+        .transportValue(SELL_TRANSPORT_VALUE)
+        .taxesValue(SELL_TAXES_VALUE)
+        .totalValue(SELL_TOTAL_VALUE)
+        .build();
     }
     return entityAfterCreation;
   }

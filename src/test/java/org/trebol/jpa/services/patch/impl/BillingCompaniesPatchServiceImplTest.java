@@ -20,14 +20,11 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.BillingCompanyPojo;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,32 +33,20 @@ import static org.trebol.testing.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 class BillingCompaniesPatchServiceImplTest {
   @InjectMocks BillingCompaniesPatchServiceImpl instance;
-  BillingCompany billingCompany;
-  BillingCompanyPojo billingCompanyPojo;
-
-  @BeforeEach
-  void beforeEach() {
-    billingCompany = new BillingCompany();
-    billingCompany.setName(ANY);
-    billingCompany.setId(1L);
-    billingCompany.setIdNumber(ANY);
-
-    billingCompanyPojo = BillingCompanyPojo.builder()
-      .idNumber(ANY)
-      .name(ANY)
-      .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    billingCompany = null;
-    billingCompanyPojo = null;
-  }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
-    billingCompanyPojo.setName("PIOLO");
-    BillingCompany actual = instance.patchExistingEntity(billingCompanyPojo, billingCompany);
-    assertEquals(1L, actual.getId());
+  void patches_entity_data() {
+    BillingCompany existingBillingCompany = BillingCompany.builder()
+      .id(1L)
+      .name(ANY)
+      .idNumber(ANY)
+      .build();
+    BillingCompanyPojo input = BillingCompanyPojo.builder()
+      .idNumber(ANY)
+      .name("PIOLO")
+      .build();
+    BillingCompany result = instance.patchExistingEntity(input, existingBillingCompany);
+    assertEquals(input.getIdNumber(), result.getIdNumber());
+    assertEquals(input.getName(), result.getName());
   }
 }

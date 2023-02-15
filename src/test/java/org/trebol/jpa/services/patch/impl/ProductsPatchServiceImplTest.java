@@ -20,7 +20,6 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +28,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ProductPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
+import org.trebol.testing.ProductsTestHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.testing.TestConstants.ANY;
@@ -36,40 +36,31 @@ import static org.trebol.testing.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 class ProductsPatchServiceImplTest {
   @InjectMocks ProductsPatchServiceImpl instance;
-  Product product;
-  ProductPojo productPojo;
+  ProductsTestHelper productsTestHelper = new ProductsTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    product = new Product();
-    product.setName(ANY);
-    product.setId(1L);
-    productPojo = ProductPojo.builder()
-      .id(1L)
-      .name(ANY)
-      .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    product = null;
-    productPojo = null;
+    productsTestHelper.resetProducts();;
   }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
-    productPojo.setBarcode(ANY);
-    productPojo.setName("Bear Brand");
-    productPojo.setPrice(1);
-    productPojo.setDescription(ANY);
-    productPojo.setCurrentStock(1);
-    product.setBarcode(ANY + " ");
-    product.setName("Bear Brand  ");
-    product.setPrice(2);
-    product.setDescription(ANY + " ");
-
-    Product actual = instance.patchExistingEntity(productPojo, product);
-
-    assertEquals(ANY, actual.getBarcode());
+  void patches_entity_data() throws BadInputException {
+    Product existingProduct = productsTestHelper.productEntityAfterCreationWithoutCategory();
+    ProductPojo input = ProductPojo.builder()
+      .id(1L)
+      .barcode("BEAR")
+      .name("Bear Brand")
+      .price(1000)
+      .description(ANY)
+      .currentStock(5)
+      .criticalStock(1)
+      .build();
+    Product result = instance.patchExistingEntity(input, existingProduct);
+    assertEquals(input.getName(), result.getName());
+    assertEquals(input.getBarcode(), result.getBarcode());
+    assertEquals(input.getPrice(), result.getPrice());
+    assertEquals(input.getDescription(), result.getDescription());
+    assertEquals(input.getCurrentStock(), result.getStockCurrent());
+    assertEquals(input.getCriticalStock(), result.getStockCritical());
   }
 }

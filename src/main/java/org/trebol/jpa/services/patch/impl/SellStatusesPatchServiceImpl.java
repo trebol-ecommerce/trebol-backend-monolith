@@ -33,7 +33,11 @@ public class SellStatusesPatchServiceImpl
 
   @Override
   public SellStatus patchExistingEntity(SellStatusPojo changes, SellStatus existing) {
-    SellStatus target = new SellStatus(existing);
+    SellStatus target = SellStatus.builder()
+      .id(existing.getId())
+      .code(existing.getCode())
+      .name(existing.getName())
+      .build();
 
     Integer code = changes.getCode();
     if (code != null && !target.getCode().equals(code)) {

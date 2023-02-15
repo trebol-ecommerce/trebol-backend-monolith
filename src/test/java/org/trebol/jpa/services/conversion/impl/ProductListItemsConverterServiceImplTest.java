@@ -41,22 +41,20 @@ class ProductListItemsConverterServiceImplTest {
   @Mock ProductsConverterService productsConverterServiceMock;
 
   @Test
-  void testApplyChangesToExistingEntity() {
-    UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
-      () -> instance.convertToNewEntity(ProductPojo.builder().build()));
-    assertEquals("Not implemented", unsupportedOperationException.getMessage());
+  void converts_listitem_to_product_pojo() {
+    ProductListItem input = ProductListItem.builder()
+      .product(Product.builder().build())
+      .build();
+    ProductPojo expectedResult = ProductPojo.builder().build();
+    when(productsConverterServiceMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
+    ProductPojo result = instance.convertToPojo(input);
+    assertEquals(expectedResult, result);
   }
 
   @Test
-  void testConvertToPojo() {
-    final ProductListItem productListItem = new ProductListItem();
-    final Product product = new Product();
-    productListItem.setProduct(product);
-    ProductPojo expectedResult = ProductPojo.builder().id(1L).build();
-    when(productsConverterServiceMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-
-    ProductPojo actual = instance.convertToPojo(productListItem);
-
-    assertEquals(expectedResult, actual);
+  void does_not_support_conveting_product_to_new_listitem_entity() {
+    ProductPojo input = ProductPojo.builder().build();
+    UnsupportedOperationException result = assertThrows(UnsupportedOperationException.class, () -> instance.convertToNewEntity(input));
+    assertEquals("Not implemented", result.getMessage());
   }
 }

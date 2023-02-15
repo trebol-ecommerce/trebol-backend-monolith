@@ -21,7 +21,6 @@
 package org.trebol.api.services.impl;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,11 +38,12 @@ import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.jpa.services.crud.PeopleCrudService;
 import org.trebol.jpa.services.patch.PeoplePatchService;
+import org.trebol.testing.PeopleTestHelper;
 
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -56,123 +56,102 @@ class ProfileServiceImplTest {
   @Mock PeopleConverterService peopleConverterMock;
   @Mock PeoplePatchService peoplePatchService;
   @Mock PeopleRepository peopleRepositoryMock;
-  UserRole userRoleMock;
-  Person personMock;
-  User userMock;
-  PersonPojo personPojoMock;
+  PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
+  User existingUser;
 
   @BeforeEach
   void beforeEach() {
-    // Default mock objects
-    userRoleMock = new UserRole(1L, "roleName");
-    personMock = new Person(1L, "firstName", "lastName", "123",
-      "email@mock.com", "+123 456", "+123 456");
-    userMock = new User(1L, "userName", "password", personMock, userRoleMock);
-    personPojoMock = PersonPojo.builder()
+    existingUser = User.builder() // without profile
       .id(1L)
-      .firstName("firstName")
-      .lastName("lastName")
-      .idNumber("1")
-      .email("email@example.com")
-      .phone1("+123 456")
-      .phone2("+123 456")
+      .name("userName")
+      .password("password")
+      .userRole(UserRole.builder()
+        .id(1L)
+        .name("roleName")
+        .build())
       .build();
   }
 
-  // TEST METHOD: getProfileFromUserName(String userName)
-
-  @DisplayName("getProfile, when User not found, throw UserNotFoundException")
   @Test
-  void getProfileFromUserName_UserNotFound_UserNotFoundException() {
-    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.empty()); // in getUserFromName
-
-    assertThrows(UserNotFoundException.class, () -> instance.getProfileFromUserName("userName"));
-  }
-
-  @DisplayName("getProfile, when User has no profile, throw PersonNotFoundException")
-  @Test
-  void getProfileFromUserName_UserWithoutProfile_PersonNotFoundException() {
-    userMock.setPerson(null); // Person profile is null
-
-    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userMock));
-
-    assertThrows(PersonNotFoundException.class, () -> instance.getProfileFromUserName("userName"));
-  }
-
-  @DisplayName("getProfile, when User has a profile, No Exception")
-  @Test
-  void getProfileFromUserName_UserFoundWithProfile_NoException() {
-    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userMock)); // in getUserFromName
-
-    assertDoesNotThrow(() -> instance.getProfileFromUserName("userName"));
-  }
-
-
-  // TEST METHOD: updateProfileForUserWithName(String userName, PersonPojo profile)
-
-  @DisplayName("updateProfile, when User not found, throw UserNotFoundException")
-  @Test
-  void updateProfileForUserWithName_UserNotFound_UserNotFoundException() {
-    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.empty()); // in getUserFromName
-
-    assertThrows(UserNotFoundException.class,
-      () -> instance.updateProfileForUserWithName("userName", null));
-  }
-
-  @DisplayName("updateProfile, when User has a profile then update it, No Exception")
-  @Test
-  void updateProfileForUserWithName_UserHasProfile_UpdateProfile_NoException() throws BadInputException {
-    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userMock)); // in getUserFromName
-    when(peoplePatchService.patchExistingEntity(any(PersonPojo.class), any(Person.class)))
-      .thenReturn(personMock);
-
-    assertDoesNotThrow(() -> instance.updateProfileForUserWithName("userName", personPojoMock));
-
-    verify(peopleRepositoryMock, times(1)).saveAndFlush(any(Person.class));
-  }
-
-  @DisplayName("updateProfile, when User has no profile then create it, No Exception")
-  @Test
-  void updateProfileForUserWithName_UserHasNoProfile_CreateNewProfile_NoException() throws BadInputException {
-    userMock.setPerson(null); // Person profile is null
-
-    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userMock)); // in getUserFromName
+  void creates_new_profile_data_when_user_does_not_have_one() throws BadInputException {
+    Person newProfile = peopleTestHelper.personEntityAfterCreation();
+    User existingUserBefore = new User(existingUser);
+    User existingUserAfter = new User(existingUser);
+    existingUserAfter.setPerson(newProfile);
+    String name = existingUser.getName();
+    PersonPojo input = peopleTestHelper.personPojoBeforeCreation();
+    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingUserBefore));
     when(peopleServiceMock.getExisting(any(PersonPojo.class))).thenReturn(Optional.empty());
-    when(peopleConverterMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
-    when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
-    when(usersRepositoryMock.saveAndFlush(any(User.class))).thenReturn(userMock);
+    when(peopleConverterMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(newProfile);
+    when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(newProfile);
+    when(usersRepositoryMock.saveAndFlush(any(User.class))).thenReturn(existingUserAfter); // binds Person entity to User entity
+    assertDoesNotThrow(() -> instance.updateProfileForUserWithName(name, input));
+    verify(peopleRepositoryMock, times(1)).saveAndFlush(newProfile);
+    verify(usersRepositoryMock, times(1)).saveAndFlush(existingUserBefore);
+  }
 
-    assertDoesNotThrow(() -> instance.updateProfileForUserWithName("userName", personPojoMock));
-
+  @Test
+  void updates_existing_profile_data() throws BadInputException {
+    Person existingProfile = peopleTestHelper.personEntityAfterCreation();
+    existingUser.setPerson(existingProfile);
+    String name = existingUser.getName();
+    PersonPojo input = peopleTestHelper.personPojoBeforeCreation();
+    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingUser));
+    when(peoplePatchService.patchExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(existingProfile);
+    assertDoesNotThrow(() -> instance.updateProfileForUserWithName(name, input));
     verify(peopleRepositoryMock, times(1)).saveAndFlush(any(Person.class));
-    verify(usersRepositoryMock, times(1)).saveAndFlush(any(User.class));
   }
 
-  @DisplayName("updateProfile, when User has no profile then use existing profile, No Exception")
   @Test
-  void updateProfileForUserWithName_UserHasNoProfile_UseExistingProfile_NoException() throws BadInputException {
-    userMock.setPerson(null); // Person profile is null
+  void fetches_profile_data() {
+    Person existingProfile = peopleTestHelper.personEntityAfterCreation();
+    existingUser.setPerson(existingProfile);
+    String name = existingUser.getName();
+    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingUser));
+    assertDoesNotThrow(() -> instance.getProfileFromUserName(name));
+  }
 
-    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userMock)); // in getUserFromName
-    when(peopleServiceMock.getExisting(any(PersonPojo.class))).thenReturn(Optional.of(personMock));
+  @Test
+  void either_method_may_throw_UserNotFoundException() {
+    String name = existingUser.getName();
+    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+    List.of(
+      assertThrows(UserNotFoundException.class, () -> instance.getProfileFromUserName(name)),
+      assertThrows(UserNotFoundException.class, () -> instance.updateProfileForUserWithName(name, null))
+    ).forEach(result -> assertEquals("There is no account with the specified username", result.getMessage()));
+  }
+
+  @Test
+  void fetching_may_throw_PersonNotFoundException() {
+    String name = existingUser.getName();
+    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingUser));
+    PersonNotFoundException result = assertThrows(PersonNotFoundException.class, () -> instance.getProfileFromUserName(name));
+    assertEquals("The account does not have an associated profile", result.getMessage());
+  }
+
+  @Test
+  void binds_existing_profile_data() throws BadInputException {
+    Person existingProfile = peopleTestHelper.personEntityAfterCreation();
+    String name = existingUser.getName();
+    PersonPojo input = peopleTestHelper.personPojoBeforeCreation();
+    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingUser));
+    when(peopleServiceMock.getExisting(any(PersonPojo.class))).thenReturn(Optional.of(existingProfile));
     when(usersRepositoryMock.findByPersonIdNumber(anyString())).thenReturn(Optional.empty());
-    when(usersRepositoryMock.saveAndFlush(any(User.class))).thenReturn(userMock);
-
-    assertDoesNotThrow(() -> instance.updateProfileForUserWithName("userName", personPojoMock));
-
+    when(usersRepositoryMock.saveAndFlush(any(User.class))).thenReturn(existingUser);
+    assertDoesNotThrow(() -> instance.updateProfileForUserWithName(name, input));
     verify(usersRepositoryMock, times(1)).saveAndFlush(any(User.class));
   }
 
-  @DisplayName("updateProfile, when User has no profile but existing profile in use, throw BadInputException")
   @Test
-  void updateProfileForUserWithName_UserHasNoProfile_ExistingProfileAlreadyInUse_BadInputException() throws BadInputException {
-    userMock.setPerson(null); // Person profile is null
-
-    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userMock)); // in getUserFromName
-    when(peopleServiceMock.getExisting(any(PersonPojo.class))).thenReturn(Optional.of(personMock));
-    when(usersRepositoryMock.findByPersonIdNumber(anyString())).thenReturn(Optional.of(userMock));
-
-    assertThrows(BadInputException.class, () -> instance.updateProfileForUserWithName("userName", personPojoMock));
+  void cannot_bind_existing_profile_data_if_it_is_already_bound_to_another_user() throws BadInputException {
+    Person existingProfile = peopleTestHelper.personEntityAfterCreation();
+    String name = existingUser.getName();
+    PersonPojo input = peopleTestHelper.personPojoBeforeCreation();
+    when(usersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingUser));
+    when(peopleServiceMock.getExisting(any(PersonPojo.class))).thenReturn(Optional.of(existingProfile));
+    when(usersRepositoryMock.findByPersonIdNumber(anyString())).thenReturn(Optional.of(existingUser));
+    BadInputException result = assertThrows(BadInputException.class, () -> instance.updateProfileForUserWithName(name, input));
+    assertEquals("Person profile is associated to another account. Cannot use it.", result.getMessage());
   }
 
 }

@@ -20,8 +20,6 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,7 +34,6 @@ import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.jpa.repositories.UserRolesRepository;
-import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 
 import java.util.Optional;
@@ -50,81 +47,88 @@ import static org.trebol.testing.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 class UsersConverterServiceImplTest {
   @InjectMocks UsersConverterServiceImpl instance;
-  @Mock UsersRepository userRepositoryMock;
   @Mock UserRolesRepository rolesRepositoryMock;
   @Mock PeopleConverterService peopleServiceMock;
   @Mock PeopleRepository peopleRepositoryMock;
   @Mock PasswordEncoder passwordEncoderMock;
-  User user;
-  UserPojo userPojo;
-
-  @BeforeEach
-  void beforeEach() {
-    user = new User();
-    user.setName(ANY);
-    user.setId(1L);
-    final UserRole userRole = new UserRole();
-    userRole.setName(ANY);
-    user.setUserRole(userRole);
-    Person person = new Person();
-    user.setPerson(person);
-    userPojo = UserPojo.builder()
-      .id(1L)
-      .name(ANY)
-      .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    user = null;
-    userPojo = null;
-  }
 
   @Test
   void converts_to_pojo() {
-    when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(PersonPojo.builder().build());
-
-    UserPojo actual = instance.convertToPojo(user);
-
-    assertNotNull(actual.getPerson());
-    assertEquals(user.getId(), actual.getId());
-    assertEquals(user.getName(), actual.getName());
+    User input = User.builder()
+      .id(1L)
+      .name(ANY)
+      .person(Person.builder().build())
+      .userRole(UserRole.builder()
+        .name(ANY)
+        .build())
+      .build();
+    PersonPojo expectedPersonPojo = PersonPojo.builder()
+      .idNumber(ANY)
+      .build();
+    when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
+    UserPojo actual = instance.convertToPojo(input);
+    assertNotNull(actual);
+    assertEquals(input.getId(), actual.getId());
+    assertEquals(input.getName(), actual.getName());
+    assertEquals(expectedPersonPojo, actual.getPerson());
   }
 
   @Test
   void does_not_accept_empty_roles_for_new_entities() {
+    UserPojo userPojo = UserPojo.builder()
+      .id(1L)
+      .name(ANY)
+      .build();
     BadInputException badInputException = assertThrows(BadInputException.class, () -> instance.convertToNewEntity(userPojo));
     assertEquals("The user was not given any role", badInputException.getMessage());
   }
 
   @Test
-  void does_not_accept_unexisting_roles_for_new_entities() {
-    userPojo.setRole(ANY);
+  void does_not_accept_unexisting_user_roles_for_new_entities() {
+    UserPojo userPojo = UserPojo.builder()
+      .id(1L)
+      .name(ANY)
+      .role(ANY)
+      .build();
     when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
-
-    BadInputException badInputException = assertThrows(BadInputException.class, () -> instance.convertToNewEntity(userPojo));
-    assertEquals("The specified user role does not exist", badInputException.getMessage());
+    BadInputException result = assertThrows(BadInputException.class, () -> instance.convertToNewEntity(userPojo));
+    assertEquals("The specified user role does not exist", result.getMessage());
   }
 
   @Test
   void converts_to_new_entity() throws BadInputException {
-    final Person person = new Person();
-    person.setIdNumber(ANY);
-    final UserRole userRole = new UserRole();
-    userRole.setName(ANY);
-    final PersonPojo personPojo = PersonPojo.builder().idNumber(ANY).build();
-    userPojo.setPassword(ANY);
-    userPojo.setRole(ANY);
-    userPojo.setPerson(personPojo);
+    UserPojo input = UserPojo.builder()
+      .id(1L)
+      .name(ANY)
+      .password(ANY)
+      .role(ANY)
+      .person(PersonPojo.builder()
+        .idNumber(ANY)
+        .build())
+      .build();
+    Person expectedPerson = Person.builder().build();
+    UserRole expectedUserRole = UserRole.builder().build();
     when(passwordEncoderMock.encode(anyString())).thenReturn(ANY);
-    when(peopleRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(person));
-    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(userRole));
+    when(peopleRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(expectedPerson));
+    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedUserRole));
+    User result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertEquals(expectedPerson, result.getPerson());
+    assertEquals(expectedUserRole, result.getUserRole());
+  }
 
-    User actual = instance.convertToNewEntity(userPojo);
-
-    assertNotNull(actual.getPerson());
-    assertEquals(userPojo.getPerson().getIdNumber(), actual.getPerson().getIdNumber());
-    assertNotNull(actual.getUserRole());
-    assertEquals(userPojo.getRole(), actual.getUserRole().getName());
+  @Test
+  void converts_to_new_entity_without_profile() throws BadInputException {
+    UserPojo input = UserPojo.builder()
+      .id(1L)
+      .name(ANY)
+      .password(ANY)
+      .role(ANY)
+      .build();
+    when(passwordEncoderMock.encode(anyString())).thenReturn(ANY);
+    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(UserRole.builder().build()));
+    User result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertNull(result.getPerson());
   }
 }

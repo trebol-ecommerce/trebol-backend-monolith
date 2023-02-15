@@ -20,7 +20,6 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +28,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ImagePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
+import org.trebol.testing.ImagesTestHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.testing.TestConstants.ANY;
@@ -36,43 +36,24 @@ import static org.trebol.testing.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 class ImagesPatchServiceImplTest {
   @InjectMocks ImagesPatchServiceImpl instance;
-  Image image;
-  ImagePojo imagePojo;
+  ImagesTestHelper imagesTestHelper = new ImagesTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    image = new Image();
-    image.setId(1L);
-    image.setFilename(ANY);
-    imagePojo = ImagePojo.builder()
-      .id(1L)
-      .filename(ANY)
-      .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    image = null;
-    imagePojo = null;
+    imagesTestHelper.resetImages();
   }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
-    Image actual = instance.patchExistingEntity(imagePojo, image);
-    assertEquals(1L, actual.getId());
-
-    image.setFilename(ANY);
-    image.setCode(ANY);
-    image.setUrl(ANY);
-
-    imagePojo.setUrl(ANY + " ");
-    imagePojo.setCode(ANY + " ");
-    imagePojo.setFilename(ANY + " ");
-
-    actual = instance.patchExistingEntity(imagePojo, image);
-
-    assertEquals(ANY + " ", actual.getUrl());
-    assertEquals(ANY + " ", actual.getCode());
-    assertEquals(ANY + " ", actual.getFilename());
+  void patches_entity_data() throws BadInputException {
+    Image existingImage = imagesTestHelper.imageEntityAfterCreation();
+    ImagePojo input = ImagePojo.builder()
+      .code(ANY)
+      .filename(ANY)
+      .url(ANY)
+      .build();
+    Image result = instance.patchExistingEntity(input, existingImage);
+    assertEquals(input.getCode(), result.getCode());
+    assertEquals(input.getFilename(), result.getFilename());
+    assertEquals(input.getUrl(), result.getUrl());
   }
 }

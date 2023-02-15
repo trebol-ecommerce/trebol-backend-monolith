@@ -228,8 +228,11 @@ public class SalesCrudServiceImpl
         throw new BadInputException("Unexisting product in sell details");
       }
       Product product = productByBarcode.get();
-      SellDetail targetDetail = new SellDetail(d.getUnits(), product);
-      targetDetail.setUnitValue(product.getPrice());
+      SellDetail targetDetail = SellDetail.builder()
+        .units(d.getUnits())
+        .product(product)
+        .unitValue(product.getPrice())
+        .build();
       details.add(targetDetail);
     }
     return details;
@@ -252,7 +255,9 @@ public class SalesCrudServiceImpl
   }
 
   private void updateTotals(Sell input) {
-    int netValue = 0, taxesValue = 0, totalUnits = 0;
+    int netValue = 0;
+    int taxesValue = 0;
+    int totalUnits = 0;
     for (SellDetail sd : input.getDetails()) {
       int unitValue = sd.getUnitValue();
       double unitTaxValue = unitValue * TAX_PERCENT;

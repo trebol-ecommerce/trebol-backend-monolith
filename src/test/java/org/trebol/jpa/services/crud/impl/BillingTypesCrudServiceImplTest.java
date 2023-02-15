@@ -38,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class BillingTypesCrudServiceImplTest {
@@ -46,17 +47,17 @@ class BillingTypesCrudServiceImplTest {
 
   @Test
   void finds_by_name() throws BadInputException {
-    String billingTypeName = "test company";
     BillingTypePojo example = BillingTypePojo.builder()
-      .name(billingTypeName)
+      .name(ANY)
       .build();
-    BillingType expectedResult = new BillingType(1L, billingTypeName);
+    BillingType expectedResult = BillingType.builder()
+      .id(1L)
+      .name(ANY)
+      .build();
     when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
-
     Optional<BillingType> match = instance.getExisting(example);
-
-    verify(billingTypesRepositoryMock).findByName(billingTypeName);
     assertTrue(match.isPresent());
     assertEquals(expectedResult, match.get());
+    verify(billingTypesRepositoryMock).findByName(example.getName());
   }
 }

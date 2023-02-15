@@ -20,20 +20,21 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "app_permissions")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Permission
   implements Serializable {
   private static final long serialVersionUID = 8L;
@@ -48,28 +49,4 @@ public class Permission
   @Size(max = 100)
   @Column(name = "permission_description")
   private String description;
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Permission that = (Permission) o;
-    return Objects.equals(id, that.id) &&
-      Objects.equals(code, that.code) &&
-      Objects.equals(description, that.description);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, code, description);
-  }
-
-  @Override
-  public String toString() {
-    return "Permission{" +
-      "id=" + id +
-      ", code='" + code + '\'' +
-      ", description='" + description + '\'' +
-      '}';
-  }
 }

@@ -20,20 +20,21 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "sell_statuses")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class SellStatus
   implements Serializable {
   private static final long serialVersionUID = 16L;
@@ -47,40 +48,4 @@ public class SellStatus
   @Size(min = 1, max = 100)
   @Column(name = "sell_status_name", nullable = false, unique = true)
   private String name;
-
-  public SellStatus(SellStatus source) {
-    this.id = source.id;
-    this.code = source.code;
-    this.name = source.name;
-  }
-
-  public SellStatus(Long id, Integer code, String name) {
-    this.id = id;
-    this.code = code;
-    this.name = name;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    SellStatus that = (SellStatus) o;
-    return Objects.equals(id, that.id) &&
-      Objects.equals(code, that.code) &&
-      Objects.equals(name, that.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, code, name);
-  }
-
-  @Override
-  public String toString() {
-    return "SellStatus{" +
-      "id=" + id +
-      ", code=" + code +
-      ", name='" + name + '\'' +
-      '}';
-  }
 }

@@ -20,50 +20,43 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.UserRolePojo;
 import org.trebol.jpa.entities.UserRole;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
-@ExtendWith(MockitoExtension.class)
 class UserRolesConverterServiceImplTest {
-  @InjectMocks UserRolesConverterServiceImpl instance;
-  UserRole userRole;
-  UserRolePojo userRolePojo;
+  UserRolesConverterServiceImpl instance;
 
   @BeforeEach
   void beforeEach() {
-    userRole = new UserRole();
-    userRole.setName(ANY);
-    userRole.setId(1L);
-    userRolePojo = UserRolePojo.builder()
+    instance = new UserRolesConverterServiceImpl();
+  }
+
+  @Test
+  void converts_to_pojo() {
+    UserRole input = UserRole.builder()
       .id(1L)
       .name(ANY)
       .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    userRole = null;
-    userRolePojo = null;
-  }
-
-  @Test
-  void testConvertToPojo() {
-    UserRolePojo actual = instance.convertToPojo(userRole);
-    assertEquals(userRole.getName(), actual.getName());
+    UserRolePojo result = instance.convertToPojo(input);
+    assertNotNull(result);
+    assertEquals(input.getId(), result.getId());
+    assertEquals(input.getName(), result.getName());
   }
 
   @Test
-  void testConvertToNewEntity() {
-    UserRole actual = instance.convertToNewEntity(userRolePojo);
-    assertEquals(userRolePojo.getName(), actual.getName());
+  void converts_to_new_entity() {
+    UserRolePojo input = UserRolePojo.builder()
+      .id(1L)
+      .name(ANY)
+      .build();
+    UserRole result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertEquals(input.getName(), result.getName());
   }
 }

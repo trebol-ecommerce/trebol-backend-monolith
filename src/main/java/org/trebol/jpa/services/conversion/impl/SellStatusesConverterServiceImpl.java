@@ -41,10 +41,10 @@ public class SellStatusesConverterServiceImpl
 
   @Override
   public SellStatus convertToNewEntity(SellStatusPojo source) {
-    SellStatus target = new SellStatus();
-    target.setCode(source.getCode());
-    target.setName(source.getName());
-    return target;
+    return SellStatus.builder()
+      .code(source.getCode())
+      .name(source.getName())
+      .build();
   }
 
   @Override

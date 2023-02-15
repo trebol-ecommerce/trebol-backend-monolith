@@ -20,15 +20,14 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.PersonPojo;
-import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
+import org.trebol.testing.PeopleTestHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.testing.TestConstants.ANY;
@@ -36,47 +35,28 @@ import static org.trebol.testing.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 class PeoplePatchServiceImplTest {
   @InjectMocks PeoplePatchServiceImpl instance;
-  Person person;
-  PersonPojo personPojo;
+  PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    person = new Person();
-    person.setId(1L);
-    personPojo = PersonPojo.builder().id(1L).build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    person = null;
-    personPojo = null;
+    peopleTestHelper.resetPeople();
   }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
-    Person actual = instance.patchExistingEntity(personPojo, person);
-
-    assertEquals(1L, actual.getId());
-
-    person.setEmail(ANY);
-    person.setFirstName(ANY);
-    person.setLastName(ANY);
-    person.setIdNumber(ANY);
-    person.setPhone1(ANY);
-    person.setPhone2(ANY);
-    personPojo.setEmail(ANY + " ");
-    personPojo.setFirstName(ANY + " ");
-    personPojo.setLastName(ANY + " ");
-    personPojo.setIdNumber(ANY + " ");
-    personPojo.setPhone1(ANY + " ");
-    personPojo.setPhone2(ANY + " ");
-
-    actual = instance.patchExistingEntity(personPojo, person);
-
-    assertEquals(ANY + " ", actual.getEmail());
-    assertEquals(ANY + " ", actual.getFirstName());
-    assertEquals(ANY + " ", actual.getLastName());
-    assertEquals(ANY + " ", actual.getPhone1());
-    assertEquals(ANY + " ", actual.getPhone2());
+  void patches_entity_data() {
+    Person existingPerson = peopleTestHelper.personEntityAfterCreation();
+    PersonPojo input = PersonPojo.builder()
+      .firstName(ANY)
+      .lastName(ANY)
+      .email(ANY)
+      .phone1(ANY)
+      .phone2(ANY)
+      .build();
+    Person result = instance.patchExistingEntity(input, existingPerson);
+    assertEquals(input.getEmail(), result.getEmail());
+    assertEquals(input.getFirstName(), result.getFirstName());
+    assertEquals(input.getLastName(), result.getLastName());
+    assertEquals(input.getPhone1(), result.getPhone1());
+    assertEquals(input.getPhone2(), result.getPhone2());
   }
 }

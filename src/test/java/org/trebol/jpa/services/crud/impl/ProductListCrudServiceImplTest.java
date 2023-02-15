@@ -38,6 +38,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListCrudServiceImplTest {
@@ -46,16 +47,45 @@ class ProductListCrudServiceImplTest {
   @Mock ProductListItemsRepository productListItemRepositoryMock;
 
   @Test
-  void delete_whenProductListNotFound_throwsEntityNotFoundException() {
-    when(productListRepositoryMock.count(any(Predicate.class))).thenReturn(0L);
-    assertThrows(EntityNotFoundException.class, () -> instance.delete(new BooleanBuilder()));
+  void matches_productlist_from_name() {
+    ProductListPojo input = ProductListPojo.builder()
+      .name(ANY)
+      .build();
+    ProductList expectedResult = ProductList.builder().build();
+    when(productListRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
+    Optional<ProductList> result = instance.getExisting(input);
+    assertTrue(result.isPresent());
+    assertEquals(expectedResult, result.get());
+    verify(productListRepositoryMock).findByName(input.getName());
   }
 
   @Test
-  void delete_whenProductListFound_shouldCallDeleteOnRepositories() {
-    ProductList productListMock = new ProductList();
-    productListMock.setId(1L);
-    List<ProductList> productListsMock = List.of(productListMock);
+  void matches_productlist_from_id() {
+    ProductListPojo input = ProductListPojo.builder()
+      .id(1L)
+      .build();
+    ProductList expectedResult = ProductList.builder().build();
+    when(productListRepositoryMock.findById(anyLong())).thenReturn(Optional.of(expectedResult));
+    Optional<ProductList> result = instance.getExisting(input);
+    assertTrue(result.isPresent());
+    assertEquals(expectedResult, result.get());;
+    verify(productListRepositoryMock).findById(input.getId());
+  }
+
+  @Test
+  void cannot_match_any_productlist_from_null_data() {
+    ProductListPojo input = ProductListPojo.builder().build();
+    Optional<ProductList> actualProductListOptional = instance.getExisting(input);
+    assertTrue(actualProductListOptional.isEmpty());
+  }
+
+  @Test
+  void deletes_lists() {
+    List<ProductList> productListsMock = List.of(
+      ProductList.builder()
+        .id(1L)
+        .build()
+    );
     when(productListRepositoryMock.count(any(Predicate.class))).thenReturn(1L);
     when(productListRepositoryMock.findAll(any(Predicate.class))).thenReturn(productListsMock);
     instance.delete(new BooleanBuilder());
@@ -64,33 +94,9 @@ class ProductListCrudServiceImplTest {
   }
 
   @Test
-  void getExisting_whenIdNull_shouldReturnEmptyOptional() {
-    ProductListPojo productListPojoMock = ProductListPojo.builder()
-      .id(null)
-      .name("productListPojoName")
-      .build();
-    Optional<ProductList> actualProductListOptional = instance.getExisting(productListPojoMock);
-    assertTrue(actualProductListOptional.isEmpty());
-  }
-
-  @Test
-  void getExisting_whenNameNull_shouldReturnEmptyOptional() {
-    ProductListPojo productListPojoMock = ProductListPojo.builder().build();
-    Optional<ProductList> actualProductListOptional = instance.getExisting(productListPojoMock);
-    assertTrue(actualProductListOptional.isEmpty());
-  }
-
-  @Test
-  void getExisting_whenNameNotNull_shouldReturnProductList() {
-    ProductListPojo productListPojoMock = ProductListPojo.builder()
-      .name("productListPojoName")
-      .build();
-    ProductList productListMock = new ProductList();
-    productListMock.setName("productListName");
-    when(productListRepositoryMock.findByName(anyString())).thenReturn(Optional.of(productListMock));
-    Optional<ProductList> actualProductListOptional = instance.getExisting(productListPojoMock);
-    verify(productListRepositoryMock).findByName(productListPojoMock.getName());
-    assertTrue(actualProductListOptional.isPresent());
-    assertEquals(productListMock, actualProductListOptional.get());
+  void attempting_to_delete_nothing_throws_EntityNotFoundException() {
+    BooleanBuilder input = new BooleanBuilder();
+    when(productListRepositoryMock.count(any(Predicate.class))).thenReturn(0L);
+    assertThrows(EntityNotFoundException.class, () -> instance.delete(input));
   }
 }

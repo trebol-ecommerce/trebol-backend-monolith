@@ -20,20 +20,21 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "images")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Image
   implements Serializable {
   private static final long serialVersionUID = 5L;
@@ -57,44 +58,5 @@ public class Image
     this.code = source.code;
     this.filename = source.filename;
     this.url = source.url;
-  }
-
-  public Image(String code, String filename, String url) {
-    this.code = code;
-    this.filename = filename;
-    this.url = url;
-  }
-
-  public Image(Long id, String code, String filename, String url) {
-    this.id = id;
-    this.code = code;
-    this.filename = filename;
-    this.url = url;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Image image = (Image) o;
-    return Objects.equals(id, image.id) &&
-      Objects.equals(code, image.code) &&
-      Objects.equals(filename, image.filename) &&
-      Objects.equals(url, image.url);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, code, filename, url);
-  }
-
-  @Override
-  public String toString() {
-    return "Image{" +
-      "id=" + id +
-      ", code='" + code + '\'' +
-      ", filename='" + filename + '\'' +
-      ", url='" + url + '\'' +
-      '}';
   }
 }

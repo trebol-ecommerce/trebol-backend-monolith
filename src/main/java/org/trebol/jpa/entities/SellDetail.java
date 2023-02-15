@@ -20,20 +20,21 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "sell_details")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class SellDetail
   implements Serializable {
   private static final long serialVersionUID = 15L;
@@ -63,52 +64,7 @@ public class SellDetail
     this.units = source.units;
     this.unitValue = source.unitValue;
     this.description = source.description;
-    this.product = source.product;
+    this.product = new Product(source.product);
     this.sell = source.sell;
-  }
-
-  public SellDetail(int units, Product product) {
-    this.units = units;
-    this.product = product;
-    this.unitValue = product.getPrice();
-    this.description = String.format("%o x %s [%s] | Unit Val: %d",
-      units, product.getName(), product.getBarcode(), product.getPrice());
-  }
-
-  public SellDetail(Long id, int units, Integer unitValue, Product product) {
-    this.id = id;
-    this.units = units;
-    this.unitValue = unitValue;
-    this.product = product;
-    this.description = String.format("%o x %s [%s] | Unit Val: %d",
-      units, product.getName(), product.getBarcode(), product.getPrice());
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    SellDetail that = (SellDetail) o;
-    return units == that.units &&
-      Objects.equals(id, that.id) &&
-      Objects.equals(unitValue, that.unitValue) &&
-      Objects.equals(product, that.product) &&
-      Objects.equals(description, that.description);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, units, unitValue, product, description);
-  }
-
-  @Override
-  public String toString() {
-    return "SellDetail{" +
-      "id=" + id +
-      ", units=" + units +
-      ", unitValue=" + unitValue +
-      ", product=" + product +
-      ", description=" + description +
-      '}';
   }
 }

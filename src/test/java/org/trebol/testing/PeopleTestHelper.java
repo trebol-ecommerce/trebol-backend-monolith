@@ -50,14 +50,23 @@ public class PeopleTestHelper {
 
   public PersonPojo personPojoForFetch() {
     if (this.pojoForFetch == null) {
-      this.pojoForFetch = PersonPojo.builder().idNumber(PERSON_ID_NUMBER).build();
+      this.pojoForFetch = PersonPojo.builder()
+        .idNumber(PERSON_ID_NUMBER)
+        .build();
     }
     return this.pojoForFetch;
   }
 
   public PersonPojo personPojoBeforeCreation() {
     if (this.pojoBeforeCreation == null) {
-      this.pojoBeforeCreation = PersonPojo.builder().idNumber(PERSON_ID_NUMBER).build();
+      this.pojoBeforeCreation = PersonPojo.builder()
+        .idNumber(PERSON_ID_NUMBER)
+        .firstName(PERSON_FIRST_NAME)
+        .lastName(PERSON_LAST_NAME)
+        .email(PERSON_EMAIL)
+        .phone1(PERSON_PHONE1)
+        .phone2(PERSON_PHONE2)
+        .build();
     }
     return this.pojoBeforeCreation;
   }
@@ -79,15 +88,27 @@ public class PeopleTestHelper {
 
   public Person personEntityBeforeCreation() {
     if (this.entityBeforeCreation == null) {
-      this.entityBeforeCreation = new Person(PERSON_FIRST_NAME, PERSON_LAST_NAME, PERSON_ID_NUMBER, PERSON_EMAIL);
+      this.entityBeforeCreation = Person.builder()
+        .firstName(PERSON_FIRST_NAME)
+        .lastName(PERSON_LAST_NAME)
+        .idNumber(PERSON_ID_NUMBER)
+        .email(PERSON_EMAIL)
+        .build();
     }
     return this.entityBeforeCreation;
   }
 
   public Person personEntityAfterCreation() {
     if (this.entityAfterCreation == null) {
-      this.entityAfterCreation = new Person(GENERIC_ID, PERSON_FIRST_NAME, PERSON_LAST_NAME, PERSON_ID_NUMBER, PERSON_EMAIL,
-        PERSON_PHONE1, PERSON_PHONE2);
+      this.entityAfterCreation = Person.builder()
+          .id(GENERIC_ID)
+          .firstName(PERSON_FIRST_NAME)
+          .lastName(PERSON_LAST_NAME)
+          .idNumber(PERSON_ID_NUMBER)
+          .email(PERSON_EMAIL)
+          .phone1(PERSON_PHONE1)
+          .phone2(PERSON_PHONE2)
+          .build();
     }
     return this.entityAfterCreation;
   }

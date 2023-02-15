@@ -32,36 +32,35 @@ import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.services.patch.PeoplePatchService;
+import org.trebol.testing.CustomersTestHelper;
+import org.trebol.testing.PeopleTestHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class CustomersPatchServiceImplTest {
   @InjectMocks CustomersPatchServiceImpl instance;
   @Mock PeoplePatchService peopleServiceMock;
-  Customer customer;
-  Person person;
-  CustomerPojo customerPojo;
+  CustomersTestHelper customersTestHelper = new CustomersTestHelper();
+  PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    person = new Person();
-    person.setId(ID_1L);
-    customer = new Customer();
-    customer.setId(ID_1L);
-    customer.setPerson(person);
-    customerPojo = CustomerPojo.builder()
-      .person(PersonPojo.builder().id(ID_1L).build())
-      .build();
+    customersTestHelper.resetCustomers();
+    peopleTestHelper.resetPeople();
   }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
-    when(peopleServiceMock.patchExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(person);
-    Customer actual = instance.patchExistingEntity(customerPojo, customer);
-    assertEquals(person, actual.getPerson());
+  void patches_entity_data() throws BadInputException {
+    Customer existingCustomer = customersTestHelper.customerEntityAfterCreation();
+    CustomerPojo input = CustomerPojo.builder()
+      .person(PersonPojo.builder().build())
+      .build();
+    Person expectedPerson = peopleTestHelper.personEntityAfterCreation();
+    when(peopleServiceMock.patchExistingEntity(any(PersonPojo.class), any(Person.class))).thenReturn(expectedPerson);
+    Customer actual = instance.patchExistingEntity(input, existingCustomer);
+    assertEquals(expectedPerson, actual.getPerson());
   }
 }

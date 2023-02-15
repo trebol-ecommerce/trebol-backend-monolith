@@ -58,7 +58,7 @@ class UsersCrudServiceImplTest {
     User expectedResult = new User(1L,
       userName,
       "test-password",
-      new Person("111111111"),
+      Person.builder().idNumber("111111111").build(),
       new UserRole(1000L, "test-user"));
     when(usersRepositoryMock.findByName(userName)).thenReturn(Optional.of(expectedResult));
 
@@ -71,17 +71,23 @@ class UsersCrudServiceImplTest {
 
   @Test
   void delete_ProtectedAccount_ThrowsBadInputException() {
-    Long userId = 1L;
-    User userMock = new User(userId,
-      "test-user",
-      "test-password",
-      new Person("111111111"),
-      new UserRole(1000L, "test-role"));
-
+    User userMock = User.builder()
+      .id(1L)
+      .name("test-user")
+      .password("test-password")
+      .person(Person.builder()
+        .idNumber("111111111")
+        .build())
+      .userRole(UserRole.builder()
+        .id(1000L)
+        .name("test-role")
+        .build())
+      .build();
+    BooleanBuilder anyPredicate = new BooleanBuilder();
     when(securityPropertiesMock.isAccountProtectionEnabled()).thenReturn(true);
-    when(securityPropertiesMock.getProtectedAccountId()).thenReturn(userId);
     when(usersRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(userMock));
+    when(securityPropertiesMock.getProtectedAccountId()).thenReturn(userMock.getId());
 
-    assertThrows(AccountProtectionViolationException.class, () -> instance.delete(new BooleanBuilder()));
+    assertThrows(AccountProtectionViolationException.class, () -> instance.delete(anyPredicate));
   }
 }

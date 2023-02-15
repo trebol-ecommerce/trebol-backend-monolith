@@ -55,7 +55,7 @@ class ShippersPatchServiceImplTest {
   }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
+  void patches_entity_data() throws BadInputException {
     shipperPojo.setName("PIOLO");
     Shipper actual = instance.patchExistingEntity(shipperPojo, shipper);
     assertEquals(1L, actual.getId());

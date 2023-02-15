@@ -20,19 +20,20 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "product_images")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class ProductImage
   implements Serializable {
   private static final long serialVersionUID = 12L;
@@ -49,31 +50,7 @@ public class ProductImage
   private Product product;
 
   public ProductImage(Product product, Image image) {
-    this.product = product;
-    this.image = image;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    ProductImage that = (ProductImage) o;
-    return Objects.equals(id, that.id) &&
-      Objects.equals(image, that.image) &&
-      Objects.equals(product, that.product);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, image, product);
-  }
-
-  @Override
-  public String toString() {
-    return "ProductImage{" +
-      "id=" + id +
-      ", image=" + image +
-      ", product=" + product +
-      '}';
+    this.product = new Product(product);
+    this.image = new Image(image);
   }
 }

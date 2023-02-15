@@ -33,18 +33,18 @@ import org.trebol.jpa.services.conversion.SalespeopleConverterService;
 @Service
 public class SalespeopleConverterServiceImpl
   implements SalespeopleConverterService {
-  private final PeopleConverterService peopleService;
+  private final PeopleConverterService peopleConverterService;
 
   @Autowired
   public SalespeopleConverterServiceImpl(
-    PeopleConverterService peopleService
+    PeopleConverterService peopleConverterService
   ) {
-    this.peopleService = peopleService;
+    this.peopleConverterService = peopleConverterService;
   }
 
   @Override
   public SalespersonPojo convertToPojo(Salesperson source) {
-    PersonPojo targetPerson = peopleService.convertToPojo(source.getPerson());
+    PersonPojo targetPerson = peopleConverterService.convertToPojo(source.getPerson());
     return SalespersonPojo.builder()
       .id(source.getId())
       .person(targetPerson)
@@ -53,10 +53,10 @@ public class SalespeopleConverterServiceImpl
 
   @Override
   public Salesperson convertToNewEntity(SalespersonPojo source) throws BadInputException {
-    Salesperson target = new Salesperson();
-    Person targetPerson = peopleService.convertToNewEntity(source.getPerson());
-    target.setPerson(targetPerson);
-    return target;
+    Person targetPerson = peopleConverterService.convertToNewEntity(source.getPerson());
+    return Salesperson.builder()
+      .person(targetPerson)
+      .build();
   }
 
   @Override

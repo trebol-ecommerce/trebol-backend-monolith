@@ -117,7 +117,10 @@ public class DataProductListContentsController {
 
     Optional<Product> productMatch = productCrudService.getExisting(input);
     if (productMatch.isPresent()) {
-      ProductListItem listItem = new ProductListItem(listMatch.get(), productMatch.get());
+      ProductListItem listItem = ProductListItem.builder()
+        .list(listMatch.get())
+        .product(productMatch.get())
+        .build();
       if (!listItemsRepository.exists(Example.of(listItem))) {
         listItemsRepository.save(listItem);
       }
@@ -138,7 +141,10 @@ public class DataProductListContentsController {
     for (ProductPojo p : input) {
       Optional<Product> productMatch = productCrudService.getExisting(p);
       if (productMatch.isPresent()) {
-        ProductListItem listItem = new ProductListItem(listMatch.get(), productMatch.get());
+        ProductListItem listItem = ProductListItem.builder()
+          .list(listMatch.get())
+          .product(productMatch.get())
+          .build();
         if (!listItemsRepository.exists(Example.of(listItem))) {
           listItemsRepository.save(listItem);
         }

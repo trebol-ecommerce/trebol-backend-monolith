@@ -52,17 +52,14 @@ public class AddressesConverterServiceImpl
 
   @Override
   public Address convertToNewEntity(AddressPojo source) {
-    Address target = new Address();
-    target.setFirstLine(source.getFirstLine());
-    target.setCity(source.getCity());
-    target.setMunicipality(source.getMunicipality());
-    if (source.getPostalCode() != null) {
-      target.setPostalCode(source.getPostalCode());
-    }
-    if (source.getNotes() != null) {
-      target.setNotes(source.getNotes());
-    }
-    return target;
+    return Address.builder()
+      .firstLine(source.getFirstLine())
+      .secondLine(source.getSecondLine())
+      .city(source.getCity())
+      .municipality(source.getMunicipality())
+      .postalCode(source.getPostalCode())
+      .notes((source.getNotes()))
+      .build();
   }
 
   @Override

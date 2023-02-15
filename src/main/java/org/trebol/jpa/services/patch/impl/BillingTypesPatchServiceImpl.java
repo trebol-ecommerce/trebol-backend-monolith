@@ -33,7 +33,10 @@ public class BillingTypesPatchServiceImpl
 
   @Override
   public BillingType patchExistingEntity(BillingTypePojo changes, BillingType existing) {
-    BillingType target = new BillingType(existing);
+    BillingType target = BillingType.builder()
+      .id(existing.getId())
+      .name(existing.getName())
+      .build();
 
     String name = changes.getName();
     if (!name.isBlank() && !target.getName().equals(name)) {

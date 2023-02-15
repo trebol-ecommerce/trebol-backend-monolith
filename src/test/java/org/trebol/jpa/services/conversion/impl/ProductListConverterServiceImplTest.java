@@ -21,8 +21,6 @@
 package org.trebol.jpa.services.conversion.impl;
 
 import com.querydsl.core.types.Predicate;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,45 +33,39 @@ import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
-import static org.trebol.testing.TestConstants.ID_1L;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListConverterServiceImplTest {
   @InjectMocks ProductListConverterServiceImpl instance;
   @Mock ProductListItemsRepository productListItemRepositoryMock;
-  ProductList productList;
-  ProductListPojo productListPojo;
 
-  @BeforeEach
-  void beforeEach() {
-    productList = new ProductList();
-    productList.setId(1L);
-    productList.setName(ANY);
-    productList.setName(ANY);
-    productListPojo = ProductListPojo.builder()
+  @Test
+  void converts_to_pojo() {
+    ProductList input = ProductList.builder()
       .id(1L)
-      .name(ANY + " ")
-      .code(ANY + " ")
+      .name(ANY)
+      .code(ANY)
       .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    productList = null;
-    productListPojo = null;
-  }
-
-  @Test
-  void testConvertToPojo() {
-    Mockito.when(productListItemRepositoryMock.count(Mockito.any(Predicate.class))).thenReturn(ID_1L);
-    ProductListPojo actual = instance.convertToPojo(productList);
-    assertEquals(ANY, actual.getName());
+    Mockito.when(productListItemRepositoryMock.count(Mockito.any(Predicate.class))).thenReturn(1L);
+    ProductListPojo result = instance.convertToPojo(input);
+    assertNotNull(result);
+    assertEquals(input.getId(), result.getId());
+    assertEquals(input.getName(), result.getName());
+    assertEquals(input.getCode(), result.getCode());
+    assertEquals(1L, result.getTotalCount());
   }
 
   @Test
-  void testConvertToNewEntity() throws BadInputException {
-    ProductList actual = instance.convertToNewEntity(productListPojo);
-    assertEquals(ANY + " ", actual.getName());
+  void converts_to_new_entity() throws BadInputException {
+    ProductListPojo input = ProductListPojo.builder()
+      .name(ANY)
+      .code(ANY)
+      .build();
+    ProductList result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertEquals(input.getName(), result.getName());
+    assertEquals(input.getCode(), result.getCode());
   }
 }

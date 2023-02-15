@@ -20,15 +20,13 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "product_lists",
@@ -36,9 +34,13 @@ import java.util.Objects;
     @UniqueConstraint(columnNames = {"product_list_name"}),
     @UniqueConstraint(columnNames = {"product_list_code"}),
   })
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class ProductList
   implements Serializable {
   private static final long serialVersionUID = 16L;
@@ -63,41 +65,6 @@ public class ProductList
     this.name = source.name;
     this.code = source.code;
     this.disabled = source.disabled;
-    this.items = source.items;
-  }
-
-  public ProductList(String code) {
-    this.code = code;
-  }
-
-  public ProductList(String name, String code) {
-    this.name = name;
-    this.code = code;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    ProductList that = (ProductList) o;
-    return disabled == that.disabled &&
-      Objects.equals(id, that.id) &&
-      Objects.equals(name, that.name) &&
-      Objects.equals(code, that.code);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, name, code, disabled);
-  }
-
-  @Override
-  public String toString() {
-    return "ProductList{" +
-      "id=" + id +
-      ", name='" + name + '\'' +
-      ", code='" + code + '\'' +
-      ", disabled=" + disabled +
-      '}';
+    this.items = new ArrayList<>(source.items);
   }
 }

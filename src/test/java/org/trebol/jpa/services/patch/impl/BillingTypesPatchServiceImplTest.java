@@ -20,8 +20,6 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,30 +34,17 @@ import static org.trebol.testing.TestConstants.ANY;
 @ExtendWith(MockitoExtension.class)
 class BillingTypesPatchServiceImplTest {
   @InjectMocks BillingTypesPatchServiceImpl instance;
-  BillingType billingType;
-  BillingTypePojo billingTypePojo;
-
-  @BeforeEach
-  void beforeEach() {
-    billingType = new BillingType();
-    billingType.setName(ANY);
-    billingType.setId(1L);
-    billingType.setName(ANY);
-    billingTypePojo = BillingTypePojo.builder()
-      .name(ANY)
-      .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    billingType = null;
-    billingTypePojo = null;
-  }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
-    billingTypePojo.setName("PIOLO");
-    BillingType actual = instance.patchExistingEntity(billingTypePojo, billingType);
-    assertEquals(1L, actual.getId());
+  void patches_entity_data() throws BadInputException {
+    BillingType existingBillingType = BillingType.builder()
+      .id(1L)
+      .name(ANY)
+      .build();
+    BillingTypePojo input = BillingTypePojo.builder()
+      .name("PIOLO")
+      .build();
+    BillingType result = instance.patchExistingEntity(input, existingBillingType);
+    assertEquals(input.getName(), result.getName());
   }
 }

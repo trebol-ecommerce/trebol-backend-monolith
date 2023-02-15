@@ -55,7 +55,7 @@ class SellStatusesPatchServiceImplTest {
   }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
+  void patches_entity_data() throws BadInputException {
     sellStatusPojo.setName("PIOLO");
     SellStatus actual = instance.patchExistingEntity(sellStatusPojo, sellStatus);
     assertEquals(1L, actual.getId());

@@ -20,19 +20,20 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "salespeople")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Salesperson
   implements Serializable {
   private static final long serialVersionUID = 13L;
@@ -47,36 +48,6 @@ public class Salesperson
 
   public Salesperson(Salesperson source) {
     this.id = source.id;
-    this.person = source.person;
-  }
-
-  public Salesperson(String idNumber) {
-    this.person = new Person(idNumber);
-  }
-
-  public Salesperson(Person person) {
-    this.person = person;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Salesperson that = (Salesperson) o;
-    return Objects.equals(id, that.id) &&
-      Objects.equals(person, that.person);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, person);
-  }
-
-  @Override
-  public String toString() {
-    return "Salesperson{" +
-      "id=" + id +
-      ", person=" + person +
-      '}';
+    this.person = new Person(source.person);
   }
 }

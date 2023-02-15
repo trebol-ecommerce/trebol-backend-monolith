@@ -40,9 +40,9 @@ public class BillingTypesConverterServiceImpl
 
   @Override
   public BillingType convertToNewEntity(BillingTypePojo source) {
-    BillingType target = new BillingType();
-    target.setName(source.getName());
-    return target;
+    return BillingType.builder()
+      .name(source.getName())
+      .build();
   }
 
   @Override

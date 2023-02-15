@@ -20,6 +20,7 @@
 
 package org.trebol.api.services.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,50 +37,50 @@ import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.SalesRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ReceiptServiceImplTest {
   @InjectMocks ReceiptServiceImpl instance;
   @Mock SalesRepository salesRepositoryMock;
   @Mock ConversionService conversionServiceMock;
+  Sell sellMock;
+
+  @BeforeEach
+  void beforeEach() {
+    sellMock = Sell.builder()
+      .details(List.of(
+        SellDetail.builder()
+          .product(Product.builder()
+            .name(ANY)
+            .barcode(ANY)
+            .build())
+          .units(1)
+          .build()))
+      .status(SellStatus.builder()
+        .name(ANY).build())
+      .build();
+  }
 
   @Test
   @DisplayName("When Sale not found by token, throw EntityNotFoundException")
   void fetchReceiptByTransactionToken_SaleNotFound_EntityNotFoundException() {
     when(salesRepositoryMock.findByTransactionToken(anyString())).thenReturn(Optional.empty());
 
-    assertThrows(EntityNotFoundException.class, () -> instance.fetchReceiptByTransactionToken("token"));
+    assertThrows(EntityNotFoundException.class, () -> instance.fetchReceiptByTransactionToken(ANY));
   }
 
   @Test
   @DisplayName("When Sale found by token, no exception")
   void fetchReceiptByTransactionToken_SaleFound_NoException() {
-    SellStatus sellStatusMock = new SellStatus();
-    sellStatusMock.setName("statusName");
-
-    Product productMock = new Product();
-    productMock.setName("productName");
-    productMock.setBarcode("barcode");
-
-    SellDetail sellDetailMock = new SellDetail();
-    sellDetailMock.setProduct(productMock);
-    sellDetailMock.setUnits(1);
-    Collection<SellDetail> sellDetailCollectionMock = List.of(sellDetailMock);
-
-    Sell sellMock = new Sell();
-    sellMock.setDetails(sellDetailCollectionMock);
-    sellMock.setStatus(sellStatusMock);
-
     ReceiptPojo receiptPojoMock = new ReceiptPojo();
     ReceiptDetailPojo receiptDetailPojoMock = new ReceiptDetailPojo();
-
     when(salesRepositoryMock.findByTransactionToken(anyString())).thenReturn(Optional.of(sellMock));
     when(conversionServiceMock.convert(any(Sell.class), eq(ReceiptPojo.class))).thenReturn(receiptPojoMock);
     when(conversionServiceMock.convert(any(SellDetail.class), eq(ReceiptDetailPojo.class))).thenReturn(receiptDetailPojoMock);
@@ -90,39 +91,15 @@ class ReceiptServiceImplTest {
   @Test
   @DisplayName("When Sale found by token, should return the correct ReceiptPojo")
   void fetchReceiptByTransactionToken_ReturnsReceiptPojo() {
-    SellStatus sellStatusMock = new SellStatus();
-    sellStatusMock.setName("statusName");
-
-    Product productMock = new Product();
-    productMock.setName("productName");
-    productMock.setBarcode("barcode");
-
-    SellDetail sellDetailMock = new SellDetail();
-    sellDetailMock.setProduct(productMock);
-    sellDetailMock.setUnitValue(1);
-    Collection<SellDetail> sellDetailCollectionMock = List.of(sellDetailMock);
-
-    Sell sellMock = new Sell();
-    sellMock.setDetails(sellDetailCollectionMock);
-    sellMock.setStatus(sellStatusMock);
-
     ReceiptPojo receiptPojoMock = new ReceiptPojo();
     ReceiptDetailPojo receiptDetailPojoMock = new ReceiptDetailPojo();
-
     when(salesRepositoryMock.findByTransactionToken(anyString())).thenReturn(Optional.of(sellMock));
     when(conversionServiceMock.convert(any(Sell.class), eq(ReceiptPojo.class))).thenReturn(receiptPojoMock);
     when(conversionServiceMock.convert(any(SellDetail.class), eq(ReceiptDetailPojo.class))).thenReturn(receiptDetailPojoMock);
 
-    ReceiptPojo actualReceiptPojo = instance.fetchReceiptByTransactionToken("token");
+    ReceiptPojo actualReceiptPojo = instance.fetchReceiptByTransactionToken(ANY);
 
-    Collection<ReceiptDetailPojo> actualReceiptDetailPojosCollection = actualReceiptPojo.getDetails();
-    ReceiptDetailPojo actualReceiptDetailPojo = actualReceiptDetailPojosCollection.iterator().next();
-
-    assertEquals(sellDetailCollectionMock.size(), actualReceiptDetailPojosCollection.size());
-    assertEquals(productMock.getName(), actualReceiptDetailPojo.getProduct().getName());
-    assertEquals(productMock.getBarcode(), actualReceiptDetailPojo.getProduct().getBarcode());
-    assertEquals(sellDetailMock.getUnitValue(), actualReceiptDetailPojo.getUnitValue());
-    assertEquals(receiptPojoMock.getStatus(), actualReceiptPojo.getStatus());
+    assertEquals(receiptPojoMock, actualReceiptPojo);
   }
 
 }

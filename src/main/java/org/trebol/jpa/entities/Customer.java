@@ -20,23 +20,23 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Customer
   implements Serializable {
   private static final long serialVersionUID = 4L;
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "customer_id", nullable = false)
@@ -47,36 +47,6 @@ public class Customer
 
   public Customer(Customer source) {
     this.id = source.id;
-    this.person = source.person;
-  }
-
-  public Customer(String idNumber) {
-    this.person = new Person(idNumber);
-  }
-
-  public Customer(Person person) {
-    this.person = person;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Customer customer = (Customer) o;
-    return Objects.equals(id, customer.id) &&
-      Objects.equals(person, customer.person);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, person);
-  }
-
-  @Override
-  public String toString() {
-    return "Customer{" +
-      "id=" + id +
-      ", person=" + person +
-      '}';
+    this.person = new Person(source.person);
   }
 }

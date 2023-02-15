@@ -36,15 +36,14 @@ import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.repositories.ProductImagesRepository;
 import org.trebol.jpa.services.conversion.ImagesConverterService;
 import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
+import org.trebol.testing.ProductsTestHelper;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ProductsConverterServiceImplTest {
@@ -52,49 +51,53 @@ class ProductsConverterServiceImplTest {
   @Mock ProductImagesRepository productImagesRepositoryMock;
   @Mock ImagesConverterService imagesConverterServiceMock;
   @Mock ProductCategoriesConverterService productCategoriesConverterServiceMock;
-  Product product;
-  ProductPojo productPojo;
+  final ProductsTestHelper productsTestHelper = new ProductsTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    product = new Product();
-    product.setName(ANY);
-    product.setId(1L);
-    productPojo = ProductPojo.builder()
-      .id(1L)
-      .name(ANY)
-      .build();
+    productsTestHelper.resetProducts();
   }
 
   @Test
-  void testConvertToPojo() {
-    final ProductCategory productCategory = new ProductCategory();
-    final ProductImage productImage = new ProductImage();
-    final Image image = new Image();
-    productImage.setImage(image);
-    product.setProductCategory(productCategory);
-    when(productImagesRepositoryMock.deepFindProductImagesByProductId(anyLong())).thenReturn(List.of(productImage));
-    when(imagesConverterServiceMock.convertToPojo(any(Image.class))).thenReturn(ImagePojo.builder().build());
-    when(productCategoriesConverterServiceMock.convertToPojo(any(ProductCategory.class))).thenReturn(ProductCategoryPojo.builder().build());
-
-    ProductPojo actual = instance.convertToPojo(product);
-
-    assertEquals(product.getName(), actual.getName());
-    assertEquals(product.getBarcode(), actual.getBarcode());
-    assertNotNull(actual.getCategory());
-    assertNotNull(actual.getImages());
-    assertEquals(1, actual.getImages().size());
+  void convers_to_pojo() {
+    Product input = productsTestHelper.productEntityAfterCreationWithoutCategory();
+    input.setProductCategory(ProductCategory.builder().build());
+    ProductCategoryPojo expectedProductCategory = ProductCategoryPojo.builder().build();
+    List<ProductImage> existingImages = List.of(
+      ProductImage.builder()
+        .image(Image.builder().build())
+        .product(input)
+        .build()
+    );
+    ImagePojo expectedImagePojo = ImagePojo.builder().build();
+    when(productImagesRepositoryMock.deepFindProductImagesByProductId(anyLong())).thenReturn(existingImages);
+    when(imagesConverterServiceMock.convertToPojo(any(Image.class))).thenReturn(expectedImagePojo);
+    when(productCategoriesConverterServiceMock.convertToPojo(any(ProductCategory.class))).thenReturn(expectedProductCategory);
+    ProductPojo result = instance.convertToPojo(input);
+    assertEquals(input.getName(), result.getName());
+    assertEquals(input.getBarcode(), result.getBarcode());
+    assertEquals(input.getPrice(), result.getPrice());
+    assertEquals(input.getDescription(), result.getDescription());
+    assertEquals(input.getStockCurrent(), result.getCurrentStock());
+    assertEquals(input.getStockCritical(), result.getCriticalStock());
+    assertNotNull(result.getCategory());
+    assertEquals(expectedProductCategory, result.getCategory());
+    assertNotNull(result.getImages());
+    assertFalse(result.getImages().isEmpty());
+    assertEquals(1, result.getImages().size());
+    assertEquals(expectedImagePojo, result.getImages().iterator().next());
   }
 
   @Test
-  void testConvertToNewEntity() {
-    productPojo.setBarcode(ANY);
-    productPojo.setPrice(1);
-
-    Product actual = instance.convertToNewEntity(productPojo);
-
-    assertEquals(productPojo.getName(), actual.getName());
-    assertEquals(productPojo.getBarcode(), actual.getBarcode());
-    assertEquals(productPojo.getPrice(), actual.getPrice());
+  void converts_to_new_entity() {
+    ProductPojo input = productsTestHelper.productPojoBeforeCreationWithoutCategory();
+    Product result = instance.convertToNewEntity(input);
+    assertEquals(input.getName(), result.getName());
+    assertEquals(input.getBarcode(), result.getBarcode());
+    assertEquals(input.getPrice(), result.getPrice());
+    assertEquals(input.getDescription(), result.getDescription());
+    assertEquals(input.getCurrentStock(), result.getStockCurrent());
+    assertEquals(input.getCriticalStock(), result.getStockCritical());
+    assertNull(result.getProductCategory());
   }
 }

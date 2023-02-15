@@ -20,7 +20,6 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,12 +28,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.*;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.services.conversion.AddressesConverterService;
-import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
-import org.trebol.jpa.services.conversion.CustomersConverterService;
-import org.trebol.jpa.services.conversion.SalespeopleConverterService;
+import org.trebol.jpa.services.conversion.*;
+import org.trebol.testing.SalesTestHelper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
@@ -48,71 +45,82 @@ class SalesConverterServiceImplTest {
   @Mock SalespeopleConverterService salespeopleConverterMock;
   @Mock BillingCompaniesConverterService billingCompaniesConverterMock;
   @Mock AddressesConverterService addressesConverterServiceMock;
-  SellPojo sellPojo;
-  Sell sell;
+  @Mock ShippersConverterService shippersConverterServiceMock;
+  final SalesTestHelper salesTestHelper = new SalesTestHelper();
 
   @BeforeEach
-  public void beforeEach() {
-    sellPojo = SellPojo.builder().build();
-    sell = new Sell();
-  }
-
-  @AfterEach
-  public void setUpAfter() {
-
-    instance = null;
-    sellPojo = null;
-    sell = null;
+  void beforeEach() {
+    salesTestHelper.resetSales();
   }
 
   @Test
-  void testConvertToPojo() {
-    sell.setStatus(new SellStatus(ID_1L, 1, ANY));
-    sell.setPaymentType(new PaymentType(ID_1L, ANY));
-    sell.setBillingType(new BillingType(ID_1L, BILLING_TYPE_ENTERPRISE));
-    sell.setBillingCompany(new BillingCompany(ID_1L, ANY, ANY));
-    sell.setBillingAddress(new Address());
-    sell.setShippingAddress(new Address());
-    sell.setCustomer(new Customer(ANY));
-    sell.setSalesperson(new Salesperson(ANY));
-    when(billingCompaniesConverterMock.convertToPojo(any(BillingCompany.class))).thenReturn(BillingCompanyPojo.builder().build());
-    when(addressesConverterServiceMock.convertToPojo(any(Address.class))).thenReturn(AddressPojo.builder().build());
+  void converts_to_pojo_with_some_data() {
+    Sell sell = salesTestHelper.sellEntityBeforeCreation();
+    CustomerPojo expectedCustomerPojo = CustomerPojo.builder().build();
+    AddressPojo expectedAddressPojo = AddressPojo.builder().build();
     when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
-    when(salespeopleConverterMock.convertToPojo(any(Salesperson.class))).thenReturn(SalespersonPojo.builder().build());
+    when(addressesConverterServiceMock.convertToPojo(any(Address.class))).thenReturn(expectedAddressPojo);
+    SellPojo result = instance.convertToPojo(sell);
+    assertNotNull(result);
+    assertEquals(sell.getDate(), result.getDate());
+    assertEquals(expectedCustomerPojo, result.getCustomer());
+    assertEquals(sell.getStatus().getName(), result.getStatus());
+    assertEquals(sell.getPaymentType().getName(), result.getPaymentType());
+    assertEquals(sell.getBillingType().getName(), result.getBillingType());
+    assertEquals(expectedAddressPojo, result.getBillingAddress());
+    assertNull(result.getBillingCompany());
+    assertNull(result.getSalesperson());
+    assertNull(result.getShippingAddress());
+    assertNull(result.getShipper());
+    verify(customersConverterMock).convertToPojo(sell.getCustomer());
+    verify(addressesConverterServiceMock).convertToPojo(sell.getBillingAddress());
+  }
 
-    SellPojo actual = instance.convertToPojo(sell);
-
-    assertEquals(ANY, actual.getStatus());
+  @Test
+  void converts_to_pojo_with_all_data() {
+    Sell sell = salesTestHelper.sellEntityAfterCreation();
+    sell.setShipper(Shipper.builder().build());
+    sell.setShippingAddress(Address.builder().build());
+    sell.setSalesperson(Salesperson.builder().build());
+    AddressPojo expectedAddress = AddressPojo.builder().build();
+    ShipperPojo expectedShipperPojo = ShipperPojo.builder().build();
+    SalespersonPojo expectedSalespersonPojo = SalespersonPojo.builder().build();
+    when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
+    when(addressesConverterServiceMock.convertToPojo(any(Address.class))).thenReturn(expectedAddress);
+    when(shippersConverterServiceMock.convertToPojo(any(Shipper.class))).thenReturn(expectedShipperPojo);
+    when(salespeopleConverterMock.convertToPojo(any(Salesperson.class))).thenReturn(expectedSalespersonPojo);
+    SellPojo result = instance.convertToPojo(sell);
+    assertEquals(expectedAddress, result.getShippingAddress());
+    assertEquals(expectedShipperPojo, result.getShipper());
+    assertEquals(expectedSalespersonPojo, result.getSalesperson());
     verify(addressesConverterServiceMock, times(2)).convertToPojo(any(Address.class));
-    verify(customersConverterMock, times(1)).convertToPojo(any(Customer.class));
-    verify(salespeopleConverterMock, times(1)).convertToPojo(any(Salesperson.class));
+    verify(shippersConverterServiceMock).convertToPojo(sell.getShipper());
+    verify(salespeopleConverterMock).convertToPojo(sell.getSalesperson());
   }
 
   @Test
-  void testConvertToPojoNullProperties() {
-    sell.setStatus(new SellStatus(ID_1L, 1, ANY));
-    sell.setPaymentType(new PaymentType(ID_1L, ANY));
-    sell.setBillingType(new BillingType(ID_1L, BILLING_TYPE_ENTERPRISE));
-    sell.setCustomer(new Customer(ANY));
+  void only_converts_billing_company_data_if_billing_type_is_correct() {
+    Sell sell = salesTestHelper.sellEntityBeforeCreation();
+    sell.setBillingCompany(BillingCompany.builder()
+      .id(ID_1L)
+      .idNumber(ANY)
+      .name(ANY)
+      .build());
     when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
+    when(addressesConverterServiceMock.convertToPojo(any(Address.class))).thenReturn(AddressPojo.builder().build());
+    SellPojo result = instance.convertToPojo(sell);
+    assertNull(result.getBillingCompany());
+    verifyNoInteractions(billingCompaniesConverterMock);
 
-    SellPojo actual = instance.convertToPojo(sell);
-
-    assertEquals(ANY, actual.getStatus());
-    verify(customersConverterMock, times(1)).convertToPojo(any(Customer.class));
-  }
-
-  @Test
-  void testConvertToPojoNullPropertiesNotEnterpriceInvoice() {
-    sell.setStatus(new SellStatus(ID_1L, 1, ANY));
-    sell.setPaymentType(new PaymentType(ID_1L, ANY));
-    sell.setBillingType(new BillingType(ID_1L, "Enterprise Invoicesss"));
-    sell.setCustomer(new Customer(ANY));
-    when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
-
-    SellPojo actual = instance.convertToPojo(sell);
-
-    assertEquals(ANY, actual.getStatus());
-    verify(customersConverterMock, times(1)).convertToPojo(any(Customer.class));
+    sell.setBillingType(BillingType.builder()
+      .id(2L)
+      .name(BILLING_TYPE_ENTERPRISE)
+      .build());
+    BillingCompanyPojo expectedBillingCompanyPojo = BillingCompanyPojo.builder().build();
+    when(billingCompaniesConverterMock.convertToPojo(any(BillingCompany.class))).thenReturn(expectedBillingCompanyPojo);
+    result = instance.convertToPojo(sell);
+    assertNotNull(result.getBillingCompany());
+    assertEquals(expectedBillingCompanyPojo, result.getBillingCompany());
+    verify(billingCompaniesConverterMock).convertToPojo(sell.getBillingCompany());
   }
 }

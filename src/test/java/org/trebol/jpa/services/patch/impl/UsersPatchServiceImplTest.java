@@ -76,7 +76,7 @@ class UsersPatchServiceImplTest {
   }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
+  void patches_entity_data() throws BadInputException {
     userPojo.setId(1L);
     userPojo.setName(ANY);
     userPojo.setRole(ANY);

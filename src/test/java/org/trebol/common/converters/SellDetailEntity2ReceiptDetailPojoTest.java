@@ -36,10 +36,10 @@ class SellDetailEntity2ReceiptDetailPojoTest {
   @Test
   void converts_selldetail_entities_to_receiptdetail_pojos() {
     List.of(
-      new SellDetail(),
-      detailWithDescription(),
-      detailWithDescriptionAndUnitValue(),
-      detailWithDescriptionAndUnitValueAndUnits()
+      SellDetail.builder().build(),
+      SellDetail.builder().description(ANY).build(),
+      SellDetail.builder().description(ANY).unitValue(1000).build(),
+      SellDetail.builder().description(ANY).unitValue(1000).units(2).build()
     ).forEach(selldetail -> {
       ReceiptDetailPojo result = instance.convert(selldetail);
       assertNotNull(result);
@@ -47,23 +47,5 @@ class SellDetailEntity2ReceiptDetailPojoTest {
       assertEquals(selldetail.getUnits(), result.getUnits());
       assertEquals(selldetail.getUnitValue(), result.getUnitValue());
     });
-  }
-
-  SellDetail detailWithDescription() {
-    SellDetail sellDetail = new SellDetail();
-    sellDetail.setDescription(ANY);
-    return sellDetail;
-  }
-
-  SellDetail detailWithDescriptionAndUnitValue() {
-    SellDetail sellDetail = detailWithDescription();
-    sellDetail.setUnitValue(1000);
-    return sellDetail;
-  }
-
-  SellDetail detailWithDescriptionAndUnitValueAndUnits() {
-    SellDetail sellDetail = detailWithDescriptionAndUnitValue();
-    sellDetail.setUnits(2);
-    return sellDetail;
   }
 }

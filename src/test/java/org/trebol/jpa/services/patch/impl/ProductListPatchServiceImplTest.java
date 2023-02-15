@@ -20,47 +20,46 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ProductListPojo;
 import org.trebol.common.exceptions.BadInputException;
+import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductList;
+import org.trebol.jpa.entities.ProductListItem;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListPatchServiceImplTest {
   @InjectMocks ProductListPatchServiceImpl instance;
-  ProductList productList;
-  ProductListPojo productListPojo;
 
-  @BeforeEach
-  void beforeEach() {
-    productList = new ProductList();
-    productList.setId(1L);
-    productList.setName(ANY);
-    productList.setName(ANY);
-    productListPojo = ProductListPojo.builder()
+  @Test
+  void patches_entity_data() throws BadInputException {
+    ProductList existingProductList = ProductList.builder()
       .id(1L)
+      .name(ANY)
+      .code(ANY)
+      .items(List.of(
+        ProductListItem.builder()
+          .product(Product.builder().build())
+          .build()
+      ))
+      .build();
+    ProductListPojo input = ProductListPojo.builder()
       .name(ANY + " ")
       .code(ANY + " ")
       .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    productList = null;
-    productListPojo = null;
-  }
-
-  @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
-    ProductList actual = instance.patchExistingEntity(productListPojo, productList);
-    assertEquals(1L, actual.getId());
+    ProductList actual = instance.patchExistingEntity(input, existingProductList);
+    assertEquals(input.getCode(), actual.getCode());
+    assertEquals(input.getName(), actual.getName());
+    assertNotEquals(input.getCode(), existingProductList.getCode());
+    assertNotEquals(input.getName(), existingProductList.getName());
   }
 }

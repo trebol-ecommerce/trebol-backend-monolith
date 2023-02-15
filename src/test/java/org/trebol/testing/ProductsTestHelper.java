@@ -55,7 +55,7 @@ public class ProductsTestHelper {
     return this.pojoForFetch;
   }
 
-  public ProductPojo productPojoBeforeCreation() {
+  public ProductPojo productPojoBeforeCreationWithoutCategory() {
     if (this.pojoBeforeCreation == null) {
       this.pojoBeforeCreation = ProductPojo.builder()
         .name(PRODUCT_NAME)
@@ -64,12 +64,13 @@ public class ProductsTestHelper {
         .price(PRODUCT_PRICE)
         .currentStock(PRODUCT_STOCK)
         .criticalStock(PRODUCT_STOCK_CRITICAL)
+        .category(null)
         .build();
     }
     return this.pojoBeforeCreation;
   }
 
-  public ProductPojo productPojoAfterCreation() {
+  public ProductPojo productPojoAfterCreationWithoutCategory() {
     if (this.pojoAfterCreation == null) {
       this.pojoAfterCreation = ProductPojo.builder()
         .id(PRODUCT_ID)
@@ -79,23 +80,39 @@ public class ProductsTestHelper {
         .price(PRODUCT_PRICE)
         .currentStock(PRODUCT_STOCK)
         .criticalStock(PRODUCT_STOCK_CRITICAL)
+        .category(null)
         .build();
     }
     return pojoAfterCreation;
   }
 
-  public Product productEntityBeforeCreation() {
+  public Product productEntityBeforeCreationWithoutCategory() {
     if (this.entityBeforeCreation == null) {
-      this.entityBeforeCreation = new Product(PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION, PRODUCT_PRICE,
-        PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL);
+      this.entityBeforeCreation = Product.builder()
+        .name(PRODUCT_NAME)
+        .barcode(PRODUCT_BARCODE)
+        .description(PRODUCT_DESCRIPTION)
+        .price(PRODUCT_PRICE)
+        .stockCurrent(PRODUCT_STOCK)
+        .stockCritical(PRODUCT_STOCK_CRITICAL)
+        .productCategory(null)
+        .build();
     }
     return this.entityBeforeCreation;
   }
 
-  public Product productEntityAfterCreation() {
+  public Product productEntityAfterCreationWithoutCategory() {
     if (this.entityAfterCreation == null) {
-      this.entityAfterCreation = new Product(PRODUCT_ID, PRODUCT_NAME, PRODUCT_BARCODE, PRODUCT_DESCRIPTION,
-        PRODUCT_PRICE, PRODUCT_STOCK, PRODUCT_STOCK_CRITICAL, null);
+      this.entityAfterCreation = Product.builder()
+        .id(PRODUCT_ID)
+        .name(PRODUCT_NAME)
+        .barcode(PRODUCT_BARCODE)
+        .description(PRODUCT_DESCRIPTION)
+        .price(PRODUCT_PRICE)
+        .stockCurrent(PRODUCT_STOCK)
+        .stockCritical(PRODUCT_STOCK_CRITICAL)
+        .productCategory(null)
+        .build();
     }
     return this.entityAfterCreation;
   }

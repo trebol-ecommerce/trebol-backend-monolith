@@ -20,20 +20,21 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "billing_companies")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class BillingCompany
   implements Serializable {
   private static final long serialVersionUID = 2L;
@@ -53,35 +54,5 @@ public class BillingCompany
     this.id = source.id;
     this.idNumber = source.idNumber;
     this.name = source.name;
-  }
-
-  public BillingCompany(Long id, String idNumber, String name) {
-    this.id = id;
-    this.idNumber = idNumber;
-    this.name = name;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    BillingCompany that = (BillingCompany) o;
-    return Objects.equals(id, that.id) &&
-      Objects.equals(idNumber, that.idNumber) &&
-      Objects.equals(name, that.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, idNumber, name);
-  }
-
-  @Override
-  public String toString() {
-    return "BillingCompany{" +
-      "id=" + id +
-      ", idNumber='" + idNumber + '\'' +
-      ", name='" + name + '\'' +
-      '}';
   }
 }

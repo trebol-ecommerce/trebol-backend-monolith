@@ -61,8 +61,10 @@ public class SalespeopleTestHelper {
 
   public SalespersonPojo salespersonPojoBeforeCreation() {
     if (this.pojoBeforeCreation == null) {
-      this.pojoForFetch = SalespersonPojo.builder()
-        .person(PersonPojo.builder().idNumber(SALESPERSON_ID_NUMBER).build())
+      this.pojoBeforeCreation = SalespersonPojo.builder()
+        .person(PersonPojo.builder()
+          .idNumber(SALESPERSON_ID_NUMBER)
+          .build())
         .build();
     }
     return this.pojoBeforeCreation;
@@ -87,17 +89,31 @@ public class SalespeopleTestHelper {
 
   public Salesperson salespersonEntityBeforeCreation() {
     if (this.entityBeforeCreation == null) {
-      this.entityBeforeCreation = new Salesperson(new Person(SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
-        SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL));
+      this.entityBeforeCreation = Salesperson.builder()
+        .person(Person.builder()
+          .firstName(SALESPERSON_FIRST_NAME)
+          .lastName(SALESPERSON_LAST_NAME)
+          .idNumber(SALESPERSON_ID_NUMBER)
+          .email(SALESPERSON_EMAIL)
+          .build())
+        .build();
     }
     return this.entityBeforeCreation;
   }
 
   public Salesperson salespersonEntityAfterCreation() {
     if (this.entityAfterCreation == null) {
-      this.entityAfterCreation = new Salesperson(new Person(GENERIC_ID, SALESPERSON_FIRST_NAME, SALESPERSON_LAST_NAME,
-        SALESPERSON_ID_NUMBER, SALESPERSON_EMAIL, SALESPERSON_PHONE1,
-        SALESPERSON_PHONE2));
+      this.entityAfterCreation = Salesperson.builder()
+        .person(Person.builder()
+          .id(GENERIC_ID)
+          .firstName(SALESPERSON_FIRST_NAME)
+          .lastName(SALESPERSON_LAST_NAME)
+          .idNumber(SALESPERSON_ID_NUMBER)
+          .email(SALESPERSON_EMAIL)
+          .phone1(SALESPERSON_PHONE1)
+          .phone2(SALESPERSON_PHONE2)
+          .build())
+        .build();
     }
     return this.entityAfterCreation;
   }

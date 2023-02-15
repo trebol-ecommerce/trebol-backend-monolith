@@ -92,15 +92,18 @@ public class RegistrationServiceImpl
     usersRepository.saveAndFlush(newUser);
     logger.info("New user created with name '{}' and idNumber '{}'", newUser.getName(), newPerson.getIdNumber());
 
-    Customer newCustomer = new Customer(newPerson);
+    Customer newCustomer = Customer.builder()
+      .person(newPerson)
+      .build();
     customersRepository.saveAndFlush(newCustomer);
   }
 
   protected User convertToUser(RegistrationPojo registration) {
     String password = passwordEncoder.encode(registration.getPassword());
-    User target = new User();
-    target.setName(registration.getName());
-    target.setPassword(password);
+    User target = User.builder()
+      .name(registration.getName())
+      .password(password)
+      .build();
 
     Optional<UserRole> customerRole = rolesRepository.findByName("Customer");
     if (customerRole.isEmpty()) {

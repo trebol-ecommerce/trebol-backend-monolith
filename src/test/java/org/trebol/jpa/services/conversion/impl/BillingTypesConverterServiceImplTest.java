@@ -20,51 +20,41 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.BillingTypePojo;
 import org.trebol.jpa.entities.BillingType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
-@ExtendWith(MockitoExtension.class)
 class BillingTypesConverterServiceImplTest {
-  @InjectMocks BillingTypesConverterServiceImpl instance;
-  BillingType billingType;
-  BillingTypePojo billingTypePojo;
+  BillingTypesConverterServiceImpl instance;
 
   @BeforeEach
   void beforeEach() {
-    billingType = new BillingType();
-    billingType.setName(ANY);
-    billingType.setId(1L);
-    billingType.setName(ANY);
+    instance = new BillingTypesConverterServiceImpl();
+  }
 
-    billingTypePojo = BillingTypePojo.builder()
+  @Test
+  void converts_to_pojo() {
+    BillingType input = BillingType.builder()
+      .id(1L)
       .name(ANY)
       .build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    billingType = null;
-    billingTypePojo = null;
+    BillingTypePojo result = instance.convertToPojo(input);
+    assertNotNull(result);
+    assertEquals(input.getName(), result.getName());
   }
 
   @Test
-  void testConvertToPojo() {
-    BillingTypePojo actual = instance.convertToPojo(billingType);
-    assertEquals(billingType.getName(), actual.getName());
-  }
-
-  @Test
-  void testConvertToNewEntity() {
-    BillingType actual = instance.convertToNewEntity(billingTypePojo);
-    assertEquals(billingTypePojo.getName(), actual.getName());
+  void converts_to_new_entity() {
+    BillingTypePojo input = BillingTypePojo.builder()
+      .name(ANY)
+      .build();
+    BillingType result = instance.convertToNewEntity(input);
+    assertNotNull(result);
+    assertEquals(input.getName(), result.getName());
   }
 }

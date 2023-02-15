@@ -51,11 +51,12 @@ public class PeopleConverterServiceImpl
 
   @Override
   public Person convertToNewEntity(PersonPojo source) {
-    Person target = new Person();
-    target.setFirstName(source.getFirstName());
-    target.setLastName(source.getLastName());
-    target.setIdNumber(source.getIdNumber());
-    target.setEmail(source.getEmail());
+    Person target = Person.builder()
+      .firstName(source.getFirstName())
+      .lastName(source.getLastName())
+      .idNumber(source.getIdNumber())
+      .email(source.getEmail())
+      .build();
     if (source.getPhone1() != null) {
       target.setPhone1(source.getPhone1());
     }

@@ -20,14 +20,11 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -35,9 +32,13 @@ import java.util.Objects;
   uniqueConstraints = {
     @UniqueConstraint(columnNames = {"param_category", "param_name"})
   })
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Param
   implements Serializable {
   private static final long serialVersionUID = 6L;
@@ -55,30 +56,4 @@ public class Param
   @Size(min = 1, max = 500)
   @Column(name = "param_value", nullable = false)
   private String value;
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Param param = (Param) o;
-    return Objects.equals(id, param.id) &&
-      Objects.equals(category, param.category) &&
-      Objects.equals(name, param.name) &&
-      Objects.equals(value, param.value);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, category, name, value);
-  }
-
-  @Override
-  public String toString() {
-    return "Param{" +
-      "id=" + id +
-      ", category='" + category + '\'' +
-      ", name='" + name + '\'' +
-      ", value='" + value + '\'' +
-      '}';
-  }
 }

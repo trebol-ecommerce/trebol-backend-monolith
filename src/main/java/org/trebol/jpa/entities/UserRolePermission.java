@@ -20,19 +20,20 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "app_user_role_permissions")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class UserRolePermission
   implements Serializable {
   private static final long serialVersionUID = 21L;
@@ -48,27 +49,9 @@ public class UserRolePermission
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    UserRolePermission that = (UserRolePermission) o;
-    return Objects.equals(id, that.id) &&
-      Objects.equals(permission, that.permission) &&
-      Objects.equals(userRole, that.userRole);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, permission, userRole);
-  }
-
-  @Override
-  public String toString() {
-    return "UserRolePermission{" +
-      "id=" + id +
-      ", permission=" + permission +
-      ", userRole=" + userRole +
-      '}';
+  public UserRolePermission(UserRolePermission source) {
+    this.id = source.id;
+    this.permission = source.permission;
+    this.userRole = source.userRole;
   }
 }

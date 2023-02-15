@@ -41,9 +41,9 @@ public class UserRolesConverterServiceImpl
 
   @Override
   public UserRole convertToNewEntity(UserRolePojo source) {
-    UserRole convert = new UserRole();
-    convert.setName(source.getName());
-    return convert;
+    return UserRole.builder()
+      .name(source.getName())
+      .build();
   }
 
   @Override

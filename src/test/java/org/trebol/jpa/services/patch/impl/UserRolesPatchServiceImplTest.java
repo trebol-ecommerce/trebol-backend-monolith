@@ -56,7 +56,7 @@ class UserRolesPatchServiceImplTest {
   }
 
   @Test
-  void testApplyChangesToExistingEntity() throws BadInputException {
+  void patches_entity_data() throws BadInputException {
     UserRole actual = instance.patchExistingEntity(userRolePojo, userRole);
     assertEquals(1L, actual.getId());
   }
