@@ -32,6 +32,7 @@ import java.util.Collection;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+// TODO introduce a POJO for POST requests - where all fields are required - and a second POJO for PATCH requests - where not all fields may be included (perhaps implemented using Java Optionals)
 @Data
 @Builder
 @JsonInclude(NON_NULL)
@@ -47,9 +48,11 @@ public class ProductPojo {
   @NotNull
   private Integer price;
   @JsonIgnore
-  private Integer currentStock;
+  @Builder.Default
+  private Integer currentStock = 0;
   @JsonIgnore
-  private Integer criticalStock;
+  @Builder.Default
+  private Integer criticalStock = 0;
   private ProductCategoryPojo category;
   private Collection<ImagePojo> images;
 }
