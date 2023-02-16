@@ -22,14 +22,18 @@ package org.trebol.api.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 // TODO introduce a POJO for POST requests - where all fields are required - and a second POJO for PATCH requests - where not all fields may be included (perhaps implemented using Java Optionals)
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude
 public class ShipperPojo {
   @JsonIgnore
