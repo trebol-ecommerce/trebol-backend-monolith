@@ -20,6 +20,7 @@
 
 package org.trebol.api.controllers;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RootController {
 
   @GetMapping({"", "/"})
-  public void defaultMapping() {
-    /* ping-like method. return success status without message body */
+  public ResponseEntity<Void> defaultMapping() {
+    return ResponseEntity.ok().build();
   }
 }
