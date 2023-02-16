@@ -20,6 +20,7 @@
 
 package org.trebol.security;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.List;
 
 @Data
+@Builder
 public class UserDetailsPojo
   implements UserDetails {
   private static final long serialVersionUID = 1L;

@@ -81,16 +81,30 @@ public class UserDetailsServiceImpl
         permissions.add(rp.getPermission());
       }
       List<SimpleGrantedAuthority> authorities = convertPermissionList(permissions);
-      return new UserDetailsPojo(authorities, username, "",
-        true, true, true, true);
+      return UserDetailsPojo.builder()
+        .authorities(authorities)
+        .username(username)
+        .password("")
+        .enabled(true)
+        .accountNonLocked(true)
+        .accountNonExpired(true)
+        .credentialsNonExpired(true)
+        .build();
     }
     Optional<User> foundUser = usersRepository.findByNameWithRole(username);
     if (foundUser.isPresent()) {
       User user = foundUser.get();
       Iterable<Permission> permissions = userPermissionsService.loadPermissionsForUser(user);
       List<SimpleGrantedAuthority> authorities = convertPermissionList(permissions);
-      return new UserDetailsPojo(authorities, username, user.getPassword(),
-        true, true, true, true);
+      return UserDetailsPojo.builder()
+        .authorities(authorities)
+        .username(username)
+        .password(user.getPassword())
+        .enabled(true)
+        .accountNonLocked(true)
+        .accountNonExpired(true)
+        .credentialsNonExpired(true)
+        .build();
     } else {
       throw new UsernameNotFoundException(username);
     }

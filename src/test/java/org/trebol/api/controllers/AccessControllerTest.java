@@ -57,14 +57,15 @@ class AccessControllerTest {
 
   @BeforeEach
   void beforeEach() {
-    userDetails = new UserDetailsPojo(
-      List.of(),
-      "username",
-      "password",
-      true,
-      true,
-      true,
-      true);
+    userDetails = UserDetailsPojo.builder()
+      .authorities(List.of())
+      .username("username")
+      .password("password")
+      .enabled(true)
+      .accountNonLocked(true)
+      .accountNonExpired(true)
+      .credentialsNonExpired(true)
+      .build();
   }
 
   @Test
