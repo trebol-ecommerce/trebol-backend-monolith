@@ -22,18 +22,18 @@ package org.trebol.api.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RootControllerTest {
+  RootController instance = new RootController();
+
   @Test
-  void return_200OK() {
-    given().
-        standaloneSetup(new RootController()).
-    when().
-        get("/").
-    then().
-        assertThat().
-        status(HttpStatus.OK);
+  void returns_200_OK() {
+    ResponseEntity<Void> result = instance.defaultMapping();
+    assertTrue(result.getStatusCode().is2xxSuccessful());
+    assertEquals(HttpStatus.OK, result.getStatusCode());
   }
 }
