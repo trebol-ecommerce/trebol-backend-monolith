@@ -22,6 +22,7 @@ package org.trebol.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.security.Keys;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,15 +30,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -72,25 +72,34 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-  JwtMockGuestAuthenticationFilterTest.SecurityMockBeans.class,
+  SecurityMockBeans.class,
   JwtMockGuestAuthenticationFilterTest.MockSecurityConfig.class })
 @WebAppConfiguration
 class JwtMockGuestAuthenticationFilterTest {
-  static String GUEST_URL = "/guest";
+  static final String GUEST_URL = "/guest";
+  static final String USERNAME = "guest";
+  static final String PASSWORD = USERNAME;
+  static final String PRIVATE_KEY_SEQUENCE = "a9s8dy030g8h39f7weh8eufesa0d8f7g";
+  static List<GrantedAuthority> GUEST_AUTHORITIES;
   @MockBean SecurityProperties securityPropertiesMock;
   @MockBean UserDetailsService userDetailsServiceMock;
   @Autowired WebApplicationContext webApplicationContext;
   PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
   MockMvc mockMvc;
 
+  @BeforeAll
+  static void beforeAll() {
+    GUEST_AUTHORITIES = List.of(
+        new SimpleGrantedAuthority("checkout"));
+  }
+
   @BeforeEach
   void beforeEach() {
     when(securityPropertiesMock.getJwtExpirationAfterHours()).thenReturn(1);
     when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(UserDetailsPojo.builder()
-      .username("guest")
-      .password("guest")
-      .authorities(List.of(
-        new SimpleGrantedAuthority("checkout")))
+      .username(USERNAME)
+      .password(PASSWORD)
+      .authorities(GUEST_AUTHORITIES)
       .enabled(true)
       .accountNonLocked(true)
       .accountNonExpired(true)
@@ -149,13 +158,13 @@ class JwtMockGuestAuthenticationFilterTest {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
       auth.authenticationProvider(daoAuthenticationProvider)
         .inMemoryAuthentication()
-        .withUser("guest")
-        .password(passwordEncoder.encode("guest"))
-        .authorities("checkout");
+        .withUser(USERNAME)
+        .password(passwordEncoder.encode(PASSWORD))
+        .authorities(GUEST_AUTHORITIES);
     }
 
     private JwtGuestAuthenticationFilter guestFilterForUrl(String url) throws Exception {
-      SecretKey key = Keys.hmacShaKeyFor("a9s8dy030g8h39f7weh8eufesa0d8f7g".getBytes());
+      SecretKey key = Keys.hmacShaKeyFor(PRIVATE_KEY_SEQUENCE.getBytes());
       JwtGuestAuthenticationFilter filter = new JwtGuestAuthenticationFilter(
         securityProperties,
         key,
@@ -163,26 +172,6 @@ class JwtMockGuestAuthenticationFilterTest {
         customersService);
       filter.setFilterProcessesUrl(url);
       return filter;
-    }
-  }
-
-  @TestConfiguration
-  static class SecurityMockBeans {
-
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(
-      PasswordEncoder passwordEncoder,
-      UserDetailsService userDetailsService
-    ) {
-      DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-      provider.setPasswordEncoder(passwordEncoder);
-      provider.setUserDetailsService(userDetailsService);
-      return provider;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-      return new BCryptPasswordEncoder(5);
     }
   }
 }
