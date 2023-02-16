@@ -28,7 +28,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @TestConfiguration
-class SecurityMockBeans {
+class SecurityTestingConfig {
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(

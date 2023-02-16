@@ -48,8 +48,10 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.trebol.api.models.LoginPojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.config.SecurityProperties;
+import org.trebol.jpa.services.crud.CustomersCrudService;
+import org.trebol.testing.PeopleTestHelper;
 
 import javax.crypto.SecretKey;
 import java.util.List;
@@ -60,7 +62,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Spring Security integration tests for the JwtMockLoginAuthenticationFilter<br/>
+ * Spring Security integration tests for the JwtMockGuestAuthenticationFilter<br/>
  * For more insight on the how's and why's, check out these links.<br/>
  * <ul>
  * <li><a href="https://docs.spring.io/spring-security/site/docs/5.3.x/reference/html5/#test">Spring Security Reference - 19.Testing</a></li>
@@ -70,23 +72,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-  SecurityMockBeans.class,
-  JwtMockLoginAuthenticationFilterTest.MockSecurityConfig.class })
+  SecurityTestingConfig.class,
+  JwtGuestAuthenticationFilterTest.MockSecurityConfig.class })
 @WebAppConfiguration
-class JwtMockLoginAuthenticationFilterTest {
-  static final String LOGIN_URL = "/login";
-  static final String USERNAME = "SOME";
-  static final String PASSWORD = "BODY";
-  static final String PRIVATE_KEY_SEQUENCE = "ONCE_TOLD_ME_THE_WORLD_IS_GONNA_ROLL_ME";
-  static List<GrantedAuthority> USER_AUTHORITIES;
+class JwtGuestAuthenticationFilterTest {
+  static final String GUEST_URL = "/guest";
+  static final String USERNAME = "guest";
+  static final String PASSWORD = USERNAME;
+  static final String PRIVATE_KEY_SEQUENCE = "a9s8dy030g8h39f7weh8eufesa0d8f7g";
+  static List<GrantedAuthority> GUEST_AUTHORITIES;
   @MockBean SecurityProperties securityPropertiesMock;
   @MockBean UserDetailsService userDetailsServiceMock;
   @Autowired WebApplicationContext webApplicationContext;
+  PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
   MockMvc mockMvc;
 
   @BeforeAll
   static void beforeAll() {
-    USER_AUTHORITIES = List.of(
+    GUEST_AUTHORITIES = List.of(
         new SimpleGrantedAuthority("checkout"));
   }
 
@@ -96,7 +99,7 @@ class JwtMockLoginAuthenticationFilterTest {
     when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(UserDetailsPojo.builder()
       .username(USERNAME)
       .password(PASSWORD)
-      .authorities(USER_AUTHORITIES)
+      .authorities(GUEST_AUTHORITIES)
       .enabled(true)
       .accountNonLocked(true)
       .accountNonExpired(true)
@@ -111,13 +114,10 @@ class JwtMockLoginAuthenticationFilterTest {
   @Test
   @WithAnonymousUser
   void accepts_authentication() throws Exception {
-    LoginPojo login = LoginPojo.builder()
-      .name(USERNAME)
-      .password(PASSWORD)
-      .build();
-    String jsonRequestBody = new ObjectMapper().writeValueAsString(login);
+    PersonPojo profile = peopleTestHelper.personPojoBeforeCreation();
+    String jsonRequestBody = new ObjectMapper().writeValueAsString(profile);
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-      .post(LOGIN_URL)
+      .post(GUEST_URL)
       .content(jsonRequestBody);
     mockMvc.perform(requestBuilder)
       .andExpect(status().isOk());
@@ -127,6 +127,7 @@ class JwtMockLoginAuthenticationFilterTest {
   @EnableWebSecurity
   static class MockSecurityConfig
     extends WebSecurityConfigurerAdapter {
+    @MockBean CustomersCrudService customersService;
     final SecurityProperties securityProperties;
     final UserDetailsService userDetailsService;
     final PasswordEncoder passwordEncoder;
@@ -148,9 +149,9 @@ class JwtMockLoginAuthenticationFilterTest {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
-        .antMatchers(LOGIN_URL).permitAll()
+        .antMatchers(GUEST_URL).permitAll()
         .and().csrf().disable()
-        .addFilter(loginFilterForUrl(LOGIN_URL));
+        .addFilter(guestFilterForUrl(GUEST_URL));
     }
 
     @Override
@@ -159,15 +160,16 @@ class JwtMockLoginAuthenticationFilterTest {
         .inMemoryAuthentication()
         .withUser(USERNAME)
         .password(passwordEncoder.encode(PASSWORD))
-        .authorities(USER_AUTHORITIES);
+        .authorities(GUEST_AUTHORITIES);
     }
 
-    private JwtLoginAuthenticationFilter loginFilterForUrl(String url) throws Exception {
+    private JwtGuestAuthenticationFilter guestFilterForUrl(String url) throws Exception {
       SecretKey key = Keys.hmacShaKeyFor(PRIVATE_KEY_SEQUENCE.getBytes());
-      JwtLoginAuthenticationFilter filter = new JwtLoginAuthenticationFilter(
+      JwtGuestAuthenticationFilter filter = new JwtGuestAuthenticationFilter(
         securityProperties,
         key,
-        super.authenticationManager());
+        super.authenticationManager(),
+        customersService);
       filter.setFilterProcessesUrl(url);
       return filter;
     }
