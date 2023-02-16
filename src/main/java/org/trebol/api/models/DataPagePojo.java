@@ -23,6 +23,7 @@ package org.trebol.api.models;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,18 +34,12 @@ import java.util.Collection;
  * @param <T> The type of data in the page
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude
 public class DataPagePojo<T> {
-  private Collection<T> items;
-  private int pageIndex;
-  private long totalCount;
-  private int pageSize;
-
-  public DataPagePojo() {
-    this.items = new ArrayList<>();
-    this.pageIndex = 0;
-    this.totalCount = 0;
-    this.pageSize = 0;
-  }
+  private Collection<T> items = new ArrayList<>();
+  private int pageIndex = 0;
+  private long totalCount = 0;
+  private int pageSize = 0;
 }
