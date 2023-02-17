@@ -26,19 +26,17 @@ import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 /**
- * Interface for API controllers that handle reading of data stored in a persistence context and
- * return it converted to the parameterized class, presumably a Pojo
+ * {@link org.springframework.web.bind.annotation.RestController} that handles requests for reading data from a persistence context.
  *
- * @param <P> The Pojo class
+ * @param <M> Its signature model class
  */
-public interface DataController<P> {
+public interface DataController<M> {
 
   /**
-   * Get a paged collection of Pojos.
+   * Get a paged collection of data.
    *
-   * @param requestParams A map of key/value String pairs, that may be parsed as sorting, pagination and filtering
-   *                      conditions.
-   * @return An instance of DataPagePojo, with the items and page information.
+   * @param requestParams A {@link java.util.Map} of key/value String pairs containing the parameters for reading the data.
+   * @return An instance of {@link org.trebol.api.models.DataPagePojo} containing the data itself, and information about that page of data.
    */
-  DataPagePojo<P> readMany(@NotNull Map<String, String> requestParams);
+  DataPagePojo<M> readMany(@NotNull Map<String, String> requestParams);
 }

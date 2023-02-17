@@ -39,6 +39,15 @@ import org.trebol.payment.PaymentServiceException;
 
 import java.io.IOException;
 
+/**
+ * Implements WebPay Plus as a payment gateway, using its official SDK.<br/>
+ * Usage of WebPay Plus requires an affiliation to Transbank.<br/>
+ * You can <a href="https://publico.transbank.cl/">know more about Transbank here</a>.<br/>
+ * The documentation for the SDK and general use of WebPay Plus APIs
+ * <a href="https://transbankdevelopers.cl/referencia/webpay">can be found here</a>.<br/>
+ * <br/>
+ * <b>Please note it is all in Spanish!</b>
+ */
 @Service
 public class WebpayplusPaymentServiceImpl
   implements PaymentService {

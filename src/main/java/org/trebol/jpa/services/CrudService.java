@@ -32,25 +32,25 @@ import java.util.Optional;
 
 
 /**
- * Interface for wrapping basic CRUD service operations by using Pojo classes
+ * Performs all four CRUD operations against a given type of data
  *
- * @param <P> The models type class
+ * @param <M> The signature model class
+ * @param <E> The signature entity class
  */
-public interface CrudService<P, E> {
+public interface CrudService<M, E> {
 
   /**
-   * Inserts and persists an item.
+   * Saves a registry into the persistence context.
    *
-   * @param dto The item to be created.
-   * @return The created item, with updated properties (most importantly its ID),
-   * or null if the item could not be created.
-   * @throws BadInputException     When the data in the input object is not valid or is insufficient.
-   * @throws EntityExistsException When the data collides with an existing registry.
+   * @param input The model to be added to the persistence context.
+   * @return The model as inserted, with updated properties (usually its <b>id</b> field).
+   * @throws BadInputException     When the data required from the input object is invalid or insufficient.
+   * @throws EntityExistsException When the data is a duplicate of an existing registry.
    */
-  P create(P dto) throws BadInputException, EntityExistsException;
+  M create(M input) throws BadInputException, EntityExistsException;
 
   /**
-   * Queries a paged collection of items.
+   * Queries a paged collection of registries in the form of a {@link org.trebol.api.models.DataPagePojo}.
    *
    * @param pageSize  Number of items per page.
    * @param pageIndex Page index (0-based).
@@ -58,51 +58,75 @@ public interface CrudService<P, E> {
    * @param filters   Filtering conditions
    * @return The requested page of items along some metadata
    */
-  DataPagePojo<P> readMany(int pageIndex, int pageSize, @Nullable Sort order, @Nullable Predicate filters);
+  DataPagePojo<M> readMany(int pageIndex, int pageSize, @Nullable Sort order, @Nullable Predicate filters);
 
+  // TODO why throw an exception when no match is made? That is not an application error - consider using Optional<M> as return type and ditch the throws clause.
   /**
-   * Retrieves the first item that matches a certain filter.
+   * Retrieves the first item that matches certain filtering conditions.
+   * These are wrapped in a {@link com.querydsl.core.types.Predicate}, and it is usually the task of the
+   * {@link org.trebol.jpa.services.PredicateService} to create the Predicate for it in the first place.
    *
    * @param filters Filtering conditions
    * @return The requested item
    * @throws EntityNotFoundException When no item matches the filter.
    */
-  P readOne(Predicate filters) throws EntityNotFoundException;
+  M readOne(Predicate filters) throws EntityNotFoundException;
 
+  // TODO why does only this method return an entity type? Perhaps it can be refactored away.
   /**
-   * Attempts to match the given models class instance to an existing entity.
-   * This method is also useful to assert bare-minimum models validity for using it to update data.
+   * Attempts to match the given model class instance to an existing entity, by querying the
+   * persistence context using its <i>identifying property</i>.<br/>
+   * Note that the <i>identifying property</i> depends on the data type.
    *
-   * @param example The models class instance that should hold a valid identifying property
-   * @return A possible entity match that may have succeeded or not
-   * @throws BadInputException When the models doesn't have its identifying property.
+   * @param example An instance of the model class. It should hold a valid  <i>identification property</i>
+   *                that can be matched against in the persistence context.
+   * @return A container possibly holding an entity.
+   * @throws BadInputException When the model does not have a valid <i>identification property</i>.
    */
-  Optional<E> getExisting(P example) throws BadInputException;
+  Optional<E> getExisting(M example) throws BadInputException;
 
+  // TODO in implementations, this is more akin to a PATCH method, in that it partially updates the data, than a PUT method, which intent is to updates the whole model. This interface should declare separate methods for doing both things, and make use of different POJOs to validate data accordingly.
   /**
-   * Updates an existing item.
+   * Updates an existing registry, first fetching it from its <i>identifying property</i> and
+   * then replacing the rest of its contents with those from the input model.<br/>
+   * Note that the <i>identifying property</i> depends on the data type.<br/>
+   * <br/>
+   * <i>NOTE: This intended behavior may change in the future.</i>
    *
-   * @param dto The item to be updated. Its identifying field may or may not be
-   *            present, and can be different from the second method param.
-   * @return The saved item, with updated properties
-   * @throws EntityNotFoundException When no item matches the given item
-   * @throws BadInputException       When the data in the input object is not valid.
+   * @param input The model to be updated. Its identifying field may or may not be
+   *              present, and can be different from the second method param.
+   * @return A model-copy of the saved registry, with its properties updated accordingly.
+   * @throws EntityNotFoundException When no registry matches the given input.
+   * @throws BadInputException       When the data in the input object is not valid.<br/>
+   *                                 It is expected that some portions data may be null, because it may not have
+   *                                 been included during serialization. Such cases are <i>not</i> meant to cause
+   *                                 a BadInputException.<br/>
    */
-  P update(P dto) throws EntityNotFoundException, BadInputException;
+  M update(M input) throws EntityNotFoundException, BadInputException;
 
+  // TODO in implementations, this is more akin to a PATCH method, in that it partially updates the data, than a PUT method, which intent is to updates the whole model. This interface should declare separate methods for doing both things, and make use of different POJOs to validate data accordingly.
   /**
-   * Updates an existing item matching given filtering conditions
+   * Updates one or several existing registries, by first targeting them
+   * given some filtering conditions wrapped in a {@link com.querydsl.core.types.Predicate}.<br/>
+   * It is usually the task of the {@link org.trebol.jpa.services.PredicateService}
+   * to create this Predicate in the first place.
+   * <br/>
+   * <i>NOTE: This intended behavior may change in the future.</i>
    *
-   * @param dto     The item with upcoming data.
-   * @param filters Filtering conditions
+   * @param input   The model with upcoming data.
+   * @param filters The QueryDSL filtering conditions
    * @return The saved item, with updated properties
    * @throws EntityNotFoundException When no item matches given filters.
    * @throws BadInputException       When the data in the input object is not valid.
    */
-  P update(P dto, Predicate filters) throws EntityNotFoundException, BadInputException;
+  M update(M input, Predicate filters) throws EntityNotFoundException, BadInputException;
 
+  // TODO why throw an exception? It is not an application error to not delete any registry. Consider changing the return type to aptly inform the caller about the result.
   /**
-   * Deletes all items matching given filtering conditions.
+   * Deletes all items matching given filtering conditions wrapped in a
+   * {@link com.querydsl.core.types.Predicate}.<br/>
+   * It is usually the task of the {@link org.trebol.jpa.services.PredicateService}
+   * to create this Predicate in the first place.
    *
    * @param filters Filtering conditions
    * @throws EntityNotFoundException When no item matches given filters.

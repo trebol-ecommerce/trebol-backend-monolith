@@ -20,18 +20,21 @@
 
 package org.trebol.common.exceptions;
 
+/**
+ * Thrown by most services that validate data as inputted by the consumer of the application's REST API
+ */
 public class BadInputException
   extends Exception {
 
-  public BadInputException(String string) {
-    super(string);
+  public BadInputException(String message) {
+    super(message);
   }
 
-  public BadInputException(String string, Throwable thrwbl) {
-    super(string, thrwbl);
+  public BadInputException(String message, Throwable cause) {
+    super(message, cause);
   }
 
-  public BadInputException(Throwable thrwbl) {
-    super(thrwbl);
+  public BadInputException(Throwable cause) {
+    super(cause);
   }
 }

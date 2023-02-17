@@ -29,9 +29,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * A simple object that represents a page of data for a specific type
+ * A container object that holds a page of data for a specific type, and information about that page.<br/>
+ * By default, it uses an {@link java.util.ArrayList}, but any {@link java.util.Collection} may be used.
  *
- * @param <T> The type of data in the page
+ * @param <T> The type of data of this container.
  */
 @Data
 @NoArgsConstructor

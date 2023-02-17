@@ -51,7 +51,7 @@ import static org.trebol.config.Constants.*;
 /**
  * Implements Mailgun HTTP API as a mail service provider.<br/>
  * A Mailgun account is required to use this.<br/>
- * Read about Mailgun on their website https://www.mailgun.com/
+ * Read about Mailgun on <a href="https://www.mailgun.com/">their website here</a>.
  */
 @Service
 @Profile("mailgun")

@@ -84,6 +84,7 @@ public class PublicCheckoutController {
   @PreAuthorize("hasAuthority('checkout')")
   public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody SellPojo transactionRequest)
     throws BadInputException, PaymentServiceException, EntityExistsException {
+    // TODO this is the root of all evil. "creating a sale" here definitely sounds wrong - while "creating an order" does not.
     SellPojo createdTransaction = salesCrudService.create(transactionRequest);
     return service.requestTransactionStart(createdTransaction);
   }

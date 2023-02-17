@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Type that creates an instance of CorsConfigurationSource using information from an instance of CorsProperties
+ * Creates an instance of CorsConfigurationSource using information from an instance of CorsProperties
  */
 public class CorsConfigurationSourceBuilder {
   private static final Long MAX_AGE = 300L;

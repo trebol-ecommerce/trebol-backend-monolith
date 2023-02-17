@@ -41,25 +41,27 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Simple CRUD service abstraction. Communicates with other services only through Pojos, keeping JPA entity classes only within their own scope.
+ * Abstraction that supports all four CRUD operations.<br/>
+ * Communicates with other services mostly using model classes.<br/>
+ *
  * Whenever possible, its public abstract API should not be overriden, but its protected methods instead.
  *
- * @param <P> The models class
+ * @param <M> The models class
  * @param <E> The entity class
  */
 @Transactional
-public abstract class CrudGenericService<P, E>
-  implements CrudService<P, E> {
+public abstract class CrudGenericService<M, E>
+  implements CrudService<M, E> {
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
   private final Repository<E> repository;
-  private final ConverterService<P, E> converter;
-  private final PatchService<P, E> patchService;
+  private final ConverterService<M, E> converter;
+  private final PatchService<M, E> patchService;
 
   protected CrudGenericService(
     Repository<E> repository,
-    ConverterService<P, E> converter,
-    PatchService<P, E> patchService
+    ConverterService<M, E> converter,
+    PatchService<M, E> patchService
   ) {
     this.repository = repository;
     this.converter = converter;
@@ -67,23 +69,26 @@ public abstract class CrudGenericService<P, E>
   }
 
   /**
-   * Converts a models to an entity, saves it and returns it back as a brand new models equivalent.
+   * Converts a model class instance to an entity instance, saves it and returns it back as a model copy of the persisted entity.
    *
-   * @param inputPojo The Pojo instance to be converted and inserted.
+   * @param input model Pojo instance to be converted and inserted.
+   * @throws BadInputException     When the data required from the input object is invalid or insufficient to build a proper entity.
+   * @throws EntityExistsException When the data is a duplicate of an existing entity.
    */
   @Override
-  public P create(P inputPojo)
+  public M create(M input)
     throws BadInputException, EntityExistsException {
-    this.validateInputPojoBeforeCreation(inputPojo);
-    E preparedEntity = this.prepareNewEntityFromInputPojo(inputPojo);
+    this.validateInputPojoBeforeCreation(input);
+    E preparedEntity = this.prepareNewEntityFromInputPojo(input);
     return this.persist(preparedEntity);
   }
 
   /**
-   * Read entities, convert them to pojos and return the collection.
+   * Read data from repository, convert each entity to its equivalent model class and
+   * return the collected data in a {@link org.trebol.api.models.DataPagePojo}.
    */
   @Override
-  public DataPagePojo<P> readMany(int pageIndex, int pageSize, @Nullable Sort order, @Nullable Predicate filters) {
+  public DataPagePojo<M> readMany(int pageIndex, int pageSize, @Nullable Sort order, @Nullable Predicate filters) {
     Pageable pagination = ((order == null) ?
       PageRequest.of(pageIndex, pageSize) :
       PageRequest.of(pageIndex, pageSize, order));
@@ -93,16 +98,20 @@ public abstract class CrudGenericService<P, E>
     Page<E> iterable = ((filters == null) ?
       repository.findAll(pagination) :
       repository.findAll(filters, pagination));
-    List<P> pojoList = new ArrayList<>();
+    List<M> pojoList = new ArrayList<>();
     for (E item : iterable) {
-      P outputItem = converter.convertToPojo(item);
+      M outputItem = converter.convertToPojo(item);
       pojoList.add(outputItem);
     }
     return new DataPagePojo<>(pojoList, pageIndex, totalCount, pageSize);
   }
 
+  /**
+   * @throws EntityNotFoundException When no entity matches the given example.
+   * @throws BadInputException       When the data in the input object is not valid.
+   */
   @Override
-  public P update(P input)
+  public M update(M input)
     throws EntityNotFoundException, BadInputException {
     Optional<E> match = this.getExisting(input);
     if (match.isEmpty()) {
@@ -111,8 +120,12 @@ public abstract class CrudGenericService<P, E>
     return this.persistEntityWithUpdatesFromPojo(input, match.get());
   }
 
+  /**
+   * @throws EntityNotFoundException When no entity matches the given filtering conditions.
+   * @throws BadInputException       When the data in the input object is not valid.
+   */
   @Override
-  public P update(P input, Predicate filters)
+  public M update(M input, Predicate filters)
     throws EntityNotFoundException, BadInputException {
     Optional<E> firstMatch = repository.findOne(filters);
     if (firstMatch.isEmpty()) {
@@ -121,6 +134,9 @@ public abstract class CrudGenericService<P, E>
     return this.persistEntityWithUpdatesFromPojo(input, firstMatch.get());
   }
 
+  /**
+   * @throws EntityNotFoundException When no entity matches the given filtering conditions.
+   */
   @Override
   public void delete(Predicate filters)
     throws EntityNotFoundException {
@@ -131,8 +147,11 @@ public abstract class CrudGenericService<P, E>
     repository.deleteAll(repository.findAll(filters));
   }
 
+  /**
+   * @throws EntityNotFoundException When no entity matches the given filtering conditions.
+   */
   @Override
-  public P readOne(Predicate filters)
+  public M readOne(Predicate filters)
     throws EntityNotFoundException {
     Optional<E> entity = repository.findOne(filters);
     if (entity.isEmpty()) {
@@ -142,7 +161,7 @@ public abstract class CrudGenericService<P, E>
     return converter.convertToPojo(found);
   }
 
-  protected final P persist(E preparedEntity) {
+  protected final M persist(E preparedEntity) {
     E result = repository.saveAndFlush(preparedEntity);
     return converter.convertToPojo(result);
   }
@@ -157,7 +176,7 @@ public abstract class CrudGenericService<P, E>
    * @return The resulting Pojo class instance
    * @throws BadInputException If data in Pojo is insufficient, incorrect, malformed, etc
    */
-  protected P persistEntityWithUpdatesFromPojo(P changes, E existingEntity)
+  protected M persistEntityWithUpdatesFromPojo(M changes, E existingEntity)
     throws BadInputException {
     E updatedEntity = patchService.patchExistingEntity(changes, existingEntity);
     if (existingEntity.equals(updatedEntity)) {
@@ -167,20 +186,20 @@ public abstract class CrudGenericService<P, E>
   }
 
   /**
-   * Base entity-specific validation  method.
-   * Should be called at the beginning of the create() method.
+   * Generic validation routine. Should be be called at the beginning of the create() method.
    *
-   * @param inputPojo A models to validate
-   * @throws BadInputException If the models does not have a valid identifying property
+   * @param inputPojo A model to validate
+   * @throws BadInputException If the model does not have a valid identifying property
+   * @throws BadInputException If the model does not have a valid identifying property
    */
-  protected void validateInputPojoBeforeCreation(P inputPojo) throws BadInputException {
+  protected void validateInputPojoBeforeCreation(M inputPojo) throws BadInputException {
     if (this.getExisting(inputPojo).isPresent()) {
       throw new EntityExistsException(ITEM_ALREADY_EXISTS);
     }
   }
 
   /**
-   * Creates a new entity from a models.
+   * Creates a new entity from a model classs.
    * Executes right before persisting data.
    * Ideal overridable method to include cascading entity relationships.
    *
@@ -188,7 +207,7 @@ public abstract class CrudGenericService<P, E>
    * @return An entity object equivalent to the provided models, ready for saving
    * @throws BadInputException If the models does not have a valid identifying property
    */
-  protected E prepareNewEntityFromInputPojo(P inputPojo) throws BadInputException {
+  protected E prepareNewEntityFromInputPojo(M inputPojo) throws BadInputException {
     return converter.convertToNewEntity(inputPojo);
   }
 }

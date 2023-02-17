@@ -29,7 +29,7 @@ import org.springframework.validation.annotation.Validated;
 /**
  * Holds configuration properties for using Mailgun as a mail service provider.<br/>
  * A Mailgun account is required to use this.<br/>
- * Read about Mailgun on their website https://www.mailgun.com/
+ * Read about Mailgun on <a href="https://www.mailgun.com/">their website here</a>.
  */
 @Validated
 @Component

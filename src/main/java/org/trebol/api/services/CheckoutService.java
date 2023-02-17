@@ -27,6 +27,11 @@ import org.trebol.payment.PaymentServiceException;
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 
+/**
+ * Core component of the client-side commerce process.<br/>
+ * Helps consumers of the REST API to pay for their products; validate those payments; and finally
+ * redirect them to a result page.
+ */
 public interface CheckoutService {
 
   /**

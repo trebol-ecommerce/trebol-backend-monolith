@@ -25,6 +25,16 @@ import org.trebol.jpa.entities.User;
 
 import java.util.Set;
 
+/**
+ * Provides a mean to acknowledge the raw permissions data as stored in the persistence context.
+ */
 public interface UserPermissionsService {
-  Set<Permission> loadPermissionsForUser(User source);
+
+  /**
+   * Fetches the {@link java.util.Set} of unique permissions associated to a given user.
+   *
+   * @param user The user to fetch permissions for.
+   * @return A Set of permission entities.
+   */
+  Set<Permission> loadPermissionsForUser(User user);
 }

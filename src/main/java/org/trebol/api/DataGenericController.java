@@ -33,16 +33,17 @@ import org.trebol.jpa.services.SortSpecParserService;
 import java.util.Map;
 
 /**
- * RestController that implements IDataController with a GenericJpaService
+ * Base class that implements {@link org.trebol.api.DataController}.<br/>
+ * Thus, it can only read data of a given type.
  *
- * @param <P> The Pojo class
- * @param <E> The Entity class
+ * @param <M> The model class
+ * @param <E> The entity class
  */
-public abstract class DataGenericController<P, E>
-  implements DataController<P> {
+public abstract class DataGenericController<M, E>
+  implements DataController<M> {
   protected final PaginationService paginationService;
   protected final SortSpecParserService sortService;
-  protected final CrudService<P, E> crudService;
+  protected final CrudService<M, E> crudService;
   protected final PredicateService predicateService;
 
   protected abstract Map<String, OrderSpecifier<?>> getOrderSpecMap();
@@ -50,7 +51,7 @@ public abstract class DataGenericController<P, E>
   protected DataGenericController(
     PaginationService paginationService,
     SortSpecParserService sortService,
-    CrudService<P, E> crudService,
+    CrudService<M, E> crudService,
     PredicateService predicateService
   ) {
     this.paginationService = paginationService;
@@ -67,7 +68,7 @@ public abstract class DataGenericController<P, E>
    * @return A paged collection of Pojos.
    */
   @Override
-  public DataPagePojo<P> readMany(@Nullable Map<String, String> requestParams) {
+  public DataPagePojo<M> readMany(@Nullable Map<String, String> requestParams) {
     int pageIndex = paginationService.determineRequestedPageIndex(requestParams);
     int pageSize = paginationService.determineRequestedPageSize(requestParams);
 

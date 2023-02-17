@@ -90,15 +90,15 @@ public class ProductsCrudServiceImpl
 
   @Transactional
   @Override
-  public ProductPojo create(ProductPojo inputPojo)
+  public ProductPojo create(ProductPojo input)
     throws BadInputException, EntityExistsException {
-    this.validateInputPojoBeforeCreation(inputPojo);
-    Product prepared = this.prepareNewEntityFromInputPojo(inputPojo);
+    this.validateInputPojoBeforeCreation(input);
+    Product prepared = this.prepareNewEntityFromInputPojo(input);
     Product persistent = productsRepository.saveAndFlush(prepared);
     ProductPojo outputPojo = productsConverterService.convertToPojo(persistent);
 
     // one-Product-to-many-Images
-    Collection<ImagePojo> inputPojoImages = inputPojo.getImages();
+    Collection<ImagePojo> inputPojoImages = input.getImages();
     if (inputPojoImages != null && !inputPojoImages.isEmpty()) {
       List<ProductImage> resultImages = this.makeTransientProductImages(persistent, inputPojoImages);
       productImagesRepository.saveAll(resultImages);
@@ -106,7 +106,7 @@ public class ProductsCrudServiceImpl
     }
 
     // one-Product-to-one-ProductCategory
-    ProductCategoryPojo inputCategory = inputPojo.getCategory();
+    ProductCategoryPojo inputCategory = input.getCategory();
     if (inputCategory != null) {
       Optional<ProductCategory> match = categoriesCrudService.getExisting(inputCategory);
       if (match.isPresent()) {

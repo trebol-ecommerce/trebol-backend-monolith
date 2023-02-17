@@ -20,7 +20,6 @@
 
 package org.trebol.api;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,31 +32,43 @@ import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 /**
- * Catches declared exceptions at controller level and submits custom responses
+ * Catches some known exceptions, commonly declared at the controller level.<br/>
+ * Then it sends custom responses to consumers of the REST API.<br/>
+ * Supports:
+ * <ul>
+ * <li>{@link javax.persistence.EntityNotFoundException}</li> -> 404 NOT FOUND
+ * <li>{@link javax.persistence.EntityExistsException}</li> ->
+ * <li>{@link org.trebol.common.exceptions.BadInputException}</li>
+ * <li>{@link org.springframework.web.bind.MethodArgumentNotValidException}</li>
+ * </ul>
+ * @see org.springframework.http.HttpStatus
  */
 @RestControllerAdvice
 public class ExceptionsControllerAdvice {
 
-  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ResponseStatus(NOT_FOUND)
   @ExceptionHandler(EntityNotFoundException.class)
   public String handleException(EntityNotFoundException ex) {
     return ex.getMessage();
   }
 
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(BAD_REQUEST)
   @ExceptionHandler(EntityExistsException.class)
   public String handleException(EntityExistsException ex) {
     return ex.getMessage();
   }
 
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(BAD_REQUEST)
   @ExceptionHandler(BadInputException.class)
   public String handleException(BadInputException ex) {
     return ex.getMessage();
   }
 
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public Map<String, String> handleException(MethodArgumentNotValidException ex) {
     Map<String, String> errors = new HashMap<>();
