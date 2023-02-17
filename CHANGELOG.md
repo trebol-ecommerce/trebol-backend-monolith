@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v0.1.0] - VERSION RESET
 
 ### Added
 
@@ -17,19 +17,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Account protection mechanism by `user_id` - **Thank you `@mepox`**
   - Any attempt to delete one certain user account will be cancelled
   - The protected user account must have the same `id` indicated by `trebol.security.protected-account-id` in `application.properties`
+- Spring Security Test dependency for integration tests that deal with Spring Security mechanisms
 
 ### Changed
 
-- [WIP] **BREAKING CHANGE** Split logic in services that implement `ICrudJpaService<P>` and extend `GenericCrudJpaService<P, E>`
-  - Introduce `IDataTransportJpaService<P, E>` to keep specific domain-dependant boilerplate code for updating entities before they are submitted to database
-    - This new, separate interface inherits the `applyChangesToExistingEntity` method from `ITwoWayConverterJpaService<P, E>`
-    - The original method in `ITwoWayConverterJpaService` has been deprecated
-  - Break down the steps taken on each method in the public API of `GenericCrudJpaService` and its sub-implementations, by introducing these overridable `protected` methods 
+- [WIP] **BREAKING CHANGE** Split logic in services that implement `ICrudJpaService` (now `CrudService`) and extend `GenericCrudJpaService` (now `CrudGenericService`)
+  - Introduce `PatchService<P, E>` to keep specific domain-dependant boilerplate code for updating entities before they are submitted to database
+    - This new, separate interface inherits the `applyChangesToExistingEntity` method from `ITwoWayConverterJpaService` (now `ConverterService`)
+    - The original method in `ITwoWayConverterJpaService` (now `ConverterService`) has been deprecated
+  - Break down the steps taken on each method in the public API of `GenericCrudJpaService` (now `CrudGenericService`) and its sub-implementations, by introducing these overridable `protected` methods
     - `prepareEntityWithUpdatesFromPojo`
     - `validateInputPojoBeforeCreation`
     - `prepareNewEntityFromInputPojo`
-  - Introduce sub-interfaces from `ICrudJpaService<P, E`, `IDataTransportJpaService<P, E>` and `ITwoWayConverterJpaService<P, E>`
-    - This increases the accuracy of type-safe dependency injection. Specially important for unit testing and mocks.
+  - Introduce sub-interfaces from `ICrudJpaService` (now `CrudService`), `PatchService` and `ITwoWayConverterJpaService` (now `ConverterService`)
+    - This increases the accuracy of type-safe dependency injection. Specially important for mocks and unit testing.
 - UsersConverterJpaServiceImpl - refactor `convertToNewEntity` since it tag as cyclomatic issue
 - SalesConverterJpaServiceImpl, SalesProcessServiceImpl - add string constants
 - **BREAKING CHANGE**: Rename table names to follow the naming convention - **Thank you `@mepox`**
@@ -44,28 +45,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Following [Switching to V2](https://github.com/actions/setup-java/blob/v3.6.0/docs/switching-to-v2.md) guide
     - Chose `temurin` distro, maintained by the Eclipse foundation
   - `actions/cache`         | `v1 -> `v3`
-- Update to latest Spring Boot patch (as of Oct 12th, 2022)
+- Update to the latest Spring Boot patch (as of Oct 12th, 2022)
   - `spring-boot-starter-parent` - `2.6.4` to `2.6.12`
-- Take advantage of Project Lombok `@Builder` annotation for Pojo classes
-  - `AddressPojo`
-  - `AuthorizedAccessPojo`
-  - `BillingCompanyPojo`
-  - `BillingTypePojo`
-  - `CustomerPojo`
-  - `ImagePojo`
-  - `PaymentRedirectionDetailsPojo`
-  - `PersonPojo`
-  - `ProductPojo`
-  - `ProductCategoryPojo`
-  - `ProductListPojo`
-  - `SalespersonPojo`
-  - `SellPojo`
-  - `SellDetailPojo`
-  - `SellStatusPojo`
-  - `ShipperPojo`
-  - `UserPojo`
-  - `UserRolePojo`
+- Take advantage of Project Lombok annotations for entity and model classes
 - Use entrySet in place of keySet for better iteration in CorsConfigurationSourceBuilder
+- Enforce a better naming scheme for classes and methods
+  - No interface names with capital initial `I`
+  - Class and method names should explain roles and purposes from the get-go
+  - It is preferable to avoid class names over 50 characters long
+  - Test classes must always be suffixed with `Test`
+  - Test methods should be named using `underscores_and_lowercase`
+  - Spring component class names should be suffixed with their respective base type name (`Service`, `Controller`, `Config`, `Repository`)
+
+### Removed
+
+- REST Assured dependency, as the Spring Framework provides an easy and working `MockMvc`
 
 ### Tests
 
@@ -96,8 +90,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `UserRolesConverterJpaServiceImplTest`
     - `UsersConverterJpaServiceImplTest`
 - Refactor out test boilerplate using `@InjectMocks`
+- Introduce Spring Security integration tests for custom Filters
+  - `JwtGuestAuthenticationFilter`
+  - `JwtLoginAuthenticationFilter`
 
-### Fixed  
+### Fixed
 
 - Using a better fitted java11 method of String to check for emptiness - **Thank you `@NyorJa`**
 
@@ -111,7 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Property to configure max allowed nested depth while fetching categories
 - *BREAKING CHANGE*: `SellDetail` entity now has a `description` field, which is meant to describe and summarize the detail in a human-readable format
 - When fetching data, filters by category may include descendant of lower level categories
-  - For example, assumming that category A includes subcategories AB and AC, filtering 'by category A' may include children from subcategories AB and AC as well 
+  - For example, assumming that category A includes subcategories AB and AC, filtering 'by category A' may include children from subcategories AB and AC as well
   - This applies for filtering categories and products
   - Behavior before was to fetch only direct descendants of a given category
 - Implement three API resources to interact with sales after a checkout process from the customer
@@ -124,7 +121,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - An empty configuration file is provided
 
 ### Changed
-- Use [Project Lombok](https://projectlombok.org) 
+- Use [Project Lombok](https://projectlombok.org)
 - The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
 - Default `GET /data/sales` sort order is by descending `buyOrder`
 - (Temporary) Disable regex pattern validation for phone numbers
@@ -175,7 +172,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/public/categories`
   - `/public/products`
   - `/public/products/{barcode}`
-- Remove any reference to the depreacted `amount` property in the Receipt entity 
+- Remove any reference to the depreacted `amount` property in the Receipt entity
 
 ## [v1.2.0] - 2022-01-07
 
@@ -188,7 +185,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated security rule for `GET /data/products` to: do not require any authority
 - Simplified method signature for `readMany` method in `IDataController`
-- Updated BD schema diagram `schema.png` 
+- Updated BD schema diagram `schema.png`
 
 ### Removed
 - Clean up deprecated resources

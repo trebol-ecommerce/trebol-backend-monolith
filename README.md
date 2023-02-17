@@ -10,7 +10,7 @@
   <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-  
+
   [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
   [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
   [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
@@ -21,15 +21,18 @@
 
 ## Current Status 📓
 
-Implementing [Trébol API v1.5.0](https://github.com/trebol-ecommerce/api/blob/main/trebol-api.json).
+This project's artifact, group and version have changed recently.
+Now down to `v0.1.0`, as the required conditions for me to call it reaching a valid `v1.0` state have changed.
 
-Please take a look at the `CHANGELOG.md` file to review the latest changes and additions.
+Please take a look at the `CHANGELOG.md` file to review this and other recent changes and additions.
+
+Currently bound to and implementing [Trébol API v1.5.0](https://github.com/trebol-ecommerce/api/blob/main/trebol-api.json).
 
 ## Features 🚀
 
 * Uses [Project Lombok](https://projectlombok.org)
   * You should have the correct plugin in your IDE to integrate with it.
-  * Here's a list of [compatible software with their installation guides](https://projectlombok.org/setup/)  
+  * Here's a list of [compatible software with their installation guides](https://projectlombok.org/setup/)
 * Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api)
   * Supports all operations as described by the document
   * Filtering, sorting and pagination of data are implemented through query params
@@ -68,7 +71,7 @@ This schema was designed in a couple minutes using [Azimutt](https://github.com/
 
 ### Installation
 
-After cloning the repository, run `mvn verify`, grab a drink and wait a little. 
+After cloning the repository, run `mvn verify`, grab a drink and wait a little.
 That command will:
 
 - Download & install dependencies
@@ -100,7 +103,7 @@ contains sane default settings and brief summaries of what everything does.
 You _can_ run the application out-of-the-box with these, though you should have a look at it.
 
 Also remember, that Spring Boot does support using more than one profile at once.
-[This](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.external-config) and 
+[This](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.external-config) and
 [this](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.profiles) section of the Spring Boot guide can help you understand these mechanisms.
 
 ## Contributing to this repository 😍

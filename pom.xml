@@ -30,13 +30,13 @@
     <version>2.6.12</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>org.trebol</groupId>
-  <artifactId>spring-boot-backend</artifactId>
+  <groupId>org.trebolecommerce</groupId>
+  <artifactId>trebol-backend-monolith</artifactId>
   <packaging>war</packaging>
   <version>3.0.2-SNAPSHOT</version>
 
-  <name>Trébol Spring Boot Backend</name>
-  <description>eCommerce RESTful Service.</description>
+  <name>Trébol Backend Monolith</name>
+  <description>Monolithic eCommerce backend web application that exposes a RESTful API compliant with the Trebol API v1.5.0 specification.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -138,7 +138,7 @@
       <artifactId>mariadb-java-client</artifactId>
     </dependency>
 
-<!--    apache common lang-->
+    <!-- Apache common lang-->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
@@ -164,7 +164,7 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- Unirest -->
+    <!-- Unirest (elegant alternative to RestTemplate) -->
     <dependency>
       <groupId>com.konghq</groupId>
       <artifactId>unirest-java</artifactId>
@@ -251,7 +251,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
 
-      <!-- Support code coverage -->
+      <!-- Support code coverage report generation -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
