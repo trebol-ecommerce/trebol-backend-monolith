@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -36,15 +36,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.trebol.exceptions.CorsMappingParseException;
-import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.crud.ICustomersCrudService;
-import org.trebol.pojo.CustomerPojo;
-import org.trebol.security.IAuthorizationHeaderParserService;
+import org.trebol.config.exceptions.CorsMappingParseException;
+import org.trebol.jpa.services.crud.CustomersCrudService;
 import org.trebol.security.JwtGuestAuthenticationFilter;
 import org.trebol.security.JwtLoginAuthenticationFilter;
 import org.trebol.security.JwtTokenVerifierFilter;
+import org.trebol.security.services.AuthorizationHeaderParserService;
 
 import javax.crypto.SecretKey;
 
@@ -53,21 +50,22 @@ import javax.crypto.SecretKey;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig
   extends WebSecurityConfigurerAdapter {
-
   private final UserDetailsService userDetailsService;
   private final SecretKey secretKey;
   private final SecurityProperties securityProperties;
   private final CorsProperties corsProperties;
-  private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
-  private final ICustomersCrudService customersService;
+  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  private final CustomersCrudService customersService;
 
   @Autowired
-  public SecurityConfig(UserDetailsService userDetailsService,
-                        SecretKey secretKey,
-                        SecurityProperties securityProperties,
-                        IAuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-                        CorsProperties corsProperties,
-                        ICustomersCrudService customersService) {
+  public SecurityConfig(
+    UserDetailsService userDetailsService,
+    SecretKey secretKey,
+    SecurityProperties securityProperties,
+    AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+    CorsProperties corsProperties,
+    CustomersCrudService customersService
+  ) {
     this.userDetailsService = userDetailsService;
     this.secretKey = secretKey;
     this.securityProperties = securityProperties;
@@ -79,36 +77,31 @@ public class SecurityConfig
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-        .headers()
-            .frameOptions().sameOrigin()
-          .and()
-        .cors()
-          .and()
-        .csrf()
-            .disable()
-        .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-          .and()
-        .addFilter(
-            this.loginFilterForUrl("/public/login"))
-        .addFilterAfter(
-            this.guestFilterForUrl("/public/guest"),
-            JwtLoginAuthenticationFilter.class)
-        .addFilterAfter(
-            new JwtTokenVerifierFilter(jwtClaimsParserService),
-            JwtGuestAuthenticationFilter.class);
+      .headers()
+        .frameOptions().sameOrigin().and()
+        .cors().and()
+        .csrf().disable()
+      .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+      .addFilter(this.loginFilterForUrl("/public/login"))
+      .addFilterAfter(
+        this.guestFilterForUrl("/public/guest"),
+        JwtLoginAuthenticationFilter.class)
+      .addFilterAfter(
+        new JwtTokenVerifierFilter(jwtClaimsParserService),
+        JwtGuestAuthenticationFilter.class);
   }
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.authenticationProvider(daoAuthenticationProvider());
     if (securityProperties.isGuestUserEnabled() &&
-        !securityProperties.getGuestUserName().isBlank()) {
+      !securityProperties.getGuestUserName().isBlank()) {
       String credential = securityProperties.getGuestUserName();
       auth.inMemoryAuthentication()
-          .withUser(credential)
-          .password(passwordEncoder().encode(credential))
-          .authorities("checkout");
+        .withUser(credential)
+        .password(passwordEncoder().encode(credential))
+        .authorities("checkout");
     }
   }
 
@@ -122,7 +115,11 @@ public class SecurityConfig
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() throws CorsMappingParseException {
-    return new CorsConfigurationSourceBuilder(corsProperties).build();
+    return new CorsConfigurationSourceBuilder(corsProperties.getListDelimiter())
+      .allowedHeaders(corsProperties.getAllowedHeaders())
+      .allowedOrigins(corsProperties.getAllowedOrigins())
+      .corsMappings(corsProperties.getMappings())
+      .build();
   }
 
   @Bean
@@ -149,5 +146,4 @@ public class SecurityConfig
     filter.setFilterProcessesUrl(url);
     return filter;
   }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,15 +20,22 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "product_images")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class ProductImage
   implements Serializable {
-
   private static final long serialVersionUID = 12L;
 
   @Id
@@ -42,64 +49,8 @@ public class ProductImage
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Product product;
 
-  public ProductImage() { }
-
   public ProductImage(Product product, Image image) {
-    this.product = product;
-    this.image = image;
-  }
-
-  public ProductImage(ProductImage source) {
-    this.id = source.id;
-    this.image = source.image;
-    this.product = source.product;
-  }
-
-  public Long getId() {
-      return id;
-  }
-
-  public void setId(Long id) {
-      this.id = id;
-  }
-
-  public Image getImage() {
-      return image;
-  }
-
-  public void setImage(Image image) {
-      this.image = image;
-  }
-
-  public Product getProduct() {
-      return product;
-  }
-
-  public void setProduct(Product product) {
-      this.product = product;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    ProductImage that = (ProductImage) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(image, that.image) &&
-        Objects.equals(product, that.product);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, image, product);
-  }
-
-  @Override
-  public String toString() {
-    return "ProductImage{" +
-        "id=" + id +
-        ", image=" + image +
-        ", product=" + product +
-        '}';
+    this.product = new Product(product);
+    this.image = new Image(image);
   }
 }

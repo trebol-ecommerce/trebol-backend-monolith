@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,10 +20,11 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -39,9 +40,15 @@ import java.util.Objects;
       "address_second_line", "address_postal_code", "address_notes"
     })
   })
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Address
   implements Serializable {
-
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -66,8 +73,6 @@ public class Address
   @Column(name = "address_notes")
   private String notes;
 
-  public Address() { }
-
   public Address(Address source) {
     this.id = source.id;
     this.city = source.city;
@@ -76,93 +81,5 @@ public class Address
     this.secondLine = source.secondLine;
     this.postalCode = source.postalCode;
     this.notes = source.notes;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getCity() {
-    return city;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
-  public String getMunicipality() {
-    return municipality;
-  }
-
-  public void setMunicipality(String municipality) {
-    this.municipality = municipality;
-  }
-
-  public String getFirstLine() {
-    return firstLine;
-  }
-
-  public void setFirstLine(String firstLine) {
-    this.firstLine = firstLine;
-  }
-
-  public String getSecondLine() {
-    return secondLine;
-  }
-
-  public void setSecondLine(String secondLine) {
-    this.secondLine = secondLine;
-  }
-
-  public String getPostalCode() {
-    return postalCode;
-  }
-
-  public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode;
-  }
-
-  public String getNotes() {
-    return notes;
-  }
-
-  public void setNotes(String notes) {
-    this.notes = notes;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Address address = (Address) o;
-    return Objects.equals(id, address.id) &&
-        Objects.equals(city, address.city) &&
-        Objects.equals(municipality, address.municipality) &&
-        Objects.equals(firstLine, address.firstLine) &&
-        Objects.equals(secondLine, address.secondLine) &&
-        Objects.equals(postalCode, address.postalCode) &&
-        Objects.equals(notes, address.notes);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, city, municipality, firstLine, secondLine, postalCode, notes);
-  }
-
-  @Override
-  public String toString() {
-    return "Address{" +
-        "id=" + id +
-        ", city='" + city + '\'' +
-        ", municipality='" + municipality + '\'' +
-        ", firstLine='" + firstLine + '\'' +
-        ", secondLine='" + secondLine + '\'' +
-        ", postalCode='" + postalCode + '\'' +
-        ", notes='" + notes + '\'' +
-        '}';
   }
 }

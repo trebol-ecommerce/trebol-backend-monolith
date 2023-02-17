@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,15 +20,17 @@
 
 package org.trebol.config;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 
-@Validated
-@Configuration
+@Data
+@Component
 @ConfigurationProperties(prefix = "trebol.cors")
+@Validated
 public class CorsProperties {
 
   @NotBlank
@@ -39,37 +41,5 @@ public class CorsProperties {
   private String mappings;
   @NotBlank
   private String listDelimiter;
-
-  public String getAllowedHeaders() {
-    return allowedHeaders;
-  }
-
-  public void setAllowedHeaders(String allowedHeaders) {
-    this.allowedHeaders = allowedHeaders;
-  }
-
-  public String getAllowedOrigins() {
-    return allowedOrigins;
-  }
-
-  public void setAllowedOrigins(String allowedOrigins) {
-    this.allowedOrigins = allowedOrigins;
-  }
-
-  public String getMappings() {
-    return mappings;
-  }
-
-  public void setMappings(String mappings) {
-    this.mappings = mappings;
-  }
-
-  public String getListDelimiter() {
-    return listDelimiter;
-  }
-
-  public void setListDelimiter(String listDelimiter) {
-    this.listDelimiter = listDelimiter;
-  }
 
 }

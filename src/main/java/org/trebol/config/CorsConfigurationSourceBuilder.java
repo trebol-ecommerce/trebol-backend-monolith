@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -23,7 +23,7 @@ package org.trebol.config;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.trebol.exceptions.CorsMappingParseException;
+import org.trebol.config.exceptions.CorsMappingParseException;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,53 +31,56 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Type that creates an instance of CorsConfigurationSource using information from an instance of CorsProperties
+ * Creates an instance of CorsConfigurationSource using information from an instance of CorsProperties
  */
 public class CorsConfigurationSourceBuilder {
-
+  private static final Long MAX_AGE = 300L;
+  private final CorsConfiguration config;
   private final String listDelimiter;
-  private final List<String> allowedHeaders;
-  private final List<String> allowedOrigins;
   private final Map<String, String> mappings;
 
-  public CorsConfigurationSourceBuilder(CorsProperties corsProperties) throws CorsMappingParseException {
-    this.listDelimiter = corsProperties.getListDelimiter();
-    this.allowedHeaders = Arrays.asList(corsProperties.getAllowedHeaders().split(this.listDelimiter));
-    this.allowedOrigins = Arrays.asList(corsProperties.getAllowedOrigins().split(this.listDelimiter));
-    this.mappings = this.parseMappings(corsProperties);
+  public CorsConfigurationSourceBuilder(String listDelimiter) {
+    this.listDelimiter = listDelimiter;
+    this.config = new CorsConfiguration();
+    this.config.setAllowCredentials(true);
+    this.config.setMaxAge(MAX_AGE);
+    this.mappings = new HashMap<>();
+  }
+
+  public CorsConfigurationSourceBuilder allowedHeaders(String allowedHeadersString) {
+    List<String> headersList = Arrays.asList(allowedHeadersString.split(this.listDelimiter));
+    this.config.setAllowedHeaders(headersList);
+    return this;
+  }
+
+  public CorsConfigurationSourceBuilder allowedOrigins(String allowedOriginsString) {
+    List<String> originsList = Arrays.asList(allowedOriginsString.split(this.listDelimiter));
+    this.config.setAllowedOrigins(originsList);
+    return this;
+  }
+
+  public CorsConfigurationSourceBuilder corsMappings(String corsMappings) throws CorsMappingParseException {
+    for (String chunk : corsMappings.split(this.listDelimiter)) {
+      String[] mapping = chunk.split(" ");
+      try {
+        String method = mapping[0] + ",HEAD,OPTIONS";
+        String path = mapping[1];
+        this.mappings.put(path, method);
+      } catch (ArrayIndexOutOfBoundsException e) {
+        throw new CorsMappingParseException(chunk);
+      }
+    }
+    return this;
   }
 
   public CorsConfigurationSource build() {
-    CorsConfiguration baseConfig = new CorsConfiguration();
-    baseConfig.setAllowedHeaders(this.allowedHeaders);
-    baseConfig.setAllowCredentials(true);
-    baseConfig.setMaxAge(300L);
     UrlBasedCorsConfigurationSource cfg = new UrlBasedCorsConfigurationSource();
-    for (Map.Entry<String,String> properties : mappings.entrySet()) {
+    for (Map.Entry<String, String> properties : mappings.entrySet()) {
       List<String> methods = Arrays.asList(properties.getValue().split(","));
-      CorsConfiguration pathConfig = new CorsConfiguration(baseConfig);
-      pathConfig.setAllowedOrigins(this.allowedOrigins);
+      CorsConfiguration pathConfig = new CorsConfiguration(config);
       pathConfig.setAllowedMethods(methods);
       cfg.registerCorsConfiguration(properties.getKey(), pathConfig);
     }
     return cfg;
   }
-
-  private Map<String, String> parseMappings(CorsProperties corsProperties) throws CorsMappingParseException {
-    Map<String, String> map = new HashMap<>();
-
-    for (String chunk : corsProperties.getMappings().split(this.listDelimiter)) {
-      String[] mapping = chunk.split(" ");
-      try {
-        String method = mapping[0] + ",HEAD,OPTIONS";
-        String path = mapping[1];
-        map.put(path, method);
-      } catch (ArrayIndexOutOfBoundsException e) {
-        throw new CorsMappingParseException(
-                "Could not parse '" + chunk + "', format must be 'METHOD[,METHOD2,...] /path/to/api'");
-      }
-    }
-    return map;
-  }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,10 +20,11 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -31,10 +32,16 @@ import java.util.Objects;
   uniqueConstraints = {
     @UniqueConstraint(columnNames = {"parent_product_category_id", "product_category_name"})
   })
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
 public class ProductCategory
   implements Serializable {
-
   private static final long serialVersionUID = 11L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "product_category_id", nullable = false)
@@ -49,83 +56,29 @@ public class ProductCategory
   @ManyToOne(fetch = FetchType.LAZY)
   private ProductCategory parent;
 
-  public ProductCategory() { }
-
   public ProductCategory(ProductCategory source) {
     this.id = source.id;
     this.code = source.code;
     this.name = source.name;
-    this.parent = source.parent;
-  }
-
-  public ProductCategory(String code, String name, ProductCategory parent) {
-    this.code = code;
-    this.name = name;
-    this.parent = parent;
-  }
-
-  public ProductCategory(Long id, String code, String name, ProductCategory parent) {
-    this.id = id;
-    this.code = code;
-    this.name = name;
-    this.parent = parent;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public ProductCategory getParent() {
-    return parent;
-  }
-
-  public void setParent(ProductCategory parent) {
-    this.parent = parent;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    ProductCategory that = (ProductCategory) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(code, that.code) &&
-        Objects.equals(name, that.name) &&
-        Objects.equals(parent, that.parent);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, code, name, parent);
+    if (source.parent != null) {
+      this.parent = new ProductCategory(source.parent);
+    }
   }
 
   @Override
   public String toString() {
-    return "ProductCategory{" +
-        "id=" + id +
-        ", code='" + code + '\'' +
-        ", name='" + name + '\'' +
-        ", parent=" + parent +
-        '}';
+    return "ProductCategory(" +
+      "id=" + id +
+      ", code='" + code + '\'' +
+      ", name='" + name + '\'' +
+      ((parent != null) ?
+        (", parent=ProductCategory(" +
+          "id=" + parent.id +
+          ", code=" + parent.code +
+          ", name=" + parent.name +
+          ')'
+        ) :
+        ", parent=null") +
+      ')';
   }
 }

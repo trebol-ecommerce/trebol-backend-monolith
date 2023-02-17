@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -27,8 +27,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.trebol.api.models.LoginPojo;
 import org.trebol.config.SecurityProperties;
-import org.trebol.pojo.LoginPojo;
 
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
@@ -37,11 +37,13 @@ import java.io.IOException;
 
 public class JwtLoginAuthenticationFilter
   extends GenericJwtAuthenticationFilter {
-
   private final AuthenticationManager authenticationManager;
 
-  public JwtLoginAuthenticationFilter(SecurityProperties jwtProperties, SecretKey secretKey,
-                                      AuthenticationManager authenticationManager) {
+  public JwtLoginAuthenticationFilter(
+    SecurityProperties jwtProperties,
+    SecretKey secretKey,
+    AuthenticationManager authenticationManager
+  ) {
     super(jwtProperties, secretKey);
     this.authenticationManager = authenticationManager;
   }
@@ -55,8 +57,8 @@ public class JwtLoginAuthenticationFilter
       try {
         LoginPojo userData = new ObjectMapper().readValue(request.getInputStream(), LoginPojo.class);
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-            userData.getName(),
-            userData.getPassword());
+          userData.getName(),
+          userData.getPassword());
         return authenticationManager.authenticate(authentication);
       } catch (IOException e) {
         throw new BadCredentialsException("Request body is not a login request");

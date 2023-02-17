@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -21,6 +21,7 @@
 package org.trebol.security;
 
 import io.jsonwebtoken.Claims;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.trebol.security.services.AuthorizationHeaderParserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -45,11 +47,12 @@ import java.util.Set;
 
 public class JwtTokenVerifierFilter
   extends OncePerRequestFilter {
-
   private final Logger myLogger = LoggerFactory.getLogger(JwtTokenVerifierFilter.class);
-  private final IAuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
-  public JwtTokenVerifierFilter(IAuthorizationHeaderParserService<Claims> jwtClaimsParserService) {
+  public JwtTokenVerifierFilter(
+    AuthorizationHeaderParserService<Claims> jwtClaimsParserService
+  ) {
     super();
     this.jwtClaimsParserService = jwtClaimsParserService;
   }
@@ -69,11 +72,11 @@ public class JwtTokenVerifierFilter
   protected void doFilterInternal(@NotNull HttpServletRequest request,
                                   @NotNull HttpServletResponse response,
                                   @NotNull FilterChain filterChain)
-      throws ServletException, IOException, IllegalStateException {
+    throws ServletException, IOException, IllegalStateException {
 
     String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-    if (authorizationHeader == null || authorizationHeader.isBlank()) {
+    if (StringUtils.isBlank(authorizationHeader)) {
       filterChain.doFilter(request, response);
     } else {
       String jwt = authorizationHeader.replace("Bearer ", "");
@@ -85,21 +88,20 @@ public class JwtTokenVerifierFilter
           String username = tokenBody.getSubject();
           Set<SimpleGrantedAuthority> authorities = this.extractAuthorities(tokenBody);
           Authentication authentication = new UsernamePasswordAuthenticationToken(
-              username,
-              null,
-              authorities);
+            username,
+            null,
+            authorities);
 
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
       } catch (NullPointerException | IllegalStateException exc) {
         myLogger.info("Access denied: '{}' '{}' used an invalid token '{}'",
-                      request.getMethod(),
-                      request.getRequestURI(),
-                      jwt);
+          request.getMethod(),
+          request.getRequestURI(),
+          jwt);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       }
     }
   }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,15 +20,15 @@
 
 package org.trebol.config;
 
+import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PRIVATE;
+
 /**
  * A temporary helper class to hold on to some name keys
  */
+@NoArgsConstructor(access = PRIVATE)
 public final class Constants {
-
-  private Constants() {
-
-  }
-  
   public static final String SELL_STATUS_PENDING = "Pending";
   public static final String SELL_STATUS_PAYMENT_STARTED = "Payment Started";
   public static final String SELL_STATUS_PAYMENT_CANCELLED = "Payment Cancelled";
@@ -37,4 +37,8 @@ public final class Constants {
   public static final String SELL_STATUS_PAID_CONFIRMED = "Paid, Confirmed";
   public static final String SELL_STATUS_REJECTED = "Rejected";
   public static final String SELL_STATUS_COMPLETED = "Delivery Complete";
+  public static final String BILLING_TYPE_INDIVIDUAL = "Bill";
+  public static final String BILLING_TYPE_ENTERPRISE = "Enterprise Invoice";
+  public static final String WEBPAY_SUCCESS_TOKEN_HEADER_NAME = "token_ws";
+  public static final String WEBPAY_ABORTION_TOKEN_HEADER_NAME = "TBK_TOKEN";
 }
