@@ -1,9 +1,9 @@
-<h1 align="center">Trébol eCommerce Spring Boot Backend</h1>
+<h1 align="center">Trébol Backend Monolith</h1>
 
 <div align="center">
 
   <a href="https://spring.io">
-    <img src="https://spring.io/images/projects/spring.svg"
+    <img src="https://github.com/spring-projects/spring-framework/raw/main/framework-docs/src/docs/spring-framework.png"
     height="120" alt="Spring Logo">
   </a>
 
