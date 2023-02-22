@@ -33,7 +33,7 @@ import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
 import org.trebol.jpa.repositories.*;
-import org.trebol.jpa.services.RegexMatcherAdapterService;
+import org.trebol.common.services.RegexMatcherAdapterService;
 import org.trebol.jpa.services.conversion.AddressesConverterService;
 import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
 import org.trebol.jpa.services.conversion.CustomersConverterService;
