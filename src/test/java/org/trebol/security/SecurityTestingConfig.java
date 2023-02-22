@@ -23,6 +23,7 @@ package org.trebol.security;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.TestingAuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,14 +36,8 @@ class SecurityTestingConfig {
   static final String PRIVATE_KEY_SEQUENCE = "a9s8dy030g8h39f7weh8eufesa0d8f7g";
 
   @Bean
-  public DaoAuthenticationProvider daoAuthenticationProvider(
-    PasswordEncoder passwordEncoder,
-    UserDetailsService userDetailsService
-  ) {
-    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    provider.setPasswordEncoder(passwordEncoder);
-    provider.setUserDetailsService(userDetailsService);
-    return provider;
+  public TestingAuthenticationProvider authenticationProvider() {
+    return new TestingAuthenticationProvider();
   }
 
   @Bean

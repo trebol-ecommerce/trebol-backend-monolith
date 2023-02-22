@@ -29,7 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -130,7 +130,7 @@ class JwtGuestAuthenticationFilterTest {
     final SecurityProperties securityProperties;
     final UserDetailsService userDetailsService;
     final PasswordEncoder passwordEncoder;
-    final DaoAuthenticationProvider daoAuthenticationProvider;
+    final AuthenticationProvider authenticationProvider;
     final SecretKey secretKey;
 
     @Autowired
@@ -138,13 +138,13 @@ class JwtGuestAuthenticationFilterTest {
       SecurityProperties securityProperties,
       UserDetailsService userDetailsService,
       PasswordEncoder passwordEncoder,
-      DaoAuthenticationProvider daoAuthenticationProvider,
+      AuthenticationProvider authenticationProvider,
       SecretKey secretKey
     ) {
       this.securityProperties = securityProperties;
       this.userDetailsService = userDetailsService;
       this.passwordEncoder = passwordEncoder;
-      this.daoAuthenticationProvider = daoAuthenticationProvider;
+      this.authenticationProvider = authenticationProvider;
       this.secretKey = secretKey;
     }
 
@@ -158,7 +158,7 @@ class JwtGuestAuthenticationFilterTest {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-      auth.authenticationProvider(daoAuthenticationProvider)
+      auth.authenticationProvider(authenticationProvider)
         .inMemoryAuthentication()
         .withUser(USERNAME)
         .password(passwordEncoder.encode(PASSWORD))
