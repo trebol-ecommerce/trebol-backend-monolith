@@ -46,8 +46,7 @@ import java.util.Map;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.SEE_OTHER;
-import static org.trebol.config.Constants.WEBPAY_ABORTION_TOKEN_HEADER_NAME;
-import static org.trebol.config.Constants.WEBPAY_SUCCESS_TOKEN_HEADER_NAME;
+import static org.trebol.config.Constants.*;
 
 @RestController
 @RequestMapping("/public/checkout")
@@ -81,7 +80,7 @@ public class PublicCheckoutController {
    *                                 payment process
    */
   @PostMapping({"", "/"})
-  @PreAuthorize("hasAuthority('checkout')")
+  @PreAuthorize("hasAuthority('" + AUTHORITY_CHECKOUT + "')")
   public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody SellPojo transactionRequest)
     throws BadInputException, PaymentServiceException, EntityExistsException {
     // TODO this is the root of all evil. "creating a sale" here definitely sounds wrong - while "creating an order" does not.

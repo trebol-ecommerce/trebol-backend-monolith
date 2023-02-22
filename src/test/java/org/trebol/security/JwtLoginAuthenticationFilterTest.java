@@ -57,6 +57,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.trebol.config.Constants.AUTHORITY_CHECKOUT;
 
 /**
  * Spring Security integration tests for the JwtMockLoginAuthenticationFilter<br/>
@@ -85,7 +86,7 @@ class JwtLoginAuthenticationFilterTest {
   @BeforeAll
   static void beforeAll() {
     USER_AUTHORITIES = List.of(
-        new SimpleGrantedAuthority("checkout"));
+        new SimpleGrantedAuthority(AUTHORITY_CHECKOUT));
   }
 
   @BeforeEach
