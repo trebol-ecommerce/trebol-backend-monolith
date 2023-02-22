@@ -33,13 +33,16 @@ import org.trebol.security.services.AuthorizationHeaderParserService;
 import org.trebol.security.services.AuthorizedApiService;
 
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.trebol.config.Constants.JWT_PREFIX;
 
 @RestController
 @RequestMapping("/access")
 @PreAuthorize("isAuthenticated()")
 public class AccessController {
+  private static final Pattern BEARER_TOKEN_PATTERN = Pattern.compile("^" + JWT_PREFIX + ".+$");
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final UserDetailsService userDetailsService;
   private final AuthorizedApiService authorizedApiService;
@@ -95,10 +98,10 @@ public class AccessController {
   private UserDetails getUserDetails(HttpHeaders requestHeaders)
     throws UsernameNotFoundException, IllegalStateException {
     String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
-    if (authorizationHeader == null || !authorizationHeader.matches("^Bearer .+$")) {
+    if (authorizationHeader == null || !BEARER_TOKEN_PATTERN.matcher(authorizationHeader).matches()) {
       return null;
     }
-    String jwt = authorizationHeader.replace("Bearer ", "");
+    String jwt = authorizationHeader.replace(JWT_PREFIX, "");
     Claims body = jwtClaimsParserService.parseToken(jwt);
     String username = body.getSubject();
     return userDetailsService.loadUserByUsername(username);

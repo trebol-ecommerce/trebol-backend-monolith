@@ -45,6 +45,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.trebol.config.Constants.JWT_CLAIM_AUTHORITIES;
+import static org.trebol.config.Constants.JWT_PREFIX;
 
 public class JwtTokenVerifierFilter
   extends OncePerRequestFilter {
@@ -80,7 +81,7 @@ public class JwtTokenVerifierFilter
     if (StringUtils.isBlank(authorizationHeader)) {
       filterChain.doFilter(request, response);
     } else {
-      String jwt = authorizationHeader.replace("Bearer ", "");
+      String jwt = authorizationHeader.replace(JWT_PREFIX, "");
       try {
         Claims tokenBody = jwtClaimsParserService.parseToken(jwt);
         Instant expiration = tokenBody.getExpiration().toInstant();

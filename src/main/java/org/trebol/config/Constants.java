@@ -43,4 +43,5 @@ public final class Constants {
   public static final String WEBPAY_ABORTION_TOKEN_HEADER_NAME = "TBK_TOKEN";
   public static final String AUTHORITY_CHECKOUT = "checkout";
   public static final String JWT_CLAIM_AUTHORITIES = "authorities";
+  public static final String JWT_PREFIX = "Bearer ";
 }
