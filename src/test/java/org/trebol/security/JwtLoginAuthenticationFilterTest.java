@@ -21,7 +21,6 @@
 package org.trebol.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,7 +76,6 @@ class JwtLoginAuthenticationFilterTest {
   static final String LOGIN_URL = "/login";
   static final String USERNAME = "SOME";
   static final String PASSWORD = "BODY";
-  static final String PRIVATE_KEY_SEQUENCE = "ONCE_TOLD_ME_THE_WORLD_IS_GONNA_ROLL_ME";
   static List<GrantedAuthority> USER_AUTHORITIES;
   @MockBean SecurityProperties securityPropertiesMock;
   @MockBean UserDetailsService userDetailsServiceMock;
@@ -131,18 +129,21 @@ class JwtLoginAuthenticationFilterTest {
     final UserDetailsService userDetailsService;
     final PasswordEncoder passwordEncoder;
     final DaoAuthenticationProvider daoAuthenticationProvider;
+    final SecretKey secretKey;
 
     @Autowired
     MockSecurityConfig(
       SecurityProperties securityProperties,
       UserDetailsService userDetailsService,
       PasswordEncoder passwordEncoder,
-      DaoAuthenticationProvider daoAuthenticationProvider
+      DaoAuthenticationProvider daoAuthenticationProvider,
+      SecretKey secretKey
     ) {
       this.securityProperties = securityProperties;
       this.userDetailsService = userDetailsService;
       this.passwordEncoder = passwordEncoder;
       this.daoAuthenticationProvider = daoAuthenticationProvider;
+      this.secretKey = secretKey;
     }
 
     @Override
@@ -150,7 +151,7 @@ class JwtLoginAuthenticationFilterTest {
       http.authorizeRequests()
         .antMatchers(LOGIN_URL).permitAll()
         .and().csrf().disable()
-        .addFilter(loginFilterForUrl(LOGIN_URL));
+        .addFilter(loginFilterForUrl());
     }
 
     @Override
@@ -162,13 +163,12 @@ class JwtLoginAuthenticationFilterTest {
         .authorities(USER_AUTHORITIES);
     }
 
-    private JwtLoginAuthenticationFilter loginFilterForUrl(String url) throws Exception {
-      SecretKey key = Keys.hmacShaKeyFor(PRIVATE_KEY_SEQUENCE.getBytes());
+    private JwtLoginAuthenticationFilter loginFilterForUrl() throws Exception {
       JwtLoginAuthenticationFilter filter = new JwtLoginAuthenticationFilter(
         securityProperties,
-        key,
+        secretKey,
         super.authenticationManager());
-      filter.setFilterProcessesUrl(url);
+      filter.setFilterProcessesUrl(LOGIN_URL);
       return filter;
     }
   }
