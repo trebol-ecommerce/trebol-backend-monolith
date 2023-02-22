@@ -36,6 +36,8 @@ import java.time.Instant;
 import java.time.Period;
 import java.util.Date;
 
+import static org.trebol.config.Constants.JWT_CLAIM_AUTHORITIES;
+
 /**
  * Abstract filter that writes a Bearer token to the response upon a succesful authentication call
  */
@@ -69,7 +71,7 @@ public abstract class GenericJwtAuthenticationFilter
 
     String token = Jwts.builder()
       .setSubject(authResult.getName())
-      .claim("authorities", authResult.getAuthorities())
+      .claim(JWT_CLAIM_AUTHORITIES, authResult.getAuthorities())
       .setIssuedAt(Date.from(now))
       .setExpiration(Date.from(expiration))
       .signWith(secretKey)

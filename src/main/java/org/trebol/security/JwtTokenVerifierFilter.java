@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.trebol.config.Constants.JWT_CLAIM_AUTHORITIES;
 
 public class JwtTokenVerifierFilter
   extends OncePerRequestFilter {
@@ -59,7 +60,7 @@ public class JwtTokenVerifierFilter
 
   private Set<SimpleGrantedAuthority> extractAuthorities(Claims tokenBody) {
     @SuppressWarnings("unchecked")
-    List<Map<String, String>> jwsAuthorityMap = (List<Map<String, String>>) tokenBody.get("authorities");
+    List<Map<String, String>> jwsAuthorityMap = (List<Map<String, String>>) tokenBody.get(JWT_CLAIM_AUTHORITIES);
     Set<SimpleGrantedAuthority> authorities = new HashSet<>();
     for (Map<String, String> authorityKeyValuePair : jwsAuthorityMap) {
       SimpleGrantedAuthority authority = new SimpleGrantedAuthority(authorityKeyValuePair.get("authority"));
