@@ -4,6 +4,43 @@
     <selectedOptions>
       <option name="environmentVariables" visible="false" />
     </selectedOptions>
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="org.trebol.api.models.*" />
+        <option name="ENABLED" value="true" />
+        <option name="INCLUDE" value="false" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="org.trebol.security.UserDetailsPojo" />
+        <option name="ENABLED" value="true" />
+        <option name="INCLUDE" value="false" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="org.trebol.BackendApp" />
+        <option name="ENABLED" value="true" />
+        <option name="INCLUDE" value="false" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="org.trebol.security.JwtGuestAuthenticationFilter" />
+        <option name="ENABLED" value="true" />
+        <option name="INCLUDE" value="false" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="org.trebol.security.JwtLoginAuthenticationFilter" />
+        <option name="ENABLED" value="true" />
+        <option name="INCLUDE" value="false" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="org.trebol.security.JwtTokenVerifierFilter" />
+        <option name="ENABLED" value="true" />
+        <option name="INCLUDE" value="false" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="org.trebol.security.GenericJwtAuthenticationFilter" />
+        <option name="ENABLED" value="true" />
+        <option name="INCLUDE" value="false" />
+      </pattern>
+    </extension>
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="ALTERNATIVE_JRE_PATH" value="11" />
     <option name="MAIN_CLASS_NAME" value="" />
