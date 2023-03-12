@@ -3,35 +3,40 @@ target/
 bin/
 
 # Generated files
-/src/main/setup/
-/src/main/webapp/
-/logs
+src/main/setup/
+src/main/webapp/
+logs/
 
 # Editor files and folders
 .classpath
 .project
 .settings/
-/nb-configuration.xml
-/nbactions.xml
+nb-configuration.xml
+nbactions.xml
 .idea/
+*.iml
 .vscode/
 
+# Do include some simple config
+!.idea/runConfigurations/All_unit_tests.xml
+!.idea/runConfigurations/All_integration_tests.xml
+
 # Configuration files others than the one provided by default
-/src/main/resources/*.properties
-!/src/main/resources/application.properties
-!/src/main/resources/application-mailgun.empty.properties
+src/main/resources/*.properties
+!src/main/resources/application.properties
+!src/main/resources/application-mailgun.empty.properties
 
 # System Files
 .DS_Store
 Thumbs.db
 
 # Git worktree files
-/commondir
-/gitdir
-/HEAD
-/index
-/ORIG_HEAD
-/COMMIT_EDITMSG
-/REBASE_HEAD
+commondir
+gitdir
+HEAD
+index
+ORIG_HEAD
+COMMIT_EDITMSG
+REBASE_HEAD
 FETCH_HEAD
 rebase-merge/
