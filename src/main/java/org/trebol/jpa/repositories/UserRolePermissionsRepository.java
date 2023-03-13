@@ -25,10 +25,12 @@ import org.springframework.data.repository.query.Param;
 import org.trebol.jpa.Repository;
 import org.trebol.jpa.entities.UserRolePermission;
 
+import java.util.List;
+
 @org.springframework.stereotype.Repository
 public interface UserRolePermissionsRepository
   extends Repository<UserRolePermission> {
 
   @Query("SELECT urp FROM UserRolePermission urp JOIN FETCH urp.permission WHERE urp.userRole.id = :userRoleId")
-  Iterable<UserRolePermission> deepFindPermissionsByUserRoleId(@Param("userRoleId") Long userRoleId);
+  List<UserRolePermission> deepFindPermissionsByUserRoleId(@Param("userRoleId") Long userRoleId);
 }
