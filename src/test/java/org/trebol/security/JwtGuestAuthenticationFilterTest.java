@@ -95,6 +95,7 @@ class JwtGuestAuthenticationFilterTest {
   @BeforeEach
   void beforeEach() {
     when(securityPropertiesMock.getJwtExpirationAfterHours()).thenReturn(1);
+    when(securityPropertiesMock.getGuestUserName()).thenReturn(USERNAME);
     when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(UserDetailsPojo.builder()
       .username(USERNAME)
       .password(PASSWORD)
