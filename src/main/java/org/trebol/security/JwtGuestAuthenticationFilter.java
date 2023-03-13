@@ -46,14 +46,16 @@ public class JwtGuestAuthenticationFilter
   private final Logger myLogger = LoggerFactory.getLogger(JwtGuestAuthenticationFilter.class);
   private final AuthenticationManager authenticationManager;
   private final CustomersCrudService customersService;
+  private  final SecurityProperties securityProperties;
 
   public JwtGuestAuthenticationFilter(
-    SecurityProperties jwtProperties,
+    SecurityProperties securityProperties,
     SecretKey secretKey,
     AuthenticationManager authenticationManager,
     CustomersCrudService customersService
   ) {
-    super(jwtProperties, secretKey);
+    super(securityProperties, secretKey);
+    this.securityProperties = securityProperties;
     this.authenticationManager = authenticationManager;
     this.customersService = customersService;
   }
@@ -67,7 +69,8 @@ public class JwtGuestAuthenticationFilter
       try {
         PersonPojo guestCustomerData = new ObjectMapper().readValue(request.getInputStream(), PersonPojo.class);
         this.saveCustomerData(guestCustomerData);
-        Authentication authentication = new UsernamePasswordAuthenticationToken("guest", "guest");
+        final String credential = securityProperties.getGuestUserName();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(credential, credential);
         return authenticationManager.authenticate(authentication);
       } catch (IOException e) {
         throw new BadCredentialsException("Invalid request body for guest session");
