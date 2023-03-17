@@ -29,12 +29,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.trebol.api.models.AuthorizedAccessPojo;
+import org.trebol.common.services.RegexMatcherAdapterService;
 import org.trebol.security.services.AuthorizationHeaderParserService;
 import org.trebol.security.services.AuthorizedApiService;
 
 import java.util.Collection;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.trebol.config.Constants.JWT_PREFIX;
 
 @RestController
 @RequestMapping("/access")
@@ -43,16 +45,19 @@ public class AccessController {
   private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
   private final UserDetailsService userDetailsService;
   private final AuthorizedApiService authorizedApiService;
+  private final RegexMatcherAdapterService regexMatcherService;
 
   @Autowired
   public AccessController(
     AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
     UserDetailsService userDetailsService,
-    AuthorizedApiService authorizedApiService
+    AuthorizedApiService authorizedApiService,
+    RegexMatcherAdapterService regexMatcherService
   ) {
     this.jwtClaimsParserService = jwtClaimsParserService;
     this.userDetailsService = userDetailsService;
     this.authorizedApiService = authorizedApiService;
+    this.regexMatcherService = regexMatcherService;
   }
 
   @GetMapping({"", "/"})
@@ -95,10 +100,10 @@ public class AccessController {
   private UserDetails getUserDetails(HttpHeaders requestHeaders)
     throws UsernameNotFoundException, IllegalStateException {
     String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
-    if (authorizationHeader == null || !authorizationHeader.matches("^Bearer .+$")) {
+    if (authorizationHeader == null || !regexMatcherService.isAValidAuthorizationHeader(authorizationHeader)) {
       return null;
     }
-    String jwt = authorizationHeader.replace("Bearer ", "");
+    String jwt = authorizationHeader.replace(JWT_PREFIX, "");
     Claims body = jwtClaimsParserService.parseToken(jwt);
     String username = body.getSubject();
     return userDetailsService.loadUserByUsername(username);

@@ -33,6 +33,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.trebol.api.models.AuthorizedAccessPojo;
+import org.trebol.common.services.RegexMatcherAdapterService;
 import org.trebol.security.UserDetailsPojo;
 import org.trebol.security.services.AuthorizationHeaderParserService;
 import org.trebol.security.services.AuthorizedApiService;
@@ -41,18 +42,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static io.jsonwebtoken.Claims.SUBJECT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.trebol.config.Constants.JWT_PREFIX;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class AccessControllerTest {
+  final String FAKE_JWT = "TEST";
   @InjectMocks AccessController instance;
   @Mock AuthorizationHeaderParserService<Claims> jwtClaimsParserServiceMock;
   @Mock UserDetailsService userDetailsServiceMock;
   @Mock AuthorizedApiService authorizedApiServiceMock;
+  @Mock RegexMatcherAdapterService regexMatcherAdapterService;
   UserDetails userDetails;
 
   @BeforeEach
@@ -70,24 +75,29 @@ class AccessControllerTest {
 
   @Test
   void parses_authorization_header() {
-    String fakeAuthorizationHeader = "Bearer TEST";
-    when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn(fakeAuthorizationHeader);
-    when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(new DefaultClaims(Map.of("sub", "username")));
+    DefaultClaims validClaims = new DefaultClaims(Map.of(
+      SUBJECT, "username"));
+    when(regexMatcherAdapterService.isAValidAuthorizationHeader(anyString())).thenReturn(true);
+    when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn(JWT_PREFIX + FAKE_JWT);
+    when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
     when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(null);
 
     ArrayList<Object> results = new ArrayList<>();
     results.add(instance.getApiRoutesAccess(new HttpHeaders()));
     results.add(instance.getApiResourceAccess(new HttpHeaders(), ANY));
     results.forEach(Assertions::assertNull);
-    verify(jwtClaimsParserServiceMock, times(results.size())).parseToken("TEST");
+    verify(jwtClaimsParserServiceMock, times(results.size())).parseToken(FAKE_JWT);
     verify(userDetailsServiceMock, times(results.size())).loadUserByUsername("username");
   }
 
   @Test
   void fetches_list_of_available_api_routes() {
+    DefaultClaims validClaims = new DefaultClaims(Map.of(
+      SUBJECT, "some"));
     List<String> expectedRoutesList = List.of();
-    when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn("Bearer TEST");
-    when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(new DefaultClaims(Map.of("sub", "some")));
+    when(regexMatcherAdapterService.isAValidAuthorizationHeader(anyString())).thenReturn(true);
+    when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn(JWT_PREFIX + FAKE_JWT);
+    when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
     when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(userDetails);
     when(authorizedApiServiceMock.getAuthorizedApiRoutes(any(UserDetails.class))).thenReturn(expectedRoutesList);
 
@@ -101,9 +111,12 @@ class AccessControllerTest {
 
   @Test
   void fetches_list_of_permitted_methods() {
+    DefaultClaims validClaims = new DefaultClaims(Map.of(
+      SUBJECT, "some"));
     List<String> expectedMethodsList = List.of();
-    when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn("Bearer TEST");
-    when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(new DefaultClaims(Map.of("sub", "some")));
+    when(regexMatcherAdapterService.isAValidAuthorizationHeader(anyString())).thenReturn(true);
+    when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn(JWT_PREFIX + FAKE_JWT);
+    when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
     when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(userDetails);
     when(authorizedApiServiceMock.getAuthorizedApiRouteAccess(any(UserDetails.class), anyString())).thenReturn(expectedMethodsList);
 

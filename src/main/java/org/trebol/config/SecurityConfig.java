@@ -45,6 +45,8 @@ import org.trebol.security.services.AuthorizationHeaderParserService;
 
 import javax.crypto.SecretKey;
 
+import static org.trebol.config.Constants.AUTHORITY_CHECKOUT;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -101,7 +103,7 @@ public class SecurityConfig
       auth.inMemoryAuthentication()
         .withUser(credential)
         .password(passwordEncoder().encode(credential))
-        .authorities("checkout");
+        .authorities(AUTHORITY_CHECKOUT);
     }
   }
 

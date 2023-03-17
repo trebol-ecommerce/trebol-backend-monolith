@@ -21,7 +21,6 @@
 package org.trebol.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -60,6 +59,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.trebol.config.Constants.AUTHORITY_CHECKOUT;
 
 /**
  * Spring Security integration tests for the JwtMockGuestAuthenticationFilter<br/>
@@ -79,7 +79,6 @@ class JwtGuestAuthenticationFilterTest {
   static final String GUEST_URL = "/guest";
   static final String USERNAME = "guest";
   static final String PASSWORD = USERNAME;
-  static final String PRIVATE_KEY_SEQUENCE = "a9s8dy030g8h39f7weh8eufesa0d8f7g";
   static List<GrantedAuthority> GUEST_AUTHORITIES;
   @MockBean SecurityProperties securityPropertiesMock;
   @MockBean UserDetailsService userDetailsServiceMock;
@@ -90,12 +89,13 @@ class JwtGuestAuthenticationFilterTest {
   @BeforeAll
   static void beforeAll() {
     GUEST_AUTHORITIES = List.of(
-        new SimpleGrantedAuthority("checkout"));
+        new SimpleGrantedAuthority(AUTHORITY_CHECKOUT));
   }
 
   @BeforeEach
   void beforeEach() {
     when(securityPropertiesMock.getJwtExpirationAfterHours()).thenReturn(1);
+    when(securityPropertiesMock.getGuestUserName()).thenReturn(USERNAME);
     when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(UserDetailsPojo.builder()
       .username(USERNAME)
       .password(PASSWORD)
@@ -131,19 +131,22 @@ class JwtGuestAuthenticationFilterTest {
     final SecurityProperties securityProperties;
     final UserDetailsService userDetailsService;
     final PasswordEncoder passwordEncoder;
-    final DaoAuthenticationProvider daoAuthenticationProvider;
+    final AuthenticationProvider authenticationProvider;
+    final SecretKey secretKey;
 
     @Autowired
     MockSecurityConfig(
       SecurityProperties securityProperties,
       UserDetailsService userDetailsService,
       PasswordEncoder passwordEncoder,
-      DaoAuthenticationProvider daoAuthenticationProvider
+      AuthenticationProvider authenticationProvider,
+      SecretKey secretKey
     ) {
       this.securityProperties = securityProperties;
       this.userDetailsService = userDetailsService;
       this.passwordEncoder = passwordEncoder;
-      this.daoAuthenticationProvider = daoAuthenticationProvider;
+      this.authenticationProvider = authenticationProvider;
+      this.secretKey = secretKey;
     }
 
     @Override
@@ -151,26 +154,25 @@ class JwtGuestAuthenticationFilterTest {
       http.authorizeRequests()
         .antMatchers(GUEST_URL).permitAll()
         .and().csrf().disable()
-        .addFilter(guestFilterForUrl(GUEST_URL));
+        .addFilter(guestFilterForUrl());
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-      auth.authenticationProvider(daoAuthenticationProvider)
+      auth.authenticationProvider(authenticationProvider)
         .inMemoryAuthentication()
         .withUser(USERNAME)
         .password(passwordEncoder.encode(PASSWORD))
         .authorities(GUEST_AUTHORITIES);
     }
 
-    private JwtGuestAuthenticationFilter guestFilterForUrl(String url) throws Exception {
-      SecretKey key = Keys.hmacShaKeyFor(PRIVATE_KEY_SEQUENCE.getBytes());
+    private JwtGuestAuthenticationFilter guestFilterForUrl() throws Exception {
       JwtGuestAuthenticationFilter filter = new JwtGuestAuthenticationFilter(
         securityProperties,
-        key,
+        secretKey,
         super.authenticationManager(),
         customersService);
-      filter.setFilterProcessesUrl(url);
+      filter.setFilterProcessesUrl(GUEST_URL);
       return filter;
     }
   }

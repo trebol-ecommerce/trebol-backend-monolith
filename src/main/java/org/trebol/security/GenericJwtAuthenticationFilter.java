@@ -36,6 +36,9 @@ import java.time.Instant;
 import java.time.Period;
 import java.util.Date;
 
+import static org.trebol.config.Constants.JWT_CLAIM_AUTHORITIES;
+import static org.trebol.config.Constants.JWT_PREFIX;
+
 /**
  * Abstract filter that writes a Bearer token to the response upon a succesful authentication call
  */
@@ -69,13 +72,13 @@ public abstract class GenericJwtAuthenticationFilter
 
     String token = Jwts.builder()
       .setSubject(authResult.getName())
-      .claim("authorities", authResult.getAuthorities())
+      .claim(JWT_CLAIM_AUTHORITIES, authResult.getAuthorities())
       .setIssuedAt(Date.from(now))
       .setExpiration(Date.from(expiration))
       .signWith(secretKey)
       .compact();
 
-    String headerValue = "Bearer " + token;
+    String headerValue = JWT_PREFIX + token;
     response.addHeader(HttpHeaders.AUTHORIZATION, headerValue);
     response.getWriter().write(headerValue);
   }

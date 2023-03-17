@@ -18,7 +18,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services;
+package org.trebol.common.services;
 
 /**
  * Compiles once, then memoizes common and important regex Patterns
@@ -26,4 +26,5 @@ package org.trebol.jpa.services;
  */
 public interface RegexMatcherAdapterService {
   boolean isAValidIdNumber(String matchAgainst);
+  boolean isAValidAuthorizationHeader(String matchAgainst);
 }

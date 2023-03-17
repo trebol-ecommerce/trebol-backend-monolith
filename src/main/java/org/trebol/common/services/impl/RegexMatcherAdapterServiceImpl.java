@@ -18,20 +18,23 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services.impl;
+package org.trebol.common.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.config.ValidationProperties;
-import org.trebol.jpa.services.RegexMatcherAdapterService;
+import org.trebol.common.services.RegexMatcherAdapterService;
 
 import java.util.regex.Pattern;
+
+import static org.trebol.config.Constants.JWT_PREFIX;
 
 @Service
 public class RegexMatcherAdapterServiceImpl
   implements RegexMatcherAdapterService {
   private final ValidationProperties validationProperties;
   private Pattern idNumberPattern = null;
+  private Pattern jwtTokenPattern = null;
 
   @Autowired
   public RegexMatcherAdapterServiceImpl(
@@ -46,5 +49,13 @@ public class RegexMatcherAdapterServiceImpl
       this.idNumberPattern = Pattern.compile(validationProperties.getIdNumberRegexp());
     }
     return this.idNumberPattern.matcher(matchAgainst).matches();
+  }
+
+  @Override
+  public boolean isAValidAuthorizationHeader(String matchAgainst) {
+    if (this.jwtTokenPattern == null) {
+      this.jwtTokenPattern = Pattern.compile("^" + JWT_PREFIX + ".+$");
+    }
+    return this.jwtTokenPattern.matcher(matchAgainst).matches();
   }
 }
