@@ -17,9 +17,8 @@ nbactions.xml
 *.iml
 .vscode/
 
-# Do include some simple config
-!.idea/runConfigurations/All_unit_tests.xml
-!.idea/runConfigurations/All_integration_tests.xml
+# Do include a simple IntelliJ config
+!.idea/runConfigurations/All_tests.xml
 
 # Configuration files others than the one provided by default
 src/main/resources/*.properties
