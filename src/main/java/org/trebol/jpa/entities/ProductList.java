@@ -20,13 +20,26 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "product_lists",
@@ -65,6 +78,12 @@ public class ProductList
     this.name = source.name;
     this.code = source.code;
     this.disabled = source.disabled;
-    this.items = new ArrayList<>(source.items);
+    this.items = source.items.stream()
+      .map(sourceItem -> {
+        ProductListItem target = new ProductListItem(sourceItem);
+        target.setList(this);
+        return target;
+      })
+      .collect(Collectors.toList());
   }
 }
