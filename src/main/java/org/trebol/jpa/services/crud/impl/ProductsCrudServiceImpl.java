@@ -192,7 +192,10 @@ public class ProductsCrudServiceImpl
         Optional<Image> match = imagesCrudService.getExisting(img);
         if (match.isPresent()) {
           Image existingImage = match.get();
-          ProductImage relationship = new ProductImage(existingProduct, existingImage);
+          ProductImage relationship = ProductImage.builder()
+            .product(existingProduct)
+            .image(existingImage)
+            .build();
           allRelationships.add(relationship);
         }
       } catch (BadInputException ex) {

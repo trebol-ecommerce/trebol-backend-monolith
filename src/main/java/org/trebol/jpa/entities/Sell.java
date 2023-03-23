@@ -121,11 +121,13 @@ public class Sell
       .map(SellDetail::new)
       .collect(Collectors.toList())
     );
-    if (source.billingType.getName().equals(BILLING_TYPE_ENTERPRISE)) {
+    if (source.billingCompany != null) {
       this.billingCompany = new BillingCompany(source.billingCompany);
     }
-    if (source.shipper != null && source.shippingAddress != null) {
+    if (source.shipper != null) {
       this.shipper = new Shipper(source.shipper);
+    }
+    if (source.shippingAddress != null) {
       this.shippingAddress = new Address(source.shippingAddress);
     }
     if (source.salesperson != null) {

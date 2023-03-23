@@ -65,6 +65,6 @@ public class SellDetail
     this.unitValue = source.unitValue;
     this.description = source.description;
     this.product = new Product(source.product);
-    this.sell = source.sell;
+    this.sell = null; // avoid an infinite loop
   }
 }

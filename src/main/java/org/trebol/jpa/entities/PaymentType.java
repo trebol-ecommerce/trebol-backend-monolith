@@ -46,4 +46,9 @@ public class PaymentType
   @Size(min = 1, max = 100)
   @Column(name = "payment_type_name", nullable = false, unique = true)
   private String name;
+
+  public PaymentType(PaymentType source) {
+    this.id = source.id;
+    this.name = source.name;
+  }
 }

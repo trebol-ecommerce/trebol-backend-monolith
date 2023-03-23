@@ -48,4 +48,10 @@ public class SellStatus
   @Size(min = 1, max = 100)
   @Column(name = "sell_status_name", nullable = false, unique = true)
   private String name;
+
+  public SellStatus(SellStatus source) {
+    this.id = source.id;
+    this.code = source.code;
+    this.name = source.name;
+  }
 }

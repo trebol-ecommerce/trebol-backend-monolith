@@ -67,6 +67,6 @@ public class User
     if (source.person != null) {
       this.person = new Person(source.person);
     }
-    this.userRole = source.userRole;
+    this.userRole = new UserRole(source.userRole);
   }
 }

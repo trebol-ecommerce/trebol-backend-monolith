@@ -56,4 +56,11 @@ public class Param
   @Size(min = 1, max = 500)
   @Column(name = "param_value", nullable = false)
   private String value;
+
+  public Param(Param source) {
+    this.id = source.id;
+    this.category = source.category;
+    this.name = source.name;
+    this.value = source.value;
+  }
 }

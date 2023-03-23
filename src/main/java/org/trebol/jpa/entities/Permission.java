@@ -49,4 +49,10 @@ public class Permission
   @Size(max = 100)
   @Column(name = "permission_description")
   private String description;
+
+  public Permission(Permission source) {
+    this.id = source.id;
+    this.code = source.code;
+    this.description = source.description;
+  }
 }
