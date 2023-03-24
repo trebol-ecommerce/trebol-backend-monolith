@@ -57,7 +57,10 @@
     <jacoco.codeCoverage.minRatio>0.20</jacoco.codeCoverage.minRatio>
     <groovy.version>3.0.7</groovy.version> <!-- temp fix for inconsistent use of API in REST Assured -->
 
-    <trebol.coverage-exclusions>**/trebol/api/models/**.*</trebol.coverage-exclusions>
+    <trebol.coverage-exclusions>
+      **/trebol/api/models/**.*,
+      **/trebol/jpa/entities/**.*
+    </trebol.coverage-exclusions>
 
     <!-- Sonar CI/CD -->
     <sonar.organization>trebol-ecommerce</sonar.organization>
