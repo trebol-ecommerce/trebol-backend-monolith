@@ -48,4 +48,10 @@ public class ProductListItem
   @JoinColumn(name = "product_id", nullable = false)
   @ManyToOne(optional = false)
   private Product product;
+
+  public ProductListItem(ProductListItem source) {
+    this.id = source.id;
+    this.list = null; // avoid an infinite loop
+    this.product = new Product(source.product);
+  }
 }

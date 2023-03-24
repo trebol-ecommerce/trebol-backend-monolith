@@ -46,4 +46,9 @@ public class BillingType
   @Size(min = 1, max = 100)
   @Column(name = "billing_type_name", nullable = false, unique = true)
   private String name;
+
+  public BillingType(BillingType source) {
+    this.id = source.id;
+    this.name = source.name;
+  }
 }

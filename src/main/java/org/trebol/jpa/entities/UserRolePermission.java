@@ -51,7 +51,7 @@ public class UserRolePermission
 
   public UserRolePermission(UserRolePermission source) {
     this.id = source.id;
-    this.permission = source.permission;
-    this.userRole = source.userRole;
+    this.permission = new Permission(source.permission);
+    this.userRole = new UserRole(source.userRole);
   }
 }

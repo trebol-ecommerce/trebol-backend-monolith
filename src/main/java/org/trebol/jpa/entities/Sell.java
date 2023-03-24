@@ -20,18 +20,32 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
-
-import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 
 @Entity
 @Table(
@@ -116,16 +130,20 @@ public class Sell
     this.billingType = source.billingType;
     this.billingAddress = new Address(source.billingAddress);
     this.customer = new Customer(source.customer);
-    this.details = new ArrayList<>();
-    this.details.addAll(source.details.stream()
-      .map(SellDetail::new)
-      .collect(Collectors.toList())
-    );
-    if (source.billingType.getName().equals(BILLING_TYPE_ENTERPRISE)) {
+    this.details = source.details.stream()
+      .map(sourceDetail -> {
+        SellDetail target = new SellDetail(sourceDetail);
+        target.setSell(this);
+        return target;
+      })
+      .collect(Collectors.toList());
+    if (source.billingCompany != null) {
       this.billingCompany = new BillingCompany(source.billingCompany);
     }
-    if (source.shipper != null && source.shippingAddress != null) {
+    if (source.shipper != null) {
       this.shipper = new Shipper(source.shipper);
+    }
+    if (source.shippingAddress != null) {
       this.shippingAddress = new Address(source.shippingAddress);
     }
     if (source.salesperson != null) {

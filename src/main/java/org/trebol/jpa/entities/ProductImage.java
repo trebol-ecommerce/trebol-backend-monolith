@@ -49,8 +49,9 @@ public class ProductImage
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Product product;
 
-  public ProductImage(Product product, Image image) {
-    this.product = new Product(product);
-    this.image = new Image(image);
+  public ProductImage(ProductImage source) {
+    this.id = source.id;
+    this.product = new Product(source.product);
+    this.image = new Image(source.image);
   }
 }
