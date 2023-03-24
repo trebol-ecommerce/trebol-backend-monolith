@@ -21,46 +21,46 @@
 
 ## Current Status 📓
 
-This project's artifact, group and version have changed recently.
-Now down to `v0.1.0`, as the required conditions for me to call it reaching a valid `v1.0` state have changed.
+This project's artifact, group and version have changed recently, as I decided that the conditions it must meet to reach a proper `v1.0` have changed.
 
 Please take a look at the `CHANGELOG.md` file to review this and other recent changes and additions.
 
-Currently bound to and implementing [Trébol API v1.5.0](https://github.com/trebol-ecommerce/api/blob/main/trebol-api.json).
+Currently bound to and implementing [Trébol API v1.5.0](https://github.com/trebol-ecommerce/api/blob/v1.5.0/trebol-api.json).
 
 ## Features 🚀
 
-* Uses [Project Lombok](https://projectlombok.org)
-  * You should have the correct plugin in your IDE to integrate with it.
-  * Here's a list of [compatible software with their installation guides](https://projectlombok.org/setup/)
-* Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api)
-  * Supports all operations as described by the document
-  * Filtering, sorting and pagination of data are implemented through query params
-  * Login, registration and guest accounts
-  * Checking out with user or guest accounts
+* Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api) and supports all of the operations described by the document, such as
+  * CRUD operations on all declared data types
+    * Can filter, sort and paginate through query params
+  * Login, registration and optionally, guest customer accounts
+  * Checking out as a registered user or a guest (when enabled)
+* Uses [Project Lombok](https://projectlombok.org) in all of its API models and JPA entities
+  * Here's a list of [compatible IDEs and their installation guides](https://projectlombok.org/setup/) to get yourself hacking in no time
 * Uses [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
   * Annotated entity classes; including constraints and indexes where they are most needed at scale
-    * Bundles drivers for H2 and MariaDB, but can virtually connect to any JDBC-compatible database with the correct driver
+  * Bundles drivers for H2 and MariaDB, but can virtually connect to any JDBC-compatible database with the correct driver
 * Uses [Spring Security](https://spring.io/projects/spring-security)
   * Implements stateless session authentication/autorization through [JSON Web Tokens](https://jwt.io/) with aid from the [JJWT library](https://github.com/jwtk/jjwt)
     * Paired with `users`, `roles`, and `permissions` database tables (see `/src/main/resources/data.sql` for an example setup with 4 roles and users)
-    * Do note that Authorities required in some controllers are hard-coded. These must match entries in the `permissions` table
-  * Passwords are encoded using BCrypt
-* Integrates payments with [Webpay Plus](https://transbankdevelopers.cl/producto/webpay) by Transbank ([Java SDK repo](https://github.com/TransbankDevelopers/transbank-sdk-java))
-  * On due time, it may be possible to integrate more popular payment services such as Paypal and Stripe
+    * Do note that Authorities required in some controllers are hard-coded. These must match entries in the `permissions` database table
+  * Passwords encoded with BCrypt by default
+* Integrates payments with [WebpayPlus](https://transbankdevelopers.cl/producto/webpay) by Transbank ([Java SDK repo](https://github.com/TransbankDevelopers/transbank-sdk-java))
+  * It is planned to integrate more internationally popular payment services such as Paypal and Stripe
 * Integrates mail notifications with [Mailgun](https://mailgun.com) (an account and API key are required)
-* Self-evident properties files for configuring mission-critical parameters such as
-  * CORS mappings
-  * JWT secret key and duration
-  * BCrypt algorithm strength
-  * Webpay integration endpoints
-  * Mailgun & general mail properties
+* Defines quite-evident properties, and provides a throughfully-explained example file with them
+  * Mission-critical
+    * WebpayPlus properties
+    * Mailgun & general mail properties
+  * Security-crucial
+    * CORS mappings
+    * JWT secret key and duration
+    * BCrypt algorithm strength
 
 ### Data model diagram
 
 ![Schema](./schema.png)
 
-This schema was designed in a couple minutes using [Azimutt](https://github.com/azimuttapp/azimutt), a MIT-licensed, handy navigation and diagram visualization tool for Entity-Relationship models.
+This Entity-Relationship model diagram was designed in a couple minutes using [Azimutt](https://github.com/azimuttapp/azimutt), a MIT-licensed, handy ER-model-navigation, diagram-visualization-and-design tool.
 
 ## Getting started 👍
 
@@ -71,36 +71,35 @@ This schema was designed in a couple minutes using [Azimutt](https://github.com/
 
 ### Installation
 
-After cloning the repository, run `mvn verify`, grab a drink and wait a little.
+First, don't forget to install any [Project Lombok plugin for your IDE](https://projectlombok.org/setup/) if you haven't done it by the time you read this.
+
+After cloning the repository, run `mvn verify`, get yourself comfortable and wait until it is done.
 That command will:
 
 - Download & install dependencies
+- Generate sources
 - Compile the project
 - Generate the WAR package file
 - Install it to your local maven repo
 - Run unit tests
 - Check code coverage
 
-**The important step here is to compile the project first**, because some classes (QueryDSL types such as `QUser`, `QProduct` and so on) are unversioned.
+**The important step here is to generate the sources**, because some classes (QueryDSL types such as `QUser`, `QProduct` and so on) are unversioned and instead, generated through a Maven plugin included within the project dependencies.
 
-Instead, these classes are generated through a Maven plugin included within the project dependencies.
-
-If for any reason you fail to compile, please run `mvn clean generate-sources` and try it again.
-
-Also don't forget to install any [Project Lombok plugin for your IDE](https://projectlombok.org/setup/) if you don't have it already.
+If for any reason you fail to compile the project, please run `mvn clean generate-sources` instead and then try the former command again.
 
 ### How to use
 
-You can quickly run the application over an embedded server by executing `mvn spring-boot:run`
+You can quickly run the application over an embedded server by executing the Spring Boot Run maven goal (e.g. running `mvn spring-boot:run`)
 
-Mailgun integration will only be available if the `mailgun` profile is active. Please read the `application-mailgun.empty.properties` file and [this bit of the Spring Boot documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.profiles) to know how to proceed with that.
+Mailgun integration will only be available if the `mailgun` profile is active (this is hard-coded). Please read the `application-mailgun.empty.properties` file and [this bit of the Spring Boot documentation](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.profiles) to know how to proceed with that.
 
 ### Configuration
 
 The default configuration profile, which is located at `/src/main/resources/application.properties`
 contains sane default settings and brief summaries of what everything does.
 
-You _can_ run the application out-of-the-box with these, though you should have a look at it.
+You _can_ run the application out-of-the-box with these, though you should have a good look at it.
 
 Also remember, that Spring Boot does support using more than one profile at once.
 [This](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.external-config) and
@@ -108,7 +107,7 @@ Also remember, that Spring Boot does support using more than one profile at once
 
 ## Contributing to this repository 😍
 
-Please review the [contributing guidelines](https://github.com/trebol-ecommerce/spring-boot-backend/blob/main/CONTRIBUTING.md) before proceeding.
+Please review the [contributing guidelines](./CONTRIBUTING.md) before proceeding.
 
 ## Contributors ✨
 
@@ -145,3 +144,5 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+[spring-boot-docs]: https://docs.spring.io/spring-boot/docs/2.6.12/reference/html
