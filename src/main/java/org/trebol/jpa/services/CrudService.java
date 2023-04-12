@@ -28,6 +28,7 @@ import org.trebol.common.exceptions.BadInputException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -85,16 +86,29 @@ public interface CrudService<M, E> {
    */
   Optional<E> getExisting(M example) throws BadInputException;
 
-  // TODO in implementations, this is more akin to a PATCH method, in that it partially updates the data, than a PUT method, which intent is to updates the whole model. This interface should declare separate methods for doing both things, and make use of different POJOs to validate data accordingly.
   /**
    * Updates an existing registry, first fetching it from its <i>identifying property</i> and
    * then replacing the rest of its contents with those from the input model.<br/>
    * Note that the <i>identifying property</i> depends on the data type.<br/>
    * <br/>
-   * <i>NOTE: This intended behavior may change in the future.</i>
    *
-   * @param input The model to be updated. Its identifying field may or may not be
-   *              present, and can be different from the second method param.
+   * @param input Model with data to update
+   * @return A model-copy of the saved registry, with its properties updated accordingly.
+   * @throws EntityNotFoundException When no registry matches the given input.
+   * @throws BadInputException       When the data in the input object is not valid.<br/>
+   *                                 It is expected that some portions data may be null, because it may not have
+   *                                 been included during serialization. Such cases are <i>not</i> meant to cause
+   *                                 a BadInputException.<br/>
+   * @deprecated
+   */
+  @Deprecated(since = "0.2.0-SNAPSHOT", forRemoval = true)
+  M update(M input) throws EntityNotFoundException, BadInputException;
+
+  /**
+   * Updates an existing registry, by fetching it from a provided id and then overwriting the registry entirely.
+   *
+   * @param input Model with data to update
+   * @param id The identifying property
    * @return A model-copy of the saved registry, with its properties updated accordingly.
    * @throws EntityNotFoundException When no registry matches the given input.
    * @throws BadInputException       When the data in the input object is not valid.<br/>
@@ -102,24 +116,52 @@ public interface CrudService<M, E> {
    *                                 been included during serialization. Such cases are <i>not</i> meant to cause
    *                                 a BadInputException.<br/>
    */
-  M update(M input) throws EntityNotFoundException, BadInputException;
+  Optional<M> update(M input, Long id) throws BadInputException;
 
-  // TODO in implementations, this is more akin to a PATCH method, in that it partially updates the data, than a PUT method, which intent is to updates the whole model. This interface should declare separate methods for doing both things, and make use of different POJOs to validate data accordingly.
   /**
-   * Updates one or several existing registries, by first targeting them
-   * given some filtering conditions wrapped in a {@link com.querydsl.core.types.Predicate}.<br/>
-   * It is usually the task of the {@link org.trebol.jpa.services.PredicateService}
-   * to create this Predicate in the first place.
+   * Updates an existing registry, if found given some filtering conditions wrapped in a
+   * {@link com.querydsl.core.types.Predicate}.<br/>
+   * Predicates can be produced using a {@link org.trebol.jpa.services.PredicateService}.
    * <br/>
    * <i>NOTE: This intended behavior may change in the future.</i>
    *
-   * @param input   The model with upcoming data.
+   * @param input   The model with upcoming data
    * @param filters The QueryDSL filtering conditions
    * @return The saved item, with updated properties
    * @throws EntityNotFoundException When no item matches given filters.
    * @throws BadInputException       When the data in the input object is not valid.
    */
-  M update(M input, Predicate filters) throws EntityNotFoundException, BadInputException;
+  Optional<M> update(M input, Predicate filters) throws BadInputException;
+
+  /**
+   * Updates part of an existing registry, by fetching it from a provided id and overwriting properties one by one
+   * as defined by the <b>changes</b> parameter.<br/>
+   *
+   * @param changes A collection of key/value pairs to indicate the bits of data to update
+   * @param id The identifying property
+   * @return A model-copy of the saved registry, with its properties updated accordingly.
+   * @throws EntityNotFoundException When no registry matches the given input.
+   * @throws BadInputException       When the data in the input object is not valid.<br/>
+   *                                 It is expected that some portions data may be null, because it may not have
+   *                                 been included during serialization. Such cases are <i>not</i> meant to cause
+   *                                 a BadInputException.<br/>
+   */
+  Optional<M> partialUpdate(Map<String, Object> changes, Long id) throws BadInputException;
+
+  /**
+   * Updates part of an existing registry, if found given some filtering conditions wrapped in a
+   * {@link com.querydsl.core.types.Predicate}.<br/>
+   * Predicates can be produced using a {@link org.trebol.jpa.services.PredicateService}.
+   * <br/>
+   * <i>NOTE: This intended behavior may change in the future.</i>
+   *
+   * @param changes A collection of key/value pairs to indicate the bits of data to update
+   * @param filters The QueryDSL filtering conditions
+   * @return The saved item, with updated properties
+   * @throws EntityNotFoundException When no item matches given filters.
+   * @throws BadInputException       When the data in the input object is not valid.
+   */
+  Optional<M> partialUpdate(Map<String, Object> changes, Predicate filters) throws BadInputException;
 
   // TODO why throw an exception? It is not an application error to not delete any registry. Consider changing the return type to aptly inform the caller about the result.
   /**
