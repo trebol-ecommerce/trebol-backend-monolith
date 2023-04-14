@@ -21,10 +21,14 @@
 package org.trebol.jpa.services.patch.impl;
 
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.ImagePojo;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.patch.ImagesPatchService;
+
+import java.util.Map;
 
 @Service
 @NoArgsConstructor
@@ -32,24 +36,35 @@ public class ImagesPatchServiceImpl
   implements ImagesPatchService {
 
   @Override
-  public Image patchExistingEntity(ImagePojo changes, Image existing) {
+  public Image patchExistingEntity(Map<String, Object> changes, Image existing) throws BadInputException {
     Image target = new Image(existing);
 
-    String code = changes.getCode();
-    if (code != null && !code.isBlank() && !target.getCode().equals(code)) {
-      target.setCode(code);
+    if (changes.containsKey("code")) {
+      String code = (String) changes.get("code");
+      if (!StringUtils.isBlank(code)) {
+        target.setCode(code);
+      }
     }
 
-    String filename = changes.getFilename();
-    if (filename != null && !filename.isBlank() && !target.getFilename().equals(filename)) {
-      target.setFilename(filename);
+    if (changes.containsKey("filename")) {
+      String filename = (String) changes.get("filename");
+      if (!StringUtils.isBlank(filename)) {
+        target.setFilename(filename);
+      }
     }
 
-    String url = changes.getUrl();
-    if (url != null && !url.isBlank() && !target.getUrl().equals(url)) {
-      target.setUrl(url);
+    if (changes.containsKey("url")) {
+      String url = (String) changes.get("url");
+      if (!StringUtils.isBlank(url)) {
+        target.setUrl(url);
+      }
     }
 
     return target;
+  }
+
+  @Override
+  public Image patchExistingEntity(ImagePojo changes, Image target) throws BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 }

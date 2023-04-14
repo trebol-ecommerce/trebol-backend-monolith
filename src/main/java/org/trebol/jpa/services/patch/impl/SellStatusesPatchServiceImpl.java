@@ -21,10 +21,14 @@
 package org.trebol.jpa.services.patch.impl;
 
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.SellStatusPojo;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.services.patch.SellStatusesPatchService;
+
+import java.util.Map;
 
 @Service
 @NoArgsConstructor
@@ -32,23 +36,26 @@ public class SellStatusesPatchServiceImpl
   implements SellStatusesPatchService {
 
   @Override
-  public SellStatus patchExistingEntity(SellStatusPojo changes, SellStatus existing) {
-    SellStatus target = SellStatus.builder()
-      .id(existing.getId())
-      .code(existing.getCode())
-      .name(existing.getName())
-      .build();
+  public SellStatus patchExistingEntity(Map<String, Object> changes, SellStatus existing) throws BadInputException {
+    SellStatus target = new SellStatus(existing);
 
-    Integer code = changes.getCode();
-    if (code != null && !target.getCode().equals(code)) {
+    if (changes.containsKey("code")) {
+      int code = (int) changes.get("code");
       target.setCode(code);
     }
 
-    String name = changes.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
+    if (changes.containsKey("name")) {
+      String name = (String) changes.get("name");
+      if (!StringUtils.isBlank(name)) {
+        target.setName(name);
+      }
     }
 
     return target;
+  }
+
+  @Override
+  public SellStatus patchExistingEntity(SellStatusPojo changes, SellStatus existing) throws BadInputException {
+    throw new UnsupportedOperationException("This method has been deprecated");
   }
 }
