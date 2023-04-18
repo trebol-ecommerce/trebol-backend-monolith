@@ -20,8 +20,8 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,34 +30,78 @@ import org.trebol.api.models.SellStatusPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.SellStatus;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Map;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.trebol.testing.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.NOT_ANY;
 
 @ExtendWith(MockitoExtension.class)
 class SellStatusesPatchServiceImplTest {
   @InjectMocks SellStatusesPatchServiceImpl instance;
-  SellStatus sellStatus;
-  SellStatusPojo sellStatusPojo;
+  private static ObjectMapper MAPPER;
+  private static SellStatus EXISTING_SELL_STATUS;
 
-  @BeforeEach
-  void beforeEach() {
-    sellStatus = new SellStatus();
-    sellStatus.setName(ANY);
-    sellStatus.setId(1L);
-    sellStatus.setName(ANY);
-    sellStatusPojo = SellStatusPojo.builder().name(ANY).build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    sellStatus = null;
-    sellStatusPojo = null;
+  @BeforeAll
+  static void beforeAll() {
+    MAPPER = new ObjectMapper();
+    MAPPER.setSerializationInclusion(NON_NULL);
+    EXISTING_SELL_STATUS = SellStatus.builder()
+      .id(1L)
+      .code(0)
+      .name(ANY)
+      .build();
   }
 
   @Test
-  void patches_entity_data() throws BadInputException {
-    sellStatusPojo.setName("PIOLO");
-    SellStatus actual = instance.patchExistingEntity(sellStatusPojo, sellStatus);
-    assertEquals(1L, actual.getId());
+  void performs_empty_patch() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(SellStatusPojo.builder().build());
+    SellStatus result = instance.patchExistingEntity(input, EXISTING_SELL_STATUS);
+    assertEquals(EXISTING_SELL_STATUS, result);
+  }
+
+  @Test
+  void patches_name() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(SellStatusPojo.builder()
+      .name(NOT_ANY)
+      .build());
+    SellStatus result = instance.patchExistingEntity(input, EXISTING_SELL_STATUS);
+    assertNotEquals(EXISTING_SELL_STATUS, result);
+    assertEquals(NOT_ANY, result.getName());
+  }
+
+  @Test
+  void patches_code() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(SellStatusPojo.builder()
+      .code(5)
+      .build());
+    SellStatus result = instance.patchExistingEntity(input, EXISTING_SELL_STATUS);
+    assertNotEquals(EXISTING_SELL_STATUS, result);
+    assertEquals(5, result.getCode());
+  }
+
+  @Test
+  void patches_all_fields() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(SellStatusPojo.builder()
+      .code(3)
+      .name(NOT_ANY)
+      .build());
+    SellStatus result = instance.patchExistingEntity(input, EXISTING_SELL_STATUS);
+    assertNotEquals(EXISTING_SELL_STATUS, result);
+    assertEquals(3, result.getCode());
+    assertEquals(NOT_ANY, result.getName());
+  }
+
+  @Test
+  void does_not_support_old_method_signature() {
+    SellStatusPojo input = SellStatusPojo.builder().build();
+    assertThrows(UnsupportedOperationException.class,
+      () -> instance.patchExistingEntity(input, EXISTING_SELL_STATUS));
+  }
+
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> mapFrom(SellStatusPojo data) {
+    return MAPPER.convertValue(data, Map.class);
   }
 }

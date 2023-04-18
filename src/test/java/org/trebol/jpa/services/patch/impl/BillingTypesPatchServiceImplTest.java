@@ -20,6 +20,8 @@
 
 package org.trebol.jpa.services.patch.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,23 +30,55 @@ import org.trebol.api.models.BillingTypePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingType;
 
+import java.util.Map;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.trebol.testing.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.NOT_ANY;
 
 @ExtendWith(MockitoExtension.class)
 class BillingTypesPatchServiceImplTest {
   @InjectMocks BillingTypesPatchServiceImpl instance;
+  private static ObjectMapper MAPPER;
+  private static BillingType EXISTING_BILLING_TYPE;
 
-  @Test
-  void patches_entity_data() throws BadInputException {
-    BillingType existingBillingType = BillingType.builder()
+  @BeforeAll
+  static void beforeAll() {
+    MAPPER = new ObjectMapper();
+    MAPPER.setSerializationInclusion(NON_NULL);
+    EXISTING_BILLING_TYPE = BillingType.builder()
       .id(1L)
       .name(ANY)
       .build();
-    BillingTypePojo input = BillingTypePojo.builder()
-      .name("PIOLO")
-      .build();
-    BillingType result = instance.patchExistingEntity(input, existingBillingType);
-    assertEquals(input.getName(), result.getName());
+  }
+
+  @Test
+  void performs_empty_patch() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(BillingTypePojo.builder().build());
+    BillingType result = instance.patchExistingEntity(input, EXISTING_BILLING_TYPE);
+    assertEquals(EXISTING_BILLING_TYPE, result);
+  }
+
+  @Test
+  void patches_name() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(BillingTypePojo.builder()
+        .name(NOT_ANY)
+        .build());
+    BillingType result = instance.patchExistingEntity(input, EXISTING_BILLING_TYPE);
+    assertEquals(NOT_ANY, result.getName());
+  }
+
+  @Test
+  void does_not_support_old_method_signature() {
+    BillingTypePojo input = BillingTypePojo.builder().build();
+    assertThrows(UnsupportedOperationException.class,
+      () -> instance.patchExistingEntity(input, EXISTING_BILLING_TYPE));
+  }
+
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> mapFrom(BillingTypePojo data) {
+    return MAPPER.convertValue(data, Map.class);
   }
 }
