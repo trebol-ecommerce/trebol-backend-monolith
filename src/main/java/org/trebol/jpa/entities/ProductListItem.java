@@ -49,9 +49,13 @@ public class ProductListItem
   @ManyToOne(optional = false)
   private Product product;
 
+  /**
+   * Please note: this copy-constructor does not include a ProductListItem's relationships
+   * @param source The original Sell
+   */
   public ProductListItem(ProductListItem source) {
     this.id = source.id;
-    this.list = null; // avoid an infinite loop
-    this.product = new Product(source.product);
+    this.list = null;
+    this.product = null;
   }
 }

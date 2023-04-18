@@ -49,9 +49,13 @@ public class ProductImage
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Product product;
 
+  /**
+   * Please note: this copy-constructor does NOT include a ProductImage's relationships
+   * @param source The original ProductImage
+   */
   public ProductImage(ProductImage source) {
     this.id = source.id;
-    this.product = new Product(source.product);
-    this.image = new Image(source.image);
+    this.image = null;
+    this.product = null;
   }
 }

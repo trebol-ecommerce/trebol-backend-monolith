@@ -66,6 +66,10 @@ public class Product
   @ManyToOne(fetch = FetchType.LAZY)
   private ProductCategory productCategory;
 
+  /**
+   * Please note: this copy-constructor does not include a Product's relationship to a ProductCategory.
+   * @param source The original Product
+   */
   public Product(Product source) {
     this.id = source.id;
     this.name = source.name;
@@ -74,8 +78,6 @@ public class Product
     this.price = source.price;
     this.stockCurrent = source.stockCurrent;
     this.stockCritical = source.stockCritical;
-    if (source.productCategory != null) {
-      this.productCategory = source.productCategory;
-    }
+    this.productCategory = null;
   }
 }

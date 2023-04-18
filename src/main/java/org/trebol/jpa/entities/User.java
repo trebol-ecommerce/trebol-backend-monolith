@@ -60,13 +60,15 @@ public class User
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
+  /**
+   * Please note: this copy-constructor does not include a User's relationships nor its password
+   * @param source The original User
+   */
   public User(User source) {
     this.id = source.id;
     this.name = source.name;
-    this.password = source.password;
-    if (source.person != null) {
-      this.person = new Person(source.person);
-    }
-    this.userRole = new UserRole(source.userRole);
+    this.password = null;
+    this.person = null;
+    this.userRole = null;
   }
 }

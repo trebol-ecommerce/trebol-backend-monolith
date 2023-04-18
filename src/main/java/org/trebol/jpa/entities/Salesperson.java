@@ -46,6 +46,10 @@ public class Salesperson
   @ManyToOne(optional = false, cascade = CascadeType.ALL)
   private Person person;
 
+  /**
+   * Please note: this copy-constructor DOES include a Salesperson's relationship to its own profile data
+   * @param source The original Sell
+   */
   public Salesperson(Salesperson source) {
     this.id = source.id;
     this.person = new Person(source.person);

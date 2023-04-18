@@ -49,9 +49,13 @@ public class UserRolePermission
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
+  /**
+   * Please note: this copy-constructor does not include a UserRolePermission's relationships
+   * @param source The original UserRolePermission
+   */
   public UserRolePermission(UserRolePermission source) {
     this.id = source.id;
-    this.permission = new Permission(source.permission);
-    this.userRole = new UserRole(source.userRole);
+    this.permission = null;
+    this.userRole = null;
   }
 }
