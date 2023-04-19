@@ -42,7 +42,7 @@ public class PeoplePatchServiceImpl
     if (changes.containsKey("idNumber")) {
       String idNumber = (String) changes.get("idNumber");
       if (!StringUtils.isBlank(idNumber)) {
-        target.setFirstName(idNumber);
+        target.setIdNumber(idNumber);
       }
     }
 

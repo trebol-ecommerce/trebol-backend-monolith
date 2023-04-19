@@ -23,11 +23,14 @@ package org.trebol.jpa.services.patch.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.SalespersonPojo;
+import org.trebol.common.Utils;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.patch.PeoplePatchService;
 import org.trebol.jpa.services.patch.SalespeoplePatchService;
+
+import java.util.Map;
 
 @Service
 public class SalespeoplePatchServiceImpl
@@ -42,12 +45,21 @@ public class SalespeoplePatchServiceImpl
   }
 
   @Override
-  public Salesperson patchExistingEntity(SalespersonPojo changes, Salesperson existing) throws BadInputException {
+  public Salesperson patchExistingEntity(Map<String, Object> changes, Salesperson existing) throws BadInputException {
     Salesperson target = new Salesperson(existing);
 
-    Person person = peoplePatchService.patchExistingEntity(changes.getPerson(), existing.getPerson());
-    target.setPerson(person);
+    Map<String, Object> personChanges = Utils.copyMapWithUnprefixedEntries(changes, "person.");
+    if (!personChanges.isEmpty()) {
+      Person existingPerson = existing.getPerson();
+      Person person = peoplePatchService.patchExistingEntity(personChanges, existingPerson);
+      target.setPerson(person);
+    }
 
     return target;
+  }
+
+  @Override
+  public Salesperson patchExistingEntity(SalespersonPojo changes, Salesperson existing) throws BadInputException {
+    throw new UnsupportedOperationException("This method has been deprecated");
   }
 }
