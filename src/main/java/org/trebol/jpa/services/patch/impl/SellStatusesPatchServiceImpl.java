@@ -40,8 +40,10 @@ public class SellStatusesPatchServiceImpl
     SellStatus target = new SellStatus(existing);
 
     if (changes.containsKey("code")) {
-      int code = (int) changes.get("code");
-      target.setCode(code);
+      Integer code = (Integer) changes.get("code");
+      if (code != null) {
+        target.setCode(code);
+      }
     }
 
     if (changes.containsKey("name")) {
