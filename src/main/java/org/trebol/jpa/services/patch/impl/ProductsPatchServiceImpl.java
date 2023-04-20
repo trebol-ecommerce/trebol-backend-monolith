@@ -21,10 +21,14 @@
 package org.trebol.jpa.services.patch.impl;
 
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.ProductPojo;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.services.patch.ProductsPatchService;
+
+import java.util.Map;
 
 @Service
 @NoArgsConstructor
@@ -32,32 +36,50 @@ public class ProductsPatchServiceImpl
   implements ProductsPatchService {
 
   @Override
-  public Product patchExistingEntity(ProductPojo changes, Product existing) {
+  public Product patchExistingEntity(Map<String, Object> changes, Product existing) throws BadInputException {
     Product target = new Product(existing);
 
-    String barcode = changes.getBarcode();
-    if (barcode != null && !barcode.isBlank() && !target.getBarcode().equals(barcode)) {
-      target.setBarcode(barcode);
+    if (changes.containsKey("barcode")) {
+      String barcode = (String) changes.get("barcode");
+      if (!StringUtils.isBlank(barcode)) {
+        target.setBarcode(barcode);
+      }
     }
 
-    String name = changes.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
+    if (changes.containsKey("name")) {
+      String name = (String) changes.get("name");
+      if (!StringUtils.isBlank(name)) {
+        target.setName(name);
+      }
     }
 
-    Integer price = changes.getPrice();
-    target.setPrice(price);
-
-    String description = changes.getDescription();
-    if (description != null) {
-      target.setDescription(description);
+    if (changes.containsKey("price")) {
+      Integer price = (Integer) changes.get("price");
+      target.setPrice(price);
     }
 
-    Integer currentStock = changes.getCurrentStock();
-    if (currentStock != null) {
+    if (changes.containsKey("description")) {
+      String description = (String) changes.get("description");
+      if (!StringUtils.isBlank(description)) {
+        target.setDescription(description);
+      }
+    }
+
+    if (changes.containsKey("currentStock")) {
+      Integer currentStock = (Integer) changes.get("currentStock");
       target.setStockCurrent(currentStock);
     }
 
+    if (changes.containsKey("criticalStock")) {
+      Integer criticalStock = (Integer) changes.get("criticalStock");
+      target.setStockCritical(criticalStock);
+    }
+
     return target;
+  }
+
+  @Override
+  public Product patchExistingEntity(ProductPojo changes, Product existing) throws BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 }
