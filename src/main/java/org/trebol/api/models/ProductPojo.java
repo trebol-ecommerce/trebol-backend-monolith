@@ -51,12 +51,8 @@ public class ProductPojo {
   private String description;
   @NotNull
   private Integer price;
-  @JsonIgnore
-  @Builder.Default
-  private Integer currentStock = 0;
-  @JsonIgnore
-  @Builder.Default
-  private Integer criticalStock = 0;
+  private Integer currentStock;
+  private Integer criticalStock;
   private ProductCategoryPojo category;
   private Collection<ImagePojo> images;
 }

@@ -23,7 +23,6 @@ package org.trebol.api.models;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
 
@@ -32,6 +31,5 @@ import javax.validation.constraints.NotBlank;
 @JsonInclude
 public class BillingTypePojo {
   @NotBlank
-  @NonNull
   private String name;
 }
