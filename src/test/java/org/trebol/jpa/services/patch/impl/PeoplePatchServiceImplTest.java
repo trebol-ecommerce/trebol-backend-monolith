@@ -22,7 +22,6 @@ package org.trebol.jpa.services.patch.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,7 +29,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
-import org.trebol.testing.PeopleTestHelper;
 
 import java.util.Map;
 
@@ -42,7 +40,6 @@ import static org.trebol.testing.TestConstants.NOT_ANY;
 @ExtendWith(MockitoExtension.class)
 class PeoplePatchServiceImplTest {
   @InjectMocks PeoplePatchServiceImpl instance;
-  PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
   private static ObjectMapper MAPPER;
   private static Person EXISTING_PERSON;
 
@@ -57,11 +54,6 @@ class PeoplePatchServiceImplTest {
       .lastName(ANY)
       .email(ANY)
       .build();
-  }
-
-  @BeforeEach
-  void beforeEach() {
-    peopleTestHelper.resetPeople();
   }
 
   @Test
