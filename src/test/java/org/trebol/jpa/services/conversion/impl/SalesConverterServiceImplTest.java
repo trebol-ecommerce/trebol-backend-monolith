@@ -58,7 +58,7 @@ class SalesConverterServiceImplTest {
     Sell sell = salesTestHelper.sellEntityBeforeCreation();
     CustomerPojo expectedCustomerPojo = CustomerPojo.builder().build();
     AddressPojo expectedAddressPojo = AddressPojo.builder().build();
-    when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
+    when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(expectedCustomerPojo);
     when(addressesConverterServiceMock.convertToPojo(any(Address.class))).thenReturn(expectedAddressPojo);
     SellPojo result = instance.convertToPojo(sell);
     assertNotNull(result);
@@ -79,19 +79,19 @@ class SalesConverterServiceImplTest {
   @Test
   void converts_to_pojo_with_all_data() {
     Sell sell = salesTestHelper.sellEntityAfterCreation();
-    sell.setShipper(Shipper.builder().build());
+    sell.setShipper(Shipper.builder().name(ANY).build());
     sell.setShippingAddress(Address.builder().build());
     sell.setSalesperson(Salesperson.builder().build());
+    CustomerPojo expectedCustomer = CustomerPojo.builder().build();
     AddressPojo expectedAddress = AddressPojo.builder().build();
-    ShipperPojo expectedShipperPojo = ShipperPojo.builder().build();
     SalespersonPojo expectedSalespersonPojo = SalespersonPojo.builder().build();
-    when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(CustomerPojo.builder().build());
+    when(customersConverterMock.convertToPojo(any(Customer.class))).thenReturn(expectedCustomer);
     when(addressesConverterServiceMock.convertToPojo(any(Address.class))).thenReturn(expectedAddress);
-    when(shippersConverterServiceMock.convertToPojo(any(Shipper.class))).thenReturn(expectedShipperPojo);
     when(salespeopleConverterMock.convertToPojo(any(Salesperson.class))).thenReturn(expectedSalespersonPojo);
     SellPojo result = instance.convertToPojo(sell);
+    assertEquals(expectedCustomer, result.getCustomer());
     assertEquals(expectedAddress, result.getShippingAddress());
-    assertEquals(expectedShipperPojo, result.getShipper());
+    assertEquals(ANY, result.getShipper());
     assertEquals(expectedSalespersonPojo, result.getSalesperson());
     verify(addressesConverterServiceMock, times(2)).convertToPojo(any(Address.class));
     verify(shippersConverterServiceMock).convertToPojo(sell.getShipper());

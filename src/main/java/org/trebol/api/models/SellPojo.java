@@ -65,7 +65,7 @@ public class SellPojo {
   @Valid
   private CustomerPojo customer;
   private SalespersonPojo salesperson;
-  private ShipperPojo shipper;
+  private String shipper;
   private BillingCompanyPojo billingCompany;
   @Valid
   @NotNull

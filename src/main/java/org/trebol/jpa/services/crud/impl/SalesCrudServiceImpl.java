@@ -191,8 +191,8 @@ public class SalesCrudServiceImpl
       } else {
         target.setShippingAddress(existingShippingAddress.get());
       }
-      ShipperPojo pojoShipper = inputPojo.getShipper();
-      Optional<Shipper> existingShipper = shippersCrudService.getExisting(pojoShipper);
+      String pojoShipperName = inputPojo.getShipper();
+      Optional<Shipper> existingShipper = shippersRepository.findByName(pojoShipperName);
       if (existingShipper.isEmpty()) {
         throw new BadInputException("Specified shipper does not exist");
       }

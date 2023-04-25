@@ -38,21 +38,18 @@ public class SalesConverterServiceImpl
   private final CustomersConverterService customersConverterService;
   private final SalespeopleConverterService salespeopleConverterService;
   private final AddressesConverterService addressesConverterService;
-  private final ShippersConverterService shippersConverterService;
 
   @Autowired
   public SalesConverterServiceImpl(
     BillingCompaniesConverterService billingCompaniesConverterService,
     CustomersConverterService customersConverterService,
     SalespeopleConverterService salespeopleConverterService,
-    AddressesConverterService addressesConverterService,
-    ShippersConverterService shippersConverterService
+    AddressesConverterService addressesConverterService
   ) {
     this.billingCompaniesConverterService = billingCompaniesConverterService;
     this.customersConverterService = customersConverterService;
     this.salespeopleConverterService = salespeopleConverterService;
     this.addressesConverterService = addressesConverterService;
-    this.shippersConverterService = shippersConverterService;
   }
 
   // TODO this method can be really expensive, please optimize it when the REST API specification includes PATCH and PUT methods
@@ -93,8 +90,7 @@ public class SalesConverterServiceImpl
     }
 
     if (source.getShipper() != null) {
-      ShipperPojo shipper = shippersConverterService.convertToPojo(source.getShipper());
-      target.setShipper(shipper);
+      target.setShipper(source.getShipper().getName());
     }
 
     if (source.getSalesperson() != null) {
