@@ -20,173 +20,166 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.trebol.api.models.BillingCompanyPojo;
-import org.trebol.api.models.CustomerPojo;
-import org.trebol.api.models.PersonPojo;
 import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.*;
-import org.trebol.common.services.RegexMatcherAdapterService;
-import org.trebol.jpa.services.conversion.AddressesConverterService;
-import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
-import org.trebol.jpa.services.conversion.CustomersConverterService;
-import org.trebol.jpa.services.crud.CustomersCrudService;
-import org.trebol.testing.SalesTestHelper;
+import org.trebol.jpa.repositories.PaymentTypesRepository;
+import org.trebol.jpa.repositories.SellStatusesRepository;
+import org.trebol.jpa.repositories.ShippersRepository;
 
-import javax.validation.Validator;
+import java.time.Clock;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 import static org.trebol.testing.TestConstants.ANY;
-import static org.trebol.testing.TestConstants.ID_1L;
+import static org.trebol.testing.TestConstants.NOT_ANY;
 
 @ExtendWith(MockitoExtension.class)
 class SalesPatchServiceImplTest {
   @InjectMocks SalesPatchServiceImpl instance;
   @Mock SellStatusesRepository statusesRepositoryMock;
-  @Mock BillingTypesRepository billingTypesRepositoryMock;
   @Mock PaymentTypesRepository paymentTypesRepositoryMock;
-  @Mock BillingCompaniesRepository billingCompaniesRepositoryMock;
   @Mock ShippersRepository shippersRepositoryMock;
-  @Mock AddressesRepository addressesRepositoryMock;
-  @Mock BillingCompaniesConverterService billingCompaniesConverterMock;
-  @Mock CustomersConverterService customersConverterMock;
-  @Mock CustomersCrudService customersServiceMock;
-  @Mock CustomersRepository customersRepositoryMock;
-  @Mock AddressesConverterService addressesConverterServiceMock;
-  @Mock Validator validatorMock;
-  @Mock RegexMatcherAdapterService regexMatcherAdapterServiceMock;
-  SalesTestHelper salesTestHelper = new SalesTestHelper();
-  BillingType billingType;
-  Sell existingSell;
+  private static ObjectMapper MAPPER;
+  private static Sell EXISTING_SELL;
 
-  @BeforeEach
-  public void beforeEach() {
-    salesTestHelper.resetSales();
-    existingSell = salesTestHelper.sellEntityAfterCreation();
-    billingType = new BillingType(ID_1L, ANY);
-  }
-
-  @Test
-  void accepts_empty_object() {
-    SellPojo emptyObject = SellPojo.builder().build();
-    assertDoesNotThrow(() -> instance.patchExistingEntity(emptyObject, existingSell));
-  }
-
-  @Test
-  void only_accepts_sell_statuses_stored_in_persistence_layer() {
-    SellPojo sellPojo = SellPojo.builder()
-      .status(ANY)
-      .build();
-    when(statusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
-    BadInputException result = assertThrows(BadInputException.class, () -> instance.patchExistingEntity(sellPojo, existingSell));
-    assertEquals("Status '" + sellPojo.getStatus() + "' is not valid", result.getMessage());
-
-    SellStatus sellStatus = new SellStatus(ID_1L, 1, ANY);
-    when(statusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatus));
-    assertDoesNotThrow(() -> instance.patchExistingEntity(sellPojo, existingSell));
-  }
-
-  @Test
-  void only_accepts_payment_types_stored_in_persistence_layer() {
-    SellPojo sellPojo = SellPojo.builder()
-      .paymentType(ANY)
-      .build();
-    when(paymentTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
-    BadInputException result = assertThrows(BadInputException.class, () -> instance.patchExistingEntity(sellPojo, existingSell));
-    assertEquals("Payment type '" + sellPojo.getPaymentType() + "' is not valid", result.getMessage());
-
-    PaymentType paymentType = new PaymentType(ID_1L, ANY);
-    when(paymentTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(paymentType));
-    assertDoesNotThrow(() -> instance.patchExistingEntity(sellPojo, existingSell));
-  }
-
-  @Test
-  void only_accepts_billing_types_stored_in_persistence_layer() {
-    SellPojo sellPojo = SellPojo.builder()
-      .billingType(ANY)
-      .build();
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
-    BadInputException result = assertThrows(BadInputException.class, () -> instance.patchExistingEntity(sellPojo, existingSell));
-    assertEquals("Billing type '" + sellPojo.getBillingType() + "' is not valid", result.getMessage());
-
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(billingType));
-    assertDoesNotThrow(() -> instance.patchExistingEntity(sellPojo, existingSell));
-  }
-
-  @Test
-  void does_not_process_enterprise_invoices_without_company_data() {
-    SellPojo sellPojo = SellPojo.builder()
-      .billingType(BILLING_TYPE_ENTERPRISE)
-      .build();
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(billingType));
-    BadInputException result = assertThrows(BadInputException.class, () -> instance.patchExistingEntity(sellPojo, existingSell));
-    assertEquals("Billing company details are required to generate enterprise invoices", result.getMessage());
-  }
-
-  @Test
-  void does_not_process_enterprise_invoices_with_empty_company_data() {
-    SellPojo sellPojo = SellPojo.builder()
-      .billingType(BILLING_TYPE_ENTERPRISE)
-      .billingCompany(BillingCompanyPojo.builder().build())
-      .build();
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(billingType));
-    BadInputException result = assertThrows(BadInputException.class, () -> instance.patchExistingEntity(sellPojo, existingSell));
-    assertEquals("Billing company must have an id number", result.getMessage());
-  }
-
-  @Test
-  void does_not_process_enterprise_invoices_with_invalid_company_data() {
-    SellPojo sellPojo = SellPojo.builder()
-      .billingType(BILLING_TYPE_ENTERPRISE)
-      .billingCompany(BillingCompanyPojo.builder()
-        .idNumber(ANY)
+  @BeforeAll
+  static void beforeAll() {
+    MAPPER = new ObjectMapper()
+      .findAndRegisterModules()
+      .setSerializationInclusion(NON_NULL)
+      .configure(WRITE_DATES_AS_TIMESTAMPS, false);
+    EXISTING_SELL = Sell.builder()
+      .id(1L)
+      .date(Instant.now())
+      .totalItems(1)
+      .netValue(9700)
+      .transportValue(0)
+      .taxesValue(300)
+      .totalValue(10000)
+      .transactionToken(ANY)
+      .paymentType(PaymentType.builder()
+        .id(1L)
+        .name(ANY)
         .build())
+      .status(SellStatus.builder()
+        .id(1L)
+        .name(ANY)
+        .build())
+      .billingType(BillingType.builder()
+        .id(1L)
+        .name(ANY)
+        .build())
+      .billingAddress(null)
+      .customer(null)
+      .details(null)
+      .billingCompany(null)
+      .shipper(null)
+      .shippingAddress(null)
+      .salesperson(null)
       .build();
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(billingType));
-    when(regexMatcherAdapterServiceMock.isAValidIdNumber(anyString())).thenReturn(false);
-    BadInputException result = assertThrows(BadInputException.class, () -> instance.patchExistingEntity(sellPojo, existingSell));
-    assertEquals("Billing company must have a correct id number", result.getMessage());
-    verify(regexMatcherAdapterServiceMock).isAValidIdNumber(sellPojo.getBillingCompany().getIdNumber());
-
-    when(regexMatcherAdapterServiceMock.isAValidIdNumber(anyString())).thenReturn(true);
-    assertDoesNotThrow(() -> instance.patchExistingEntity(sellPojo, existingSell));
   }
 
   @Test
-  void only_accepts_valid_customer_data() throws BadInputException {
-    SellPojo sellPojo = SellPojo.builder()
-      .customer(CustomerPojo.builder()
-        .person(PersonPojo.builder().build())
-        .build())
-      .build();
-    BadInputException result = assertThrows(BadInputException.class, () -> instance.patchExistingEntity(sellPojo, existingSell));
-    assertEquals("Customer must possess valid personal information", result.getMessage());
+  void performs_empty_patch() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(SellPojo.builder().build());
+    Sell result = instance.patchExistingEntity(input, EXISTING_SELL);
+    assertEquals(EXISTING_SELL, result);
+  }
 
-    sellPojo.setCustomer(CustomerPojo.builder()
-      .person(PersonPojo.builder()
-        .idNumber(ANY)
-        .build())
+  @Test
+  void patches_date() throws BadInputException {
+    Instant whenTheMethodExecutes = Instant.now(Clock.systemUTC());
+    Map<String, Object> input = this.mapFrom(SellPojo.builder()
+      .date(whenTheMethodExecutes)
       .build());
-    Customer existingCustomer = Customer.builder()
-      .person(Person.builder()
-        .idNumber(ANY)
-        .build())
-      .build();
-    when(customersServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(existingCustomer));
-    Sell succesfulResult = instance.patchExistingEntity(sellPojo, existingSell);
-    assertEquals(sellPojo.getCustomer().getPerson().getIdNumber(), succesfulResult.getCustomer().getPerson().getIdNumber());
+    Sell result = instance.patchExistingEntity(input, EXISTING_SELL);
+    assertNotEquals(EXISTING_SELL, result);
+    assertEquals(whenTheMethodExecutes, result.getDate());
+  }
+
+  @Test
+  void patches_status() throws BadInputException {
+    SellStatus existingStatus = SellStatus.builder().id(2L).build();
+    Map<String, Object> input = this.mapFrom(SellPojo.builder()
+      .status(NOT_ANY)
+      .build());
+    when(statusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingStatus));
+    Sell result = instance.patchExistingEntity(input, EXISTING_SELL);
+    assertNotEquals(EXISTING_SELL, result);
+    assertEquals(existingStatus, result.getStatus());
+  }
+
+  @Test
+  void patches_paymentType() throws BadInputException {
+    PaymentType existingPaymentType = PaymentType.builder().id(2L).build();
+    Map<String, Object> input = this.mapFrom(SellPojo.builder()
+      .paymentType(NOT_ANY)
+      .build());
+    when(paymentTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingPaymentType));
+    Sell result = instance.patchExistingEntity(input, EXISTING_SELL);
+    assertNotEquals(EXISTING_SELL, result);
+    assertEquals(existingPaymentType, result.getPaymentType());
+  }
+
+  @Test
+  void patches_shipper() throws BadInputException {
+    Shipper existingShipper = Shipper.builder().id(2L).build();
+    Map<String, Object> input = this.mapFrom(SellPojo.builder()
+      .shipper(NOT_ANY)
+      .build());
+    when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingShipper));
+    Sell result = instance.patchExistingEntity(input, EXISTING_SELL);
+    assertNotEquals(EXISTING_SELL, result);
+    assertEquals(existingShipper, result.getShipper());
+  }
+
+  @Test
+  void patches_all_fields() throws BadInputException {
+    Instant whenTheMethodExecutes = Instant.now();
+    SellStatus existingStatus = SellStatus.builder().build();
+    PaymentType existingPaymentType = PaymentType.builder().build();
+    Shipper existingShipper = Shipper.builder().build();
+    Map<String, Object> input = this.mapFrom(SellPojo.builder()
+      .date(whenTheMethodExecutes)
+      .status(NOT_ANY)
+      .paymentType(NOT_ANY)
+      .shipper(NOT_ANY)
+      .build());
+    when(statusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingStatus));
+    when(paymentTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingPaymentType));
+    when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingShipper));
+    Sell result = instance.patchExistingEntity(input, EXISTING_SELL);
+    assertNotEquals(EXISTING_SELL, result);
+    assertEquals(whenTheMethodExecutes, result.getDate());
+    assertEquals(existingStatus, result.getStatus());
+    assertEquals(existingPaymentType, result.getPaymentType());
+    assertEquals(existingShipper, result.getShipper());
+  }
+
+  @Test
+  void does_not_support_old_method_signature() {
+    SellPojo input = SellPojo.builder().build();
+    assertThrows(UnsupportedOperationException.class,
+      () -> instance.patchExistingEntity(input, EXISTING_SELL));
+  }
+
+  private Map<String, Object> mapFrom(SellPojo data) {
+    return MAPPER.convertValue(data, new TypeReference<HashMap<String, Object>>() {});
   }
 }
