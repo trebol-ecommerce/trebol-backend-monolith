@@ -99,7 +99,12 @@ public class Sell
   private Collection<SellDetail> details;
 
   /**
-   * Please note: this copy-constructor does not include a Sell's relationships
+   * Please note that this copy-constructor only preserves the following relationships.
+   * <ul>
+   *   <li>SellStatus</li>
+   *   <li>PaymentType</li>
+   *   <li>BillingType</li>
+   * </ul>
    * @param source The original Sell
    */
   public Sell(Sell source) {
