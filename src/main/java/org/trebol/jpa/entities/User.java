@@ -61,14 +61,14 @@ public class User
   private UserRole userRole;
 
   /**
-   * Please note: this copy-constructor does not include a User's relationships nor its password
+   * Please note that this copy-constructor only preserves a User's relationship to a role
    * @param source The original User
    */
   public User(User source) {
     this.id = source.id;
     this.name = source.name;
+    this.userRole = source.userRole;
     this.password = null;
     this.person = null;
-    this.userRole = null;
   }
 }
