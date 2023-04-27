@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.ProductListPojo;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
@@ -57,6 +58,11 @@ public class ProductListsCrudServiceImpl
   }
 
   @Override
+  public ProductListPojo update(ProductListPojo input) throws EntityNotFoundException, BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
+  }
+
+  @Override
   public void delete(Predicate filters)
     throws EntityNotFoundException {
     long count = listsRepository.count(filters);
@@ -84,5 +90,13 @@ public class ProductListsCrudServiceImpl
     }
   }
 
+  @Override
+  protected Long extractIdFrom(ProductList source) {
+    return source.getId();
+  }
 
+  @Override
+  protected void injectIdInto(Long id, ProductList target) {
+    target.setId(id);
+  }
 }

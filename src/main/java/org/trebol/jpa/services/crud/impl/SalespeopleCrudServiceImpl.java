@@ -33,6 +33,7 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.SalespeopleCrudService;
 import org.trebol.jpa.services.patch.SalespeoplePatchService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
@@ -60,5 +61,20 @@ public class SalespeopleCrudServiceImpl
     } else {
       return salespeopleRepository.findByPersonIdNumber(idNumber);
     }
+  }
+
+  @Override
+  public SalespersonPojo update(SalespersonPojo input) throws EntityNotFoundException, BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
+  }
+
+  @Override
+  protected Long extractIdFrom(Salesperson source) {
+    return source.getId();
+  }
+
+  @Override
+  protected void injectIdInto(Long id, Salesperson target) {
+    target.setId(id);
   }
 }

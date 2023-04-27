@@ -33,6 +33,7 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
 import org.trebol.jpa.services.patch.ImagesPatchService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
@@ -53,6 +54,11 @@ public class ImagesCrudServiceImpl
   }
 
   @Override
+  public ImagePojo update(ImagePojo input) throws EntityNotFoundException, BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
+  }
+
+  @Override
   public Optional<Image> getExisting(ImagePojo input) throws BadInputException {
     String name = input.getFilename();
     if (StringUtils.isBlank(name)) {
@@ -60,5 +66,15 @@ public class ImagesCrudServiceImpl
     } else {
       return imagesRepository.findByFilename(name);
     }
+  }
+
+  @Override
+  protected Long extractIdFrom(Image source) {
+    return source.getId();
+  }
+
+  @Override
+  protected void injectIdInto(Long id, Image target) {
+    target.setId(id);
   }
 }

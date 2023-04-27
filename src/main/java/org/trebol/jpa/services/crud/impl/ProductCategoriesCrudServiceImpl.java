@@ -33,6 +33,8 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
 import org.trebol.jpa.services.patch.ProductCategoriesPatchService;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Map;
 import java.util.Optional;
 
 @Transactional
@@ -55,6 +57,11 @@ public class ProductCategoriesCrudServiceImpl
   }
 
   @Override
+  public ProductCategoryPojo update(ProductCategoryPojo input) throws EntityNotFoundException, BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
+  }
+
+  @Override
   public Optional<ProductCategory> getExisting(ProductCategoryPojo input) throws BadInputException {
     String code = input.getCode();
     if (StringUtils.isBlank(code)) {
@@ -68,23 +75,32 @@ public class ProductCategoriesCrudServiceImpl
   protected final ProductCategory prepareNewEntityFromInputPojo(ProductCategoryPojo inputPojo) throws BadInputException {
     ProductCategory target = super.prepareNewEntityFromInputPojo(inputPojo);
     if (inputPojo.getParent() != null) {
-      this.passParentIfMatchingEntityExists(target, inputPojo.getParent());
+      this.passParentIfMatchingEntityExists(target, inputPojo.getParent().getCode());
     }
     return target;
   }
 
   @Override
-  protected final ProductCategoryPojo persistEntityWithUpdatesFromPojo(ProductCategoryPojo changes, ProductCategory existingEntity) throws BadInputException {
-    ProductCategory preparedEntity = categoriesPatchService.patchExistingEntity(changes, existingEntity);
-    this.passParentIfMatchingEntityExists(preparedEntity, changes.getParent());
-    if (!existingEntity.equals(preparedEntity)) {
-      return changes;
-    }
-    return this.persist(preparedEntity);
+  protected Long extractIdFrom(ProductCategory source) {
+    return source.getId();
   }
 
-  private void passParentIfMatchingEntityExists(ProductCategory target, ProductCategoryPojo sourceParent) {
-    String sourceParentCode = sourceParent.getCode();
+  @Override
+  protected void injectIdInto(Long id, ProductCategory target) {
+    target.setId(id);
+  }
+
+  @Override
+  protected final ProductCategory flushPartialChanges(Map<String, Object> changes, ProductCategory existingEntity) throws BadInputException {
+    ProductCategory preparedEntity = categoriesPatchService.patchExistingEntity(changes, existingEntity);
+    this.passParentIfMatchingEntityExists(preparedEntity, existingEntity.getParent().getCode());
+    if (!existingEntity.equals(preparedEntity)) {
+      return existingEntity;
+    }
+    return categoriesRepository.saveAndFlush(preparedEntity);
+  }
+
+  private void passParentIfMatchingEntityExists(ProductCategory target, String sourceParentCode) {
     ProductCategory previousExistingParent = target.getParent();
     if (sourceParentCode != null && (previousExistingParent == null || !previousExistingParent.getCode().equals(sourceParentCode))) {
       Optional<ProductCategory> parentMatch = categoriesRepository.findByCode(sourceParentCode);

@@ -46,6 +46,7 @@ import org.trebol.jpa.services.crud.ProductsCrudService;
 import org.trebol.jpa.services.patch.ProductsPatchService;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -58,7 +59,6 @@ public class ProductsCrudServiceImpl
   implements ProductsCrudService {
   private final ProductsRepository productsRepository;
   private final ProductsConverterService productsConverterService;
-  private final ProductsPatchService productsPatchService;
   private final ProductImagesRepository productImagesRepository;
   private final ImagesCrudService imagesCrudService;
   private final ProductCategoriesCrudService categoriesCrudService;
@@ -80,12 +80,16 @@ public class ProductsCrudServiceImpl
     super(productsRepository, productsConverterService, productsPatchService);
     this.productsRepository = productsRepository;
     this.productsConverterService = productsConverterService;
-    this.productsPatchService = productsPatchService;
     this.imagesCrudService = imagesCrudService;
     this.categoriesConverterService = categoriesConverterService;
     this.productImagesRepository = productImagesRepository;
     this.categoriesCrudService = categoriesCrudService;
     this.imageConverterService = imageConverterService;
+  }
+
+  @Override
+  public ProductPojo update(ProductPojo input) throws EntityNotFoundException, BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 
   @Transactional
@@ -133,38 +137,13 @@ public class ProductsCrudServiceImpl
   }
 
   @Override
-  protected ProductPojo persistEntityWithUpdatesFromPojo(ProductPojo changes, Product existingEntity)
-    throws BadInputException {
-    Product localChanges = productsPatchService.patchExistingEntity(changes, existingEntity);
-    Product persistent = productsRepository.saveAndFlush(localChanges);
-    ProductPojo outputPojo = productsConverterService.convertToPojo(persistent);
-    if (outputPojo == null) {
-      throw new IllegalStateException("Conversion service returned null when requested to convert one " +
-        "persisted Product to a ProductPojo");
-    }
+  protected Long extractIdFrom(Product source) {
+    return source.getId();
+  }
 
-    // one-Product-to-many-Images
-    productImagesRepository.deleteByProductId(persistent.getId());
-    Collection<ImagePojo> inputPojoImages = changes.getImages();
-    if (inputPojoImages != null) {
-      List<ProductImage> resultImages = this.makeTransientProductImages(persistent, inputPojoImages);
-      productImagesRepository.saveAll(resultImages);
-      this.addImagesToPojo(resultImages, outputPojo);
-    }
-
-    // one-Product-to-one-ProductCategory
-    persistent.setProductCategory(null);
-    ProductCategoryPojo inputCategory = changes.getCategory();
-    if (inputCategory != null) {
-      Optional<ProductCategory> match = categoriesCrudService.getExisting(inputCategory);
-      if (match.isPresent()) {
-        ProductCategory existingCategory = match.get();
-        persistent.setProductCategory(existingCategory);
-        ProductCategoryPojo outputCategory = categoriesConverterService.convertToPojo(existingCategory);
-        outputPojo.setCategory(outputCategory);
-      }
-    }
-    return outputPojo;
+  @Override
+  protected void injectIdInto(Long id, Product target) {
+    target.setId(id);
   }
 
   private void addImagesToPojo(List<ProductImage> resultImages, ProductPojo outputPojo) {

@@ -42,7 +42,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UsersCrudServiceImpl
-  extends CrudGenericService<UserPojo, User> implements UsersCrudService {
+  extends CrudGenericService<UserPojo, User>
+  implements UsersCrudService {
   private final UsersRepository usersRepository;
   private final SecurityProperties securityProperties;
 
@@ -66,6 +67,21 @@ public class UsersCrudServiceImpl
     } else {
       return usersRepository.findByName(name);
     }
+  }
+
+  @Override
+  public UserPojo update(UserPojo input) throws EntityNotFoundException, BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
+  }
+
+  @Override
+  protected Long extractIdFrom(User source) {
+    return source.getId();
+  }
+
+  @Override
+  protected void injectIdInto(Long id, User target) {
+    target.setId(id);
   }
 
   @Override

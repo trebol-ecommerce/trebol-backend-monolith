@@ -29,19 +29,16 @@ import org.trebol.api.models.*;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.config.ApiProperties;
 import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.AddressesRepository;
-import org.trebol.jpa.repositories.BillingTypesRepository;
-import org.trebol.jpa.repositories.ProductsRepository;
-import org.trebol.jpa.repositories.SalesRepository;
+import org.trebol.jpa.repositories.*;
 import org.trebol.jpa.services.conversion.*;
-import org.trebol.jpa.services.crud.*;
+import org.trebol.jpa.services.crud.BillingCompaniesCrudService;
+import org.trebol.jpa.services.crud.CrudGenericService;
+import org.trebol.jpa.services.crud.CustomersCrudService;
+import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.patch.SalesPatchService;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 
@@ -52,7 +49,6 @@ public class SalesCrudServiceImpl
   implements SalesCrudService {
   private final SalesRepository salesRepository;
   private final SalesConverterService salesConverterService;
-  private final SalesPatchService salesPatchService;
   private final ProductsRepository productsRepository;
   private final ProductsConverterService productConverterService;
   private final CustomersCrudService customersCrudService;
@@ -62,7 +58,7 @@ public class SalesCrudServiceImpl
   private final BillingCompaniesConverterService billingCompaniesConverterService;
   // private final PaymentTypesJpaRepository paymentTypesRepository;
   private final AddressesRepository addressesRepository;
-  private final ShippersCrudService shippersCrudService;
+  private final ShippersRepository shippersRepository;
   private final AddressesConverterService addressesConverterService;
   private final ApiProperties apiProperties;
   private static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
@@ -70,9 +66,9 @@ public class SalesCrudServiceImpl
   @Autowired
   public SalesCrudServiceImpl(
     SalesRepository salesRepository,
-    ProductsRepository productsRepository,
     SalesConverterService salesConverterService,
     SalesPatchService salesPatchService,
+    ProductsRepository productsRepository,
     ProductsConverterService productConverterService,
     CustomersCrudService customersCrudService,
     CustomersConverterService customersConverterService,
@@ -81,7 +77,7 @@ public class SalesCrudServiceImpl
     BillingCompaniesConverterService billingCompaniesConverterService,
     // PaymentTypesJpaRepository paymentTypesRepository,
     AddressesRepository addressesRepository,
-    ShippersCrudService shippersCrudService,
+    ShippersRepository shippersRepository,
     AddressesConverterService addressesConverterService,
     ApiProperties apiProperties
   ) {
@@ -89,7 +85,6 @@ public class SalesCrudServiceImpl
     this.salesRepository = salesRepository;
     this.productsRepository = productsRepository;
     this.salesConverterService = salesConverterService;
-    this.salesPatchService = salesPatchService;
     this.productConverterService = productConverterService;
     this.customersCrudService = customersCrudService;
     this.customersConverterService = customersConverterService;
@@ -98,7 +93,7 @@ public class SalesCrudServiceImpl
     this.billingCompaniesConverterService = billingCompaniesConverterService;
     // this.paymentTypesRepository = paymentTypesRepository;
     this.addressesRepository = addressesRepository;
-    this.shippersCrudService = shippersCrudService;
+    this.shippersRepository = shippersRepository;
     this.addressesConverterService = addressesConverterService;
     this.apiProperties = apiProperties;
   }
@@ -111,6 +106,11 @@ public class SalesCrudServiceImpl
     } else {
       return this.salesRepository.findById(buyOrder);
     }
+  }
+
+  @Override
+  public SellPojo update(SellPojo input) throws EntityNotFoundException, BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 
   @Override
@@ -129,17 +129,23 @@ public class SalesCrudServiceImpl
   }
 
   @Override
-  protected SellPojo persistEntityWithUpdatesFromPojo(SellPojo changes, Sell existingEntity)
+  protected Long extractIdFrom(Sell source) {
+    return source.getId();
+  }
+
+  @Override
+  protected void injectIdInto(Long id, Sell target) {
+    target.setId(id);
+  }
+
+  @Override
+  protected Sell flushPartialChanges(Map<String, Object> changes, Sell existingEntity)
     throws BadInputException {
     Integer statusCode = existingEntity.getStatus().getCode();
     if ((statusCode >= 3 || statusCode < 0) && !apiProperties.isAbleToEditSalesAfterBeingProcessed()) {
       throw new BadInputException("The requested transaction cannot be modified");
     }
-    Sell updatedEntity = salesPatchService.patchExistingEntity(changes, existingEntity);
-    if (updatedEntity.equals(existingEntity)) {
-      return changes;
-    }
-    return this.persist(updatedEntity);
+    return super.flushPartialChanges(changes, existingEntity);
   }
 
   @Override
