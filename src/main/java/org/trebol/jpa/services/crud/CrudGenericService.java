@@ -80,7 +80,7 @@ public abstract class CrudGenericService<M, E extends DBEntity>
   @Override
   public M create(M input) throws BadInputException, EntityExistsException {
     this.validateInputPojoBeforeCreation(input);
-    E preparedEntity = this.prepareNewEntityFromInputPojo(input);
+    E preparedEntity = converter.convertToNewEntity(input);
     E result = repository.saveAndFlush(preparedEntity);
     return converter.convertToPojo(result);
   }
@@ -213,18 +213,5 @@ public abstract class CrudGenericService<M, E extends DBEntity>
     if (this.getExisting(inputPojo).isPresent()) {
       throw new EntityExistsException(ITEM_ALREADY_EXISTS);
     }
-  }
-
-  /**
-   * Creates a new entity from a model classs.
-   * Executes right before persisting data.
-   * Ideal overridable method to include cascading entity relationships.
-   *
-   * @param inputPojo A models to convert to an entity
-   * @return An entity object equivalent to the provided models, ready for saving
-   * @throws BadInputException If the models does not have a valid identifying property
-   */
-  protected E prepareNewEntityFromInputPojo(M inputPojo) throws BadInputException {
-    return converter.convertToNewEntity(inputPojo);
   }
 }
