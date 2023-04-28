@@ -31,8 +31,8 @@ import org.trebol.common.exceptions.BadInputException;
 public interface ConverterService<P, E> {
 
   /**
-   * Straightly converts a Pojo to a new @Entity, assuming that the Pojo is already @Valid.
-   * It does not include relationships to other entities.
+   * Straightly converts a Pojo to a new <code>@Entity</code>, assuming that the Pojo is already <code>@Valid</code>.
+   * <b>This includes relationships to other entities</b>.<br/>
    * This method DOES NOT persist data.
    *
    * @param source The source Pojo.
