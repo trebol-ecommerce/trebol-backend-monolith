@@ -51,7 +51,7 @@ public interface ConverterService<P, E> {
    * @return An updated instance of the @Entity, prepared to be saved to the database.
    * @deprecated Please use {@link PatchService}'s method instead
    */
-  @Deprecated
+  @Deprecated(forRemoval = true, since = "0.2.0-SNAPSHOT")
   E applyChangesToExistingEntity(P source, E target);
 
   /**
