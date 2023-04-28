@@ -47,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -151,6 +152,7 @@ class CrudGenericServiceTest {
     Map<String, Object> changes = Map.of("name", name);
     GenericEntity updatedEntity = new GenericEntity(id, name);
     GenericPojo updatedPojo = new GenericPojo(id, name);
+    when(genericRepositoryMock.findById(anyLong())).thenReturn(Optional.of(persistedEntity));
     when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(updatedEntity);
     when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
     when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatedPojo);
