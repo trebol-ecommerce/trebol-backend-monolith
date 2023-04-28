@@ -151,7 +151,7 @@ class CrudGenericServiceTest {
     Map<String, Object> changes = Map.of("name", name);
     GenericEntity updatedEntity = new GenericEntity(id, name);
     GenericPojo updatedPojo = new GenericPojo(id, name);
-    when(genericPatchServiceMock.patchExistingEntity(anyMap(), persistedEntity)).thenReturn(updatedEntity);
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(updatedEntity);
     when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
     when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatedPojo);
     CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
@@ -175,7 +175,7 @@ class CrudGenericServiceTest {
     GenericEntity updatedEntity = new GenericEntity(1L, name);
     GenericPojo updatedPojo = new GenericPojo(id, name);
     when(genericRepositoryMock.findOne(filters)).thenReturn(Optional.of(persistedEntity));
-    when(genericPatchServiceMock.patchExistingEntity(anyMap(), persistedEntity)).thenReturn(updatedEntity);
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(updatedEntity);
     when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
     when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatedPojo);
 
