@@ -125,20 +125,20 @@ public abstract class CrudGenericService<M, E extends DBEntity>
   }
 
   /**
-   * @throws BadInputException       When the data in the input object is not valid.
+   * @throws BadInputException When the data in the input object is not valid.
    */
   @Override
   public Optional<M> update(M input, Predicate filters) throws BadInputException {
+    long count = repository.count(filters);
+    if (count > 1) {
+      throw new RuntimeException("Cannot update more than one item at a time");
+    }
     Optional<E> firstMatch = repository.findOne(filters);
     if (firstMatch.isEmpty()) {
       return Optional.empty();
     }
-    E inputEntity = converter.convertToNewEntity(input);
     Long id = firstMatch.get().getId();
-    inputEntity.setId(id);
-    E resultEntity = repository.saveAndFlush(inputEntity);
-    M output = converter.convertToPojo(resultEntity);
-    return Optional.of(output);
+    return this.update(input, id);
   }
 
   @Override
