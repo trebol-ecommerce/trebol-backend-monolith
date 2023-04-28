@@ -18,45 +18,17 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.entities;
+package org.trebol.jpa;
 
-import lombok.*;
-import org.trebol.jpa.DBEntity;
+import java.io.Serializable;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-
-@Entity
-@Table(name = "images")
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-public class Image
-  implements DBEntity {
-  private static final long serialVersionUID = 5L;
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "image_id", nullable = false)
-  private Long id;
-  @Size(min = 1, max = 50)
-  @Column(name = "image_code", nullable = false, unique = true)
-  private String code;
-  @Size(min = 1, max = 100)
-  @Column(name = "image_filename", nullable = false, unique = true)
-  private String filename;
-  @Size(min = 1, max = 500)
-  @Column(name = "image_url", nullable = false, unique = true)
-  private String url;
-
-  public Image(Image source) {
-    this.id = source.id;
-    this.code = source.code;
-    this.filename = source.filename;
-    this.url = source.url;
-  }
+/**
+ * An entity that has an <i>id</i> field and a getter/setter pair to interact with it.<br/>
+ * Meant to be used alongside <code>CrudRepository</code> or <code>JpaRepository</code> since these expose
+ * methods <code>findById</code> and <code>getById</code>.
+ */
+public interface DBEntity
+  extends Serializable {
+  Long getId();
+  void setId(Long id);
 }

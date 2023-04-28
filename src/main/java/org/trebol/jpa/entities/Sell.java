@@ -22,10 +22,10 @@ package org.trebol.jpa.entities;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.trebol.jpa.DBEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.Collection;
 
@@ -44,7 +44,7 @@ import java.util.Collection;
 @EqualsAndHashCode
 @ToString
 public class Sell
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 14L;
 
   @Id

@@ -21,10 +21,10 @@
 package org.trebol.jpa.entities;
 
 import lombok.*;
+import org.trebol.jpa.DBEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "app_permissions")
@@ -36,7 +36,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 public class Permission
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 8L;
 
   @Id

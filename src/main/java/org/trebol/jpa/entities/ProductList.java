@@ -21,10 +21,10 @@
 package org.trebol.jpa.entities;
 
 import lombok.*;
+import org.trebol.jpa.DBEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -41,7 +41,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class ProductList
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 16L;
 
   @Id
