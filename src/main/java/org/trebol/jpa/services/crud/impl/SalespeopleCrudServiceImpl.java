@@ -67,14 +67,4 @@ public class SalespeopleCrudServiceImpl
   public SalespersonPojo update(SalespersonPojo input) throws EntityNotFoundException, BadInputException {
     throw new UnsupportedOperationException("This method signature has been deprecated");
   }
-
-  @Override
-  protected Long extractIdFrom(Salesperson source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, Salesperson target) {
-    target.setId(id);
-  }
 }

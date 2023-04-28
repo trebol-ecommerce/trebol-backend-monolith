@@ -67,14 +67,4 @@ public class ImagesCrudServiceImpl
       return imagesRepository.findByFilename(name);
     }
   }
-
-  @Override
-  protected Long extractIdFrom(Image source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, Image target) {
-    target.setId(id);
-  }
 }

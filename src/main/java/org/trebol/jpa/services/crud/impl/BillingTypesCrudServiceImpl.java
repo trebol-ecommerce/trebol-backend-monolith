@@ -67,14 +67,4 @@ public class BillingTypesCrudServiceImpl
       return typesRepository.findByName(name);
     }
   }
-
-  @Override
-  protected Long extractIdFrom(BillingType source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, BillingType target) {
-    target.setId(id);
-  }
 }

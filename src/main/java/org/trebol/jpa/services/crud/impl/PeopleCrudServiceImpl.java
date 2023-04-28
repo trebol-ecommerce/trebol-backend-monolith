@@ -67,14 +67,4 @@ public class PeopleCrudServiceImpl
       return peopleRepository.findByIdNumber(idCard);
     }
   }
-
-  @Override
-  protected Long extractIdFrom(Person source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, Person target) {
-    target.setId(id);
-  }
 }

@@ -136,16 +136,6 @@ public class ProductsCrudServiceImpl
     }
   }
 
-  @Override
-  protected Long extractIdFrom(Product source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, Product target) {
-    target.setId(id);
-  }
-
   private void addImagesToPojo(List<ProductImage> resultImages, ProductPojo outputPojo) {
     Collection<ImagePojo> outputImages = new ArrayList<>();
     for (ProductImage productImage : resultImages) {

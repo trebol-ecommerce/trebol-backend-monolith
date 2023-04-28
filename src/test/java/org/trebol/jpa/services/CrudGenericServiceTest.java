@@ -32,6 +32,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.trebol.api.models.DataPagePojo;
 import org.trebol.common.exceptions.BadInputException;
+import org.trebol.jpa.DBEntity;
 import org.trebol.jpa.Repository;
 import org.trebol.jpa.services.crud.CrudGenericService;
 
@@ -41,7 +42,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -230,16 +235,6 @@ class CrudGenericServiceTest {
       }
 
       @Override
-      protected Long extractIdFrom(GenericEntity source) {
-        return source.id;
-      }
-
-      @Override
-      protected void injectIdInto(Long id, GenericEntity target) {
-        target.id = id;
-      }
-
-      @Override
       public Optional<GenericEntity> getExisting(GenericPojo example) {
         return Optional.empty();
       }
@@ -258,16 +253,6 @@ class CrudGenericServiceTest {
       }
 
       @Override
-      protected Long extractIdFrom(GenericEntity source) {
-        return source.id;
-      }
-
-      @Override
-      protected void injectIdInto(Long id, GenericEntity target) {
-        target.id = id;
-      }
-
-      @Override
       public Optional<GenericEntity> getExisting(GenericPojo example) {
         return Optional.of(persistedEntity);
       }
@@ -283,7 +268,7 @@ class CrudGenericServiceTest {
 
   @Data
   @AllArgsConstructor
-  static class GenericEntity {
+  static class GenericEntity implements DBEntity {
     Long id;
     String name;
   }

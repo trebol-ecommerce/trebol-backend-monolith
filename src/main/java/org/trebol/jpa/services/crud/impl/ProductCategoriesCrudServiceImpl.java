@@ -81,16 +81,6 @@ public class ProductCategoriesCrudServiceImpl
   }
 
   @Override
-  protected Long extractIdFrom(ProductCategory source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, ProductCategory target) {
-    target.setId(id);
-  }
-
-  @Override
   protected final ProductCategory flushPartialChanges(Map<String, Object> changes, ProductCategory existingEntity) throws BadInputException {
     ProductCategory preparedEntity = categoriesPatchService.patchExistingEntity(changes, existingEntity);
     this.passParentIfMatchingEntityExists(preparedEntity, existingEntity.getParent().getCode());

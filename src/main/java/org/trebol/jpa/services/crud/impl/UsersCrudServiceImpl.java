@@ -75,16 +75,6 @@ public class UsersCrudServiceImpl
   }
 
   @Override
-  protected Long extractIdFrom(User source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, User target) {
-    target.setId(id);
-  }
-
-  @Override
   public void delete(Predicate filters) throws EntityNotFoundException {
     if (securityProperties.isAccountProtectionEnabled()) {
       Optional<User> optionalUser = usersRepository.findOne(filters);

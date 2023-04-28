@@ -67,14 +67,4 @@ public class BillingCompaniesCrudServiceImpl
       return companiesRepository.findByIdNumber(idNumber);
     }
   }
-
-  @Override
-  protected Long extractIdFrom(BillingCompany source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, BillingCompany target) {
-    target.setId(id);
-  }
 }

@@ -29,6 +29,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.DataPagePojo;
 import org.trebol.common.exceptions.BadInputException;
+import org.trebol.jpa.DBEntity;
 import org.trebol.jpa.Repository;
 import org.trebol.jpa.services.ConverterService;
 import org.trebol.jpa.services.CrudService;
@@ -51,7 +52,7 @@ import java.util.Optional;
  * @param <E> The entity class
  */
 @Transactional
-public abstract class CrudGenericService<M, E>
+public abstract class CrudGenericService<M, E extends DBEntity>
   implements CrudService<M, E> {
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
@@ -68,9 +69,6 @@ public abstract class CrudGenericService<M, E>
     this.converter = converter;
     this.patchService = patchService;
   }
-
-  protected abstract Long extractIdFrom(E source);
-  protected abstract void injectIdInto(Long id, E target);
 
   /**
    * Converts a model class instance to an entity instance, saves it and returns it back as a model copy of the persisted entity.
@@ -120,7 +118,7 @@ public abstract class CrudGenericService<M, E>
   @Override
   public Optional<M> update(M input, Long id) throws EntityNotFoundException, BadInputException {
     E inputEntity = converter.convertToNewEntity(input);
-    this.injectIdInto(id, inputEntity);
+    inputEntity.setId(id);
     E resultEntity = repository.saveAndFlush(inputEntity);
     M output = converter.convertToPojo(resultEntity);
     return Optional.of(output);
@@ -136,8 +134,8 @@ public abstract class CrudGenericService<M, E>
       return Optional.empty();
     }
     E inputEntity = converter.convertToNewEntity(input);
-    Long id = this.extractIdFrom(firstMatch.get());
-    this.injectIdInto(id, inputEntity);
+    Long id = firstMatch.get().getId();
+    inputEntity.setId(id);
     E resultEntity = repository.saveAndFlush(inputEntity);
     M output = converter.convertToPojo(resultEntity);
     return Optional.of(output);
@@ -205,7 +203,7 @@ public abstract class CrudGenericService<M, E>
   }
 
   /**
-   * Generic validation routine. Should be be called at the beginning of the create() method.
+   * Generic validation routine. Should be called at the beginning of the create() method.
    *
    * @param inputPojo A model to validate
    * @throws BadInputException If the model does not have a valid identifying property

@@ -67,14 +67,4 @@ public class CustomersCrudServiceImpl
       return customersRepository.findByPersonIdNumber(idNumber);
     }
   }
-
-  @Override
-  protected Long extractIdFrom(Customer source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, Customer target) {
-    target.setId(id);
-  }
 }

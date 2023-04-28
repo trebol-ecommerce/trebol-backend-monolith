@@ -129,16 +129,6 @@ public class SalesCrudServiceImpl
   }
 
   @Override
-  protected Long extractIdFrom(Sell source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, Sell target) {
-    target.setId(id);
-  }
-
-  @Override
   protected Sell flushPartialChanges(Map<String, Object> changes, Sell existingEntity)
     throws BadInputException {
     Integer statusCode = existingEntity.getStatus().getCode();

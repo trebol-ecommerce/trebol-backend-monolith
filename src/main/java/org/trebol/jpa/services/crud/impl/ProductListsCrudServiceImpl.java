@@ -89,14 +89,4 @@ public class ProductListsCrudServiceImpl
       return listsRepository.findByName(name);
     }
   }
-
-  @Override
-  protected Long extractIdFrom(ProductList source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, ProductList target) {
-    target.setId(id);
-  }
 }

@@ -67,14 +67,4 @@ public class SellStatusesCrudServiceImpl
   public SellStatusPojo update(SellStatusPojo input) throws EntityNotFoundException, BadInputException {
     throw new UnsupportedOperationException("This method signature has been deprecated");
   }
-
-  @Override
-  protected Long extractIdFrom(SellStatus source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, SellStatus target) {
-    target.setId(id);
-  }
 }

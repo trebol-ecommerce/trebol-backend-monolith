@@ -67,14 +67,4 @@ public class UserRolesCrudServiceImpl
   public UserRolePojo update(UserRolePojo input) throws EntityNotFoundException, BadInputException {
     throw new UnsupportedOperationException("This method signature has been deprecated");
   }
-
-  @Override
-  protected Long extractIdFrom(UserRole source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, UserRole target) {
-    target.setId(id);
-  }
 }

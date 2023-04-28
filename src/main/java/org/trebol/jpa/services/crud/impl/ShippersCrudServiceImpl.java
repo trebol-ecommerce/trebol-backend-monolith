@@ -67,14 +67,4 @@ public class ShippersCrudServiceImpl
   public ShipperPojo update(ShipperPojo input) throws EntityNotFoundException, BadInputException {
     throw new UnsupportedOperationException("This method signature has been deprecated");
   }
-
-  @Override
-  protected Long extractIdFrom(Shipper source) {
-    return source.getId();
-  }
-
-  @Override
-  protected void injectIdInto(Long id, Shipper target) {
-    target.setId(id);
-  }
 }
