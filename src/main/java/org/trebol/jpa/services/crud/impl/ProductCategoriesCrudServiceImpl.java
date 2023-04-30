@@ -62,7 +62,7 @@ public class ProductCategoriesCrudServiceImpl
   }
 
   @Override
-  public Optional<ProductCategory> getExisting(ProductCategoryPojo input) throws BadInputException {
+public Optional<ProductCategory> getExisting(ProductCategoryPojo input) throws BadInputException {
     String code = input.getCode();
     if (StringUtils.isBlank(code)) {
       throw new BadInputException("Invalid category code");
@@ -72,29 +72,14 @@ public class ProductCategoriesCrudServiceImpl
   }
 
   @Override
-  protected final ProductCategory prepareNewEntityFromInputPojo(ProductCategoryPojo inputPojo) throws BadInputException {
-    ProductCategory target = super.prepareNewEntityFromInputPojo(inputPojo);
-    if (inputPojo.getParent() != null) {
-      this.passParentIfMatchingEntityExists(target, inputPojo.getParent().getCode());
-    }
-    return target;
-  }
-
-  @Override
   protected final ProductCategory flushPartialChanges(Map<String, Object> changes, ProductCategory existingEntity) throws BadInputException {
     ProductCategory preparedEntity = categoriesPatchService.patchExistingEntity(changes, existingEntity);
-    this.passParentIfMatchingEntityExists(preparedEntity, existingEntity.getParent().getCode());
-    if (!existingEntity.equals(preparedEntity)) {
+    if (existingEntity.getParent() != null) {
+      preparedEntity.setParent(existingEntity.getParent());
+    }
+    if (existingEntity.equals(preparedEntity)) {
       return existingEntity;
     }
     return categoriesRepository.saveAndFlush(preparedEntity);
-  }
-
-  private void passParentIfMatchingEntityExists(ProductCategory target, String sourceParentCode) {
-    ProductCategory previousExistingParent = target.getParent();
-    if (sourceParentCode != null && (previousExistingParent == null || !previousExistingParent.getCode().equals(sourceParentCode))) {
-      Optional<ProductCategory> parentMatch = categoriesRepository.findByCode(sourceParentCode);
-      parentMatch.ifPresent(target::setParent);
-    }
   }
 }

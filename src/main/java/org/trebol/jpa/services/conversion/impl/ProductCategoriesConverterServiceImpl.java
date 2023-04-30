@@ -20,16 +20,25 @@
 
 package org.trebol.jpa.services.conversion.impl;
 
-import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
 
 @Service
-@NoArgsConstructor
 public class ProductCategoriesConverterServiceImpl
   implements ProductCategoriesConverterService {
+
+  private final ProductsCategoriesRepository categoriesRepository;
+
+  @Autowired
+  public ProductCategoriesConverterServiceImpl(
+    ProductsCategoriesRepository categoriesRepository
+  ) {
+    this.categoriesRepository = categoriesRepository;
+  }
 
   @Override
   public ProductCategoryPojo convertToPojo(ProductCategory source) {
@@ -42,10 +51,16 @@ public class ProductCategoriesConverterServiceImpl
 
   @Override
   public ProductCategory convertToNewEntity(ProductCategoryPojo source) {
-    return ProductCategory.builder()
+    ProductCategory target = ProductCategory.builder()
       .code(source.getCode())
       .name(source.getName())
       .build();
+
+    if (source.getParent() != null) {
+      String parentCode = source.getParent().getCode();
+      categoriesRepository.findByCode(parentCode).ifPresent(target::setParent);
+    }
+    return target;
   }
 
   @Override
