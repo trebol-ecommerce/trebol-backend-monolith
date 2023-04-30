@@ -20,7 +20,6 @@
 
 package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +35,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @JsonInclude
 public class ShipperPojo {
-  @JsonIgnore
-  private Long id;
   @NotBlank
   private String name;
 }

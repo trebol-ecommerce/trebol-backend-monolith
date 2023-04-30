@@ -46,7 +46,6 @@ public class SalespeopleConverterServiceImpl
   public SalespersonPojo convertToPojo(Salesperson source) {
     PersonPojo targetPerson = peopleConverterService.convertToPojo(source.getPerson());
     return SalespersonPojo.builder()
-      .id(source.getId())
       .person(targetPerson)
       .build();
   }

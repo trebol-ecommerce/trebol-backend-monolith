@@ -20,7 +20,6 @@
 
 package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
@@ -32,8 +31,6 @@ import javax.validation.constraints.NotNull;
 @Builder
 @JsonInclude
 public class UserRolePojo {
-  @JsonIgnore
-  private Long id;
   @NotNull
   private String name;
 }

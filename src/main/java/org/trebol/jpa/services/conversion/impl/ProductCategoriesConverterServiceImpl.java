@@ -43,7 +43,6 @@ public class ProductCategoriesConverterServiceImpl
   @Override
   public ProductCategoryPojo convertToPojo(ProductCategory source) {
     return ProductCategoryPojo.builder()
-      .id(source.getId())
       .code(source.getCode())
       .name(source.getName())
       .build();

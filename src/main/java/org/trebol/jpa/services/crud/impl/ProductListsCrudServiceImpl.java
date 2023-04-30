@@ -79,7 +79,6 @@ public class ProductListsCrudServiceImpl
 
   @Override
   public Optional<ProductList> getExisting(ProductListPojo input) {
-    Long id = input.getId();
     String name = input.getName();
     if (id == null && name == null) {
       return Optional.empty();

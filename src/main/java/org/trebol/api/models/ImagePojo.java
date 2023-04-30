@@ -20,7 +20,6 @@
 
 package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,8 +37,6 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
 public class ImagePojo {
-  @JsonIgnore
-  private Long id;
   @NotBlank
   private String code;
   @NotBlank

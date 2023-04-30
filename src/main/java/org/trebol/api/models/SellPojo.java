@@ -20,7 +20,6 @@
 
 package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -35,7 +34,6 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Collection;
 
-import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 @Data
@@ -47,7 +45,6 @@ public class SellPojo {
   private Long buyOrder;
   @JsonIgnore
   private String token;
-  @JsonFormat(shape = STRING, pattern = "yyyy/MM/dd HH:mm:ss OOOO", timezone = "UTC")
   private Instant date;
   @Valid
   @NotEmpty

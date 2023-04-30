@@ -45,7 +45,6 @@ class ProductCategoriesConverterServiceImplTest {
     ProductCategory input = productCategoriesTestHelper.productCategoryEntityAfterCreation();
     ProductCategoryPojo result = instance.convertToPojo(input);
     assertNotNull(result);
-    assertEquals(input.getId(), result.getId());
     assertEquals(input.getName(), result.getName());
     assertEquals(input.getCode(), result.getCode());
   }

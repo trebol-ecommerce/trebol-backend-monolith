@@ -34,7 +34,6 @@ public class ShippersConverterServiceImpl
   @Override
   public ShipperPojo convertToPojo(Shipper source) {
     return ShipperPojo.builder()
-      .id(source.getId())
       .name(source.getName())
       .build();
   }

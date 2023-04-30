@@ -20,7 +20,6 @@
 
 package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +35,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @JsonInclude
 public class SellDetailPojo {
-  @JsonIgnore
-  private Long id;
   @Min(1)
   private int units;
   private int unitValue;
