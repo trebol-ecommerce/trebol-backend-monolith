@@ -20,6 +20,7 @@
 
 package org.trebol.jpa.services.crud.impl;
 
+import com.querydsl.core.types.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,6 @@ import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.repositories.ProductImagesRepository;
 import org.trebol.jpa.repositories.ProductsRepository;
-import org.trebol.jpa.services.conversion.ImagesConverterService;
 import org.trebol.jpa.services.conversion.ProductsConverterService;
 import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
@@ -47,7 +47,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -58,7 +57,6 @@ public class ProductsCrudServiceImpl
   private final ProductsConverterService productsConverterService;
   private final ProductImagesRepository productImagesRepository;
   private final ImagesCrudService imagesCrudService;
-  private final ImagesConverterService imageConverterService;
   private final Logger logger = LoggerFactory.getLogger(ProductsCrudServiceImpl.class);
 
   @Autowired
@@ -67,15 +65,13 @@ public class ProductsCrudServiceImpl
     ProductsConverterService productsConverterService,
     ProductsPatchService productsPatchService,
     ProductImagesRepository productImagesRepository,
-    ImagesCrudService imagesCrudService,
-    ImagesConverterService imageConverterService
+    ImagesCrudService imagesCrudService
   ) {
     super(productsRepository, productsConverterService, productsPatchService);
     this.productsRepository = productsRepository;
     this.productsConverterService = productsConverterService;
     this.imagesCrudService = imagesCrudService;
     this.productImagesRepository = productImagesRepository;
-    this.imageConverterService = imageConverterService;
   }
 
   @Transactional
@@ -86,18 +82,13 @@ public class ProductsCrudServiceImpl
     Product prepared = productsConverterService.convertToNewEntity(input);
     Product persistent = productsRepository.saveAndFlush(prepared);
     ProductPojo target = productsConverterService.convertToPojo(persistent);
-
     Collection<ImagePojo> inputPojoImages = input.getImages();
     if (inputPojoImages != null && !inputPojoImages.isEmpty()) {
       List<ProductImage> preparedImages = this.makeProductImageRelationships(persistent, inputPojoImages);
-      List<ImagePojo> targetPojoImages = productImagesRepository.saveAll(preparedImages)
-        .stream()
-        .map(ProductImage::getImage)
-        .map(imageConverterService::convertToPojo)
-        .collect(Collectors.toList());
+      List<ProductImage> persistentProductImages = productImagesRepository.saveAll(preparedImages);
+      Collection<ImagePojo> targetPojoImages = productsConverterService.convertImagesToPojo(persistentProductImages);
       target.setImages(targetPojoImages);
     }
-
     return target;
   }
 
@@ -107,25 +98,35 @@ public class ProductsCrudServiceImpl
     prepared.setId(id);
     Product persistent = productsRepository.saveAndFlush(prepared);
     ProductPojo target = productsConverterService.convertToPojo(persistent);
-
     productImagesRepository.deleteByProductId(id);
     Collection<ImagePojo> inputPojoImages = input.getImages();
     if (inputPojoImages != null && !inputPojoImages.isEmpty()) {
       List<ProductImage> preparedImages = this.makeProductImageRelationships(persistent, inputPojoImages);
-      List<ImagePojo> targetPojoImages = productImagesRepository.saveAll(preparedImages)
-        .stream()
-        .map(ProductImage::getImage)
-        .map(imageConverterService::convertToPojo)
-        .collect(Collectors.toList());
+      List<ProductImage> persistentProductImages = productImagesRepository.saveAll(preparedImages);
+      Collection<ImagePojo> targetPojoImages = productsConverterService.convertImagesToPojo(persistentProductImages);
       target.setImages(targetPojoImages);
     }
-
     return Optional.of(target);
   }
 
   @Override
   public ProductPojo update(ProductPojo input) throws EntityNotFoundException, BadInputException {
     throw new UnsupportedOperationException("This method signature has been deprecated");
+  }
+
+   @Override
+  public ProductPojo readOne(Predicate filters)
+    throws EntityNotFoundException {
+    Optional<Product> entity = productsRepository.findOne(filters);
+    if (entity.isEmpty()) {
+      throw new EntityNotFoundException(ITEM_NOT_FOUND);
+    }
+    Product found = entity.get();
+    ProductPojo target = productsConverterService.convertToPojo(found);
+    List<ProductImage> productImages = productImagesRepository.deepFindProductImagesByProductId(found.getId());
+    Collection<ImagePojo> imagePojos = productsConverterService.convertImagesToPojo(productImages);
+    target.setImages(imagePojos);
+    return target;
   }
 
   @Override

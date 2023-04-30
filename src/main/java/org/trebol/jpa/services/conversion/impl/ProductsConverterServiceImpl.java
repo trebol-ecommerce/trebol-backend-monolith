@@ -36,8 +36,8 @@ import org.trebol.jpa.services.conversion.ImagesConverterService;
 import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
 import org.trebol.jpa.services.conversion.ProductsConverterService;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -61,7 +61,6 @@ public class ProductsConverterServiceImpl
     this.productCategoriesConverterService = productCategoriesConverterService;
   }
 
-  // TODO this method can be expensive, optimize it to fetch required data only according to context
   @Override
   public ProductPojo convertToPojo(Product source) {
     ProductPojo target = ProductPojo.builder()
@@ -72,14 +71,6 @@ public class ProductsConverterServiceImpl
       .currentStock(source.getStockCurrent())
       .criticalStock(source.getStockCritical())
       .build();
-    Set<ImagePojo> images = new HashSet<>();
-    for (ProductImage pi : productImagesRepository.deepFindProductImagesByProductId(source.getId())) {
-      ImagePojo targetImage = imagesConverterService.convertToPojo(pi.getImage());
-      if (targetImage != null) {
-        images.add(targetImage);
-      }
-    }
-    target.setImages(images);
 
     ProductCategory category = source.getProductCategory();
     if (category != null) {
@@ -109,7 +100,17 @@ public class ProductsConverterServiceImpl
   }
 
   @Override
+  public Collection<ImagePojo> convertImagesToPojo(Collection<ProductImage> productImages) {
+    return productImages.stream()
+      .map(ProductImage::getImage)
+      .map(imagesConverterService::convertToPojo)
+      .distinct()
+      .collect(Collectors.toList());
+  }
+
+  @Override
   public Product applyChangesToExistingEntity(ProductPojo source, Product target) {
     throw new UnsupportedOperationException("This method is deprecated");
   }
+
 }
