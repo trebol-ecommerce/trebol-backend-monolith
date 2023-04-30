@@ -26,14 +26,33 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.trebol.api.models.*;
-import org.trebol.jpa.entities.*;
-import org.trebol.jpa.services.conversion.*;
+import org.trebol.api.models.AddressPojo;
+import org.trebol.api.models.BillingCompanyPojo;
+import org.trebol.api.models.CustomerPojo;
+import org.trebol.api.models.SalespersonPojo;
+import org.trebol.api.models.SellPojo;
+import org.trebol.jpa.entities.Address;
+import org.trebol.jpa.entities.BillingCompany;
+import org.trebol.jpa.entities.BillingType;
+import org.trebol.jpa.entities.Customer;
+import org.trebol.jpa.entities.Salesperson;
+import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.entities.Shipper;
+import org.trebol.jpa.services.conversion.AddressesConverterService;
+import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
+import org.trebol.jpa.services.conversion.CustomersConverterService;
+import org.trebol.jpa.services.conversion.SalespeopleConverterService;
+import org.trebol.jpa.services.conversion.ShippersConverterService;
 import org.trebol.testing.SalesTestHelper;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 import static org.trebol.testing.TestConstants.ANY;
 import static org.trebol.testing.TestConstants.ID_1L;
@@ -94,7 +113,6 @@ class SalesConverterServiceImplTest {
     assertEquals(ANY, result.getShipper());
     assertEquals(expectedSalespersonPojo, result.getSalesperson());
     verify(addressesConverterServiceMock, times(2)).convertToPojo(any(Address.class));
-    verify(shippersConverterServiceMock).convertToPojo(sell.getShipper());
     verify(salespeopleConverterMock).convertToPojo(sell.getSalesperson());
   }
 

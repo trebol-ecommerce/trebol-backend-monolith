@@ -67,7 +67,6 @@ public class ProductCategoriesTestHelper {
   public ProductCategoryPojo productCategoryPojoAfterCreation() {
     if (this.pojoAfterCreation == null) {
       this.pojoAfterCreation = ProductCategoryPojo.builder()
-        .id(PRODUCT_ID)
         .code(CATEGORY_CODE)
         .name(CATEGORY_NAME)
         .build();

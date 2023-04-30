@@ -73,7 +73,6 @@ public class ProductsTestHelper {
   public ProductPojo productPojoAfterCreationWithoutCategory() {
     if (this.pojoAfterCreation == null) {
       this.pojoAfterCreation = ProductPojo.builder()
-        .id(PRODUCT_ID)
         .name(PRODUCT_NAME)
         .barcode(PRODUCT_BARCODE)
         .description(PRODUCT_DESCRIPTION)

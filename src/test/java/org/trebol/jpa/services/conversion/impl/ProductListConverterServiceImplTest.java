@@ -51,7 +51,6 @@ class ProductListConverterServiceImplTest {
     Mockito.when(productListItemRepositoryMock.count(Mockito.any(Predicate.class))).thenReturn(1L);
     ProductListPojo result = instance.convertToPojo(input);
     assertNotNull(result);
-    assertEquals(input.getId(), result.getId());
     assertEquals(input.getName(), result.getName());
     assertEquals(input.getCode(), result.getCode());
     assertEquals(1L, result.getTotalCount());

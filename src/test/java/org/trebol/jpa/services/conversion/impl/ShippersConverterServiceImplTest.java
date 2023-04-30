@@ -45,7 +45,6 @@ class ShippersConverterServiceImplTest {
       .build();
     ShipperPojo result = instance.convertToPojo(input);
     assertNotNull(result);
-    assertEquals(input.getId(), result.getId());
     assertEquals(input.getName(), result.getName());
   }
 

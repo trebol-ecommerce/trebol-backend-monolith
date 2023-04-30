@@ -38,7 +38,10 @@ import org.trebol.jpa.services.conversion.PeopleConverterService;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -68,7 +71,6 @@ class UsersConverterServiceImplTest {
     when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
     UserPojo actual = instance.convertToPojo(input);
     assertNotNull(actual);
-    assertEquals(input.getId(), actual.getId());
     assertEquals(input.getName(), actual.getName());
     assertEquals(expectedPersonPojo, actual.getPerson());
   }
@@ -76,7 +78,6 @@ class UsersConverterServiceImplTest {
   @Test
   void does_not_accept_empty_roles_for_new_entities() {
     UserPojo userPojo = UserPojo.builder()
-      .id(1L)
       .name(ANY)
       .build();
     BadInputException badInputException = assertThrows(BadInputException.class, () -> instance.convertToNewEntity(userPojo));
@@ -86,7 +87,6 @@ class UsersConverterServiceImplTest {
   @Test
   void does_not_accept_unexisting_user_roles_for_new_entities() {
     UserPojo userPojo = UserPojo.builder()
-      .id(1L)
       .name(ANY)
       .role(ANY)
       .build();
@@ -98,7 +98,6 @@ class UsersConverterServiceImplTest {
   @Test
   void converts_to_new_entity() throws BadInputException {
     UserPojo input = UserPojo.builder()
-      .id(1L)
       .name(ANY)
       .password(ANY)
       .role(ANY)
@@ -120,7 +119,6 @@ class UsersConverterServiceImplTest {
   @Test
   void converts_to_new_entity_without_profile() throws BadInputException {
     UserPojo input = UserPojo.builder()
-      .id(1L)
       .name(ANY)
       .password(ANY)
       .role(ANY)

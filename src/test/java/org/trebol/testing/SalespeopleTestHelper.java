@@ -74,7 +74,6 @@ public class SalespeopleTestHelper {
     if (this.pojoAfterCreation == null) {
       this.pojoAfterCreation = SalespersonPojo.builder()
         .person(PersonPojo.builder()
-          .id(GENERIC_ID)
           .firstName(SALESPERSON_FIRST_NAME)
           .lastName(SALESPERSON_LAST_NAME)
           .idNumber(SALESPERSON_ID_NUMBER)

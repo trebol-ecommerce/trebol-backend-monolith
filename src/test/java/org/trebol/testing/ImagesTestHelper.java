@@ -69,7 +69,6 @@ public class ImagesTestHelper {
   public ImagePojo imagePojoAfterCreation() {
     if (this.pojoAfterCreation == null) {
       this.pojoAfterCreation = ImagePojo.builder()
-        .id(IMAGE_ID)
         .code(IMAGE_CODE)
         .filename(IMAGE_FILENAME)
         .url(IMAGE_URL)

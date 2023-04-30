@@ -57,7 +57,6 @@ class CustomersConverterServiceImplTest {
     when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
     CustomerPojo result = instance.convertToPojo(input);
     assertNotNull(result);
-    assertEquals(input.getId(), result.getId());
     assertEquals(expectedPersonPojo, result.getPerson());
   }
 

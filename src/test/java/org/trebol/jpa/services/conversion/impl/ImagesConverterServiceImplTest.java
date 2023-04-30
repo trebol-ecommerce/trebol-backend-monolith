@@ -47,7 +47,6 @@ class ImagesConverterServiceImplTest {
       .build();
     ImagePojo result = instance.convertToPojo(input);
     assertNotNull(result);
-    assertEquals(input.getId(), result.getId());
     assertEquals(input.getFilename(), result.getFilename());
     assertEquals(input.getCode(), result.getCode());
   }

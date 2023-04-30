@@ -47,7 +47,7 @@ class ProductListCrudServiceImplTest {
   @Mock ProductListItemsRepository productListItemRepositoryMock;
 
   @Test
-  void matches_productlist_from_name() {
+  void matches_productlist_from_name() throws BadInputException {
     ProductListPojo input = ProductListPojo.builder()
       .name(ANY)
       .build();
@@ -60,23 +60,10 @@ class ProductListCrudServiceImplTest {
   }
 
   @Test
-  void matches_productlist_from_id() {
-    ProductListPojo input = ProductListPojo.builder()
-      .id(1L)
-      .build();
-    ProductList expectedResult = ProductList.builder().build();
-    when(productListRepositoryMock.findById(anyLong())).thenReturn(Optional.of(expectedResult));
-    Optional<ProductList> result = instance.getExisting(input);
-    assertTrue(result.isPresent());
-    assertEquals(expectedResult, result.get());;
-    verify(productListRepositoryMock).findById(input.getId());
-  }
-
-  @Test
-  void cannot_match_any_productlist_from_null_data() {
+  void cannot_match_any_productlist_from_null_data() throws BadInputException {
     ProductListPojo input = ProductListPojo.builder().build();
-    Optional<ProductList> actualProductListOptional = instance.getExisting(input);
-    assertTrue(actualProductListOptional.isEmpty());
+    BadInputException result = assertThrows(BadInputException.class, () -> instance.getExisting(input));
+    assertEquals("The specified list has no name", result.getMessage());
   }
 
   @Test
