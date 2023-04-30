@@ -62,7 +62,7 @@ public class ProductCategoriesCrudServiceImpl
   }
 
   @Override
-public Optional<ProductCategory> getExisting(ProductCategoryPojo input) throws BadInputException {
+  public Optional<ProductCategory> getExisting(ProductCategoryPojo input) throws BadInputException {
     String code = input.getCode();
     if (StringUtils.isBlank(code)) {
       throw new BadInputException("Invalid category code");
