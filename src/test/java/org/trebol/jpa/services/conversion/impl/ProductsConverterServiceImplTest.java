@@ -59,7 +59,7 @@ class ProductsConverterServiceImplTest {
   }
 
   @Test
-  void convers_to_pojo() {
+  void converts_to_pojo() {
     Product input = productsTestHelper.productEntityAfterCreationWithoutCategory();
     input.setProductCategory(ProductCategory.builder().build());
     ProductCategoryPojo expectedProductCategory = ProductCategoryPojo.builder().build();
