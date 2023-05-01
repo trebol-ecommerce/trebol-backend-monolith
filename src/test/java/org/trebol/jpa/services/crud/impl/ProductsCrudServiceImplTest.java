@@ -154,7 +154,7 @@ class ProductsCrudServiceImplTest {
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
     when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.of(imageEntity));
-    when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(resultProductImages); // unused value, stubbed for safety
+    when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(resultProductImages);
     when(imagesConverterMock.convertToPojo(any(Image.class))).thenReturn(expectedResultImage);
 
     Optional<ProductPojo> result = instance.update(input, 1L);
