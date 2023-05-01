@@ -4,6 +4,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Support for partial update
+  - Meant to be, but not yet mapped as PATCH methods
+
+### Changed
+
+- Update `CrudService` signature methods
+  - `update` - now meant as a method to fully update a data registry or item
+  - `partialUpdate` - new method; meant to update part(s) of a data registry or item (former behavior of the `update` method)
+- Update `PatchService` signature methods
+  - `patchExistingEntity` method relies on a `Map<String, Object>` as first parameter, instead of a `<P>` object
+    - The previous method signature has been deprecated in favor of this one
+- All `@Entity` classes implement a new `DBEntity` interface
+  - This interface declares a getter & setter pair for an `id` field. Most entities already had one anyway.
+  - This is made to easily integrate the `partialUpdate` method with database numeric primary keys, represented by the `findById` repositories
+- Update base `CrudGenericService` implementation
+  - `partialUpdate` method is implemented, being fully-aware of the `DBEntity` interface to pass the `id` to an existing target entity
+  - `create` and `update` methods now share extremely similar logic
+    - Their only difference is that the `update` method syncs the entity `id` before being saved and flushed
+  - `prepareEntityWithUpdatesFromPojo` renamed to `flushPartialChanges`
+  - Remove method `prepareNewEntityFromInputPojo`
+    - Instead of overriding this method, implementations may directly override its containing `create` method
+  - Remove method `persist`
+    - This two-line method started making things a bit confusing... (!?)
+    - (note to self: never excuse a two-line method to duplicate code refactoring)
+- Scope and flows of data have changed
+  - Entity classes' copy constructors are very often used, so now these never care for entity relationships
+    - EXCEPT when it is explicitly stated otherwise! These exceptions were made (from-to):
+      - `Customer` -> `Person`
+      - `Salesperson` -> `Person`
+      - `Sell` -> `SellStatus`
+      - `Sell` -> `PaymentType`
+      - `Sell` -> `BillingType`
+      - `User` -> `UserRole`
+  - `ConverterService`s now take care of one-to-one entity relationships at most
+  - `CrudService`s now take care of all entity relationships not covered by other cases
+  - Pojo classes with `id` fields have been stripped of them; only entities hold `id` fields now
+
+### Fixed
+
+- Calls to `/checkout` using an invalid sell will output a `400` error (bad input from user) instead of `500` (bad state of the server)
+
 ## [v0.1.1] - 2023-03-23
 
 ### Added
