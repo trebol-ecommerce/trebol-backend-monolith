@@ -22,6 +22,7 @@ package org.trebol.api.services;
 
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.payment.PaymentServiceException;
 
 import javax.persistence.EntityNotFoundException;
@@ -42,7 +43,7 @@ public interface CheckoutService {
    * @return Details used by the requester to navigate to the payment page
    * @throws PaymentServiceException On unexpected failures
    */
-  PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException;
+  PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException, BadInputException;
 
   /**
    * From a given token, assert existence of a transaction marked as "started"; fetch result of said transaction;
