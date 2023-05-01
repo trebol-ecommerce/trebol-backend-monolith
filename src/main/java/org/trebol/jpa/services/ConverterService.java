@@ -55,7 +55,7 @@ public interface ConverterService<P, E> {
   E applyChangesToExistingEntity(P source, E target);
 
   /**
-   * Converts an existing @Entity to its complete Pojo equivalent, including all relationships to other entities.
+   * Converts an existing @Entity to its Pojo equivalent, but only including one-to-one relationships to other entities.
    *
    * @param source The source @Entity.
    * @return The resulting Pojo, or null if the @Entity isn't persistent
