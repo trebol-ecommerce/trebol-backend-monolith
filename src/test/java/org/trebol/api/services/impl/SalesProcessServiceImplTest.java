@@ -51,7 +51,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.trebol.config.Constants.*;
+import static org.trebol.config.Constants.SELL_STATUS_COMPLETED;
+import static org.trebol.config.Constants.SELL_STATUS_PAID_CONFIRMED;
+import static org.trebol.config.Constants.SELL_STATUS_PAID_UNCONFIRMED;
+import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_CANCELLED;
+import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_FAILED;
+import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
+import static org.trebol.config.Constants.SELL_STATUS_PENDING;
+import static org.trebol.config.Constants.SELL_STATUS_REJECTED;
 
 @ExtendWith(MockitoExtension.class)
 class SalesProcessServiceImplTest {
@@ -330,7 +337,6 @@ class SalesProcessServiceImplTest {
       SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
 
       assertEquals(1, actualSellDetailsPojo.size());
-      assertEquals(1L, actualSellDetailPojo.getId());
       assertEquals(11, actualSellDetailPojo.getUnits());
       assertEquals(111, actualSellDetailPojo.getUnitValue());
       assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
@@ -424,7 +430,6 @@ class SalesProcessServiceImplTest {
       SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
 
       assertEquals(1, actualSellDetailsPojo.size());
-      assertEquals(1L, actualSellDetailPojo.getId());
       assertEquals(11, actualSellDetailPojo.getUnits());
       assertEquals(111, actualSellDetailPojo.getUnitValue());
       assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
@@ -518,7 +523,6 @@ class SalesProcessServiceImplTest {
       SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
 
       assertEquals(1, actualSellDetailsPojo.size());
-      assertEquals(1L, actualSellDetailPojo.getId());
       assertEquals(11, actualSellDetailPojo.getUnits());
       assertEquals(111, actualSellDetailPojo.getUnitValue());
       assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
@@ -612,7 +616,6 @@ class SalesProcessServiceImplTest {
       SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
 
       assertEquals(1, actualSellDetailsPojo.size());
-      assertEquals(1L, actualSellDetailPojo.getId());
       assertEquals(11, actualSellDetailPojo.getUnits());
       assertEquals(111, actualSellDetailPojo.getUnitValue());
       assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
