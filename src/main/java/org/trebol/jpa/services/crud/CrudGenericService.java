@@ -156,6 +156,10 @@ public abstract class CrudGenericService<M, E extends DBEntity>
 
   @Override
   public Optional<M> partialUpdate(Map<String, Object> changes, Predicate filters) {
+    long count = repository.count(filters);
+    if (count > 1) {
+      throw new RuntimeException("Cannot update more than one item at a time");
+    }
     return repository.findOne(filters)
       .map(existingEntity -> {
         try {

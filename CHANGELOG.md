@@ -48,6 +48,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Calls to `/checkout` using an invalid sell will output a `400` error (bad input from user) instead of `500` (bad state of the server)
+- Add a check in two `GenericCrudService` methods, `partialUpdate` and `update`, both overloaded with a QueryDSL `Predicate` as a second method argument
+  - Validate that said `Predicate` only ever matches one record
+  - This behavior *could* change in the future, but for now it is a deliberate choice to avoid them affecting more than one registry at a time
 
 ## [v0.1.1] - 2023-03-23
 
