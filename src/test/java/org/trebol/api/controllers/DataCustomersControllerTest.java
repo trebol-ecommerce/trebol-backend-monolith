@@ -74,11 +74,6 @@ class DataCustomersControllerTest
   }
 
   @Test
-  void updates_customers() {
-    assertDoesNotThrow(() -> super.updates_data_using_only_a_pojo(CustomerPojo.builder().build()));
-  }
-
-  @Test
   void updates_customers_using_predicate_filters_map() {
     assertDoesNotThrow(() -> super.updates_data_parsing_predicate_filters_from_map(CustomerPojo.builder().build(), null));
   }

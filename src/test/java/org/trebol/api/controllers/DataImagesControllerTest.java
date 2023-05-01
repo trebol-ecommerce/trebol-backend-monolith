@@ -81,18 +81,6 @@ class DataImagesControllerTest
   }
 
   @Test
-  void updates_images() {
-    assertDoesNotThrow(() -> {
-      ImagePojo input = ImagePojo.builder()
-        .url(ANY)
-        .filename(ANY)
-        .code(ANY)
-        .build();
-      super.updates_data_using_only_a_pojo(input);
-    });
-  }
-
-  @Test
   void updates_images_using_predicate_filters_map() {
     assertDoesNotThrow(() -> {
       ImagePojo input = ImagePojo.builder()

@@ -74,11 +74,6 @@ class DataProductListsControllerTest
   }
 
   @Test
-  void updates_lists() {
-    assertDoesNotThrow(() -> super.updates_data_using_only_a_pojo(ProductListPojo.builder().build()));
-  }
-
-  @Test
   void updates_lists_using_predicate_filters_map() {
     assertDoesNotThrow(() -> super.updates_data_parsing_predicate_filters_from_map(ProductListPojo.builder().build(), null));
   }

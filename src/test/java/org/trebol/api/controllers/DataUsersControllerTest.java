@@ -74,11 +74,6 @@ class DataUsersControllerTest
   }
 
   @Test
-  void updates_salespeople() {
-    assertDoesNotThrow(() -> super.updates_data_using_only_a_pojo(UserPojo.builder().build()));
-  }
-
-  @Test
   void updates_salespeople_using_predicate_filters_map() {
     assertDoesNotThrow(() -> super.updates_data_parsing_predicate_filters_from_map(UserPojo.builder().build(), null));
   }
