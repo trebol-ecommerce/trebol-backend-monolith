@@ -28,6 +28,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ProductListPojo;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
@@ -36,8 +37,14 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -60,7 +67,7 @@ class ProductListCrudServiceImplTest {
   }
 
   @Test
-  void cannot_match_any_productlist_from_null_data() throws BadInputException {
+  void cannot_match_any_productlist_from_null_data() {
     ProductListPojo input = ProductListPojo.builder().build();
     BadInputException result = assertThrows(BadInputException.class, () -> instance.getExisting(input));
     assertEquals("The specified list has no name", result.getMessage());
