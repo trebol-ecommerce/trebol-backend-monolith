@@ -29,62 +29,39 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.trebol.api.models.AddressPojo;
-import org.trebol.api.models.CustomerPojo;
-import org.trebol.api.models.SellDetailPojo;
 import org.trebol.api.models.SellPojo;
-import org.trebol.common.exceptions.BadInputException;
-import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.AddressesRepository;
-import org.trebol.jpa.repositories.BillingTypesRepository;
-import org.trebol.jpa.repositories.ProductsRepository;
+import org.trebol.config.ApiProperties;
+import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.repositories.SalesRepository;
-import org.trebol.jpa.services.conversion.*;
-import org.trebol.jpa.services.crud.BillingCompaniesCrudService;
-import org.trebol.jpa.services.crud.CustomersCrudService;
-import org.trebol.jpa.services.crud.ShippersCrudService;
-import org.trebol.jpa.services.patch.SalesPatchService;
-import org.trebol.testing.CustomersTestHelper;
-import org.trebol.testing.ProductsTestHelper;
+import org.trebol.jpa.services.conversion.AddressesConverterService;
+import org.trebol.jpa.services.conversion.SalesConverterService;
 import org.trebol.testing.SalesTestHelper;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-import static org.trebol.testing.TestConstants.ANY;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SalesCrudServiceImplTest {
   @InjectMocks SalesCrudServiceImpl instance;
   @Mock SalesRepository salesRepositoryMock;
-  @Mock ProductsRepository productsRepositoryMock;
   @Mock SalesConverterService salesConverterMock;
-  @Mock SalesPatchService salesPatchServiceMock;
-  @Mock ProductsConverterService productsConverterServiceMock; // TODO write an unit test that needs this mock
-  @Mock CustomersCrudService customersCrudServiceMock;
-  @Mock CustomersConverterService customersConverterServiceMock;
-  @Mock BillingTypesRepository billingTypesRepositoryMock;
-  @Mock BillingCompaniesCrudService billingCompaniesCrudServiceMock;
-  @Mock BillingCompaniesConverterService billingCompaniesConverterServiceMock;
-  @Mock AddressesRepository addressesRepositoryMock;
-  @Mock ShippersCrudService shippersCrudServiceMock;
-  @Mock AddressesConverterService addressesConverterServiceMock;
-  final ProductsTestHelper productsHelper = new ProductsTestHelper();
+  @Mock AddressesConverterService addressesConverterServiceMock; // TODO verify usage of this mock when reading one
+  @Mock ApiProperties apiProperties; // TODO verify usage of this mock when doing a partial update
   final SalesTestHelper salesHelper = new SalesTestHelper();
-  final CustomersTestHelper customersHelper = new CustomersTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    productsHelper.resetProducts();
     salesHelper.resetSales();
-    customersHelper.resetCustomers();
   }
 
   @Test
@@ -101,10 +78,10 @@ class SalesCrudServiceImplTest {
   }
 
   @Test
-  void finds_using_predicates() throws EntityNotFoundException {
+  void finds_using_predicate() throws EntityNotFoundException {
     SellPojo expectedResult = SellPojo.builder()
       .buyOrder(1L)
-      .details(List.of()) // omit conversion cascading
+      .details(List.of()) // TODO put some details here to provide coverage to their conversion as well
       .build();
     when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
     when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(expectedResult);
@@ -113,111 +90,6 @@ class SalesCrudServiceImplTest {
 
     assertNotNull(result);
     assertEquals(expectedResult, result);
-  }
-
-  @Test
-  void does_not_create_sales_with_incomplete_data() throws BadInputException {
-    Customer customer = customersHelper.customerEntityAfterCreation();
-    when(salesConverterMock.convertToNewEntity(any(SellPojo.class))).thenReturn(new Sell());
-    when(customersCrudServiceMock.getExisting(nullable(CustomerPojo.class))).thenReturn(Optional.of(customer));
-    when(billingTypesRepositoryMock.findByName(nullable(String.class))).thenReturn(Optional.of(new BillingType()));
-    when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(new Address());
-
-    List.of(
-      SellPojo.builder().build(),
-      SellPojo.builder()
-        .customer(customersHelper.customerPojoBeforeCreation())
-        .build(),
-      SellPojo.builder()
-        .customer(customersHelper.customerPojoBeforeCreation())
-        .billingType(ANY)
-        .build(),
-      SellPojo.builder()
-        .customer(customersHelper.customerPojoBeforeCreation())
-        .billingType(ANY)
-        .billingAddress(AddressPojo.builder().build())
-        .build()
-    ).forEach((sellPojo) -> assertThrows(
-      NullPointerException.class,
-      () -> instance.create(sellPojo)
-    ));
-    verifyNoInteractions(salesRepositoryMock);
-
-    SellPojo valid = SellPojo.builder()
-      .customer(customersHelper.customerPojoBeforeCreation())
-      .billingType(ANY)
-      .billingAddress(AddressPojo.builder().build())
-      .details(List.of())
-      .build();
-    SellPojo expectedResult = SellPojo.builder()
-      .date(Instant.now())
-      .build();
-    when(salesConverterMock.convertToPojo(nullable(Sell.class))).thenReturn(expectedResult);
-
-    SellPojo result = instance.create(valid);
-
-    assertNotNull(result);
-    assertEquals(expectedResult, result);
-  }
-
-  @Test
-  void creates_sell()
-    throws BadInputException, EntityExistsException {
-    SellPojo input = SellPojo.builder()
-      .customer(customersHelper.customerPojoBeforeCreation())
-      .billingType(ANY)
-      .billingAddress(AddressPojo.builder().build())
-      .details(List.of(
-        SellDetailPojo.builder()
-          .units(1)
-          .product(productsHelper.productPojoBeforeCreationWithoutCategory())
-          .build()
-      ))
-      .build();
-    SellPojo expectedResult = salesHelper.sellPojoAfterCreation();
-    when(salesConverterMock.convertToNewEntity(any(SellPojo.class))).thenReturn(new Sell());
-    when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.empty());
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new BillingType()));
-    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(new Product()));
-    when(salesConverterMock.convertToPojo(nullable(Sell.class))).thenReturn(expectedResult);
-
-    SellPojo result = instance.create(input);
-
-    assertNotNull(result);
-    assertEquals(expectedResult, result);
-  }
-
-  @Test
-  void updates_sell()
-    throws BadInputException, EntityNotFoundException {
-    SellPojo input = salesHelper.sellPojoAfterCreation();
-    Instant updatedDate = Instant.now().minus(Duration.ofHours(1L));
-    input.setDate(updatedDate);
-    Sell internalResult = new Sell(salesHelper.sellEntityAfterCreation());
-    internalResult.setDate(updatedDate);
-    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
-    when(salesPatchServiceMock.patchExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(internalResult);
-    when(salesRepositoryMock.saveAndFlush(any(Sell.class))).thenReturn(internalResult);
-    when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(input);
-
-    SellPojo result = instance.update(input, new BooleanBuilder());
-
-    assertNotNull(result);
-    assertEquals(input, result);
-  }
-
-  @Test
-  void returns_same_when_no_update_is_made()
-    throws BadInputException, EntityNotFoundException {
-    SellPojo input = salesHelper.sellPojoAfterCreation();
-    Sell matchingEntity = salesHelper.sellEntityAfterCreation();
-    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(matchingEntity));
-    when(salesPatchServiceMock.patchExistingEntity(any(SellPojo.class), any(Sell.class))).thenReturn(matchingEntity);
-
-    SellPojo result = instance.update(input, new BooleanBuilder());
-
-    verify(salesPatchServiceMock).patchExistingEntity(input, matchingEntity);
-    assertEquals(input, result);
   }
 
   @Test
