@@ -34,6 +34,7 @@ import org.trebol.api.models.SellDetailPojo;
 import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Address;
+import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Product;
@@ -63,6 +64,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
 import static org.trebol.jpa.services.conversion.impl.SalesConverterServiceImpl.UNEXISTING_BILLING_TYPE;
 import static org.trebol.testing.TestConstants.ANY;
 import static org.trebol.testing.TestConstants.NOT_ANY;
@@ -83,9 +85,11 @@ class SalesConverterServiceImplTest {
   @Mock AddressesConverterService addressesConverterServiceMock;
   private static final Instant SOME_INSTANT = Instant.now();
   private static final CustomerPojo SOME_CUSTOMER = CustomerPojo.builder().build();
+  private static final BillingCompanyPojo SOME_BILLING_COMPANY = BillingCompanyPojo.builder().build();
   private static final AddressPojo SOME_ADDRESS;
   private static final Customer SOME_CUSTOMER_ENTITY = Customer.builder().build();
   private static final BillingType SOME_BILLING_TYPE_ENTITY = BillingType.builder().build();
+  private static final BillingCompany SOME_BILLING_COMPANY_ENTITY = BillingCompany.builder().build();
   private static final Address SOME_ADDRESS_ENTITY = Address.builder().build();
   private static final Product SOME_PRODUCT_ENTITY = Product.builder().build();
 
@@ -180,9 +184,66 @@ class SalesConverterServiceImplTest {
     verifyNoInteractions(addressesConverterServiceMock);
   }
 
+  @Test
+  void converts_to_new_entity_with_new_billing_company() throws BadInputException {
+    SellPojo input = SellPojo.builder()
+      .date(SOME_INSTANT)
+      .customer(SOME_CUSTOMER)
+      .billingType(BILLING_TYPE_ENTERPRISE)
+      .billingCompany(SOME_BILLING_COMPANY)
+      .billingAddress(SOME_ADDRESS)
+      .details(List.of(
+        SellDetailPojo.builder()
+          .units(1)
+          .product(ProductPojo.builder()
+            .barcode(ANY)
+            .build())
+          .build()
+      ))
+      .build();
+    when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
+    when(billingCompaniesConverterServiceMock.convertToNewEntity(any(BillingCompanyPojo.class))).thenReturn(SOME_BILLING_COMPANY_ENTITY);
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+    when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
+    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(SOME_PRODUCT_ENTITY));
+    Sell result = instance.convertToNewEntity(input);
+    assertEquals(SOME_BILLING_COMPANY_ENTITY, result.getBillingCompany());
+    verify(billingCompaniesCrudServiceMock).getExisting(SOME_BILLING_COMPANY);
+    verify(billingCompaniesConverterServiceMock).convertToNewEntity(SOME_BILLING_COMPANY);
+  }
+
+  @Test
+  void converts_to_new_entity_with_existing_billing_company() throws BadInputException {
+    SellPojo input = SellPojo.builder()
+      .date(SOME_INSTANT)
+      .customer(SOME_CUSTOMER)
+      .billingType(BILLING_TYPE_ENTERPRISE)
+      .billingCompany(SOME_BILLING_COMPANY)
+      .billingAddress(SOME_ADDRESS)
+      .details(List.of(
+        SellDetailPojo.builder()
+          .units(1)
+          .product(ProductPojo.builder()
+            .barcode(ANY)
+            .build())
+          .build()
+      ))
+      .build();
+    when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
+    when(billingCompaniesCrudServiceMock.getExisting(any(BillingCompanyPojo.class))).thenReturn(Optional.of(SOME_BILLING_COMPANY_ENTITY));
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+    when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
+    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(SOME_PRODUCT_ENTITY));
+    Sell result = instance.convertToNewEntity(input);
+    assertEquals(SOME_BILLING_COMPANY_ENTITY, result.getBillingCompany());
+    verify(billingCompaniesCrudServiceMock).getExisting(SOME_BILLING_COMPANY);
+    verifyNoInteractions(billingCompaniesConverterServiceMock);
+  }
+
   @Nested
   class NewEntityValidationFailureCases {
     private static final String NO_CUSTOMER_PROVIDED = "No customer provided";
+    private static final String NO_BILLING_COMPANY_PROVIDED = "No billing company provided";
 
     @Test
     void no_customer_information() throws BadInputException {
@@ -244,6 +305,29 @@ class SalesConverterServiceImplTest {
       when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingBillingType));
       assertThrows(NullPointerException.class, () -> instance.convertToNewEntity(input));
       verify(billingTypesRepositoryMock).findByName(ANY);
+    }
+
+    @Test
+    void billing_type_for_enterprise_without_billing_company() throws BadInputException {
+      SellPojo input = SellPojo.builder()
+        .date(SOME_INSTANT)
+        .customer(SOME_CUSTOMER)
+        .billingType(BILLING_TYPE_ENTERPRISE)
+        .billingAddress(AddressPojo.builder()
+          .firstLine(ANY)
+          .secondLine(ANY)
+          .city(ANY)
+          .municipality(ANY)
+          .postalCode(ANY)
+          .notes(ANY)
+          .build())
+        .billingCompany(null)
+        .build();
+      BillingType existingBillingType = BillingType.builder().build();
+      when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingBillingType));
+      when(billingCompaniesCrudServiceMock.getExisting(isNull())).thenThrow(new BadInputException(NO_BILLING_COMPANY_PROVIDED));
+      BadInputException result = assertThrows(BadInputException.class, () -> instance.convertToNewEntity(input));
+      assertEquals(NO_BILLING_COMPANY_PROVIDED, result.getMessage());
     }
 
     @Test
