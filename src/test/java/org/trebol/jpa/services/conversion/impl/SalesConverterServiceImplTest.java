@@ -27,6 +27,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.AddressPojo;
+import org.trebol.api.models.BillingCompanyPojo;
 import org.trebol.api.models.CustomerPojo;
 import org.trebol.api.models.ProductPojo;
 import org.trebol.api.models.SellDetailPojo;
@@ -82,6 +83,22 @@ class SalesConverterServiceImplTest {
   @Mock AddressesConverterService addressesConverterServiceMock;
   private static final Instant SOME_INSTANT = Instant.now();
   private static final CustomerPojo SOME_CUSTOMER = CustomerPojo.builder().build();
+  private static final AddressPojo SOME_ADDRESS;
+  private static final Customer SOME_CUSTOMER_ENTITY = Customer.builder().build();
+  private static final BillingType SOME_BILLING_TYPE_ENTITY = BillingType.builder().build();
+  private static final Address SOME_ADDRESS_ENTITY = Address.builder().build();
+  private static final Product SOME_PRODUCT_ENTITY = Product.builder().build();
+
+  static {
+    SOME_ADDRESS = AddressPojo.builder()
+        .firstLine(ANY)
+        .secondLine(ANY)
+        .city(ANY)
+        .municipality(ANY)
+        .postalCode(ANY)
+        .notes(ANY)
+        .build();
+  }
 
   @Test
   void converts_to_new_entity() throws BadInputException {
@@ -89,14 +106,7 @@ class SalesConverterServiceImplTest {
       .date(SOME_INSTANT)
       .customer(SOME_CUSTOMER)
       .billingType(ANY)
-      .billingAddress(AddressPojo.builder()
-        .firstLine(ANY)
-        .secondLine(ANY)
-        .city(ANY)
-        .municipality(ANY)
-        .postalCode(ANY)
-        .notes(ANY)
-        .build())
+      .billingAddress(SOME_ADDRESS)
       .details(List.of(
         SellDetailPojo.builder()
           .units(1)
@@ -124,14 +134,7 @@ class SalesConverterServiceImplTest {
       .date(SOME_INSTANT)
       .customer(SOME_CUSTOMER)
       .billingType(ANY)
-      .billingAddress(AddressPojo.builder()
-        .firstLine(ANY)
-        .secondLine(ANY)
-        .city(ANY)
-        .municipality(ANY)
-        .postalCode(ANY)
-        .notes(ANY)
-        .build())
+      .billingAddress(SOME_ADDRESS)
       .details(List.of(
         SellDetailPojo.builder()
           .units(1)
@@ -141,16 +144,12 @@ class SalesConverterServiceImplTest {
           .build()
       ))
       .build();
-    Customer existingCustomer = Customer.builder().build();
-    BillingType existingBillingType = BillingType.builder().build();
-    Address address = Address.builder().build();
-    Product existingProduct = Product.builder().build();
-    when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(existingCustomer));
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingBillingType));
-    when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(address);
-    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(existingProduct));
+    when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+    when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(SOME_ADDRESS_ENTITY);
+    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(SOME_PRODUCT_ENTITY));
     Sell result = instance.convertToNewEntity(input);
-    assertEquals(address, result.getBillingAddress());
+    assertEquals(SOME_ADDRESS_ENTITY, result.getBillingAddress());
     verify(addressesRepositoryMock).findByFields(ANY, ANY, ANY, ANY, ANY, ANY);
     verify(addressesConverterServiceMock).convertToNewEntity(input.getBillingAddress());
   }
@@ -161,14 +160,7 @@ class SalesConverterServiceImplTest {
       .date(SOME_INSTANT)
       .customer(SOME_CUSTOMER)
       .billingType(ANY)
-      .billingAddress(AddressPojo.builder()
-        .firstLine(ANY)
-        .secondLine(ANY)
-        .city(ANY)
-        .municipality(ANY)
-        .postalCode(ANY)
-        .notes(ANY)
-        .build())
+      .billingAddress(SOME_ADDRESS)
       .details(List.of(
         SellDetailPojo.builder()
           .units(1)
@@ -178,16 +170,12 @@ class SalesConverterServiceImplTest {
           .build()
       ))
       .build();
-    Customer existingCustomer = Customer.builder().build();
-    BillingType existingBillingType = BillingType.builder().build();
-    Address existingAddress = Address.builder().build();
-    Product existingProduct = Product.builder().build();
-    when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(existingCustomer));
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(existingBillingType));
-    when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(existingAddress));
-    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(existingProduct));
+    when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+    when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
+    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(SOME_PRODUCT_ENTITY));
     Sell result = instance.convertToNewEntity(input);
-    assertEquals(existingAddress, result.getBillingAddress());
+    assertEquals(SOME_ADDRESS_ENTITY, result.getBillingAddress());
     verify(addressesRepositoryMock).findByFields(ANY, ANY, ANY, ANY, ANY, ANY);
     verifyNoInteractions(addressesConverterServiceMock);
   }
