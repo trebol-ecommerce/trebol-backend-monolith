@@ -57,18 +57,6 @@ public abstract class DataCrudGenericControllerTest<P, E>
     verify(crudServiceMock).create(input);
   }
 
-  protected void updates_data_parsing_predicate_filters_from_map(P input, @Nullable Map<String, String> predicateFiltersMap) throws BadInputException {
-    if (predicateFiltersMap == null) {
-      predicateFiltersMap = Map.of(ANY, ANY);
-    }
-    Predicate predicate = new BooleanBuilder();
-    when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
-
-    instance.update(input, predicateFiltersMap);
-
-    verify(crudServiceMock).update(input, predicate);
-  }
-
   protected void deletes_data_parsing_predicate_filters_from_map(@Nullable Map<String, String> predicateFiltersMap) {
     if (predicateFiltersMap == null) {
       predicateFiltersMap = Map.of(ANY, ANY);

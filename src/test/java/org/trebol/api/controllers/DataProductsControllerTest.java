@@ -20,6 +20,8 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,8 +37,13 @@ import org.trebol.jpa.services.crud.ProductsCrudService;
 import org.trebol.jpa.services.predicates.ProductsPredicateService;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -75,7 +82,17 @@ class DataProductsControllerTest
 
   @Test
   void updates_products_using_predicate_filters_map() {
-    assertDoesNotThrow(() -> super.updates_data_parsing_predicate_filters_from_map(ProductPojo.builder().build(), null));
+    assertDoesNotThrow(() -> {
+      ProductPojo existingList = ProductPojo.builder().build();
+      ProductPojo input = ProductPojo.builder().build();
+      Predicate predicate = new BooleanBuilder();
+      when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
+      when(crudServiceMock.update(any(), any(Predicate.class))).thenReturn(Optional.of(existingList));
+
+      instance.update(ProductPojo.builder().build(), Map.of(ANY, ANY));
+
+      verify(crudServiceMock).update(input, predicate);
+    });
   }
 
   @Test
