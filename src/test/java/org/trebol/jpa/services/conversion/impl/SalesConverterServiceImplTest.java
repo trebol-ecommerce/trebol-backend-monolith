@@ -149,14 +149,7 @@ class SalesConverterServiceImplTest {
       .customer(SOME_CUSTOMER)
       .billingType(ANY)
       .billingAddress(SOME_ADDRESS)
-      .details(List.of(
-        SellDetailPojo.builder()
-          .units(1)
-          .product(ProductPojo.builder()
-            .barcode(ANY)
-            .build())
-          .build()
-      ))
+      .details(List.of())
       .build();
     when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
     when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
@@ -176,14 +169,7 @@ class SalesConverterServiceImplTest {
       .billingType(BILLING_TYPE_ENTERPRISE)
       .billingCompany(SOME_BILLING_COMPANY)
       .billingAddress(SOME_ADDRESS)
-      .details(List.of(
-        SellDetailPojo.builder()
-          .units(1)
-          .product(ProductPojo.builder()
-            .barcode(ANY)
-            .build())
-          .build()
-      ))
+      .details(List.of())
       .build();
     when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
     when(billingCompaniesConverterServiceMock.convertToNewEntity(any(BillingCompanyPojo.class))).thenReturn(SOME_BILLING_COMPANY_ENTITY);
@@ -293,7 +279,7 @@ class SalesConverterServiceImplTest {
     }
 
     @Test
-    void invalid_details() throws BadInputException {
+    void invalid_details() {
       SellPojo.SellPojoBuilder inputBuilder = SellPojo.builder()
         .date(SOME_INSTANT)
         .customer(SOME_CUSTOMER)
@@ -347,7 +333,7 @@ class SalesConverterServiceImplTest {
     }
 
     @Test
-    void invalid_products() throws BadInputException {
+    void invalid_products() {
       SellPojo input = SellPojo.builder()
         .date(SOME_INSTANT)
         .customer(SOME_CUSTOMER)
