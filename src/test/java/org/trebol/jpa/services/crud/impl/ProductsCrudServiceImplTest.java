@@ -52,6 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -111,21 +112,21 @@ class ProductsCrudServiceImplTest {
   void creates_product_alongside_an_image() throws BadInputException {
     ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
     input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
-    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
-    ImagePojo expectedResultImage = imagesHelper.imagePojoAfterCreation();
-    expectedResult.setImages(List.of(expectedResultImage));
     Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
     Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
     Image imageEntity = imagesHelper.imageEntityAfterCreation();
     List<ProductImage> resultProductImages = List.of(ProductImage.builder()
       .image(imageEntity)
       .build());
+    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
+    List<ImagePojo> expectedResultImages = List.of(imagesHelper.imagePojoAfterCreation());
+    expectedResult.setImages(expectedResultImages);
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
     when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.of(imageEntity));
     when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(resultProductImages); // unused value, stubbed for safety
-    when(imagesConverterMock.convertToPojo(any(Image.class))).thenReturn(expectedResultImage);
+    when(productsConverterMock.convertImagesToPojo(anyList())).thenReturn(expectedResultImages);
 
     ProductPojo result = instance.create(input);
 
@@ -133,7 +134,7 @@ class ProductsCrudServiceImplTest {
     assertNotNull(result);
     assertFalse(result.getImages().isEmpty());
     ImagePojo resultImage = result.getImages().iterator().next();
-    assertEquals(expectedResultImage, resultImage);
+    assertEquals(expectedResultImages.get(0), resultImage);
     assertEquals(expectedResult, result);
   }
 
@@ -141,21 +142,21 @@ class ProductsCrudServiceImplTest {
   void updates_existing_product_alongside_a_new_image() throws BadInputException {
     ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
     input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
-    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
-    ImagePojo expectedResultImage = imagesHelper.imagePojoAfterCreation();
-    expectedResult.setImages(List.of(expectedResultImage));
     Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
     Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
     Image imageEntity = imagesHelper.imageEntityAfterCreation();
     List<ProductImage> resultProductImages = List.of(ProductImage.builder()
       .image(imageEntity)
       .build());
+    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
+    List<ImagePojo> expectedResultImages = List.of(imagesHelper.imagePojoAfterCreation());
+    expectedResult.setImages(expectedResultImages);
     when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
     when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
     when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
     when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.of(imageEntity));
     when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(resultProductImages);
-    when(imagesConverterMock.convertToPojo(any(Image.class))).thenReturn(expectedResultImage);
+    when(productsConverterMock.convertImagesToPojo(anyList())).thenReturn(expectedResultImages);
 
     Optional<ProductPojo> result = instance.update(input, 1L);
 
@@ -164,7 +165,7 @@ class ProductsCrudServiceImplTest {
     ProductPojo actualResult = result.get();
     assertFalse(actualResult.getImages().isEmpty());
     ImagePojo actualResultImage = actualResult.getImages().iterator().next();
-    assertEquals(expectedResultImage, actualResultImage);
+    assertEquals(expectedResultImages.get(0), actualResultImage);
     assertEquals(expectedResult, actualResult);
   }
 }
