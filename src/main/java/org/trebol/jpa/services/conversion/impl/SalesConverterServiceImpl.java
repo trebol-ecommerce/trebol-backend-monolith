@@ -266,7 +266,7 @@ public class SalesConverterServiceImpl
   private void convertShippingInformationForEntity(SellPojo model, Sell target) throws BadInputException {
     String pojoShipperName = model.getShipper();
     AddressPojo pojoShippingAddress = model.getShippingAddress();
-    if (!StringUtils.isBlank(pojoShipperName) && pojoShippingAddress != null) {
+    if (!StringUtils.isBlank(pojoShipperName)) {
       Optional<Shipper> existingShipper = shippersRepository.findByName(pojoShipperName);
       if (existingShipper.isEmpty()) {
         throw new BadInputException("Specified shipper does not exist");

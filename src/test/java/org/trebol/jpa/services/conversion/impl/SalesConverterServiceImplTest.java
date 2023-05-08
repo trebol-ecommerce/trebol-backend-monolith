@@ -39,6 +39,7 @@ import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.repositories.AddressesRepository;
 import org.trebol.jpa.repositories.BillingTypesRepository;
 import org.trebol.jpa.repositories.ProductsRepository;
@@ -93,6 +94,7 @@ class SalesConverterServiceImplTest {
   private static final BillingCompany SOME_BILLING_COMPANY_ENTITY = BillingCompany.builder().build();
   private static final Address SOME_ADDRESS_ENTITY = Address.builder().build();
   private static final Product SOME_PRODUCT_ENTITY = Product.builder().build();
+  private static final Shipper SOME_SHIPPER_ENTITY = Shipper.builder().build();
 
   static {
     SOME_ADDRESS = AddressPojo.builder()
@@ -121,12 +123,15 @@ class SalesConverterServiceImplTest {
             .build())
           .build()
       ))
+      .shipper(ANY)
+      .shippingAddress(SOME_ADDRESS)
       .build();
     when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
     when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
     when(billingCompaniesCrudServiceMock.getExisting(any(BillingCompanyPojo.class))).thenReturn(Optional.of(SOME_BILLING_COMPANY_ENTITY));
     when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
     when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(SOME_PRODUCT_ENTITY));
+    when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_SHIPPER_ENTITY));
     Sell result = instance.convertToNewEntity(input);
     assertEquals(SOME_CUSTOMER_ENTITY, result.getCustomer());
     verify(customersCrudServiceMock).getExisting(SOME_CUSTOMER);
@@ -135,11 +140,14 @@ class SalesConverterServiceImplTest {
     assertEquals(SOME_BILLING_COMPANY_ENTITY, result.getBillingCompany());
     verify(billingCompaniesCrudServiceMock).getExisting(SOME_BILLING_COMPANY);
     assertEquals(SOME_ADDRESS_ENTITY, result.getBillingAddress());
-    verify(addressesRepositoryMock, times(1)).findByFields(ANY, ANY, ANY, ANY, ANY, ANY);
     assertFalse(result.getDetails().isEmpty());
     assertEquals(1, result.getDetails().size());
     assertEquals(SOME_PRODUCT_ENTITY, result.getDetails().iterator().next().getProduct());
     verify(productsRepositoryMock, times(1)).findByBarcode(ANY);
+    assertEquals(SOME_SHIPPER_ENTITY, result.getShipper());
+    assertEquals(SOME_ADDRESS_ENTITY, result.getShippingAddress());
+    verify(shippersRepositoryMock).findByName(ANY);
+    verify(addressesRepositoryMock, times(2)).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // billing & shipping addresses
   }
 
   @Test
@@ -151,7 +159,6 @@ class SalesConverterServiceImplTest {
       .billingAddress(SOME_ADDRESS)
       .details(List.of())
       .build();
-    when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
     when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
     when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(SOME_ADDRESS_ENTITY);
     Sell result = instance.convertToNewEntity(input);
@@ -170,7 +177,6 @@ class SalesConverterServiceImplTest {
       .billingAddress(SOME_ADDRESS)
       .details(List.of())
       .build();
-    when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
     when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
     when(billingCompaniesConverterServiceMock.convertToNewEntity(any(BillingCompanyPojo.class))).thenReturn(SOME_BILLING_COMPANY_ENTITY);
     when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
@@ -178,6 +184,26 @@ class SalesConverterServiceImplTest {
     assertEquals(SOME_BILLING_COMPANY_ENTITY, result.getBillingCompany());
     verify(billingCompaniesCrudServiceMock).getExisting(SOME_BILLING_COMPANY); // not mocked, is Optional.empty()
     verify(billingCompaniesConverterServiceMock).convertToNewEntity(SOME_BILLING_COMPANY);
+  }
+
+  @Test
+  void converts_to_new_entity_with_new_shipping_address() throws BadInputException {
+    SellPojo input = SellPojo.builder()
+      .date(SOME_INSTANT)
+      .customer(SOME_CUSTOMER)
+      .billingType(ANY)
+      .billingAddress(SOME_ADDRESS)
+      .details(List.of())
+      .shipper(ANY)
+      .shippingAddress(SOME_ADDRESS)
+      .build();
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+    when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(SOME_ADDRESS_ENTITY);
+    when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_SHIPPER_ENTITY));
+    Sell result = instance.convertToNewEntity(input);
+    verify(addressesRepositoryMock, times(2)).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // not mocked, is Optional.empty()
+    verify(addressesConverterServiceMock, times(2)).convertToNewEntity(SOME_ADDRESS); // billing & shipping addresses
+    assertEquals(SOME_ADDRESS_ENTITY, result.getBillingAddress());
   }
 
   @Nested
@@ -354,8 +380,43 @@ class SalesConverterServiceImplTest {
       verify(productsRepositoryMock).findByBarcode(ANY);
     }
 
+    @Test
+    void invalid_shipper() {
+      SellPojo input = SellPojo.builder()
+        .date(SOME_INSTANT)
+        .customer(SOME_CUSTOMER)
+        .billingType(ANY)
+        .billingAddress(SOME_ADDRESS)
+        .details(List.of())
+        .shipper(ANY)
+        .build();
+      when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+      when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
+      BadInputException result = assertThrows(BadInputException.class, () -> instance.convertToNewEntity(input));
+      assertEquals("Specified shipper does not exist", result.getMessage());
+      verify(shippersRepositoryMock).findByName(ANY);
+    }
+
+    @Test
+    void shipper_without_shipping_address() {
+      SellPojo input = SellPojo.builder()
+        .date(SOME_INSTANT)
+        .customer(SOME_CUSTOMER)
+        .billingType(ANY)
+        .billingAddress(SOME_ADDRESS)
+        .details(List.of())
+        .shipper(ANY)
+        .shippingAddress(null)
+        .build();
+      when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+      when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
+      when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_SHIPPER_ENTITY));
+      assertThrows(NullPointerException.class, () -> instance.convertToNewEntity(input));
+      verify(addressesRepositoryMock, times(1)).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // billing address only
+      verify(shippersRepositoryMock).findByName(ANY);
+    }
+
     // TODO add suites to validate
-    //  - shipping information
     //  - total values calculation
   }
 }
