@@ -154,7 +154,6 @@ class SalesConverterServiceImplTest {
     when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
     when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
     when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(SOME_ADDRESS_ENTITY);
-    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(SOME_PRODUCT_ENTITY));
     Sell result = instance.convertToNewEntity(input);
     verify(addressesRepositoryMock).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // not mocked, is Optional.empty()
     verify(addressesConverterServiceMock).convertToNewEntity(input.getBillingAddress());
@@ -175,7 +174,6 @@ class SalesConverterServiceImplTest {
     when(billingCompaniesConverterServiceMock.convertToNewEntity(any(BillingCompanyPojo.class))).thenReturn(SOME_BILLING_COMPANY_ENTITY);
     when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
     when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
-    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(SOME_PRODUCT_ENTITY));
     Sell result = instance.convertToNewEntity(input);
     assertEquals(SOME_BILLING_COMPANY_ENTITY, result.getBillingCompany());
     verify(billingCompaniesCrudServiceMock).getExisting(SOME_BILLING_COMPANY); // not mocked, is Optional.empty()
