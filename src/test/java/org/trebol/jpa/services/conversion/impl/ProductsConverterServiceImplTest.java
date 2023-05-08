@@ -43,11 +43,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
@@ -78,8 +76,6 @@ class ProductsConverterServiceImplTest {
         .build()
     );
     ImagePojo expectedImagePojo = ImagePojo.builder().build();
-    when(productImagesRepositoryMock.deepFindProductImagesByProductId(anyLong())).thenReturn(existingImages);
-    when(imagesConverterServiceMock.convertToPojo(any(Image.class))).thenReturn(expectedImagePojo);
     when(productCategoriesConverterServiceMock.convertToPojo(any(ProductCategory.class))).thenReturn(expectedProductCategory);
     ProductPojo result = instance.convertToPojo(input);
     assertEquals(input.getName(), result.getName());
@@ -90,10 +86,7 @@ class ProductsConverterServiceImplTest {
     assertEquals(input.getStockCritical(), result.getCriticalStock());
     assertNotNull(result.getCategory());
     assertEquals(expectedProductCategory, result.getCategory());
-    assertNotNull(result.getImages());
-    assertFalse(result.getImages().isEmpty());
-    assertEquals(1, result.getImages().size());
-    assertEquals(expectedImagePojo, result.getImages().iterator().next());
+    assertNull(result.getImages());
   }
 
   @Test
