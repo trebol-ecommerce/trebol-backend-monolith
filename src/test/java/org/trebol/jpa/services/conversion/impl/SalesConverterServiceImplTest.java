@@ -289,24 +289,88 @@ class SalesConverterServiceImplTest {
       when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
       when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.empty());
       assertThrows(NullPointerException.class, () -> instance.convertToNewEntity(inputWithoutDetails));
+      verifyNoInteractions(productsRepositoryMock);
     }
 
-    // TODO finish this test suite
-//     @Test
-//     void insufficient_or_invalid_details() {
-//       SellPojo inputWithZeroDetails = SellPojo.builder()
-//         .date(SOME_INSTANT)
-//         .customer(SOME_CUSTOMER)
-//         .billingType(ANY)
-//         .billingAddress(SOME_ADDRESS)
-//         .details(List.of())
-//         .build();
-//       when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.empty());
-//       assertThrows(NullPointerException.class, () -> instance.convertToNewEntity(inputWithZeroDetails));
-//     }
+    @Test
+    void invalid_details() throws BadInputException {
+      SellPojo.SellPojoBuilder inputBuilder = SellPojo.builder()
+        .date(SOME_INSTANT)
+        .customer(SOME_CUSTOMER)
+        .billingType(ANY)
+        .billingAddress(SOME_ADDRESS);
+      when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+      when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
+
+      // products cannot be null
+      List.of(
+        List.of(
+          SellDetailPojo.builder().build()
+        ),
+        List.of(
+          SellDetailPojo.builder()
+            .product(null)
+            .build()
+        )
+      ).forEach(detailsList -> {
+        inputBuilder.details(detailsList);
+        assertThrows(NullPointerException.class, () -> instance.convertToNewEntity(inputBuilder.build()));
+      });
+
+      // nor can product barcodes be absent, null nor empty
+      List.of(
+        List.of(
+          SellDetailPojo.builder()
+            .product(ProductPojo.builder().build())
+            .build()
+        ),
+        List.of(
+          SellDetailPojo.builder()
+            .product(ProductPojo.builder()
+              .barcode(null)
+              .build())
+            .build()
+        ),
+        List.of(
+          SellDetailPojo.builder()
+            .product(ProductPojo.builder()
+              .barcode("")
+              .build())
+            .build()
+        )
+      ).forEach(detailsList -> {
+        inputBuilder.details(detailsList);
+        RuntimeException result = assertThrows(RuntimeException.class, () -> instance.convertToNewEntity(inputBuilder.build()));
+        assertEquals("Product barcode must be valid", result.getMessage());
+      });
+      verifyNoInteractions(productsRepositoryMock);
+    }
+
+    @Test
+    void invalid_products() throws BadInputException {
+      SellPojo input = SellPojo.builder()
+        .date(SOME_INSTANT)
+        .customer(SOME_CUSTOMER)
+        .billingType(ANY)
+        .billingAddress(SOME_ADDRESS)
+        .details(List.of(
+          SellDetailPojo.builder()
+            .product(ProductPojo.builder()
+              .barcode(ANY)
+              .build())
+            .build()
+        ))
+        .build();
+      when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+      when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
+      when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.empty());
+      RuntimeException result = assertThrows(RuntimeException.class, () -> instance.convertToNewEntity(input));
+      BadInputException originalResult = (BadInputException) result.getCause();
+      assertEquals("Unexisting product in sell details", originalResult.getMessage());
+      verify(productsRepositoryMock).findByBarcode(ANY);
+    }
 
     // TODO add suites to validate
-    //  - proper details
     //  - shipping information
     //  - total values calculation
   }
