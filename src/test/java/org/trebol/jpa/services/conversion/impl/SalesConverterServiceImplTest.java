@@ -171,8 +171,8 @@ class SalesConverterServiceImplTest {
       .details(List.of())
       .build();
     when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
-    when(billingCompaniesConverterServiceMock.convertToNewEntity(any(BillingCompanyPojo.class))).thenReturn(SOME_BILLING_COMPANY_ENTITY);
     when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+    when(billingCompaniesConverterServiceMock.convertToNewEntity(any(BillingCompanyPojo.class))).thenReturn(SOME_BILLING_COMPANY_ENTITY);
     when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
     Sell result = instance.convertToNewEntity(input);
     assertEquals(SOME_BILLING_COMPANY_ENTITY, result.getBillingCompany());
