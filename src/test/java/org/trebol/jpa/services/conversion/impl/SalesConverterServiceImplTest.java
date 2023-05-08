@@ -67,6 +67,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
+import static org.trebol.jpa.services.conversion.impl.SalesConverterServiceImpl.TAX_PERCENT;
 import static org.trebol.jpa.services.conversion.impl.SalesConverterServiceImpl.UNEXISTING_BILLING_TYPE;
 import static org.trebol.testing.TestConstants.ANY;
 import static org.trebol.testing.TestConstants.NOT_ANY;
@@ -148,6 +149,49 @@ class SalesConverterServiceImplTest {
     assertEquals(SOME_ADDRESS_ENTITY, result.getShippingAddress());
     verify(shippersRepositoryMock).findByName(ANY);
     verify(addressesRepositoryMock, times(2)).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // billing & shipping addresses
+  }
+
+  @Test
+  void converts_to_new_entity_and_calculates_values_and_totals() throws BadInputException {
+    int productUnits = 2;
+    int productValue = 10000;
+    int transportValue = 0;
+    int taxPerProduct = (int) (productValue * TAX_PERCENT);
+    int netProductValue = (productValue - taxPerProduct);
+    int totalTaxValue = (taxPerProduct * productUnits);
+    int totalNetValue = (netProductValue * productUnits);
+    int totalValue = (totalNetValue + totalTaxValue + transportValue);
+    Product productEntityWithPrice = Product.builder()
+      .price(productValue)
+      .build();
+    SellPojo input = SellPojo.builder()
+      .date(SOME_INSTANT)
+      .customer(SOME_CUSTOMER)
+      .billingType(BILLING_TYPE_ENTERPRISE)
+      .billingCompany(SOME_BILLING_COMPANY)
+      .billingAddress(SOME_ADDRESS)
+      .details(List.of(
+        SellDetailPojo.builder()
+          .units(productUnits)
+          .product(ProductPojo.builder()
+            .barcode(ANY)
+            .build())
+          .build()
+      ))
+      .shipper(ANY)
+      .shippingAddress(SOME_ADDRESS)
+      .build();
+    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+    when(billingCompaniesCrudServiceMock.getExisting(any(BillingCompanyPojo.class))).thenReturn(Optional.of(SOME_BILLING_COMPANY_ENTITY));
+    when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
+    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(productEntityWithPrice));
+    when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_SHIPPER_ENTITY));
+    Sell result = instance.convertToNewEntity(input);
+    assertEquals(productUnits, result.getTotalItems());
+    assertEquals(totalTaxValue, result.getTaxesValue());
+    assertEquals(totalNetValue, result.getNetValue());
+    assertEquals(transportValue, result.getTransportValue());
+    assertEquals(totalValue, result.getTotalValue());
   }
 
   @Nested
@@ -419,8 +463,5 @@ class SalesConverterServiceImplTest {
       verify(addressesRepositoryMock, times(1)).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // billing address only
       verify(shippersRepositoryMock).findByName(ANY);
     }
-
-    // TODO add suites to validate
-    //  - total values calculation
   }
 }

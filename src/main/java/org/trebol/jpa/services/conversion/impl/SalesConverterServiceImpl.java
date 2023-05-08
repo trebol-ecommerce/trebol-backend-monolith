@@ -75,7 +75,7 @@ public class SalesConverterServiceImpl
   private final ShippersRepository shippersRepository;
   private final AddressesRepository addressesRepository;
   private final AddressesConverterService addressesConverterService;
-  private static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
+  static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
   static final String UNEXISTING_BILLING_TYPE = "Specified billing type does not exist";
 
   @Autowired
