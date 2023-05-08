@@ -150,60 +150,64 @@ class SalesConverterServiceImplTest {
     verify(addressesRepositoryMock, times(2)).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // billing & shipping addresses
   }
 
-  @Test
-  void converts_to_new_entity_with_new_billing_address() throws BadInputException {
-    SellPojo input = SellPojo.builder()
-      .date(SOME_INSTANT)
-      .customer(SOME_CUSTOMER)
-      .billingType(ANY)
-      .billingAddress(SOME_ADDRESS)
-      .details(List.of())
-      .build();
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
-    when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(SOME_ADDRESS_ENTITY);
-    Sell result = instance.convertToNewEntity(input);
-    verify(addressesRepositoryMock).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // not mocked, is Optional.empty()
-    verify(addressesConverterServiceMock).convertToNewEntity(input.getBillingAddress());
-    assertEquals(SOME_ADDRESS_ENTITY, result.getBillingAddress());
-  }
+  @Nested
+  class NewEntityCascadingCases {
 
-  @Test
-  void converts_to_new_entity_with_new_billing_company() throws BadInputException {
-    SellPojo input = SellPojo.builder()
-      .date(SOME_INSTANT)
-      .customer(SOME_CUSTOMER)
-      .billingType(BILLING_TYPE_ENTERPRISE)
-      .billingCompany(SOME_BILLING_COMPANY)
-      .billingAddress(SOME_ADDRESS)
-      .details(List.of())
-      .build();
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
-    when(billingCompaniesConverterServiceMock.convertToNewEntity(any(BillingCompanyPojo.class))).thenReturn(SOME_BILLING_COMPANY_ENTITY);
-    when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
-    Sell result = instance.convertToNewEntity(input);
-    assertEquals(SOME_BILLING_COMPANY_ENTITY, result.getBillingCompany());
-    verify(billingCompaniesCrudServiceMock).getExisting(SOME_BILLING_COMPANY); // not mocked, is Optional.empty()
-    verify(billingCompaniesConverterServiceMock).convertToNewEntity(SOME_BILLING_COMPANY);
-  }
+    @Test
+    void converts_to_new_entity_with_new_billing_address() throws BadInputException {
+      SellPojo input = SellPojo.builder()
+        .date(SOME_INSTANT)
+        .customer(SOME_CUSTOMER)
+        .billingType(ANY)
+        .billingAddress(SOME_ADDRESS)
+        .details(List.of())
+        .build();
+      when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+      when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(SOME_ADDRESS_ENTITY);
+      Sell result = instance.convertToNewEntity(input);
+      verify(addressesRepositoryMock).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // not mocked, is Optional.empty()
+      verify(addressesConverterServiceMock).convertToNewEntity(input.getBillingAddress());
+      assertEquals(SOME_ADDRESS_ENTITY, result.getBillingAddress());
+    }
 
-  @Test
-  void converts_to_new_entity_with_new_shipping_address() throws BadInputException {
-    SellPojo input = SellPojo.builder()
-      .date(SOME_INSTANT)
-      .customer(SOME_CUSTOMER)
-      .billingType(ANY)
-      .billingAddress(SOME_ADDRESS)
-      .details(List.of())
-      .shipper(ANY)
-      .shippingAddress(SOME_ADDRESS)
-      .build();
-    when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
-    when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(SOME_ADDRESS_ENTITY);
-    when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_SHIPPER_ENTITY));
-    Sell result = instance.convertToNewEntity(input);
-    verify(addressesRepositoryMock, times(2)).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // not mocked, is Optional.empty()
-    verify(addressesConverterServiceMock, times(2)).convertToNewEntity(SOME_ADDRESS); // billing & shipping addresses
-    assertEquals(SOME_ADDRESS_ENTITY, result.getBillingAddress());
+    @Test
+    void converts_to_new_entity_with_new_billing_company() throws BadInputException {
+      SellPojo input = SellPojo.builder()
+        .date(SOME_INSTANT)
+        .customer(SOME_CUSTOMER)
+        .billingType(BILLING_TYPE_ENTERPRISE)
+        .billingCompany(SOME_BILLING_COMPANY)
+        .billingAddress(SOME_ADDRESS)
+        .details(List.of())
+        .build();
+      when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+      when(billingCompaniesConverterServiceMock.convertToNewEntity(any(BillingCompanyPojo.class))).thenReturn(SOME_BILLING_COMPANY_ENTITY);
+      when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
+      Sell result = instance.convertToNewEntity(input);
+      assertEquals(SOME_BILLING_COMPANY_ENTITY, result.getBillingCompany());
+      verify(billingCompaniesCrudServiceMock).getExisting(SOME_BILLING_COMPANY); // not mocked, is Optional.empty()
+      verify(billingCompaniesConverterServiceMock).convertToNewEntity(SOME_BILLING_COMPANY);
+    }
+
+    @Test
+    void converts_to_new_entity_with_new_shipping_address() throws BadInputException {
+      SellPojo input = SellPojo.builder()
+        .date(SOME_INSTANT)
+        .customer(SOME_CUSTOMER)
+        .billingType(ANY)
+        .billingAddress(SOME_ADDRESS)
+        .details(List.of())
+        .shipper(ANY)
+        .shippingAddress(SOME_ADDRESS)
+        .build();
+      when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
+      when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(SOME_ADDRESS_ENTITY);
+      when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_SHIPPER_ENTITY));
+      Sell result = instance.convertToNewEntity(input);
+      verify(addressesRepositoryMock, times(2)).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // not mocked, is Optional.empty()
+      verify(addressesConverterServiceMock, times(2)).convertToNewEntity(SOME_ADDRESS); // billing & shipping addresses
+      assertEquals(SOME_ADDRESS_ENTITY, result.getBillingAddress());
+    }
   }
 
   @Nested
