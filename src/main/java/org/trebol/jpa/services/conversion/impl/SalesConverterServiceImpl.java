@@ -127,10 +127,8 @@ public class SalesConverterServiceImpl
 
     if (target.getBillingType().equals(BILLING_TYPE_ENTERPRISE)) {
       BillingCompany sourceBillingCompany = source.getBillingCompany();
-      if (sourceBillingCompany != null) {
-        BillingCompanyPojo targetBillingCompany = billingCompaniesConverterService.convertToPojo(sourceBillingCompany);
-        target.setBillingCompany(targetBillingCompany);
-      }
+      BillingCompanyPojo targetBillingCompany = billingCompaniesConverterService.convertToPojo(sourceBillingCompany);
+      target.setBillingCompany(targetBillingCompany);
     }
 
     if (source.getShipper() != null) {
