@@ -26,7 +26,6 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
-// TODO introduce a POJO for POST requests - where all fields are required - and a second POJO for PATCH requests - where not all fields may be included (perhaps implemented using Java Optionals)
 @Data
 @Builder
 @JsonInclude

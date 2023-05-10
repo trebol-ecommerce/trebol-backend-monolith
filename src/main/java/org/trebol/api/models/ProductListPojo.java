@@ -31,7 +31,6 @@ import javax.validation.constraints.NotEmpty;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-// TODO introduce a POJO for POST requests - where all fields are required - and a second POJO for PATCH requests - where not all fields may be included (perhaps implemented using Java Optionals)
 @Data
 @Builder
 @NoArgsConstructor
