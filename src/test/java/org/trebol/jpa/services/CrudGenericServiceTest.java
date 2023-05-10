@@ -60,7 +60,7 @@ class CrudGenericServiceTest {
   @Mock PatchService<GenericPojo, GenericEntity> genericPatchServiceMock;
   final GenericPojo newPojo = new GenericPojo(null, GENERIC_NAME);
   final GenericEntity newEntity = new GenericEntity(null, GENERIC_NAME);
-  final GenericEntity persistedEntity = new GenericEntity(1L, GENERIC_NAME);
+  static final GenericEntity persistedEntity = new GenericEntity(1L, GENERIC_NAME);
   final GenericPojo persistedPojo = new GenericPojo(1L, GENERIC_NAME);
   final List<GenericEntity> emptyEntityList = List.of();
   final List<GenericEntity> persistedEntityList = List.of(persistedEntity);
@@ -69,10 +69,10 @@ class CrudGenericServiceTest {
 
   @Test
   void sanity_checks() {
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
     assertNotNull(service);
 
-    CrudGenericService<GenericPojo, GenericEntity> service2 = this.instantiate_with_existing_entity();
+    CrudGenericService<GenericPojo, GenericEntity> service2 = new MockServiceWithExistingEntity(this);
     assertNotNull(service2);
   }
 
@@ -83,7 +83,7 @@ class CrudGenericServiceTest {
     when(genericRepositoryMock.saveAndFlush(newEntity)).thenReturn(persistedEntity);
     when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
 
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
     GenericPojo result = service.create(newPojo);
 
     assertNotNull(result);
@@ -100,7 +100,7 @@ class CrudGenericServiceTest {
     PageImpl<GenericEntity> emptyPage = new PageImpl<>(emptyEntityList);
     when(genericRepositoryMock.findAll(simplePageRequest)).thenReturn(emptyPage);
 
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
     DataPagePojo<GenericPojo> result = service.readMany(0, 10, null, null);
 
     assertNotNull(result);
@@ -117,7 +117,7 @@ class CrudGenericServiceTest {
     when(genericRepositoryMock.count(filters)).thenReturn(1L);
     when(genericRepositoryMock.findAll(filters, simplePageRequest)).thenReturn(singleItemPage);
     when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
     DataPagePojo<GenericPojo> result = service.readMany(0, 10, null, filters);
 
@@ -135,7 +135,7 @@ class CrudGenericServiceTest {
     Optional<GenericEntity> result = Optional.of(persistedEntity);
     when(genericRepositoryMock.findOne(filters)).thenReturn(result);
     when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
     GenericPojo foundPojo = service.readOne(filters);
 
@@ -156,7 +156,7 @@ class CrudGenericServiceTest {
     when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(updatedEntity);
     when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
     when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatedPojo);
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
     Optional<GenericPojo> result = service.partialUpdate(changes, id);
 
@@ -181,7 +181,7 @@ class CrudGenericServiceTest {
     when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
     when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatedPojo);
 
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
     Optional<GenericPojo> result = service.partialUpdate(changes, filters);
 
     assertTrue(result.isPresent());
@@ -200,7 +200,7 @@ class CrudGenericServiceTest {
     when(genericRepositoryMock.count(filters)).thenReturn(1L);
     when(genericRepositoryMock.findAll(filters)).thenReturn(persistedEntityPage);
 
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
     service.delete(filters);
 
     verify(genericRepositoryMock).findAll(filters);
@@ -213,7 +213,7 @@ class CrudGenericServiceTest {
     Optional<GenericEntity> emptyResult = Optional.empty();
     when(genericRepositoryMock.findOne(filters)).thenReturn(emptyResult);
 
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
     GenericPojo genericPojo = null;
 
     try {
@@ -223,42 +223,6 @@ class CrudGenericServiceTest {
     }
 
     assertNull(genericPojo);
-  }
-
-  private CrudGenericService<GenericPojo, GenericEntity> instantiate_without_existing_entity() {
-    return new CrudGenericService<>(
-      genericRepositoryMock,
-      genericConverterMock,
-      genericPatchServiceMock) {
-
-      @Override
-      public GenericPojo update(GenericPojo input) throws EntityNotFoundException, BadInputException {
-        throw new UnsupportedOperationException("This method signature has been deprecated");
-      }
-
-      @Override
-      public Optional<GenericEntity> getExisting(GenericPojo example) {
-        return Optional.empty();
-      }
-    };
-  }
-
-  private CrudGenericService<GenericPojo, GenericEntity> instantiate_with_existing_entity() {
-    return new CrudGenericService<>(
-      genericRepositoryMock,
-      genericConverterMock,
-      genericPatchServiceMock) {
-
-      @Override
-      public GenericPojo update(GenericPojo input) throws EntityNotFoundException, BadInputException {
-        throw new UnsupportedOperationException("This method signature has been deprecated");
-      }
-
-      @Override
-      public Optional<GenericEntity> getExisting(GenericPojo example) {
-        return Optional.of(persistedEntity);
-      }
-    };
   }
 
   @Data
@@ -273,5 +237,37 @@ class CrudGenericServiceTest {
   static class GenericEntity implements DBEntity {
     Long id;
     String name;
+  }
+
+  static class MockServiceWithoutExistingEntity extends CrudGenericService<GenericPojo, GenericEntity> {
+    MockServiceWithoutExistingEntity(CrudGenericServiceTest testClass) {
+      super(testClass.genericRepositoryMock, testClass.genericConverterMock, testClass.genericPatchServiceMock);
+    }
+
+    @Override
+    public GenericPojo update(GenericPojo input) throws EntityNotFoundException, BadInputException {
+      throw new UnsupportedOperationException("This method signature has been deprecated");
+    }
+
+    @Override
+    public Optional<GenericEntity> getExisting(GenericPojo example) {
+      return Optional.empty();
+    }
+  }
+
+  static class MockServiceWithExistingEntity extends CrudGenericService<GenericPojo, GenericEntity> {
+    MockServiceWithExistingEntity(CrudGenericServiceTest testClass) {
+      super(testClass.genericRepositoryMock, testClass.genericConverterMock, testClass.genericPatchServiceMock);
+    }
+
+    @Override
+    public GenericPojo update(GenericPojo input) throws EntityNotFoundException, BadInputException {
+      throw new UnsupportedOperationException("This method signature has been deprecated");
+    }
+
+    @Override
+    public Optional<GenericEntity> getExisting(GenericPojo example) {
+      return Optional.of(CrudGenericServiceTest.persistedEntity);
+    }
   }
 }
