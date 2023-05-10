@@ -81,8 +81,7 @@ class CrudGenericServiceTest {
   }
 
   @Test
-  void creates_data()
-    throws BadInputException, EntityExistsException {
+  void creates_data() throws BadInputException, EntityExistsException {
     when(genericConverterMock.convertToNewEntity(NEW_POJO)).thenReturn(NEW_ENTITY);
     when(genericRepositoryMock.saveAndFlush(NEW_ENTITY)).thenReturn(PERSISTED_ENTITY);
     when(genericConverterMock.convertToPojo(PERSISTED_ENTITY)).thenReturn(PERSISTED_POJO);
@@ -133,8 +132,7 @@ class CrudGenericServiceTest {
 
 
   @Test
-  void reads_singular_data()
-    throws EntityNotFoundException {
+  void reads_singular_data() throws EntityNotFoundException {
     Predicate filters = new BooleanBuilder();
     Optional<GenericEntity> result = Optional.of(PERSISTED_ENTITY);
     when(genericRepositoryMock.findOne(filters)).thenReturn(result);
@@ -149,8 +147,7 @@ class CrudGenericServiceTest {
   }
 
   @Test
-  void partially_updates_data()
-    throws BadInputException, EntityNotFoundException {
+  void partially_updates_data() throws BadInputException, EntityNotFoundException {
     Long id = 1L;
     String name = "test2";
     Map<String, Object> changes = Map.of("name", name);
@@ -172,8 +169,7 @@ class CrudGenericServiceTest {
   }
 
   @Test
-  void partially_updates_data_using_filters()
-    throws BadInputException, EntityNotFoundException {
+  void partially_updates_data_using_filters() throws BadInputException, EntityNotFoundException {
     Long id = 1L;
     String name = "test2";
     Predicate filters = new BooleanBuilder();
@@ -197,8 +193,7 @@ class CrudGenericServiceTest {
   }
 
   @Test
-  void deletes_data()
-    throws EntityNotFoundException {
+  void deletes_data() throws EntityNotFoundException {
     PageImpl<GenericEntity> persistedEntityPage = new PageImpl<>(PERSISTED_ENTITY_LIST);
     Predicate filters = new BooleanBuilder();
     when(genericRepositoryMock.count(filters)).thenReturn(1L);
