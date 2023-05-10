@@ -50,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -144,6 +145,49 @@ class CrudGenericServiceTest {
     assertEquals(PERSISTED_POJO, foundPojo);
     verify(genericRepositoryMock).findOne(filters);
     verify(genericConverterMock).convertToPojo(PERSISTED_ENTITY);
+  }
+
+  @Test
+  void updates_data() throws BadInputException, EntityNotFoundException {
+    Long id = 1L;
+    String name = "test2";
+    GenericPojo changes = new GenericPojo(null, name);
+    GenericEntity changesEntity = new GenericEntity(null, name);
+    GenericPojo updatedPojo = new GenericPojo(id, name);
+    when(genericConverterMock.convertToNewEntity(any(GenericPojo.class))).thenReturn(changesEntity);
+    when(genericConverterMock.convertToPojo(nullable(GenericEntity.class))).thenReturn(updatedPojo);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    Optional<GenericPojo> result = service.update(changes, id);
+
+    assertTrue(result.isPresent());
+    assertEquals(updatedPojo, result.get());
+    verify(genericConverterMock).convertToNewEntity(changes);
+    verify(genericRepositoryMock).saveAndFlush(changesEntity);
+    verify(genericConverterMock).convertToPojo(null);
+  }
+
+  @Test
+  void updates_data_using_filters() throws BadInputException, EntityNotFoundException {
+    Long id = 1L;
+    String name = "test2";
+    GenericPojo changes = new GenericPojo(null, name);
+    Predicate filters = new BooleanBuilder();
+    GenericEntity changesEntity = new GenericEntity(null, name);
+    GenericPojo updatedPojo = new GenericPojo(id, name);
+    when(genericRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericConverterMock.convertToNewEntity(any(GenericPojo.class))).thenReturn(changesEntity);
+    when(genericConverterMock.convertToPojo(nullable(GenericEntity.class))).thenReturn(updatedPojo);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    Optional<GenericPojo> result = service.update(changes, filters);
+
+    assertTrue(result.isPresent());
+    assertEquals(updatedPojo, result.get());
+    verify(genericRepositoryMock).findOne(filters);
+    verify(genericConverterMock).convertToNewEntity(changes);
+    verify(genericRepositoryMock).saveAndFlush(changesEntity);
+    verify(genericConverterMock).convertToPojo(null);
   }
 
   @Test
