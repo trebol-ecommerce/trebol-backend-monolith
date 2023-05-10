@@ -33,7 +33,6 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.ImagesCrudService;
 import org.trebol.jpa.services.patch.ImagesPatchService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
@@ -51,11 +50,6 @@ public class ImagesCrudServiceImpl
   ) {
     super(imagesRepository, imagesConverterService, imagesPatchService);
     this.imagesRepository = imagesRepository;
-  }
-
-  @Override
-  public ImagePojo update(ImagePojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 
   @Override

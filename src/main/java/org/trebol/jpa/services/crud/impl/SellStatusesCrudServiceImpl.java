@@ -33,7 +33,6 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.SellStatusesCrudService;
 import org.trebol.jpa.services.patch.SellStatusesPatchService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
@@ -61,10 +60,5 @@ public class SellStatusesCrudServiceImpl
     } else {
       return statusesRepository.findByName(name);
     }
-  }
-
-  @Override
-  public SellStatusPojo update(SellStatusPojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 }

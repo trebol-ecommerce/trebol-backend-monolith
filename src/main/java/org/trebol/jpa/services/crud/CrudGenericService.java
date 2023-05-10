@@ -108,6 +108,11 @@ public abstract class CrudGenericService<M, E extends DBEntity>
     return new DataPagePojo<>(pojoList, pageIndex, totalCount, pageSize);
   }
 
+  @Override
+  public M update(M input) throws EntityNotFoundException, BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
+  }
+
   /**
    * @throws EntityNotFoundException When no entity matches the given id.
    * @throws BadInputException       When the data in the input object is not valid.<br/>

@@ -59,11 +59,6 @@ public class ProductListsCrudServiceImpl
   }
 
   @Override
-  public ProductListPojo update(ProductListPojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
-  }
-
-  @Override
   public void delete(Predicate filters)
     throws EntityNotFoundException {
     long count = listsRepository.count(filters);

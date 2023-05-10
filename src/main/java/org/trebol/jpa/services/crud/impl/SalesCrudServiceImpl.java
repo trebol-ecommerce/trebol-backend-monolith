@@ -79,11 +79,6 @@ public class SalesCrudServiceImpl
   }
 
   @Override
-  public SellPojo update(SellPojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
-  }
-
-  @Override
   public SellPojo readOne(Predicate conditions) throws EntityNotFoundException {
     Optional<Sell> matchingSell = salesRepository.findOne(conditions);
     if (matchingSell.isPresent()) {

@@ -70,11 +70,6 @@ public class UsersCrudServiceImpl
   }
 
   @Override
-  public UserPojo update(UserPojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
-  }
-
-  @Override
   public void delete(Predicate filters) throws EntityNotFoundException {
     if (securityProperties.isAccountProtectionEnabled()) {
       Optional<User> optionalUser = usersRepository.findOne(filters);

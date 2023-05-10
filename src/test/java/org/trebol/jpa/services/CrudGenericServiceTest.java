@@ -45,6 +45,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -69,11 +70,14 @@ class CrudGenericServiceTest {
 
   @Test
   void sanity_checks() {
-    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
-    assertNotNull(service);
-
-    CrudGenericService<GenericPojo, GenericEntity> service2 = new MockServiceWithExistingEntity(this);
-    assertNotNull(service2);
+    List.of(
+      new MockServiceWithoutExistingEntity(this),
+      new MockServiceWithExistingEntity(this)
+    ).forEach(service -> {
+      assertNotNull(service);
+      UnsupportedOperationException oldUpdateMethodException = assertThrows(UnsupportedOperationException.class, () -> service.update(NEW_POJO));
+      assertEquals("This method signature has been deprecated", oldUpdateMethodException.getMessage());
+    });
   }
 
   @Test
@@ -245,11 +249,6 @@ class CrudGenericServiceTest {
     }
 
     @Override
-    public GenericPojo update(GenericPojo input) throws EntityNotFoundException, BadInputException {
-      throw new UnsupportedOperationException("This method signature has been deprecated");
-    }
-
-    @Override
     public Optional<GenericEntity> getExisting(GenericPojo example) {
       return Optional.empty();
     }
@@ -258,11 +257,6 @@ class CrudGenericServiceTest {
   static class MockServiceWithExistingEntity extends CrudGenericService<GenericPojo, GenericEntity> {
     MockServiceWithExistingEntity(CrudGenericServiceTest testClass) {
       super(testClass.genericRepositoryMock, testClass.genericConverterMock, testClass.genericPatchServiceMock);
-    }
-
-    @Override
-    public GenericPojo update(GenericPojo input) throws EntityNotFoundException, BadInputException {
-      throw new UnsupportedOperationException("This method signature has been deprecated");
     }
 
     @Override

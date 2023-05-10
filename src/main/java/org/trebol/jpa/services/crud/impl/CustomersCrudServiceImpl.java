@@ -33,7 +33,6 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
 import org.trebol.jpa.services.patch.CustomersPatchService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
@@ -51,11 +50,6 @@ public class CustomersCrudServiceImpl
   ) {
     super(customersRepository, customersConverterService, customersPatchService);
     this.customersRepository = customersRepository;
-  }
-
-  @Override
-  public CustomerPojo update(CustomerPojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 
   @Override

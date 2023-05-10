@@ -33,7 +33,6 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.UserRolesCrudService;
 import org.trebol.jpa.services.patch.UserRolesPatchService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
@@ -61,10 +60,5 @@ public class UserRolesCrudServiceImpl
     } else {
       return rolesRepository.findByName(name);
     }
-  }
-
-  @Override
-  public UserRolePojo update(UserRolePojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 }

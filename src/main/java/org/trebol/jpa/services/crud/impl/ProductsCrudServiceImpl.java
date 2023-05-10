@@ -109,11 +109,6 @@ public class ProductsCrudServiceImpl
     return Optional.of(target);
   }
 
-  @Override
-  public ProductPojo update(ProductPojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
-  }
-
    @Override
   public ProductPojo readOne(Predicate filters)
     throws EntityNotFoundException {

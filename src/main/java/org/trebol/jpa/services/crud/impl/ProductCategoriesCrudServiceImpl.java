@@ -33,7 +33,6 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
 import org.trebol.jpa.services.patch.ProductCategoriesPatchService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,11 +53,6 @@ public class ProductCategoriesCrudServiceImpl
     super(categoriesRepository, categoriesConverterService, categoriesPatchService);
     this.categoriesRepository = categoriesRepository;
     this.categoriesPatchService = categoriesPatchService;
-  }
-
-  @Override
-  public ProductCategoryPojo update(ProductCategoryPojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 
   @Override

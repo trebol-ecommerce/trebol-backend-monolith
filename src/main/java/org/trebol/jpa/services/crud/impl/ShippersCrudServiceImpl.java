@@ -33,7 +33,6 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.ShippersCrudService;
 import org.trebol.jpa.services.patch.ShippersPatchService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
@@ -61,10 +60,5 @@ public class ShippersCrudServiceImpl
     } else {
       return shippersRepository.findByName(name);
     }
-  }
-
-  @Override
-  public ShipperPojo update(ShipperPojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 }

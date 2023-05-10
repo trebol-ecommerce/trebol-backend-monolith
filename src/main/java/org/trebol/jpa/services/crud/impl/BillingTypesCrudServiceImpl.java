@@ -33,7 +33,6 @@ import org.trebol.jpa.services.crud.BillingTypesCrudService;
 import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.patch.BillingTypesPatchService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
@@ -51,11 +50,6 @@ public class BillingTypesCrudServiceImpl
   ) {
     super(typesRepository, typesConverterService, typesPatchService);
     this.typesRepository = typesRepository;
-  }
-
-  @Override
-  public BillingTypePojo update(BillingTypePojo input) throws EntityNotFoundException, BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 
   @Override
