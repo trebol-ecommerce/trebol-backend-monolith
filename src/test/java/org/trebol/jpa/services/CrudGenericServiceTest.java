@@ -58,14 +58,14 @@ class CrudGenericServiceTest {
   @Mock Repository<GenericEntity> genericRepositoryMock;
   @Mock ConverterService<GenericPojo, GenericEntity> genericConverterMock;
   @Mock PatchService<GenericPojo, GenericEntity> genericPatchServiceMock;
-  final GenericPojo newPojo = new GenericPojo(null, GENERIC_NAME);
-  final GenericEntity newEntity = new GenericEntity(null, GENERIC_NAME);
+  static final GenericPojo newPojo = new GenericPojo(null, GENERIC_NAME);
+  static final GenericEntity newEntity = new GenericEntity(null, GENERIC_NAME);
   static final GenericEntity persistedEntity = new GenericEntity(1L, GENERIC_NAME);
-  final GenericPojo persistedPojo = new GenericPojo(1L, GENERIC_NAME);
-  final List<GenericEntity> emptyEntityList = List.of();
-  final List<GenericEntity> persistedEntityList = List.of(persistedEntity);
-  final List<GenericPojo> persistedPojoList = List.of(persistedPojo);
-  final PageRequest simplePageRequest = PageRequest.of(0, 10);
+  static final GenericPojo persistedPojo = new GenericPojo(1L, GENERIC_NAME);
+  static final List<GenericEntity> emptyEntityList = List.of();
+  static final List<GenericEntity> persistedEntityList = List.of(persistedEntity);
+  static final List<GenericPojo> persistedPojoList = List.of(persistedPojo);
+  static final PageRequest simplePageRequest = PageRequest.of(0, 10);
 
   @Test
   void sanity_checks() {
