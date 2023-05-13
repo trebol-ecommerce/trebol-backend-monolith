@@ -47,12 +47,12 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -250,32 +250,26 @@ class CrudGenericServiceTest {
   @Test
   void deletes_data() throws EntityNotFoundException {
     PageImpl<GenericEntity> persistedEntityPage = new PageImpl<>(PERSISTED_ENTITY_LIST);
-    Predicate filters = new BooleanBuilder();
-    when(genericRepositoryMock.count(filters)).thenReturn(1L);
-    when(genericRepositoryMock.findAll(filters)).thenReturn(persistedEntityPage);
+    when(genericRepositoryMock.count(nullable(Predicate.class))).thenReturn(1L);
+    when(genericRepositoryMock.findAll(nullable(Predicate.class))).thenReturn(persistedEntityPage);
     CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
-    service.delete(filters);
+    service.delete(null);
 
-    verify(genericRepositoryMock).findAll(filters);
+    verify(genericRepositoryMock).count((Predicate) isNull());
+    verify(genericRepositoryMock).findAll((Predicate) isNull());
     verify(genericRepositoryMock).deleteAll(persistedEntityPage);
   }
 
   @Test
-  void errors_when_reads_singular_data_but_is_unable_to_find_it() {
-    Predicate filters = new BooleanBuilder();
-    Optional<GenericEntity> emptyResult = Optional.empty();
-    when(genericRepositoryMock.findOne(filters)).thenReturn(emptyResult);
-    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
-    GenericPojo genericPojo = null;
+  void will_error_out_when_a_delete_query_affects_zero_items() throws EntityNotFoundException {
+    when(genericRepositoryMock.count(nullable(Predicate.class))).thenReturn(0L);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
-    try {
-      genericPojo = service.readOne(filters);
-    } catch (EntityNotFoundException ex) {
-      verify(genericRepositoryMock).findOne(filters);
-    }
+    EntityNotFoundException result = assertThrows(EntityNotFoundException.class, () -> service.delete(null));
 
-    assertNull(genericPojo);
+    assertEquals("Requested item(s) not found", result.getMessage());
+    verify(genericRepositoryMock).count((Predicate) isNull());
   }
 
   @Data
