@@ -169,7 +169,7 @@ class CrudGenericServiceTest {
   }
 
   @Test
-  void updates_data() throws BadInputException, EntityNotFoundException {
+  void updates_a_single_item_using_id() throws BadInputException, EntityNotFoundException {
     Long id = 1L;
     String name = "test2";
     GenericPojo changes = new GenericPojo(null, name);
@@ -189,7 +189,7 @@ class CrudGenericServiceTest {
   }
 
   @Test
-  void updates_data_using_filters() throws BadInputException, EntityNotFoundException {
+  void updates_a_single_item_using_filters() throws BadInputException, EntityNotFoundException {
     Long id = 1L;
     String name = "test2";
     GenericPojo changes = new GenericPojo(null, name);
@@ -212,7 +212,7 @@ class CrudGenericServiceTest {
   }
 
   @Test
-  void partially_updates_data() throws BadInputException, EntityNotFoundException {
+  void partially_updates_a_single_item_using_id() throws BadInputException, EntityNotFoundException {
     Long id = 1L;
     String name = "test2";
     Map<String, Object> changes = Map.of("name", name);
@@ -234,7 +234,7 @@ class CrudGenericServiceTest {
   }
 
   @Test
-  void partially_updates_data_using_filters() throws BadInputException, EntityNotFoundException {
+  void partially_updates_a_single_item_using_filters() throws BadInputException, EntityNotFoundException {
     Long id = 1L;
     String name = "test2";
     Predicate filters = new BooleanBuilder();
