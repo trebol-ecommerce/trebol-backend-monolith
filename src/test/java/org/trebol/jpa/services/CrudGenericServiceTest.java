@@ -89,9 +89,9 @@ class CrudGenericServiceTest {
 
   @Test
   void creates_data() throws BadInputException, EntityExistsException {
-    when(genericConverterMock.convertToNewEntity(NEW_POJO)).thenReturn(NEW_ENTITY);
-    when(genericRepositoryMock.saveAndFlush(NEW_ENTITY)).thenReturn(PERSISTED_ENTITY);
-    when(genericConverterMock.convertToPojo(PERSISTED_ENTITY)).thenReturn(PERSISTED_POJO);
+    when(genericConverterMock.convertToNewEntity(any(GenericPojo.class))).thenReturn(NEW_ENTITY);
+    when(genericRepositoryMock.saveAndFlush(any(GenericEntity.class))).thenReturn(PERSISTED_ENTITY);
+    when(genericConverterMock.convertToPojo(any(GenericEntity.class))).thenReturn(PERSISTED_POJO);
     CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
 
     GenericPojo result = service.create(NEW_POJO);
@@ -147,8 +147,8 @@ class CrudGenericServiceTest {
   void reads_a_single_item() throws EntityNotFoundException {
     Predicate filters = new BooleanBuilder();
     Optional<GenericEntity> result = Optional.of(PERSISTED_ENTITY);
-    when(genericRepositoryMock.findOne(filters)).thenReturn(result);
-    when(genericConverterMock.convertToPojo(PERSISTED_ENTITY)).thenReturn(PERSISTED_POJO);
+    when(genericRepositoryMock.findOne(any(Predicate.class))).thenReturn(result);
+    when(genericConverterMock.convertToPojo(any(GenericEntity.class))).thenReturn(PERSISTED_POJO);
     CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
     GenericPojo foundPojo = service.readOne(filters);
