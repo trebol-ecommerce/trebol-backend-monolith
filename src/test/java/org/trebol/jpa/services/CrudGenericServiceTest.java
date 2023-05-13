@@ -190,12 +190,10 @@ class CrudGenericServiceTest {
 
   @Test
   void updates_a_single_item_using_filters() throws BadInputException, EntityNotFoundException {
-    Long id = 1L;
-    String name = "test2";
-    GenericPojo changes = new GenericPojo(null, name);
+    GenericPojo changes = new GenericPojo(null, ANY);
     Predicate filters = new BooleanBuilder();
-    GenericEntity changesEntity = new GenericEntity(null, name);
-    GenericPojo updatedPojo = new GenericPojo(id, name);
+    GenericEntity changesEntity = new GenericEntity(null, ANY);
+    GenericPojo updatedPojo = new GenericPojo(1L, ANY);
     when(genericRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(PERSISTED_ENTITY));
     when(genericConverterMock.convertToNewEntity(any(GenericPojo.class))).thenReturn(changesEntity);
     when(genericConverterMock.convertToPojo(nullable(GenericEntity.class))).thenReturn(updatedPojo);
@@ -209,6 +207,28 @@ class CrudGenericServiceTest {
     verify(genericConverterMock).convertToNewEntity(changes);
     verify(genericRepositoryMock).saveAndFlush(changesEntity);
     verify(genericConverterMock).convertToPojo(null);
+  }
+
+  @Test
+  void will_error_out_when_an_update_query_with_filters_finds_too_many_items() throws EntityNotFoundException {
+    long tooMany = 2L;
+    GenericPojo changes = new GenericPojo(null, ANY);
+    when(genericRepositoryMock.count(nullable(Predicate.class))).thenReturn(tooMany);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    RuntimeException result = assertThrows(RuntimeException.class, () -> service.update(changes, (Predicate) null));
+
+    assertEquals("Cannot update more than one item at a time", result.getMessage());
+  }
+
+  @Test
+  void will_not_error_when_an_update_query_with_filters_finds_nothing() throws BadInputException, EntityNotFoundException {
+    GenericPojo changes = new GenericPojo(null, ANY);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    Optional<GenericPojo> result = service.update(changes, (Predicate) null);
+
+    assertTrue(result.isEmpty());
   }
 
   @Test
