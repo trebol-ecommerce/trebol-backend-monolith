@@ -54,6 +54,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
@@ -240,8 +241,8 @@ class CrudGenericServiceTest {
     GenericPojo updatedPojo = new GenericPojo(id, name);
     when(genericRepositoryMock.findById(anyLong())).thenReturn(Optional.of(PERSISTED_ENTITY));
     when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(updatedEntity);
-    when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
-    when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatedPojo);
+    when(genericRepositoryMock.saveAndFlush(any(GenericEntity.class))).thenReturn(updatedEntity);
+    when(genericConverterMock.convertToPojo(any(GenericEntity.class))).thenReturn(updatedPojo);
     CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
     Optional<GenericPojo> result = service.partialUpdate(changes, id);
@@ -254,17 +255,41 @@ class CrudGenericServiceTest {
   }
 
   @Test
+  void will_return_early_if_changes_made_by_a_partial_update_query_with_id_amounted_to_zero() throws BadInputException, EntityNotFoundException {
+    Map<String, Object> changes = Map.of("name", ANY);
+    when(genericRepositoryMock.findById(anyLong())).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(PERSISTED_ENTITY);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    service.partialUpdate(changes, 0L);
+
+    verify(genericRepositoryMock, times(0)).saveAndFlush(any(GenericEntity.class));
+  }
+
+  @Test
+  void will_cascade_errors_from_patch_service_during_partial_updates_with_id() throws BadInputException, EntityNotFoundException {
+    BadInputException expectedCause = new BadInputException(ANY);
+    Map<String, Object> changes = Map.of("name", ANY);
+    when(genericRepositoryMock.findById(anyLong())).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenThrow(expectedCause);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    RuntimeException result = assertThrows(RuntimeException.class, () -> service.partialUpdate(changes, 0L));
+
+    assertEquals(expectedCause, result.getCause());
+    verify(genericPatchServiceMock).patchExistingEntity(changes, PERSISTED_ENTITY);
+  }
+
+  @Test
   void partially_updates_a_single_item_using_filters() throws BadInputException, EntityNotFoundException {
-    Long id = 1L;
-    String name = "test2";
     Predicate filters = new BooleanBuilder();
-    Map<String, Object> changes = Map.of("name", name);
-    GenericEntity updatedEntity = new GenericEntity(1L, name);
-    GenericPojo updatedPojo = new GenericPojo(id, name);
-    when(genericRepositoryMock.findOne(filters)).thenReturn(Optional.of(PERSISTED_ENTITY));
+    Map<String, Object> changes = Map.of("name", ANY);
+    GenericEntity updatedEntity = new GenericEntity(1L, ANY);
+    GenericPojo updatedPojo = new GenericPojo(1L, ANY);
+    when(genericRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(PERSISTED_ENTITY));
     when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(updatedEntity);
-    when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
-    when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatedPojo);
+    when(genericRepositoryMock.saveAndFlush(any(GenericEntity.class))).thenReturn(updatedEntity);
+    when(genericConverterMock.convertToPojo(any(GenericEntity.class))).thenReturn(updatedPojo);
     CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
     Optional<GenericPojo> result = service.partialUpdate(changes, filters);
@@ -275,6 +300,44 @@ class CrudGenericServiceTest {
     verify(genericPatchServiceMock).patchExistingEntity(changes, PERSISTED_ENTITY);
     verify(genericRepositoryMock).saveAndFlush(updatedEntity);
     verify(genericConverterMock).convertToPojo(updatedEntity);
+  }
+
+  @Test
+  void will_return_early_if_changes_made_by_a_partial_update_query_with_filters_amounted_to_zero() throws BadInputException, EntityNotFoundException {
+    Map<String, Object> changes = Map.of("name", ANY);
+    when(genericRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(PERSISTED_ENTITY);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    service.partialUpdate(changes, (Predicate) null);
+
+    verify(genericRepositoryMock, times(0)).saveAndFlush(any(GenericEntity.class));
+  }
+
+  @Test
+  void will_error_out_when_a_partial_update_query_with_filters_finds_too_many_items() throws EntityNotFoundException {
+    long tooMany = 2L;
+    Map<String, Object> changes = Map.of("name", ANY);
+    when(genericRepositoryMock.count(nullable(Predicate.class))).thenReturn(tooMany);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    RuntimeException result = assertThrows(RuntimeException.class, () -> service.partialUpdate(changes, (Predicate) null));
+
+    assertEquals("Cannot update more than one item at a time", result.getMessage());
+  }
+
+  @Test
+  void will_cascade_errors_from_patch_service_during_partial_updates_with_filters() throws BadInputException, EntityNotFoundException {
+    BadInputException expectedCause = new BadInputException(ANY);
+    Map<String, Object> changes = Map.of("name", ANY);
+    when(genericRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenThrow(expectedCause);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    RuntimeException result = assertThrows(RuntimeException.class, () -> service.partialUpdate(changes, (Predicate) null));
+
+    assertEquals(expectedCause, result.getCause());
+    verify(genericPatchServiceMock).patchExistingEntity(changes, PERSISTED_ENTITY);
   }
 
   @Test
