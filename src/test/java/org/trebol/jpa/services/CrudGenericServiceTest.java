@@ -103,18 +103,6 @@ class CrudGenericServiceTest {
   }
 
   @Test
-  void reads_zero_items() {
-    when(genericRepositoryMock.findAll(any(PageRequest.class))).thenReturn(EMPTY_ENTITY_PAGE);
-    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
-
-    DataPagePojo<GenericPojo> result = service.readMany(0, 10, null, null);
-
-    assertNotNull(result);
-    assertEquals(EMPTY_POJO_LIST, result.getItems());
-    verify(genericRepositoryMock).findAll(SIMPLE_PAGE_REQUEST);
-  }
-
-  @Test
   void parses_sorting_order() {
     Sort sortOrder = Sort.by(ANY);
     Pageable expectedPagination = PageRequest.of(0, 10, sortOrder);
@@ -140,6 +128,18 @@ class CrudGenericServiceTest {
     assertEquals(PERSISTED_POJO_LIST, result.getItems());
     verify(genericRepositoryMock).findAll(SIMPLE_PAGE_REQUEST);
     verify(genericConverterMock).convertToPojo(PERSISTED_ENTITY);
+  }
+
+  @Test
+  void will_not_error_when_a_read_query_for_many_items_returns_zero_items() {
+    when(genericRepositoryMock.findAll(any(PageRequest.class))).thenReturn(EMPTY_ENTITY_PAGE);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
+
+    DataPagePojo<GenericPojo> result = service.readMany(0, 10, null, null);
+
+    assertNotNull(result);
+    assertEquals(EMPTY_POJO_LIST, result.getItems());
+    verify(genericRepositoryMock).findAll(SIMPLE_PAGE_REQUEST);
   }
 
   @Test
