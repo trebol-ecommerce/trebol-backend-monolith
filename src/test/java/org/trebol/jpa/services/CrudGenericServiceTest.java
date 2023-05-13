@@ -142,9 +142,8 @@ class CrudGenericServiceTest {
     verify(genericConverterMock).convertToPojo(PERSISTED_ENTITY);
   }
 
-
   @Test
-  void reads_singular_data() throws EntityNotFoundException {
+  void reads_a_single_item() throws EntityNotFoundException {
     Predicate filters = new BooleanBuilder();
     Optional<GenericEntity> result = Optional.of(PERSISTED_ENTITY);
     when(genericRepositoryMock.findOne(filters)).thenReturn(result);
@@ -156,6 +155,17 @@ class CrudGenericServiceTest {
     assertEquals(PERSISTED_POJO, foundPojo);
     verify(genericRepositoryMock).findOne(filters);
     verify(genericConverterMock).convertToPojo(PERSISTED_ENTITY);
+  }
+
+  @Test
+  void will_error_out_when_a_read_query_for_a_single_item_finds_nothing() {
+    when(genericRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.empty());
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
+
+    EntityNotFoundException result = assertThrows(EntityNotFoundException.class, () -> service.readOne(null));
+
+    assertEquals("Requested item(s) not found", result.getMessage());
+    verify(genericRepositoryMock).findOne((Predicate) isNull());
   }
 
   @Test
