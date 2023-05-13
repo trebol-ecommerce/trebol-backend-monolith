@@ -27,6 +27,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
+/**
+ * An interface to support parsing of Maps into sort order clauses to be used in queries at the persistence layer.
+ */
 public interface SortSpecParserService {
   /**
    * Resolves sort order constraints for queries
