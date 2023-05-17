@@ -26,8 +26,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -45,10 +45,12 @@ public class ProductPojo {
   private String barcode;
   @JsonInclude(NON_EMPTY)
   private String description;
-  @NotNull
-  private Integer price;
-  private Integer currentStock;
-  private Integer criticalStock;
+  @Min(1)
+  private int price;
+  @Builder.Default
+  private int currentStock = 0;
+  @Builder.Default
+  private int criticalStock = 0;
   private ProductCategoryPojo category;
   private Collection<ImagePojo> images;
 }
