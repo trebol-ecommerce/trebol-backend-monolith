@@ -87,9 +87,15 @@ public class ProductsConverterServiceImpl
       .barcode(source.getBarcode())
       .price(source.getPrice())
       .description(source.getDescription())
-      .stockCurrent(source.getCurrentStock())
-      .stockCritical(source.getCriticalStock())
       .build();
+
+    if (source.getCurrentStock() != null) {
+      target.setStockCurrent(source.getCurrentStock());
+    }
+
+    if (source.getCriticalStock() != null) {
+      target.setStockCritical(source.getCriticalStock());
+    }
 
     ProductCategoryPojo sourceCategory = source.getCategory();
     if (sourceCategory != null && !StringUtils.isBlank(sourceCategory.getCode())) {
