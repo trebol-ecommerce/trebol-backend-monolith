@@ -32,7 +32,10 @@ import org.trebol.jpa.services.SortSpecParserService;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
 
 public abstract class DataCrudGenericControllerTest<P, E>
@@ -52,24 +55,6 @@ public abstract class DataCrudGenericControllerTest<P, E>
     instance.create(input);
 
     verify(crudServiceMock).create(input);
-  }
-
-  protected void updates_data_using_only_a_pojo(P input) throws BadInputException {
-    instance.update(input, Map.of());
-
-    verify(crudServiceMock).update(input);
-  }
-
-  protected void updates_data_parsing_predicate_filters_from_map(P input, @Nullable Map<String, String> predicateFiltersMap) throws BadInputException {
-    if (predicateFiltersMap == null) {
-      predicateFiltersMap = Map.of(ANY, ANY);
-    }
-    Predicate predicate = new BooleanBuilder();
-    when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
-
-    instance.update(input, predicateFiltersMap);
-
-    verify(crudServiceMock).update(input, predicate);
   }
 
   protected void deletes_data_parsing_predicate_filters_from_map(@Nullable Map<String, String> predicateFiltersMap) {

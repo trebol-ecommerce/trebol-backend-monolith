@@ -34,22 +34,28 @@ import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.repositories.ProductImagesRepository;
+import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 import org.trebol.jpa.services.conversion.ImagesConverterService;
 import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
 import org.trebol.testing.ProductsTestHelper;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ProductsConverterServiceImplTest {
   @InjectMocks ProductsConverterServiceImpl instance;
   @Mock ProductImagesRepository productImagesRepositoryMock;
   @Mock ImagesConverterService imagesConverterServiceMock;
+  @Mock ProductsCategoriesRepository productsCategoriesRepositoryMock;
   @Mock ProductCategoriesConverterService productCategoriesConverterServiceMock;
   final ProductsTestHelper productsTestHelper = new ProductsTestHelper();
 
@@ -59,7 +65,7 @@ class ProductsConverterServiceImplTest {
   }
 
   @Test
-  void convers_to_pojo() {
+  void converts_to_pojo() {
     Product input = productsTestHelper.productEntityAfterCreationWithoutCategory();
     input.setProductCategory(ProductCategory.builder().build());
     ProductCategoryPojo expectedProductCategory = ProductCategoryPojo.builder().build();
@@ -70,8 +76,6 @@ class ProductsConverterServiceImplTest {
         .build()
     );
     ImagePojo expectedImagePojo = ImagePojo.builder().build();
-    when(productImagesRepositoryMock.deepFindProductImagesByProductId(anyLong())).thenReturn(existingImages);
-    when(imagesConverterServiceMock.convertToPojo(any(Image.class))).thenReturn(expectedImagePojo);
     when(productCategoriesConverterServiceMock.convertToPojo(any(ProductCategory.class))).thenReturn(expectedProductCategory);
     ProductPojo result = instance.convertToPojo(input);
     assertEquals(input.getName(), result.getName());
@@ -82,10 +86,7 @@ class ProductsConverterServiceImplTest {
     assertEquals(input.getStockCritical(), result.getCriticalStock());
     assertNotNull(result.getCategory());
     assertEquals(expectedProductCategory, result.getCategory());
-    assertNotNull(result.getImages());
-    assertFalse(result.getImages().isEmpty());
-    assertEquals(1, result.getImages().size());
-    assertEquals(expectedImagePojo, result.getImages().iterator().next());
+    assertNull(result.getImages());
   }
 
   @Test
@@ -99,5 +100,23 @@ class ProductsConverterServiceImplTest {
     assertEquals(input.getCurrentStock(), result.getStockCurrent());
     assertEquals(input.getCriticalStock(), result.getStockCritical());
     assertNull(result.getProductCategory());
+  }
+
+  @Test
+  void converts_to_new_entity_with_existing_category() {
+    ProductPojo input = productsTestHelper.productPojoBeforeCreationWithoutCategory();
+    ProductCategory existingCategory = ProductCategory.builder()
+        .id(2L)
+        .code(ANY)
+        .name(ANY)
+        .build();
+    when(productsCategoriesRepositoryMock.findByCode(anyString())).thenReturn(Optional.of(existingCategory));
+    input.setCategory(ProductCategoryPojo.builder()
+      .code(ANY)
+      .name(ANY)
+      .build());
+    Product result = instance.convertToNewEntity(input);
+    assertNotNull(result.getProductCategory());
+    assertEquals(existingCategory, result.getProductCategory());
   }
 }

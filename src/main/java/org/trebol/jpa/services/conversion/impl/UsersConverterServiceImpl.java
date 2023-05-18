@@ -66,7 +66,6 @@ public class UsersConverterServiceImpl
   @Override
   public UserPojo convertToPojo(User source) {
     UserPojo target = UserPojo.builder()
-      .id(source.getId())
       .name(source.getName())
       .role(source.getUserRole().getName())
       .build();

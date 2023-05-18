@@ -21,6 +21,7 @@
 package org.trebol.jpa.services.conversion.impl;
 
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.AddressPojo;
 import org.trebol.jpa.entities.Address;
@@ -38,13 +39,13 @@ public class AddressesConverterServiceImpl
       .municipality(source.getMunicipality())
       .firstLine(source.getFirstLine())
       .build();
-    if (source.getSecondLine() != null && !source.getSecondLine().isBlank()) {
+    if (!StringUtils.isBlank(source.getSecondLine())) {
       target.setSecondLine(source.getSecondLine());
     }
-    if (source.getPostalCode() != null && !source.getPostalCode().isBlank()) {
+    if (!StringUtils.isBlank(source.getPostalCode())) {
       target.setPostalCode(source.getPostalCode());
     }
-    if (source.getNotes() != null && !source.getNotes().isBlank()) {
+    if (!StringUtils.isBlank(source.getNotes())) {
       target.setNotes(source.getNotes());
     }
     return target;

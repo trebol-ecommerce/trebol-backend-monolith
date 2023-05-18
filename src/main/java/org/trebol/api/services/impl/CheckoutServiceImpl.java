@@ -40,6 +40,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
@@ -67,13 +68,13 @@ public class CheckoutServiceImpl
   }
 
   @Override
-  public PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException {
+  public PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException, BadInputException {
     PaymentRedirectionDetailsPojo response = paymentIntegrationService.requestNewPaymentPageDetails(transaction);
     try {
       transaction.setToken(response.getToken());
       salesProcessService.markAsStarted(transaction);
       return response;
-    } catch (EntityNotFoundException | BadInputException exc) {
+    } catch (EntityNotFoundException exc) {
       throw new IllegalStateException("The server had a problem requesting the transaction", exc);
     }
   }
@@ -128,9 +129,9 @@ public class CheckoutServiceImpl
   }
 
   private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws EntityNotFoundException {
-    Map<String, String> startedWithTokenMatcher = Map.of(
+    Map<String, String> startedWithTokenMatcher = new HashMap<>(Map.of(
       "statusCode", SELL_STATUS_PAYMENT_STARTED,
-      "token", transactionToken);
+      "token", transactionToken));
     Predicate startedTransactionWithMatchingToken = salesPredicateService.parseMap(startedWithTokenMatcher);
     return salesCrudService.readOne(startedTransactionWithMatchingToken);
   }

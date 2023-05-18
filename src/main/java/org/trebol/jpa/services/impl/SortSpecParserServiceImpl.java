@@ -30,22 +30,24 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
-/**
- * An interface to support parsing of Maps into sort order clauses to be used in queries at the persistence layer.
- */
 @Service
 public class SortSpecParserServiceImpl
   implements SortSpecParserService {
+  static final String SORT_PROPERTY_QUERY_MAP_KEY = "sortBy";
+  static final String SORT_DIRECTION_QUERY_MAP_KEY = "order";
 
   @Override
-  public Sort parse(@NotNull @NotEmpty Map<String, OrderSpecifier<?>> orderSpecMap, @NotNull Map<String, String> queryMap) {
-    if (!queryMap.containsKey("sortBy")) {
+  public Sort parse(
+    @NotNull @NotEmpty Map<String, OrderSpecifier<?>> orderSpecMap,
+    @NotNull Map<String, String> queryMap
+  ) {
+    if (!queryMap.containsKey(SORT_PROPERTY_QUERY_MAP_KEY)) {
       return Sort.unsorted();
     }
-    String propertyName = queryMap.get("sortBy");
+    String propertyName = queryMap.get(SORT_PROPERTY_QUERY_MAP_KEY);
     OrderSpecifier<?> orderSpecifier = orderSpecMap.get(propertyName);
     Sort sortBy = QSort.by(orderSpecifier);
-    switch (queryMap.get("order")) {
+    switch (queryMap.get(SORT_DIRECTION_QUERY_MAP_KEY)) {
       case "asc":
         return sortBy.ascending();
       case "desc":

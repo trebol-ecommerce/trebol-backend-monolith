@@ -22,211 +22,382 @@ package org.trebol.jpa.services;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.trebol.api.models.DataPagePojo;
 import org.trebol.common.exceptions.BadInputException;
+import org.trebol.jpa.DBEntity;
 import org.trebol.jpa.Repository;
 import org.trebol.jpa.services.crud.CrudGenericService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class CrudGenericServiceTest {
+  static final String GENERIC_NAME = "test";
   @Mock Repository<GenericEntity> genericRepositoryMock;
   @Mock ConverterService<GenericPojo, GenericEntity> genericConverterMock;
   @Mock PatchService<GenericPojo, GenericEntity> genericPatchServiceMock;
-  final GenericPojo newPojo = new GenericPojo(null, "test");
-  final GenericEntity newEntity = new GenericEntity(null, "test");
-  final GenericEntity persistedEntity = new GenericEntity(1L, "test");
-  final GenericPojo persistedPojo = new GenericPojo(1L, "test");
-  final List<GenericEntity> emptyEntityList = List.of();
-  final List<GenericEntity> persistedEntityList = List.of(persistedEntity);
-  final List<GenericPojo> persistedPojoList = List.of(persistedPojo);
-  final PageRequest simplePageRequest = PageRequest.of(0, 10);
+  static final GenericPojo NEW_POJO = new GenericPojo(null, GENERIC_NAME);
+  static final GenericEntity NEW_ENTITY = new GenericEntity(null, GENERIC_NAME);
+  static final GenericEntity PERSISTED_ENTITY = new GenericEntity(1L, GENERIC_NAME);
+  static final GenericPojo PERSISTED_POJO = new GenericPojo(1L, GENERIC_NAME);
+  static final List<GenericPojo> EMPTY_POJO_LIST = List.of();
+  static final Page<GenericEntity> EMPTY_ENTITY_PAGE = new PageImpl<>(List.of());
+  static final List<GenericEntity> PERSISTED_ENTITY_LIST = List.of(PERSISTED_ENTITY);
+  static final List<GenericPojo> PERSISTED_POJO_LIST = List.of(PERSISTED_POJO);
+  static final PageRequest SIMPLE_PAGE_REQUEST = PageRequest.of(0, 10);
 
   @Test
   void sanity_checks() {
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
-    assertNotNull(service);
-
-    CrudGenericService<GenericPojo, GenericEntity> service2 = this.instantiate_with_existing_entity();
-    assertNotNull(service2);
+    List.of(
+      new MockServiceWithoutExistingEntity(this),
+      new MockServiceWithExistingEntity(this)
+    ).forEach(service -> {
+      assertNotNull(service);
+      UnsupportedOperationException oldUpdateMethodException = assertThrows(UnsupportedOperationException.class, () -> service.update(NEW_POJO));
+      assertEquals("This method signature has been deprecated", oldUpdateMethodException.getMessage());
+    });
   }
 
   @Test
-  void creates_data()
-    throws BadInputException, EntityExistsException {
-    when(genericConverterMock.convertToNewEntity(newPojo)).thenReturn(newEntity);
-    when(genericRepositoryMock.saveAndFlush(newEntity)).thenReturn(persistedEntity);
-    when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
+  void creates_data() throws BadInputException, EntityExistsException {
+    when(genericConverterMock.convertToNewEntity(any(GenericPojo.class))).thenReturn(NEW_ENTITY);
+    when(genericRepositoryMock.saveAndFlush(any(GenericEntity.class))).thenReturn(PERSISTED_ENTITY);
+    when(genericConverterMock.convertToPojo(any(GenericEntity.class))).thenReturn(PERSISTED_POJO);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
 
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
-    GenericPojo result = service.create(newPojo);
+    GenericPojo result = service.create(NEW_POJO);
 
     assertNotNull(result);
-    assertEquals(persistedPojo, result);
-    verify(genericConverterMock).convertToNewEntity(newPojo);
-    verify(genericRepositoryMock).saveAndFlush(newEntity);
-    verify(genericConverterMock).convertToPojo(persistedEntity);
+    assertEquals(PERSISTED_POJO, result);
+    verify(genericConverterMock).convertToNewEntity(NEW_POJO);
+    verify(genericRepositoryMock).saveAndFlush(NEW_ENTITY);
+    verify(genericConverterMock).convertToPojo(PERSISTED_ENTITY);
   }
 
   @Test
-  void reads_plural_data_without_items() {
-    DataPagePojo<GenericPojo> expectedResult = new DataPagePojo<>();
-    expectedResult.setPageSize(10);
-    PageImpl<GenericEntity> emptyPage = new PageImpl<>(emptyEntityList);
-    when(genericRepositoryMock.findAll(simplePageRequest)).thenReturn(emptyPage);
+  void parses_sorting_order() {
+    Sort sortOrder = Sort.by(ANY);
+    Pageable expectedPagination = PageRequest.of(0, 10, sortOrder);
+    when(genericRepositoryMock.findAll(any(PageRequest.class))).thenReturn(EMPTY_ENTITY_PAGE);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
 
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
+    DataPagePojo<GenericPojo> result = service.readMany(0, 10, sortOrder, null);
+
+    assertNotNull(result);
+    verify(genericRepositoryMock).findAll(expectedPagination);
+  }
+
+  @Test
+  void reads_many_items() {
+    PageImpl<GenericEntity> singleItemPage = new PageImpl<>(PERSISTED_ENTITY_LIST);
+    when(genericRepositoryMock.count()).thenReturn(1L);
+    when(genericRepositoryMock.findAll(any(PageRequest.class))).thenReturn(singleItemPage);
+    when(genericConverterMock.convertToPojo(any(GenericEntity.class))).thenReturn(PERSISTED_POJO);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    DataPagePojo<GenericPojo> result = service.readMany(0, 10, null, null);
+
+    assertEquals(PERSISTED_POJO_LIST, result.getItems());
+    verify(genericRepositoryMock).findAll(SIMPLE_PAGE_REQUEST);
+    verify(genericConverterMock).convertToPojo(PERSISTED_ENTITY);
+  }
+
+  @Test
+  void will_not_error_when_a_read_query_for_many_items_returns_zero_items() {
+    when(genericRepositoryMock.findAll(any(PageRequest.class))).thenReturn(EMPTY_ENTITY_PAGE);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
+
     DataPagePojo<GenericPojo> result = service.readMany(0, 10, null, null);
 
     assertNotNull(result);
-    assertEquals(expectedResult, result);
-    verify(genericRepositoryMock).findAll(simplePageRequest);
+    assertEquals(EMPTY_POJO_LIST, result.getItems());
+    verify(genericRepositoryMock).findAll(SIMPLE_PAGE_REQUEST);
   }
 
   @Test
-  void reads_plural_data_with_items() {
+  void reads_a_single_item() throws EntityNotFoundException {
     Predicate filters = new BooleanBuilder();
-    DataPagePojo<GenericPojo> expectedResult = new DataPagePojo<>(persistedPojoList, 0, 1, 10);
-    PageImpl<GenericEntity> singleItemPage = new PageImpl<>(persistedEntityList);
-
-    when(genericRepositoryMock.count(filters)).thenReturn(1L);
-    when(genericRepositoryMock.findAll(filters, simplePageRequest)).thenReturn(singleItemPage);
-    when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
-
-    DataPagePojo<GenericPojo> result = service.readMany(0, 10, null, filters);
-
-    assertEquals(expectedResult, result);
-    verify(genericRepositoryMock).count(filters);
-    verify(genericRepositoryMock).findAll(filters, simplePageRequest);
-    verify(genericConverterMock).convertToPojo(persistedEntity);
-  }
-
-
-  @Test
-  void reads_singular_data()
-    throws EntityNotFoundException {
-    Predicate filters = new BooleanBuilder();
-    Optional<GenericEntity> result = Optional.of(persistedEntity);
-    when(genericRepositoryMock.findOne(filters)).thenReturn(result);
-    when(genericConverterMock.convertToPojo(persistedEntity)).thenReturn(persistedPojo);
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
+    Optional<GenericEntity> result = Optional.of(PERSISTED_ENTITY);
+    when(genericRepositoryMock.findOne(any(Predicate.class))).thenReturn(result);
+    when(genericConverterMock.convertToPojo(any(GenericEntity.class))).thenReturn(PERSISTED_POJO);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
     GenericPojo foundPojo = service.readOne(filters);
 
-    assertEquals(persistedPojo, foundPojo);
+    assertEquals(PERSISTED_POJO, foundPojo);
     verify(genericRepositoryMock).findOne(filters);
-    verify(genericConverterMock).convertToPojo(persistedEntity);
+    verify(genericConverterMock).convertToPojo(PERSISTED_ENTITY);
   }
 
   @Test
-  void updates_data()
-    throws BadInputException, EntityNotFoundException {
-    GenericPojo updatingPojo = new GenericPojo(1L, "test2");
-    GenericEntity updatedEntity = new GenericEntity(1L, "test2");
-    when(genericPatchServiceMock.patchExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
-    when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
-    when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatingPojo);
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
+  void will_error_out_when_a_read_query_for_a_single_item_finds_nothing() {
+    when(genericRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.empty());
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithoutExistingEntity(this);
 
-    GenericPojo result = service.update(updatingPojo);
+    EntityNotFoundException result = assertThrows(EntityNotFoundException.class, () -> service.readOne(null));
 
-    assertNotNull(result);
-    assertEquals(updatingPojo, result);
-    verify(genericPatchServiceMock).patchExistingEntity(updatingPojo, persistedEntity);
+    assertEquals("Requested item(s) not found", result.getMessage());
+    verify(genericRepositoryMock).findOne((Predicate) isNull());
+  }
+
+  @Test
+  void updates_a_single_item_using_id() throws BadInputException, EntityNotFoundException {
+    Long id = 1L;
+    String name = "test2";
+    GenericPojo changes = new GenericPojo(null, name);
+    GenericEntity changesEntity = new GenericEntity(null, name);
+    GenericPojo updatedPojo = new GenericPojo(id, name);
+    when(genericConverterMock.convertToNewEntity(any(GenericPojo.class))).thenReturn(changesEntity);
+    when(genericConverterMock.convertToPojo(nullable(GenericEntity.class))).thenReturn(updatedPojo);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    Optional<GenericPojo> result = service.update(changes, id);
+
+    assertTrue(result.isPresent());
+    assertEquals(updatedPojo, result.get());
+    verify(genericConverterMock).convertToNewEntity(changes);
+    verify(genericRepositoryMock).saveAndFlush(changesEntity);
+    verify(genericConverterMock).convertToPojo(null);
+  }
+
+  @Test
+  void updates_a_single_item_using_filters() throws BadInputException, EntityNotFoundException {
+    GenericPojo changes = new GenericPojo(null, ANY);
+    Predicate filters = new BooleanBuilder();
+    GenericEntity changesEntity = new GenericEntity(null, ANY);
+    GenericPojo updatedPojo = new GenericPojo(1L, ANY);
+    when(genericRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericConverterMock.convertToNewEntity(any(GenericPojo.class))).thenReturn(changesEntity);
+    when(genericConverterMock.convertToPojo(nullable(GenericEntity.class))).thenReturn(updatedPojo);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    Optional<GenericPojo> result = service.update(changes, filters);
+
+    assertTrue(result.isPresent());
+    assertEquals(updatedPojo, result.get());
+    verify(genericRepositoryMock).findOne(filters);
+    verify(genericConverterMock).convertToNewEntity(changes);
+    verify(genericRepositoryMock).saveAndFlush(changesEntity);
+    verify(genericConverterMock).convertToPojo(null);
+  }
+
+  @Test
+  void will_error_out_when_an_update_query_with_filters_finds_too_many_items() throws EntityNotFoundException {
+    long tooMany = 2L;
+    GenericPojo changes = new GenericPojo(null, ANY);
+    when(genericRepositoryMock.count(nullable(Predicate.class))).thenReturn(tooMany);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    RuntimeException result = assertThrows(RuntimeException.class, () -> service.update(changes, (Predicate) null));
+
+    assertEquals("Cannot update more than one item at a time", result.getMessage());
+  }
+
+  @Test
+  void will_not_error_when_an_update_query_with_filters_finds_nothing() throws BadInputException, EntityNotFoundException {
+    GenericPojo changes = new GenericPojo(null, ANY);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    Optional<GenericPojo> result = service.update(changes, (Predicate) null);
+
+    assertTrue(result.isEmpty());
+  }
+
+  @Test
+  void partially_updates_a_single_item_using_id() throws BadInputException, EntityNotFoundException {
+    Long id = 1L;
+    String name = "test2";
+    Map<String, Object> changes = Map.of("name", name);
+    GenericEntity updatedEntity = new GenericEntity(id, name);
+    GenericPojo updatedPojo = new GenericPojo(id, name);
+    when(genericRepositoryMock.findById(anyLong())).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(updatedEntity);
+    when(genericRepositoryMock.saveAndFlush(any(GenericEntity.class))).thenReturn(updatedEntity);
+    when(genericConverterMock.convertToPojo(any(GenericEntity.class))).thenReturn(updatedPojo);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    Optional<GenericPojo> result = service.partialUpdate(changes, id);
+
+    assertTrue(result.isPresent());
+    assertEquals(updatedPojo, result.get());
+    verify(genericPatchServiceMock).patchExistingEntity(changes, PERSISTED_ENTITY);
     verify(genericRepositoryMock).saveAndFlush(updatedEntity);
     verify(genericConverterMock).convertToPojo(updatedEntity);
   }
 
   @Test
-  void updates_data_using_filters()
-    throws BadInputException, EntityNotFoundException {
+  void will_return_early_if_changes_made_by_a_partial_update_query_with_id_amounted_to_zero() throws BadInputException, EntityNotFoundException {
+    Map<String, Object> changes = Map.of("name", ANY);
+    when(genericRepositoryMock.findById(anyLong())).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(PERSISTED_ENTITY);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    service.partialUpdate(changes, 0L);
+
+    verify(genericRepositoryMock, times(0)).saveAndFlush(any(GenericEntity.class));
+  }
+
+  @Test
+  void will_cascade_errors_from_patch_service_during_partial_updates_with_id() throws BadInputException, EntityNotFoundException {
+    BadInputException expectedCause = new BadInputException(ANY);
+    Map<String, Object> changes = Map.of("name", ANY);
+    when(genericRepositoryMock.findById(anyLong())).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenThrow(expectedCause);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    RuntimeException result = assertThrows(RuntimeException.class, () -> service.partialUpdate(changes, 0L));
+
+    assertEquals(expectedCause, result.getCause());
+    verify(genericPatchServiceMock).patchExistingEntity(changes, PERSISTED_ENTITY);
+  }
+
+  @Test
+  void partially_updates_a_single_item_using_filters() throws BadInputException, EntityNotFoundException {
     Predicate filters = new BooleanBuilder();
-    GenericPojo updatingPojo = new GenericPojo(1L, "test2");
-    GenericEntity updatedEntity = new GenericEntity(1L, "test2");
-    when(genericRepositoryMock.findOne(filters)).thenReturn(Optional.of(persistedEntity));
-    when(genericPatchServiceMock.patchExistingEntity(updatingPojo, persistedEntity)).thenReturn(updatedEntity);
-    when(genericRepositoryMock.saveAndFlush(updatedEntity)).thenReturn(updatedEntity);
-    when(genericConverterMock.convertToPojo(updatedEntity)).thenReturn(updatingPojo);
+    Map<String, Object> changes = Map.of("name", ANY);
+    GenericEntity updatedEntity = new GenericEntity(1L, ANY);
+    GenericPojo updatedPojo = new GenericPojo(1L, ANY);
+    when(genericRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(updatedEntity);
+    when(genericRepositoryMock.saveAndFlush(any(GenericEntity.class))).thenReturn(updatedEntity);
+    when(genericConverterMock.convertToPojo(any(GenericEntity.class))).thenReturn(updatedPojo);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
-    GenericPojo result = service.update(updatingPojo, filters);
+    Optional<GenericPojo> result = service.partialUpdate(changes, filters);
 
-    assertEquals(updatingPojo, result);
+    assertTrue(result.isPresent());
+    assertEquals(updatedPojo, result.get());
     verify(genericRepositoryMock).findOne(filters);
-    verify(genericPatchServiceMock).patchExistingEntity(updatingPojo, persistedEntity);
+    verify(genericPatchServiceMock).patchExistingEntity(changes, PERSISTED_ENTITY);
     verify(genericRepositoryMock).saveAndFlush(updatedEntity);
     verify(genericConverterMock).convertToPojo(updatedEntity);
   }
 
   @Test
-  void deletes_data()
-    throws EntityNotFoundException {
-    PageImpl<GenericEntity> persistedEntityPage = new PageImpl<>(persistedEntityList);
-    Predicate filters = new BooleanBuilder();
-    when(genericRepositoryMock.count(filters)).thenReturn(1L);
-    when(genericRepositoryMock.findAll(filters)).thenReturn(persistedEntityPage);
+  void will_return_early_if_changes_made_by_a_partial_update_query_with_filters_amounted_to_zero() throws BadInputException, EntityNotFoundException {
+    Map<String, Object> changes = Map.of("name", ANY);
+    when(genericRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenReturn(PERSISTED_ENTITY);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_with_existing_entity();
-    service.delete(filters);
+    service.partialUpdate(changes, (Predicate) null);
 
-    verify(genericRepositoryMock).findAll(filters);
+    verify(genericRepositoryMock, times(0)).saveAndFlush(any(GenericEntity.class));
+  }
+
+  @Test
+  void will_error_out_when_a_partial_update_query_with_filters_finds_too_many_items() throws EntityNotFoundException {
+    long tooMany = 2L;
+    Map<String, Object> changes = Map.of("name", ANY);
+    when(genericRepositoryMock.count(nullable(Predicate.class))).thenReturn(tooMany);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    RuntimeException result = assertThrows(RuntimeException.class, () -> service.partialUpdate(changes, (Predicate) null));
+
+    assertEquals("Cannot update more than one item at a time", result.getMessage());
+  }
+
+  @Test
+  void will_cascade_errors_from_patch_service_during_partial_updates_with_filters() throws BadInputException, EntityNotFoundException {
+    BadInputException expectedCause = new BadInputException(ANY);
+    Map<String, Object> changes = Map.of("name", ANY);
+    when(genericRepositoryMock.findOne(nullable(Predicate.class))).thenReturn(Optional.of(PERSISTED_ENTITY));
+    when(genericPatchServiceMock.patchExistingEntity(anyMap(), any(GenericEntity.class))).thenThrow(expectedCause);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    RuntimeException result = assertThrows(RuntimeException.class, () -> service.partialUpdate(changes, (Predicate) null));
+
+    assertEquals(expectedCause, result.getCause());
+    verify(genericPatchServiceMock).patchExistingEntity(changes, PERSISTED_ENTITY);
+  }
+
+  @Test
+  void deletes_data() throws EntityNotFoundException {
+    PageImpl<GenericEntity> persistedEntityPage = new PageImpl<>(PERSISTED_ENTITY_LIST);
+    when(genericRepositoryMock.count(nullable(Predicate.class))).thenReturn(1L);
+    when(genericRepositoryMock.findAll(nullable(Predicate.class))).thenReturn(persistedEntityPage);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
+
+    service.delete(null);
+
+    verify(genericRepositoryMock).count((Predicate) isNull());
+    verify(genericRepositoryMock).findAll((Predicate) isNull());
     verify(genericRepositoryMock).deleteAll(persistedEntityPage);
   }
 
   @Test
-  void errors_when_reads_singular_data_but_is_unable_to_find_it() {
-    Predicate filters = new BooleanBuilder();
-    Optional<GenericEntity> emptyResult = Optional.empty();
-    when(genericRepositoryMock.findOne(filters)).thenReturn(emptyResult);
+  void will_error_out_when_a_delete_query_affects_zero_items() throws EntityNotFoundException {
+    when(genericRepositoryMock.count(nullable(Predicate.class))).thenReturn(0L);
+    CrudGenericService<GenericPojo, GenericEntity> service = new MockServiceWithExistingEntity(this);
 
-    CrudGenericService<GenericPojo, GenericEntity> service = this.instantiate_without_existing_entity();
-    GenericPojo genericPojo = null;
+    EntityNotFoundException result = assertThrows(EntityNotFoundException.class, () -> service.delete(null));
 
-    try {
-      genericPojo = service.readOne(filters);
-    } catch (EntityNotFoundException ex) {
-      verify(genericRepositoryMock).findOne(filters);
+    assertEquals("Requested item(s) not found", result.getMessage());
+    verify(genericRepositoryMock).count((Predicate) isNull());
+  }
+
+  @Data
+  @AllArgsConstructor
+  private static class GenericPojo {
+    Long id;
+    String name;
+  }
+
+  @Data
+  @AllArgsConstructor
+  private static class GenericEntity implements DBEntity {
+    Long id;
+    String name;
+  }
+
+  private static class MockServiceWithoutExistingEntity extends CrudGenericService<GenericPojo, GenericEntity> {
+    MockServiceWithoutExistingEntity(CrudGenericServiceTest testClass) {
+      super(testClass.genericRepositoryMock, testClass.genericConverterMock, testClass.genericPatchServiceMock);
     }
 
-    assertNull(genericPojo);
+    @Override
+    public Optional<GenericEntity> getExisting(GenericPojo example) {
+      return Optional.empty();
+    }
   }
 
-  private CrudGenericService<GenericPojo, GenericEntity> instantiate_without_existing_entity() {
-    return new CrudGenericService<>(
-      genericRepositoryMock,
-      genericConverterMock,
-      genericPatchServiceMock) {
-      @Override
-      public Optional<GenericEntity> getExisting(GenericPojo example) {
-        return Optional.empty();
-      }
-    };
-  }
+  private static class MockServiceWithExistingEntity extends CrudGenericService<GenericPojo, GenericEntity> {
+    MockServiceWithExistingEntity(CrudGenericServiceTest testClass) {
+      super(testClass.genericRepositoryMock, testClass.genericConverterMock, testClass.genericPatchServiceMock);
+    }
 
-  private CrudGenericService<GenericPojo, GenericEntity> instantiate_with_existing_entity() {
-    return new CrudGenericService<>(
-      genericRepositoryMock,
-      genericConverterMock,
-      genericPatchServiceMock) {
-      @Override
-      public Optional<GenericEntity> getExisting(GenericPojo example) {
-        return Optional.of(persistedEntity);
-      }
-    };
+    @Override
+    public Optional<GenericEntity> getExisting(GenericPojo example) {
+      return Optional.of(CrudGenericServiceTest.PERSISTED_ENTITY);
+    }
   }
 }

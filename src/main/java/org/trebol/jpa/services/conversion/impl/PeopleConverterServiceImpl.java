@@ -34,7 +34,6 @@ public class PeopleConverterServiceImpl
   @Override
   public PersonPojo convertToPojo(Person source) {
     PersonPojo target = PersonPojo.builder()
-      .id(source.getId())
       .idNumber(source.getIdNumber())
       .firstName(source.getFirstName())
       .lastName(source.getLastName())

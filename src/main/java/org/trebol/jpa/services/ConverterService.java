@@ -31,8 +31,8 @@ import org.trebol.common.exceptions.BadInputException;
 public interface ConverterService<P, E> {
 
   /**
-   * Straightly converts a Pojo to a new @Entity, assuming that the Pojo is already @Valid.
-   * It does not include relationships to other entities.
+   * Straightly converts a Pojo to a new <code>@Entity</code>, assuming that the Pojo is already <code>@Valid</code>.
+   * <b>This includes relationships to other entities</b>.<br/>
    * This method DOES NOT persist data.
    *
    * @param source The source Pojo.
@@ -51,11 +51,11 @@ public interface ConverterService<P, E> {
    * @return An updated instance of the @Entity, prepared to be saved to the database.
    * @deprecated Please use {@link PatchService}'s method instead
    */
-  @Deprecated
+  @Deprecated(forRemoval = true, since = "0.2.0-SNAPSHOT")
   E applyChangesToExistingEntity(P source, E target);
 
   /**
-   * Converts an existing @Entity to its complete Pojo equivalent, including all relationships to other entities.
+   * Converts an existing @Entity to its Pojo equivalent, but only including one-to-one relationships to other entities.
    *
    * @param source The source @Entity.
    * @return The resulting Pojo, or null if the @Entity isn't persistent

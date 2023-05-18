@@ -20,8 +20,8 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,34 +30,55 @@ import org.trebol.api.models.ShipperPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Shipper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Map;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.trebol.testing.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.NOT_ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ShippersPatchServiceImplTest {
   @InjectMocks ShippersPatchServiceImpl instance;
-  Shipper shipper;
-  ShipperPojo shipperPojo;
+  private static ObjectMapper MAPPER;
+  private static Shipper EXISTING_SHIPPER;
 
-  @BeforeEach
-  void beforeEach() {
-    shipper = new Shipper();
-    shipper.setName(ANY);
-    shipper.setId(1L);
-    shipper.setName(ANY);
-    shipperPojo = ShipperPojo.builder().name(ANY).build();
-  }
-
-  @AfterEach
-  void afterEach() {
-    shipper = null;
-    shipperPojo = null;
+  @BeforeAll
+  static void beforeAll() {
+    MAPPER = new ObjectMapper();
+    MAPPER.setSerializationInclusion(NON_NULL);
+    EXISTING_SHIPPER = Shipper.builder()
+      .id(1L)
+      .name(ANY)
+      .build();
   }
 
   @Test
-  void patches_entity_data() throws BadInputException {
-    shipperPojo.setName("PIOLO");
-    Shipper actual = instance.patchExistingEntity(shipperPojo, shipper);
-    assertEquals(1L, actual.getId());
+  void performs_empty_patch() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(ShipperPojo.builder().build());
+    Shipper result = instance.patchExistingEntity(input, EXISTING_SHIPPER);
+    assertEquals(EXISTING_SHIPPER, result);
+  }
+
+  @Test
+  void patches_name() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(ShipperPojo.builder()
+      .name(NOT_ANY)
+      .build());
+    Shipper result = instance.patchExistingEntity(input, EXISTING_SHIPPER);
+    assertNotEquals(EXISTING_SHIPPER, result);
+    assertEquals(NOT_ANY, result.getName());
+  }
+
+  @Test
+  void does_not_support_old_method_signature() {
+    ShipperPojo input = ShipperPojo.builder().build();
+    assertThrows(UnsupportedOperationException.class,
+      () -> instance.patchExistingEntity(input, EXISTING_SHIPPER));
+  }
+
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> mapFrom(ShipperPojo data) {
+    return MAPPER.convertValue(data, Map.class);
   }
 }

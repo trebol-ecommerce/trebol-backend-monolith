@@ -20,10 +20,15 @@
 
 package org.trebol.jpa.services.conversion;
 
+import org.trebol.api.models.ImagePojo;
 import org.trebol.api.models.ProductPojo;
 import org.trebol.jpa.entities.Product;
+import org.trebol.jpa.entities.ProductImage;
 import org.trebol.jpa.services.ConverterService;
+
+import java.util.Collection;
 
 public interface ProductsConverterService
   extends ConverterService<ProductPojo, Product> {
+  Collection<ImagePojo> convertImagesToPojo(Collection<ProductImage> productImages);
 }

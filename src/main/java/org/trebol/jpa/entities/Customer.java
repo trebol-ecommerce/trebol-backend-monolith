@@ -21,9 +21,9 @@
 package org.trebol.jpa.entities;
 
 import lombok.*;
+import org.trebol.jpa.DBEntity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "customers")
@@ -35,7 +35,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 public class Customer
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 4L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +45,10 @@ public class Customer
   @OneToOne(optional = false, cascade = CascadeType.ALL)
   private Person person;
 
+  /**
+   * Please note: this copy-constructor DOES include a Customer's relationship to its own profile data
+   * @param source The original UserRolePermission
+   */
   public Customer(Customer source) {
     this.id = source.id;
     this.person = new Person(source.person);

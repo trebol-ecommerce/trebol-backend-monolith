@@ -33,6 +33,7 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.ProductCategoriesCrudService;
 import org.trebol.jpa.services.patch.ProductCategoriesPatchService;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Transactional
@@ -65,30 +66,14 @@ public class ProductCategoriesCrudServiceImpl
   }
 
   @Override
-  protected final ProductCategory prepareNewEntityFromInputPojo(ProductCategoryPojo inputPojo) throws BadInputException {
-    ProductCategory target = super.prepareNewEntityFromInputPojo(inputPojo);
-    if (inputPojo.getParent() != null) {
-      this.passParentIfMatchingEntityExists(target, inputPojo.getParent());
-    }
-    return target;
-  }
-
-  @Override
-  protected final ProductCategoryPojo persistEntityWithUpdatesFromPojo(ProductCategoryPojo changes, ProductCategory existingEntity) throws BadInputException {
+  protected final ProductCategory flushPartialChanges(Map<String, Object> changes, ProductCategory existingEntity) throws BadInputException {
     ProductCategory preparedEntity = categoriesPatchService.patchExistingEntity(changes, existingEntity);
-    this.passParentIfMatchingEntityExists(preparedEntity, changes.getParent());
-    if (!existingEntity.equals(preparedEntity)) {
-      return changes;
+    if (existingEntity.getParent() != null) {
+      preparedEntity.setParent(existingEntity.getParent());
     }
-    return this.persist(preparedEntity);
-  }
-
-  private void passParentIfMatchingEntityExists(ProductCategory target, ProductCategoryPojo sourceParent) {
-    String sourceParentCode = sourceParent.getCode();
-    ProductCategory previousExistingParent = target.getParent();
-    if (sourceParentCode != null && (previousExistingParent == null || !previousExistingParent.getCode().equals(sourceParentCode))) {
-      Optional<ProductCategory> parentMatch = categoriesRepository.findByCode(sourceParentCode);
-      parentMatch.ifPresent(target::setParent);
+    if (existingEntity.equals(preparedEntity)) {
+      return existingEntity;
     }
+    return categoriesRepository.saveAndFlush(preparedEntity);
   }
 }

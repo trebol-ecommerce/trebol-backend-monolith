@@ -21,10 +21,10 @@
 package org.trebol.jpa.entities;
 
 import lombok.*;
+import org.trebol.jpa.DBEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 @Entity
 @Table(
@@ -40,7 +40,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 public class User
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 19L;
 
   @Id
@@ -60,13 +60,15 @@ public class User
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
+  /**
+   * Please note that this copy-constructor only preserves a User's relationship to a role
+   * @param source The original User
+   */
   public User(User source) {
     this.id = source.id;
     this.name = source.name;
-    this.password = source.password;
-    if (source.person != null) {
-      this.person = new Person(source.person);
-    }
-    this.userRole = new UserRole(source.userRole);
+    this.userRole = source.userRole;
+    this.password = null;
+    this.person = null;
   }
 }

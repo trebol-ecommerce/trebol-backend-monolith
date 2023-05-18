@@ -42,7 +42,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.trebol.config.Constants.*;
+import static org.trebol.config.Constants.SELL_STATUS_COMPLETED;
+import static org.trebol.config.Constants.SELL_STATUS_PAID_CONFIRMED;
+import static org.trebol.config.Constants.SELL_STATUS_PAID_UNCONFIRMED;
+import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_CANCELLED;
+import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_FAILED;
+import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
+import static org.trebol.config.Constants.SELL_STATUS_PENDING;
+import static org.trebol.config.Constants.SELL_STATUS_REJECTED;
 
 @Transactional
 @Service
@@ -154,7 +161,6 @@ public class SalesProcessServiceImpl
     for (SellDetail detail : sellDetailsRepository.findBySellId(existingSell.getId())) {
       ProductPojo productPojo = productConverterService.convertToPojo(detail.getProduct());
       SellDetailPojo sellDetailPojo = SellDetailPojo.builder()
-        .id(detail.getId())
         .units(detail.getUnits())
         .unitValue(detail.getUnitValue())
         .product(productPojo)
@@ -188,7 +194,6 @@ public class SalesProcessServiceImpl
     for (SellDetail detail : sellDetailsRepository.findBySellId(existingSell.getId())) {
       ProductPojo productPojo = productConverterService.convertToPojo(detail.getProduct());
       SellDetailPojo sellDetailPojo = SellDetailPojo.builder()
-        .id(detail.getId())
         .units(detail.getUnits())
         .unitValue(detail.getUnitValue())
         .product(productPojo)
@@ -223,7 +228,6 @@ public class SalesProcessServiceImpl
     for (SellDetail detail : sellDetailsRepository.findBySellId(existingSell.getId())) {
       ProductPojo productPojo = productConverterService.convertToPojo(detail.getProduct());
       SellDetailPojo sellDetailPojo = SellDetailPojo.builder()
-        .id(detail.getId())
         .units(detail.getUnits())
         .unitValue(detail.getUnitValue())
         .product(productPojo)
@@ -257,7 +261,6 @@ public class SalesProcessServiceImpl
     for (SellDetail detail : sellDetailsRepository.findBySellId(existingSell.getId())) {
       ProductPojo productPojo = productConverterService.convertToPojo(detail.getProduct());
       SellDetailPojo sellDetailPojo = SellDetailPojo.builder()
-        .id(detail.getId())
         .units(detail.getUnits())
         .unitValue(detail.getUnitValue())
         .product(productPojo)

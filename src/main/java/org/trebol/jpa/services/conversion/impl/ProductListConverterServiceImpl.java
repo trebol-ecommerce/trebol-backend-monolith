@@ -45,7 +45,6 @@ public class ProductListConverterServiceImpl
     Long sourceListId = source.getId();
     long itemCount = productListItemRepository.count(QProductListItem.productListItem.list.id.eq(sourceListId));
     return ProductListPojo.builder()
-      .id(sourceListId)
       .name(source.getName())
       .code(source.getCode())
       .totalCount(itemCount)

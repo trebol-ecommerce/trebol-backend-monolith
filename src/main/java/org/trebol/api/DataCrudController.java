@@ -32,5 +32,7 @@ public interface DataCrudController<M> {
 
   void update(M input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException;
 
+  void partialUpdate(Map<String, Object> input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException;
+
   void delete(Map<String, String> requestParams) throws EntityNotFoundException;
 }

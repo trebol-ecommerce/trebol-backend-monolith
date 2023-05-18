@@ -21,10 +21,14 @@
 package org.trebol.jpa.services.patch.impl;
 
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.BillingCompanyPojo;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.services.patch.BillingCompaniesPatchService;
+
+import java.util.Map;
 
 @Service
 @NoArgsConstructor
@@ -32,14 +36,28 @@ public class BillingCompaniesPatchServiceImpl
   implements BillingCompaniesPatchService {
 
   @Override
-  public BillingCompany patchExistingEntity(BillingCompanyPojo changes, BillingCompany existing) {
+  public BillingCompany patchExistingEntity(Map<String, Object> changes, BillingCompany existing) throws BadInputException {
     BillingCompany target = new BillingCompany(existing);
 
-    String name = changes.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
+    if (changes.containsKey("idNumber")) {
+      String idNumber = (String) changes.get("idNumber");
+      if (!StringUtils.isBlank(idNumber)) {
+        target.setIdNumber(idNumber);
+      }
+    }
+
+    if (changes.containsKey("name")) {
+      String name = (String) changes.get("name");
+      if (!StringUtils.isBlank(name)) {
+        target.setName(name);
+      }
     }
 
     return target;
+  }
+
+  @Override
+  public BillingCompany patchExistingEntity(BillingCompanyPojo changes, BillingCompany target) throws BadInputException {
+    throw new UnsupportedOperationException("This method has been deprecated");
   }
 }

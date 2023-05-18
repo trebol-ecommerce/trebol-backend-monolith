@@ -20,6 +20,8 @@
 
 package org.trebol.jpa.services.patch.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,53 +29,66 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.PersonPojo;
-import org.trebol.api.models.SalespersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.patch.PeoplePatchService;
+import org.trebol.testing.PeopleTestHelper;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.nullable;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.testing.TestConstants.ID_1L;
+import static org.trebol.config.Constants.PERSON_DATA_MAP_KEYS_PREFIX;
 
 @ExtendWith(MockitoExtension.class)
 class SalespeoplePatchServiceImplTest {
   @InjectMocks SalespeoplePatchServiceImpl instance;
   @Mock PeoplePatchService peoplePatchServiceMock;
-  Salesperson salesperson;
-  SalespersonPojo salespersonPojo;
-  Person person;
+  PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
+  private static ObjectMapper MAPPER;
+  private static Salesperson EXISTING_SALESPERSON;
 
-  @BeforeEach
-  void beforeEach() {
-    person = new Person();
-    person.setId(ID_1L);
-    salesperson = new Salesperson();
-    salesperson.setId(ID_1L);
-    salesperson.setPerson(person);
-    salespersonPojo = SalespersonPojo.builder()
-      .person(PersonPojo.builder().id(ID_1L).build())
+  @BeforeAll
+  static void beforeAll() {
+    MAPPER = new ObjectMapper();
+    EXISTING_SALESPERSON = Salesperson.builder()
+      .id(1L)
+      .person(Person.builder().build())
       .build();
   }
 
-  @Test
-  void passes_person_profile_data() throws BadInputException {
-    when(peoplePatchServiceMock.patchExistingEntity(nullable(PersonPojo.class), nullable(Person.class))).thenReturn(person);
-
-    Salesperson actual = instance.patchExistingEntity(salespersonPojo, salesperson);
-
-    assertNotNull(actual.getPerson());
-    assertEquals(person, actual.getPerson());
+  @BeforeEach
+  void beforeEach() {
+    peopleTestHelper.resetPeople();
   }
 
   @Test
-  void passes_null_person_profile() throws BadInputException {
-    salespersonPojo.setPerson(null);
+  void delegates_patching_to_peoplePatchService() throws BadInputException {
+    PersonPojo somePersonPojo = peopleTestHelper.personPojoBeforeCreation();
+    Map<String, Object> input = this.mapFrom(somePersonPojo);
+    Map<String, Object> serviceInput = this.nestPersonDataMap(input);
+    Person expectedPerson = peopleTestHelper.personEntityAfterCreation();
+    when(peoplePatchServiceMock.patchExistingEntity(anyMap(), any(Person.class))).thenReturn(expectedPerson);
+    Salesperson result = instance.patchExistingEntity(serviceInput, EXISTING_SALESPERSON);
+    assertEquals(expectedPerson, result.getPerson());
+    verify(peoplePatchServiceMock).patchExistingEntity(input, EXISTING_SALESPERSON.getPerson());
+  }
 
-    Salesperson result = instance.patchExistingEntity(salespersonPojo, salesperson);
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> mapFrom(PersonPojo data) {
+    return MAPPER.convertValue(data, Map.class);
+  }
 
-    assertNull(result.getPerson());
+  private Map<String, Object> nestPersonDataMap(Map<String, Object> data) {
+    return data.entrySet().stream()
+      .map(entry -> Map.entry(
+        PERSON_DATA_MAP_KEYS_PREFIX + entry.getKey(),
+        entry.getValue()))
+      .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 }

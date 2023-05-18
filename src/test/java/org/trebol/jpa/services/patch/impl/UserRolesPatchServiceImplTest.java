@@ -20,8 +20,8 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,34 +30,55 @@ import org.trebol.api.models.UserRolePojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.UserRole;
 
+import java.util.Map;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.trebol.testing.TestConstants.ANY;
+import static org.trebol.testing.TestConstants.NOT_ANY;
 
 @ExtendWith(MockitoExtension.class)
 class UserRolesPatchServiceImplTest {
   @InjectMocks UserRolesPatchServiceImpl instance;
-  UserRole userRole;
-  UserRolePojo userRolePojo;
+  private static ObjectMapper MAPPER;
+  private static UserRole EXISTING_USER_ROLE;
 
-  @BeforeEach
-  void beforeEach() {
-    userRole = new UserRole();
-    userRole.setName("ANY");
-    userRole.setId(1L);
-    userRolePojo = UserRolePojo.builder()
+  @BeforeAll
+  static void beforeAll() {
+    MAPPER = new ObjectMapper();
+    MAPPER.setSerializationInclusion(NON_NULL);
+    EXISTING_USER_ROLE = UserRole.builder()
       .id(1L)
-      .name("ANY")
+      .name(ANY)
       .build();
   }
 
-  @AfterEach
-  void afterEach() {
-    userRole = null;
-    userRolePojo = null;
+  @Test
+  void performs_empty_patch() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(UserRolePojo.builder().build());
+    UserRole result = instance.patchExistingEntity(input, EXISTING_USER_ROLE);
+    assertEquals(EXISTING_USER_ROLE, result);
   }
 
   @Test
-  void patches_entity_data() throws BadInputException {
-    UserRole actual = instance.patchExistingEntity(userRolePojo, userRole);
-    assertEquals(1L, actual.getId());
+  void patches_name() throws BadInputException {
+    Map<String, Object> input = this.mapFrom(UserRolePojo.builder()
+      .name(NOT_ANY)
+      .build());
+    UserRole result = instance.patchExistingEntity(input, EXISTING_USER_ROLE);
+    assertEquals(NOT_ANY, result.getName());
+  }
+
+  @Test
+  void does_not_support_old_method_signature() {
+    UserRolePojo input = UserRolePojo.builder().build();
+    assertThrows(UnsupportedOperationException.class,
+      () -> instance.patchExistingEntity(input, EXISTING_USER_ROLE));
+  }
+
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> mapFrom(UserRolePojo data) {
+    return MAPPER.convertValue(data, Map.class);
   }
 }

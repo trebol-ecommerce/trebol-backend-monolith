@@ -21,10 +21,12 @@
 package org.trebol.jpa.services.crud.impl;
 
 import com.querydsl.core.types.Predicate;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.ProductListPojo;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
@@ -72,17 +74,12 @@ public class ProductListsCrudServiceImpl
   }
 
   @Override
-  public Optional<ProductList> getExisting(ProductListPojo input) {
-    Long id = input.getId();
+  public Optional<ProductList> getExisting(ProductListPojo input) throws BadInputException {
     String name = input.getName();
-    if (id == null && name == null) {
-      return Optional.empty();
-    } else if (id != null) {
-      return listsRepository.findById(id);
+    if (StringUtils.isBlank(name)) {
+      throw new BadInputException("The specified list has no name");
     } else {
       return listsRepository.findByName(name);
     }
   }
-
-
 }

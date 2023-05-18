@@ -21,9 +21,9 @@
 package org.trebol.jpa.entities;
 
 import lombok.*;
+import org.trebol.jpa.DBEntity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "shippers")
@@ -35,7 +35,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 public class Shipper
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 18L;
 
   @Id

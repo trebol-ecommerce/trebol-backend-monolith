@@ -22,7 +22,12 @@ package org.trebol.testing;
 
 import org.trebol.api.models.SellDetailPojo;
 import org.trebol.api.models.SellPojo;
-import org.trebol.jpa.entities.*;
+import org.trebol.jpa.entities.Address;
+import org.trebol.jpa.entities.BillingType;
+import org.trebol.jpa.entities.PaymentType;
+import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.entities.SellDetail;
+import org.trebol.jpa.entities.SellStatus;
 
 import java.time.Instant;
 import java.util.List;
@@ -111,7 +116,6 @@ public class SalesTestHelper {
         .paymentType(SELL_PAYMENT_TYPE_NAME)
         .details(List.of(
           SellDetailPojo.builder()
-            .id(GENERIC_ID)
             .units(SELL_DETAIL_UNITS)
             .unitValue(productsHelper.productPojoAfterCreationWithoutCategory().getPrice())
             .product(productsHelper.productPojoAfterCreationWithoutCategory())

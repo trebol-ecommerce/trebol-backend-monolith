@@ -27,7 +27,6 @@ import org.trebol.jpa.services.CrudService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecParserService;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.Map;
 
@@ -52,25 +51,27 @@ public abstract class DataCrudGenericController<M, E>
   }
 
   @Override
-  public void create(M input)
-    throws BadInputException, EntityExistsException {
-    crudService.create(input);
-  }
-
-  @Override
-  public void update(M input, Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    if (!requestParams.isEmpty()) {
-      Predicate predicate = predicateService.parseMap(requestParams);
-      crudService.update(input, predicate);
-    } else {
-      crudService.update(input);
+  public void update(M input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException {
+    if (requestParams.isEmpty()) {
+      throw new BadInputException("Missing request params");
     }
+    Predicate predicate = predicateService.parseMap(requestParams);
+    crudService.update(input, predicate)
+      .orElseThrow(() -> new EntityNotFoundException("No element was found to update"));
   }
 
   @Override
-  public void delete(Map<String, String> requestParams)
-    throws EntityNotFoundException {
+  public void partialUpdate(Map<String, Object> input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException {
+    if (requestParams.isEmpty()) {
+      throw new BadInputException("Missing request params");
+    }
+    Predicate predicate = predicateService.parseMap(requestParams);
+    crudService.partialUpdate(input, predicate)
+      .orElseThrow(() -> new EntityNotFoundException("No element was found to update"));
+  }
+
+  @Override
+  public void delete(Map<String, String> requestParams) throws EntityNotFoundException {
     if (!requestParams.isEmpty()) {
       Predicate predicate = predicateService.parseMap(requestParams);
       crudService.delete(predicate);

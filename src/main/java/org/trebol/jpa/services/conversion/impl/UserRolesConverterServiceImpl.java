@@ -34,7 +34,6 @@ public class UserRolesConverterServiceImpl
   @Override
   public UserRolePojo convertToPojo(UserRole source) {
     return UserRolePojo.builder()
-      .id(source.getId())
       .name(source.getName())
       .build();
   }

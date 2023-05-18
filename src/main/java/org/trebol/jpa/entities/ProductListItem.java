@@ -21,9 +21,9 @@
 package org.trebol.jpa.entities;
 
 import lombok.*;
+import org.trebol.jpa.DBEntity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "product_list_items")
@@ -35,7 +35,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 public class ProductListItem
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 17L;
 
   @Id
@@ -49,9 +49,13 @@ public class ProductListItem
   @ManyToOne(optional = false)
   private Product product;
 
+  /**
+   * Please note: this copy-constructor does not include a ProductListItem's relationships
+   * @param source The original Sell
+   */
   public ProductListItem(ProductListItem source) {
     this.id = source.id;
-    this.list = null; // avoid an infinite loop
-    this.product = new Product(source.product);
+    this.list = null;
+    this.product = null;
   }
 }

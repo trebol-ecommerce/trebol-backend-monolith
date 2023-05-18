@@ -18,12 +18,17 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.jpa.services;
+package org.trebol.jpa;
 
-import lombok.AllArgsConstructor;
+import java.io.Serializable;
 
-@AllArgsConstructor
-public class GenericPojo {
-  private final Long id;
-  private final String name;
+/**
+ * An entity that has an <i>id</i> field and a getter/setter pair to interact with it.<br/>
+ * Meant to be used alongside <code>CrudRepository</code> or <code>JpaRepository</code> since these expose
+ * methods <code>findById</code> and <code>getById</code>.
+ */
+public interface DBEntity
+  extends Serializable {
+  Long getId();
+  void setId(Long id);
 }

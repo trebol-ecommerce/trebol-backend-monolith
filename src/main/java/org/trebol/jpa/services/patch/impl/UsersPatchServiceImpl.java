@@ -20,68 +20,52 @@
 
 package org.trebol.jpa.services.patch.impl;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.trebol.api.models.PersonPojo;
 import org.trebol.api.models.UserPojo;
-import org.trebol.jpa.entities.Person;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.User;
-import org.trebol.jpa.entities.UserRole;
-import org.trebol.jpa.repositories.PeopleRepository;
 import org.trebol.jpa.repositories.UserRolesRepository;
 import org.trebol.jpa.services.patch.UsersPatchService;
 
-import java.util.Optional;
+import java.util.Map;
 
 @Transactional
 @Service
 public class UsersPatchServiceImpl
   implements UsersPatchService {
   private final UserRolesRepository rolesRepository;
-  private final PeopleRepository peopleRepository;
-  private final PasswordEncoder passwordEncoder;
 
   public UsersPatchServiceImpl(
-    UserRolesRepository rolesRepository,
-    PeopleRepository peopleRepository,
-    PasswordEncoder passwordEncoder
+    UserRolesRepository rolesRepository
   ) {
     this.rolesRepository = rolesRepository;
-    this.peopleRepository = peopleRepository;
-    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
-  public User patchExistingEntity(UserPojo changes, User existing) {
+  public User patchExistingEntity(Map<String, Object> changes, User existing) throws BadInputException {
     User target = new User(existing);
 
-    String name = changes.getName();
-    if (name != null && !name.isBlank() && !target.getName().equals(name)) {
-      target.setName(name);
+    if (changes.containsKey("name")) {
+      String name = (String) changes.get("name");
+      if (!StringUtils.isBlank(name)) {
+        target.setName(name);
+      }
     }
 
-    String roleName = changes.getRole();
-    if (roleName != null && !roleName.isBlank() && !target.getUserRole().getName().equals(roleName)) {
-      Optional<UserRole> roleNameMatch = rolesRepository.findByName(roleName);
-      roleNameMatch.ifPresent(target::setUserRole);
-    }
-
-    String password = changes.getPassword();
-    if (password != null && !password.isBlank() && !passwordEncoder.matches(password, target.getPassword())) {
-      String encodedPassword = passwordEncoder.encode(password);
-      target.setPassword(encodedPassword);
-    }
-
-    PersonPojo person = changes.getPerson();
-    if (person != null) {
-      String idNumber = person.getIdNumber();
-      if (idNumber != null && !idNumber.isBlank() && !target.getPerson().getIdNumber().equals(idNumber)) {
-        Optional<Person> idNumberMatch = peopleRepository.findByIdNumber(idNumber);
-        idNumberMatch.ifPresent(target::setPerson);
+    if (changes.containsKey("role")) {
+      String roleName = (String) changes.get("role");
+      if (!StringUtils.isBlank(roleName)) {
+        rolesRepository.findByName(roleName).ifPresent(target::setUserRole);
       }
     }
 
     return target;
+  }
+
+  @Override
+  public User patchExistingEntity(UserPojo changes, User existing) throws BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 }

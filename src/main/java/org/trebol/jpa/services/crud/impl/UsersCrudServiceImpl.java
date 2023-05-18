@@ -42,7 +42,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UsersCrudServiceImpl
-  extends CrudGenericService<UserPojo, User> implements UsersCrudService {
+  extends CrudGenericService<UserPojo, User>
+  implements UsersCrudService {
   private final UsersRepository usersRepository;
   private final SecurityProperties securityProperties;
 

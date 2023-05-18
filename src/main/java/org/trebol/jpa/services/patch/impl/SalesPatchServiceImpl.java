@@ -24,255 +24,79 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.trebol.api.models.*;
+import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.jpa.entities.*;
-import org.trebol.jpa.repositories.*;
-import org.trebol.common.services.RegexMatcherAdapterService;
-import org.trebol.jpa.services.conversion.AddressesConverterService;
-import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
-import org.trebol.jpa.services.conversion.CustomersConverterService;
-import org.trebol.jpa.services.crud.CustomersCrudService;
+import org.trebol.jpa.entities.Sell;
+import org.trebol.jpa.repositories.PaymentTypesRepository;
+import org.trebol.jpa.repositories.SellStatusesRepository;
+import org.trebol.jpa.repositories.ShippersRepository;
 import org.trebol.jpa.services.patch.SalesPatchService;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
-import static org.trebol.config.Constants.BILLING_TYPE_INDIVIDUAL;
+import java.time.Instant;
+import java.util.Map;
 
 @Transactional
 @Service
 public class SalesPatchServiceImpl
   implements SalesPatchService {
-  private static final String IS_NOT_VALID = "is not valid";
   private final SellStatusesRepository statusesRepository;
-  private final BillingTypesRepository billingTypesRepository;
   private final PaymentTypesRepository paymentTypesRepository;
-  private final BillingCompaniesRepository billingCompaniesRepository;
   private final ShippersRepository shippersRepository;
-  private final AddressesRepository addressesRepository;
-  private final BillingCompaniesConverterService billingCompaniesConverter;
-  private final CustomersConverterService customersConverter;
-  private final CustomersCrudService customersService;
-  private final CustomersRepository customersRepository;
-  private final AddressesConverterService addressesConverterService;
-  private final Validator validator;
-  private final RegexMatcherAdapterService regexMatcherAdapterService;
 
   @Autowired
   public SalesPatchServiceImpl(
-    AddressesConverterService addressesConverterService,
     SellStatusesRepository statusesRepository,
-    BillingTypesRepository billingTypesRepository,
-    BillingCompaniesRepository billingCompaniesRepository,
     PaymentTypesRepository paymentTypesRepository,
-    AddressesRepository addressesRepository,
-    ShippersRepository shippersRepository,
-    BillingCompaniesConverterService billingCompaniesConverter,
-    CustomersConverterService customersConverter,
-    CustomersCrudService customersService,
-    CustomersRepository customersRepository,
-    Validator validator,
-    RegexMatcherAdapterService regexMatcherAdapterService
+    ShippersRepository shippersRepository
   ) {
-    this.addressesConverterService = addressesConverterService;
     this.statusesRepository = statusesRepository;
-    this.billingTypesRepository = billingTypesRepository;
-    this.billingCompaniesRepository = billingCompaniesRepository;
     this.paymentTypesRepository = paymentTypesRepository;
-    this.addressesRepository = addressesRepository;
     this.shippersRepository = shippersRepository;
-    this.billingCompaniesConverter = billingCompaniesConverter;
-    this.customersConverter = customersConverter;
-    this.customersService = customersService;
-    this.customersRepository = customersRepository;
-    this.validator = validator;
-    this.regexMatcherAdapterService = regexMatcherAdapterService;
   }
 
   @Transactional
   @Override
-  public Sell patchExistingEntity(SellPojo changes, Sell existing) throws BadInputException {
+  public Sell patchExistingEntity(Map<String, Object> changes, Sell existing) throws BadInputException {
     Sell target = new Sell(existing);
 
-    if (changes.getDate() != null) {
-      target.setDate(changes.getDate());
-    }
-    if (changes.getStatus() != null) {
-      this.applyStatus(changes, target);
-    }
-    if (changes.getPaymentType() != null) {
-      this.applyPaymentType(changes, target);
-    }
-    if (changes.getBillingType() != null) {
-      this.applyBillingTypeAndCompany(changes, target);
-    }
-    if (changes.getCustomer() != null && changes.getCustomer().getPerson() != null) {
-      this.applyCustomer(changes, target);
-    }
-    if (changes.getBillingAddress() != null) {
-      this.applyBillingAddress(changes, target);
-    }
-    if (changes.getShippingAddress() != null) {
-      this.applyShippingAddress(changes, target);
-    }
+    try {
+      if (changes.containsKey("date")) {
+        String rawDate = (String) changes.get("date");
+        if (rawDate != null) {
+          Instant date = Instant.parse(rawDate);
+          target.setDate(date);
+        }
+      }
 
-    if (changes.getShipper() != null) {
-      this.applyShipper(changes, target);
+      if (changes.containsKey("status")) {
+        String statusName = (String) changes.get("status");
+        if (!StringUtils.isBlank(statusName)) {
+          statusesRepository.findByName(statusName).ifPresent(target::setStatus);
+        }
+      }
+
+      if (changes.containsKey("paymentType")) {
+        String paymentTypeName = (String) changes.get("paymentType");
+        if (!StringUtils.isBlank(paymentTypeName)) {
+          paymentTypesRepository.findByName(paymentTypeName).ifPresent(target::setPaymentType);
+        }
+      }
+
+      if (changes.containsKey("shipper")) {
+        String shipperName = (String) changes.get("shipper");
+        if (!StringUtils.isBlank(shipperName)) {
+          shippersRepository.findByName(shipperName).ifPresent(target::setShipper);
+        }
+      }
+    } catch (ClassCastException ex) {
+      throw new BadInputException("The ");
     }
 
     return target;
   }
 
-  private void applyStatus(SellPojo source, Sell target) throws BadInputException {
-    String statusName = source.getStatus();
-    if (StringUtils.isBlank(statusName)) {
-      statusName = "Pending";
-    }
-
-    Optional<SellStatus> existingStatus = statusesRepository.findByName(statusName);
-    if (existingStatus.isEmpty()) {
-      throw new BadInputException("Status '" + statusName + "' " + IS_NOT_VALID);
-    } else {
-      target.setStatus(existingStatus.get());
-    }
-  }
-
-  private void applyPaymentType(SellPojo source, Sell target) throws BadInputException {
-    String paymentType = source.getPaymentType();
-    if (StringUtils.isBlank(paymentType)) {
-      throw new BadInputException("An accepted payment type is required");
-    } else {
-      Optional<PaymentType> existingPaymentType = paymentTypesRepository.findByName(paymentType);
-      if (existingPaymentType.isEmpty()) {
-        throw new BadInputException("Payment type '" + paymentType + "' " + IS_NOT_VALID);
-      } else {
-        target.setPaymentType(existingPaymentType.get());
-      }
-    }
-  }
-
-  private void applyBillingTypeAndCompany(SellPojo source, Sell target) throws BadInputException {
-    String billingType = source.getBillingType();
-    if (StringUtils.isBlank(billingType)) {
-      billingType = BILLING_TYPE_INDIVIDUAL;
-    }
-
-    Optional<BillingType> existingBillingType = billingTypesRepository.findByName(billingType);
-    if (existingBillingType.isPresent()) {
-      target.setBillingType(existingBillingType.get());
-    } else {
-      throw new BadInputException("Billing type '" + billingType + "' " + IS_NOT_VALID);
-    }
-
-    if (billingType.equals(BILLING_TYPE_ENTERPRISE)) {
-      BillingCompanyPojo sourceBillingCompany = source.getBillingCompany();
-      if (sourceBillingCompany == null) {
-        throw new BadInputException("Billing company details are required to generate enterprise invoices");
-      } else {
-        BillingCompany billingCompany = this.fetchOrConvertBillingCompany(sourceBillingCompany);
-        target.setBillingCompany(billingCompany);
-      }
-    }
-  }
-
-  private void applyCustomer(SellPojo source, Sell target) throws BadInputException {
-    CustomerPojo sourceCustomer = source.getCustomer();
-    if (StringUtils.isBlank(sourceCustomer.getPerson().getIdNumber())) {
-      throw new BadInputException("Customer must possess valid personal information");
-    } else {
-      Optional<Customer> existing = customersService.getExisting(sourceCustomer);
-      if (existing.isPresent()) {
-        target.setCustomer(existing.get());
-      } else {
-        Customer targetCustomer = customersConverter.convertToNewEntity(sourceCustomer);
-        targetCustomer = customersRepository.saveAndFlush(targetCustomer);
-        target.setCustomer(targetCustomer);
-      }
-    }
-  }
-
-  private void applyBillingAddress(SellPojo source, Sell target) throws BadInputException {
-    AddressPojo billingAddress = source.getBillingAddress();
-    if (billingAddress != null) {
-      try {
-        Address targetAddress = this.fetchOrConvertAddress(billingAddress);
-        target.setBillingAddress(targetAddress);
-      } catch (BadInputException ex) {
-        throw new BadInputException("The provided billing address " + IS_NOT_VALID);
-      }
-    }
-  }
-
-  private void applyShippingAddress(SellPojo source, Sell target) throws BadInputException {
-    AddressPojo shippingAddress = source.getShippingAddress();
-    if (shippingAddress != null) {
-      try {
-        Address targetAddress = this.fetchOrConvertAddress(shippingAddress);
-        target.setShippingAddress(targetAddress);
-      } catch (BadInputException ex) {
-        throw new BadInputException("The provided shipping address " + IS_NOT_VALID);
-      }
-    }
-  }
-
-  private void applyShipper(SellPojo source, Sell target) throws BadInputException {
-    ShipperPojo sourceShipper = source.getShipper();
-    if (sourceShipper != null) {
-      Set<ConstraintViolation<ShipperPojo>> validations = validator.validate(sourceShipper);
-      if (!validations.isEmpty()) {
-        throw new BadInputException("Invalid shipper");
-      } else {
-        Optional<Shipper> byName = shippersRepository.findByName(sourceShipper.getName());
-        if (byName.isEmpty()) {
-          throw new BadInputException("The specified shipper does not exist");
-        } else {
-          target.setShipper(byName.get());
-        }
-      }
-    }
-  }
-
-  private Address fetchOrConvertAddress(AddressPojo source) throws BadInputException {
-    Set<ConstraintViolation<AddressPojo>> validations = validator.validate(source);
-    if (!validations.isEmpty()) {
-      throw new BadInputException("Invalid address");
-    } else {
-      Optional<Address> matchingAddress = addressesRepository.findByFields(
-        source.getCity(),
-        source.getMunicipality(),
-        source.getFirstLine(),
-        source.getSecondLine(),
-        source.getPostalCode(),
-        source.getNotes());
-      if (matchingAddress.isEmpty()) {
-        return addressesConverterService.convertToNewEntity(source);
-      }
-      return matchingAddress.get();
-    }
-  }
-
-  private BillingCompany fetchOrConvertBillingCompany(BillingCompanyPojo sourceBillingCompany)
-    throws BadInputException {
-    String idNumber = sourceBillingCompany.getIdNumber();
-    if (StringUtils.isBlank(idNumber)) {
-      throw new BadInputException("Billing company must have an id number");
-    }
-
-    if (!regexMatcherAdapterService.isAValidIdNumber(idNumber)) {
-      throw new BadInputException("Billing company must have a correct id number");
-    }
-
-    Optional<BillingCompany> matchByIdNumber = billingCompaniesRepository.findByIdNumber(idNumber);
-    if (matchByIdNumber.isPresent()) {
-      return matchByIdNumber.get();
-    } else {
-      BillingCompany billingCompany = billingCompaniesConverter.convertToNewEntity(sourceBillingCompany);
-      billingCompany = billingCompaniesRepository.saveAndFlush(billingCompany);
-      return billingCompany;
-    }
+  @Override
+  public Sell patchExistingEntity(SellPojo changes, Sell existing) throws BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 }

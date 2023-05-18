@@ -20,6 +20,8 @@
 
 package org.trebol.api.controllers;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,8 +37,13 @@ import org.trebol.jpa.services.crud.ImagesCrudService;
 import org.trebol.jpa.services.predicates.ImagesPredicateService;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -81,26 +88,21 @@ class DataImagesControllerTest
   }
 
   @Test
-  void updates_images() {
-    assertDoesNotThrow(() -> {
-      ImagePojo input = ImagePojo.builder()
-        .url(ANY)
-        .filename(ANY)
-        .code(ANY)
-        .build();
-      super.updates_data_using_only_a_pojo(input);
-    });
-  }
-
-  @Test
   void updates_images_using_predicate_filters_map() {
     assertDoesNotThrow(() -> {
+      ImagePojo existingList = ImagePojo.builder().build();
       ImagePojo input = ImagePojo.builder()
         .url(ANY)
         .filename(ANY)
         .code(ANY)
         .build();
-      super.updates_data_parsing_predicate_filters_from_map(input, null);
+      Predicate predicate = new BooleanBuilder();
+      when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
+      when(crudServiceMock.update(any(), any(Predicate.class))).thenReturn(Optional.of(existingList));
+
+      instance.update(input, Map.of(ANY, ANY));
+
+      verify(crudServiceMock).update(input, predicate);
     });
   }
 

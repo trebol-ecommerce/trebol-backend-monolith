@@ -21,9 +21,9 @@
 package org.trebol.jpa.entities;
 
 import lombok.*;
+import org.trebol.jpa.DBEntity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "app_user_role_permissions")
@@ -35,7 +35,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 public class UserRolePermission
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 21L;
 
   @Id
@@ -49,9 +49,13 @@ public class UserRolePermission
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
+  /**
+   * Please note: this copy-constructor does not include a UserRolePermission's relationships
+   * @param source The original UserRolePermission
+   */
   public UserRolePermission(UserRolePermission source) {
     this.id = source.id;
-    this.permission = new Permission(source.permission);
-    this.userRole = new UserRole(source.userRole);
+    this.permission = null;
+    this.userRole = null;
   }
 }

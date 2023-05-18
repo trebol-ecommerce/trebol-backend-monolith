@@ -22,21 +22,29 @@ package org.trebol.jpa.services.conversion.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ProductCategoryPojo;
 import org.trebol.jpa.entities.ProductCategory;
+import org.trebol.jpa.repositories.ProductsCategoriesRepository;
 import org.trebol.testing.ProductCategoriesTestHelper;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.trebol.testing.TestConstants.ANY;
 import static org.trebol.testing.TestConstants.ID_1L;
 
+@ExtendWith(MockitoExtension.class)
 class ProductCategoriesConverterServiceImplTest {
-  ProductCategoriesConverterServiceImpl instance;
+  @InjectMocks ProductCategoriesConverterServiceImpl instance;
+  @Mock ProductsCategoriesRepository categoriesRepositoryMock;
   final ProductCategoriesTestHelper productCategoriesTestHelper = new ProductCategoriesTestHelper();
 
   @BeforeEach
   void beforeEach() {
-    instance = new ProductCategoriesConverterServiceImpl();
     productCategoriesTestHelper.resetProductCategories();
   }
 
@@ -45,7 +53,6 @@ class ProductCategoriesConverterServiceImplTest {
     ProductCategory input = productCategoriesTestHelper.productCategoryEntityAfterCreation();
     ProductCategoryPojo result = instance.convertToPojo(input);
     assertNotNull(result);
-    assertEquals(input.getId(), result.getId());
     assertEquals(input.getName(), result.getName());
     assertEquals(input.getCode(), result.getCode());
   }

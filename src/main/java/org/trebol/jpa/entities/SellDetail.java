@@ -21,10 +21,10 @@
 package org.trebol.jpa.entities;
 
 import lombok.*;
+import org.trebol.jpa.DBEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "sell_details")
@@ -36,7 +36,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 public class SellDetail
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 15L;
 
   @Id
@@ -59,12 +59,16 @@ public class SellDetail
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private Sell sell;
 
+  /**
+   * Please note: this copy-constructor does not include a SellDetail's relationships
+   * @param source The original SellDetail
+   */
   public SellDetail(SellDetail source) {
     this.id = source.id;
     this.units = source.units;
     this.unitValue = source.unitValue;
     this.description = source.description;
-    this.product = new Product(source.product);
-    this.sell = null; // avoid an infinite loop
+    this.product = null;
+    this.sell = null;
   }
 }

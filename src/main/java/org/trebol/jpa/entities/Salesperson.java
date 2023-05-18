@@ -21,9 +21,9 @@
 package org.trebol.jpa.entities;
 
 import lombok.*;
+import org.trebol.jpa.DBEntity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "salespeople")
@@ -35,7 +35,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 public class Salesperson
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 13L;
 
   @Id
@@ -46,6 +46,10 @@ public class Salesperson
   @ManyToOne(optional = false, cascade = CascadeType.ALL)
   private Person person;
 
+  /**
+   * Please note: this copy-constructor DOES include a Salesperson's relationship to its own profile data
+   * @param source The original Sell
+   */
   public Salesperson(Salesperson source) {
     this.id = source.id;
     this.person = new Person(source.person);

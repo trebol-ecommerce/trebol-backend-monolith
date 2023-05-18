@@ -20,7 +20,6 @@
 
 package org.trebol.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,15 +33,12 @@ import java.util.Collection;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-// TODO introduce a POJO for POST requests - where all fields are required - and a second POJO for PATCH requests - where not all fields may be included (perhaps implemented using Java Optionals)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
 public class ProductPojo {
-  @JsonIgnore
-  private Long id;
   @NotBlank
   private String name;
   @NotBlank
@@ -51,12 +47,8 @@ public class ProductPojo {
   private String description;
   @NotNull
   private Integer price;
-  @JsonIgnore
-  @Builder.Default
-  private Integer currentStock = 0;
-  @JsonIgnore
-  @Builder.Default
-  private Integer criticalStock = 0;
+  private Integer currentStock;
+  private Integer criticalStock;
   private ProductCategoryPojo category;
   private Collection<ImagePojo> images;
 }

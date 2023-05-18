@@ -52,14 +52,11 @@ class SalespeopleConverterServiceImplTest {
 
   @Test
   void converts_to_pojo() {
-    PersonPojo expectedPersonPojo = PersonPojo.builder()
-      .id(1L)
-      .build();
+    PersonPojo expectedPersonPojo = PersonPojo.builder().build();
     Salesperson input = salespeopleTestHelper.salespersonEntityAfterCreation();
     when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
     SalespersonPojo result = instance.convertToPojo(input);
     assertNotNull(result);
-    assertEquals(input.getId(), result.getId());
     assertEquals(expectedPersonPojo, result.getPerson());
   }
 
@@ -72,7 +69,6 @@ class SalespeopleConverterServiceImplTest {
     when(peopleServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(expectedPerson);
     Salesperson result = instance.convertToNewEntity(input);
     assertNotNull(result);
-    assertEquals(input.getId(), result.getId());
     assertEquals(expectedPerson, result.getPerson());
   }
 }

@@ -45,14 +45,12 @@ class UserRolesConverterServiceImplTest {
       .build();
     UserRolePojo result = instance.convertToPojo(input);
     assertNotNull(result);
-    assertEquals(input.getId(), result.getId());
     assertEquals(input.getName(), result.getName());
   }
 
   @Test
   void converts_to_new_entity() {
     UserRolePojo input = UserRolePojo.builder()
-      .id(1L)
       .name(ANY)
       .build();
     UserRole result = instance.convertToNewEntity(input);

@@ -29,6 +29,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.DataPagePojo;
 import org.trebol.common.exceptions.BadInputException;
+import org.trebol.jpa.DBEntity;
 import org.trebol.jpa.Repository;
 import org.trebol.jpa.services.ConverterService;
 import org.trebol.jpa.services.CrudService;
@@ -38,6 +39,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -50,7 +52,7 @@ import java.util.Optional;
  * @param <E> The entity class
  */
 @Transactional
-public abstract class CrudGenericService<M, E>
+public abstract class CrudGenericService<M, E extends DBEntity>
   implements CrudService<M, E> {
   protected static final String ITEM_NOT_FOUND = "Requested item(s) not found";
   protected static final String ITEM_ALREADY_EXISTS = "The item already exists";
@@ -76,11 +78,11 @@ public abstract class CrudGenericService<M, E>
    * @throws EntityExistsException When the data is a duplicate of an existing entity.
    */
   @Override
-  public M create(M input)
-    throws BadInputException, EntityExistsException {
+  public M create(M input) throws BadInputException, EntityExistsException {
     this.validateInputPojoBeforeCreation(input);
-    E preparedEntity = this.prepareNewEntityFromInputPojo(input);
-    return this.persist(preparedEntity);
+    E preparedEntity = converter.convertToNewEntity(input);
+    E result = repository.saveAndFlush(preparedEntity);
+    return converter.convertToPojo(result);
   }
 
   /**
@@ -106,32 +108,72 @@ public abstract class CrudGenericService<M, E>
     return new DataPagePojo<>(pojoList, pageIndex, totalCount, pageSize);
   }
 
-  /**
-   * @throws EntityNotFoundException When no entity matches the given example.
-   * @throws BadInputException       When the data in the input object is not valid.
-   */
   @Override
-  public M update(M input)
-    throws EntityNotFoundException, BadInputException {
-    Optional<E> match = this.getExisting(input);
-    if (match.isEmpty()) {
-      throw new EntityNotFoundException(ITEM_NOT_FOUND);
-    }
-    return this.persistEntityWithUpdatesFromPojo(input, match.get());
+  public M update(M input) throws EntityNotFoundException, BadInputException {
+    throw new UnsupportedOperationException("This method signature has been deprecated");
   }
 
   /**
-   * @throws EntityNotFoundException When no entity matches the given filtering conditions.
-   * @throws BadInputException       When the data in the input object is not valid.
+   * @throws EntityNotFoundException When no entity matches the given id.
+   * @throws BadInputException       When the data in the input object is not valid.<br/>
+   *                                 It is expected that some portions data may be null, because it may not have
+   *                                 been included during serialization. Such cases are <i>not</i> meant to cause
+   *                                 a BadInputException.
    */
   @Override
-  public M update(M input, Predicate filters)
-    throws EntityNotFoundException, BadInputException {
+  public Optional<M> update(M input, Long id) throws EntityNotFoundException, BadInputException {
+    E inputEntity = converter.convertToNewEntity(input);
+    inputEntity.setId(id);
+    E resultEntity = repository.saveAndFlush(inputEntity);
+    M output = converter.convertToPojo(resultEntity);
+    return Optional.of(output);
+  }
+
+  /**
+   * @throws BadInputException When the data in the input object is not valid.
+   */
+  @Override
+  public Optional<M> update(M input, Predicate filters) throws BadInputException {
+    long count = repository.count(filters);
+    if (count > 1) {
+      throw new RuntimeException("Cannot update more than one item at a time");
+    }
     Optional<E> firstMatch = repository.findOne(filters);
     if (firstMatch.isEmpty()) {
-      throw new EntityNotFoundException(ITEM_NOT_FOUND);
+      return Optional.empty();
     }
-    return this.persistEntityWithUpdatesFromPojo(input, firstMatch.get());
+    Long id = firstMatch.get().getId();
+    return this.update(input, id);
+  }
+
+  @Override
+  public Optional<M> partialUpdate(Map<String, Object> changes, Long id) {
+    return repository.findById(id)
+      .map(existingEntity -> {
+        try {
+          E result = this.flushPartialChanges(changes, existingEntity);
+          return converter.convertToPojo(result);
+        } catch (BadInputException e) {
+          throw new RuntimeException(e);
+        }
+      });
+  }
+
+  @Override
+  public Optional<M> partialUpdate(Map<String, Object> changes, Predicate filters) {
+    long count = repository.count(filters);
+    if (count > 1) {
+      throw new RuntimeException("Cannot update more than one item at a time");
+    }
+    return repository.findOne(filters)
+      .map(existingEntity -> {
+        try {
+          E result = this.flushPartialChanges(changes, existingEntity);
+          return converter.convertToPojo(result);
+        } catch (BadInputException e) {
+          throw new RuntimeException(e);
+        }
+      });
   }
 
   /**
@@ -161,32 +203,16 @@ public abstract class CrudGenericService<M, E>
     return converter.convertToPojo(found);
   }
 
-  protected final M persist(E preparedEntity) {
-    E result = repository.saveAndFlush(preparedEntity);
-    return converter.convertToPojo(result);
-  }
-
-  /**
-   * Copies changes from a models to an entity.
-   * Executes right before updating (persisting) data.
-   * Ideal overridable method to include cascading entity relationships.
-   *
-   * @param changes        A Pojo class instance with the data that is being submitted
-   * @param existingEntity An existing entity class instance that will be updated
-   * @return The resulting Pojo class instance
-   * @throws BadInputException If data in Pojo is insufficient, incorrect, malformed, etc
-   */
-  protected M persistEntityWithUpdatesFromPojo(M changes, E existingEntity)
-    throws BadInputException {
+  protected E flushPartialChanges(Map<String, Object> changes, E existingEntity) throws BadInputException {
     E updatedEntity = patchService.patchExistingEntity(changes, existingEntity);
     if (existingEntity.equals(updatedEntity)) {
-      return changes;
+      return existingEntity;
     }
-    return this.persist(updatedEntity);
+    return repository.saveAndFlush(updatedEntity);
   }
 
   /**
-   * Generic validation routine. Should be be called at the beginning of the create() method.
+   * Generic validation routine. Should be called at the beginning of the create() method.
    *
    * @param inputPojo A model to validate
    * @throws BadInputException If the model does not have a valid identifying property
@@ -196,18 +222,5 @@ public abstract class CrudGenericService<M, E>
     if (this.getExisting(inputPojo).isPresent()) {
       throw new EntityExistsException(ITEM_ALREADY_EXISTS);
     }
-  }
-
-  /**
-   * Creates a new entity from a model classs.
-   * Executes right before persisting data.
-   * Ideal overridable method to include cascading entity relationships.
-   *
-   * @param inputPojo A models to convert to an entity
-   * @return An entity object equivalent to the provided models, ready for saving
-   * @throws BadInputException If the models does not have a valid identifying property
-   */
-  protected E prepareNewEntityFromInputPojo(M inputPojo) throws BadInputException {
-    return converter.convertToNewEntity(inputPojo);
   }
 }

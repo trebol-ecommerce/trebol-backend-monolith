@@ -74,7 +74,6 @@ public class PeopleTestHelper {
   public PersonPojo personPojoAfterCreation() {
     if (this.pojoAfterCreation == null) {
       this.pojoAfterCreation = PersonPojo.builder()
-        .id(GENERIC_ID)
         .firstName(PERSON_FIRST_NAME)
         .lastName(PERSON_LAST_NAME)
         .idNumber(PERSON_ID_NUMBER)

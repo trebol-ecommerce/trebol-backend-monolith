@@ -44,4 +44,5 @@ public final class Constants {
   public static final String AUTHORITY_CHECKOUT = "checkout";
   public static final String JWT_CLAIM_AUTHORITIES = "authorities";
   public static final String JWT_PREFIX = "Bearer ";
+  public static final String PERSON_DATA_MAP_KEYS_PREFIX = "person.";
 }

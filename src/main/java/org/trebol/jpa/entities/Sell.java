@@ -20,32 +20,14 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.trebol.jpa.DBEntity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(
@@ -62,7 +44,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 @ToString
 public class Sell
-  implements Serializable {
+  implements DBEntity {
   private static final long serialVersionUID = 14L;
 
   @Id
@@ -116,6 +98,15 @@ public class Sell
   @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
   private Collection<SellDetail> details;
 
+  /**
+   * Please note that this copy-constructor only preserves the following relationships.
+   * <ul>
+   *   <li>SellStatus</li>
+   *   <li>PaymentType</li>
+   *   <li>BillingType</li>
+   * </ul>
+   * @param source The original Sell
+   */
   public Sell(Sell source) {
     this.id = source.id;
     this.date = Instant.from(source.date);
@@ -128,26 +119,12 @@ public class Sell
     this.paymentType = source.paymentType;
     this.status = source.status;
     this.billingType = source.billingType;
-    this.billingAddress = new Address(source.billingAddress);
-    this.customer = new Customer(source.customer);
-    this.details = source.details.stream()
-      .map(sourceDetail -> {
-        SellDetail target = new SellDetail(sourceDetail);
-        target.setSell(this);
-        return target;
-      })
-      .collect(Collectors.toList());
-    if (source.billingCompany != null) {
-      this.billingCompany = new BillingCompany(source.billingCompany);
-    }
-    if (source.shipper != null) {
-      this.shipper = new Shipper(source.shipper);
-    }
-    if (source.shippingAddress != null) {
-      this.shippingAddress = new Address(source.shippingAddress);
-    }
-    if (source.salesperson != null) {
-      this.salesperson = new Salesperson(source.salesperson);
-    }
+    this.billingAddress = null;
+    this.customer = null;
+    this.details = null;
+    this.billingCompany = null;
+    this.shipper = null;
+    this.shippingAddress = null;
+    this.salesperson = null;
   }
 }

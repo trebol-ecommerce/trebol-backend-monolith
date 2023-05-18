@@ -28,6 +28,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.ProductListPojo;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
@@ -36,8 +37,14 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +54,7 @@ class ProductListCrudServiceImplTest {
   @Mock ProductListItemsRepository productListItemRepositoryMock;
 
   @Test
-  void matches_productlist_from_name() {
+  void matches_productlist_from_name() throws BadInputException {
     ProductListPojo input = ProductListPojo.builder()
       .name(ANY)
       .build();
@@ -60,23 +67,10 @@ class ProductListCrudServiceImplTest {
   }
 
   @Test
-  void matches_productlist_from_id() {
-    ProductListPojo input = ProductListPojo.builder()
-      .id(1L)
-      .build();
-    ProductList expectedResult = ProductList.builder().build();
-    when(productListRepositoryMock.findById(anyLong())).thenReturn(Optional.of(expectedResult));
-    Optional<ProductList> result = instance.getExisting(input);
-    assertTrue(result.isPresent());
-    assertEquals(expectedResult, result.get());;
-    verify(productListRepositoryMock).findById(input.getId());
-  }
-
-  @Test
   void cannot_match_any_productlist_from_null_data() {
     ProductListPojo input = ProductListPojo.builder().build();
-    Optional<ProductList> actualProductListOptional = instance.getExisting(input);
-    assertTrue(actualProductListOptional.isEmpty());
+    BadInputException result = assertThrows(BadInputException.class, () -> instance.getExisting(input));
+    assertEquals("The specified list has no name", result.getMessage());
   }
 
   @Test
