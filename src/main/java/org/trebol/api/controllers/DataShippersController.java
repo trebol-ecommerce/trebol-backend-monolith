@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -82,6 +83,16 @@ public class DataShippersController
   public void update(@RequestBody ShipperPojo input, @RequestParam Map<String, String> requestParams)
     throws BadInputException, EntityNotFoundException {
     super.update(input, requestParams);
+  }
+
+  @Override
+  @PatchMapping({"", "/"})
+  @PreAuthorize("hasAuthority('shippers:update')")
+  public void partialUpdate(
+    @RequestBody Map<String, Object> input,
+    @RequestParam Map<String, String> requestParams
+  ) throws BadInputException, EntityNotFoundException {
+    super.partialUpdate(input, requestParams);
   }
 
   @Override
