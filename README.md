@@ -32,6 +32,7 @@ Currently bound to and implementing [Trébol API v1.5.0](https://github.com/treb
 * Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api) and supports all of the operations described by the document, such as
   * CRUD operations on all declared data types
     * Can filter, sort and paginate through query params
+    * Some endpoints support partial updates using `PATCH` requests
   * Login, registration and optionally, guest customer accounts
   * Checking out as a registered user or a guest (when enabled)
 * Uses [Project Lombok](https://projectlombok.org) in all of its API models and JPA entities
