@@ -8,8 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Support for partial update
-  - Meant to be, but not yet mapped as PATCH methods
+- Support for partial updates using `PATCH` request in these endpoints
+    - `/data/products`
+    - `/data/sales`
+    - `/data/users`
+    - `/data/images`
+    - `/data/product_categories`
+    - `/data/shippers`
+    - `/data/product_lists`
 
 ### Changed
 
