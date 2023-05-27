@@ -21,17 +21,16 @@
 
 ## Current Status 📓
 
-This project's artifact, group and version have changed recently, as I decided that the conditions it must meet to reach a proper `v1.0` have changed.
+Implementing [Trébol API v1.7.2](https://github.com/trebol-ecommerce/api/blob/v1.7.2/src/trebol-api.json).
 
-Please take a look at the `CHANGELOG.md` file to review this and other recent changes and additions.
-
-Currently bound to and implementing [Trébol API v1.5.0](https://github.com/trebol-ecommerce/api/blob/v1.5.0/trebol-api.json).
+Please take a look at the `CHANGELOG.md` file to review the most recent changes and additions to the codebase.
 
 ## Features 🚀
 
-* Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api) and supports all of the operations described by the document, such as
+* Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api) and supports all the operations described by the document, such as
   * CRUD operations on all declared data types
     * Can filter, sort and paginate through query params
+    * Some endpoints support partial updates using `PATCH` requests
   * Login, registration and optionally, guest customer accounts
   * Checking out as a registered user or a guest (when enabled)
 * Uses [Project Lombok](https://projectlombok.org) in all of its API models and JPA entities
