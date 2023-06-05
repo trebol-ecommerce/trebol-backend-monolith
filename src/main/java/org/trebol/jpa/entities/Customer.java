@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,17 +20,23 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+import org.trebol.jpa.DBEntity;
+
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Customer
-  implements Serializable {
-
+  implements DBEntity {
   private static final long serialVersionUID = 4L;
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "customer_id", nullable = false)
@@ -39,56 +45,12 @@ public class Customer
   @OneToOne(optional = false, cascade = CascadeType.ALL)
   private Person person;
 
-  public Customer() { }
-
+  /**
+   * Please note: this copy-constructor DOES include a Customer's relationship to its own profile data
+   * @param source The original UserRolePermission
+   */
   public Customer(Customer source) {
     this.id = source.id;
-    this.person = source.person;
-  }
-
-  public Customer(String idNumber) {
-    this.person = new Person(idNumber);
-  }
-
-  public Customer(Person person) {
-    this.person = person;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Person getPerson() {
-    return person;
-  }
-
-  public void setPerson(Person person) {
-    this.person = person;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Customer customer = (Customer) o;
-    return Objects.equals(id, customer.id) &&
-        Objects.equals(person, customer.person);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, person);
-  }
-
-  @Override
-  public String toString() {
-    return "Customer{" +
-        "id=" + id +
-        ", person=" + person +
-        '}';
+    this.person = new Person(source.person);
   }
 }

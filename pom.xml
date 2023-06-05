@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2022 The Trébol eCommerce Project
+  ~ Copyright (c) 2023 The Trebol eCommerce Project
   ~
-  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+  ~ and associated documentation files (the "Software"), to deal in the Software without restriction,
+  ~ including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+  ~ and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+  ~ to do so, subject to the following conditions:
   ~
-  ~ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
+  ~ portions of the Software.
   ~
-  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+  ~ PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+  ~ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+  ~ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+  ~ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -20,13 +30,13 @@
     <version>2.6.12</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>org.trebol</groupId>
-  <artifactId>spring-boot-backend</artifactId>
+  <groupId>org.trebolecommerce</groupId>
+  <artifactId>trebol-backend-monolith</artifactId>
   <packaging>war</packaging>
-  <version>3.0.2-SNAPSHOT</version>
+  <version>0.2.0</version>
 
-  <name>Trébol Spring Boot Backend</name>
-  <description>eCommerce RESTful Service.</description>
+  <name>Trébol Backend Monolith</name>
+  <description>Monolithic eCommerce backend web application that exposes a RESTful API compliant with the Trebol API v1.5.0 specification.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,6 +48,7 @@
     <project-lombok.version>1.18.24</project-lombok.version>
     <jjwt.version>0.11.5</jjwt.version>
     <mockito.version>4.0.0</mockito.version>
+    <unirest.version>3.13.8</unirest.version>
 
     <!-- Plugins configuration -->
     <java.endorsed-api.dir>${project.build.directory}/endorsed</java.endorsed-api.dir>
@@ -46,9 +57,15 @@
     <jacoco.codeCoverage.minRatio>0.20</jacoco.codeCoverage.minRatio>
     <groovy.version>3.0.7</groovy.version> <!-- temp fix for inconsistent use of API in REST Assured -->
 
+    <trebol.coverage-exclusions>
+      **/trebol/api/models/**.*,
+      **/trebol/jpa/entities/**.*
+    </trebol.coverage-exclusions>
+
     <!-- Sonar CI/CD -->
     <sonar.organization>trebol-ecommerce</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.coverage.exclusions>${trebol.coverage-exclusions}</sonar.coverage.exclusions>
   </properties>
 
   <dependencies>
@@ -78,6 +95,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
       <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -122,7 +144,7 @@
       <artifactId>mariadb-java-client</artifactId>
     </dependency>
 
-<!--    apache common lang-->
+    <!-- Apache common lang-->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
@@ -148,21 +170,19 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- Unirest -->
+    <!-- Unirest (elegant alternative to RestTemplate) -->
     <dependency>
       <groupId>com.konghq</groupId>
       <artifactId>unirest-java</artifactId>
-      <version>3.13.8</version>
+      <version>${unirest.version}</version>
     </dependency>
-
-    <!-- REST Assured -->
     <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>spring-mock-mvc</artifactId>
-      <version>4.5.1</version>
+      <groupId>com.konghq</groupId>
+      <artifactId>unirest-mocks</artifactId>
+      <version>${unirest.version}</version>
       <scope>test</scope>
     </dependency>
-    
+
     <!-- WebPay SDK -->
     <dependency>
       <groupId>com.github.transbankdevelopers</groupId>
@@ -195,7 +215,7 @@
           </annotationProcessorPaths>
         </configuration>
       </plugin>
-      
+
       <!-- Generate QueryDSL classes -->
       <plugin>
         <groupId>com.mysema.maven</groupId>
@@ -237,7 +257,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
 
-      <!-- Support code coverage -->
+      <!-- Support code coverage report generation -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -263,6 +283,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
+              <excludes>${trebol.coverage-exclusions}</excludes>
               <rules>
                 <rule>
                   <element>BUNDLE</element>

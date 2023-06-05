@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,10 +20,11 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+import org.trebol.jpa.DBEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -31,9 +32,15 @@ import java.util.Objects;
   indexes = {
     @Index(columnList = "product_name")
   })
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Product
-  implements Serializable {
-
+  implements DBEntity {
   private static final long serialVersionUID = 10L;
 
   @Id
@@ -59,8 +66,10 @@ public class Product
   @ManyToOne(fetch = FetchType.LAZY)
   private ProductCategory productCategory;
 
-  public Product() { }
-
+  /**
+   * Please note: this copy-constructor does not include a Product's relationship to a ProductCategory.
+   * @param source The original Product
+   */
   public Product(Product source) {
     this.id = source.id;
     this.name = source.name;
@@ -69,140 +78,6 @@ public class Product
     this.price = source.price;
     this.stockCurrent = source.stockCurrent;
     this.stockCritical = source.stockCritical;
-    this.productCategory = source.productCategory;
-  }
-
-  public Product(String barcode) {
-    this.barcode = barcode;
-  }
-
-  public Product(Long id,
-                 String name,
-                 String barcode,
-                 String description,
-                 int price,
-                 int stockCurrent,
-                 int stockCritical,
-                 ProductCategory productCategory) {
-    this.id = id;
-    this.name = name;
-    this.barcode = barcode;
-    this.description = description;
-    this.price = price;
-    this.stockCurrent = stockCurrent;
-    this.stockCritical = stockCritical;
-    this.productCategory = productCategory;
-  }
-
-  public Product(String name,
-                 String barcode,
-                 String description,
-                 int price,
-                 int stockCurrent,
-                 int stockCritical) {
-    this.name = name;
-    this.barcode = barcode;
-    this.description = description;
-    this.price = price;
-    this.stockCurrent = stockCurrent;
-    this.stockCritical = stockCritical;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getBarcode() {
-    return barcode;
-  }
-
-  public void setBarcode(String barcode) {
-    this.barcode = barcode;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public int getPrice() {
-    return price;
-  }
-
-  public void setPrice(int price) {
-    this.price = price;
-  }
-
-  public int getStockCurrent() {
-    return stockCurrent;
-  }
-
-  public void setStockCurrent(int stockCurrent) {
-    this.stockCurrent = stockCurrent;
-  }
-
-  public int getStockCritical() {
-    return stockCritical;
-  }
-
-  public void setStockCritical(int stockCritical) {
-    this.stockCritical = stockCritical;
-  }
-
-  public ProductCategory getProductCategory() {
-    return productCategory;
-  }
-
-  public void setProductCategory(ProductCategory productCategory) {
-    this.productCategory = productCategory;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Product product = (Product) o;
-    return price == product.price &&
-        stockCurrent == product.stockCurrent &&
-        stockCritical == product.stockCritical &&
-        Objects.equals(id, product.id) &&
-        Objects.equals(name, product.name) &&
-        Objects.equals(barcode, product.barcode) &&
-        Objects.equals(description, product.description) &&
-        Objects.equals(productCategory, product.productCategory);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, name, barcode, description, price, stockCurrent, stockCritical, productCategory);
-  }
-
-  @Override
-  public String toString() {
-    return "Product{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", barcode='" + barcode + '\'' +
-        ", description='" + description + '\'' +
-        ", price=" + price +
-        ", stockCurrent=" + stockCurrent +
-        ", stockCritical=" + stockCritical +
-        ", productCategory=" + productCategory +
-        '}';
+    this.productCategory = null;
   }
 }

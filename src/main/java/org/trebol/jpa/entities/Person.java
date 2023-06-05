@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,10 +20,11 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+import org.trebol.jpa.DBEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -34,9 +35,15 @@ import java.util.Objects;
     @Index(columnList = "person_last_name"),
     @Index(columnList = "person_email")
   })
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Person
-  implements Serializable {
-
+  implements DBEntity {
   private static final long serialVersionUID = 9L;
 
   @Id
@@ -56,11 +63,11 @@ public class Person
   @Column(name = "person_email", nullable = false)
   private String email;
   @Column(name = "person_phone1", nullable = false)
+  @Builder.Default
   private String phone1 = "";
   @Column(name = "person_phone2", nullable = false)
+  @Builder.Default
   private String phone2 = "";
-
-  public Person() { }
 
   public Person(Person source) {
     this.id = source.id;
@@ -70,120 +77,5 @@ public class Person
     this.email = source.email;
     this.phone1 = source.phone1;
     this.phone2 = source.phone2;
-  }
-
-  public Person(String idNumber) {
-    this.idNumber = idNumber;
-  }
-
-  public Person(String firstName, String lastName, String idNumber, String email) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.idNumber = idNumber;
-    this.email = email;
-  }
-
-  public Person(Long id,
-                String firstName,
-                String lastName,
-                String idNumber,
-                String email,
-                String phone1,
-                String phone2) {
-    this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.idNumber = idNumber;
-    this.email = email;
-    this.phone1 = phone1;
-    this.phone2 = phone2;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public String getIdNumber() {
-    return idNumber;
-  }
-
-  public void setIdNumber(String idNumber) {
-    this.idNumber = idNumber;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPhone1() {
-    return phone1;
-  }
-
-  public void setPhone1(String phone1) {
-    this.phone1 = phone1;
-  }
-
-  public String getPhone2() {
-    return phone2;
-  }
-
-  public void setPhone2(String phone2) {
-    this.phone2 = phone2;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Person person = (Person) o;
-    return Objects.equals(id, person.id) &&
-        Objects.equals(firstName, person.firstName) &&
-        Objects.equals(lastName, person.lastName) &&
-        Objects.equals(idNumber, person.idNumber) &&
-        Objects.equals(email, person.email) &&
-        Objects.equals(phone1, person.phone1) &&
-        Objects.equals(phone2, person.phone2);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, firstName, lastName, idNumber, email, phone1, phone2);
-  }
-
-  @Override
-  public String toString() {
-    return "Person{" +
-        "id=" + id +
-        ", firstName='" + firstName + '\'' +
-        ", lastName='" + lastName + '\'' +
-        ", idNumber='" + idNumber + '\'' +
-        ", email='" + email + '\'' +
-        ", phone1='" + phone1 + '\'' +
-        ", phone2='" + phone2 + '\'' +
-        '}';
   }
 }

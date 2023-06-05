@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -29,13 +29,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.trebol.api.models.CustomerPojo;
+import org.trebol.api.models.PersonPojo;
+import org.trebol.common.exceptions.BadInputException;
 import org.trebol.config.SecurityProperties;
-import org.trebol.exceptions.BadInputException;
-import org.trebol.jpa.entities.Customer;
-import org.trebol.jpa.services.GenericCrudJpaService;
-import org.trebol.jpa.services.crud.ICustomersCrudService;
-import org.trebol.pojo.CustomerPojo;
-import org.trebol.pojo.PersonPojo;
+import org.trebol.jpa.services.crud.CustomersCrudService;
 
 import javax.crypto.SecretKey;
 import javax.persistence.EntityExistsException;
@@ -45,16 +43,19 @@ import java.io.IOException;
 
 public class JwtGuestAuthenticationFilter
   extends GenericJwtAuthenticationFilter {
-
   private final Logger myLogger = LoggerFactory.getLogger(JwtGuestAuthenticationFilter.class);
   private final AuthenticationManager authenticationManager;
-  private final ICustomersCrudService customersService;
+  private final CustomersCrudService customersService;
+  private  final SecurityProperties securityProperties;
 
-  public JwtGuestAuthenticationFilter(SecurityProperties jwtProperties,
-                                      SecretKey secretKey,
-                                      AuthenticationManager authenticationManager,
-                                      ICustomersCrudService customersService) {
-    super(jwtProperties, secretKey);
+  public JwtGuestAuthenticationFilter(
+    SecurityProperties securityProperties,
+    SecretKey secretKey,
+    AuthenticationManager authenticationManager,
+    CustomersCrudService customersService
+  ) {
+    super(securityProperties, secretKey);
+    this.securityProperties = securityProperties;
     this.authenticationManager = authenticationManager;
     this.customersService = customersService;
   }
@@ -68,7 +69,8 @@ public class JwtGuestAuthenticationFilter
       try {
         PersonPojo guestCustomerData = new ObjectMapper().readValue(request.getInputStream(), PersonPojo.class);
         this.saveCustomerData(guestCustomerData);
-        Authentication authentication = new UsernamePasswordAuthenticationToken("guest", "guest");
+        final String credential = securityProperties.getGuestUserName();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(credential, credential);
         return authenticationManager.authenticate(authentication);
       } catch (IOException e) {
         throw new BadCredentialsException("Invalid request body for guest session");

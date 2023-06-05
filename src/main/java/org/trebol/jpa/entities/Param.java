@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,10 +20,11 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+import org.trebol.jpa.DBEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -31,9 +32,15 @@ import java.util.Objects;
   uniqueConstraints = {
     @UniqueConstraint(columnNames = {"param_category", "param_name"})
   })
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Param
-  implements Serializable {
-
+  implements DBEntity {
   private static final long serialVersionUID = 6L;
 
   @Id
@@ -50,63 +57,10 @@ public class Param
   @Column(name = "param_value", nullable = false)
   private String value;
 
-  public Param() { }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getCategory() {
-    return category;
-  }
-
-  public void setCategory(String category) {
-    this.category = category;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getValue() {
-    return value;
-  }
-
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Param param = (Param) o;
-    return Objects.equals(id, param.id) &&
-        Objects.equals(category, param.category) &&
-        Objects.equals(name, param.name) &&
-        Objects.equals(value, param.value);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, category, name, value);
-  }
-
-  @Override
-  public String toString() {
-    return "Param{" +
-        "id=" + id +
-        ", category='" + category + '\'' +
-        ", name='" + name + '\'' +
-        ", value='" + value + '\'' +
-        '}';
+  public Param(Param source) {
+    this.id = source.id;
+    this.category = source.category;
+    this.name = source.name;
+    this.value = source.value;
   }
 }

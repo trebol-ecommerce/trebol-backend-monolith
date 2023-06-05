@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,15 +20,22 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+import org.trebol.jpa.DBEntity;
+
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "app_user_role_permissions")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class UserRolePermission
-  implements Serializable {
-
+  implements DBEntity {
   private static final long serialVersionUID = 21L;
 
   @Id
@@ -42,53 +49,13 @@ public class UserRolePermission
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private UserRole userRole;
 
-  public UserRolePermission() { }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Permission getPermission() {
-    return permission;
-  }
-
-  public void setPermission(Permission permission) {
-    this.permission = permission;
-  }
-
-  public UserRole getUserRole() {
-    return userRole;
-  }
-
-  public void setUserRole(UserRole userRole) {
-    this.userRole = userRole;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    UserRolePermission that = (UserRolePermission) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(permission, that.permission) &&
-        Objects.equals(userRole, that.userRole);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, permission, userRole);
-  }
-
-  @Override
-  public String toString() {
-    return "UserRolePermission{" +
-        "id=" + id +
-        ", permission=" + permission +
-        ", userRole=" + userRole +
-        '}';
+  /**
+   * Please note: this copy-constructor does not include a UserRolePermission's relationships
+   * @param source The original UserRolePermission
+   */
+  public UserRolePermission(UserRolePermission source) {
+    this.id = source.id;
+    this.permission = null;
+    this.userRole = null;
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,10 +20,11 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+import org.trebol.jpa.DBEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -31,9 +32,15 @@ import java.util.Objects;
   indexes = {
     @Index(columnList = "user_role_name")
   })
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class UserRole
-  implements Serializable {
-
+  implements DBEntity {
   private static final long serialVersionUID = 20L;
 
   @Id
@@ -44,53 +51,8 @@ public class UserRole
   @Column(name = "user_role_name", nullable = false, unique = true)
   private String name;
 
-  public UserRole() { }
-
   public UserRole(UserRole source) {
     this.id = source.id;
     this.name = source.name;
-  }
-
-  public UserRole(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    UserRole userRole = (UserRole) o;
-    return Objects.equals(id, userRole.id) &&
-        Objects.equals(name, userRole.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, name);
-  }
-
-  @Override
-  public String toString() {
-    return "UserRole{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        '}';
   }
 }

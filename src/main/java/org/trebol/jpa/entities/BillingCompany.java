@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,16 +20,23 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+import org.trebol.jpa.DBEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "billing_companies")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class BillingCompany
-  implements Serializable {
-
+  implements DBEntity {
   private static final long serialVersionUID = 2L;
 
   @Id
@@ -43,65 +50,9 @@ public class BillingCompany
   @Column(name = "billing_company_name", nullable = false, unique = true)
   private String name;
 
-  public BillingCompany() { }
-
   public BillingCompany(BillingCompany source) {
     this.id = source.id;
     this.idNumber = source.idNumber;
     this.name = source.name;
-  }
-
-  public BillingCompany(Long id, String idNumber, String name) {
-    this.id = id;
-    this.idNumber = idNumber;
-    this.name = name;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getIdNumber() {
-    return idNumber;
-  }
-
-  public void setIdNumber(String idNumber) {
-    this.idNumber = idNumber;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    BillingCompany that = (BillingCompany) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(idNumber, that.idNumber) &&
-        Objects.equals(name, that.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, idNumber, name);
-  }
-
-  @Override
-  public String toString() {
-    return "BillingCompany{" +
-        "id=" + id +
-        ", idNumber='" + idNumber + '\'' +
-        ", name='" + name + '\'' +
-        '}';
   }
 }

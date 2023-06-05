@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 The Trebol eCommerce Project
+ * Copyright (c) 2023 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,16 +20,23 @@
 
 package org.trebol.jpa.entities;
 
+import lombok.*;
+import org.trebol.jpa.DBEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "app_permissions")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Permission
-  implements Serializable {
-
+  implements DBEntity {
   private static final long serialVersionUID = 8L;
 
   @Id
@@ -43,53 +50,9 @@ public class Permission
   @Column(name = "permission_description")
   private String description;
 
-  public Permission() { }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Permission that = (Permission) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(code, that.code) &&
-        Objects.equals(description, that.description);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, code, description);
-  }
-
-  @Override
-  public String toString() {
-    return "Permission{" +
-        "id=" + id +
-        ", code='" + code + '\'' +
-        ", description='" + description + '\'' +
-        '}';
+  public Permission(Permission source) {
+    this.id = source.id;
+    this.code = source.code;
+    this.description = source.description;
   }
 }
