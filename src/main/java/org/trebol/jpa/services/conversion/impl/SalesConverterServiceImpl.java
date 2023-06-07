@@ -203,10 +203,12 @@ public class SalesConverterServiceImpl
         throw new BadInputException("Unexisting product in sell details");
       }
       Product product = productByBarcode.get();
+      String description = detail.getUnits() + "x " + product.getName();
       return SellDetail.builder()
         .units(detail.getUnits())
         .product(product)
         .unitValue(product.getPrice())
+        .description(description)
         .build();
     } catch (BadInputException exc) {
       throw new RuntimeException(exc.getMessage(), exc);
