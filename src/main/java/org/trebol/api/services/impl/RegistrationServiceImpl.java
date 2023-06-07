@@ -32,6 +32,8 @@ import org.trebol.api.services.RegistrationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
+import org.trebol.jpa.entities.QPerson;
+import org.trebol.jpa.entities.QUser;
 import org.trebol.jpa.entities.User;
 import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.repositories.CustomersRepository;
