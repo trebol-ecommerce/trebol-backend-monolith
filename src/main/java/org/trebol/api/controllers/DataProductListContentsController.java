@@ -44,6 +44,8 @@ import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Product;
 import org.trebol.jpa.entities.ProductList;
 import org.trebol.jpa.entities.ProductListItem;
+import org.trebol.jpa.entities.QProductList;
+import org.trebol.jpa.entities.QProductListItem;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
 import org.trebol.jpa.services.SortSpecParserService;
