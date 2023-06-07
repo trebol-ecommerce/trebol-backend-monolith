@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.ConverterService;
 
 public interface UserRolesConverterService
-  extends ConverterService<UserRolePojo, UserRole> {
+    extends ConverterService<UserRolePojo, UserRole> {
 }

@@ -51,116 +51,116 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductsCrudServiceImpl
-  extends CrudGenericService<ProductPojo, Product>
-  implements ProductsCrudService {
-  private final ProductsRepository productsRepository;
-  private final ProductsConverterService productsConverterService;
-  private final ProductImagesRepository productImagesRepository;
-  private final ImagesCrudService imagesCrudService;
-  private final Logger logger = LoggerFactory.getLogger(ProductsCrudServiceImpl.class);
+    extends CrudGenericService<ProductPojo, Product>
+    implements ProductsCrudService {
+    private final ProductsRepository productsRepository;
+    private final ProductsConverterService productsConverterService;
+    private final ProductImagesRepository productImagesRepository;
+    private final ImagesCrudService imagesCrudService;
+    private final Logger logger = LoggerFactory.getLogger(ProductsCrudServiceImpl.class);
 
-  @Autowired
-  public ProductsCrudServiceImpl(
-    ProductsRepository productsRepository,
-    ProductsConverterService productsConverterService,
-    ProductsPatchService productsPatchService,
-    ProductImagesRepository productImagesRepository,
-    ImagesCrudService imagesCrudService
-  ) {
-    super(productsRepository, productsConverterService, productsPatchService);
-    this.productsRepository = productsRepository;
-    this.productsConverterService = productsConverterService;
-    this.imagesCrudService = imagesCrudService;
-    this.productImagesRepository = productImagesRepository;
-  }
-
-  @Transactional
-  @Override
-  public ProductPojo create(ProductPojo input)
-    throws BadInputException, EntityExistsException {
-    this.validateInputPojoBeforeCreation(input);
-    Product prepared = productsConverterService.convertToNewEntity(input);
-    Product persistent = productsRepository.saveAndFlush(prepared);
-    ProductPojo target = productsConverterService.convertToPojo(persistent);
-    Collection<ImagePojo> inputPojoImages = input.getImages();
-    if (inputPojoImages != null && !inputPojoImages.isEmpty()) {
-      List<ProductImage> preparedImages = this.makeProductImageRelationships(persistent, inputPojoImages);
-      List<ProductImage> persistentProductImages = productImagesRepository.saveAll(preparedImages);
-      Collection<ImagePojo> targetPojoImages = productsConverterService.convertImagesToPojo(persistentProductImages);
-      target.setImages(targetPojoImages);
+    @Autowired
+    public ProductsCrudServiceImpl(
+        ProductsRepository productsRepository,
+        ProductsConverterService productsConverterService,
+        ProductsPatchService productsPatchService,
+        ProductImagesRepository productImagesRepository,
+        ImagesCrudService imagesCrudService
+    ) {
+        super(productsRepository, productsConverterService, productsPatchService);
+        this.productsRepository = productsRepository;
+        this.productsConverterService = productsConverterService;
+        this.imagesCrudService = imagesCrudService;
+        this.productImagesRepository = productImagesRepository;
     }
-    return target;
-  }
 
-  @Override
-  public Optional<ProductPojo> update(ProductPojo input, Long id) throws EntityNotFoundException, BadInputException {
-    Product prepared = productsConverterService.convertToNewEntity(input);
-    prepared.setId(id);
-    Product persistent = productsRepository.saveAndFlush(prepared);
-    ProductPojo target = productsConverterService.convertToPojo(persistent);
-    productImagesRepository.deleteByProductId(id);
-    Collection<ImagePojo> inputPojoImages = input.getImages();
-    if (inputPojoImages != null && !inputPojoImages.isEmpty()) {
-      List<ProductImage> preparedImages = this.makeProductImageRelationships(persistent, inputPojoImages);
-      List<ProductImage> persistentProductImages = productImagesRepository.saveAll(preparedImages);
-      Collection<ImagePojo> targetPojoImages = productsConverterService.convertImagesToPojo(persistentProductImages);
-      target.setImages(targetPojoImages);
+    @Transactional
+    @Override
+    public ProductPojo create(ProductPojo input)
+        throws BadInputException, EntityExistsException {
+        this.validateInputPojoBeforeCreation(input);
+        Product prepared = productsConverterService.convertToNewEntity(input);
+        Product persistent = productsRepository.saveAndFlush(prepared);
+        ProductPojo target = productsConverterService.convertToPojo(persistent);
+        Collection<ImagePojo> inputPojoImages = input.getImages();
+        if (inputPojoImages!=null && !inputPojoImages.isEmpty()) {
+            List<ProductImage> preparedImages = this.makeProductImageRelationships(persistent, inputPojoImages);
+            List<ProductImage> persistentProductImages = productImagesRepository.saveAll(preparedImages);
+            Collection<ImagePojo> targetPojoImages = productsConverterService.convertImagesToPojo(persistentProductImages);
+            target.setImages(targetPojoImages);
+        }
+        return target;
     }
-    return Optional.of(target);
-  }
 
-   @Override
-  public ProductPojo readOne(Predicate filters)
-    throws EntityNotFoundException {
-    Optional<Product> entity = productsRepository.findOne(filters);
-    if (entity.isEmpty()) {
-      throw new EntityNotFoundException(ITEM_NOT_FOUND);
+    @Override
+    public Optional<ProductPojo> update(ProductPojo input, Long id) throws EntityNotFoundException, BadInputException {
+        Product prepared = productsConverterService.convertToNewEntity(input);
+        prepared.setId(id);
+        Product persistent = productsRepository.saveAndFlush(prepared);
+        ProductPojo target = productsConverterService.convertToPojo(persistent);
+        productImagesRepository.deleteByProductId(id);
+        Collection<ImagePojo> inputPojoImages = input.getImages();
+        if (inputPojoImages!=null && !inputPojoImages.isEmpty()) {
+            List<ProductImage> preparedImages = this.makeProductImageRelationships(persistent, inputPojoImages);
+            List<ProductImage> persistentProductImages = productImagesRepository.saveAll(preparedImages);
+            Collection<ImagePojo> targetPojoImages = productsConverterService.convertImagesToPojo(persistentProductImages);
+            target.setImages(targetPojoImages);
+        }
+        return Optional.of(target);
     }
-    Product found = entity.get();
-    ProductPojo target = productsConverterService.convertToPojo(found);
-    List<ProductImage> productImages = productImagesRepository.deepFindProductImagesByProductId(found.getId());
-    Collection<ImagePojo> imagePojos = productsConverterService.convertImagesToPojo(productImages);
-    target.setImages(imagePojos);
-    return target;
-  }
 
-  @Override
-  public Optional<Product> getExisting(ProductPojo input)
-    throws BadInputException {
-    String barcode = input.getBarcode();
-    if (StringUtils.isBlank(barcode)) {
-      throw new BadInputException("Invalid product barcode");
-    } else {
-      return productsRepository.findByBarcode(barcode);
+    @Override
+    public ProductPojo readOne(Predicate filters)
+        throws EntityNotFoundException {
+        Optional<Product> entity = productsRepository.findOne(filters);
+        if (entity.isEmpty()) {
+            throw new EntityNotFoundException(ITEM_NOT_FOUND);
+        }
+        Product found = entity.get();
+        ProductPojo target = productsConverterService.convertToPojo(found);
+        List<ProductImage> productImages = productImagesRepository.deepFindProductImagesByProductId(found.getId());
+        Collection<ImagePojo> imagePojos = productsConverterService.convertImagesToPojo(productImages);
+        target.setImages(imagePojos);
+        return target;
     }
-  }
 
-  /**
-   * Creates transient instances of the ProductImages entity. Does NOT persist said instances.
-   *
-   * @param existingProduct The persisted entity
-   * @param inputImages     The list of images to link to the aforementioned Product
-   * @return The list of ImagePojos with normalized metadata.
-   */
-  private List<ProductImage> makeProductImageRelationships(Product existingProduct, Collection<ImagePojo> inputImages) {
-    List<ProductImage> allRelationships = new ArrayList<>();
-    for (ImagePojo img : inputImages) {
-      try {
-        Optional<Image> match = imagesCrudService.getExisting(img);
-        Image image = match.orElseGet(() -> Image.builder()
-          .code(img.getCode())
-          .filename(img.getFilename())
-          .url(img.getUrl())
-          .build());
-        ProductImage relationship = ProductImage.builder()
-          .product(existingProduct)
-          .image(image)
-          .build();
-        allRelationships.add(relationship);
-      } catch (BadInputException ex) {
-        logger.debug("An image was not linked to product with barcode '{}'", existingProduct.getBarcode());
-      }
+    @Override
+    public Optional<Product> getExisting(ProductPojo input)
+        throws BadInputException {
+        String barcode = input.getBarcode();
+        if (StringUtils.isBlank(barcode)) {
+            throw new BadInputException("Invalid product barcode");
+        } else {
+            return productsRepository.findByBarcode(barcode);
+        }
     }
-    return allRelationships;
-  }
+
+    /**
+     * Creates transient instances of the ProductImages entity. Does NOT persist said instances.
+     *
+     * @param existingProduct The persisted entity
+     * @param inputImages     The list of images to link to the aforementioned Product
+     * @return The list of ImagePojos with normalized metadata.
+     */
+    private List<ProductImage> makeProductImageRelationships(Product existingProduct, Collection<ImagePojo> inputImages) {
+        List<ProductImage> allRelationships = new ArrayList<>();
+        for (ImagePojo img : inputImages) {
+            try {
+                Optional<Image> match = imagesCrudService.getExisting(img);
+                Image image = match.orElseGet(() -> Image.builder()
+                    .code(img.getCode())
+                    .filename(img.getFilename())
+                    .url(img.getUrl())
+                    .build());
+                ProductImage relationship = ProductImage.builder()
+                    .product(existingProduct)
+                    .image(image)
+                    .build();
+                allRelationships.add(relationship);
+            } catch (BadInputException ex) {
+                logger.debug("An image was not linked to product with barcode '{}'", existingProduct.getBarcode());
+            }
+        }
+        return allRelationships;
+    }
 }

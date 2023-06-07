@@ -47,48 +47,48 @@ import static org.trebol.config.Constants.PERSON_DATA_MAP_KEYS_PREFIX;
 
 @ExtendWith(MockitoExtension.class)
 class SalespeoplePatchServiceImplTest {
-  @InjectMocks SalespeoplePatchServiceImpl instance;
-  @Mock PeoplePatchService peoplePatchServiceMock;
-  PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
-  private static ObjectMapper MAPPER;
-  private static Salesperson EXISTING_SALESPERSON;
+    @InjectMocks SalespeoplePatchServiceImpl instance;
+    @Mock PeoplePatchService peoplePatchServiceMock;
+    PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
+    private static ObjectMapper MAPPER;
+    private static Salesperson EXISTING_SALESPERSON;
 
-  @BeforeAll
-  static void beforeAll() {
-    MAPPER = new ObjectMapper();
-    EXISTING_SALESPERSON = Salesperson.builder()
-      .id(1L)
-      .person(Person.builder().build())
-      .build();
-  }
+    @BeforeAll
+    static void beforeAll() {
+        MAPPER = new ObjectMapper();
+        EXISTING_SALESPERSON = Salesperson.builder()
+            .id(1L)
+            .person(Person.builder().build())
+            .build();
+    }
 
-  @BeforeEach
-  void beforeEach() {
-    peopleTestHelper.resetPeople();
-  }
+    @BeforeEach
+    void beforeEach() {
+        peopleTestHelper.resetPeople();
+    }
 
-  @Test
-  void delegates_patching_to_peoplePatchService() throws BadInputException {
-    PersonPojo somePersonPojo = peopleTestHelper.personPojoBeforeCreation();
-    Map<String, Object> input = this.mapFrom(somePersonPojo);
-    Map<String, Object> serviceInput = this.nestPersonDataMap(input);
-    Person expectedPerson = peopleTestHelper.personEntityAfterCreation();
-    when(peoplePatchServiceMock.patchExistingEntity(anyMap(), any(Person.class))).thenReturn(expectedPerson);
-    Salesperson result = instance.patchExistingEntity(serviceInput, EXISTING_SALESPERSON);
-    assertEquals(expectedPerson, result.getPerson());
-    verify(peoplePatchServiceMock).patchExistingEntity(input, EXISTING_SALESPERSON.getPerson());
-  }
+    @Test
+    void delegates_patching_to_peoplePatchService() throws BadInputException {
+        PersonPojo somePersonPojo = peopleTestHelper.personPojoBeforeCreation();
+        Map<String, Object> input = this.mapFrom(somePersonPojo);
+        Map<String, Object> serviceInput = this.nestPersonDataMap(input);
+        Person expectedPerson = peopleTestHelper.personEntityAfterCreation();
+        when(peoplePatchServiceMock.patchExistingEntity(anyMap(), any(Person.class))).thenReturn(expectedPerson);
+        Salesperson result = instance.patchExistingEntity(serviceInput, EXISTING_SALESPERSON);
+        assertEquals(expectedPerson, result.getPerson());
+        verify(peoplePatchServiceMock).patchExistingEntity(input, EXISTING_SALESPERSON.getPerson());
+    }
 
-  @SuppressWarnings("unchecked")
-  private Map<String, Object> mapFrom(PersonPojo data) {
-    return MAPPER.convertValue(data, Map.class);
-  }
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> mapFrom(PersonPojo data) {
+        return MAPPER.convertValue(data, Map.class);
+    }
 
-  private Map<String, Object> nestPersonDataMap(Map<String, Object> data) {
-    return data.entrySet().stream()
-      .map(entry -> Map.entry(
-        PERSON_DATA_MAP_KEYS_PREFIX + entry.getKey(),
-        entry.getValue()))
-      .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-  }
+    private Map<String, Object> nestPersonDataMap(Map<String, Object> data) {
+        return data.entrySet().stream()
+            .map(entry -> Map.entry(
+                PERSON_DATA_MAP_KEYS_PREFIX + entry.getKey(),
+                entry.getValue()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
 }

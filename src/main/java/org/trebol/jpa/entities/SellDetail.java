@@ -36,39 +36,40 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class SellDetail
-  implements DBEntity {
-  private static final long serialVersionUID = 15L;
+    implements DBEntity {
+    private static final long serialVersionUID = 15L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "sell_detail_id", nullable = false)
-  private Long id;
-  @Column(name = "sell_detail_units", nullable = false)
-  private int units;
-  @Column(name = "sell_detail_unit_value", nullable = false)
-  private Integer unitValue;
-  @Column(name = "sell_detail_description", nullable = false)
-  @Size(max = 260)
-  private String description;
-  @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false,
-    foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-  @ManyToOne(optional = false)
-  private Product product;
-  @JoinColumn(name = "sell_id", referencedColumnName = "sell_id", insertable = false, updatable = false,
-    foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private Sell sell;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sell_detail_id", nullable = false)
+    private Long id;
+    @Column(name = "sell_detail_units", nullable = false)
+    private int units;
+    @Column(name = "sell_detail_unit_value", nullable = false)
+    private Integer unitValue;
+    @Column(name = "sell_detail_description", nullable = false)
+    @Size(max = 260)
+    private String description;
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false,
+        foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @ManyToOne(optional = false)
+    private Product product;
+    @JoinColumn(name = "sell_id", referencedColumnName = "sell_id", insertable = false, updatable = false,
+        foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Sell sell;
 
-  /**
-   * Please note: this copy-constructor does not include a SellDetail's relationships
-   * @param source The original SellDetail
-   */
-  public SellDetail(SellDetail source) {
-    this.id = source.id;
-    this.units = source.units;
-    this.unitValue = source.unitValue;
-    this.description = source.description;
-    this.product = null;
-    this.sell = null;
-  }
+    /**
+     * Please note: this copy-constructor does not include a SellDetail's relationships
+     *
+     * @param source The original SellDetail
+     */
+    public SellDetail(SellDetail source) {
+        this.id = source.id;
+        this.units = source.units;
+        this.unitValue = source.unitValue;
+        this.description = source.description;
+        this.product = null;
+        this.sell = null;
+    }
 }

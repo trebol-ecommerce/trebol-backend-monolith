@@ -62,563 +62,563 @@ import static org.trebol.config.Constants.SELL_STATUS_REJECTED;
 
 @ExtendWith(MockitoExtension.class)
 class SalesProcessServiceImplTest {
-  @InjectMocks SalesProcessServiceImpl instance;
-  @Mock SalesCrudService crudServiceMock;
-  @Mock SalesRepository salesRepositoryMock;
-  @Mock SellStatusesRepository sellStatusesRepositoryMock;
-  @Mock SellDetailsRepository sellDetailsRepositoryMock;
-  @Mock SalesConverterService sellConverterServiceMock;
-  @Mock ProductsConverterService productConverterServiceMock;
-  final ProductsTestHelper productsHelper = new ProductsTestHelper();
+    @InjectMocks SalesProcessServiceImpl instance;
+    @Mock SalesCrudService crudServiceMock;
+    @Mock SalesRepository salesRepositoryMock;
+    @Mock SellStatusesRepository sellStatusesRepositoryMock;
+    @Mock SellDetailsRepository sellDetailsRepositoryMock;
+    @Mock SalesConverterService sellConverterServiceMock;
+    @Mock ProductsConverterService productConverterServiceMock;
+    final ProductsTestHelper productsHelper = new ProductsTestHelper();
 
-  @BeforeEach
-  void beforeEach() {
-    productsHelper.resetProducts();
-  }
-
-  @Nested
-  class MarkAsStarted {
-
-    @Test
-    void markAsStarted_SellStatus_IsNotPending_BadInputException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName("status");
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock));
-
-      assertThrows(BadInputException.class, () -> instance.markAsStarted(sellPojoMock));
+    @BeforeEach
+    void beforeEach() {
+        productsHelper.resetProducts();
     }
 
-    @Test
-    void markAsStarted_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+    @Nested
+    class MarkAsStarted {
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PENDING);
+        @Test
+        void markAsStarted_SellStatus_IsNotPending_BadInputException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName("status");
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      assertThrows(IllegalStateException.class, () -> instance.markAsStarted(sellPojoMock));
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock));
+
+            assertThrows(BadInputException.class, () -> instance.markAsStarted(sellPojoMock));
+        }
+
+        @Test
+        void markAsStarted_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PENDING);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+
+            assertThrows(IllegalStateException.class, () -> instance.markAsStarted(sellPojoMock));
+        }
+
+        @Test
+        void markAsStarted_ShouldReturn_SellPojo_WithStatusStarted() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PENDING);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+
+            assertEquals(SELL_STATUS_PAYMENT_STARTED, instance.markAsStarted(sellPojoMock).getStatus());
+        }
     }
 
-    @Test
-    void markAsStarted_ShouldReturn_SellPojo_WithStatusStarted() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+    @Nested
+    class MarkAsAborted {
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PENDING);
+        @Test
+        void markAsAborted_SellStatus_IsNotStarted_BadInputException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName("status");
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      assertEquals(SELL_STATUS_PAYMENT_STARTED, instance.markAsStarted(sellPojoMock).getStatus());
-    }
-  }
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
 
-  @Nested
-  class MarkAsAborted {
+            assertThrows(BadInputException.class, () -> instance.markAsAborted(sellPojoMock));
+        }
 
-    @Test
-    void markAsAborted_SellStatus_IsNotStarted_BadInputException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+        @Test
+        void markAsAborted_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName("status");
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
-      assertThrows(BadInputException.class, () -> instance.markAsAborted(sellPojoMock));
-    }
+            assertThrows(IllegalStateException.class, () -> instance.markAsAborted(sellPojoMock));
+        }
 
-    @Test
-    void markAsAborted_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+        @Test
+        void markAsAborted_ShouldReturn_SellPojo_WithStatusCancelled() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
 
-      assertThrows(IllegalStateException.class, () -> instance.markAsAborted(sellPojoMock));
-    }
-
-    @Test
-    void markAsAborted_ShouldReturn_SellPojo_WithStatusCancelled() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-
-      assertEquals(SELL_STATUS_PAYMENT_CANCELLED, instance.markAsAborted(sellPojoMock).getStatus());
-    }
-  }
-
-  @Nested
-  class MarkAsFailed {
-
-    @Test
-    void markAsFailed_SellStatus_IsNotStarted_BadInputException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName("status");
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-
-      assertThrows(BadInputException.class, () -> instance.markAsFailed(sellPojoMock));
+            assertEquals(SELL_STATUS_PAYMENT_CANCELLED, instance.markAsAborted(sellPojoMock).getStatus());
+        }
     }
 
-    @Test
-    void markAsFailed_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+    @Nested
+    class MarkAsFailed {
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
+        @Test
+        void markAsFailed_SellStatus_IsNotStarted_BadInputException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName("status");
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      assertThrows(IllegalStateException.class, () -> instance.markAsFailed(sellPojoMock));
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+
+            assertThrows(BadInputException.class, () -> instance.markAsFailed(sellPojoMock));
+        }
+
+        @Test
+        void markAsFailed_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+
+            assertThrows(IllegalStateException.class, () -> instance.markAsFailed(sellPojoMock));
+        }
+
+        @Test
+        void markAsFailed_ShouldReturn_SellPojo_WithStatusFailed() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+
+            assertEquals(SELL_STATUS_PAYMENT_FAILED, instance.markAsFailed(sellPojoMock).getStatus());
+        }
     }
 
-    @Test
-    void markAsFailed_ShouldReturn_SellPojo_WithStatusFailed() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+    @Nested
+    class MarkAsPaid {
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
+        @Test
+        void markAsPaid__SellStatus_IsNotStarted_BadInputException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName("status");
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      assertEquals(SELL_STATUS_PAYMENT_FAILED, instance.markAsFailed(sellPojoMock).getStatus());
-    }
-  }
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
 
-  @Nested
-  class MarkAsPaid {
+            assertThrows(BadInputException.class, () -> instance.markAsPaid(sellPojoMock));
+        }
 
-    @Test
-    void markAsPaid__SellStatus_IsNotStarted_BadInputException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+        @Test
+        void markAsPaid_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName("status");
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
-      assertThrows(BadInputException.class, () -> instance.markAsPaid(sellPojoMock));
-    }
+            assertThrows(IllegalStateException.class, () -> instance.markAsPaid(sellPojoMock));
+        }
 
-    @Test
-    void markAsPaid_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+        @Test
+        void markAsPaid_ShouldReturn_SellPojo_WithStatusUnconfirmed() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
 
-      assertThrows(IllegalStateException.class, () -> instance.markAsPaid(sellPojoMock));
-    }
+            assertEquals(SELL_STATUS_PAID_UNCONFIRMED, instance.markAsPaid(sellPojoMock).getStatus());
+        }
 
-    @Test
-    void markAsPaid_ShouldReturn_SellPojo_WithStatusUnconfirmed() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+        @Test
+        void markAsPaid_ShouldReturn_SellPojo_WithCorrectDetails() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+            SellDetail sellDetailMock = new SellDetail();
+            sellDetailMock.setId(1L);
+            sellDetailMock.setUnits(11);
+            sellDetailMock.setUnitValue(111);
+            List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
 
-      assertEquals(SELL_STATUS_PAID_UNCONFIRMED, instance.markAsPaid(sellPojoMock).getStatus());
-    }
+            ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
 
-    @Test
-    void markAsPaid_ShouldReturn_SellPojo_WithCorrectDetails() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+            when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
+            when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAYMENT_STARTED);
+            Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsPaid(sellPojoMock).getDetails();
+            SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      SellDetail sellDetailMock = new SellDetail();
-      sellDetailMock.setId(1L);
-      sellDetailMock.setUnits(11);
-      sellDetailMock.setUnitValue(111);
-      List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
-
-      ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-      when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
-      when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
-
-      Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsPaid(sellPojoMock).getDetails();
-      SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
-
-      assertEquals(1, actualSellDetailsPojo.size());
-      assertEquals(11, actualSellDetailPojo.getUnits());
-      assertEquals(111, actualSellDetailPojo.getUnitValue());
-      assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
-    }
-  }
-
-  @Nested
-  class MarkAsConfirmed {
-
-    @Test
-    void markAsConfirmed__SellStatus_IsNotStarted_BadInputException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName("status");
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-
-      assertThrows(BadInputException.class, () -> instance.markAsConfirmed(sellPojoMock));
+            assertEquals(1, actualSellDetailsPojo.size());
+            assertEquals(11, actualSellDetailPojo.getUnits());
+            assertEquals(111, actualSellDetailPojo.getUnitValue());
+            assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
+        }
     }
 
-    @Test
-    void markAsConfirmed_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+    @Nested
+    class MarkAsConfirmed {
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
+        @Test
+        void markAsConfirmed__SellStatus_IsNotStarted_BadInputException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName("status");
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      assertThrows(IllegalStateException.class, () -> instance.markAsConfirmed(sellPojoMock));
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+
+            assertThrows(BadInputException.class, () -> instance.markAsConfirmed(sellPojoMock));
+        }
+
+        @Test
+        void markAsConfirmed_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+
+            assertThrows(IllegalStateException.class, () -> instance.markAsConfirmed(sellPojoMock));
+        }
+
+        @Test
+        void markAsConfirmed_ShouldReturn_SellPojo_WithStatusConfirmed() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+
+            assertEquals(SELL_STATUS_PAID_CONFIRMED, instance.markAsConfirmed(sellPojoMock).getStatus());
+        }
+
+        @Test
+        void markAsConfirmed_ShouldReturn_SellPojo_WithCorrectDetails() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            SellDetail sellDetailMock = new SellDetail();
+            sellDetailMock.setId(1L);
+            sellDetailMock.setUnits(11);
+            sellDetailMock.setUnitValue(111);
+            List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
+
+            ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+            when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
+            when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
+
+            Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsConfirmed(sellPojoMock).getDetails();
+            SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
+
+            assertEquals(1, actualSellDetailsPojo.size());
+            assertEquals(11, actualSellDetailPojo.getUnits());
+            assertEquals(111, actualSellDetailPojo.getUnitValue());
+            assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
+        }
     }
 
-    @Test
-    void markAsConfirmed_ShouldReturn_SellPojo_WithStatusConfirmed() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+    @Nested
+    class MarkAsRejected {
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
+        @Test
+        void markAsRejected__SellStatus_IsNotStarted_BadInputException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName("status");
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      assertEquals(SELL_STATUS_PAID_CONFIRMED, instance.markAsConfirmed(sellPojoMock).getStatus());
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+
+            assertThrows(BadInputException.class, () -> instance.markAsRejected(sellPojoMock));
+        }
+
+        @Test
+        void markAsRejected_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+
+            assertThrows(IllegalStateException.class, () -> instance.markAsRejected(sellPojoMock));
+        }
+
+        @Test
+        void markAsRejected_ShouldReturn_SellPojo_WithStatusRejected() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+
+            assertEquals(SELL_STATUS_REJECTED, instance.markAsRejected(sellPojoMock).getStatus());
+        }
+
+        @Test
+        void markAsRejected_ShouldReturn_SellPojo_WithCorrectDetails() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            SellDetail sellDetailMock = new SellDetail();
+            sellDetailMock.setId(1L);
+            sellDetailMock.setUnits(11);
+            sellDetailMock.setUnitValue(111);
+            List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
+
+            ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+            when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
+            when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
+
+            Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsRejected(sellPojoMock).getDetails();
+            SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
+
+            assertEquals(1, actualSellDetailsPojo.size());
+            assertEquals(11, actualSellDetailPojo.getUnits());
+            assertEquals(111, actualSellDetailPojo.getUnitValue());
+            assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
+        }
     }
 
-    @Test
-    void markAsConfirmed_ShouldReturn_SellPojo_WithCorrectDetails() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
+    @Nested
+    class MarkAsCompleted {
 
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
+        @Test
+        void markAsCompleted__SellStatus_IsNotStarted_BadInputException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName("status");
 
-      SellDetail sellDetailMock = new SellDetail();
-      sellDetailMock.setId(1L);
-      sellDetailMock.setUnits(11);
-      sellDetailMock.setUnitValue(111);
-      List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
 
-      ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
 
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-      when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
-      when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
+            assertThrows(BadInputException.class, () -> instance.markAsCompleted(sellPojoMock));
+        }
 
-      Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsConfirmed(sellPojoMock).getDetails();
-      SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
+        @Test
+        void markAsCompleted_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
 
-      assertEquals(1, actualSellDetailsPojo.size());
-      assertEquals(11, actualSellDetailPojo.getUnits());
-      assertEquals(111, actualSellDetailPojo.getUnitValue());
-      assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAID_CONFIRMED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+
+            assertThrows(IllegalStateException.class, () -> instance.markAsCompleted(sellPojoMock));
+        }
+
+        @Test
+        void markAsCompleted_ShouldReturn_SellPojo_WithStatusCompleted() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAID_CONFIRMED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+
+            assertEquals(SELL_STATUS_COMPLETED, instance.markAsCompleted(sellPojoMock).getStatus());
+        }
+
+        @Test
+        void markAsCompleted_ShouldReturn_SellPojo_WithCorrectDetails() throws BadInputException {
+            // Setup mock objects
+            SellPojo sellPojoMock = SellPojo.builder().build();
+
+            SellStatus sellStatusMock = new SellStatus();
+            sellStatusMock.setName(SELL_STATUS_PAID_CONFIRMED);
+
+            Sell sellMock = new Sell();
+            sellMock.setStatus(sellStatusMock);
+
+            SellDetail sellDetailMock = new SellDetail();
+            sellDetailMock.setId(1L);
+            sellDetailMock.setUnits(11);
+            sellDetailMock.setUnitValue(111);
+            List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
+
+            ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
+
+            // Stubbing
+            when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
+            when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
+            when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
+            when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
+            when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
+
+            Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsCompleted(sellPojoMock).getDetails();
+            SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
+
+            assertEquals(1, actualSellDetailsPojo.size());
+            assertEquals(11, actualSellDetailPojo.getUnits());
+            assertEquals(111, actualSellDetailPojo.getUnitValue());
+            assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
+        }
     }
-  }
-
-  @Nested
-  class MarkAsRejected {
-
-    @Test
-    void markAsRejected__SellStatus_IsNotStarted_BadInputException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName("status");
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-
-      assertThrows(BadInputException.class, () -> instance.markAsRejected(sellPojoMock));
-    }
-
-    @Test
-    void markAsRejected_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
-
-      assertThrows(IllegalStateException.class, () -> instance.markAsRejected(sellPojoMock));
-    }
-
-    @Test
-    void markAsRejected_ShouldReturn_SellPojo_WithStatusRejected() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-
-      assertEquals(SELL_STATUS_REJECTED, instance.markAsRejected(sellPojoMock).getStatus());
-    }
-
-    @Test
-    void markAsRejected_ShouldReturn_SellPojo_WithCorrectDetails() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAID_UNCONFIRMED);
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      SellDetail sellDetailMock = new SellDetail();
-      sellDetailMock.setId(1L);
-      sellDetailMock.setUnits(11);
-      sellDetailMock.setUnitValue(111);
-      List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
-
-      ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-      when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
-      when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
-
-      Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsRejected(sellPojoMock).getDetails();
-      SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
-
-      assertEquals(1, actualSellDetailsPojo.size());
-      assertEquals(11, actualSellDetailPojo.getUnits());
-      assertEquals(111, actualSellDetailPojo.getUnitValue());
-      assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
-    }
-  }
-
-  @Nested
-  class MarkAsCompleted {
-
-    @Test
-    void markAsCompleted__SellStatus_IsNotStarted_BadInputException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName("status");
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-
-      assertThrows(BadInputException.class, () -> instance.markAsCompleted(sellPojoMock));
-    }
-
-    @Test
-    void markAsCompleted_SellStatus_IsNotInRepo_IllegalStateException() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAID_CONFIRMED);
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
-
-      assertThrows(IllegalStateException.class, () -> instance.markAsCompleted(sellPojoMock));
-    }
-
-    @Test
-    void markAsCompleted_ShouldReturn_SellPojo_WithStatusCompleted() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAID_CONFIRMED);
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-
-      assertEquals(SELL_STATUS_COMPLETED, instance.markAsCompleted(sellPojoMock).getStatus());
-    }
-
-    @Test
-    void markAsCompleted_ShouldReturn_SellPojo_WithCorrectDetails() throws BadInputException {
-      // Setup mock objects
-      SellPojo sellPojoMock = SellPojo.builder().build();
-
-      SellStatus sellStatusMock = new SellStatus();
-      sellStatusMock.setName(SELL_STATUS_PAID_CONFIRMED);
-
-      Sell sellMock = new Sell();
-      sellMock.setStatus(sellStatusMock);
-
-      SellDetail sellDetailMock = new SellDetail();
-      sellDetailMock.setId(1L);
-      sellDetailMock.setUnits(11);
-      sellDetailMock.setUnitValue(111);
-      List<SellDetail> sellDetailsMock = List.of(sellDetailMock);
-
-      ProductPojo productPojoMock = productsHelper.productPojoAfterCreationWithoutCategory();
-
-      // Stubbing
-      when(crudServiceMock.getExisting(any(SellPojo.class))).thenReturn(Optional.of(sellMock)); // fetchExistingOrThrowException
-      when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(sellStatusMock));
-      when(sellConverterServiceMock.convertToPojo(any())).thenReturn(sellPojoMock); // convertOrThrowException
-      when(sellDetailsRepositoryMock.findBySellId(any())).thenReturn(sellDetailsMock);
-      when(productConverterServiceMock.convertToPojo(any())).thenReturn(productPojoMock);
-
-      Collection<SellDetailPojo> actualSellDetailsPojo = instance.markAsCompleted(sellPojoMock).getDetails();
-      SellDetailPojo actualSellDetailPojo = actualSellDetailsPojo.iterator().next();
-
-      assertEquals(1, actualSellDetailsPojo.size());
-      assertEquals(11, actualSellDetailPojo.getUnits());
-      assertEquals(111, actualSellDetailPojo.getUnitValue());
-      assertEquals(productPojoMock, actualSellDetailPojo.getProduct());
-    }
-  }
 }

@@ -39,39 +39,39 @@ import static org.mockito.Mockito.when;
 import static org.trebol.testing.TestConstants.ANY;
 
 public abstract class DataCrudGenericControllerTest<P, E>
-  extends DataGenericControllerTest<P, E> {
-  protected DataCrudGenericController<P, E> instance;
-  protected PaginationService paginationServiceMock;
-  protected SortSpecParserService sortServiceMock;
-  protected CrudService<P, E> crudServiceMock;
-  protected PredicateService predicateServiceMock;
+    extends DataGenericControllerTest<P, E> {
+    protected DataCrudGenericController<P, E> instance;
+    protected PaginationService paginationServiceMock;
+    protected SortSpecParserService sortServiceMock;
+    protected CrudService<P, E> crudServiceMock;
+    protected PredicateService predicateServiceMock;
 
-  protected void beforeEach() {
-    super.instance = instance;
-    super.crudServiceMock = crudServiceMock;
-  }
-
-  protected void creates_data(P input) throws BadInputException {
-    instance.create(input);
-
-    verify(crudServiceMock).create(input);
-  }
-
-  protected void deletes_data_parsing_predicate_filters_from_map(@Nullable Map<String, String> predicateFiltersMap) {
-    if (predicateFiltersMap == null) {
-      predicateFiltersMap = Map.of(ANY, ANY);
+    protected void beforeEach() {
+        super.instance = instance;
+        super.crudServiceMock = crudServiceMock;
     }
-    Predicate predicate = new BooleanBuilder();
-    when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
 
-    instance.delete(predicateFiltersMap);
+    protected void creates_data(P input) throws BadInputException {
+        instance.create(input);
 
-    verify(predicateServiceMock).parseMap(predicateFiltersMap);
-    verify(crudServiceMock).delete(predicate);
-  }
+        verify(crudServiceMock).create(input);
+    }
 
-  protected void does_not_delete_data_when_predicate_filters_map_is_empty() {
-    instance.delete(Map.of());
-    verify(crudServiceMock, never()).delete(any(Predicate.class));
-  }
+    protected void deletes_data_parsing_predicate_filters_from_map(@Nullable Map<String, String> predicateFiltersMap) {
+        if (predicateFiltersMap==null) {
+            predicateFiltersMap = Map.of(ANY, ANY);
+        }
+        Predicate predicate = new BooleanBuilder();
+        when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
+
+        instance.delete(predicateFiltersMap);
+
+        verify(predicateServiceMock).parseMap(predicateFiltersMap);
+        verify(crudServiceMock).delete(predicate);
+    }
+
+    protected void does_not_delete_data_when_predicate_filters_map_is_empty() {
+        instance.delete(Map.of());
+        verify(crudServiceMock, never()).delete(any(Predicate.class));
+    }
 }

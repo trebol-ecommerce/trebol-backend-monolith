@@ -30,6 +30,6 @@ import javax.validation.constraints.NotNull;
 @Builder
 @JsonInclude
 public class UserRolePojo {
-  @NotNull
-  private String name;
+    @NotNull
+    private String name;
 }

@@ -31,15 +31,15 @@ import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public class CustomersSortSpec {
-  private static final QCustomer BASE_PATH = QCustomer.customer;
-  private static final QPerson PERSON_PATH = BASE_PATH.person;
-  public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
-    "idNumber", PERSON_PATH.idNumber.asc(),
-    "firstName", PERSON_PATH.firstName.asc(),
-    "email", PERSON_PATH.email.asc(),
-    "phone1", PERSON_PATH.phone1.asc(),
-    "phone2", PERSON_PATH.phone2.asc(),
-    "name", PERSON_PATH.lastName.asc(),
-    "lastName", PERSON_PATH.lastName.asc()
-  );
+    private static final QCustomer BASE_PATH = QCustomer.customer;
+    private static final QPerson PERSON_PATH = BASE_PATH.person;
+    public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
+        "idNumber", PERSON_PATH.idNumber.asc(),
+        "firstName", PERSON_PATH.firstName.asc(),
+        "email", PERSON_PATH.email.asc(),
+        "phone1", PERSON_PATH.phone1.asc(),
+        "phone2", PERSON_PATH.phone2.asc(),
+        "name", PERSON_PATH.lastName.asc(),
+        "lastName", PERSON_PATH.lastName.asc()
+    );
 }

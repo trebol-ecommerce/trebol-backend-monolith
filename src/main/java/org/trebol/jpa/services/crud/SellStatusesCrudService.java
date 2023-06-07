@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.services.CrudService;
 
 public interface SellStatusesCrudService
-  extends CrudService<SellStatusPojo, SellStatus> {
+    extends CrudService<SellStatusPojo, SellStatus> {
 }

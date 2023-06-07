@@ -30,12 +30,12 @@ import javax.persistence.EntityExistsException;
  */
 public interface RegistrationService {
 
-  /**
-   * Core registration mechanism. Takes the registration request and fulfills it.
-   *
-   * @param registration An object containing the details of the registration request.
-   * @throws BadInputException     When the registration request contains invalid data.
-   * @throws EntityExistsException When a user account matching the provided details already exists.
-   */
-  void register(RegistrationPojo registration) throws BadInputException, EntityExistsException;
+    /**
+     * Core registration mechanism. Takes the registration request and fulfills it.
+     *
+     * @param registration An object containing the details of the registration request.
+     * @throws BadInputException     When the registration request contains invalid data.
+     * @throws EntityExistsException When a user account matching the provided details already exists.
+     */
+    void register(RegistrationPojo registration) throws BadInputException, EntityExistsException;
 }

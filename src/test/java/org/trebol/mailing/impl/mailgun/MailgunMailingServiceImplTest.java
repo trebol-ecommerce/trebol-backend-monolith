@@ -45,139 +45,139 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class MailgunMailingServiceImplTest {
-  MailgunMailingServiceImpl instance;
-  @Mock MailingProperties integrationPropertiesMock;
-  @Mock MailgunMailingProperties mailgunPropertiesMock;
-  @Mock ConversionService conversionServiceMock;
-  private static final String MOCK_VALID_MAILGUN_JSON_RESPONSE = "{ \"id\": \"ffad4d-3a8abe\" }";
-  private static final String MOCK_DATE_FORMAT = "M/d/y z";
-  private static final String MOCK_DATE_TIMEZONE = "UTC";
-  private static final String MOCK_MAILGUN_DOMAIN = "somedomain.org";
-  SellPojo readySell;
+    MailgunMailingServiceImpl instance;
+    @Mock MailingProperties integrationPropertiesMock;
+    @Mock MailgunMailingProperties mailgunPropertiesMock;
+    @Mock ConversionService conversionServiceMock;
+    private static final String MOCK_VALID_MAILGUN_JSON_RESPONSE = "{ \"id\": \"ffad4d-3a8abe\" }";
+    private static final String MOCK_DATE_FORMAT = "M/d/y z";
+    private static final String MOCK_DATE_TIMEZONE = "UTC";
+    private static final String MOCK_MAILGUN_DOMAIN = "somedomain.org";
+    SellPojo readySell;
 
-  @BeforeEach
-  void beforeEach() {
-    when(mailgunPropertiesMock.getDomain()).thenReturn(MOCK_MAILGUN_DOMAIN);
-    when(mailgunPropertiesMock.getCustomerOrderPaymentTemplate()).thenReturn(ANY);
-    when(mailgunPropertiesMock.getCustomerOrderConfirmationTemplate()).thenReturn(ANY);
-    when(mailgunPropertiesMock.getCustomerOrderRejectionTemplate()).thenReturn(ANY);
-    when(mailgunPropertiesMock.getCustomerOrderCompletionTemplate()).thenReturn(ANY);
-    when(mailgunPropertiesMock.getOwnerOrderConfirmationTemplate()).thenReturn(ANY);
-    when(mailgunPropertiesMock.getOwnerOrderRejectionTemplate()).thenReturn(ANY);
-    when(mailgunPropertiesMock.getOwnerOrderCompletionTemplate()).thenReturn(ANY);
-    when(integrationPropertiesMock.getDateFormat()).thenReturn(MOCK_DATE_FORMAT);
-    when(integrationPropertiesMock.getDateTimezone()).thenReturn(MOCK_DATE_TIMEZONE);
-    when(integrationPropertiesMock.getCustomerOrderPaymentSubject()).thenReturn(ANY);
-    when(integrationPropertiesMock.getCustomerOrderConfirmationSubject()).thenReturn(ANY);
-    when(integrationPropertiesMock.getCustomerOrderRejectionSubject()).thenReturn(ANY);
-    when(integrationPropertiesMock.getCustomerOrderCompletionSubject()).thenReturn(ANY);
-    when(integrationPropertiesMock.getOwnerOrderConfirmationSubject()).thenReturn(ANY);
-    when(integrationPropertiesMock.getOwnerOrderCompletionSubject()).thenReturn(ANY);
-    when(integrationPropertiesMock.getOwnerOrderRejectionSubject()).thenReturn(ANY);
-    instance = new MailgunMailingServiceImpl(integrationPropertiesMock, mailgunPropertiesMock, conversionServiceMock);
-    readySell = SellPojo.builder()
-      .status(SELL_STATUS_PAID_UNCONFIRMED)
-      .buyOrder(1000L)
-      .details(List.of(
-        SellDetailPojo.builder()
-          .description("some product")
-          .build(),
-        SellDetailPojo.builder()
-          .description("some other product")
-          .build()
-      ))
-      .customer(CustomerPojo.builder()
-        .person(PersonPojo.builder()
-          .firstName(ANY)
-          .lastName(ANY)
-          .email(ANY)
-          .build())
-        .build())
-      .build();
-  }
+    @BeforeEach
+    void beforeEach() {
+        when(mailgunPropertiesMock.getDomain()).thenReturn(MOCK_MAILGUN_DOMAIN);
+        when(mailgunPropertiesMock.getCustomerOrderPaymentTemplate()).thenReturn(ANY);
+        when(mailgunPropertiesMock.getCustomerOrderConfirmationTemplate()).thenReturn(ANY);
+        when(mailgunPropertiesMock.getCustomerOrderRejectionTemplate()).thenReturn(ANY);
+        when(mailgunPropertiesMock.getCustomerOrderCompletionTemplate()).thenReturn(ANY);
+        when(mailgunPropertiesMock.getOwnerOrderConfirmationTemplate()).thenReturn(ANY);
+        when(mailgunPropertiesMock.getOwnerOrderRejectionTemplate()).thenReturn(ANY);
+        when(mailgunPropertiesMock.getOwnerOrderCompletionTemplate()).thenReturn(ANY);
+        when(integrationPropertiesMock.getDateFormat()).thenReturn(MOCK_DATE_FORMAT);
+        when(integrationPropertiesMock.getDateTimezone()).thenReturn(MOCK_DATE_TIMEZONE);
+        when(integrationPropertiesMock.getCustomerOrderPaymentSubject()).thenReturn(ANY);
+        when(integrationPropertiesMock.getCustomerOrderConfirmationSubject()).thenReturn(ANY);
+        when(integrationPropertiesMock.getCustomerOrderRejectionSubject()).thenReturn(ANY);
+        when(integrationPropertiesMock.getCustomerOrderCompletionSubject()).thenReturn(ANY);
+        when(integrationPropertiesMock.getOwnerOrderConfirmationSubject()).thenReturn(ANY);
+        when(integrationPropertiesMock.getOwnerOrderCompletionSubject()).thenReturn(ANY);
+        when(integrationPropertiesMock.getOwnerOrderRejectionSubject()).thenReturn(ANY);
+        instance = new MailgunMailingServiceImpl(integrationPropertiesMock, mailgunPropertiesMock, conversionServiceMock);
+        readySell = SellPojo.builder()
+            .status(SELL_STATUS_PAID_UNCONFIRMED)
+            .buyOrder(1000L)
+            .details(List.of(
+                SellDetailPojo.builder()
+                    .description("some product")
+                    .build(),
+                SellDetailPojo.builder()
+                    .description("some other product")
+                    .build()
+            ))
+            .customer(CustomerPojo.builder()
+                .person(PersonPojo.builder()
+                    .firstName(ANY)
+                    .lastName(ANY)
+                    .email(ANY)
+                    .build())
+                .build())
+            .build();
+    }
 
-  @AfterEach
-  void afterEach() {
-    MockClient.clear();
-  }
+    @AfterEach
+    void afterEach() {
+        MockClient.clear();
+    }
 
-  @ParameterizedTest
-  @ValueSource(strings = {
-    SELL_STATUS_PAID_UNCONFIRMED,
-    SELL_STATUS_PAID_CONFIRMED,
-    SELL_STATUS_REJECTED,
-    SELL_STATUS_COMPLETED
-  })
-  void notifies_statuses_to_customers(String status) {
-    ReceiptPojo receipt = new ReceiptPojo();
-    when(conversionServiceMock.convert(any(SellPojo.class), eq(ReceiptPojo.class))).thenReturn(receipt);
-    MockClient restClient = MockClient.register();
-    restClient.expect(HttpMethod.POST, MAILGUN_HOST + MOCK_MAILGUN_DOMAIN + "/messages").thenReturn(MOCK_VALID_MAILGUN_JSON_RESPONSE);
-    readySell.setStatus(status);
+    @ParameterizedTest
+    @ValueSource(strings = {
+        SELL_STATUS_PAID_UNCONFIRMED,
+        SELL_STATUS_PAID_CONFIRMED,
+        SELL_STATUS_REJECTED,
+        SELL_STATUS_COMPLETED
+    })
+    void notifies_statuses_to_customers(String status) {
+        ReceiptPojo receipt = new ReceiptPojo();
+        when(conversionServiceMock.convert(any(SellPojo.class), eq(ReceiptPojo.class))).thenReturn(receipt);
+        MockClient restClient = MockClient.register();
+        restClient.expect(HttpMethod.POST, MAILGUN_HOST + MOCK_MAILGUN_DOMAIN + "/messages").thenReturn(MOCK_VALID_MAILGUN_JSON_RESPONSE);
+        readySell.setStatus(status);
 
-    assertDoesNotThrow(() -> instance.notifyOrderStatusToClient(readySell));
+        assertDoesNotThrow(() -> instance.notifyOrderStatusToClient(readySell));
 
-    verify(conversionServiceMock).convert(readySell, ReceiptPojo.class);
-    verify(mailgunPropertiesMock).getDomain();
-    verify(mailgunPropertiesMock).getApiKey();
-    verify(integrationPropertiesMock).getSenderEmail();
-    restClient.verifyAll();
-  }
+        verify(conversionServiceMock).convert(readySell, ReceiptPojo.class);
+        verify(mailgunPropertiesMock).getDomain();
+        verify(mailgunPropertiesMock).getApiKey();
+        verify(integrationPropertiesMock).getSenderEmail();
+        restClient.verifyAll();
+    }
 
-  @ParameterizedTest
-  @ValueSource(strings = {
-    SELL_STATUS_PENDING,
-    SELL_STATUS_PAYMENT_STARTED,
-    SELL_STATUS_PAYMENT_CANCELLED,
-    SELL_STATUS_PAYMENT_FAILED
-  })
-  void does_not_notify_some_statuses_to_customers(String status) {
-    readySell.setStatus(status);
+    @ParameterizedTest
+    @ValueSource(strings = {
+        SELL_STATUS_PENDING,
+        SELL_STATUS_PAYMENT_STARTED,
+        SELL_STATUS_PAYMENT_CANCELLED,
+        SELL_STATUS_PAYMENT_FAILED
+    })
+    void does_not_notify_some_statuses_to_customers(String status) {
+        readySell.setStatus(status);
 
-    assertDoesNotThrow(() -> instance.notifyOrderStatusToClient(readySell));
+        assertDoesNotThrow(() -> instance.notifyOrderStatusToClient(readySell));
 
-    verifyNoMoreInteractions(conversionServiceMock);
-    verifyNoMoreInteractions(integrationPropertiesMock);
-  }
+        verifyNoMoreInteractions(conversionServiceMock);
+        verifyNoMoreInteractions(integrationPropertiesMock);
+    }
 
-  @ParameterizedTest
-  @ValueSource(strings = {
-    SELL_STATUS_PAID_CONFIRMED,
-    SELL_STATUS_REJECTED,
-    SELL_STATUS_COMPLETED
-  })
-  void notifies_statuses_to_owners(String status) {
-    ReceiptPojo receipt = new ReceiptPojo();
-    when(conversionServiceMock.convert(any(SellPojo.class), eq(ReceiptPojo.class))).thenReturn(receipt);
-    when(integrationPropertiesMock.getOwnerEmail()).thenReturn(ANY);
-    MockClient restClient = MockClient.register();
-    restClient.expect(HttpMethod.POST, MAILGUN_HOST + MOCK_MAILGUN_DOMAIN + "/messages").thenReturn(MOCK_VALID_MAILGUN_JSON_RESPONSE);
-    readySell.setStatus(status);
+    @ParameterizedTest
+    @ValueSource(strings = {
+        SELL_STATUS_PAID_CONFIRMED,
+        SELL_STATUS_REJECTED,
+        SELL_STATUS_COMPLETED
+    })
+    void notifies_statuses_to_owners(String status) {
+        ReceiptPojo receipt = new ReceiptPojo();
+        when(conversionServiceMock.convert(any(SellPojo.class), eq(ReceiptPojo.class))).thenReturn(receipt);
+        when(integrationPropertiesMock.getOwnerEmail()).thenReturn(ANY);
+        MockClient restClient = MockClient.register();
+        restClient.expect(HttpMethod.POST, MAILGUN_HOST + MOCK_MAILGUN_DOMAIN + "/messages").thenReturn(MOCK_VALID_MAILGUN_JSON_RESPONSE);
+        readySell.setStatus(status);
 
-    assertDoesNotThrow(() -> instance.notifyOrderStatusToOwners(readySell));
+        assertDoesNotThrow(() -> instance.notifyOrderStatusToOwners(readySell));
 
-    verify(conversionServiceMock).convert(readySell, ReceiptPojo.class);
-    verify(mailgunPropertiesMock).getDomain();
-    verify(mailgunPropertiesMock).getApiKey();
-    verify(integrationPropertiesMock).getSenderEmail();
-    verify(integrationPropertiesMock).getOwnerEmail();
-    restClient.verifyAll();
-  }
+        verify(conversionServiceMock).convert(readySell, ReceiptPojo.class);
+        verify(mailgunPropertiesMock).getDomain();
+        verify(mailgunPropertiesMock).getApiKey();
+        verify(integrationPropertiesMock).getSenderEmail();
+        verify(integrationPropertiesMock).getOwnerEmail();
+        restClient.verifyAll();
+    }
 
-  @ParameterizedTest
-  @ValueSource(strings = {
-    SELL_STATUS_PENDING,
-    SELL_STATUS_PAYMENT_STARTED,
-    SELL_STATUS_PAYMENT_CANCELLED,
-    SELL_STATUS_PAYMENT_FAILED,
-    SELL_STATUS_PAID_UNCONFIRMED
-  })
-  void does_not_notify_some_statuses_to_owners(String status) {
-    readySell.setStatus(status);
+    @ParameterizedTest
+    @ValueSource(strings = {
+        SELL_STATUS_PENDING,
+        SELL_STATUS_PAYMENT_STARTED,
+        SELL_STATUS_PAYMENT_CANCELLED,
+        SELL_STATUS_PAYMENT_FAILED,
+        SELL_STATUS_PAID_UNCONFIRMED
+    })
+    void does_not_notify_some_statuses_to_owners(String status) {
+        readySell.setStatus(status);
 
-    assertDoesNotThrow(() -> instance.notifyOrderStatusToOwners(readySell));
+        assertDoesNotThrow(() -> instance.notifyOrderStatusToOwners(readySell));
 
-    verifyNoMoreInteractions(conversionServiceMock);
-    verifyNoMoreInteractions(integrationPropertiesMock);
-  }
+        verifyNoMoreInteractions(conversionServiceMock);
+        verifyNoMoreInteractions(integrationPropertiesMock);
+    }
 }

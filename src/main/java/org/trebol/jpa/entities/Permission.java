@@ -36,23 +36,23 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class Permission
-  implements DBEntity {
-  private static final long serialVersionUID = 8L;
+    implements DBEntity {
+    private static final long serialVersionUID = 8L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "permission_id", nullable = false)
-  private Long id;
-  @Size(min = 1, max = 25)
-  @Column(name = "permission_code", nullable = false, unique = true)
-  private String code;
-  @Size(max = 100)
-  @Column(name = "permission_description")
-  private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "permission_id", nullable = false)
+    private Long id;
+    @Size(min = 1, max = 25)
+    @Column(name = "permission_code", nullable = false, unique = true)
+    private String code;
+    @Size(max = 100)
+    @Column(name = "permission_description")
+    private String description;
 
-  public Permission(Permission source) {
-    this.id = source.id;
-    this.code = source.code;
-    this.description = source.description;
-  }
+    public Permission(Permission source) {
+        this.id = source.id;
+        this.code = source.code;
+        this.description = source.description;
+    }
 }

@@ -39,69 +39,69 @@ import static org.trebol.testing.TestConstants.NOT_ANY;
 
 @ExtendWith(MockitoExtension.class)
 class BillingCompaniesPatchServiceImplTest {
-  @InjectMocks BillingCompaniesPatchServiceImpl instance;
-  private static ObjectMapper MAPPER;
-  private static BillingCompany EXISTING_BILLING_COMPANY;
+    @InjectMocks BillingCompaniesPatchServiceImpl instance;
+    private static ObjectMapper MAPPER;
+    private static BillingCompany EXISTING_BILLING_COMPANY;
 
-  @BeforeAll
-  static void beforeAll() {
-    MAPPER = new ObjectMapper();
-    MAPPER.setSerializationInclusion(NON_NULL);
-    EXISTING_BILLING_COMPANY = BillingCompany.builder()
-      .id(1L)
-      .name(ANY)
-      .idNumber(ANY)
-      .build();
-  }
+    @BeforeAll
+    static void beforeAll() {
+        MAPPER = new ObjectMapper();
+        MAPPER.setSerializationInclusion(NON_NULL);
+        EXISTING_BILLING_COMPANY = BillingCompany.builder()
+            .id(1L)
+            .name(ANY)
+            .idNumber(ANY)
+            .build();
+    }
 
-  @Test
-  void performs_empty_patch() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(BillingCompanyPojo.builder().build());
-    BillingCompany result = instance.patchExistingEntity(input, EXISTING_BILLING_COMPANY);
-    assertEquals(EXISTING_BILLING_COMPANY, result);
-  }
+    @Test
+    void performs_empty_patch() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(BillingCompanyPojo.builder().build());
+        BillingCompany result = instance.patchExistingEntity(input, EXISTING_BILLING_COMPANY);
+        assertEquals(EXISTING_BILLING_COMPANY, result);
+    }
 
-  @Test
-  void patches_name() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(BillingCompanyPojo.builder()
-      .name(NOT_ANY)
-      .build());
-    BillingCompany result = instance.patchExistingEntity(input, EXISTING_BILLING_COMPANY);
-    assertNotEquals(EXISTING_BILLING_COMPANY, result);
-    assertEquals(NOT_ANY, result.getName());
-  }
+    @Test
+    void patches_name() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(BillingCompanyPojo.builder()
+            .name(NOT_ANY)
+            .build());
+        BillingCompany result = instance.patchExistingEntity(input, EXISTING_BILLING_COMPANY);
+        assertNotEquals(EXISTING_BILLING_COMPANY, result);
+        assertEquals(NOT_ANY, result.getName());
+    }
 
-  @Test
-  void patches_idNumber() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(BillingCompanyPojo.builder()
-      .idNumber(NOT_ANY)
-      .build());
-    BillingCompany result = instance.patchExistingEntity(input, EXISTING_BILLING_COMPANY);
-    assertNotEquals(EXISTING_BILLING_COMPANY, result);
-    assertEquals(NOT_ANY, result.getIdNumber());
-  }
+    @Test
+    void patches_idNumber() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(BillingCompanyPojo.builder()
+            .idNumber(NOT_ANY)
+            .build());
+        BillingCompany result = instance.patchExistingEntity(input, EXISTING_BILLING_COMPANY);
+        assertNotEquals(EXISTING_BILLING_COMPANY, result);
+        assertEquals(NOT_ANY, result.getIdNumber());
+    }
 
-  @Test
-  void patches_all_fields() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(BillingCompanyPojo.builder()
-      .name(NOT_ANY)
-      .idNumber(NOT_ANY)
-      .build());
-    BillingCompany result = instance.patchExistingEntity(input, EXISTING_BILLING_COMPANY);
-    assertNotEquals(EXISTING_BILLING_COMPANY, result);
-    assertEquals(NOT_ANY, result.getName());
-    assertEquals(NOT_ANY, result.getIdNumber());
-  }
+    @Test
+    void patches_all_fields() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(BillingCompanyPojo.builder()
+            .name(NOT_ANY)
+            .idNumber(NOT_ANY)
+            .build());
+        BillingCompany result = instance.patchExistingEntity(input, EXISTING_BILLING_COMPANY);
+        assertNotEquals(EXISTING_BILLING_COMPANY, result);
+        assertEquals(NOT_ANY, result.getName());
+        assertEquals(NOT_ANY, result.getIdNumber());
+    }
 
-  @Test
-  void does_not_support_old_method_signature() {
-    BillingCompanyPojo input = BillingCompanyPojo.builder().build();
-    assertThrows(UnsupportedOperationException.class,
-      () -> instance.patchExistingEntity(input, EXISTING_BILLING_COMPANY));
-  }
+    @Test
+    void does_not_support_old_method_signature() {
+        BillingCompanyPojo input = BillingCompanyPojo.builder().build();
+        assertThrows(UnsupportedOperationException.class,
+            () -> instance.patchExistingEntity(input, EXISTING_BILLING_COMPANY));
+    }
 
-  @SuppressWarnings("unchecked")
-  private Map<String, Object> mapFrom(BillingCompanyPojo data) {
-    return MAPPER.convertValue(data, Map.class);
-  }
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> mapFrom(BillingCompanyPojo data) {
+        return MAPPER.convertValue(data, Map.class);
+    }
 }

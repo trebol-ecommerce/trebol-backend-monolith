@@ -36,19 +36,19 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class BillingType
-  implements DBEntity {
-  private static final long serialVersionUID = 3L;
+    implements DBEntity {
+    private static final long serialVersionUID = 3L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "billing_type_id", nullable = false)
-  private Long id;
-  @Size(min = 1, max = 100)
-  @Column(name = "billing_type_name", nullable = false, unique = true)
-  private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "billing_type_id", nullable = false)
+    private Long id;
+    @Size(min = 1, max = 100)
+    @Column(name = "billing_type_name", nullable = false, unique = true)
+    private String name;
 
-  public BillingType(BillingType source) {
-    this.id = source.id;
-    this.name = source.name;
-  }
+    public BillingType(BillingType source) {
+        this.id = source.id;
+        this.name = source.name;
+    }
 }

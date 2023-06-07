@@ -24,6 +24,6 @@ import org.trebol.jpa.entities.QBillingCompany;
 import org.trebol.jpa.services.PredicateService;
 
 public interface BillingCompaniesPredicateService
-  extends PredicateService {
-  QBillingCompany basePath = QBillingCompany.billingCompany;
+    extends PredicateService {
+    QBillingCompany basePath = QBillingCompany.billingCompany;
 }

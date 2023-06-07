@@ -28,12 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RootControllerTest {
-  RootController instance = new RootController();
+    RootController instance = new RootController();
 
-  @Test
-  void returns_200_OK() {
-    ResponseEntity<Void> result = instance.defaultMapping();
-    assertTrue(result.getStatusCode().is2xxSuccessful());
-    assertEquals(HttpStatus.OK, result.getStatusCode());
-  }
+    @Test
+    void returns_200_OK() {
+        ResponseEntity<Void> result = instance.defaultMapping();
+        assertTrue(result.getStatusCode().is2xxSuccessful());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
 }

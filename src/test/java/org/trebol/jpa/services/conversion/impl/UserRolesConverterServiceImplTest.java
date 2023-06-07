@@ -30,31 +30,31 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
 class UserRolesConverterServiceImplTest {
-  UserRolesConverterServiceImpl instance;
+    UserRolesConverterServiceImpl instance;
 
-  @BeforeEach
-  void beforeEach() {
-    instance = new UserRolesConverterServiceImpl();
-  }
+    @BeforeEach
+    void beforeEach() {
+        instance = new UserRolesConverterServiceImpl();
+    }
 
-  @Test
-  void converts_to_pojo() {
-    UserRole input = UserRole.builder()
-      .id(1L)
-      .name(ANY)
-      .build();
-    UserRolePojo result = instance.convertToPojo(input);
-    assertNotNull(result);
-    assertEquals(input.getName(), result.getName());
-  }
+    @Test
+    void converts_to_pojo() {
+        UserRole input = UserRole.builder()
+            .id(1L)
+            .name(ANY)
+            .build();
+        UserRolePojo result = instance.convertToPojo(input);
+        assertNotNull(result);
+        assertEquals(input.getName(), result.getName());
+    }
 
-  @Test
-  void converts_to_new_entity() {
-    UserRolePojo input = UserRolePojo.builder()
-      .name(ANY)
-      .build();
-    UserRole result = instance.convertToNewEntity(input);
-    assertNotNull(result);
-    assertEquals(input.getName(), result.getName());
-  }
+    @Test
+    void converts_to_new_entity() {
+        UserRolePojo input = UserRolePojo.builder()
+            .name(ANY)
+            .build();
+        UserRole result = instance.convertToNewEntity(input);
+        assertNotNull(result);
+        assertEquals(input.getName(), result.getName());
+    }
 }

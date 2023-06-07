@@ -34,6 +34,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @JsonInclude
 public class ShipperPojo {
-  @NotBlank
-  private String name;
+    @NotBlank
+    private String name;
 }

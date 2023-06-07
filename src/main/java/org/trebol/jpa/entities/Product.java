@@ -28,10 +28,10 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(
-  name = "products",
-  indexes = {
-    @Index(columnList = "product_name")
-  })
+    name = "products",
+    indexes = {
+        @Index(columnList = "product_name")
+    })
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,44 +40,45 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class Product
-  implements DBEntity {
-  private static final long serialVersionUID = 10L;
+    implements DBEntity {
+    private static final long serialVersionUID = 10L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "product_id", nullable = false)
-  private Long id;
-  @Size(max = 200)
-  @Column(name = "product_name", nullable = false, unique = true)
-  private String name;
-  @Size(max = 50)
-  @Column(name = "product_code", nullable = false, unique = true)
-  private String barcode;
-  @Size(max = 4000)
-  @Column(name = "product_description")
-  private String description;
-  @Column(name = "product_price", nullable = false)
-  private int price;
-  @Column(name = "product_stock_current", nullable = false)
-  private int stockCurrent;
-  @Column(name = "product_stock_critical", nullable = false)
-  private int stockCritical;
-  @JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id")
-  @ManyToOne(fetch = FetchType.LAZY)
-  private ProductCategory productCategory;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id", nullable = false)
+    private Long id;
+    @Size(max = 200)
+    @Column(name = "product_name", nullable = false, unique = true)
+    private String name;
+    @Size(max = 50)
+    @Column(name = "product_code", nullable = false, unique = true)
+    private String barcode;
+    @Size(max = 4000)
+    @Column(name = "product_description")
+    private String description;
+    @Column(name = "product_price", nullable = false)
+    private int price;
+    @Column(name = "product_stock_current", nullable = false)
+    private int stockCurrent;
+    @Column(name = "product_stock_critical", nullable = false)
+    private int stockCritical;
+    @JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ProductCategory productCategory;
 
-  /**
-   * Please note: this copy-constructor does not include a Product's relationship to a ProductCategory.
-   * @param source The original Product
-   */
-  public Product(Product source) {
-    this.id = source.id;
-    this.name = source.name;
-    this.barcode = source.barcode;
-    this.description = source.description;
-    this.price = source.price;
-    this.stockCurrent = source.stockCurrent;
-    this.stockCritical = source.stockCritical;
-    this.productCategory = null;
-  }
+    /**
+     * Please note: this copy-constructor does not include a Product's relationship to a ProductCategory.
+     *
+     * @param source The original Product
+     */
+    public Product(Product source) {
+        this.id = source.id;
+        this.name = source.name;
+        this.barcode = source.barcode;
+        this.description = source.description;
+        this.price = source.price;
+        this.stockCurrent = source.stockCurrent;
+        this.stockCritical = source.stockCritical;
+        this.productCategory = null;
+    }
 }

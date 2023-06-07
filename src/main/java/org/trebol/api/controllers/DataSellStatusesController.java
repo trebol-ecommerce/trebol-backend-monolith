@@ -43,27 +43,27 @@ import java.util.Map;
 @RequestMapping("/data/sell_statuses")
 @PreAuthorize("isAuthenticated()")
 public class DataSellStatusesController
-  extends DataGenericController<SellStatusPojo, SellStatus> {
+    extends DataGenericController<SellStatusPojo, SellStatus> {
 
-  @Autowired
-  public DataSellStatusesController(
-    PaginationService paginationService,
-    SortSpecParserService sortService,
-    SellStatusesCrudService crudService,
-    SellStatusesPredicateService predicateService
-  ) {
-    super(paginationService, sortService, crudService, predicateService);
-  }
+    @Autowired
+    public DataSellStatusesController(
+        PaginationService paginationService,
+        SortSpecParserService sortService,
+        SellStatusesCrudService crudService,
+        SellStatusesPredicateService predicateService
+    ) {
+        super(paginationService, sortService, crudService, predicateService);
+    }
 
-  @Override
-  @GetMapping({"", "/"})
-  @PreAuthorize("hasAuthority('sell_statuses:read')")
-  public DataPagePojo<SellStatusPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(allRequestParams);
-  }
+    @Override
+    @GetMapping({"", "/"})
+    @PreAuthorize("hasAuthority('sell_statuses:read')")
+    public DataPagePojo<SellStatusPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+        return super.readMany(allRequestParams);
+    }
 
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return SellStatusesSortSpec.ORDER_SPEC_MAP;
-  }
+    @Override
+    protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+        return SellStatusesSortSpec.ORDER_SPEC_MAP;
+    }
 }

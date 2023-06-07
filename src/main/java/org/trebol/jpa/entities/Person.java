@@ -28,13 +28,13 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(
-  name = "people",
-  indexes = {
-    @Index(columnList = "person_id_number"),
-    @Index(columnList = "person_first_name"),
-    @Index(columnList = "person_last_name"),
-    @Index(columnList = "person_email")
-  })
+    name = "people",
+    indexes = {
+        @Index(columnList = "person_id_number"),
+        @Index(columnList = "person_first_name"),
+        @Index(columnList = "person_last_name"),
+        @Index(columnList = "person_email")
+    })
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -43,39 +43,39 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class Person
-  implements DBEntity {
-  private static final long serialVersionUID = 9L;
+    implements DBEntity {
+    private static final long serialVersionUID = 9L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "person_id", nullable = false)
-  private Long id;
-  @Size(min = 1, max = 200)
-  @Column(name = "person_first_name", nullable = false)
-  private String firstName;
-  @Size(min = 1, max = 200)
-  @Column(name = "person_last_name", nullable = false)
-  private String lastName;
-  @Size(min = 1, max = 20)
-  @Column(name = "person_id_number", nullable = false, unique = true)
-  private String idNumber;
-  @Size(min = 5, max = 100)
-  @Column(name = "person_email", nullable = false)
-  private String email;
-  @Column(name = "person_phone1", nullable = false)
-  @Builder.Default
-  private String phone1 = "";
-  @Column(name = "person_phone2", nullable = false)
-  @Builder.Default
-  private String phone2 = "";
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "person_id", nullable = false)
+    private Long id;
+    @Size(min = 1, max = 200)
+    @Column(name = "person_first_name", nullable = false)
+    private String firstName;
+    @Size(min = 1, max = 200)
+    @Column(name = "person_last_name", nullable = false)
+    private String lastName;
+    @Size(min = 1, max = 20)
+    @Column(name = "person_id_number", nullable = false, unique = true)
+    private String idNumber;
+    @Size(min = 5, max = 100)
+    @Column(name = "person_email", nullable = false)
+    private String email;
+    @Column(name = "person_phone1", nullable = false)
+    @Builder.Default
+    private String phone1 = "";
+    @Column(name = "person_phone2", nullable = false)
+    @Builder.Default
+    private String phone2 = "";
 
-  public Person(Person source) {
-    this.id = source.id;
-    this.firstName = source.firstName;
-    this.lastName = source.lastName;
-    this.idNumber = source.idNumber;
-    this.email = source.email;
-    this.phone1 = source.phone1;
-    this.phone2 = source.phone2;
-  }
+    public Person(Person source) {
+        this.id = source.id;
+        this.firstName = source.firstName;
+        this.lastName = source.lastName;
+        this.idNumber = source.idNumber;
+        this.email = source.email;
+        this.phone1 = source.phone1;
+        this.phone2 = source.phone2;
+    }
 }

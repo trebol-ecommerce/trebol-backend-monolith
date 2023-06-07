@@ -28,10 +28,10 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(
-  name = "app_user_roles",
-  indexes = {
-    @Index(columnList = "user_role_name")
-  })
+    name = "app_user_roles",
+    indexes = {
+        @Index(columnList = "user_role_name")
+    })
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,19 +40,19 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class UserRole
-  implements DBEntity {
-  private static final long serialVersionUID = 20L;
+    implements DBEntity {
+    private static final long serialVersionUID = 20L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_role_id", nullable = false)
-  private Long id;
-  @Size(min = 1, max = 50)
-  @Column(name = "user_role_name", nullable = false, unique = true)
-  private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_role_id", nullable = false)
+    private Long id;
+    @Size(min = 1, max = 50)
+    @Column(name = "user_role_name", nullable = false, unique = true)
+    private String name;
 
-  public UserRole(UserRole source) {
-    this.id = source.id;
-    this.name = source.name;
-  }
+    public UserRole(UserRole source) {
+        this.id = source.id;
+        this.name = source.name;
+    }
 }

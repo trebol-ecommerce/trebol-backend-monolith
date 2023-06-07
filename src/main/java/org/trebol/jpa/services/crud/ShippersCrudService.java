@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.services.CrudService;
 
 public interface ShippersCrudService
-  extends CrudService<ShipperPojo, Shipper> {
+    extends CrudService<ShipperPojo, Shipper> {
 }

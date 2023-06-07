@@ -27,92 +27,92 @@ import org.trebol.jpa.entities.Product;
  * Builds & caches reusable instances of Product and ProductPojo
  */
 public class ProductsTestHelper {
-  public static final long PRODUCT_ID = 1L;
-  public static final String PRODUCT_NAME = "test product name";
-  public static final String PRODUCT_BARCODE = "TESTPROD1";
-  public static final String PRODUCT_DESCRIPTION = "test product description";
-  public static final int PRODUCT_PRICE = 100;
-  public static final int PRODUCT_STOCK = 10;
-  public static final int PRODUCT_STOCK_CRITICAL = 1;
-  private ProductPojo pojoForFetch;
-  private ProductPojo pojoBeforeCreation;
-  private ProductPojo pojoAfterCreation;
-  private Product entityBeforeCreation;
-  private Product entityAfterCreation;
+    public static final long PRODUCT_ID = 1L;
+    public static final String PRODUCT_NAME = "test product name";
+    public static final String PRODUCT_BARCODE = "TESTPROD1";
+    public static final String PRODUCT_DESCRIPTION = "test product description";
+    public static final int PRODUCT_PRICE = 100;
+    public static final int PRODUCT_STOCK = 10;
+    public static final int PRODUCT_STOCK_CRITICAL = 1;
+    private ProductPojo pojoForFetch;
+    private ProductPojo pojoBeforeCreation;
+    private ProductPojo pojoAfterCreation;
+    private Product entityBeforeCreation;
+    private Product entityAfterCreation;
 
-  public void resetProducts() {
-    this.pojoForFetch = null;
-    this.pojoBeforeCreation = null;
-    this.pojoAfterCreation = null;
-    this.entityBeforeCreation = null;
-    this.entityAfterCreation = null;
-  }
-
-  public ProductPojo productPojoForFetch() {
-    if (this.pojoForFetch == null) {
-      this.pojoForFetch = ProductPojo.builder().barcode(PRODUCT_BARCODE).build();
+    public void resetProducts() {
+        this.pojoForFetch = null;
+        this.pojoBeforeCreation = null;
+        this.pojoAfterCreation = null;
+        this.entityBeforeCreation = null;
+        this.entityAfterCreation = null;
     }
-    return this.pojoForFetch;
-  }
 
-  public ProductPojo productPojoBeforeCreationWithoutCategory() {
-    if (this.pojoBeforeCreation == null) {
-      this.pojoBeforeCreation = ProductPojo.builder()
-        .name(PRODUCT_NAME)
-        .barcode(PRODUCT_BARCODE)
-        .description(PRODUCT_DESCRIPTION)
-        .price(PRODUCT_PRICE)
-        .currentStock(PRODUCT_STOCK)
-        .criticalStock(PRODUCT_STOCK_CRITICAL)
-        .category(null)
-        .build();
+    public ProductPojo productPojoForFetch() {
+        if (this.pojoForFetch==null) {
+            this.pojoForFetch = ProductPojo.builder().barcode(PRODUCT_BARCODE).build();
+        }
+        return this.pojoForFetch;
     }
-    return this.pojoBeforeCreation;
-  }
 
-  public ProductPojo productPojoAfterCreationWithoutCategory() {
-    if (this.pojoAfterCreation == null) {
-      this.pojoAfterCreation = ProductPojo.builder()
-        .name(PRODUCT_NAME)
-        .barcode(PRODUCT_BARCODE)
-        .description(PRODUCT_DESCRIPTION)
-        .price(PRODUCT_PRICE)
-        .currentStock(PRODUCT_STOCK)
-        .criticalStock(PRODUCT_STOCK_CRITICAL)
-        .category(null)
-        .build();
+    public ProductPojo productPojoBeforeCreationWithoutCategory() {
+        if (this.pojoBeforeCreation==null) {
+            this.pojoBeforeCreation = ProductPojo.builder()
+                .name(PRODUCT_NAME)
+                .barcode(PRODUCT_BARCODE)
+                .description(PRODUCT_DESCRIPTION)
+                .price(PRODUCT_PRICE)
+                .currentStock(PRODUCT_STOCK)
+                .criticalStock(PRODUCT_STOCK_CRITICAL)
+                .category(null)
+                .build();
+        }
+        return this.pojoBeforeCreation;
     }
-    return pojoAfterCreation;
-  }
 
-  public Product productEntityBeforeCreationWithoutCategory() {
-    if (this.entityBeforeCreation == null) {
-      this.entityBeforeCreation = Product.builder()
-        .name(PRODUCT_NAME)
-        .barcode(PRODUCT_BARCODE)
-        .description(PRODUCT_DESCRIPTION)
-        .price(PRODUCT_PRICE)
-        .stockCurrent(PRODUCT_STOCK)
-        .stockCritical(PRODUCT_STOCK_CRITICAL)
-        .productCategory(null)
-        .build();
+    public ProductPojo productPojoAfterCreationWithoutCategory() {
+        if (this.pojoAfterCreation==null) {
+            this.pojoAfterCreation = ProductPojo.builder()
+                .name(PRODUCT_NAME)
+                .barcode(PRODUCT_BARCODE)
+                .description(PRODUCT_DESCRIPTION)
+                .price(PRODUCT_PRICE)
+                .currentStock(PRODUCT_STOCK)
+                .criticalStock(PRODUCT_STOCK_CRITICAL)
+                .category(null)
+                .build();
+        }
+        return pojoAfterCreation;
     }
-    return this.entityBeforeCreation;
-  }
 
-  public Product productEntityAfterCreationWithoutCategory() {
-    if (this.entityAfterCreation == null) {
-      this.entityAfterCreation = Product.builder()
-        .id(PRODUCT_ID)
-        .name(PRODUCT_NAME)
-        .barcode(PRODUCT_BARCODE)
-        .description(PRODUCT_DESCRIPTION)
-        .price(PRODUCT_PRICE)
-        .stockCurrent(PRODUCT_STOCK)
-        .stockCritical(PRODUCT_STOCK_CRITICAL)
-        .productCategory(null)
-        .build();
+    public Product productEntityBeforeCreationWithoutCategory() {
+        if (this.entityBeforeCreation==null) {
+            this.entityBeforeCreation = Product.builder()
+                .name(PRODUCT_NAME)
+                .barcode(PRODUCT_BARCODE)
+                .description(PRODUCT_DESCRIPTION)
+                .price(PRODUCT_PRICE)
+                .stockCurrent(PRODUCT_STOCK)
+                .stockCritical(PRODUCT_STOCK_CRITICAL)
+                .productCategory(null)
+                .build();
+        }
+        return this.entityBeforeCreation;
     }
-    return this.entityAfterCreation;
-  }
+
+    public Product productEntityAfterCreationWithoutCategory() {
+        if (this.entityAfterCreation==null) {
+            this.entityAfterCreation = Product.builder()
+                .id(PRODUCT_ID)
+                .name(PRODUCT_NAME)
+                .barcode(PRODUCT_BARCODE)
+                .description(PRODUCT_DESCRIPTION)
+                .price(PRODUCT_PRICE)
+                .stockCurrent(PRODUCT_STOCK)
+                .stockCritical(PRODUCT_STOCK_CRITICAL)
+                .productCategory(null)
+                .build();
+        }
+        return this.entityAfterCreation;
+    }
 }

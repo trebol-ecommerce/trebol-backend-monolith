@@ -32,6 +32,6 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @Builder
 @JsonInclude(NON_NULL)
 public class AuthorizedAccessPojo {
-  private Collection<String> routes;
-  private Collection<String> permissions;
+    private Collection<String> routes;
+    private Collection<String> permissions;
 }

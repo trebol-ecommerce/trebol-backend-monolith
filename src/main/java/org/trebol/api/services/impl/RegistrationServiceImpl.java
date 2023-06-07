@@ -42,75 +42,75 @@ import java.util.Optional;
 
 @Service
 public class RegistrationServiceImpl
-  implements RegistrationService {
-  private final Logger logger = LoggerFactory.getLogger(RegistrationServiceImpl.class);
-  private final PeopleRepository peopleRepository;
-  private final UsersRepository usersRepository;
-  private final UserRolesRepository rolesRepository;
-  private final CustomersRepository customersRepository;
-  private final PasswordEncoder passwordEncoder;
-  private final PeopleConverterService peopleConverterService;
+    implements RegistrationService {
+    private final Logger logger = LoggerFactory.getLogger(RegistrationServiceImpl.class);
+    private final PeopleRepository peopleRepository;
+    private final UsersRepository usersRepository;
+    private final UserRolesRepository rolesRepository;
+    private final CustomersRepository customersRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final PeopleConverterService peopleConverterService;
 
-  @Autowired
-  public RegistrationServiceImpl(
-    PeopleRepository peopleRepository,
-    UsersRepository usersRepository,
-    UserRolesRepository rolesRepository,
-    CustomersRepository customersRepository,
-    PasswordEncoder passwordEncoder,
-    PeopleConverterService peopleConverterService
-  ) {
-    this.peopleRepository = peopleRepository;
-    this.usersRepository = usersRepository;
-    this.rolesRepository = rolesRepository;
-    this.customersRepository = customersRepository;
-    this.passwordEncoder = passwordEncoder;
-    this.peopleConverterService = peopleConverterService;
-  }
-
-  @Override
-  public void register(RegistrationPojo registration)
-    throws BadInputException, EntityExistsException {
-    String username = registration.getName();
-    Predicate userWithSameName = QUser.user.name.eq(username);
-    if (usersRepository.exists(userWithSameName)) {
-      throw new EntityExistsException("That username is taken.");
+    @Autowired
+    public RegistrationServiceImpl(
+        PeopleRepository peopleRepository,
+        UsersRepository usersRepository,
+        UserRolesRepository rolesRepository,
+        CustomersRepository customersRepository,
+        PasswordEncoder passwordEncoder,
+        PeopleConverterService peopleConverterService
+    ) {
+        this.peopleRepository = peopleRepository;
+        this.usersRepository = usersRepository;
+        this.rolesRepository = rolesRepository;
+        this.customersRepository = customersRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.peopleConverterService = peopleConverterService;
     }
 
-    PersonPojo sourcePerson = registration.getProfile();
-    Person newPerson = peopleConverterService.convertToNewEntity(sourcePerson);
+    @Override
+    public void register(RegistrationPojo registration)
+        throws BadInputException, EntityExistsException {
+        String username = registration.getName();
+        Predicate userWithSameName = QUser.user.name.eq(username);
+        if (usersRepository.exists(userWithSameName)) {
+            throw new EntityExistsException("That username is taken.");
+        }
 
-    Predicate sameProfileData = QPerson.person.idNumber.eq(sourcePerson.getIdNumber());
-    if (peopleRepository.exists(sameProfileData)) {
-      throw new EntityExistsException("That ID number is already registered and associated to an account.");
-    } else {
-      newPerson = peopleRepository.saveAndFlush(newPerson);
+        PersonPojo sourcePerson = registration.getProfile();
+        Person newPerson = peopleConverterService.convertToNewEntity(sourcePerson);
+
+        Predicate sameProfileData = QPerson.person.idNumber.eq(sourcePerson.getIdNumber());
+        if (peopleRepository.exists(sameProfileData)) {
+            throw new EntityExistsException("That ID number is already registered and associated to an account.");
+        } else {
+            newPerson = peopleRepository.saveAndFlush(newPerson);
+        }
+
+        User newUser = this.convertToUser(registration);
+        newUser.setPerson(newPerson);
+        usersRepository.saveAndFlush(newUser);
+        logger.info("New user created with name '{}' and idNumber '{}'", newUser.getName(), newPerson.getIdNumber());
+
+        Customer newCustomer = Customer.builder()
+            .person(newPerson)
+            .build();
+        customersRepository.saveAndFlush(newCustomer);
     }
 
-    User newUser = this.convertToUser(registration);
-    newUser.setPerson(newPerson);
-    usersRepository.saveAndFlush(newUser);
-    logger.info("New user created with name '{}' and idNumber '{}'", newUser.getName(), newPerson.getIdNumber());
+    protected User convertToUser(RegistrationPojo registration) {
+        String password = passwordEncoder.encode(registration.getPassword());
+        User target = User.builder()
+            .name(registration.getName())
+            .password(password)
+            .build();
 
-    Customer newCustomer = Customer.builder()
-      .person(newPerson)
-      .build();
-    customersRepository.saveAndFlush(newCustomer);
-  }
-
-  protected User convertToUser(RegistrationPojo registration) {
-    String password = passwordEncoder.encode(registration.getPassword());
-    User target = User.builder()
-      .name(registration.getName())
-      .password(password)
-      .build();
-
-    Optional<UserRole> customerRole = rolesRepository.findByName("Customer");
-    if (customerRole.isEmpty()) {
-      throw new IllegalStateException("No user role matches 'Customer', database might be compromised");
-    } else {
-      target.setUserRole(customerRole.get());
+        Optional<UserRole> customerRole = rolesRepository.findByName("Customer");
+        if (customerRole.isEmpty()) {
+            throw new IllegalStateException("No user role matches 'Customer', database might be compromised");
+        } else {
+            target.setUserRole(customerRole.get());
+        }
+        return target;
     }
-    return target;
-  }
 }

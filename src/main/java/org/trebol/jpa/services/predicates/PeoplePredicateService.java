@@ -24,6 +24,6 @@ import org.trebol.jpa.entities.QPerson;
 import org.trebol.jpa.services.PredicateService;
 
 public interface PeoplePredicateService
-  extends PredicateService {
-  QPerson basePath = QPerson.person;
+    extends PredicateService {
+    QPerson basePath = QPerson.person;
 }

@@ -36,10 +36,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
 public class ImagePojo {
-  @NotBlank
-  private String code;
-  @NotBlank
-  private String filename;
-  @NotBlank
-  private String url;
+    @NotBlank
+    private String code;
+    @NotBlank
+    private String filename;
+    @NotBlank
+    private String url;
 }

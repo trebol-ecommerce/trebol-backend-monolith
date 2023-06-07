@@ -32,11 +32,11 @@ import java.util.Map;
  */
 public interface DataController<M> {
 
-  /**
-   * Get a paged collection of data.
-   *
-   * @param requestParams A {@link java.util.Map} of key/value String pairs containing the parameters for reading the data.
-   * @return An instance of {@link org.trebol.api.models.DataPagePojo} containing the data itself, and information about that page of data.
-   */
-  DataPagePojo<M> readMany(@NotNull Map<String, String> requestParams);
+    /**
+     * Get a paged collection of data.
+     *
+     * @param requestParams A {@link java.util.Map} of key/value String pairs containing the parameters for reading the data.
+     * @return An instance of {@link org.trebol.api.models.DataPagePojo} containing the data itself, and information about that page of data.
+     */
+    DataPagePojo<M> readMany(@NotNull Map<String, String> requestParams);
 }

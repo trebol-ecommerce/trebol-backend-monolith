@@ -32,11 +32,11 @@ import javax.validation.constraints.Positive;
 @ConfigurationProperties(prefix = "trebol.api")
 @Validated
 public class ApiProperties {
-  @Positive
-  private Integer itemsPerPage;
-  @Positive
-  private Integer maxAllowedPageSize;
-  @Positive
-  private int maxCategoryFetchingRecursionDepth;
-  private boolean ableToEditSalesAfterBeingProcessed;
+    @Positive
+    private Integer itemsPerPage;
+    @Positive
+    private Integer maxAllowedPageSize;
+    @Positive
+    private int maxCategoryFetchingRecursionDepth;
+    private boolean ableToEditSalesAfterBeingProcessed;
 }

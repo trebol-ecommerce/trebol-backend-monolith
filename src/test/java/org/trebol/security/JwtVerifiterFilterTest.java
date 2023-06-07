@@ -79,105 +79,105 @@ import static org.trebol.config.Constants.JWT_PREFIX;
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-  SecurityTestingConfig.class,
-  JwtVerifiterFilterTest.MockSecurityConfig.class })
+    SecurityTestingConfig.class,
+    JwtVerifiterFilterTest.MockSecurityConfig.class})
 @WebAppConfiguration
 class JwtVerifiterFilterTest {
-  static final String ENDPOINT_URL = "/";
-  static final String POSITIVE_RESPONSE_BODY = "IT WORKS";
-  @MockBean AuthorizationHeaderParserService<Claims> claimsParserServiceMock;
-  @Autowired SecretKey secretkey;
-  @Autowired WebApplicationContext webApplicationContext;
-  MockMvc mockMvc;
+    static final String ENDPOINT_URL = "/";
+    static final String POSITIVE_RESPONSE_BODY = "IT WORKS";
+    @MockBean AuthorizationHeaderParserService<Claims> claimsParserServiceMock;
+    @Autowired SecretKey secretkey;
+    @Autowired WebApplicationContext webApplicationContext;
+    MockMvc mockMvc;
 
-  @BeforeEach
-  void beforeEach() {
-    SecurityContextHolder.clearContext();
-    mockMvc = MockMvcBuilders
-      .webAppContextSetup(webApplicationContext)
-      .apply(springSecurity())
-      .build();
-  }
-
-  @Test
-  void accepts_valid_authentication_tokens() throws Exception {
-    List<Map<String, String>> validAuthorities = List.of(
-      Map.of("authority", AUTHORITY_CHECKOUT)
-    );
-    Date oneHourAfterTestExecution = Date.from(Instant.now().plus(Duration.ofHours(1)));
-    DefaultClaims validClaims = new DefaultClaims(Map.of(
-      EXPIRATION, oneHourAfterTestExecution,
-      JWT_CLAIM_AUTHORITIES, validAuthorities
-    ));
-    String jwt = Jwts.builder()
-      .signWith(secretkey)
-      .setClaims(validClaims)
-      .compact();
-    when(claimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-      .get(ENDPOINT_URL)
-      .header(AUTHORIZATION, JWT_PREFIX + jwt);
-    mockMvc.perform(requestBuilder)
-      .andExpect(status().isOk())
-      .andExpect(content().string(POSITIVE_RESPONSE_BODY));
-  }
-
-
-  @Test
-  void rejects_invalid_authentication_tokens() throws Exception {
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-      .get(ENDPOINT_URL); // no jwt
-    mockMvc.perform(requestBuilder)
-      .andExpect(status().isForbidden());
-  }
-
-  @TestConfiguration
-  @EnableWebSecurity
-  static class MockSecurityConfig
-    extends WebSecurityConfigurerAdapter {
-    final PasswordEncoder passwordEncoder;
-    final AuthenticationProvider authenticationProvider;
-    final SecretKey secretKey;
-    final AuthorizationHeaderParserService<Claims> claimsParserService;
-
-    @Autowired
-    MockSecurityConfig(
-      PasswordEncoder passwordEncoder,
-      AuthenticationProvider authenticationProvider,
-      SecretKey secretKey,
-      AuthorizationHeaderParserService<Claims> claimsParserService
-    ) {
-      this.passwordEncoder = passwordEncoder;
-      this.authenticationProvider = authenticationProvider;
-      this.secretKey = secretKey;
-      this.claimsParserService = claimsParserService;
+    @BeforeEach
+    void beforeEach() {
+        SecurityContextHolder.clearContext();
+        mockMvc = MockMvcBuilders
+            .webAppContextSetup(webApplicationContext)
+            .apply(springSecurity())
+            .build();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-      JwtTokenVerifierFilter instance = new JwtTokenVerifierFilter(claimsParserService);
-      http.authorizeRequests()
-        .antMatchers(ENDPOINT_URL).authenticated()
-        .and().csrf().disable()
-        .addFilterAfter(instance, DigestAuthenticationFilter.class); // first authorization filter
+    @Test
+    void accepts_valid_authentication_tokens() throws Exception {
+        List<Map<String, String>> validAuthorities = List.of(
+            Map.of("authority", AUTHORITY_CHECKOUT)
+        );
+        Date oneHourAfterTestExecution = Date.from(Instant.now().plus(Duration.ofHours(1)));
+        DefaultClaims validClaims = new DefaultClaims(Map.of(
+            EXPIRATION, oneHourAfterTestExecution,
+            JWT_CLAIM_AUTHORITIES, validAuthorities
+        ));
+        String jwt = Jwts.builder()
+            .signWith(secretkey)
+            .setClaims(validClaims)
+            .compact();
+        when(claimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .get(ENDPOINT_URL)
+            .header(AUTHORIZATION, JWT_PREFIX + jwt);
+        mockMvc.perform(requestBuilder)
+            .andExpect(status().isOk())
+            .andExpect(content().string(POSITIVE_RESPONSE_BODY));
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-      auth.authenticationProvider(authenticationProvider);
+
+    @Test
+    void rejects_invalid_authentication_tokens() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .get(ENDPOINT_URL); // no jwt
+        mockMvc.perform(requestBuilder)
+            .andExpect(status().isForbidden());
     }
 
-    /**
-     * A primitive controller for mocking responses. It only accepts authenticated requests.
-     * It responds with 200 OK, and the response body is set in plain text format.
-     */
-    @RestController
-    static class SimpleController {
+    @TestConfiguration
+    @EnableWebSecurity
+    static class MockSecurityConfig
+        extends WebSecurityConfigurerAdapter {
+        final PasswordEncoder passwordEncoder;
+        final AuthenticationProvider authenticationProvider;
+        final SecretKey secretKey;
+        final AuthorizationHeaderParserService<Claims> claimsParserService;
 
-      @GetMapping("/")
-      public String respond() {
-        return POSITIVE_RESPONSE_BODY;
-      }
+        @Autowired
+        MockSecurityConfig(
+            PasswordEncoder passwordEncoder,
+            AuthenticationProvider authenticationProvider,
+            SecretKey secretKey,
+            AuthorizationHeaderParserService<Claims> claimsParserService
+        ) {
+            this.passwordEncoder = passwordEncoder;
+            this.authenticationProvider = authenticationProvider;
+            this.secretKey = secretKey;
+            this.claimsParserService = claimsParserService;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            JwtTokenVerifierFilter instance = new JwtTokenVerifierFilter(claimsParserService);
+            http.authorizeRequests()
+                .antMatchers(ENDPOINT_URL).authenticated()
+                .and().csrf().disable()
+                .addFilterAfter(instance, DigestAuthenticationFilter.class); // first authorization filter
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(authenticationProvider);
+        }
+
+        /**
+         * A primitive controller for mocking responses. It only accepts authenticated requests.
+         * It responds with 200 OK, and the response body is set in plain text format.
+         */
+        @RestController
+        static class SimpleController {
+
+            @GetMapping("/")
+            public String respond() {
+                return POSITIVE_RESPONSE_BODY;
+            }
+        }
     }
-  }
 }

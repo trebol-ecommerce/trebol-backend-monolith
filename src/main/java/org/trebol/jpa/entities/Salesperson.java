@@ -35,23 +35,24 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 public class Salesperson
-  implements DBEntity {
-  private static final long serialVersionUID = 13L;
+    implements DBEntity {
+    private static final long serialVersionUID = 13L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "salesperson_id", nullable = false)
-  private Long id;
-  @JoinColumn(name = "person_id", referencedColumnName = "person_id")
-  @ManyToOne(optional = false, cascade = CascadeType.ALL)
-  private Person person;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "salesperson_id", nullable = false)
+    private Long id;
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    private Person person;
 
-  /**
-   * Please note: this copy-constructor DOES include a Salesperson's relationship to its own profile data
-   * @param source The original Sell
-   */
-  public Salesperson(Salesperson source) {
-    this.id = source.id;
-    this.person = new Person(source.person);
-  }
+    /**
+     * Please note: this copy-constructor DOES include a Salesperson's relationship to its own profile data
+     *
+     * @param source The original Sell
+     */
+    public Salesperson(Salesperson source) {
+        this.id = source.id;
+        this.person = new Person(source.person);
+    }
 }

@@ -33,24 +33,24 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 public class BillingTypesPatchServiceImpl
-  implements BillingTypesPatchService {
+    implements BillingTypesPatchService {
 
-  @Override
-  public BillingType patchExistingEntity(Map<String, Object> changes, BillingType existing) throws BadInputException {
-    BillingType target = new BillingType(existing);
+    @Override
+    public BillingType patchExistingEntity(Map<String, Object> changes, BillingType existing) throws BadInputException {
+        BillingType target = new BillingType(existing);
 
-    if (changes.containsKey("name")) {
-      String name = (String) changes.get("name");
-      if (!StringUtils.isBlank(name)) {
-        target.setName(name);
-      }
+        if (changes.containsKey("name")) {
+            String name = (String) changes.get("name");
+            if (!StringUtils.isBlank(name)) {
+                target.setName(name);
+            }
+        }
+
+        return target;
     }
 
-    return target;
-  }
-
-  @Override
-  public BillingType patchExistingEntity(BillingTypePojo changes, BillingType existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method has been deprecated");
-  }
+    @Override
+    public BillingType patchExistingEntity(BillingTypePojo changes, BillingType existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method has been deprecated");
+    }
 }

@@ -47,92 +47,92 @@ import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
 
 @Service
 public class CheckoutServiceImpl
-  implements CheckoutService {
-  private final Logger logger = LoggerFactory.getLogger(CheckoutServiceImpl.class);
-  private final SalesCrudService salesCrudService;
-  private final SalesProcessService salesProcessService;
-  private final SalesPredicateService salesPredicateService;
-  private final PaymentService paymentIntegrationService;
+    implements CheckoutService {
+    private final Logger logger = LoggerFactory.getLogger(CheckoutServiceImpl.class);
+    private final SalesCrudService salesCrudService;
+    private final SalesProcessService salesProcessService;
+    private final SalesPredicateService salesPredicateService;
+    private final PaymentService paymentIntegrationService;
 
-  @Autowired
-  public CheckoutServiceImpl(
-    SalesCrudService salesCrudService,
-    SalesProcessService salesProcessService,
-    SalesPredicateService salesPredicateService,
-    PaymentService paymentIntegrationService
-  ) {
-    this.salesCrudService = salesCrudService;
-    this.salesProcessService = salesProcessService;
-    this.salesPredicateService = salesPredicateService;
-    this.paymentIntegrationService = paymentIntegrationService;
-  }
-
-  @Override
-  public PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException, BadInputException {
-    PaymentRedirectionDetailsPojo response = paymentIntegrationService.requestNewPaymentPageDetails(transaction);
-    try {
-      transaction.setToken(response.getToken());
-      salesProcessService.markAsStarted(transaction);
-      return response;
-    } catch (EntityNotFoundException exc) {
-      throw new IllegalStateException("The server had a problem requesting the transaction", exc);
+    @Autowired
+    public CheckoutServiceImpl(
+        SalesCrudService salesCrudService,
+        SalesProcessService salesProcessService,
+        SalesPredicateService salesPredicateService,
+        PaymentService paymentIntegrationService
+    ) {
+        this.salesCrudService = salesCrudService;
+        this.salesProcessService = salesProcessService;
+        this.salesPredicateService = salesPredicateService;
+        this.paymentIntegrationService = paymentIntegrationService;
     }
-  }
 
-  @Override
-  public SellPojo confirmTransaction(String transactionToken, boolean wasAborted)
-    throws EntityNotFoundException, PaymentServiceException {
-    SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
-    try {
-      if (wasAborted) {
-        return salesProcessService.markAsAborted(sellByToken);
-      } else {
-        return this.processSellPaymentStatus(sellByToken);
-      }
-    } catch (BadInputException e) {
-      logger.error("Incorrect state of sell, was: {}", sellByToken.getStatus());
-      throw new IllegalStateException("Transaction could not be confirmed");
+    @Override
+    public PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException, BadInputException {
+        PaymentRedirectionDetailsPojo response = paymentIntegrationService.requestNewPaymentPageDetails(transaction);
+        try {
+            transaction.setToken(response.getToken());
+            salesProcessService.markAsStarted(transaction);
+            return response;
+        } catch (EntityNotFoundException exc) {
+            throw new IllegalStateException("The server had a problem requesting the transaction", exc);
+        }
     }
-  }
 
-  @Override
-  public URI generateResultPageUrl(String transactionToken) {
-    // TODO add a switch to either use path params or query params
-    try {
-      String url = (paymentIntegrationService.getPaymentResultPageUrl() + "?token=" + transactionToken);
-      return new URL(url).toURI();
-    } catch (MalformedURLException | URISyntaxException ex) {
-      logger.error("Malformed redirection URL; make sure the 'final URL for payment method' property is correctly configured.", ex);
-      throw new IllegalStateException("Transaction was confirmed, but server had an unexpected malfunction");
+    @Override
+    public SellPojo confirmTransaction(String transactionToken, boolean wasAborted)
+        throws EntityNotFoundException, PaymentServiceException {
+        SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
+        try {
+            if (wasAborted) {
+                return salesProcessService.markAsAborted(sellByToken);
+            } else {
+                return this.processSellPaymentStatus(sellByToken);
+            }
+        } catch (BadInputException e) {
+            logger.error("Incorrect state of sell, was: {}", sellByToken.getStatus());
+            throw new IllegalStateException("Transaction could not be confirmed");
+        }
     }
-  }
 
-  /**
-   * Fetches the result of a transaction from the payment payment service and updates it in the database.
-   *
-   * @throws EntityNotFoundException If no transaction has a matching token.
-   * @throws PaymentServiceException As raised at payment level.
-   */
-  private SellPojo processSellPaymentStatus(SellPojo sellByToken)
-    throws EntityNotFoundException, PaymentServiceException {
-    int statusCode = paymentIntegrationService.requestPaymentResult(sellByToken.getToken());
-    try {
-      if (statusCode != 0) {
-        return salesProcessService.markAsFailed(sellByToken);
-      } else {
-        return salesProcessService.markAsPaid(sellByToken);
-      }
-    } catch (BadInputException e) {
-      logger.error("Incorrect state of sell, was: {}", sellByToken.getStatus());
-      throw new IllegalStateException("Transaction could not be confirmed");
+    @Override
+    public URI generateResultPageUrl(String transactionToken) {
+        // TODO add a switch to either use path params or query params
+        try {
+            String url = (paymentIntegrationService.getPaymentResultPageUrl() + "?token=" + transactionToken);
+            return new URL(url).toURI();
+        } catch (MalformedURLException | URISyntaxException ex) {
+            logger.error("Malformed redirection URL; make sure the 'final URL for payment method' property is correctly configured.", ex);
+            throw new IllegalStateException("Transaction was confirmed, but server had an unexpected malfunction");
+        }
     }
-  }
 
-  private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws EntityNotFoundException {
-    Map<String, String> startedWithTokenMatcher = new HashMap<>(Map.of(
-      "statusCode", SELL_STATUS_PAYMENT_STARTED,
-      "token", transactionToken));
-    Predicate startedTransactionWithMatchingToken = salesPredicateService.parseMap(startedWithTokenMatcher);
-    return salesCrudService.readOne(startedTransactionWithMatchingToken);
-  }
+    /**
+     * Fetches the result of a transaction from the payment payment service and updates it in the database.
+     *
+     * @throws EntityNotFoundException If no transaction has a matching token.
+     * @throws PaymentServiceException As raised at payment level.
+     */
+    private SellPojo processSellPaymentStatus(SellPojo sellByToken)
+        throws EntityNotFoundException, PaymentServiceException {
+        int statusCode = paymentIntegrationService.requestPaymentResult(sellByToken.getToken());
+        try {
+            if (statusCode!=0) {
+                return salesProcessService.markAsFailed(sellByToken);
+            } else {
+                return salesProcessService.markAsPaid(sellByToken);
+            }
+        } catch (BadInputException e) {
+            logger.error("Incorrect state of sell, was: {}", sellByToken.getStatus());
+            throw new IllegalStateException("Transaction could not be confirmed");
+        }
+    }
+
+    private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws EntityNotFoundException {
+        Map<String, String> startedWithTokenMatcher = new HashMap<>(Map.of(
+            "statusCode", SELL_STATUS_PAYMENT_STARTED,
+            "token", transactionToken));
+        Predicate startedTransactionWithMatchingToken = salesPredicateService.parseMap(startedWithTokenMatcher);
+        return salesCrudService.readOne(startedTransactionWithMatchingToken);
+    }
 }

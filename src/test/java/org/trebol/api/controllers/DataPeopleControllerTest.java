@@ -41,25 +41,25 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class DataPeopleControllerTest
-  extends DataGenericControllerTest<PersonPojo, Person> {
-  @InjectMocks DataPeopleController instance;
-  @Mock PaginationService paginationServiceMock;
-  @Mock SortSpecParserService sortServiceMock;
-  @Mock PeopleCrudService crudServiceMock;
-  @Mock PeoplePredicateService predicateServiceMock;
+    extends DataGenericControllerTest<PersonPojo, Person> {
+    @InjectMocks DataPeopleController instance;
+    @Mock PaginationService paginationServiceMock;
+    @Mock SortSpecParserService sortServiceMock;
+    @Mock PeopleCrudService crudServiceMock;
+    @Mock PeoplePredicateService predicateServiceMock;
 
-  @BeforeEach
-  protected void beforeEach() {
-    super.instance = instance;
-    super.crudServiceMock = crudServiceMock;
-  }
+    @BeforeEach
+    protected void beforeEach() {
+        super.instance = instance;
+        super.crudServiceMock = crudServiceMock;
+    }
 
-  @Test
-  void reads_people_data() {
-    assertDoesNotThrow(() -> {
-      super.reads_data(null);
-      super.reads_data(Map.of());
-      super.reads_data(Map.of(ANY, ANY));
-    });
-  }
+    @Test
+    void reads_people_data() {
+        assertDoesNotThrow(() -> {
+            super.reads_data(null);
+            super.reads_data(Map.of());
+            super.reads_data(Map.of(ANY, ANY));
+        });
+    }
 }

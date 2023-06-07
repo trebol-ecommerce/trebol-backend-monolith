@@ -39,46 +39,46 @@ import java.util.Optional;
 
 @Service
 public class ReceiptServiceImpl
-  implements ReceiptService {
-  private final SalesRepository salesRepository;
-  private final ConversionService conversionService;
+    implements ReceiptService {
+    private final SalesRepository salesRepository;
+    private final ConversionService conversionService;
 
-  @Autowired
-  public ReceiptServiceImpl(
-    SalesRepository salesRepository,
-    ConversionService conversionService
-  ) {
-    this.salesRepository = salesRepository;
-    this.conversionService = conversionService;
-  }
-
-  @Override
-  public ReceiptPojo fetchReceiptByTransactionToken(String token)
-    throws EntityNotFoundException {
-    Optional<Sell> match = salesRepository.findByTransactionToken(token);
-    if (match.isEmpty()) {
-      throw new EntityNotFoundException("The transaction could not be found, no receipt can be created");
+    @Autowired
+    public ReceiptServiceImpl(
+        SalesRepository salesRepository,
+        ConversionService conversionService
+    ) {
+        this.salesRepository = salesRepository;
+        this.conversionService = conversionService;
     }
-    Sell foundMatch = match.get();
 
-    ReceiptPojo target = conversionService.convert(foundMatch, ReceiptPojo.class);
-
-    if (target != null) {
-      List<ReceiptDetailPojo> targetDetails = new ArrayList<>();
-      for (SellDetail d : foundMatch.getDetails()) {
-        ReceiptDetailPojo targetDetail = conversionService.convert(d, ReceiptDetailPojo.class);
-        if (targetDetail != null) {
-          Product pd = d.getProduct();
-          ProductPojo targetDetailProduct = ProductPojo.builder().name(pd.getName()).barcode(pd.getBarcode()).build();
-          targetDetail.setProduct(targetDetailProduct);
-          targetDetail.setUnitValue(d.getUnitValue());
-          targetDetails.add(targetDetail);
+    @Override
+    public ReceiptPojo fetchReceiptByTransactionToken(String token)
+        throws EntityNotFoundException {
+        Optional<Sell> match = salesRepository.findByTransactionToken(token);
+        if (match.isEmpty()) {
+            throw new EntityNotFoundException("The transaction could not be found, no receipt can be created");
         }
-      }
-      target.setDetails(targetDetails);
-      target.setStatus(foundMatch.getStatus().getName());
-    }
+        Sell foundMatch = match.get();
 
-    return target;
-  }
+        ReceiptPojo target = conversionService.convert(foundMatch, ReceiptPojo.class);
+
+        if (target!=null) {
+            List<ReceiptDetailPojo> targetDetails = new ArrayList<>();
+            for (SellDetail d : foundMatch.getDetails()) {
+                ReceiptDetailPojo targetDetail = conversionService.convert(d, ReceiptDetailPojo.class);
+                if (targetDetail!=null) {
+                    Product pd = d.getProduct();
+                    ProductPojo targetDetailProduct = ProductPojo.builder().name(pd.getName()).barcode(pd.getBarcode()).build();
+                    targetDetail.setProduct(targetDetailProduct);
+                    targetDetail.setUnitValue(d.getUnitValue());
+                    targetDetails.add(targetDetail);
+                }
+            }
+            target.setDetails(targetDetails);
+            target.setStatus(foundMatch.getStatus().getName());
+        }
+
+        return target;
+    }
 }

@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Permission;
 
 @org.springframework.stereotype.Repository
 public interface PermissionsRepository
-  extends Repository<Permission> {
+    extends Repository<Permission> {
 }

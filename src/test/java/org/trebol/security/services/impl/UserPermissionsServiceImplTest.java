@@ -23,30 +23,30 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 public class UserPermissionsServiceImplTest {
-  @InjectMocks UserPermissionsServiceImpl instance;
-  @Mock UserRolePermissionsRepository userRolePermissionsRepositoryMock;
+    @InjectMocks UserPermissionsServiceImpl instance;
+    @Mock UserRolePermissionsRepository userRolePermissionsRepositoryMock;
 
-  @Test
-  void loads_permissions_for_user_roles() {
-    User input = User.builder()
-      .userRole(UserRole.builder()
-        .id(1L)
-        .build())
-      .build();
-    List<UserRolePermission> rolePermissions = List.of(
-      UserRolePermission.builder()
-        .permission(Permission.builder()
-          .description(ANY)
-          .build())
-        .build()
-    );
-    when(userRolePermissionsRepositoryMock.deepFindPermissionsByUserRoleId(anyLong())).thenReturn(rolePermissions);
+    @Test
+    void loads_permissions_for_user_roles() {
+        User input = User.builder()
+            .userRole(UserRole.builder()
+                .id(1L)
+                .build())
+            .build();
+        List<UserRolePermission> rolePermissions = List.of(
+            UserRolePermission.builder()
+                .permission(Permission.builder()
+                    .description(ANY)
+                    .build())
+                .build()
+        );
+        when(userRolePermissionsRepositoryMock.deepFindPermissionsByUserRoleId(anyLong())).thenReturn(rolePermissions);
 
-    Set<Permission> result = instance.loadPermissionsForUser(input);
-    assertFalse(result.isEmpty());
-    Set<Permission> expectedResult = rolePermissions.stream()
-      .map(UserRolePermission::getPermission)
-      .collect(Collectors.toSet());
-    assertEquals(expectedResult, result);
-  }
+        Set<Permission> result = instance.loadPermissionsForUser(input);
+        assertFalse(result.isEmpty());
+        Set<Permission> expectedResult = rolePermissions.stream()
+            .map(UserRolePermission::getPermission)
+            .collect(Collectors.toSet());
+        assertEquals(expectedResult, result);
+    }
 }

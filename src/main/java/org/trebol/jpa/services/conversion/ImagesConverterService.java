@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.ConverterService;
 
 public interface ImagesConverterService
-  extends ConverterService<ImagePojo, Image> {
+    extends ConverterService<ImagePojo, Image> {
 }

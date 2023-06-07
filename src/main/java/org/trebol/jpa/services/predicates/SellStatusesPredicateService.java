@@ -24,6 +24,6 @@ import org.trebol.jpa.entities.QSellStatus;
 import org.trebol.jpa.services.PredicateService;
 
 public interface SellStatusesPredicateService
-  extends PredicateService {
-  QSellStatus basePath = QSellStatus.sellStatus;
+    extends PredicateService {
+    QSellStatus basePath = QSellStatus.sellStatus;
 }

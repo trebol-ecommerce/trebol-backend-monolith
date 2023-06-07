@@ -35,21 +35,21 @@ import javax.persistence.EntityNotFoundException;
 @RestController
 @RequestMapping("/public/receipt")
 public class PublicReceiptController {
-  private final ReceiptService receiptService;
+    private final ReceiptService receiptService;
 
-  @Autowired
-  public PublicReceiptController(
-    ReceiptService receiptService
-  ) {
-    this.receiptService = receiptService;
-  }
-
-  @GetMapping({"/{token}", "/{token}/"})
-  public ReceiptPojo fetchReceiptById(@PathVariable("token") String token)
-    throws BadInputException, EntityNotFoundException {
-    if (StringUtils.isBlank(token)) {
-      throw new BadInputException("An incorrect receipt token was provided");
+    @Autowired
+    public PublicReceiptController(
+        ReceiptService receiptService
+    ) {
+        this.receiptService = receiptService;
     }
-    return this.receiptService.fetchReceiptByTransactionToken(token);
-  }
+
+    @GetMapping({"/{token}", "/{token}/"})
+    public ReceiptPojo fetchReceiptById(@PathVariable("token") String token)
+        throws BadInputException, EntityNotFoundException {
+        if (StringUtils.isBlank(token)) {
+            throw new BadInputException("An incorrect receipt token was provided");
+        }
+        return this.receiptService.fetchReceiptByTransactionToken(token);
+    }
 }

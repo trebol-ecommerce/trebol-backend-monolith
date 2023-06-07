@@ -41,25 +41,25 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class DataBillingTypesControllerTest
-  extends DataGenericControllerTest<BillingTypePojo, BillingType> {
-  @InjectMocks DataBillingTypesController instance;
-  @Mock PaginationService paginationServiceMock;
-  @Mock SortSpecParserService sortServiceMock;
-  @Mock BillingTypesCrudService crudServiceMock;
-  @Mock BillingTypesPredicateService predicateServiceMock;
+    extends DataGenericControllerTest<BillingTypePojo, BillingType> {
+    @InjectMocks DataBillingTypesController instance;
+    @Mock PaginationService paginationServiceMock;
+    @Mock SortSpecParserService sortServiceMock;
+    @Mock BillingTypesCrudService crudServiceMock;
+    @Mock BillingTypesPredicateService predicateServiceMock;
 
-  @BeforeEach
-  protected void beforeEach() {
-    super.instance = instance;
-    super.crudServiceMock = crudServiceMock;
-  }
+    @BeforeEach
+    protected void beforeEach() {
+        super.instance = instance;
+        super.crudServiceMock = crudServiceMock;
+    }
 
-  @Test
-  void reads_billing_types() {
-    assertDoesNotThrow(() -> {
-      super.reads_data(null);
-      super.reads_data(Map.of());
-      super.reads_data(Map.of(ANY, ANY));
-    });
-  }
+    @Test
+    void reads_billing_types() {
+        assertDoesNotThrow(() -> {
+            super.reads_data(null);
+            super.reads_data(Map.of());
+            super.reads_data(Map.of(ANY, ANY));
+        });
+    }
 }

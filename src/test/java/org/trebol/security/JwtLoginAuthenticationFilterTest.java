@@ -71,107 +71,107 @@ import static org.trebol.config.Constants.AUTHORITY_CHECKOUT;
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-  SecurityTestingConfig.class,
-  JwtLoginAuthenticationFilterTest.MockSecurityConfig.class })
+    SecurityTestingConfig.class,
+    JwtLoginAuthenticationFilterTest.MockSecurityConfig.class})
 @WebAppConfiguration
 class JwtLoginAuthenticationFilterTest {
-  static final String LOGIN_URL = "/login";
-  static final String USERNAME = "SOME";
-  static final String PASSWORD = "BODY";
-  static List<GrantedAuthority> USER_AUTHORITIES;
-  @MockBean SecurityProperties securityPropertiesMock;
-  @MockBean UserDetailsService userDetailsServiceMock;
-  @Autowired WebApplicationContext webApplicationContext;
-  MockMvc mockMvc;
+    static final String LOGIN_URL = "/login";
+    static final String USERNAME = "SOME";
+    static final String PASSWORD = "BODY";
+    static List<GrantedAuthority> USER_AUTHORITIES;
+    @MockBean SecurityProperties securityPropertiesMock;
+    @MockBean UserDetailsService userDetailsServiceMock;
+    @Autowired WebApplicationContext webApplicationContext;
+    MockMvc mockMvc;
 
-  @BeforeAll
-  static void beforeAll() {
-    USER_AUTHORITIES = List.of(
-        new SimpleGrantedAuthority(AUTHORITY_CHECKOUT));
-  }
-
-  @BeforeEach
-  void beforeEach() {
-    when(securityPropertiesMock.getJwtExpirationAfterHours()).thenReturn(1);
-    when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(UserDetailsPojo.builder()
-      .username(USERNAME)
-      .password(PASSWORD)
-      .authorities(USER_AUTHORITIES)
-      .enabled(true)
-      .accountNonLocked(true)
-      .accountNonExpired(true)
-      .credentialsNonExpired(true)
-      .build());
-    mockMvc = MockMvcBuilders
-      .webAppContextSetup(webApplicationContext)
-      .apply(springSecurity())
-      .build();
-  }
-
-  @Test
-  @WithAnonymousUser
-  void accepts_authentication() throws Exception {
-    LoginPojo login = LoginPojo.builder()
-      .name(USERNAME)
-      .password(PASSWORD)
-      .build();
-    String jsonRequestBody = new ObjectMapper().writeValueAsString(login);
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-      .post(LOGIN_URL)
-      .content(jsonRequestBody);
-    mockMvc.perform(requestBuilder)
-      .andExpect(status().isOk());
-  }
-
-  @TestConfiguration
-  @EnableWebSecurity
-  static class MockSecurityConfig
-    extends WebSecurityConfigurerAdapter {
-    final SecurityProperties securityProperties;
-    final UserDetailsService userDetailsService;
-    final PasswordEncoder passwordEncoder;
-    final AuthenticationProvider authenticationProvider;
-    final SecretKey secretKey;
-
-    @Autowired
-    MockSecurityConfig(
-      SecurityProperties securityProperties,
-      UserDetailsService userDetailsService,
-      PasswordEncoder passwordEncoder,
-      AuthenticationProvider authenticationProvider,
-      SecretKey secretKey
-    ) {
-      this.securityProperties = securityProperties;
-      this.userDetailsService = userDetailsService;
-      this.passwordEncoder = passwordEncoder;
-      this.authenticationProvider = authenticationProvider;
-      this.secretKey = secretKey;
+    @BeforeAll
+    static void beforeAll() {
+        USER_AUTHORITIES = List.of(
+            new SimpleGrantedAuthority(AUTHORITY_CHECKOUT));
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-      http.authorizeRequests()
-        .antMatchers(LOGIN_URL).permitAll()
-        .and().csrf().disable()
-        .addFilter(loginFilterForUrl());
+    @BeforeEach
+    void beforeEach() {
+        when(securityPropertiesMock.getJwtExpirationAfterHours()).thenReturn(1);
+        when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(UserDetailsPojo.builder()
+            .username(USERNAME)
+            .password(PASSWORD)
+            .authorities(USER_AUTHORITIES)
+            .enabled(true)
+            .accountNonLocked(true)
+            .accountNonExpired(true)
+            .credentialsNonExpired(true)
+            .build());
+        mockMvc = MockMvcBuilders
+            .webAppContextSetup(webApplicationContext)
+            .apply(springSecurity())
+            .build();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-      auth.authenticationProvider(authenticationProvider)
-        .inMemoryAuthentication()
-        .withUser(USERNAME)
-        .password(passwordEncoder.encode(PASSWORD))
-        .authorities(USER_AUTHORITIES);
+    @Test
+    @WithAnonymousUser
+    void accepts_authentication() throws Exception {
+        LoginPojo login = LoginPojo.builder()
+            .name(USERNAME)
+            .password(PASSWORD)
+            .build();
+        String jsonRequestBody = new ObjectMapper().writeValueAsString(login);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .post(LOGIN_URL)
+            .content(jsonRequestBody);
+        mockMvc.perform(requestBuilder)
+            .andExpect(status().isOk());
     }
 
-    private JwtLoginAuthenticationFilter loginFilterForUrl() throws Exception {
-      JwtLoginAuthenticationFilter filter = new JwtLoginAuthenticationFilter(
-        securityProperties,
-        secretKey,
-        super.authenticationManager());
-      filter.setFilterProcessesUrl(LOGIN_URL);
-      return filter;
+    @TestConfiguration
+    @EnableWebSecurity
+    static class MockSecurityConfig
+        extends WebSecurityConfigurerAdapter {
+        final SecurityProperties securityProperties;
+        final UserDetailsService userDetailsService;
+        final PasswordEncoder passwordEncoder;
+        final AuthenticationProvider authenticationProvider;
+        final SecretKey secretKey;
+
+        @Autowired
+        MockSecurityConfig(
+            SecurityProperties securityProperties,
+            UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder,
+            AuthenticationProvider authenticationProvider,
+            SecretKey secretKey
+        ) {
+            this.securityProperties = securityProperties;
+            this.userDetailsService = userDetailsService;
+            this.passwordEncoder = passwordEncoder;
+            this.authenticationProvider = authenticationProvider;
+            this.secretKey = secretKey;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.authorizeRequests()
+                .antMatchers(LOGIN_URL).permitAll()
+                .and().csrf().disable()
+                .addFilter(loginFilterForUrl());
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.authenticationProvider(authenticationProvider)
+                .inMemoryAuthentication()
+                .withUser(USERNAME)
+                .password(passwordEncoder.encode(PASSWORD))
+                .authorities(USER_AUTHORITIES);
+        }
+
+        private JwtLoginAuthenticationFilter loginFilterForUrl() throws Exception {
+            JwtLoginAuthenticationFilter filter = new JwtLoginAuthenticationFilter(
+                securityProperties,
+                secretKey,
+                super.authenticationManager());
+            filter.setFilterProcessesUrl(LOGIN_URL);
+            return filter;
+        }
     }
-  }
 }

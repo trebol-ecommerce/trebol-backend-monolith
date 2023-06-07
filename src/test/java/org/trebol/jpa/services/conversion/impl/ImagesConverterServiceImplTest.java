@@ -30,38 +30,38 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
 class ImagesConverterServiceImplTest {
-  ImagesConverterServiceImpl instance;
+    ImagesConverterServiceImpl instance;
 
-  @BeforeEach
-  void beforeEach() {
-    instance = new ImagesConverterServiceImpl();
-  }
+    @BeforeEach
+    void beforeEach() {
+        instance = new ImagesConverterServiceImpl();
+    }
 
-  @Test
-  void testConvertToPojo() {
-    Image input = Image.builder()
-      .id(1L)
-      .code(ANY)
-      .filename(ANY)
-      .url(ANY)
-      .build();
-    ImagePojo result = instance.convertToPojo(input);
-    assertNotNull(result);
-    assertEquals(input.getFilename(), result.getFilename());
-    assertEquals(input.getCode(), result.getCode());
-  }
+    @Test
+    void testConvertToPojo() {
+        Image input = Image.builder()
+            .id(1L)
+            .code(ANY)
+            .filename(ANY)
+            .url(ANY)
+            .build();
+        ImagePojo result = instance.convertToPojo(input);
+        assertNotNull(result);
+        assertEquals(input.getFilename(), result.getFilename());
+        assertEquals(input.getCode(), result.getCode());
+    }
 
-  @Test
-  void testConvertToNewEntity() {
-    ImagePojo input = ImagePojo.builder()
-      .code(ANY)
-      .filename(ANY)
-      .url(ANY)
-      .build();
-    Image result = instance.convertToNewEntity(input);
-    assertNotNull(result);
-    assertEquals(input.getFilename(), result.getFilename());
-    assertEquals(input.getCode(), result.getCode());
-    assertEquals(input.getUrl(), result.getUrl());
-  }
+    @Test
+    void testConvertToNewEntity() {
+        ImagePojo input = ImagePojo.builder()
+            .code(ANY)
+            .filename(ANY)
+            .url(ANY)
+            .build();
+        Image result = instance.convertToNewEntity(input);
+        assertNotNull(result);
+        assertEquals(input.getFilename(), result.getFilename());
+        assertEquals(input.getCode(), result.getCode());
+        assertEquals(input.getUrl(), result.getUrl());
+    }
 }

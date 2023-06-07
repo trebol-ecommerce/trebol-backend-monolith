@@ -30,52 +30,52 @@ import java.util.List;
 
 @SpringBootTest
 class BackendAppTest {
-  @Autowired AccessController accessController;
-  @Autowired AccountProfileController accountProfileController;
-  @Autowired DataBillingTypesController billingTypesController;
-  @Autowired DataCustomersController customersController;
-  @Autowired DataImagesController imagesController;
-  @Autowired DataPeopleController peopleController;
-  @Autowired DataProductCategoriesController productCategoriesController;
-  @Autowired DataProductListContentsController productListContentsController;
-  @Autowired DataProductListsController productListsController;
-  @Autowired DataProductsController productsController;
-  @Autowired DataSalesController salesController;
-  @Autowired DataSalespeopleController salespeopleController;
-  @Autowired DataSellStatusesController sellStatusesController;
-  @Autowired DataShippersController shippersController;
-  @Autowired DataUserRolesController userRolesController;
-  @Autowired DataUsersController usersController;
-  @Autowired PublicAboutController aboutController;
-  @Autowired PublicCheckoutController checkoutController;
-  @Autowired PublicReceiptController receiptController;
-  @Autowired PublicRegisterController registerController;
-  @Autowired RootController rootController;
+    @Autowired AccessController accessController;
+    @Autowired AccountProfileController accountProfileController;
+    @Autowired DataBillingTypesController billingTypesController;
+    @Autowired DataCustomersController customersController;
+    @Autowired DataImagesController imagesController;
+    @Autowired DataPeopleController peopleController;
+    @Autowired DataProductCategoriesController productCategoriesController;
+    @Autowired DataProductListContentsController productListContentsController;
+    @Autowired DataProductListsController productListsController;
+    @Autowired DataProductsController productsController;
+    @Autowired DataSalesController salesController;
+    @Autowired DataSalespeopleController salespeopleController;
+    @Autowired DataSellStatusesController sellStatusesController;
+    @Autowired DataShippersController shippersController;
+    @Autowired DataUserRolesController userRolesController;
+    @Autowired DataUsersController usersController;
+    @Autowired PublicAboutController aboutController;
+    @Autowired PublicCheckoutController checkoutController;
+    @Autowired PublicReceiptController receiptController;
+    @Autowired PublicRegisterController registerController;
+    @Autowired RootController rootController;
 
-  @Test
-  void sanity_check() {
-    List.of(
-      accessController,
-      accountProfileController,
-      billingTypesController,
-      customersController,
-      imagesController,
-      peopleController,
-      productCategoriesController,
-      productListContentsController,
-      productListsController,
-      productsController,
-      salesController,
-      salespeopleController,
-      sellStatusesController,
-      shippersController,
-      userRolesController,
-      usersController,
-      aboutController,
-      checkoutController,
-      receiptController,
-      registerController,
-      rootController
-    ).forEach(Assertions::assertNotNull);
-  }
+    @Test
+    void sanity_check() {
+        List.of(
+            accessController,
+            accountProfileController,
+            billingTypesController,
+            customersController,
+            imagesController,
+            peopleController,
+            productCategoriesController,
+            productListContentsController,
+            productListsController,
+            productsController,
+            salesController,
+            salespeopleController,
+            sellStatusesController,
+            shippersController,
+            userRolesController,
+            usersController,
+            aboutController,
+            checkoutController,
+            receiptController,
+            registerController,
+            rootController
+        ).forEach(Assertions::assertNotNull);
+    }
 }

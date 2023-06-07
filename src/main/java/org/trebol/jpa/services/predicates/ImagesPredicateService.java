@@ -24,6 +24,6 @@ import org.trebol.jpa.entities.QImage;
 import org.trebol.jpa.services.PredicateService;
 
 public interface ImagesPredicateService
-  extends PredicateService {
-  QImage basePath = QImage.image;
+    extends PredicateService {
+    QImage basePath = QImage.image;
 }

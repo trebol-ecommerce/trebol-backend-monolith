@@ -51,51 +51,51 @@ import java.util.Map;
 @RequestMapping("/data/salespeople")
 @PreAuthorize("isAuthenticated()")
 public class DataSalespeopleController
-  extends DataCrudGenericController<SalespersonPojo, Salesperson> {
+    extends DataCrudGenericController<SalespersonPojo, Salesperson> {
 
-  @Autowired
-  public DataSalespeopleController(
-    PaginationService paginationService,
-    SortSpecParserService sortService,
-    SalespeopleCrudService crudService,
-    SalespeoplePredicateService predicateService
-  ) {
-    super(paginationService, sortService, crudService, predicateService);
-  }
+    @Autowired
+    public DataSalespeopleController(
+        PaginationService paginationService,
+        SortSpecParserService sortService,
+        SalespeopleCrudService crudService,
+        SalespeoplePredicateService predicateService
+    ) {
+        super(paginationService, sortService, crudService, predicateService);
+    }
 
-  @Override
-  @GetMapping({"", "/"})
-  @PreAuthorize("hasAuthority('salespeople:read')")
-  public DataPagePojo<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(allRequestParams);
-  }
+    @Override
+    @GetMapping({"", "/"})
+    @PreAuthorize("hasAuthority('salespeople:read')")
+    public DataPagePojo<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+        return super.readMany(allRequestParams);
+    }
 
-  @Override
-  @PostMapping({"", "/"})
-  @PreAuthorize("hasAuthority('salespeople:create')")
-  public void create(@Valid @RequestBody SalespersonPojo input)
-    throws BadInputException, EntityExistsException {
-    crudService.create(input);
-  }
+    @Override
+    @PostMapping({"", "/"})
+    @PreAuthorize("hasAuthority('salespeople:create')")
+    public void create(@Valid @RequestBody SalespersonPojo input)
+        throws BadInputException, EntityExistsException {
+        crudService.create(input);
+    }
 
-  @Override
-  @PutMapping({"", "/"})
-  @PreAuthorize("hasAuthority('salespeople:update')")
-  public void update(@RequestBody SalespersonPojo input, @RequestParam Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    super.update(input, requestParams);
-  }
+    @Override
+    @PutMapping({"", "/"})
+    @PreAuthorize("hasAuthority('salespeople:update')")
+    public void update(@RequestBody SalespersonPojo input, @RequestParam Map<String, String> requestParams)
+        throws BadInputException, EntityNotFoundException {
+        super.update(input, requestParams);
+    }
 
-  @Override
-  @DeleteMapping({"", "/"})
-  @PreAuthorize("hasAuthority('salespeople:delete')")
-  public void delete(@RequestParam Map<String, String> requestParams)
-    throws EntityNotFoundException {
-    super.delete(requestParams);
-  }
+    @Override
+    @DeleteMapping({"", "/"})
+    @PreAuthorize("hasAuthority('salespeople:delete')")
+    public void delete(@RequestParam Map<String, String> requestParams)
+        throws EntityNotFoundException {
+        super.delete(requestParams);
+    }
 
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return SalespeopleSortSpec.ORDER_SPEC_MAP;
-  }
+    @Override
+    protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+        return SalespeopleSortSpec.ORDER_SPEC_MAP;
+    }
 }

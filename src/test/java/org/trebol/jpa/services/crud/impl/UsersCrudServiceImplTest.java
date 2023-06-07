@@ -45,49 +45,49 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UsersCrudServiceImplTest {
-  @InjectMocks UsersCrudServiceImpl instance;
-  @Mock UsersRepository usersRepositoryMock;
-  @Mock SecurityProperties securityPropertiesMock;
+    @InjectMocks UsersCrudServiceImpl instance;
+    @Mock UsersRepository usersRepositoryMock;
+    @Mock SecurityProperties securityPropertiesMock;
 
-  @Test
-  void finds_by_name() throws BadInputException {
-    String userName = "test-user";
-    UserPojo input = UserPojo.builder()
-      .name(userName)
-      .build();
-    User expectedResult = new User(1L,
-      userName,
-      "test-password",
-      Person.builder().idNumber("111111111").build(),
-      new UserRole(1000L, "test-user"));
-    when(usersRepositoryMock.findByName(userName)).thenReturn(Optional.of(expectedResult));
+    @Test
+    void finds_by_name() throws BadInputException {
+        String userName = "test-user";
+        UserPojo input = UserPojo.builder()
+            .name(userName)
+            .build();
+        User expectedResult = new User(1L,
+            userName,
+            "test-password",
+            Person.builder().idNumber("111111111").build(),
+            new UserRole(1000L, "test-user"));
+        when(usersRepositoryMock.findByName(userName)).thenReturn(Optional.of(expectedResult));
 
-    Optional<User> match = instance.getExisting(input);
+        Optional<User> match = instance.getExisting(input);
 
-    verify(usersRepositoryMock).findByName(userName);
-    assertTrue(match.isPresent());
-    assertEquals(expectedResult, match.get());
-  }
+        verify(usersRepositoryMock).findByName(userName);
+        assertTrue(match.isPresent());
+        assertEquals(expectedResult, match.get());
+    }
 
-  @Test
-  void delete_ProtectedAccount_ThrowsBadInputException() {
-    User userMock = User.builder()
-      .id(1L)
-      .name("test-user")
-      .password("test-password")
-      .person(Person.builder()
-        .idNumber("111111111")
-        .build())
-      .userRole(UserRole.builder()
-        .id(1000L)
-        .name("test-role")
-        .build())
-      .build();
-    BooleanBuilder anyPredicate = new BooleanBuilder();
-    when(securityPropertiesMock.isAccountProtectionEnabled()).thenReturn(true);
-    when(usersRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(userMock));
-    when(securityPropertiesMock.getProtectedAccountId()).thenReturn(userMock.getId());
+    @Test
+    void delete_ProtectedAccount_ThrowsBadInputException() {
+        User userMock = User.builder()
+            .id(1L)
+            .name("test-user")
+            .password("test-password")
+            .person(Person.builder()
+                .idNumber("111111111")
+                .build())
+            .userRole(UserRole.builder()
+                .id(1000L)
+                .name("test-role")
+                .build())
+            .build();
+        BooleanBuilder anyPredicate = new BooleanBuilder();
+        when(securityPropertiesMock.isAccountProtectionEnabled()).thenReturn(true);
+        when(usersRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(userMock));
+        when(securityPropertiesMock.getProtectedAccountId()).thenReturn(userMock.getId());
 
-    assertThrows(AccountProtectionViolationException.class, () -> instance.delete(anyPredicate));
-  }
+        assertThrows(AccountProtectionViolationException.class, () -> instance.delete(anyPredicate));
+    }
 }

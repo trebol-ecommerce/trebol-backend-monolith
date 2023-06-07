@@ -31,10 +31,10 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @JsonInclude
 public class RegistrationPojo {
-  @NotBlank
-  private String name;
-  @NotBlank
-  private String password;
-  @Valid
-  private PersonPojo profile;
+    @NotBlank
+    private String name;
+    @NotBlank
+    private String password;
+    @Valid
+    private PersonPojo profile;
 }

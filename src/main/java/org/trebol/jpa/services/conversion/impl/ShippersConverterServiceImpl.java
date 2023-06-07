@@ -29,24 +29,24 @@ import org.trebol.jpa.services.conversion.ShippersConverterService;
 @Service
 @NoArgsConstructor
 public class ShippersConverterServiceImpl
-  implements ShippersConverterService {
+    implements ShippersConverterService {
 
-  @Override
-  public ShipperPojo convertToPojo(Shipper source) {
-    return ShipperPojo.builder()
-      .name(source.getName())
-      .build();
-  }
+    @Override
+    public ShipperPojo convertToPojo(Shipper source) {
+        return ShipperPojo.builder()
+            .name(source.getName())
+            .build();
+    }
 
-  @Override
-  public Shipper convertToNewEntity(ShipperPojo source) {
-    return Shipper.builder()
-      .name(source.getName())
-      .build();
-  }
+    @Override
+    public Shipper convertToNewEntity(ShipperPojo source) {
+        return Shipper.builder()
+            .name(source.getName())
+            .build();
+    }
 
-  @Override
-  public Shipper applyChangesToExistingEntity(ShipperPojo source, Shipper target) {
-    throw new UnsupportedOperationException("This method is deprecated");
-  }
+    @Override
+    public Shipper applyChangesToExistingEntity(ShipperPojo source, Shipper target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 }

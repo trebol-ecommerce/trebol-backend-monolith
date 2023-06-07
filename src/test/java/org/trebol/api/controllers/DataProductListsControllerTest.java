@@ -48,60 +48,60 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class DataProductListsControllerTest
-  extends DataCrudGenericControllerTest<ProductListPojo, ProductList> {
-  @InjectMocks DataProductListsController instance;
-  @Mock PaginationService paginationServiceMock;
-  @Mock SortSpecParserService sortServiceMock;
-  @Mock ProductListCrudService crudServiceMock;
-  @Mock ProductListsPredicateService predicateServiceMock;
+    extends DataCrudGenericControllerTest<ProductListPojo, ProductList> {
+    @InjectMocks DataProductListsController instance;
+    @Mock PaginationService paginationServiceMock;
+    @Mock SortSpecParserService sortServiceMock;
+    @Mock ProductListCrudService crudServiceMock;
+    @Mock ProductListsPredicateService predicateServiceMock;
 
-  @Override
-  @BeforeEach
-  protected void beforeEach() {
-    super.instance = instance;
-    super.crudServiceMock = crudServiceMock;
-    super.predicateServiceMock = predicateServiceMock;
-    super.sortServiceMock = sortServiceMock;
-    super.paginationServiceMock = paginationServiceMock;
-    super.beforeEach();
-  }
+    @Override
+    @BeforeEach
+    protected void beforeEach() {
+        super.instance = instance;
+        super.crudServiceMock = crudServiceMock;
+        super.predicateServiceMock = predicateServiceMock;
+        super.sortServiceMock = sortServiceMock;
+        super.paginationServiceMock = paginationServiceMock;
+        super.beforeEach();
+    }
 
-  @Test
-  void reads_lists() {
-    assertDoesNotThrow(() -> {
-      super.reads_data(null);
-      super.reads_data(Map.of());
-      super.reads_data(Map.of(ANY, ANY));
-    });
-  }
+    @Test
+    void reads_lists() {
+        assertDoesNotThrow(() -> {
+            super.reads_data(null);
+            super.reads_data(Map.of());
+            super.reads_data(Map.of(ANY, ANY));
+        });
+    }
 
-  @Test
-  void creates_lists() {
-    assertDoesNotThrow(() -> super.creates_data(ProductListPojo.builder().build()));
-  }
+    @Test
+    void creates_lists() {
+        assertDoesNotThrow(() -> super.creates_data(ProductListPojo.builder().build()));
+    }
 
-  @Test
-  void updates_lists_using_predicate_filters_map() {
-    assertDoesNotThrow(() -> {
-      ProductListPojo existingList = ProductListPojo.builder().build();
-      ProductListPojo input = ProductListPojo.builder().build();
-      Predicate predicate = new BooleanBuilder();
-      when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
-      when(crudServiceMock.update(any(), any(Predicate.class))).thenReturn(Optional.of(existingList));
+    @Test
+    void updates_lists_using_predicate_filters_map() {
+        assertDoesNotThrow(() -> {
+            ProductListPojo existingList = ProductListPojo.builder().build();
+            ProductListPojo input = ProductListPojo.builder().build();
+            Predicate predicate = new BooleanBuilder();
+            when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
+            when(crudServiceMock.update(any(), any(Predicate.class))).thenReturn(Optional.of(existingList));
 
-      instance.update(ProductListPojo.builder().build(), Map.of(ANY, ANY));
+            instance.update(ProductListPojo.builder().build(), Map.of(ANY, ANY));
 
-      verify(crudServiceMock).update(input, predicate);
-    });
-  }
+            verify(crudServiceMock).update(input, predicate);
+        });
+    }
 
-  @Test
-  void deletes_lists() {
-    assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
-  }
+    @Test
+    void deletes_lists() {
+        assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
+    }
 
-  @Test
-  void does_not_delete_lists_when_predicate_filters_map_is_empty() {
-    assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
-  }
+    @Test
+    void does_not_delete_lists_when_predicate_filters_map_is_empty() {
+        assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
+    }
 }

@@ -31,22 +31,22 @@ import javax.persistence.EntityNotFoundException;
  */
 public interface ProfileService {
 
-  /**
-   * Fetches personal information from a given username in a wrapper
-   * {@link org.trebol.api.models.PersonPojo} object.
-   *
-   * @param userName The name of the user to fetch data from.
-   * @return The personal information of the user.
-   * @throws EntityNotFoundException When no user with the provided name exists.
-   */
-  PersonPojo getProfileFromUserName(String userName) throws EntityNotFoundException;
+    /**
+     * Fetches personal information from a given username in a wrapper
+     * {@link org.trebol.api.models.PersonPojo} object.
+     *
+     * @param userName The name of the user to fetch data from.
+     * @return The personal information of the user.
+     * @throws EntityNotFoundException When no user with the provided name exists.
+     */
+    PersonPojo getProfileFromUserName(String userName) throws EntityNotFoundException;
 
-  /**
-   * Updates personal information for a given user.
-   *
-   * @param userName The name of the user to fetch data from.
-   * @return The personal information of the user.
-   * @throws EntityNotFoundException When no user with the provided name exists.
-   */
-  void updateProfileForUserWithName(String userName, PersonPojo profile) throws BadInputException, UserNotFoundException;
+    /**
+     * Updates personal information for a given user.
+     *
+     * @param userName The name of the user to fetch data from.
+     * @return The personal information of the user.
+     * @throws EntityNotFoundException When no user with the provided name exists.
+     */
+    void updateProfileForUserWithName(String userName, PersonPojo profile) throws BadInputException, UserNotFoundException;
 }

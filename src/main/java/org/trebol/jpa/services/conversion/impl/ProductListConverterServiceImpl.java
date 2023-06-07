@@ -30,37 +30,37 @@ import org.trebol.jpa.services.conversion.ProductListsConverterService;
 
 @Service
 public class ProductListConverterServiceImpl
-  implements ProductListsConverterService {
-  private final ProductListItemsRepository productListItemRepository;
+    implements ProductListsConverterService {
+    private final ProductListItemsRepository productListItemRepository;
 
-  @Autowired
-  public ProductListConverterServiceImpl(
-    ProductListItemsRepository productListItemRepository
-  ) {
-    this.productListItemRepository = productListItemRepository;
-  }
+    @Autowired
+    public ProductListConverterServiceImpl(
+        ProductListItemsRepository productListItemRepository
+    ) {
+        this.productListItemRepository = productListItemRepository;
+    }
 
-  @Override
-  public ProductListPojo convertToPojo(ProductList source) {
-    Long sourceListId = source.getId();
-    long itemCount = productListItemRepository.count(QProductListItem.productListItem.list.id.eq(sourceListId));
-    return ProductListPojo.builder()
-      .name(source.getName())
-      .code(source.getCode())
-      .totalCount(itemCount)
-      .build();
-  }
+    @Override
+    public ProductListPojo convertToPojo(ProductList source) {
+        Long sourceListId = source.getId();
+        long itemCount = productListItemRepository.count(QProductListItem.productListItem.list.id.eq(sourceListId));
+        return ProductListPojo.builder()
+            .name(source.getName())
+            .code(source.getCode())
+            .totalCount(itemCount)
+            .build();
+    }
 
-  @Override
-  public ProductList convertToNewEntity(ProductListPojo source) {
-    return ProductList.builder()
-      .name(source.getName())
-      .code(source.getCode())
-      .build();
-  }
+    @Override
+    public ProductList convertToNewEntity(ProductListPojo source) {
+        return ProductList.builder()
+            .name(source.getName())
+            .code(source.getCode())
+            .build();
+    }
 
-  @Override
-  public ProductList applyChangesToExistingEntity(ProductListPojo source, ProductList target) {
-    throw new UnsupportedOperationException("This method is deprecated");
-  }
+    @Override
+    public ProductList applyChangesToExistingEntity(ProductListPojo source, ProductList target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 }

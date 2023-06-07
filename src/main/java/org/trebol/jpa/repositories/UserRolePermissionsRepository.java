@@ -29,8 +29,8 @@ import java.util.List;
 
 @org.springframework.stereotype.Repository
 public interface UserRolePermissionsRepository
-  extends Repository<UserRolePermission> {
+    extends Repository<UserRolePermission> {
 
-  @Query("SELECT urp FROM UserRolePermission urp JOIN FETCH urp.permission WHERE urp.userRole.id = :userRoleId")
-  List<UserRolePermission> deepFindPermissionsByUserRoleId(@Param("userRoleId") Long userRoleId);
+    @Query("SELECT urp FROM UserRolePermission urp JOIN FETCH urp.permission WHERE urp.userRole.id = :userRoleId")
+    List<UserRolePermission> deepFindPermissionsByUserRoleId(@Param("userRoleId") Long userRoleId);
 }

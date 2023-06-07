@@ -42,44 +42,44 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UsersCrudServiceImpl
-  extends CrudGenericService<UserPojo, User>
-  implements UsersCrudService {
-  private final UsersRepository usersRepository;
-  private final SecurityProperties securityProperties;
+    extends CrudGenericService<UserPojo, User>
+    implements UsersCrudService {
+    private final UsersRepository usersRepository;
+    private final SecurityProperties securityProperties;
 
-  @Autowired
-  public UsersCrudServiceImpl(
-    UsersRepository usersRepository,
-    UsersConverterService usersConverterService,
-    UsersPatchService usersPatchService,
-    SecurityProperties securityProperties
-  ) {
-    super(usersRepository, usersConverterService, usersPatchService);
-    this.usersRepository = usersRepository;
-    this.securityProperties = securityProperties;
-  }
-
-  @Override
-  public Optional<User> getExisting(UserPojo input) throws BadInputException {
-    String name = input.getName();
-    if (StringUtils.isBlank(name)) {
-      throw new BadInputException("Invalid user name");
-    } else {
-      return usersRepository.findByName(name);
+    @Autowired
+    public UsersCrudServiceImpl(
+        UsersRepository usersRepository,
+        UsersConverterService usersConverterService,
+        UsersPatchService usersPatchService,
+        SecurityProperties securityProperties
+    ) {
+        super(usersRepository, usersConverterService, usersPatchService);
+        this.usersRepository = usersRepository;
+        this.securityProperties = securityProperties;
     }
-  }
 
-  @Override
-  public void delete(Predicate filters) throws EntityNotFoundException {
-    if (securityProperties.isAccountProtectionEnabled()) {
-      Optional<User> optionalUser = usersRepository.findOne(filters);
-      if (optionalUser.isPresent()) {
-        User user = optionalUser.get();
-        if (user.getId() == securityProperties.getProtectedAccountId()) {
-          throw new AccountProtectionViolationException("Protected account cannot be deleted");
+    @Override
+    public Optional<User> getExisting(UserPojo input) throws BadInputException {
+        String name = input.getName();
+        if (StringUtils.isBlank(name)) {
+            throw new BadInputException("Invalid user name");
+        } else {
+            return usersRepository.findByName(name);
         }
-      }
     }
-    super.delete(filters);
-  }
+
+    @Override
+    public void delete(Predicate filters) throws EntityNotFoundException {
+        if (securityProperties.isAccountProtectionEnabled()) {
+            Optional<User> optionalUser = usersRepository.findOne(filters);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                if (user.getId()==securityProperties.getProtectedAccountId()) {
+                    throw new AccountProtectionViolationException("Protected account cannot be deleted");
+                }
+            }
+        }
+        super.delete(filters);
+    }
 }

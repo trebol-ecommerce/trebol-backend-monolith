@@ -33,53 +33,53 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 public class ProductsPatchServiceImpl
-  implements ProductsPatchService {
+    implements ProductsPatchService {
 
-  @Override
-  public Product patchExistingEntity(Map<String, Object> changes, Product existing) throws BadInputException {
-    Product target = new Product(existing);
+    @Override
+    public Product patchExistingEntity(Map<String, Object> changes, Product existing) throws BadInputException {
+        Product target = new Product(existing);
 
-    if (changes.containsKey("barcode")) {
-      String barcode = (String) changes.get("barcode");
-      if (!StringUtils.isBlank(barcode)) {
-        target.setBarcode(barcode);
-      }
+        if (changes.containsKey("barcode")) {
+            String barcode = (String) changes.get("barcode");
+            if (!StringUtils.isBlank(barcode)) {
+                target.setBarcode(barcode);
+            }
+        }
+
+        if (changes.containsKey("name")) {
+            String name = (String) changes.get("name");
+            if (!StringUtils.isBlank(name)) {
+                target.setName(name);
+            }
+        }
+
+        if (changes.containsKey("price")) {
+            Integer price = (Integer) changes.get("price");
+            target.setPrice(price);
+        }
+
+        if (changes.containsKey("description")) {
+            String description = (String) changes.get("description");
+            if (!StringUtils.isBlank(description)) {
+                target.setDescription(description);
+            }
+        }
+
+        if (changes.containsKey("currentStock")) {
+            Integer currentStock = (Integer) changes.get("currentStock");
+            target.setStockCurrent(currentStock);
+        }
+
+        if (changes.containsKey("criticalStock")) {
+            Integer criticalStock = (Integer) changes.get("criticalStock");
+            target.setStockCritical(criticalStock);
+        }
+
+        return target;
     }
 
-    if (changes.containsKey("name")) {
-      String name = (String) changes.get("name");
-      if (!StringUtils.isBlank(name)) {
-        target.setName(name);
-      }
+    @Override
+    public Product patchExistingEntity(ProductPojo changes, Product existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method signature has been deprecated");
     }
-
-    if (changes.containsKey("price")) {
-      Integer price = (Integer) changes.get("price");
-      target.setPrice(price);
-    }
-
-    if (changes.containsKey("description")) {
-      String description = (String) changes.get("description");
-      if (!StringUtils.isBlank(description)) {
-        target.setDescription(description);
-      }
-    }
-
-    if (changes.containsKey("currentStock")) {
-      Integer currentStock = (Integer) changes.get("currentStock");
-      target.setStockCurrent(currentStock);
-    }
-
-    if (changes.containsKey("criticalStock")) {
-      Integer criticalStock = (Integer) changes.get("criticalStock");
-      target.setStockCritical(criticalStock);
-    }
-
-    return target;
-  }
-
-  @Override
-  public Product patchExistingEntity(ProductPojo changes, Product existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
-  }
 }

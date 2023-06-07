@@ -24,6 +24,6 @@ import org.trebol.jpa.entities.QSell;
 import org.trebol.jpa.services.PredicateService;
 
 public interface SalesPredicateService
-  extends PredicateService {
-  QSell basePath = QSell.sell;
+    extends PredicateService {
+    QSell basePath = QSell.sell;
 }

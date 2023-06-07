@@ -34,14 +34,14 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PublicAboutControllerTest {
-  @InjectMocks PublicAboutController instance;
-  @Mock CompanyService companyServiceMock;
+    @InjectMocks PublicAboutController instance;
+    @Mock CompanyService companyServiceMock;
 
-  @Test
-  void reads_company_data() {
-    when(companyServiceMock.readDetails()).thenReturn(null);
-    CompanyDetailsPojo result = instance.readCompanyDetails();
-    Assertions.assertNull(result);
-    verify(companyServiceMock).readDetails();
-  }
+    @Test
+    void reads_company_data() {
+        when(companyServiceMock.readDetails()).thenReturn(null);
+        CompanyDetailsPojo result = instance.readCompanyDetails();
+        Assertions.assertNull(result);
+        verify(companyServiceMock).readDetails();
+    }
 }

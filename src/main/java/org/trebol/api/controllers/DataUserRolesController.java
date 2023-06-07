@@ -51,51 +51,51 @@ import java.util.Map;
 @RequestMapping("/data/user_roles")
 @PreAuthorize("isAuthenticated()")
 public class DataUserRolesController
-  extends DataCrudGenericController<UserRolePojo, UserRole> {
+    extends DataCrudGenericController<UserRolePojo, UserRole> {
 
-  @Autowired
-  public DataUserRolesController(
-    PaginationService paginationService,
-    SortSpecParserService sortService,
-    UserRolesCrudService crudService,
-    UserRolesPredicateService predicateService
-  ) {
-    super(paginationService, sortService, crudService, predicateService);
-  }
+    @Autowired
+    public DataUserRolesController(
+        PaginationService paginationService,
+        SortSpecParserService sortService,
+        UserRolesCrudService crudService,
+        UserRolesPredicateService predicateService
+    ) {
+        super(paginationService, sortService, crudService, predicateService);
+    }
 
-  @Override
-  @GetMapping({"", "/"})
-  @PreAuthorize("hasAuthority('user_roles:read')")
-  public DataPagePojo<UserRolePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(allRequestParams);
-  }
+    @Override
+    @GetMapping({"", "/"})
+    @PreAuthorize("hasAuthority('user_roles:read')")
+    public DataPagePojo<UserRolePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+        return super.readMany(allRequestParams);
+    }
 
-  @Override
-  @PostMapping({"", "/"})
-  @PreAuthorize("hasAuthority('user_roles:create')")
-  public void create(@Valid @RequestBody UserRolePojo input)
-    throws BadInputException, EntityExistsException {
-    crudService.create(input);
-  }
+    @Override
+    @PostMapping({"", "/"})
+    @PreAuthorize("hasAuthority('user_roles:create')")
+    public void create(@Valid @RequestBody UserRolePojo input)
+        throws BadInputException, EntityExistsException {
+        crudService.create(input);
+    }
 
-  @Override
-  @PutMapping({"", "/"})
-  @PreAuthorize("hasAuthority('user_roles:update')")
-  public void update(@RequestBody UserRolePojo input, @RequestParam Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    super.update(input, requestParams);
-  }
+    @Override
+    @PutMapping({"", "/"})
+    @PreAuthorize("hasAuthority('user_roles:update')")
+    public void update(@RequestBody UserRolePojo input, @RequestParam Map<String, String> requestParams)
+        throws BadInputException, EntityNotFoundException {
+        super.update(input, requestParams);
+    }
 
-  @Override
-  @DeleteMapping({"", "/"})
-  @PreAuthorize("hasAuthority('user_roles:delete')")
-  public void delete(@RequestParam Map<String, String> requestParams)
-    throws EntityNotFoundException {
-    super.delete(requestParams);
-  }
+    @Override
+    @DeleteMapping({"", "/"})
+    @PreAuthorize("hasAuthority('user_roles:delete')")
+    public void delete(@RequestParam Map<String, String> requestParams)
+        throws EntityNotFoundException {
+        super.delete(requestParams);
+    }
 
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return UserRolesSortSpec.orderSpecMap;
-  }
+    @Override
+    protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+        return UserRolesSortSpec.orderSpecMap;
+    }
 }

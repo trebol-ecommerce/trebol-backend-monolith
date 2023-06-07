@@ -31,68 +31,68 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.trebol.testing.TestConstants.ANY;
 
 class AddressesConverterServiceImplTest {
-  AddressesConverterServiceImpl instance;
+    AddressesConverterServiceImpl instance;
 
-  @BeforeEach
-  void beforeEach() {
-    instance = new AddressesConverterServiceImpl();
-  }
+    @BeforeEach
+    void beforeEach() {
+        instance = new AddressesConverterServiceImpl();
+    }
 
-  @Test
-  void converts_to_pojo() {
-    Address.AddressBuilder inputBuilder = Address.builder()
-      .firstLine(ANY)
-      .municipality(ANY)
-      .city(ANY)
-      .secondLine(null)
-      .postalCode(null)
-      .notes(null);
-    List.of(
-      inputBuilder
-        .build(),
-      inputBuilder
-        .secondLine(ANY)
-        .build(),
-      inputBuilder
-        .postalCode(ANY)
-        .build(),
-      inputBuilder
-        .notes(ANY)
-        .build()
-    ).forEach(input -> {
-      AddressPojo result = instance.convertToPojo(input);
-      assertEquals(input.getFirstLine(), result.getFirstLine());
-      assertEquals(input.getSecondLine(), result.getSecondLine());
-      assertEquals(input.getMunicipality(), result.getMunicipality());
-      assertEquals(input.getCity(), result.getCity());
-      assertEquals(input.getNotes(), result.getNotes());
-    });
-  }
+    @Test
+    void converts_to_pojo() {
+        Address.AddressBuilder inputBuilder = Address.builder()
+            .firstLine(ANY)
+            .municipality(ANY)
+            .city(ANY)
+            .secondLine(null)
+            .postalCode(null)
+            .notes(null);
+        List.of(
+            inputBuilder
+                .build(),
+            inputBuilder
+                .secondLine(ANY)
+                .build(),
+            inputBuilder
+                .postalCode(ANY)
+                .build(),
+            inputBuilder
+                .notes(ANY)
+                .build()
+        ).forEach(input -> {
+            AddressPojo result = instance.convertToPojo(input);
+            assertEquals(input.getFirstLine(), result.getFirstLine());
+            assertEquals(input.getSecondLine(), result.getSecondLine());
+            assertEquals(input.getMunicipality(), result.getMunicipality());
+            assertEquals(input.getCity(), result.getCity());
+            assertEquals(input.getNotes(), result.getNotes());
+        });
+    }
 
-  @Test
-  void converts_to_new_entity() {
-    AddressPojo.AddressPojoBuilder inputBuilder = AddressPojo.builder()
-      .firstLine(ANY)
-      .municipality(ANY)
-      .city(ANY)
-      .secondLine(null)
-      .postalCode(null)
-      .notes(null);
-    List.of(
-      inputBuilder
-        .build(),
-      inputBuilder
-        .secondLine(ANY)
-        .build(),
-      inputBuilder
-        .postalCode(ANY)
-        .build(),
-      inputBuilder
-        .notes(ANY)
-        .build()
-    ).forEach(input -> {
-      Address result = instance.convertToNewEntity(input);
-      assertEquals(input.getFirstLine(), result.getFirstLine());
-    });
-  }
+    @Test
+    void converts_to_new_entity() {
+        AddressPojo.AddressPojoBuilder inputBuilder = AddressPojo.builder()
+            .firstLine(ANY)
+            .municipality(ANY)
+            .city(ANY)
+            .secondLine(null)
+            .postalCode(null)
+            .notes(null);
+        List.of(
+            inputBuilder
+                .build(),
+            inputBuilder
+                .secondLine(ANY)
+                .build(),
+            inputBuilder
+                .postalCode(ANY)
+                .build(),
+            inputBuilder
+                .notes(ANY)
+                .build()
+        ).forEach(input -> {
+            Address result = instance.convertToNewEntity(input);
+            assertEquals(input.getFirstLine(), result.getFirstLine());
+        });
+    }
 }

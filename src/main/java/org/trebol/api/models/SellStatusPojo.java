@@ -32,9 +32,9 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @Builder
 @JsonInclude
 public class SellStatusPojo {
-  @NotBlank
-  private Integer code;
-  @JsonInclude(NON_EMPTY)
-  @NotBlank
-  private String name;
+    @NotBlank
+    private Integer code;
+    @JsonInclude(NON_EMPTY)
+    @NotBlank
+    private String name;
 }

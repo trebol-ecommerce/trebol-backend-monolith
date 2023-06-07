@@ -37,13 +37,13 @@ import org.springframework.validation.annotation.Validated;
 @Profile("mailgun")
 @Data
 public class MailgunMailingProperties {
-  private String apiKey;
-  private String domain;
-  private String customerOrderPaymentTemplate;
-  private String customerOrderConfirmationTemplate;
-  private String customerOrderRejectionTemplate;
-  private String customerOrderCompletionTemplate;
-  private String ownerOrderConfirmationTemplate;
-  private String ownerOrderRejectionTemplate;
-  private String ownerOrderCompletionTemplate;
+    private String apiKey;
+    private String domain;
+    private String customerOrderPaymentTemplate;
+    private String customerOrderConfirmationTemplate;
+    private String customerOrderRejectionTemplate;
+    private String customerOrderCompletionTemplate;
+    private String ownerOrderConfirmationTemplate;
+    private String ownerOrderRejectionTemplate;
+    private String ownerOrderCompletionTemplate;
 }

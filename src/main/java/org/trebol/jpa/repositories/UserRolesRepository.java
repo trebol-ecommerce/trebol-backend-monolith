@@ -28,8 +28,8 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 public interface UserRolesRepository
-  extends Repository<UserRole> {
+    extends Repository<UserRole> {
 
-  @Query
-  Optional<UserRole> findByName(String name);
+    @Query
+    Optional<UserRole> findByName(String name);
 }

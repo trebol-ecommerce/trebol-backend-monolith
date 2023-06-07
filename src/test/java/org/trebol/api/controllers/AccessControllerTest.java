@@ -52,79 +52,79 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class AccessControllerTest {
-  final String FAKE_JWT = "TEST";
-  @InjectMocks AccessController instance;
-  @Mock AuthorizationHeaderParserService<Claims> jwtClaimsParserServiceMock;
-  @Mock UserDetailsService userDetailsServiceMock;
-  @Mock AuthorizedApiService authorizedApiServiceMock;
-  @Mock RegexMatcherAdapterService regexMatcherAdapterService;
-  UserDetails userDetails;
+    final String FAKE_JWT = "TEST";
+    @InjectMocks AccessController instance;
+    @Mock AuthorizationHeaderParserService<Claims> jwtClaimsParserServiceMock;
+    @Mock UserDetailsService userDetailsServiceMock;
+    @Mock AuthorizedApiService authorizedApiServiceMock;
+    @Mock RegexMatcherAdapterService regexMatcherAdapterService;
+    UserDetails userDetails;
 
-  @BeforeEach
-  void beforeEach() {
-    userDetails = UserDetailsPojo.builder()
-      .authorities(List.of())
-      .username("username")
-      .password("password")
-      .enabled(true)
-      .accountNonLocked(true)
-      .accountNonExpired(true)
-      .credentialsNonExpired(true)
-      .build();
-  }
+    @BeforeEach
+    void beforeEach() {
+        userDetails = UserDetailsPojo.builder()
+            .authorities(List.of())
+            .username("username")
+            .password("password")
+            .enabled(true)
+            .accountNonLocked(true)
+            .accountNonExpired(true)
+            .credentialsNonExpired(true)
+            .build();
+    }
 
-  @Test
-  void parses_authorization_header() {
-    DefaultClaims validClaims = new DefaultClaims(Map.of(
-      SUBJECT, "username"));
-    when(regexMatcherAdapterService.isAValidAuthorizationHeader(anyString())).thenReturn(true);
-    when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn(JWT_PREFIX + FAKE_JWT);
-    when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
-    when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(null);
+    @Test
+    void parses_authorization_header() {
+        DefaultClaims validClaims = new DefaultClaims(Map.of(
+            SUBJECT, "username"));
+        when(regexMatcherAdapterService.isAValidAuthorizationHeader(anyString())).thenReturn(true);
+        when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn(JWT_PREFIX + FAKE_JWT);
+        when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
+        when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(null);
 
-    ArrayList<Object> results = new ArrayList<>();
-    results.add(instance.getApiRoutesAccess(new HttpHeaders()));
-    results.add(instance.getApiResourceAccess(new HttpHeaders(), ANY));
-    results.forEach(Assertions::assertNull);
-    verify(jwtClaimsParserServiceMock, times(results.size())).parseToken(FAKE_JWT);
-    verify(userDetailsServiceMock, times(results.size())).loadUserByUsername("username");
-  }
+        ArrayList<Object> results = new ArrayList<>();
+        results.add(instance.getApiRoutesAccess(new HttpHeaders()));
+        results.add(instance.getApiResourceAccess(new HttpHeaders(), ANY));
+        results.forEach(Assertions::assertNull);
+        verify(jwtClaimsParserServiceMock, times(results.size())).parseToken(FAKE_JWT);
+        verify(userDetailsServiceMock, times(results.size())).loadUserByUsername("username");
+    }
 
-  @Test
-  void fetches_list_of_available_api_routes() {
-    DefaultClaims validClaims = new DefaultClaims(Map.of(
-      SUBJECT, "some"));
-    List<String> expectedRoutesList = List.of();
-    when(regexMatcherAdapterService.isAValidAuthorizationHeader(anyString())).thenReturn(true);
-    when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn(JWT_PREFIX + FAKE_JWT);
-    when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
-    when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(userDetails);
-    when(authorizedApiServiceMock.getAuthorizedApiRoutes(any(UserDetails.class))).thenReturn(expectedRoutesList);
+    @Test
+    void fetches_list_of_available_api_routes() {
+        DefaultClaims validClaims = new DefaultClaims(Map.of(
+            SUBJECT, "some"));
+        List<String> expectedRoutesList = List.of();
+        when(regexMatcherAdapterService.isAValidAuthorizationHeader(anyString())).thenReturn(true);
+        when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn(JWT_PREFIX + FAKE_JWT);
+        when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
+        when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(userDetails);
+        when(authorizedApiServiceMock.getAuthorizedApiRoutes(any(UserDetails.class))).thenReturn(expectedRoutesList);
 
-    AuthorizedAccessPojo result = instance.getApiRoutesAccess(new HttpHeaders());
+        AuthorizedAccessPojo result = instance.getApiRoutesAccess(new HttpHeaders());
 
-    assertNotNull(result);
-    assertTrue(result.getRoutes().isEmpty());
-    assertEquals(expectedRoutesList, result.getRoutes());
-    verify(authorizedApiServiceMock).getAuthorizedApiRoutes(userDetails);
-  }
+        assertNotNull(result);
+        assertTrue(result.getRoutes().isEmpty());
+        assertEquals(expectedRoutesList, result.getRoutes());
+        verify(authorizedApiServiceMock).getAuthorizedApiRoutes(userDetails);
+    }
 
-  @Test
-  void fetches_list_of_permitted_methods() {
-    DefaultClaims validClaims = new DefaultClaims(Map.of(
-      SUBJECT, "some"));
-    List<String> expectedMethodsList = List.of();
-    when(regexMatcherAdapterService.isAValidAuthorizationHeader(anyString())).thenReturn(true);
-    when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn(JWT_PREFIX + FAKE_JWT);
-    when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
-    when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(userDetails);
-    when(authorizedApiServiceMock.getAuthorizedApiRouteAccess(any(UserDetails.class), anyString())).thenReturn(expectedMethodsList);
+    @Test
+    void fetches_list_of_permitted_methods() {
+        DefaultClaims validClaims = new DefaultClaims(Map.of(
+            SUBJECT, "some"));
+        List<String> expectedMethodsList = List.of();
+        when(regexMatcherAdapterService.isAValidAuthorizationHeader(anyString())).thenReturn(true);
+        when(jwtClaimsParserServiceMock.extractAuthorizationHeader(any(HttpHeaders.class))).thenReturn(JWT_PREFIX + FAKE_JWT);
+        when(jwtClaimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
+        when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(userDetails);
+        when(authorizedApiServiceMock.getAuthorizedApiRouteAccess(any(UserDetails.class), anyString())).thenReturn(expectedMethodsList);
 
-    AuthorizedAccessPojo result = instance.getApiResourceAccess(new HttpHeaders(), ANY);
+        AuthorizedAccessPojo result = instance.getApiResourceAccess(new HttpHeaders(), ANY);
 
-    assertNotNull(result);
-    assertTrue(result.getPermissions().isEmpty());
-    assertEquals(expectedMethodsList, result.getPermissions());
-    verify(authorizedApiServiceMock).getAuthorizedApiRouteAccess(userDetails, ANY);
-  }
+        assertNotNull(result);
+        assertTrue(result.getPermissions().isEmpty());
+        assertEquals(expectedMethodsList, result.getPermissions());
+        verify(authorizedApiServiceMock).getAuthorizedApiRouteAccess(userDetails, ANY);
+    }
 }

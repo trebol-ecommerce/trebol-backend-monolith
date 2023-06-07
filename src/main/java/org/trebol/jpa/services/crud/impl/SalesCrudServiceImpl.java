@@ -46,70 +46,70 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class SalesCrudServiceImpl
-  extends CrudGenericService<SellPojo, Sell>
-  implements SalesCrudService {
-  private final SalesRepository salesRepository;
-  private final SalesConverterService salesConverterService;
-  private final AddressesConverterService addressesConverterService;
-  private final ApiProperties apiProperties;
+    extends CrudGenericService<SellPojo, Sell>
+    implements SalesCrudService {
+    private final SalesRepository salesRepository;
+    private final SalesConverterService salesConverterService;
+    private final AddressesConverterService addressesConverterService;
+    private final ApiProperties apiProperties;
 
-  @Autowired
-  public SalesCrudServiceImpl(
-    SalesRepository salesRepository,
-    SalesConverterService salesConverterService,
-    SalesPatchService salesPatchService,
-    AddressesConverterService addressesConverterService,
-    ApiProperties apiProperties
-  ) {
-    super(salesRepository, salesConverterService, salesPatchService);
-    this.salesRepository = salesRepository;
-    this.salesConverterService = salesConverterService;
-    this.addressesConverterService = addressesConverterService;
-    this.apiProperties = apiProperties;
-  }
-
-  @Override
-  public Optional<Sell> getExisting(SellPojo input) {
-    Long buyOrder = input.getBuyOrder();
-    if (buyOrder == null) {
-      return Optional.empty();
-    } else {
-      return this.salesRepository.findById(buyOrder);
+    @Autowired
+    public SalesCrudServiceImpl(
+        SalesRepository salesRepository,
+        SalesConverterService salesConverterService,
+        SalesPatchService salesPatchService,
+        AddressesConverterService addressesConverterService,
+        ApiProperties apiProperties
+    ) {
+        super(salesRepository, salesConverterService, salesPatchService);
+        this.salesRepository = salesRepository;
+        this.salesConverterService = salesConverterService;
+        this.addressesConverterService = addressesConverterService;
+        this.apiProperties = apiProperties;
     }
-  }
 
-  @Override
-  public SellPojo readOne(Predicate conditions) throws EntityNotFoundException {
-    Optional<Sell> matchingSell = salesRepository.findOne(conditions);
-    if (matchingSell.isPresent()) {
-      Sell found = matchingSell.get();
-      SellPojo target = salesConverterService.convertToPojo(found);
-
-      AddressPojo billingAddress = addressesConverterService.convertToPojo(found.getBillingAddress());
-      target.setBillingAddress(billingAddress);
-
-      if (found.getShippingAddress() != null) {
-        AddressPojo shippingAddress = addressesConverterService.convertToPojo(found.getShippingAddress());
-        target.setShippingAddress(shippingAddress);
-      }
-
-      List<SellDetailPojo> details = found.getDetails().stream()
-        .map(salesConverterService::convertDetailToPojo)
-        .collect(Collectors.toList());
-      target.setDetails(details);
-
-      return target;
-    } else {
-      throw new EntityNotFoundException("No sell matches the filtering conditions");
+    @Override
+    public Optional<Sell> getExisting(SellPojo input) {
+        Long buyOrder = input.getBuyOrder();
+        if (buyOrder==null) {
+            return Optional.empty();
+        } else {
+            return this.salesRepository.findById(buyOrder);
+        }
     }
-  }
 
-  @Override
-  protected Sell flushPartialChanges(Map<String, Object> changes, Sell existingEntity) throws BadInputException {
-    Integer statusCode = existingEntity.getStatus().getCode();
-    if ((statusCode >= 3 || statusCode < 0) && !apiProperties.isAbleToEditSalesAfterBeingProcessed()) {
-      throw new BadInputException("The requested transaction cannot be modified");
+    @Override
+    public SellPojo readOne(Predicate conditions) throws EntityNotFoundException {
+        Optional<Sell> matchingSell = salesRepository.findOne(conditions);
+        if (matchingSell.isPresent()) {
+            Sell found = matchingSell.get();
+            SellPojo target = salesConverterService.convertToPojo(found);
+
+            AddressPojo billingAddress = addressesConverterService.convertToPojo(found.getBillingAddress());
+            target.setBillingAddress(billingAddress);
+
+            if (found.getShippingAddress()!=null) {
+                AddressPojo shippingAddress = addressesConverterService.convertToPojo(found.getShippingAddress());
+                target.setShippingAddress(shippingAddress);
+            }
+
+            List<SellDetailPojo> details = found.getDetails().stream()
+                .map(salesConverterService::convertDetailToPojo)
+                .collect(Collectors.toList());
+            target.setDetails(details);
+
+            return target;
+        } else {
+            throw new EntityNotFoundException("No sell matches the filtering conditions");
+        }
     }
-    return super.flushPartialChanges(changes, existingEntity);
-  }
+
+    @Override
+    protected Sell flushPartialChanges(Map<String, Object> changes, Sell existingEntity) throws BadInputException {
+        Integer statusCode = existingEntity.getStatus().getCode();
+        if ((statusCode >= 3 || statusCode < 0) && !apiProperties.isAbleToEditSalesAfterBeingProcessed()) {
+            throw new BadInputException("The requested transaction cannot be modified");
+        }
+        return super.flushPartialChanges(changes, existingEntity);
+    }
 }

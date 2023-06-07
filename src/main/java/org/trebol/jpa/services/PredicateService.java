@@ -29,11 +29,11 @@ import java.util.Map;
  */
 public interface PredicateService {
 
-  /**
-   * Reads Map and creates filtering conditions based on its data
-   *
-   * @param queryParamsMap A map of keys and values
-   * @return A Predicate with filtering conditions as parsed from the input map
-   */
-  Predicate parseMap(Map<String, String> queryParamsMap);
+    /**
+     * Reads Map and creates filtering conditions based on its data
+     *
+     * @param queryParamsMap A map of keys and values
+     * @return A Predicate with filtering conditions as parsed from the input map
+     */
+    Predicate parseMap(Map<String, String> queryParamsMap);
 }

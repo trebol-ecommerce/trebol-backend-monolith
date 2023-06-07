@@ -24,6 +24,6 @@ import org.trebol.jpa.entities.QShipper;
 import org.trebol.jpa.services.PredicateService;
 
 public interface ShippersPredicateService
-  extends PredicateService {
-  QShipper basePath = QShipper.shipper;
+    extends PredicateService {
+    QShipper basePath = QShipper.shipper;
 }

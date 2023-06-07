@@ -35,19 +35,19 @@ import javax.validation.constraints.PositiveOrZero;
 @Validated
 public class SecurityProperties {
 
-  @NotBlank
-  private String jwtSecretKey;
-  @PositiveOrZero
-  private int jwtExpirationAfterMinutes;
-  @PositiveOrZero
-  private int jwtExpirationAfterHours;
-  @PositiveOrZero
-  private int jwtExpirationAfterDays;
-  @Min(6)
-  private int bcryptEncoderStrength;
-  private boolean guestUserEnabled;
-  private String guestUserName;
-  private boolean accountProtectionEnabled;
-  private long protectedAccountId;
-  private long guestUserRoleId;
+    @NotBlank
+    private String jwtSecretKey;
+    @PositiveOrZero
+    private int jwtExpirationAfterMinutes;
+    @PositiveOrZero
+    private int jwtExpirationAfterHours;
+    @PositiveOrZero
+    private int jwtExpirationAfterDays;
+    @Min(6)
+    private int bcryptEncoderStrength;
+    private boolean guestUserEnabled;
+    private String guestUserName;
+    private boolean accountProtectionEnabled;
+    private long protectedAccountId;
+    private long guestUserRoleId;
 }

@@ -43,43 +43,43 @@ import static org.trebol.config.Constants.JWT_PREFIX;
  * Abstract filter that writes a Bearer token to the response upon a succesful authentication call
  */
 public abstract class GenericJwtAuthenticationFilter
-  extends UsernamePasswordAuthenticationFilter {
-  private final SecurityProperties jwtProperties;
-  private final SecretKey secretKey;
+    extends UsernamePasswordAuthenticationFilter {
+    private final SecurityProperties jwtProperties;
+    private final SecretKey secretKey;
 
-  protected GenericJwtAuthenticationFilter(
-    SecurityProperties jwtProperties,
-    SecretKey secretKey
-  ) {
-    this.jwtProperties = jwtProperties;
-    this.secretKey = secretKey;
-  }
+    protected GenericJwtAuthenticationFilter(
+        SecurityProperties jwtProperties,
+        SecretKey secretKey
+    ) {
+        this.jwtProperties = jwtProperties;
+        this.secretKey = secretKey;
+    }
 
-  @Override
-  protected void successfulAuthentication(HttpServletRequest request,
-                                          HttpServletResponse response,
-                                          FilterChain chain,
-                                          Authentication authResult)
-    throws IOException {
-    int minutesToExpire = jwtProperties.getJwtExpirationAfterMinutes();
-    int hoursToExpire = jwtProperties.getJwtExpirationAfterHours();
-    int daysToExpire = jwtProperties.getJwtExpirationAfterDays();
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            FilterChain chain,
+                                            Authentication authResult)
+        throws IOException {
+        int minutesToExpire = jwtProperties.getJwtExpirationAfterMinutes();
+        int hoursToExpire = jwtProperties.getJwtExpirationAfterHours();
+        int daysToExpire = jwtProperties.getJwtExpirationAfterDays();
 
-    Instant now = Instant.now();
-    Instant expiration = now.plus(Period.ofDays(daysToExpire))
-      .plus(Duration.ofHours(hoursToExpire))
-      .plus(Duration.ofMinutes(minutesToExpire));
+        Instant now = Instant.now();
+        Instant expiration = now.plus(Period.ofDays(daysToExpire))
+            .plus(Duration.ofHours(hoursToExpire))
+            .plus(Duration.ofMinutes(minutesToExpire));
 
-    String token = Jwts.builder()
-      .setSubject(authResult.getName())
-      .claim(JWT_CLAIM_AUTHORITIES, authResult.getAuthorities())
-      .setIssuedAt(Date.from(now))
-      .setExpiration(Date.from(expiration))
-      .signWith(secretKey)
-      .compact();
+        String token = Jwts.builder()
+            .setSubject(authResult.getName())
+            .claim(JWT_CLAIM_AUTHORITIES, authResult.getAuthorities())
+            .setIssuedAt(Date.from(now))
+            .setExpiration(Date.from(expiration))
+            .signWith(secretKey)
+            .compact();
 
-    String headerValue = JWT_PREFIX + token;
-    response.addHeader(HttpHeaders.AUTHORIZATION, headerValue);
-    response.getWriter().write(headerValue);
-  }
+        String headerValue = JWT_PREFIX + token;
+        response.addHeader(HttpHeaders.AUTHORIZATION, headerValue);
+        response.getWriter().write(headerValue);
+    }
 }

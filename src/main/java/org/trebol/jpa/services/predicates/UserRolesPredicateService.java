@@ -24,6 +24,6 @@ import org.trebol.jpa.entities.QUserRole;
 import org.trebol.jpa.services.PredicateService;
 
 public interface UserRolesPredicateService
-  extends PredicateService {
-  QUserRole basePath = QUserRole.userRole;
+    extends PredicateService {
+    QUserRole basePath = QUserRole.userRole;
 }

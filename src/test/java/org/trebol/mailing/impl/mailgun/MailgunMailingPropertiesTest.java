@@ -36,24 +36,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestPropertySource("/application-mailgun.empty.properties")
 @EnableConfigurationProperties(MailgunMailingProperties.class)
 class MailgunMailingPropertiesTest {
-  @Autowired MailgunMailingProperties integrationProperties;
+    @Autowired MailgunMailingProperties integrationProperties;
 
-  @Test
-  void sanity_check() {
-    assertNotNull(integrationProperties);
-    List.of(
-      integrationProperties.getApiKey(),
-      integrationProperties.getDomain(),
-      integrationProperties.getCustomerOrderPaymentTemplate(),
-      integrationProperties.getCustomerOrderConfirmationTemplate(),
-      integrationProperties.getCustomerOrderRejectionTemplate(),
-      integrationProperties.getCustomerOrderCompletionTemplate(),
-      integrationProperties.getOwnerOrderConfirmationTemplate(),
-      integrationProperties.getOwnerOrderRejectionTemplate(),
-      integrationProperties.getOwnerOrderCompletionTemplate()
-    ).forEach(property -> {
-      assertNotNull(property);
-      assertTrue(property.isBlank());
-    });
-  }
+    @Test
+    void sanity_check() {
+        assertNotNull(integrationProperties);
+        List.of(
+            integrationProperties.getApiKey(),
+            integrationProperties.getDomain(),
+            integrationProperties.getCustomerOrderPaymentTemplate(),
+            integrationProperties.getCustomerOrderConfirmationTemplate(),
+            integrationProperties.getCustomerOrderRejectionTemplate(),
+            integrationProperties.getCustomerOrderCompletionTemplate(),
+            integrationProperties.getOwnerOrderConfirmationTemplate(),
+            integrationProperties.getOwnerOrderRejectionTemplate(),
+            integrationProperties.getOwnerOrderCompletionTemplate()
+        ).forEach(property -> {
+            assertNotNull(property);
+            assertTrue(property.isBlank());
+        });
+    }
 }

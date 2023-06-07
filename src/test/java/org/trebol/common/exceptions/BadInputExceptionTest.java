@@ -26,35 +26,35 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.trebol.testing.TestConstants.ANY;
 
 class BadInputExceptionTest {
-  final String errorMessage = ANY;
-  final Throwable cause = new RuntimeException(ANY);
+    final String errorMessage = ANY;
+    final Throwable cause = new RuntimeException(ANY);
 
-  @Test
-  void can_contain_an_error_message() {
-    BadInputException instance = assertThrows(BadInputException.class, () -> {
-      throw new BadInputException(errorMessage);
-    });
-    assertNotNull(instance.getMessage());
-    assertEquals(errorMessage, instance.getMessage());
-  }
+    @Test
+    void can_contain_an_error_message() {
+        BadInputException instance = assertThrows(BadInputException.class, () -> {
+            throw new BadInputException(errorMessage);
+        });
+        assertNotNull(instance.getMessage());
+        assertEquals(errorMessage, instance.getMessage());
+    }
 
-  @Test
-  void can_reference_its_own_cause() {
-    BadInputException instance = assertThrows(BadInputException.class, () -> {
-      throw new BadInputException(cause);
-    });
-    assertNotNull(instance.getCause());
-    assertEquals(cause, instance.getCause());
-  }
+    @Test
+    void can_reference_its_own_cause() {
+        BadInputException instance = assertThrows(BadInputException.class, () -> {
+            throw new BadInputException(cause);
+        });
+        assertNotNull(instance.getCause());
+        assertEquals(cause, instance.getCause());
+    }
 
-  @Test
-  void can_contain_an_error_message_and_reference_its_own_cause() {
-    BadInputException instance = assertThrows(BadInputException.class, () -> {
-      throw new BadInputException(errorMessage, cause);
-    });
-    assertNotNull(instance.getMessage());
-    assertNotNull(instance.getCause());
-    assertEquals(errorMessage, instance.getMessage());
-    assertEquals(cause, instance.getCause());
-  }
+    @Test
+    void can_contain_an_error_message_and_reference_its_own_cause() {
+        BadInputException instance = assertThrows(BadInputException.class, () -> {
+            throw new BadInputException(errorMessage, cause);
+        });
+        assertNotNull(instance.getMessage());
+        assertNotNull(instance.getCause());
+        assertEquals(errorMessage, instance.getMessage());
+        assertEquals(cause, instance.getCause());
+    }
 }

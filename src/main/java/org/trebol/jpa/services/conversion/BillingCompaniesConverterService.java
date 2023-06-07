@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.services.ConverterService;
 
 public interface BillingCompaniesConverterService
-  extends ConverterService<BillingCompanyPojo, BillingCompany> {
+    extends ConverterService<BillingCompanyPojo, BillingCompany> {
 }

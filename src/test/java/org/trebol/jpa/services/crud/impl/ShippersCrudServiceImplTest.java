@@ -41,23 +41,23 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ShippersCrudServiceImplTest {
-  @InjectMocks ShippersCrudServiceImpl instance;
-  @Mock ShippersRepository shippersRepositoryMock;
+    @InjectMocks ShippersCrudServiceImpl instance;
+    @Mock ShippersRepository shippersRepositoryMock;
 
-  @Test
-  void finds_by_name() throws BadInputException {
-    String shipperName = "test-one";
-    ShipperPojo input = ShipperPojo.builder()
-      .name(shipperName)
-      .build();
-    Shipper expectedResult = new Shipper(1L, shipperName);
-    when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
+    @Test
+    void finds_by_name() throws BadInputException {
+        String shipperName = "test-one";
+        ShipperPojo input = ShipperPojo.builder()
+            .name(shipperName)
+            .build();
+        Shipper expectedResult = new Shipper(1L, shipperName);
+        when(shippersRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
 
-    Optional<Shipper> match = instance.getExisting(input);
+        Optional<Shipper> match = instance.getExisting(input);
 
-    verify(shippersRepositoryMock).findByName(shipperName);
-    assertTrue(match.isPresent());
-    assertEquals(expectedResult, match.get());
-  }
+        verify(shippersRepositoryMock).findByName(shipperName);
+        assertTrue(match.isPresent());
+        assertEquals(expectedResult, match.get());
+    }
 
 }

@@ -41,45 +41,45 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductListsCrudServiceImpl
-  extends CrudGenericService<ProductListPojo, ProductList>
-  implements ProductListCrudService {
-  private final ProductListsRepository listsRepository;
-  private final ProductListItemsRepository listItemsRepository;
+    extends CrudGenericService<ProductListPojo, ProductList>
+    implements ProductListCrudService {
+    private final ProductListsRepository listsRepository;
+    private final ProductListItemsRepository listItemsRepository;
 
-  @Autowired
-  public ProductListsCrudServiceImpl(
-    ProductListsRepository listsRepository,
-    ProductListItemsRepository listItemsRepository,
-    ProductListsConverterService listsConverterService,
-    ProductListsPatchService listsPatchService
-  ) {
-    super(listsRepository, listsConverterService, listsPatchService);
-    this.listsRepository = listsRepository;
-    this.listItemsRepository = listItemsRepository;
-  }
-
-  @Override
-  public void delete(Predicate filters)
-    throws EntityNotFoundException {
-    long count = listsRepository.count(filters);
-    if (count == 0) {
-      throw new EntityNotFoundException(ITEM_NOT_FOUND);
-    } else {
-      for (ProductList list : listsRepository.findAll(filters)) {
-        listItemsRepository.deleteByListId(list.getId());
-      }
-
-      listsRepository.deleteAll(listsRepository.findAll(filters));
+    @Autowired
+    public ProductListsCrudServiceImpl(
+        ProductListsRepository listsRepository,
+        ProductListItemsRepository listItemsRepository,
+        ProductListsConverterService listsConverterService,
+        ProductListsPatchService listsPatchService
+    ) {
+        super(listsRepository, listsConverterService, listsPatchService);
+        this.listsRepository = listsRepository;
+        this.listItemsRepository = listItemsRepository;
     }
-  }
 
-  @Override
-  public Optional<ProductList> getExisting(ProductListPojo input) throws BadInputException {
-    String name = input.getName();
-    if (StringUtils.isBlank(name)) {
-      throw new BadInputException("The specified list has no name");
-    } else {
-      return listsRepository.findByName(name);
+    @Override
+    public void delete(Predicate filters)
+        throws EntityNotFoundException {
+        long count = listsRepository.count(filters);
+        if (count==0) {
+            throw new EntityNotFoundException(ITEM_NOT_FOUND);
+        } else {
+            for (ProductList list : listsRepository.findAll(filters)) {
+                listItemsRepository.deleteByListId(list.getId());
+            }
+
+            listsRepository.deleteAll(listsRepository.findAll(filters));
+        }
     }
-  }
+
+    @Override
+    public Optional<ProductList> getExisting(ProductListPojo input) throws BadInputException {
+        String name = input.getName();
+        if (StringUtils.isBlank(name)) {
+            throw new BadInputException("The specified list has no name");
+        } else {
+            return listsRepository.findByName(name);
+        }
+    }
 }

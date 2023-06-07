@@ -26,9 +26,9 @@ import org.trebol.jpa.Repository;
 
 @org.springframework.stereotype.Repository
 public interface ParamsRepository
-  extends Repository<org.trebol.jpa.entities.Param> {
+    extends Repository<org.trebol.jpa.entities.Param> {
 
-  @Query("SELECT p FROM Param p WHERE p.category = :category")
-  Iterable<org.trebol.jpa.entities.Param> findParamsByCategory(
-    @Param("category") String category);
+    @Query("SELECT p FROM Param p WHERE p.category = :category")
+    Iterable<org.trebol.jpa.entities.Param> findParamsByCategory(
+        @Param("category") String category);
 }

@@ -32,8 +32,8 @@ import javax.validation.constraints.NotBlank;
 @ConfigurationProperties(prefix = "trebol.validation")
 @Validated
 public class ValidationProperties {
-  @NotBlank
-  private String idNumberRegexp;
-  @NotBlank
-  private String phoneNumberRegexp;
+    @NotBlank
+    private String idNumberRegexp;
+    @NotBlank
+    private String phoneNumberRegexp;
 }

@@ -32,35 +32,35 @@ import java.util.Map;
  */
 @Service
 public class PaginationServiceImpl
-  implements PaginationService {
-  protected final ApiProperties apiProperties;
+    implements PaginationService {
+    protected final ApiProperties apiProperties;
 
-  @Autowired
-  public PaginationServiceImpl(
-    ApiProperties apiProperties
-  ) {
-    this.apiProperties = apiProperties;
-  }
-
-  @Override
-  public int determineRequestedPageIndex(Map<String, String> requestParams)
-    throws NumberFormatException {
-    if (requestParams == null || !requestParams.containsKey("pageIndex")) {
-      return 0;
+    @Autowired
+    public PaginationServiceImpl(
+        ApiProperties apiProperties
+    ) {
+        this.apiProperties = apiProperties;
     }
-    return Integer.parseInt(requestParams.get("pageIndex"));
-  }
 
-  @Override
-  public int determineRequestedPageSize(Map<String, String> requestParams)
-    throws NumberFormatException {
-    if (requestParams == null || !requestParams.containsKey("pageSize")) {
-      return apiProperties.getItemsPerPage();
+    @Override
+    public int determineRequestedPageIndex(Map<String, String> requestParams)
+        throws NumberFormatException {
+        if (requestParams==null || !requestParams.containsKey("pageIndex")) {
+            return 0;
+        }
+        return Integer.parseInt(requestParams.get("pageIndex"));
     }
-    int pageSize = Integer.parseInt(requestParams.get("pageSize"));
-    Integer maxAllowedPageSize = apiProperties.getMaxAllowedPageSize();
-    return (pageSize < maxAllowedPageSize) ?
-      pageSize :
-      maxAllowedPageSize;
-  }
+
+    @Override
+    public int determineRequestedPageSize(Map<String, String> requestParams)
+        throws NumberFormatException {
+        if (requestParams==null || !requestParams.containsKey("pageSize")) {
+            return apiProperties.getItemsPerPage();
+        }
+        int pageSize = Integer.parseInt(requestParams.get("pageSize"));
+        Integer maxAllowedPageSize = apiProperties.getMaxAllowedPageSize();
+        return (pageSize < maxAllowedPageSize) ?
+            pageSize:
+            maxAllowedPageSize;
+    }
 }

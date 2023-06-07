@@ -22,62 +22,62 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class WebpayplusPaymentServiceImplTest {
-  @InjectMocks WebpayplusPaymentServiceImpl instance;
-  @Mock WebpayplusPaymentProperties propertiesMock;
-  final SalesTestHelper salesHelper = new SalesTestHelper();
-  static final String RETURN_URL = "http://localhost";
-
-  @BeforeEach
-  void beforeEach() {
-    salesHelper.resetSales();
-  }
-
-  @Nested
-  class TestMode {
-    @Test
-    void fetches_payment_page_for_started_transactions() throws PaymentServiceException {
-      SellPojo input = salesHelper.sellPojoAfterCreation();
-      when(propertiesMock.getCallbackUrl()).thenReturn(RETURN_URL);
-      PaymentRedirectionDetailsPojo result = instance.requestNewPaymentPageDetails(input);
-      assertNotNull(result);
-      assertFalse(result.getToken().isBlank());
-      assertFalse(result.getUrl().isBlank());
-    }
-
-    @Test
-    void fetches_payment_result() {
-      assertDoesNotThrow(() -> instance.requestPaymentResult(ANY));
-    }
-
-    @Test
-    void fetches_payment_result_page_url() {
-      when(propertiesMock.getBrowserRedirectionUrl()).thenReturn(ANY);
-      String result = instance.getPaymentResultPageUrl();
-      assertNotNull(result);
-      assertEquals(ANY, result);
-    }
-  }
-
-  @Nested
-  class ProductionModeWithoutConfig {
+    @InjectMocks WebpayplusPaymentServiceImpl instance;
+    @Mock WebpayplusPaymentProperties propertiesMock;
+    final SalesTestHelper salesHelper = new SalesTestHelper();
+    static final String RETURN_URL = "http://localhost";
 
     @BeforeEach
     void beforeEach() {
-      when(propertiesMock.isProduction()).thenReturn(true);
+        salesHelper.resetSales();
     }
 
-    @Test
-    void will_not_begin_transactions() {
-      SellPojo input = salesHelper.sellPojoAfterCreation();
-      when(propertiesMock.getCallbackUrl()).thenReturn(RETURN_URL);
-      PaymentServiceException result = assertThrows(PaymentServiceException.class, () -> instance.requestNewPaymentPageDetails(input));
-      assertEquals("Webpay could not create a new transaction", result.getMessage());
+    @Nested
+    class TestMode {
+        @Test
+        void fetches_payment_page_for_started_transactions() throws PaymentServiceException {
+            SellPojo input = salesHelper.sellPojoAfterCreation();
+            when(propertiesMock.getCallbackUrl()).thenReturn(RETURN_URL);
+            PaymentRedirectionDetailsPojo result = instance.requestNewPaymentPageDetails(input);
+            assertNotNull(result);
+            assertFalse(result.getToken().isBlank());
+            assertFalse(result.getUrl().isBlank());
+        }
+
+        @Test
+        void fetches_payment_result() {
+            assertDoesNotThrow(() -> instance.requestPaymentResult(ANY));
+        }
+
+        @Test
+        void fetches_payment_result_page_url() {
+            when(propertiesMock.getBrowserRedirectionUrl()).thenReturn(ANY);
+            String result = instance.getPaymentResultPageUrl();
+            assertNotNull(result);
+            assertEquals(ANY, result);
+        }
     }
 
-    @Test
-    void will_not_fetch_transaction_result() throws PaymentServiceException {
-      int result = instance.requestPaymentResult(ANY);
-      assertEquals(1, result);
+    @Nested
+    class ProductionModeWithoutConfig {
+
+        @BeforeEach
+        void beforeEach() {
+            when(propertiesMock.isProduction()).thenReturn(true);
+        }
+
+        @Test
+        void will_not_begin_transactions() {
+            SellPojo input = salesHelper.sellPojoAfterCreation();
+            when(propertiesMock.getCallbackUrl()).thenReturn(RETURN_URL);
+            PaymentServiceException result = assertThrows(PaymentServiceException.class, () -> instance.requestNewPaymentPageDetails(input));
+            assertEquals("Webpay could not create a new transaction", result.getMessage());
+        }
+
+        @Test
+        void will_not_fetch_transaction_result() throws PaymentServiceException {
+            int result = instance.requestPaymentResult(ANY);
+            assertEquals(1, result);
+        }
     }
-  }
 }

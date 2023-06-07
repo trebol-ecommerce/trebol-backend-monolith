@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.services.CrudService;
 
 public interface BillingCompaniesCrudService
-  extends CrudService<BillingCompanyPojo, BillingCompany> {
+    extends CrudService<BillingCompanyPojo, BillingCompany> {
 }

@@ -33,31 +33,31 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 public class ProductListPatchServiceImpl
-  implements ProductListsPatchService {
+    implements ProductListsPatchService {
 
-  @Override
-  public ProductList patchExistingEntity(Map<String, Object> changes, ProductList existing) throws BadInputException {
-    ProductList target = new ProductList(existing);
+    @Override
+    public ProductList patchExistingEntity(Map<String, Object> changes, ProductList existing) throws BadInputException {
+        ProductList target = new ProductList(existing);
 
-    if (changes.containsKey("name")) {
-      String name = (String) changes.get("name");
-      if (!StringUtils.isBlank(name)) {
-        target.setName(name);
-      }
+        if (changes.containsKey("name")) {
+            String name = (String) changes.get("name");
+            if (!StringUtils.isBlank(name)) {
+                target.setName(name);
+            }
+        }
+
+        if (changes.containsKey("code")) {
+            String code = (String) changes.get("code");
+            if (!StringUtils.isBlank(code)) {
+                target.setCode(code);
+            }
+        }
+
+        return target;
     }
 
-    if (changes.containsKey("code")) {
-      String code = (String) changes.get("code");
-      if (!StringUtils.isBlank(code)) {
-        target.setCode(code);
-      }
+    @Override
+    public ProductList patchExistingEntity(ProductListPojo changes, ProductList existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method signature has been deprecated");
     }
-
-    return target;
-  }
-
-  @Override
-  public ProductList patchExistingEntity(ProductListPojo changes, ProductList existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
-  }
 }

@@ -29,24 +29,24 @@ import org.trebol.jpa.services.conversion.UserRolesConverterService;
 @Service
 @NoArgsConstructor
 public class UserRolesConverterServiceImpl
-  implements UserRolesConverterService {
+    implements UserRolesConverterService {
 
-  @Override
-  public UserRolePojo convertToPojo(UserRole source) {
-    return UserRolePojo.builder()
-      .name(source.getName())
-      .build();
-  }
+    @Override
+    public UserRolePojo convertToPojo(UserRole source) {
+        return UserRolePojo.builder()
+            .name(source.getName())
+            .build();
+    }
 
-  @Override
-  public UserRole convertToNewEntity(UserRolePojo source) {
-    return UserRole.builder()
-      .name(source.getName())
-      .build();
-  }
+    @Override
+    public UserRole convertToNewEntity(UserRolePojo source) {
+        return UserRole.builder()
+            .name(source.getName())
+            .build();
+    }
 
-  @Override
-  public UserRole applyChangesToExistingEntity(UserRolePojo source, UserRole target) {
-    throw new UnsupportedOperationException("This method is deprecated");
-  }
+    @Override
+    public UserRole applyChangesToExistingEntity(UserRolePojo source, UserRole target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 }

@@ -49,48 +49,48 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListCrudServiceImplTest {
-  @InjectMocks ProductListsCrudServiceImpl instance;
-  @Mock ProductListsRepository productListRepositoryMock;
-  @Mock ProductListItemsRepository productListItemRepositoryMock;
+    @InjectMocks ProductListsCrudServiceImpl instance;
+    @Mock ProductListsRepository productListRepositoryMock;
+    @Mock ProductListItemsRepository productListItemRepositoryMock;
 
-  @Test
-  void matches_productlist_from_name() throws BadInputException {
-    ProductListPojo input = ProductListPojo.builder()
-      .name(ANY)
-      .build();
-    ProductList expectedResult = ProductList.builder().build();
-    when(productListRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
-    Optional<ProductList> result = instance.getExisting(input);
-    assertTrue(result.isPresent());
-    assertEquals(expectedResult, result.get());
-    verify(productListRepositoryMock).findByName(input.getName());
-  }
+    @Test
+    void matches_productlist_from_name() throws BadInputException {
+        ProductListPojo input = ProductListPojo.builder()
+            .name(ANY)
+            .build();
+        ProductList expectedResult = ProductList.builder().build();
+        when(productListRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
+        Optional<ProductList> result = instance.getExisting(input);
+        assertTrue(result.isPresent());
+        assertEquals(expectedResult, result.get());
+        verify(productListRepositoryMock).findByName(input.getName());
+    }
 
-  @Test
-  void cannot_match_any_productlist_from_null_data() {
-    ProductListPojo input = ProductListPojo.builder().build();
-    BadInputException result = assertThrows(BadInputException.class, () -> instance.getExisting(input));
-    assertEquals("The specified list has no name", result.getMessage());
-  }
+    @Test
+    void cannot_match_any_productlist_from_null_data() {
+        ProductListPojo input = ProductListPojo.builder().build();
+        BadInputException result = assertThrows(BadInputException.class, () -> instance.getExisting(input));
+        assertEquals("The specified list has no name", result.getMessage());
+    }
 
-  @Test
-  void deletes_lists() {
-    List<ProductList> productListsMock = List.of(
-      ProductList.builder()
-        .id(1L)
-        .build()
-    );
-    when(productListRepositoryMock.count(any(Predicate.class))).thenReturn(1L);
-    when(productListRepositoryMock.findAll(any(Predicate.class))).thenReturn(productListsMock);
-    instance.delete(new BooleanBuilder());
-    verify(productListItemRepositoryMock, times(productListsMock.size())).deleteByListId(1L);
-    verify(productListRepositoryMock).deleteAll(productListsMock);
-  }
+    @Test
+    void deletes_lists() {
+        List<ProductList> productListsMock = List.of(
+            ProductList.builder()
+                .id(1L)
+                .build()
+        );
+        when(productListRepositoryMock.count(any(Predicate.class))).thenReturn(1L);
+        when(productListRepositoryMock.findAll(any(Predicate.class))).thenReturn(productListsMock);
+        instance.delete(new BooleanBuilder());
+        verify(productListItemRepositoryMock, times(productListsMock.size())).deleteByListId(1L);
+        verify(productListRepositoryMock).deleteAll(productListsMock);
+    }
 
-  @Test
-  void attempting_to_delete_nothing_throws_EntityNotFoundException() {
-    BooleanBuilder input = new BooleanBuilder();
-    when(productListRepositoryMock.count(any(Predicate.class))).thenReturn(0L);
-    assertThrows(EntityNotFoundException.class, () -> instance.delete(input));
-  }
+    @Test
+    void attempting_to_delete_nothing_throws_EntityNotFoundException() {
+        BooleanBuilder input = new BooleanBuilder();
+        when(productListRepositoryMock.count(any(Predicate.class))).thenReturn(0L);
+        assertThrows(EntityNotFoundException.class, () -> instance.delete(input));
+    }
 }

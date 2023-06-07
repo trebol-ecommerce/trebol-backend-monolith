@@ -33,15 +33,15 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class PublicRegisterControllerTest {
-  @InjectMocks PublicRegisterController instance;
-  @Mock RegistrationService serviceMock;
+    @InjectMocks PublicRegisterController instance;
+    @Mock RegistrationService serviceMock;
 
-  @Test
-  void registers_new_users() {
-    RegistrationPojo input = RegistrationPojo.builder().build();
-    assertDoesNotThrow(() -> {
-      instance.register(input);
-      verify(serviceMock).register(input);
-    });
-  }
+    @Test
+    void registers_new_users() {
+        RegistrationPojo input = RegistrationPojo.builder().build();
+        assertDoesNotThrow(() -> {
+            instance.register(input);
+            verify(serviceMock).register(input);
+        });
+    }
 }

@@ -31,15 +31,15 @@ import org.trebol.api.services.CompanyService;
 @RequestMapping("/public/about")
 public class PublicAboutController {
 
-  private final CompanyService companyService;
+    private final CompanyService companyService;
 
-  @Autowired
-  public PublicAboutController(CompanyService companyService) {
-    this.companyService = companyService;
-  }
+    @Autowired
+    public PublicAboutController(CompanyService companyService) {
+        this.companyService = companyService;
+    }
 
-  @GetMapping({"", "/"})
-  public CompanyDetailsPojo readCompanyDetails() {
-    return companyService.readDetails();
-  }
+    @GetMapping({"", "/"})
+    public CompanyDetailsPojo readCompanyDetails() {
+        return companyService.readDetails();
+    }
 }

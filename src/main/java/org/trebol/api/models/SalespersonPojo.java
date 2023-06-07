@@ -35,7 +35,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @JsonInclude
 public class SalespersonPojo {
-  @NotNull
-  @Valid
-  private PersonPojo person;
+    @NotNull
+    @Valid
+    private PersonPojo person;
 }

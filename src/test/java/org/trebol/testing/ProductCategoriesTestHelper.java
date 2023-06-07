@@ -28,71 +28,71 @@ import org.trebol.jpa.entities.ProductCategory;
  */
 public class ProductCategoriesTestHelper {
 
-  public static final long PRODUCT_ID = 1L;
-  public static final String CATEGORY_NAME = "test product name";
-  public static final String CATEGORY_CODE = "TESTPROD1";
-  private ProductCategoryPojo pojoForFetch;
-  private ProductCategoryPojo pojoBeforeCreation;
-  private ProductCategoryPojo pojoAfterCreation;
-  private ProductCategory entityBeforeCreation;
-  private ProductCategory entityAfterCreation;
+    public static final long PRODUCT_ID = 1L;
+    public static final String CATEGORY_NAME = "test product name";
+    public static final String CATEGORY_CODE = "TESTPROD1";
+    private ProductCategoryPojo pojoForFetch;
+    private ProductCategoryPojo pojoBeforeCreation;
+    private ProductCategoryPojo pojoAfterCreation;
+    private ProductCategory entityBeforeCreation;
+    private ProductCategory entityAfterCreation;
 
-  public void resetProductCategories() {
-    this.pojoForFetch = null;
-    this.pojoBeforeCreation = null;
-    this.pojoAfterCreation = null;
-    this.entityBeforeCreation = null;
-    this.entityAfterCreation = null;
-  }
-
-  public ProductCategoryPojo productCategoryPojoForFetch() {
-    if (this.pojoForFetch == null) {
-      this.pojoForFetch = ProductCategoryPojo.builder()
-        .code(CATEGORY_CODE)
-        .build();
+    public void resetProductCategories() {
+        this.pojoForFetch = null;
+        this.pojoBeforeCreation = null;
+        this.pojoAfterCreation = null;
+        this.entityBeforeCreation = null;
+        this.entityAfterCreation = null;
     }
-    return this.pojoForFetch;
-  }
 
-  public ProductCategoryPojo productCategoryPojoBeforeCreation() {
-    if (this.pojoBeforeCreation == null) {
-      this.pojoBeforeCreation = ProductCategoryPojo.builder()
-        .code(CATEGORY_CODE)
-        .name(CATEGORY_NAME)
-        .build();
+    public ProductCategoryPojo productCategoryPojoForFetch() {
+        if (this.pojoForFetch==null) {
+            this.pojoForFetch = ProductCategoryPojo.builder()
+                .code(CATEGORY_CODE)
+                .build();
+        }
+        return this.pojoForFetch;
     }
-    return this.pojoBeforeCreation;
-  }
 
-  public ProductCategoryPojo productCategoryPojoAfterCreation() {
-    if (this.pojoAfterCreation == null) {
-      this.pojoAfterCreation = ProductCategoryPojo.builder()
-        .code(CATEGORY_CODE)
-        .name(CATEGORY_NAME)
-        .build();
+    public ProductCategoryPojo productCategoryPojoBeforeCreation() {
+        if (this.pojoBeforeCreation==null) {
+            this.pojoBeforeCreation = ProductCategoryPojo.builder()
+                .code(CATEGORY_CODE)
+                .name(CATEGORY_NAME)
+                .build();
+        }
+        return this.pojoBeforeCreation;
     }
-    return this.pojoAfterCreation;
-  }
 
-  public ProductCategory productCategoryEntityBeforeCreation() {
-    if (this.entityBeforeCreation == null) {
-      this.entityBeforeCreation = ProductCategory.builder()
-        .code(CATEGORY_CODE)
-        .name(CATEGORY_NAME)
-        .build();
+    public ProductCategoryPojo productCategoryPojoAfterCreation() {
+        if (this.pojoAfterCreation==null) {
+            this.pojoAfterCreation = ProductCategoryPojo.builder()
+                .code(CATEGORY_CODE)
+                .name(CATEGORY_NAME)
+                .build();
+        }
+        return this.pojoAfterCreation;
     }
-    return this.entityBeforeCreation;
-  }
 
-  public ProductCategory productCategoryEntityAfterCreation() {
-    if (this.entityAfterCreation == null) {
-      this.entityAfterCreation = ProductCategory.builder()
-        .id(PRODUCT_ID)
-        .code(CATEGORY_CODE)
-        .name(CATEGORY_NAME)
-        .parent(null)
-        .build();
+    public ProductCategory productCategoryEntityBeforeCreation() {
+        if (this.entityBeforeCreation==null) {
+            this.entityBeforeCreation = ProductCategory.builder()
+                .code(CATEGORY_CODE)
+                .name(CATEGORY_NAME)
+                .build();
+        }
+        return this.entityBeforeCreation;
     }
-    return this.entityAfterCreation;
-  }
+
+    public ProductCategory productCategoryEntityAfterCreation() {
+        if (this.entityAfterCreation==null) {
+            this.entityAfterCreation = ProductCategory.builder()
+                .id(PRODUCT_ID)
+                .code(CATEGORY_CODE)
+                .name(CATEGORY_NAME)
+                .parent(null)
+                .build();
+        }
+        return this.entityAfterCreation;
+    }
 }

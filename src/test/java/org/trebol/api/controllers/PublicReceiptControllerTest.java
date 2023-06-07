@@ -38,20 +38,20 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class PublicReceiptControllerTest {
-  @InjectMocks PublicReceiptController instance;
-  @Mock ReceiptService serviceMock;
+    @InjectMocks PublicReceiptController instance;
+    @Mock ReceiptService serviceMock;
 
-  @Test
-  void reads_data_from_service_by_token() throws BadInputException {
-    String token = ANY;
-    when(serviceMock.fetchReceiptByTransactionToken(anyString())).thenReturn(null);
-    ReceiptPojo result = instance.fetchReceiptById(token);
-    assertNull(result);
-    verify(serviceMock).fetchReceiptByTransactionToken(token);
-  }
+    @Test
+    void reads_data_from_service_by_token() throws BadInputException {
+        String token = ANY;
+        when(serviceMock.fetchReceiptByTransactionToken(anyString())).thenReturn(null);
+        ReceiptPojo result = instance.fetchReceiptById(token);
+        assertNull(result);
+        verify(serviceMock).fetchReceiptByTransactionToken(token);
+    }
 
-  @Test
-  void does_not_accept_empty_tokens() {
-    assertThrows(BadInputException.class, () -> instance.fetchReceiptById(""));
-  }
+    @Test
+    void does_not_accept_empty_tokens() {
+        assertThrows(BadInputException.class, () -> instance.fetchReceiptById(""));
+    }
 }

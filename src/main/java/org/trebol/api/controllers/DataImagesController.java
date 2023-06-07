@@ -52,61 +52,61 @@ import java.util.Map;
 @RequestMapping("/data/images")
 @PreAuthorize("isAuthenticated()")
 public class DataImagesController
-  extends DataCrudGenericController<ImagePojo, Image> {
+    extends DataCrudGenericController<ImagePojo, Image> {
 
-  @Autowired
-  public DataImagesController(
-    PaginationService paginationService,
-    SortSpecParserService sortService,
-    ImagesCrudService crudService,
-    ImagesPredicateService predicateService
-  ) {
-    super(paginationService, sortService, crudService, predicateService);
-  }
+    @Autowired
+    public DataImagesController(
+        PaginationService paginationService,
+        SortSpecParserService sortService,
+        ImagesCrudService crudService,
+        ImagesPredicateService predicateService
+    ) {
+        super(paginationService, sortService, crudService, predicateService);
+    }
 
-  @Override
-  @GetMapping({"", "/"})
-  @PreAuthorize("hasAuthority('images:read')")
-  public DataPagePojo<ImagePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(allRequestParams);
-  }
+    @Override
+    @GetMapping({"", "/"})
+    @PreAuthorize("hasAuthority('images:read')")
+    public DataPagePojo<ImagePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+        return super.readMany(allRequestParams);
+    }
 
-  @Override
-  @PostMapping({"", "/"})
-  @PreAuthorize("hasAuthority('images:create')")
-  public void create(@Valid @RequestBody ImagePojo input)
-    throws BadInputException, EntityExistsException {
-    crudService.create(input);
-  }
+    @Override
+    @PostMapping({"", "/"})
+    @PreAuthorize("hasAuthority('images:create')")
+    public void create(@Valid @RequestBody ImagePojo input)
+        throws BadInputException, EntityExistsException {
+        crudService.create(input);
+    }
 
-  @Override
-  @PutMapping({"", "/"})
-  @PreAuthorize("hasAuthority('images:update')")
-  public void update(@RequestBody ImagePojo input, @RequestParam Map<String, String> requestParams)
-    throws EntityNotFoundException, BadInputException {
-    super.update(input, requestParams);
-  }
+    @Override
+    @PutMapping({"", "/"})
+    @PreAuthorize("hasAuthority('images:update')")
+    public void update(@RequestBody ImagePojo input, @RequestParam Map<String, String> requestParams)
+        throws EntityNotFoundException, BadInputException {
+        super.update(input, requestParams);
+    }
 
-  @Override
-  @PatchMapping({"", "/"})
-  @PreAuthorize("hasAuthority('images:update')")
-  public void partialUpdate(
-    @RequestBody Map<String, Object> input,
-    @RequestParam Map<String, String> requestParams
-  ) throws BadInputException, EntityNotFoundException {
-    super.partialUpdate(input, requestParams);
-  }
+    @Override
+    @PatchMapping({"", "/"})
+    @PreAuthorize("hasAuthority('images:update')")
+    public void partialUpdate(
+        @RequestBody Map<String, Object> input,
+        @RequestParam Map<String, String> requestParams
+    ) throws BadInputException, EntityNotFoundException {
+        super.partialUpdate(input, requestParams);
+    }
 
-  @Override
-  @DeleteMapping({"", "/"})
-  @PreAuthorize("hasAuthority('images:delete')")
-  public void delete(@RequestParam Map<String, String> requestParams)
-    throws EntityNotFoundException {
-    super.delete(requestParams);
-  }
+    @Override
+    @DeleteMapping({"", "/"})
+    @PreAuthorize("hasAuthority('images:delete')")
+    public void delete(@RequestParam Map<String, String> requestParams)
+        throws EntityNotFoundException {
+        super.delete(requestParams);
+    }
 
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return ImagesSortSpec.ORDER_SPEC_MAP;
-  }
+    @Override
+    protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+        return ImagesSortSpec.ORDER_SPEC_MAP;
+    }
 }

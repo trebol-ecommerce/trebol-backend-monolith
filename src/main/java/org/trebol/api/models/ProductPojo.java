@@ -39,16 +39,16 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
 public class ProductPojo {
-  @NotBlank
-  private String name;
-  @NotBlank
-  private String barcode;
-  @JsonInclude(NON_EMPTY)
-  private String description;
-  @NotNull
-  private Integer price;
-  private Integer currentStock;
-  private Integer criticalStock;
-  private ProductCategoryPojo category;
-  private Collection<ImagePojo> images;
+    @NotBlank
+    private String name;
+    @NotBlank
+    private String barcode;
+    @JsonInclude(NON_EMPTY)
+    private String description;
+    @NotNull
+    private Integer price;
+    private Integer currentStock;
+    private Integer criticalStock;
+    private ProductCategoryPojo category;
+    private Collection<ImagePojo> images;
 }

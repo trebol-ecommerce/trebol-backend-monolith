@@ -36,23 +36,23 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 public interface ProductsRepository
-  extends Repository<Product> {
+    extends Repository<Product> {
 
-  @Query(value = "SELECT p FROM Product p JOIN FETCH p.productCategory", countQuery = "SELECT p FROM Product p")
-  Page<Product> deepReadAll(Pageable pageable);
+    @Query(value = "SELECT p FROM Product p JOIN FETCH p.productCategory", countQuery = "SELECT p FROM Product p")
+    Page<Product> deepReadAll(Pageable pageable);
 
-  @Query(value = "SELECT p FROM Product p JOIN FETCH p.productCategory", countQuery = "SELECT p FROM Product p")
-  Page<Product> deepReadAll(Predicate filters, Pageable pageable);
+    @Query(value = "SELECT p FROM Product p JOIN FETCH p.productCategory", countQuery = "SELECT p FROM Product p")
+    Page<Product> deepReadAll(Predicate filters, Pageable pageable);
 
-  Optional<Product> findByBarcode(String barcode);
+    Optional<Product> findByBarcode(String barcode);
 
-  @Modifying
-  @Transactional
-  @Query("UPDATE Product p SET p.productCategory.id = :categoryId WHERE p.id = :id")
-  void setProductCategoryById(@Param("id") Long productId, @Param("categoryId") Long categoryId);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.productCategory.id = :categoryId WHERE p.id = :id")
+    void setProductCategoryById(@Param("id") Long productId, @Param("categoryId") Long categoryId);
 
-  @Modifying
-  @Transactional
-  @Query("UPDATE Product p SET p.productCategory = null WHERE p.productCategory IN (:categories)")
-  void orphanizeByCategories(@Param("categories") Collection<ProductCategory> categories);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.productCategory = null WHERE p.productCategory IN (:categories)")
+    void orphanizeByCategories(@Param("categories") Collection<ProductCategory> categories);
 }

@@ -35,18 +35,18 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 public class Shipper
-  implements DBEntity {
-  private static final long serialVersionUID = 18L;
+    implements DBEntity {
+    private static final long serialVersionUID = 18L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "shipper_id", nullable = false)
-  private Long id;
-  @Column(name = "shipper_name", nullable = false, unique = true)
-  private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "shipper_id", nullable = false)
+    private Long id;
+    @Column(name = "shipper_name", nullable = false, unique = true)
+    private String name;
 
-  public Shipper(Shipper source) {
-    this.id = source.id;
-    this.name = source.name;
-  }
+    public Shipper(Shipper source) {
+        this.id = source.id;
+        this.name = source.name;
+    }
 }

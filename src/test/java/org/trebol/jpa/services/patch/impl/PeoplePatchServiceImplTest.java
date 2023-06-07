@@ -39,102 +39,103 @@ import static org.trebol.testing.TestConstants.NOT_ANY;
 
 @ExtendWith(MockitoExtension.class)
 class PeoplePatchServiceImplTest {
-  @InjectMocks PeoplePatchServiceImpl instance;
-  private static ObjectMapper MAPPER;
-  private static Person EXISTING_PERSON;
+    @InjectMocks PeoplePatchServiceImpl instance;
+    private static ObjectMapper MAPPER;
+    private static Person EXISTING_PERSON;
 
-  @BeforeAll
-  static void beforeAll() {
-    MAPPER = new ObjectMapper();
-    MAPPER.setSerializationInclusion(NON_NULL);
-    EXISTING_PERSON = Person.builder()
-      .id(1L)
-      .idNumber(ANY)
-      .firstName(ANY)
-      .lastName(ANY)
-      .email(ANY)
-      .build();
-  }
+    @BeforeAll
+    static void beforeAll() {
+        MAPPER = new ObjectMapper();
+        MAPPER.setSerializationInclusion(NON_NULL);
+        EXISTING_PERSON = Person.builder()
+            .id(1L)
+            .idNumber(ANY)
+            .firstName(ANY)
+            .lastName(ANY)
+            .email(ANY)
+            .build();
+    }
 
-  @Test
-  void performs_empty_patch() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(PersonPojo.builder().build());
-    Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
-    assertEquals(EXISTING_PERSON, result);
-  }
+    @Test
+    void performs_empty_patch() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(PersonPojo.builder().build());
+        Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
+        assertEquals(EXISTING_PERSON, result);
+    }
 
-  @Test
-  void patches_idNumber() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(PersonPojo.builder()
-      .idNumber(NOT_ANY)
-      .build());
-    Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
-    assertNotEquals(EXISTING_PERSON, result);
-    assertEquals(NOT_ANY, result.getIdNumber());
-  }
-  @Test
-  void patches_names() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(PersonPojo.builder()
-      .firstName(NOT_ANY)
-      .lastName(NOT_ANY)
-      .build());
-    Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
-    assertNotEquals(EXISTING_PERSON, result);
-    assertEquals(NOT_ANY, result.getFirstName());
-    assertEquals(NOT_ANY, result.getLastName());
-  }
+    @Test
+    void patches_idNumber() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(PersonPojo.builder()
+            .idNumber(NOT_ANY)
+            .build());
+        Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
+        assertNotEquals(EXISTING_PERSON, result);
+        assertEquals(NOT_ANY, result.getIdNumber());
+    }
 
-  @Test
-  void patches_email() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(PersonPojo.builder()
-      .email(NOT_ANY)
-      .build());
-    Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
-    assertNotEquals(EXISTING_PERSON, result);
-    assertEquals(NOT_ANY, result.getEmail());
-  }
+    @Test
+    void patches_names() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(PersonPojo.builder()
+            .firstName(NOT_ANY)
+            .lastName(NOT_ANY)
+            .build());
+        Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
+        assertNotEquals(EXISTING_PERSON, result);
+        assertEquals(NOT_ANY, result.getFirstName());
+        assertEquals(NOT_ANY, result.getLastName());
+    }
 
-  @Test
-  void patches_phones() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(PersonPojo.builder()
-      .phone1(NOT_ANY)
-      .phone2(NOT_ANY)
-      .build());
-    Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
-    assertNotEquals(EXISTING_PERSON, result);
-    assertEquals(NOT_ANY, result.getPhone1());
-    assertEquals(NOT_ANY, result.getPhone2());
-  }
+    @Test
+    void patches_email() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(PersonPojo.builder()
+            .email(NOT_ANY)
+            .build());
+        Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
+        assertNotEquals(EXISTING_PERSON, result);
+        assertEquals(NOT_ANY, result.getEmail());
+    }
 
-  @Test
-  void patches_all_fields() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(PersonPojo.builder()
-      .idNumber(NOT_ANY)
-      .firstName(NOT_ANY)
-      .lastName(NOT_ANY)
-      .email(NOT_ANY)
-      .phone1(NOT_ANY)
-      .phone2(NOT_ANY)
-      .build());
-    Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
-    assertNotEquals(EXISTING_PERSON, result);
-    assertEquals(NOT_ANY, result.getIdNumber());
-    assertEquals(NOT_ANY, result.getFirstName());
-    assertEquals(NOT_ANY, result.getLastName());
-    assertEquals(NOT_ANY, result.getEmail());
-    assertEquals(NOT_ANY, result.getPhone1());
-    assertEquals(NOT_ANY, result.getPhone2());
-  }
+    @Test
+    void patches_phones() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(PersonPojo.builder()
+            .phone1(NOT_ANY)
+            .phone2(NOT_ANY)
+            .build());
+        Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
+        assertNotEquals(EXISTING_PERSON, result);
+        assertEquals(NOT_ANY, result.getPhone1());
+        assertEquals(NOT_ANY, result.getPhone2());
+    }
 
-  @Test
-  void does_not_support_old_method_signature() {
-    PersonPojo input = PersonPojo.builder().build();
-    assertThrows(UnsupportedOperationException.class,
-      () -> instance.patchExistingEntity(input, EXISTING_PERSON));
-  }
+    @Test
+    void patches_all_fields() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(PersonPojo.builder()
+            .idNumber(NOT_ANY)
+            .firstName(NOT_ANY)
+            .lastName(NOT_ANY)
+            .email(NOT_ANY)
+            .phone1(NOT_ANY)
+            .phone2(NOT_ANY)
+            .build());
+        Person result = instance.patchExistingEntity(input, EXISTING_PERSON);
+        assertNotEquals(EXISTING_PERSON, result);
+        assertEquals(NOT_ANY, result.getIdNumber());
+        assertEquals(NOT_ANY, result.getFirstName());
+        assertEquals(NOT_ANY, result.getLastName());
+        assertEquals(NOT_ANY, result.getEmail());
+        assertEquals(NOT_ANY, result.getPhone1());
+        assertEquals(NOT_ANY, result.getPhone2());
+    }
 
-  @SuppressWarnings("unchecked")
-  private Map<String, Object> mapFrom(PersonPojo data) {
-    return MAPPER.convertValue(data, Map.class);
-  }
+    @Test
+    void does_not_support_old_method_signature() {
+        PersonPojo input = PersonPojo.builder().build();
+        assertThrows(UnsupportedOperationException.class,
+            () -> instance.patchExistingEntity(input, EXISTING_PERSON));
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> mapFrom(PersonPojo data) {
+        return MAPPER.convertValue(data, Map.class);
+    }
 }

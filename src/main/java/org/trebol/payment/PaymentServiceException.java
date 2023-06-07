@@ -21,13 +21,13 @@
 package org.trebol.payment;
 
 public class PaymentServiceException
-  extends Exception {
+    extends Exception {
 
-  public PaymentServiceException(String string) {
-    super(string);
-  }
+    public PaymentServiceException(String string) {
+        super(string);
+    }
 
-  public PaymentServiceException(String string, Throwable thrwbl) {
-    super(string, thrwbl);
-  }
+    public PaymentServiceException(String string, Throwable thrwbl) {
+        super(string, thrwbl);
+    }
 }

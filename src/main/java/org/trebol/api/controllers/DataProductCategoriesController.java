@@ -51,63 +51,63 @@ import java.util.Map;
 @RestController
 @RequestMapping("/data/product_categories")
 public class DataProductCategoriesController
-  extends DataCrudGenericController<ProductCategoryPojo, ProductCategory> {
+    extends DataCrudGenericController<ProductCategoryPojo, ProductCategory> {
 
-  @Autowired
-  public DataProductCategoriesController(
-    PaginationService paginationService,
-    SortSpecParserService sortService,
-    ProductCategoriesCrudService crudService,
-    ProductCategoriesPredicateService predicateService
-  ) {
-    super(paginationService, sortService, crudService, predicateService);
-  }
-
-  @Override
-  @GetMapping({"", "/"})
-  public DataPagePojo<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    if (allRequestParams == null || allRequestParams.isEmpty()) {
-      allRequestParams = Map.of("parentId", "");
+    @Autowired
+    public DataProductCategoriesController(
+        PaginationService paginationService,
+        SortSpecParserService sortService,
+        ProductCategoriesCrudService crudService,
+        ProductCategoriesPredicateService predicateService
+    ) {
+        super(paginationService, sortService, crudService, predicateService);
     }
-    return super.readMany(allRequestParams);
-  }
 
-  @Override
-  @PostMapping({"", "/"})
-  @PreAuthorize("hasAuthority('product_categories:create')")
-  public void create(@Valid @RequestBody ProductCategoryPojo input)
-    throws BadInputException, EntityExistsException {
-    crudService.create(input);
-  }
+    @Override
+    @GetMapping({"", "/"})
+    public DataPagePojo<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+        if (allRequestParams==null || allRequestParams.isEmpty()) {
+            allRequestParams = Map.of("parentId", "");
+        }
+        return super.readMany(allRequestParams);
+    }
 
-  @Override
-  @PutMapping({"", "/"})
-  @PreAuthorize("hasAuthority('product_categories:update')")
-  public void update(@Valid @RequestBody ProductCategoryPojo input, @RequestParam Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    super.update(input, requestParams);
-  }
+    @Override
+    @PostMapping({"", "/"})
+    @PreAuthorize("hasAuthority('product_categories:create')")
+    public void create(@Valid @RequestBody ProductCategoryPojo input)
+        throws BadInputException, EntityExistsException {
+        crudService.create(input);
+    }
 
-  @Override
-  @PatchMapping({"", "/"})
-  @PreAuthorize("hasAuthority('product_categories:update')")
-  public void partialUpdate(
-    @RequestBody Map<String, Object> input,
-    @RequestParam Map<String, String> requestParams
-  ) throws BadInputException, EntityNotFoundException {
-    super.partialUpdate(input, requestParams);
-  }
+    @Override
+    @PutMapping({"", "/"})
+    @PreAuthorize("hasAuthority('product_categories:update')")
+    public void update(@Valid @RequestBody ProductCategoryPojo input, @RequestParam Map<String, String> requestParams)
+        throws BadInputException, EntityNotFoundException {
+        super.update(input, requestParams);
+    }
 
-  @Override
-  @DeleteMapping({"", "/"})
-  @PreAuthorize("hasAuthority('product_categories:delete')")
-  public void delete(@RequestParam Map<String, String> requestParams)
-    throws EntityNotFoundException {
-    super.delete(requestParams);
-  }
+    @Override
+    @PatchMapping({"", "/"})
+    @PreAuthorize("hasAuthority('product_categories:update')")
+    public void partialUpdate(
+        @RequestBody Map<String, Object> input,
+        @RequestParam Map<String, String> requestParams
+    ) throws BadInputException, EntityNotFoundException {
+        super.partialUpdate(input, requestParams);
+    }
 
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return ProductCategoriesSortSpec.ORDER_SPEC_MAP;
-  }
+    @Override
+    @DeleteMapping({"", "/"})
+    @PreAuthorize("hasAuthority('product_categories:delete')")
+    public void delete(@RequestParam Map<String, String> requestParams)
+        throws EntityNotFoundException {
+        super.delete(requestParams);
+    }
+
+    @Override
+    protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+        return ProductCategoriesSortSpec.ORDER_SPEC_MAP;
+    }
 }

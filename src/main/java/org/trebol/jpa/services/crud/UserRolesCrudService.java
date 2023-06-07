@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.CrudService;
 
 public interface UserRolesCrudService
-  extends CrudService<UserRolePojo, UserRole> {
+    extends CrudService<UserRolePojo, UserRole> {
 }

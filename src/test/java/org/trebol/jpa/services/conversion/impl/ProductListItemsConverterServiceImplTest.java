@@ -37,24 +37,24 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListItemsConverterServiceImplTest {
-  @InjectMocks ProductListItemsConverterServiceImpl instance;
-  @Mock ProductsConverterService productsConverterServiceMock;
+    @InjectMocks ProductListItemsConverterServiceImpl instance;
+    @Mock ProductsConverterService productsConverterServiceMock;
 
-  @Test
-  void converts_listitem_to_product_pojo() {
-    ProductListItem input = ProductListItem.builder()
-      .product(Product.builder().build())
-      .build();
-    ProductPojo expectedResult = ProductPojo.builder().build();
-    when(productsConverterServiceMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-    ProductPojo result = instance.convertToPojo(input);
-    assertEquals(expectedResult, result);
-  }
+    @Test
+    void converts_listitem_to_product_pojo() {
+        ProductListItem input = ProductListItem.builder()
+            .product(Product.builder().build())
+            .build();
+        ProductPojo expectedResult = ProductPojo.builder().build();
+        when(productsConverterServiceMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
+        ProductPojo result = instance.convertToPojo(input);
+        assertEquals(expectedResult, result);
+    }
 
-  @Test
-  void does_not_support_conveting_product_to_new_listitem_entity() {
-    ProductPojo input = ProductPojo.builder().build();
-    UnsupportedOperationException result = assertThrows(UnsupportedOperationException.class, () -> instance.convertToNewEntity(input));
-    assertEquals("Not implemented", result.getMessage());
-  }
+    @Test
+    void does_not_support_conveting_product_to_new_listitem_entity() {
+        ProductPojo input = ProductPojo.builder().build();
+        UnsupportedOperationException result = assertThrows(UnsupportedOperationException.class, () -> instance.convertToNewEntity(input));
+        assertEquals("Not implemented", result.getMessage());
+    }
 }

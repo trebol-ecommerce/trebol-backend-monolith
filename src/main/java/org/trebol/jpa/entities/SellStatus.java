@@ -36,22 +36,22 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class SellStatus
-  implements DBEntity {
-  private static final long serialVersionUID = 16L;
+    implements DBEntity {
+    private static final long serialVersionUID = 16L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "sell_status_id", nullable = false)
-  private Long id;
-  @Column(name = "sell_status_code", nullable = false, unique = true)
-  private Integer code;
-  @Size(min = 1, max = 100)
-  @Column(name = "sell_status_name", nullable = false, unique = true)
-  private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sell_status_id", nullable = false)
+    private Long id;
+    @Column(name = "sell_status_code", nullable = false, unique = true)
+    private Integer code;
+    @Size(min = 1, max = 100)
+    @Column(name = "sell_status_name", nullable = false, unique = true)
+    private String name;
 
-  public SellStatus(SellStatus source) {
-    this.id = source.id;
-    this.code = source.code;
-    this.name = source.name;
-  }
+    public SellStatus(SellStatus source) {
+        this.id = source.id;
+        this.code = source.code;
+        this.name = source.name;
+    }
 }

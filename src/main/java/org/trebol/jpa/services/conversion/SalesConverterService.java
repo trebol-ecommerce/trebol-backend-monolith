@@ -27,7 +27,8 @@ import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.services.ConverterService;
 
 public interface SalesConverterService
-  extends ConverterService<SellPojo, Sell> {
-  SellDetailPojo convertDetailToPojo(SellDetail source);
-  SellDetail convertDetailToNewEntity(SellDetailPojo detail);
+    extends ConverterService<SellPojo, Sell> {
+    SellDetailPojo convertDetailToPojo(SellDetail source);
+
+    SellDetail convertDetailToNewEntity(SellDetailPojo detail);
 }

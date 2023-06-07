@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.services.ConverterService;
 
 public interface PeopleConverterService
-  extends ConverterService<PersonPojo, Person> {
+    extends ConverterService<PersonPojo, Person> {
 }

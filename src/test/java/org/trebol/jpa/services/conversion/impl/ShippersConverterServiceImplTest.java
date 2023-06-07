@@ -30,31 +30,31 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
 class ShippersConverterServiceImplTest {
-  ShippersConverterServiceImpl instance;
+    ShippersConverterServiceImpl instance;
 
-  @BeforeEach
-  void beforeEach() {
-    instance = new ShippersConverterServiceImpl();
-  }
+    @BeforeEach
+    void beforeEach() {
+        instance = new ShippersConverterServiceImpl();
+    }
 
-  @Test
-  void converts_to_pojo() {
-    Shipper input = Shipper.builder()
-      .id(1L)
-      .name(ANY)
-      .build();
-    ShipperPojo result = instance.convertToPojo(input);
-    assertNotNull(result);
-    assertEquals(input.getName(), result.getName());
-  }
+    @Test
+    void converts_to_pojo() {
+        Shipper input = Shipper.builder()
+            .id(1L)
+            .name(ANY)
+            .build();
+        ShipperPojo result = instance.convertToPojo(input);
+        assertNotNull(result);
+        assertEquals(input.getName(), result.getName());
+    }
 
-  @Test
-  void converts_to_new_entity() {
-    ShipperPojo input = ShipperPojo.builder()
-      .name(ANY)
-      .build();
-    Shipper result = instance.convertToNewEntity(input);
-    assertNotNull(result);
-    assertEquals(input.getName(), result.getName());
-  }
+    @Test
+    void converts_to_new_entity() {
+        ShipperPojo input = ShipperPojo.builder()
+            .name(ANY)
+            .build();
+        Shipper result = instance.convertToNewEntity(input);
+        assertNotNull(result);
+        assertEquals(input.getName(), result.getName());
+    }
 }

@@ -33,31 +33,31 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 public class SellStatusesPatchServiceImpl
-  implements SellStatusesPatchService {
+    implements SellStatusesPatchService {
 
-  @Override
-  public SellStatus patchExistingEntity(Map<String, Object> changes, SellStatus existing) throws BadInputException {
-    SellStatus target = new SellStatus(existing);
+    @Override
+    public SellStatus patchExistingEntity(Map<String, Object> changes, SellStatus existing) throws BadInputException {
+        SellStatus target = new SellStatus(existing);
 
-    if (changes.containsKey("code")) {
-      Integer code = (Integer) changes.get("code");
-      if (code != null) {
-        target.setCode(code);
-      }
+        if (changes.containsKey("code")) {
+            Integer code = (Integer) changes.get("code");
+            if (code!=null) {
+                target.setCode(code);
+            }
+        }
+
+        if (changes.containsKey("name")) {
+            String name = (String) changes.get("name");
+            if (!StringUtils.isBlank(name)) {
+                target.setName(name);
+            }
+        }
+
+        return target;
     }
 
-    if (changes.containsKey("name")) {
-      String name = (String) changes.get("name");
-      if (!StringUtils.isBlank(name)) {
-        target.setName(name);
-      }
+    @Override
+    public SellStatus patchExistingEntity(SellStatusPojo changes, SellStatus existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method has been deprecated");
     }
-
-    return target;
-  }
-
-  @Override
-  public SellStatus patchExistingEntity(SellStatusPojo changes, SellStatus existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method has been deprecated");
-  }
 }

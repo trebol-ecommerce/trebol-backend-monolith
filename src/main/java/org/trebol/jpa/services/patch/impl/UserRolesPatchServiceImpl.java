@@ -33,24 +33,24 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 public class UserRolesPatchServiceImpl
-  implements UserRolesPatchService {
+    implements UserRolesPatchService {
 
-  @Override
-  public UserRole patchExistingEntity(Map<String, Object> changes, UserRole existing) throws BadInputException {
-    UserRole target = new UserRole(existing);
+    @Override
+    public UserRole patchExistingEntity(Map<String, Object> changes, UserRole existing) throws BadInputException {
+        UserRole target = new UserRole(existing);
 
-    if (changes.containsKey("name")) {
-      String name = (String) changes.get("name");
-      if (!StringUtils.isBlank(name)) {
-        target.setName(name);
-      }
+        if (changes.containsKey("name")) {
+            String name = (String) changes.get("name");
+            if (!StringUtils.isBlank(name)) {
+                target.setName(name);
+            }
+        }
+
+        return target;
     }
 
-    return target;
-  }
-
-  @Override
-  public UserRole patchExistingEntity(UserRolePojo changes, UserRole existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method has been deprecated");
-  }
+    @Override
+    public UserRole patchExistingEntity(UserRolePojo changes, UserRole existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method has been deprecated");
+    }
 }

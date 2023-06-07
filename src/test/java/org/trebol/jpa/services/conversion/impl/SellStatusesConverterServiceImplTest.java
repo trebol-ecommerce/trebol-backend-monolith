@@ -30,31 +30,31 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
 class SellStatusesConverterServiceImplTest {
-  SellStatusesConverterServiceImpl instance;
+    SellStatusesConverterServiceImpl instance;
 
-  @BeforeEach
-  void beforeEach() {
-    instance = new SellStatusesConverterServiceImpl();
-  }
+    @BeforeEach
+    void beforeEach() {
+        instance = new SellStatusesConverterServiceImpl();
+    }
 
-  @Test
-  void converts_to_pojo() {
-    SellStatus input = SellStatus.builder()
-      .id(1L)
-      .name(ANY)
-      .build();
-    SellStatusPojo result = instance.convertToPojo(input);
-    assertNotNull(result);
-    assertEquals(input.getName(), result.getName());
-  }
+    @Test
+    void converts_to_pojo() {
+        SellStatus input = SellStatus.builder()
+            .id(1L)
+            .name(ANY)
+            .build();
+        SellStatusPojo result = instance.convertToPojo(input);
+        assertNotNull(result);
+        assertEquals(input.getName(), result.getName());
+    }
 
-  @Test
-  void converts_to_new_entity() {
-    SellStatusPojo input = SellStatusPojo.builder()
-      .name(ANY)
-      .build();
-    SellStatus result = instance.convertToNewEntity(input);
-    assertNotNull(result);
-    assertEquals(input.getName(), result.getName());
-  }
+    @Test
+    void converts_to_new_entity() {
+        SellStatusPojo input = SellStatusPojo.builder()
+            .name(ANY)
+            .build();
+        SellStatus result = instance.convertToNewEntity(input);
+        assertNotNull(result);
+        assertEquals(input.getName(), result.getName());
+    }
 }

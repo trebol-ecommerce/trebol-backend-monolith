@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.UserRole;
 import org.trebol.jpa.services.PatchService;
 
 public interface UserRolesPatchService
-  extends PatchService<UserRolePojo, UserRole> {
+    extends PatchService<UserRolePojo, UserRole> {
 }

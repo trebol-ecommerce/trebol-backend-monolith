@@ -42,70 +42,70 @@ import static org.trebol.config.Constants.JWT_PREFIX;
 @RequestMapping("/access")
 @PreAuthorize("isAuthenticated()")
 public class AccessController {
-  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
-  private final UserDetailsService userDetailsService;
-  private final AuthorizedApiService authorizedApiService;
-  private final RegexMatcherAdapterService regexMatcherService;
+    private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+    private final UserDetailsService userDetailsService;
+    private final AuthorizedApiService authorizedApiService;
+    private final RegexMatcherAdapterService regexMatcherService;
 
-  @Autowired
-  public AccessController(
-    AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
-    UserDetailsService userDetailsService,
-    AuthorizedApiService authorizedApiService,
-    RegexMatcherAdapterService regexMatcherService
-  ) {
-    this.jwtClaimsParserService = jwtClaimsParserService;
-    this.userDetailsService = userDetailsService;
-    this.authorizedApiService = authorizedApiService;
-    this.regexMatcherService = regexMatcherService;
-  }
-
-  @GetMapping({"", "/"})
-  public AuthorizedAccessPojo getApiRoutesAccess(@RequestHeader HttpHeaders requestHeaders)
-    throws UsernameNotFoundException, IllegalStateException {
-    UserDetails userDetails = this.getUserDetails(requestHeaders);
-    if (userDetails == null) {
-      return null;
+    @Autowired
+    public AccessController(
+        AuthorizationHeaderParserService<Claims> jwtClaimsParserService,
+        UserDetailsService userDetailsService,
+        AuthorizedApiService authorizedApiService,
+        RegexMatcherAdapterService regexMatcherService
+    ) {
+        this.jwtClaimsParserService = jwtClaimsParserService;
+        this.userDetailsService = userDetailsService;
+        this.authorizedApiService = authorizedApiService;
+        this.regexMatcherService = regexMatcherService;
     }
-    Collection<String> routes = authorizedApiService.getAuthorizedApiRoutes(userDetails);
-    return AuthorizedAccessPojo.builder()
-      .routes(routes)
-      .build();
-  }
 
-  @GetMapping({"/{apiRoute}", "/{apiRoute}/"})
-  public AuthorizedAccessPojo getApiResourceAccess(
-    @RequestHeader HttpHeaders requestHeaders,
-    @PathVariable String apiRoute)
-    throws IllegalStateException {
-    UserDetails userDetails = this.getUserDetails(requestHeaders);
-    if (userDetails == null) {
-      return null;
+    @GetMapping({"", "/"})
+    public AuthorizedAccessPojo getApiRoutesAccess(@RequestHeader HttpHeaders requestHeaders)
+        throws UsernameNotFoundException, IllegalStateException {
+        UserDetails userDetails = this.getUserDetails(requestHeaders);
+        if (userDetails==null) {
+            return null;
+        }
+        Collection<String> routes = authorizedApiService.getAuthorizedApiRoutes(userDetails);
+        return AuthorizedAccessPojo.builder()
+            .routes(routes)
+            .build();
     }
-    Collection<String> permissions = authorizedApiService.getAuthorizedApiRouteAccess(userDetails, apiRoute);
-    return AuthorizedAccessPojo.builder()
-      .permissions(permissions)
-      .build();
-  }
 
-  @ResponseStatus(UNAUTHORIZED)
-  @ExceptionHandler({UsernameNotFoundException.class, IllegalStateException.class})
-  public void handleException(Exception ex) {
+    @GetMapping({"/{apiRoute}", "/{apiRoute}/"})
+    public AuthorizedAccessPojo getApiResourceAccess(
+        @RequestHeader HttpHeaders requestHeaders,
+        @PathVariable String apiRoute)
+        throws IllegalStateException {
+        UserDetails userDetails = this.getUserDetails(requestHeaders);
+        if (userDetails==null) {
+            return null;
+        }
+        Collection<String> permissions = authorizedApiService.getAuthorizedApiRouteAccess(userDetails, apiRoute);
+        return AuthorizedAccessPojo.builder()
+            .permissions(permissions)
+            .build();
+    }
+
+    @ResponseStatus(UNAUTHORIZED)
+    @ExceptionHandler({UsernameNotFoundException.class, IllegalStateException.class})
+    public void handleException(Exception ex) {
     /*
       bad credentials method. whatever provided data is in token, didn't match with existing records of users.
       the consumer sent an invalid token. don't return an explanation of this. the status code should suffice.
       */
-  }
-
-  private UserDetails getUserDetails(HttpHeaders requestHeaders)
-    throws UsernameNotFoundException, IllegalStateException {
-    String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
-    if (authorizationHeader == null || !regexMatcherService.isAValidAuthorizationHeader(authorizationHeader)) {
-      return null;
     }
-    String jwt = authorizationHeader.replace(JWT_PREFIX, "");
-    Claims body = jwtClaimsParserService.parseToken(jwt);
-    String username = body.getSubject();
-    return userDetailsService.loadUserByUsername(username);
-  }
+
+    private UserDetails getUserDetails(HttpHeaders requestHeaders)
+        throws UsernameNotFoundException, IllegalStateException {
+        String authorizationHeader = jwtClaimsParserService.extractAuthorizationHeader(requestHeaders);
+        if (authorizationHeader==null || !regexMatcherService.isAValidAuthorizationHeader(authorizationHeader)) {
+            return null;
+        }
+        String jwt = authorizationHeader.replace(JWT_PREFIX, "");
+        Claims body = jwtClaimsParserService.parseToken(jwt);
+        String username = body.getSubject();
+        return userDetailsService.loadUserByUsername(username);
+    }
 }

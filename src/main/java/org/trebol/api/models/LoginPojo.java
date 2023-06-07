@@ -32,8 +32,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginPojo {
-  @NotBlank
-  private String name;
-  @NotBlank
-  private String password;
+    @NotBlank
+    private String name;
+    @NotBlank
+    private String password;
 }

@@ -29,26 +29,26 @@ import org.trebol.jpa.services.conversion.SellStatusesConverterService;
 @Service
 @NoArgsConstructor
 public class SellStatusesConverterServiceImpl
-  implements SellStatusesConverterService {
+    implements SellStatusesConverterService {
 
-  @Override
-  public SellStatusPojo convertToPojo(SellStatus source) {
-    return SellStatusPojo.builder()
-      .code(source.getCode())
-      .name(source.getName())
-      .build();
-  }
+    @Override
+    public SellStatusPojo convertToPojo(SellStatus source) {
+        return SellStatusPojo.builder()
+            .code(source.getCode())
+            .name(source.getName())
+            .build();
+    }
 
-  @Override
-  public SellStatus convertToNewEntity(SellStatusPojo source) {
-    return SellStatus.builder()
-      .code(source.getCode())
-      .name(source.getName())
-      .build();
-  }
+    @Override
+    public SellStatus convertToNewEntity(SellStatusPojo source) {
+        return SellStatus.builder()
+            .code(source.getCode())
+            .name(source.getName())
+            .build();
+    }
 
-  @Override
-  public SellStatus applyChangesToExistingEntity(SellStatusPojo source, SellStatus target) {
-    throw new UnsupportedOperationException("This method is deprecated");
-  }
+    @Override
+    public SellStatus applyChangesToExistingEntity(SellStatusPojo source, SellStatus target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 }

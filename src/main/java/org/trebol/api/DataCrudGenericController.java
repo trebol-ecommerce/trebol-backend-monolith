@@ -38,43 +38,43 @@ import java.util.Map;
  * @param <E> Its signature entity class
  */
 public abstract class DataCrudGenericController<M, E>
-  extends DataGenericController<M, E>
-  implements DataCrudController<M> {
+    extends DataGenericController<M, E>
+    implements DataCrudController<M> {
 
-  protected DataCrudGenericController(
-    PaginationService paginationService,
-    SortSpecParserService sortSpecParserService,
-    CrudService<M, E> crudService,
-    PredicateService predicateService
-  ) {
-    super(paginationService, sortSpecParserService, crudService, predicateService);
-  }
-
-  @Override
-  public void update(M input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException {
-    if (requestParams.isEmpty()) {
-      throw new BadInputException("Missing request params");
+    protected DataCrudGenericController(
+        PaginationService paginationService,
+        SortSpecParserService sortSpecParserService,
+        CrudService<M, E> crudService,
+        PredicateService predicateService
+    ) {
+        super(paginationService, sortSpecParserService, crudService, predicateService);
     }
-    Predicate predicate = predicateService.parseMap(requestParams);
-    crudService.update(input, predicate)
-      .orElseThrow(() -> new EntityNotFoundException("No element was found to update"));
-  }
 
-  @Override
-  public void partialUpdate(Map<String, Object> input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException {
-    if (requestParams.isEmpty()) {
-      throw new BadInputException("Missing request params");
+    @Override
+    public void update(M input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException {
+        if (requestParams.isEmpty()) {
+            throw new BadInputException("Missing request params");
+        }
+        Predicate predicate = predicateService.parseMap(requestParams);
+        crudService.update(input, predicate)
+            .orElseThrow(() -> new EntityNotFoundException("No element was found to update"));
     }
-    Predicate predicate = predicateService.parseMap(requestParams);
-    crudService.partialUpdate(input, predicate)
-      .orElseThrow(() -> new EntityNotFoundException("No element was found to update"));
-  }
 
-  @Override
-  public void delete(Map<String, String> requestParams) throws EntityNotFoundException {
-    if (!requestParams.isEmpty()) {
-      Predicate predicate = predicateService.parseMap(requestParams);
-      crudService.delete(predicate);
+    @Override
+    public void partialUpdate(Map<String, Object> input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException {
+        if (requestParams.isEmpty()) {
+            throw new BadInputException("Missing request params");
+        }
+        Predicate predicate = predicateService.parseMap(requestParams);
+        crudService.partialUpdate(input, predicate)
+            .orElseThrow(() -> new EntityNotFoundException("No element was found to update"));
     }
-  }
+
+    @Override
+    public void delete(Map<String, String> requestParams) throws EntityNotFoundException {
+        if (!requestParams.isEmpty()) {
+            Predicate predicate = predicateService.parseMap(requestParams);
+            crudService.delete(predicate);
+        }
+    }
 }

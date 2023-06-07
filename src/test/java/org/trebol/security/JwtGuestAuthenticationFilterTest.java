@@ -72,108 +72,108 @@ import static org.trebol.config.Constants.AUTHORITY_CHECKOUT;
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-  SecurityTestingConfig.class,
-  JwtGuestAuthenticationFilterTest.MockSecurityConfig.class })
+    SecurityTestingConfig.class,
+    JwtGuestAuthenticationFilterTest.MockSecurityConfig.class})
 @WebAppConfiguration
 class JwtGuestAuthenticationFilterTest {
-  static final String GUEST_URL = "/guest";
-  static final String USERNAME = "guest";
-  static final String PASSWORD = USERNAME;
-  static List<GrantedAuthority> GUEST_AUTHORITIES;
-  @MockBean SecurityProperties securityPropertiesMock;
-  @MockBean UserDetailsService userDetailsServiceMock;
-  @Autowired WebApplicationContext webApplicationContext;
-  PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
-  MockMvc mockMvc;
+    static final String GUEST_URL = "/guest";
+    static final String USERNAME = "guest";
+    static final String PASSWORD = USERNAME;
+    static List<GrantedAuthority> GUEST_AUTHORITIES;
+    @MockBean SecurityProperties securityPropertiesMock;
+    @MockBean UserDetailsService userDetailsServiceMock;
+    @Autowired WebApplicationContext webApplicationContext;
+    PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
+    MockMvc mockMvc;
 
-  @BeforeAll
-  static void beforeAll() {
-    GUEST_AUTHORITIES = List.of(
-        new SimpleGrantedAuthority(AUTHORITY_CHECKOUT));
-  }
-
-  @BeforeEach
-  void beforeEach() {
-    when(securityPropertiesMock.getJwtExpirationAfterHours()).thenReturn(1);
-    when(securityPropertiesMock.getGuestUserName()).thenReturn(USERNAME);
-    when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(UserDetailsPojo.builder()
-      .username(USERNAME)
-      .password(PASSWORD)
-      .authorities(GUEST_AUTHORITIES)
-      .enabled(true)
-      .accountNonLocked(true)
-      .accountNonExpired(true)
-      .credentialsNonExpired(true)
-      .build());
-    mockMvc = MockMvcBuilders
-      .webAppContextSetup(webApplicationContext)
-      .apply(springSecurity())
-      .build();
-  }
-
-  @Test
-  @WithAnonymousUser
-  void accepts_authentication() throws Exception {
-    PersonPojo profile = peopleTestHelper.personPojoBeforeCreation();
-    String jsonRequestBody = new ObjectMapper().writeValueAsString(profile);
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-      .post(GUEST_URL)
-      .content(jsonRequestBody);
-    mockMvc.perform(requestBuilder)
-      .andExpect(status().isOk());
-  }
-
-  @TestConfiguration
-  @EnableWebSecurity
-  static class MockSecurityConfig
-    extends WebSecurityConfigurerAdapter {
-    @MockBean CustomersCrudService customersService;
-    final SecurityProperties securityProperties;
-    final UserDetailsService userDetailsService;
-    final PasswordEncoder passwordEncoder;
-    final AuthenticationProvider authenticationProvider;
-    final SecretKey secretKey;
-
-    @Autowired
-    MockSecurityConfig(
-      SecurityProperties securityProperties,
-      UserDetailsService userDetailsService,
-      PasswordEncoder passwordEncoder,
-      AuthenticationProvider authenticationProvider,
-      SecretKey secretKey
-    ) {
-      this.securityProperties = securityProperties;
-      this.userDetailsService = userDetailsService;
-      this.passwordEncoder = passwordEncoder;
-      this.authenticationProvider = authenticationProvider;
-      this.secretKey = secretKey;
+    @BeforeAll
+    static void beforeAll() {
+        GUEST_AUTHORITIES = List.of(
+            new SimpleGrantedAuthority(AUTHORITY_CHECKOUT));
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-      http.authorizeRequests()
-        .antMatchers(GUEST_URL).permitAll()
-        .and().csrf().disable()
-        .addFilter(guestFilterForUrl());
+    @BeforeEach
+    void beforeEach() {
+        when(securityPropertiesMock.getJwtExpirationAfterHours()).thenReturn(1);
+        when(securityPropertiesMock.getGuestUserName()).thenReturn(USERNAME);
+        when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(UserDetailsPojo.builder()
+            .username(USERNAME)
+            .password(PASSWORD)
+            .authorities(GUEST_AUTHORITIES)
+            .enabled(true)
+            .accountNonLocked(true)
+            .accountNonExpired(true)
+            .credentialsNonExpired(true)
+            .build());
+        mockMvc = MockMvcBuilders
+            .webAppContextSetup(webApplicationContext)
+            .apply(springSecurity())
+            .build();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-      auth.authenticationProvider(authenticationProvider)
-        .inMemoryAuthentication()
-        .withUser(USERNAME)
-        .password(passwordEncoder.encode(PASSWORD))
-        .authorities(GUEST_AUTHORITIES);
+    @Test
+    @WithAnonymousUser
+    void accepts_authentication() throws Exception {
+        PersonPojo profile = peopleTestHelper.personPojoBeforeCreation();
+        String jsonRequestBody = new ObjectMapper().writeValueAsString(profile);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .post(GUEST_URL)
+            .content(jsonRequestBody);
+        mockMvc.perform(requestBuilder)
+            .andExpect(status().isOk());
     }
 
-    private JwtGuestAuthenticationFilter guestFilterForUrl() throws Exception {
-      JwtGuestAuthenticationFilter filter = new JwtGuestAuthenticationFilter(
-        securityProperties,
-        secretKey,
-        super.authenticationManager(),
-        customersService);
-      filter.setFilterProcessesUrl(GUEST_URL);
-      return filter;
+    @TestConfiguration
+    @EnableWebSecurity
+    static class MockSecurityConfig
+        extends WebSecurityConfigurerAdapter {
+        @MockBean CustomersCrudService customersService;
+        final SecurityProperties securityProperties;
+        final UserDetailsService userDetailsService;
+        final PasswordEncoder passwordEncoder;
+        final AuthenticationProvider authenticationProvider;
+        final SecretKey secretKey;
+
+        @Autowired
+        MockSecurityConfig(
+            SecurityProperties securityProperties,
+            UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder,
+            AuthenticationProvider authenticationProvider,
+            SecretKey secretKey
+        ) {
+            this.securityProperties = securityProperties;
+            this.userDetailsService = userDetailsService;
+            this.passwordEncoder = passwordEncoder;
+            this.authenticationProvider = authenticationProvider;
+            this.secretKey = secretKey;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.authorizeRequests()
+                .antMatchers(GUEST_URL).permitAll()
+                .and().csrf().disable()
+                .addFilter(guestFilterForUrl());
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.authenticationProvider(authenticationProvider)
+                .inMemoryAuthentication()
+                .withUser(USERNAME)
+                .password(passwordEncoder.encode(PASSWORD))
+                .authorities(GUEST_AUTHORITIES);
+        }
+
+        private JwtGuestAuthenticationFilter guestFilterForUrl() throws Exception {
+            JwtGuestAuthenticationFilter filter = new JwtGuestAuthenticationFilter(
+                securityProperties,
+                secretKey,
+                super.authenticationManager(),
+                customersService);
+            filter.setFilterProcessesUrl(GUEST_URL);
+            return filter;
+        }
     }
-  }
 }

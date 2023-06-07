@@ -41,28 +41,28 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @AllArgsConstructor
 @JsonInclude
 public class SellPojo {
-  private Long buyOrder;
-  @JsonIgnore
-  private String token;
-  private Instant date;
-  @Valid
-  @NotEmpty
-  @JsonInclude(NON_EMPTY)
-  private Collection<SellDetailPojo> details;
-  private int netValue;
-  private int taxValue;
-  private int transportValue;
-  private int totalValue;
-  private int totalItems;
-  private String status;
-  private String billingType;
-  @NotBlank
-  private String paymentType;
-  @Valid
-  private CustomerPojo customer;
-  private SalespersonPojo salesperson;
-  private String shipper;
-  private BillingCompanyPojo billingCompany;
-  private AddressPojo billingAddress;
-  private AddressPojo shippingAddress;
+    private Long buyOrder;
+    @JsonIgnore
+    private String token;
+    private Instant date;
+    @Valid
+    @NotEmpty
+    @JsonInclude(NON_EMPTY)
+    private Collection<SellDetailPojo> details;
+    private int netValue;
+    private int taxValue;
+    private int transportValue;
+    private int totalValue;
+    private int totalItems;
+    private String status;
+    private String billingType;
+    @NotBlank
+    private String paymentType;
+    @Valid
+    private CustomerPojo customer;
+    private SalespersonPojo salesperson;
+    private String shipper;
+    private BillingCompanyPojo billingCompany;
+    private AddressPojo billingAddress;
+    private AddressPojo shippingAddress;
 }

@@ -24,6 +24,6 @@ import org.trebol.jpa.entities.QBillingType;
 import org.trebol.jpa.services.PredicateService;
 
 public interface BillingTypesPredicateService
-  extends PredicateService {
-  QBillingType basePath = QBillingType.billingType;
+    extends PredicateService {
+    QBillingType basePath = QBillingType.billingType;
 }

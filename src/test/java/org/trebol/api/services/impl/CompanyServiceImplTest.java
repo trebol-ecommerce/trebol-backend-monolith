@@ -37,44 +37,44 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CompanyServiceImplTest {
-  @InjectMocks CompanyServiceImpl instance;
-  @Mock ParamsRepository paramsRepositoryMock;
+    @InjectMocks CompanyServiceImpl instance;
+    @Mock ParamsRepository paramsRepositoryMock;
 
-  @DisplayName("It should read get params which contains name and value by category of company map it " +
-    "to CompanyDetailsPojo")
-  @Test
-  void testReadDetails() {
+    @DisplayName("It should read get params which contains name and value by category of company map it " +
+        "to CompanyDetailsPojo")
+    @Test
+    void testReadDetails() {
 
-    Param param = Param.builder()
-      .name("name")
-      .value("Piolo")
-      .build();
-    Param param2 = Param.builder()
-      .name("description")
-      .value("guwapo")
-      .build();
-    Param param3 = Param.builder()
-      .name("bannerImageURL")
-      .value("anyBannerImageURL")
-      .build();
-    Param param4 = Param.builder()
-      .name("logoImageURL")
-      .value("anyLogoImageURL")
-      .build();
-    Iterable<Param> params = List.of(param, param2, param3, param4);
+        Param param = Param.builder()
+            .name("name")
+            .value("Piolo")
+            .build();
+        Param param2 = Param.builder()
+            .name("description")
+            .value("guwapo")
+            .build();
+        Param param3 = Param.builder()
+            .name("bannerImageURL")
+            .value("anyBannerImageURL")
+            .build();
+        Param param4 = Param.builder()
+            .name("logoImageURL")
+            .value("anyLogoImageURL")
+            .build();
+        Iterable<Param> params = List.of(param, param2, param3, param4);
 
-    when(paramsRepositoryMock.findParamsByCategory("company")).thenReturn(params);
+        when(paramsRepositoryMock.findParamsByCategory("company")).thenReturn(params);
 
-    CompanyDetailsPojo actual = instance.readDetails();
+        CompanyDetailsPojo actual = instance.readDetails();
 
 
-    verify(paramsRepositoryMock, times(1)).findParamsByCategory("company");
+        verify(paramsRepositoryMock, times(1)).findParamsByCategory("company");
 
-    assertEquals("Piolo", actual.getName());
-    assertEquals("guwapo", actual.getDescription());
-    assertEquals("anyBannerImageURL", actual.getBannerImageURL());
-    assertEquals("anyLogoImageURL", actual.getLogoImageURL());
+        assertEquals("Piolo", actual.getName());
+        assertEquals("guwapo", actual.getDescription());
+        assertEquals("anyBannerImageURL", actual.getBannerImageURL());
+        assertEquals("anyLogoImageURL", actual.getLogoImageURL());
 
-  }
+    }
 
 }

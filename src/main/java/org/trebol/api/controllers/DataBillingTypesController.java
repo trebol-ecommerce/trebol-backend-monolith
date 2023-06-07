@@ -41,26 +41,26 @@ import java.util.Map;
 @RestController
 @RequestMapping("/data/billing_types")
 public class DataBillingTypesController
-  extends DataGenericController<BillingTypePojo, BillingType> {
+    extends DataGenericController<BillingTypePojo, BillingType> {
 
-  @Autowired
-  public DataBillingTypesController(
-    PaginationService paginationService,
-    SortSpecParserService sortSpecParserService,
-    BillingTypesCrudService crudService,
-    BillingTypesPredicateService predicateService
-  ) {
-    super(paginationService, sortSpecParserService, crudService, predicateService);
-  }
+    @Autowired
+    public DataBillingTypesController(
+        PaginationService paginationService,
+        SortSpecParserService sortSpecParserService,
+        BillingTypesCrudService crudService,
+        BillingTypesPredicateService predicateService
+    ) {
+        super(paginationService, sortSpecParserService, crudService, predicateService);
+    }
 
-  @Override
-  @GetMapping({"", "/"})
-  public DataPagePojo<BillingTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(allRequestParams);
-  }
+    @Override
+    @GetMapping({"", "/"})
+    public DataPagePojo<BillingTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+        return super.readMany(allRequestParams);
+    }
 
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return BillingTypesSortSpec.ORDER_SPEC_MAP;
-  }
+    @Override
+    protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+        return BillingTypesSortSpec.ORDER_SPEC_MAP;
+    }
 }

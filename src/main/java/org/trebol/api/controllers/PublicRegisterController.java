@@ -35,18 +35,18 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/public/register")
 public class PublicRegisterController {
-  private final RegistrationService registrationService;
+    private final RegistrationService registrationService;
 
-  @Autowired
-  public PublicRegisterController(
-    RegistrationService registrationService
-  ) {
-    this.registrationService = registrationService;
-  }
+    @Autowired
+    public PublicRegisterController(
+        RegistrationService registrationService
+    ) {
+        this.registrationService = registrationService;
+    }
 
-  @PostMapping({"", "/"})
-  public void register(@Valid @RequestBody RegistrationPojo userProfile)
-    throws BadInputException, EntityExistsException {
-    this.registrationService.register(userProfile);
-  }
+    @PostMapping({"", "/"})
+    public void register(@Valid @RequestBody RegistrationPojo userProfile)
+        throws BadInputException, EntityExistsException {
+        this.registrationService.register(userProfile);
+    }
 }

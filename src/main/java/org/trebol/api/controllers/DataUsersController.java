@@ -52,53 +52,53 @@ import java.util.Map;
 @RequestMapping("/data/users")
 @PreAuthorize("isAuthenticated()")
 public class DataUsersController
-  extends DataCrudGenericController<UserPojo, User> {
+    extends DataCrudGenericController<UserPojo, User> {
 
-  @Autowired
-  public DataUsersController(
-    PaginationService paginationService,
-    SortSpecParserService sortService,
-    UsersCrudService crudService,
-    UsersPredicateService predicateService
-  ) {
-    super(paginationService, sortService, crudService, predicateService);
-  }
-
-  @Override
-  @GetMapping({"", "/"})
-  @PreAuthorize("hasAuthority('users:read')")
-  public DataPagePojo<UserPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(allRequestParams);
-  }
-
-  @Override
-  @PostMapping({"", "/"})
-  @PreAuthorize("hasAuthority('users:create')")
-  public void create(@Valid @RequestBody UserPojo input)
-    throws BadInputException, EntityExistsException {
-    crudService.create(input);
-  }
-
-  @Override
-  @PutMapping({"", "/"})
-  @PreAuthorize("hasAuthority('users:update')")
-  public void update(@RequestBody UserPojo input, @RequestParam Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    super.update(input, requestParams);
-  }
-
-  @DeleteMapping({"", "/"})
-  @PreAuthorize("hasAuthority('users:delete')")
-  public void delete(Principal principal, @RequestParam Map<String, String> requestParams)
-    throws EntityNotFoundException, BadInputException {
-    if (requestParams.containsKey("name") && requestParams.get("name").equals(principal.getName())) {
-      throw new BadInputException("A user should not be able to delete their own account");
+    @Autowired
+    public DataUsersController(
+        PaginationService paginationService,
+        SortSpecParserService sortService,
+        UsersCrudService crudService,
+        UsersPredicateService predicateService
+    ) {
+        super(paginationService, sortService, crudService, predicateService);
     }
-    super.delete(requestParams);
-  }
 
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return UsersSortSpec.ORDER_SPEC_MAP;
-  }
+    @Override
+    @GetMapping({"", "/"})
+    @PreAuthorize("hasAuthority('users:read')")
+    public DataPagePojo<UserPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+        return super.readMany(allRequestParams);
+    }
+
+    @Override
+    @PostMapping({"", "/"})
+    @PreAuthorize("hasAuthority('users:create')")
+    public void create(@Valid @RequestBody UserPojo input)
+        throws BadInputException, EntityExistsException {
+        crudService.create(input);
+    }
+
+    @Override
+    @PutMapping({"", "/"})
+    @PreAuthorize("hasAuthority('users:update')")
+    public void update(@RequestBody UserPojo input, @RequestParam Map<String, String> requestParams)
+        throws BadInputException, EntityNotFoundException {
+        super.update(input, requestParams);
+    }
+
+    @DeleteMapping({"", "/"})
+    @PreAuthorize("hasAuthority('users:delete')")
+    public void delete(Principal principal, @RequestParam Map<String, String> requestParams)
+        throws EntityNotFoundException, BadInputException {
+        if (requestParams.containsKey("name") && requestParams.get("name").equals(principal.getName())) {
+            throw new BadInputException("A user should not be able to delete their own account");
+        }
+        super.delete(requestParams);
+    }
+
+    @Override
+    protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+        return UsersSortSpec.ORDER_SPEC_MAP;
+    }
 }

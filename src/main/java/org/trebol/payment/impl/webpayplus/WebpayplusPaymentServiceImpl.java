@@ -50,70 +50,70 @@ import java.io.IOException;
  */
 @Service
 public class WebpayplusPaymentServiceImpl
-  implements PaymentService {
-  private final Logger logger = LoggerFactory.getLogger(WebpayplusPaymentServiceImpl.class);
-  private final WebpayplusPaymentProperties properties;
+    implements PaymentService {
+    private final Logger logger = LoggerFactory.getLogger(WebpayplusPaymentServiceImpl.class);
+    private final WebpayplusPaymentProperties properties;
 
-  @Autowired
-  public WebpayplusPaymentServiceImpl(
-    WebpayplusPaymentProperties properties
-  ) {
-    this.properties = properties;
-  }
-
-  @Override
-  public PaymentRedirectionDetailsPojo requestNewPaymentPageDetails(SellPojo transaction) throws PaymentServiceException {
-    String buyOrder = transaction.getBuyOrder().toString();
-    String sessionId = String.valueOf(transaction.hashCode());
-    double amount = transaction.getTotalValue();
-    String returnUrl = properties.getCallbackUrl();
-
-    WebpayPlus.Transaction webpayTransaction = this.createWebpayTransaction();
-
-    try {
-      WebpayPlusTransactionCreateResponse webpayResponse = webpayTransaction.create(
-        buyOrder, sessionId, amount, returnUrl
-      );
-      return PaymentRedirectionDetailsPojo.builder()
-        .url(webpayResponse.getUrl())
-        .token(webpayResponse.getToken())
-        .build();
-    } catch (TransactionCreateException | IOException exc) {
-      logger.error("Exception raised while creating transaction: ", exc);
-      throw new PaymentServiceException("Webpay could not create a new transaction");
-    }
-  }
-
-  @Override
-  public int requestPaymentResult(String transactionToken) throws PaymentServiceException {
-    WebpayPlus.Transaction webpayTransaction = this.createWebpayTransaction();
-    try {
-      return webpayTransaction.commit(transactionToken).getResponseCode();
-    } catch (TransactionCommitException exc) {
-      return 1;
-    } catch (IOException exc) {
-      logger.error("Exception raised while requesting transaction result: ", exc);
-      throw new PaymentServiceException("Webpay failed to confirm the transaction");
-    }
-  }
-
-  @Override
-  public String getPaymentResultPageUrl() {
-    return properties.getBrowserRedirectionUrl();
-  }
-
-  private WebpayPlus.Transaction createWebpayTransaction() {
-    String commerceCode = IntegrationCommerceCodes.WEBPAY_PLUS;
-    String apiKey = IntegrationApiKeys.WEBPAY;
-    IntegrationType integrationType = IntegrationType.TEST;
-    if (Boolean.TRUE.equals(properties.isProduction())) {
-      commerceCode = properties.getCommerceCode();
-      apiKey = properties.getApiKey();
-      integrationType = IntegrationType.LIVE;
+    @Autowired
+    public WebpayplusPaymentServiceImpl(
+        WebpayplusPaymentProperties properties
+    ) {
+        this.properties = properties;
     }
 
-    WebpayOptions wpOptions = new WebpayOptions(commerceCode, apiKey, integrationType);
+    @Override
+    public PaymentRedirectionDetailsPojo requestNewPaymentPageDetails(SellPojo transaction) throws PaymentServiceException {
+        String buyOrder = transaction.getBuyOrder().toString();
+        String sessionId = String.valueOf(transaction.hashCode());
+        double amount = transaction.getTotalValue();
+        String returnUrl = properties.getCallbackUrl();
 
-    return new WebpayPlus.Transaction(wpOptions);
-  }
+        WebpayPlus.Transaction webpayTransaction = this.createWebpayTransaction();
+
+        try {
+            WebpayPlusTransactionCreateResponse webpayResponse = webpayTransaction.create(
+                buyOrder, sessionId, amount, returnUrl
+            );
+            return PaymentRedirectionDetailsPojo.builder()
+                .url(webpayResponse.getUrl())
+                .token(webpayResponse.getToken())
+                .build();
+        } catch (TransactionCreateException | IOException exc) {
+            logger.error("Exception raised while creating transaction: ", exc);
+            throw new PaymentServiceException("Webpay could not create a new transaction");
+        }
+    }
+
+    @Override
+    public int requestPaymentResult(String transactionToken) throws PaymentServiceException {
+        WebpayPlus.Transaction webpayTransaction = this.createWebpayTransaction();
+        try {
+            return webpayTransaction.commit(transactionToken).getResponseCode();
+        } catch (TransactionCommitException exc) {
+            return 1;
+        } catch (IOException exc) {
+            logger.error("Exception raised while requesting transaction result: ", exc);
+            throw new PaymentServiceException("Webpay failed to confirm the transaction");
+        }
+    }
+
+    @Override
+    public String getPaymentResultPageUrl() {
+        return properties.getBrowserRedirectionUrl();
+    }
+
+    private WebpayPlus.Transaction createWebpayTransaction() {
+        String commerceCode = IntegrationCommerceCodes.WEBPAY_PLUS;
+        String apiKey = IntegrationApiKeys.WEBPAY;
+        IntegrationType integrationType = IntegrationType.TEST;
+        if (Boolean.TRUE.equals(properties.isProduction())) {
+            commerceCode = properties.getCommerceCode();
+            apiKey = properties.getApiKey();
+            integrationType = IntegrationType.LIVE;
+        }
+
+        WebpayOptions wpOptions = new WebpayOptions(commerceCode, apiKey, integrationType);
+
+        return new WebpayPlus.Transaction(wpOptions);
+    }
 }

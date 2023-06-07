@@ -41,32 +41,32 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CustomersConverterServiceImplTest {
-  @InjectMocks CustomersConverterServiceImpl instance;
-  @Mock PeopleConverterService peopleServiceMock;
-  final CustomersTestHelper customersTestHelper = new CustomersTestHelper();
+    @InjectMocks CustomersConverterServiceImpl instance;
+    @Mock PeopleConverterService peopleServiceMock;
+    final CustomersTestHelper customersTestHelper = new CustomersTestHelper();
 
-  @BeforeEach
-  void beforeEach() {
-    customersTestHelper.resetCustomers();
-  }
+    @BeforeEach
+    void beforeEach() {
+        customersTestHelper.resetCustomers();
+    }
 
-  @Test
-  void testConvertToPojo() {
-    Customer input = customersTestHelper.customerEntityAfterCreation();
-    PersonPojo expectedPersonPojo = PersonPojo.builder().build();
-    when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
-    CustomerPojo result = instance.convertToPojo(input);
-    assertNotNull(result);
-    assertEquals(expectedPersonPojo, result.getPerson());
-  }
+    @Test
+    void testConvertToPojo() {
+        Customer input = customersTestHelper.customerEntityAfterCreation();
+        PersonPojo expectedPersonPojo = PersonPojo.builder().build();
+        when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
+        CustomerPojo result = instance.convertToPojo(input);
+        assertNotNull(result);
+        assertEquals(expectedPersonPojo, result.getPerson());
+    }
 
-  @Test
-  void testConvertToNewEntity() throws BadInputException {
-    CustomerPojo customerPojo = customersTestHelper.customerPojoBeforeCreation();
-    Person expectedPerson = Person.builder().build();
-    when(peopleServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(expectedPerson);
-    Customer result = instance.convertToNewEntity(customerPojo);
-    assertNotNull(result);
-    assertEquals(expectedPerson, result.getPerson());
-  }
+    @Test
+    void testConvertToNewEntity() throws BadInputException {
+        CustomerPojo customerPojo = customersTestHelper.customerPojoBeforeCreation();
+        Person expectedPerson = Person.builder().build();
+        when(peopleServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(expectedPerson);
+        Customer result = instance.convertToNewEntity(customerPojo);
+        assertNotNull(result);
+        assertEquals(expectedPerson, result.getPerson());
+    }
 }

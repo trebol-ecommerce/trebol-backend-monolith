@@ -41,82 +41,82 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ProductCategoryTreeResolverServiceImplTest {
-  @InjectMocks ProductCategoryTreeResolverServiceImpl instance;
-  @Mock ProductsCategoriesRepository repositoryMock;
-  @Mock ApiProperties apiPropertiesMock;
-  List<ProductCategory> descendants;
-  List<Long> descendantIds;
-  ProductCategory root;
+    @InjectMocks ProductCategoryTreeResolverServiceImpl instance;
+    @Mock ProductsCategoriesRepository repositoryMock;
+    @Mock ApiProperties apiPropertiesMock;
+    List<ProductCategory> descendants;
+    List<Long> descendantIds;
+    ProductCategory root;
 
-  @BeforeEach
-  void beforeEach() {
-    root = ProductCategory.builder()
-      .id(1L)
-      .code("root")
-      .name("ROOT")
-      .parent(null)
-      .build();
-    descendants = List.of(
-      ProductCategory.builder()
-        .id(2L)
-        .code(ANY)
-        .name(ANY)
-        .parent(root)
-        .build()
-    );
-    descendantIds = descendants.stream()
-      .map(ProductCategory::getId)
-      .collect(Collectors.toList());
-  }
+    @BeforeEach
+    void beforeEach() {
+        root = ProductCategory.builder()
+            .id(1L)
+            .code("root")
+            .name("ROOT")
+            .parent(null)
+            .build();
+        descendants = List.of(
+            ProductCategory.builder()
+                .id(2L)
+                .code(ANY)
+                .name(ANY)
+                .parent(root)
+                .build()
+        );
+        descendantIds = descendants.stream()
+            .map(ProductCategory::getId)
+            .collect(Collectors.toList());
+    }
 
-  @Test
-  void collects_all_descendants_until_max_depth_is_reached() {
-    when(apiPropertiesMock.getMaxCategoryFetchingRecursionDepth()).thenReturn(4);
-    when(repositoryMock.findByParent(any(ProductCategory.class))).thenReturn(descendants);
+    @Test
+    void collects_all_descendants_until_max_depth_is_reached() {
+        when(apiPropertiesMock.getMaxCategoryFetchingRecursionDepth()).thenReturn(4);
+        when(repositoryMock.findByParent(any(ProductCategory.class))).thenReturn(descendants);
 
-    List<ProductCategory> result = instance.getBranchesFromRoot(root);
+        List<ProductCategory> result = instance.getBranchesFromRoot(root);
 
-    assertNotNull(result);
-    assertFalse(result.isEmpty());
-    assertEquals(5, result.size()); // immediate descendant of root plus four more branches from the tree
-    assertEquals(result.get(2), result.get(1));
-  }
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(5, result.size()); // immediate descendant of root plus four more branches from the tree
+        assertEquals(result.get(2), result.get(1));
+    }
 
-  @Test
-  void given_an_id_collects_all_ids_of_its_descendants_until_max_depth_is_reached() {
-    when(apiPropertiesMock.getMaxCategoryFetchingRecursionDepth()).thenReturn(1);
-    when(repositoryMock.findIdsByParentId(anyLong())).thenReturn(descendantIds);
+    @Test
+    void given_an_id_collects_all_ids_of_its_descendants_until_max_depth_is_reached() {
+        when(apiPropertiesMock.getMaxCategoryFetchingRecursionDepth()).thenReturn(1);
+        when(repositoryMock.findIdsByParentId(anyLong())).thenReturn(descendantIds);
 
-    List<Long> result = instance.getBranchIdsFromRootId(root.getId());
+        List<Long> result = instance.getBranchIdsFromRootId(root.getId());
 
-    assertNotNull(result);
-    assertFalse(result.isEmpty());
-    assertEquals(2, result.size()); // immediate descendant of root and another of its own
-  }
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(2, result.size()); // immediate descendant of root and another of its own
+    }
 
-  @Test
-  void given_a_code_collects_all_ids_of_its_descendants_until_max_depth_is_reached() {
-    when(apiPropertiesMock.getMaxCategoryFetchingRecursionDepth()).thenReturn(0);
-    when(repositoryMock.findByCode(anyString())).thenReturn(Optional.of(root));
-    when(repositoryMock.findIdsByParentId(anyLong())).thenReturn(descendantIds);
+    @Test
+    void given_a_code_collects_all_ids_of_its_descendants_until_max_depth_is_reached() {
+        when(apiPropertiesMock.getMaxCategoryFetchingRecursionDepth()).thenReturn(0);
+        when(repositoryMock.findByCode(anyString())).thenReturn(Optional.of(root));
+        when(repositoryMock.findIdsByParentId(anyLong())).thenReturn(descendantIds);
 
-    List<Long> result = instance.getBranchIdsFromRootCode(root.getCode());
+        List<Long> result = instance.getBranchIdsFromRootCode(root.getCode());
 
-    verify(repositoryMock).findIdsByParentId(root.getId());
-    assertNotNull(result);
-    assertFalse(result.isEmpty());
-    assertEquals(1, result.size()); // just the immediate descendant of root
-  }
+        verify(repositoryMock).findIdsByParentId(root.getId());
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.size()); // just the immediate descendant of root
+    }
 
-  @Test
-  void short_circuits_when_root_by_code_does_not_exist() {
-    when(repositoryMock.findByCode(anyString())).thenReturn(Optional.empty());
+    @Test
+    void short_circuits_when_root_by_code_does_not_exist() {
+        when(repositoryMock.findByCode(anyString())).thenReturn(Optional.empty());
 
-    List<Long> result = instance.getBranchIdsFromRootCode(root.getCode());
+        List<Long> result = instance.getBranchIdsFromRootCode(root.getCode());
 
-    verify(apiPropertiesMock, times(0)).getMaxCategoryFetchingRecursionDepth();
-    verify(repositoryMock, times(0)).findIdsByParentId(anyLong());
-    assertNotNull(result);
-    assertTrue(result.isEmpty());
-  }
+        verify(apiPropertiesMock, times(0)).getMaxCategoryFetchingRecursionDepth();
+        verify(repositoryMock, times(0)).findIdsByParentId(anyLong());
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
 }

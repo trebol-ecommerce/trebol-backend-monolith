@@ -40,79 +40,79 @@ import java.util.Optional;
 
 @Service
 public class ProfileServiceImpl
-  implements ProfileService {
-  private final UsersRepository usersRepository;
-  private final PeopleCrudService peopleService;
-  private final PeopleConverterService peopleConverter;
-  private final PeoplePatchService peoplePatchService;
-  private final PeopleRepository peopleRepository;
+    implements ProfileService {
+    private final UsersRepository usersRepository;
+    private final PeopleCrudService peopleService;
+    private final PeopleConverterService peopleConverter;
+    private final PeoplePatchService peoplePatchService;
+    private final PeopleRepository peopleRepository;
 
-  @Autowired
-  public ProfileServiceImpl(
-    UsersRepository usersRepository,
-    PeopleCrudService peopleService,
-    PeopleConverterService peopleConverter,
-    PeoplePatchService peoplePatchService,
-    PeopleRepository peopleRepository
-  ) {
-    this.usersRepository = usersRepository;
-    this.peopleService = peopleService;
-    this.peopleConverter = peopleConverter;
-    this.peoplePatchService = peoplePatchService;
-    this.peopleRepository = peopleRepository;
-  }
-
-  @Override
-  public PersonPojo getProfileFromUserName(String userName)
-    throws UserNotFoundException, PersonNotFoundException {
-    Optional<User> byName = usersRepository.findByName(userName);
-    if (byName.isEmpty()) {
-      throw new UserNotFoundException("There is no account with the specified username");
+    @Autowired
+    public ProfileServiceImpl(
+        UsersRepository usersRepository,
+        PeopleCrudService peopleService,
+        PeopleConverterService peopleConverter,
+        PeoplePatchService peoplePatchService,
+        PeopleRepository peopleRepository
+    ) {
+        this.usersRepository = usersRepository;
+        this.peopleService = peopleService;
+        this.peopleConverter = peopleConverter;
+        this.peoplePatchService = peoplePatchService;
+        this.peopleRepository = peopleRepository;
     }
-    Person person = byName.get().getPerson();
-    if (person == null) {
-      throw new PersonNotFoundException("The account does not have an associated profile");
-    } else {
-      return peopleConverter.convertToPojo(person);
-    }
-  }
 
-  @Transactional
-  @Override
-  public void updateProfileForUserWithName(String userName, PersonPojo profile)
-    throws BadInputException, UserNotFoundException {
-    User targetUser = this.getUserFromName(userName);
-    Person target = targetUser.getPerson();
-    if (target == null) {
-      Optional<Person> existingProfile = peopleService.getExisting(profile);
-      if (existingProfile.isPresent()) {
-        Person person = existingProfile.get();
-        Optional<User> userByIdNumber = usersRepository.findByPersonIdNumber(person.getIdNumber());
-        if (userByIdNumber.isPresent()) {
-          throw new BadInputException("Person profile is associated to another account. Cannot use it.");
-        } else {
-          targetUser.setPerson(person);
-          usersRepository.saveAndFlush(targetUser);
+    @Override
+    public PersonPojo getProfileFromUserName(String userName)
+        throws UserNotFoundException, PersonNotFoundException {
+        Optional<User> byName = usersRepository.findByName(userName);
+        if (byName.isEmpty()) {
+            throw new UserNotFoundException("There is no account with the specified username");
         }
-      } else {
-        Person newProfile = peopleConverter.convertToNewEntity(profile);
-        newProfile = peopleRepository.saveAndFlush(newProfile);
-        targetUser.setPerson(newProfile);
-        usersRepository.saveAndFlush(targetUser);
-      }
-    } else {
-      target = peoplePatchService.patchExistingEntity(profile, target);
-      peopleRepository.saveAndFlush(target);
+        Person person = byName.get().getPerson();
+        if (person==null) {
+            throw new PersonNotFoundException("The account does not have an associated profile");
+        } else {
+            return peopleConverter.convertToPojo(person);
+        }
     }
-  }
 
-  private User getUserFromName(String userName)
-    throws UserNotFoundException {
-    Optional<User> userByName = usersRepository.findByName(userName);
-    if (userByName.isEmpty()) {
-      throw new UserNotFoundException("There is no account with the specified username");
-    } else {
-      return userByName.get();
+    @Transactional
+    @Override
+    public void updateProfileForUserWithName(String userName, PersonPojo profile)
+        throws BadInputException, UserNotFoundException {
+        User targetUser = this.getUserFromName(userName);
+        Person target = targetUser.getPerson();
+        if (target==null) {
+            Optional<Person> existingProfile = peopleService.getExisting(profile);
+            if (existingProfile.isPresent()) {
+                Person person = existingProfile.get();
+                Optional<User> userByIdNumber = usersRepository.findByPersonIdNumber(person.getIdNumber());
+                if (userByIdNumber.isPresent()) {
+                    throw new BadInputException("Person profile is associated to another account. Cannot use it.");
+                } else {
+                    targetUser.setPerson(person);
+                    usersRepository.saveAndFlush(targetUser);
+                }
+            } else {
+                Person newProfile = peopleConverter.convertToNewEntity(profile);
+                newProfile = peopleRepository.saveAndFlush(newProfile);
+                targetUser.setPerson(newProfile);
+                usersRepository.saveAndFlush(targetUser);
+            }
+        } else {
+            target = peoplePatchService.patchExistingEntity(profile, target);
+            peopleRepository.saveAndFlush(target);
+        }
     }
-  }
+
+    private User getUserFromName(String userName)
+        throws UserNotFoundException {
+        Optional<User> userByName = usersRepository.findByName(userName);
+        if (userByName.isEmpty()) {
+            throw new UserNotFoundException("There is no account with the specified username");
+        } else {
+            return userByName.get();
+        }
+    }
 }

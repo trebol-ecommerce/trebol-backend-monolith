@@ -32,12 +32,12 @@ import javax.validation.constraints.NotBlank;
 @ConfigurationProperties(prefix = "trebol.payment.webpayplus")
 @Data
 public class WebpayplusPaymentProperties {
-  private boolean production;
-  private String commerceCode;
-  private String apiKey;
-  @NotBlank
-  private String callbackUrl;
-  @NotBlank
-  private String browserRedirectionUrl;
+    private boolean production;
+    private String commerceCode;
+    private String apiKey;
+    @NotBlank
+    private String callbackUrl;
+    @NotBlank
+    private String browserRedirectionUrl;
 
 }

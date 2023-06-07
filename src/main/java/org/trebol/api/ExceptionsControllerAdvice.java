@@ -45,38 +45,39 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  * <li>{@link org.trebol.common.exceptions.BadInputException}</li>
  * <li>{@link org.springframework.web.bind.MethodArgumentNotValidException}</li>
  * </ul>
+ *
  * @see org.springframework.http.HttpStatus
  */
 @RestControllerAdvice
 public class ExceptionsControllerAdvice {
 
-  @ResponseStatus(NOT_FOUND)
-  @ExceptionHandler(EntityNotFoundException.class)
-  public String handleException(EntityNotFoundException ex) {
-    return ex.getMessage();
-  }
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(EntityNotFoundException.class)
+    public String handleException(EntityNotFoundException ex) {
+        return ex.getMessage();
+    }
 
-  @ResponseStatus(BAD_REQUEST)
-  @ExceptionHandler(EntityExistsException.class)
-  public String handleException(EntityExistsException ex) {
-    return ex.getMessage();
-  }
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(EntityExistsException.class)
+    public String handleException(EntityExistsException ex) {
+        return ex.getMessage();
+    }
 
-  @ResponseStatus(BAD_REQUEST)
-  @ExceptionHandler(BadInputException.class)
-  public String handleException(BadInputException ex) {
-    return ex.getMessage();
-  }
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(BadInputException.class)
+    public String handleException(BadInputException ex) {
+        return ex.getMessage();
+    }
 
-  @ResponseStatus(BAD_REQUEST)
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public Map<String, String> handleException(MethodArgumentNotValidException ex) {
-    Map<String, String> errors = new HashMap<>();
-    ex.getBindingResult().getAllErrors().forEach((error) -> {
-      String fieldName = ((FieldError) error).getField();
-      String errorMessage = error.getDefaultMessage();
-      errors.put(fieldName, errorMessage);
-    });
-    return errors;
-  }
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleException(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
+    }
 }

@@ -24,6 +24,6 @@ import org.trebol.jpa.entities.QProductCategory;
 import org.trebol.jpa.services.PredicateService;
 
 public interface ProductCategoriesPredicateService
-  extends PredicateService {
-  QProductCategory basePath = QProductCategory.productCategory;
+    extends PredicateService {
+    QProductCategory basePath = QProductCategory.productCategory;
 }

@@ -43,26 +43,26 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ImagesCrudServiceImplTest {
-  @InjectMocks ImagesCrudServiceImpl instance;
-  @Mock ImagesRepository imagesRepositoryMock;
-  final ImagesTestHelper imagesHelper = new ImagesTestHelper();
+    @InjectMocks ImagesCrudServiceImpl instance;
+    @Mock ImagesRepository imagesRepositoryMock;
+    final ImagesTestHelper imagesHelper = new ImagesTestHelper();
 
-  @BeforeEach
-  void beforeEach() {
-    imagesHelper.resetImages();
-  }
+    @BeforeEach
+    void beforeEach() {
+        imagesHelper.resetImages();
+    }
 
-  @Test
-  void finds_by_filename() throws BadInputException {
-    ImagePojo input = imagesHelper.imagePojoForFetch();
-    Image expectedResult = imagesHelper.imageEntityAfterCreation();
-    when(imagesRepositoryMock.findByFilename(anyString())).thenReturn(Optional.of(expectedResult));
+    @Test
+    void finds_by_filename() throws BadInputException {
+        ImagePojo input = imagesHelper.imagePojoForFetch();
+        Image expectedResult = imagesHelper.imageEntityAfterCreation();
+        when(imagesRepositoryMock.findByFilename(anyString())).thenReturn(Optional.of(expectedResult));
 
-    Optional<Image> match = instance.getExisting(input);
+        Optional<Image> match = instance.getExisting(input);
 
-    verify(imagesRepositoryMock).findByFilename(input.getFilename());
-    assertTrue(match.isPresent());
-    assertEquals(expectedResult, match.get());
-  }
+        verify(imagesRepositoryMock).findByFilename(input.getFilename());
+        assertTrue(match.isPresent());
+        assertEquals(expectedResult, match.get());
+    }
 
 }

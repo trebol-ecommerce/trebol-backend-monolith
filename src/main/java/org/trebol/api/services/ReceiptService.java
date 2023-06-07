@@ -29,12 +29,12 @@ import javax.persistence.EntityNotFoundException;
  */
 public interface ReceiptService {
 
-  /**
-   * Fetches receipt data for a transaction matching a given token.
-   *
-   * @param token The transaction token.
-   * @return The details of the transaction.
-   * @throws EntityNotFoundException When no transaction matches the input token
-   */
-  ReceiptPojo fetchReceiptByTransactionToken(String token) throws EntityNotFoundException;
+    /**
+     * Fetches receipt data for a transaction matching a given token.
+     *
+     * @param token The transaction token.
+     * @return The details of the transaction.
+     * @throws EntityNotFoundException When no transaction matches the input token
+     */
+    ReceiptPojo fetchReceiptByTransactionToken(String token) throws EntityNotFoundException;
 }

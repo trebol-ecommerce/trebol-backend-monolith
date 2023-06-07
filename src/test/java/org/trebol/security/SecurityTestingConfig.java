@@ -31,19 +31,20 @@ import javax.crypto.SecretKey;
 
 @TestConfiguration
 public class SecurityTestingConfig {
-  static final String PRIVATE_KEY_SEQUENCE = "a9s8dy030g8h39f7weh8eufesa0d8f7g";
+    static final String PRIVATE_KEY_SEQUENCE = "a9s8dy030g8h39f7weh8eufesa0d8f7g";
 
-  @Bean
-  public TestingAuthenticationProvider authenticationProvider() {
-    return new TestingAuthenticationProvider();
-  }
+    @Bean
+    public TestingAuthenticationProvider authenticationProvider() {
+        return new TestingAuthenticationProvider();
+    }
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder(5);
-  }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(5);
+    }
 
-  @Bean SecretKey secretKey() {
-    return Keys.hmacShaKeyFor(PRIVATE_KEY_SEQUENCE.getBytes());
-  }
+    @Bean
+    SecretKey secretKey() {
+        return Keys.hmacShaKeyFor(PRIVATE_KEY_SEQUENCE.getBytes());
+    }
 }

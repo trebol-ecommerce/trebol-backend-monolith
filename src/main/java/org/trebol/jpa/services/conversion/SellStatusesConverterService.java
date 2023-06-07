@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.services.ConverterService;
 
 public interface SellStatusesConverterService
-  extends ConverterService<SellStatusPojo, SellStatus> {
+    extends ConverterService<SellStatusPojo, SellStatus> {
 }
