@@ -35,7 +35,9 @@ import org.trebol.testing.ImagesTestHelper;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.trebol.testing.TestConstants.ANY;
 import static org.trebol.testing.TestConstants.NOT_ANY;
 

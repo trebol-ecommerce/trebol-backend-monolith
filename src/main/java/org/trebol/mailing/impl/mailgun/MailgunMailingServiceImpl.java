@@ -26,7 +26,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kong.unirest.*;
+import kong.unirest.HttpRequestWithBody;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
+import kong.unirest.MultipartBody;
+import kong.unirest.Unirest;
 import kong.unirest.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +38,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
-import org.trebol.api.models.*;
+import org.trebol.api.models.PersonPojo;
+import org.trebol.api.models.ReceiptDetailPojo;
+import org.trebol.api.models.ReceiptPojo;
+import org.trebol.api.models.SellDetailPojo;
+import org.trebol.api.models.SellPojo;
 import org.trebol.mailing.MailingProperties;
 import org.trebol.mailing.MailingService;
 import org.trebol.mailing.MailingServiceException;
@@ -46,7 +54,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import static org.trebol.config.Constants.*;
+import static org.trebol.config.Constants.SELL_STATUS_COMPLETED;
+import static org.trebol.config.Constants.SELL_STATUS_PAID_CONFIRMED;
+import static org.trebol.config.Constants.SELL_STATUS_PAID_UNCONFIRMED;
+import static org.trebol.config.Constants.SELL_STATUS_REJECTED;
 
 /**
  * Implements Mailgun HTTP API as a mail service provider.<br/>

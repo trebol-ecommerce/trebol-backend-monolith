@@ -24,7 +24,27 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.trebol.api.controllers.*;
+import org.trebol.api.controllers.AccessController;
+import org.trebol.api.controllers.AccountProfileController;
+import org.trebol.api.controllers.DataBillingTypesController;
+import org.trebol.api.controllers.DataCustomersController;
+import org.trebol.api.controllers.DataImagesController;
+import org.trebol.api.controllers.DataPeopleController;
+import org.trebol.api.controllers.DataProductCategoriesController;
+import org.trebol.api.controllers.DataProductListContentsController;
+import org.trebol.api.controllers.DataProductListsController;
+import org.trebol.api.controllers.DataProductsController;
+import org.trebol.api.controllers.DataSalesController;
+import org.trebol.api.controllers.DataSalespeopleController;
+import org.trebol.api.controllers.DataSellStatusesController;
+import org.trebol.api.controllers.DataShippersController;
+import org.trebol.api.controllers.DataUserRolesController;
+import org.trebol.api.controllers.DataUsersController;
+import org.trebol.api.controllers.PublicAboutController;
+import org.trebol.api.controllers.PublicCheckoutController;
+import org.trebol.api.controllers.PublicReceiptController;
+import org.trebol.api.controllers.PublicRegisterController;
+import org.trebol.api.controllers.RootController;
 
 import java.util.List;
 

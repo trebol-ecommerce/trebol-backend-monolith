@@ -23,7 +23,9 @@ package org.trebol.payment.exceptions;
 import org.junit.jupiter.api.Test;
 import org.trebol.payment.PaymentServiceException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.trebol.testing.TestConstants.ANY;
 
 class PaymentServiceExceptionTest {

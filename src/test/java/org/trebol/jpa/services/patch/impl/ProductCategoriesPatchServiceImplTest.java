@@ -32,7 +32,9 @@ import org.trebol.jpa.entities.ProductCategory;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.trebol.testing.TestConstants.ANY;
 import static org.trebol.testing.TestConstants.NOT_ANY;
 

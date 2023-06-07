@@ -22,8 +22,8 @@ package org.trebol.common.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.trebol.config.ValidationProperties;
 import org.trebol.common.services.RegexMatcherAdapterService;
+import org.trebol.config.ValidationProperties;
 
 import java.util.regex.Pattern;
 

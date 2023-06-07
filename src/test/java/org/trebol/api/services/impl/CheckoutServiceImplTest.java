@@ -43,8 +43,13 @@ import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
 import static org.trebol.testing.SalesTestHelper.SELL_TRANSACTION_TOKEN;
 import static org.trebol.testing.TestConstants.ANY;
