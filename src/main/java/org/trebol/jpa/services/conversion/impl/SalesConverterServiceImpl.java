@@ -42,6 +42,7 @@ import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.repositories.AddressesRepository;
 import org.trebol.jpa.repositories.BillingTypesRepository;
+import org.trebol.jpa.repositories.PaymentTypesRepository;
 import org.trebol.jpa.repositories.ProductsRepository;
 import org.trebol.jpa.repositories.ShippersRepository;
 import org.trebol.jpa.services.conversion.AddressesConverterService;
@@ -74,6 +75,7 @@ public class SalesConverterServiceImpl
   private final ProductsRepository productsRepository;
   private final ShippersRepository shippersRepository;
   private final AddressesRepository addressesRepository;
+  private final PaymentTypesRepository paymentTypesRepository;
   private final AddressesConverterService addressesConverterService;
   static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
   static final String UNEXISTING_BILLING_TYPE = "Specified billing type does not exist";
@@ -90,6 +92,7 @@ public class SalesConverterServiceImpl
     ProductsRepository productsRepository,
     ShippersRepository shippersRepository,
     AddressesRepository addressesRepository,
+    PaymentTypesRepository paymentTypesRepository,
     AddressesConverterService addressesConverterService
   ) {
     this.customersCrudService = customersCrudService;
@@ -102,6 +105,7 @@ public class SalesConverterServiceImpl
     this.productsRepository = productsRepository;
     this.shippersRepository = shippersRepository;
     this.addressesRepository = addressesRepository;
+    this.paymentTypesRepository = paymentTypesRepository;
     this.addressesConverterService = addressesConverterService;
   }
 
@@ -154,6 +158,7 @@ public class SalesConverterServiceImpl
     if (model.getDate() != null) {
       target.setDate(model.getDate());
     }
+    this.convertPaymentTypeInformationForEntity(model, target);
     this.convertCustomerInformationForEntity(model, target);
     this.convertBillingInformationForEntity(model, target);
     this.convertShippingInformationForEntity(model, target);
@@ -204,6 +209,17 @@ public class SalesConverterServiceImpl
   @Override
   public Sell applyChangesToExistingEntity(SellPojo source, Sell target) {
     throw new UnsupportedOperationException("This method is deprecated");
+  }
+
+  private void convertPaymentTypeInformationForEntity(SellPojo model, Sell target) {
+    String paymentType = model.getPaymentType();
+    if (!StringUtils.isBlank(paymentType)) {
+      paymentTypesRepository.findByName(paymentType)
+        .ifPresentOrElse(target::setPaymentType,
+          () -> {
+            throw new RuntimeException("The payment type does not exist");
+          });
+    }
   }
 
   /**
