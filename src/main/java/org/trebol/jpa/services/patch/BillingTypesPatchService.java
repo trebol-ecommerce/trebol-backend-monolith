@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.BillingType;
 import org.trebol.jpa.services.PatchService;
 
 public interface BillingTypesPatchService
-  extends PatchService<BillingTypePojo, BillingType> {
+    extends PatchService<BillingTypePojo, BillingType> {
 }

@@ -28,75 +28,75 @@ import org.trebol.jpa.entities.Image;
  */
 public class ImagesTestHelper {
 
-  public static final long IMAGE_ID = 1L;
-  public static final String IMAGE_CODE = "test-img";
-  public static final String IMAGE_FILENAME = "testimg.jpg";
-  public static final String IMAGE_URL = "http://example.com/img/testimg.jpg";
-  private ImagePojo pojoForFetch;
-  private ImagePojo pojoBeforeCreation;
-  private ImagePojo pojoAfterCreation;
-  private Image entityBeforeCreation;
-  private Image entityAfterCreation;
+    public static final long IMAGE_ID = 1L;
+    public static final String IMAGE_CODE = "test-img";
+    public static final String IMAGE_FILENAME = "testimg.jpg";
+    public static final String IMAGE_URL = "http://example.com/img/testimg.jpg";
+    private ImagePojo pojoForFetch;
+    private ImagePojo pojoBeforeCreation;
+    private ImagePojo pojoAfterCreation;
+    private Image entityBeforeCreation;
+    private Image entityAfterCreation;
 
-  public void resetImages() {
-    this.pojoForFetch = null;
-    this.pojoBeforeCreation = null;
-    this.pojoAfterCreation = null;
-    this.entityBeforeCreation = null;
-    this.entityAfterCreation = null;
-  }
-
-  public ImagePojo imagePojoForFetch() {
-    if (this.pojoForFetch == null) {
-      this.pojoForFetch = ImagePojo.builder()
-        .filename(IMAGE_FILENAME)
-        .build();
+    public void resetImages() {
+        this.pojoForFetch = null;
+        this.pojoBeforeCreation = null;
+        this.pojoAfterCreation = null;
+        this.entityBeforeCreation = null;
+        this.entityAfterCreation = null;
     }
-    return this.pojoForFetch;
-  }
 
-  public ImagePojo imagePojoBeforeCreation() {
-    if (this.pojoBeforeCreation == null) {
-      this.pojoBeforeCreation = ImagePojo.builder()
-        .code(IMAGE_CODE)
-        .filename(IMAGE_FILENAME)
-        .url(IMAGE_URL)
-        .build();
+    public ImagePojo imagePojoForFetch() {
+        if (this.pojoForFetch==null) {
+            this.pojoForFetch = ImagePojo.builder()
+                .filename(IMAGE_FILENAME)
+                .build();
+        }
+        return this.pojoForFetch;
     }
-    return this.pojoBeforeCreation;
-  }
 
-  public ImagePojo imagePojoAfterCreation() {
-    if (this.pojoAfterCreation == null) {
-      this.pojoAfterCreation = ImagePojo.builder()
-        .code(IMAGE_CODE)
-        .filename(IMAGE_FILENAME)
-        .url(IMAGE_URL)
-        .build();
+    public ImagePojo imagePojoBeforeCreation() {
+        if (this.pojoBeforeCreation==null) {
+            this.pojoBeforeCreation = ImagePojo.builder()
+                .code(IMAGE_CODE)
+                .filename(IMAGE_FILENAME)
+                .url(IMAGE_URL)
+                .build();
+        }
+        return this.pojoBeforeCreation;
     }
-    return this.pojoAfterCreation;
-  }
 
-  public Image imageEntityBeforeCreation() {
-    if (this.entityBeforeCreation == null) {
-      this.entityBeforeCreation = Image.builder()
-        .code(IMAGE_CODE)
-        .filename(IMAGE_FILENAME)
-        .url(IMAGE_URL)
-        .build();
+    public ImagePojo imagePojoAfterCreation() {
+        if (this.pojoAfterCreation==null) {
+            this.pojoAfterCreation = ImagePojo.builder()
+                .code(IMAGE_CODE)
+                .filename(IMAGE_FILENAME)
+                .url(IMAGE_URL)
+                .build();
+        }
+        return this.pojoAfterCreation;
     }
-    return this.entityBeforeCreation;
-  }
 
-  public Image imageEntityAfterCreation() {
-    if (this.entityAfterCreation == null) {
-      this.entityAfterCreation = Image.builder()
-        .id(IMAGE_ID)
-        .code(IMAGE_CODE)
-        .filename(IMAGE_FILENAME)
-        .url(IMAGE_URL)
-        .build();
+    public Image imageEntityBeforeCreation() {
+        if (this.entityBeforeCreation==null) {
+            this.entityBeforeCreation = Image.builder()
+                .code(IMAGE_CODE)
+                .filename(IMAGE_FILENAME)
+                .url(IMAGE_URL)
+                .build();
+        }
+        return this.entityBeforeCreation;
     }
-    return this.entityAfterCreation;
-  }
+
+    public Image imageEntityAfterCreation() {
+        if (this.entityAfterCreation==null) {
+            this.entityAfterCreation = Image.builder()
+                .id(IMAGE_ID)
+                .code(IMAGE_CODE)
+                .filename(IMAGE_FILENAME)
+                .url(IMAGE_URL)
+                .build();
+        }
+        return this.entityAfterCreation;
+    }
 }

@@ -33,31 +33,31 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 public class BillingCompaniesPatchServiceImpl
-  implements BillingCompaniesPatchService {
+    implements BillingCompaniesPatchService {
 
-  @Override
-  public BillingCompany patchExistingEntity(Map<String, Object> changes, BillingCompany existing) throws BadInputException {
-    BillingCompany target = new BillingCompany(existing);
+    @Override
+    public BillingCompany patchExistingEntity(Map<String, Object> changes, BillingCompany existing) throws BadInputException {
+        BillingCompany target = new BillingCompany(existing);
 
-    if (changes.containsKey("idNumber")) {
-      String idNumber = (String) changes.get("idNumber");
-      if (!StringUtils.isBlank(idNumber)) {
-        target.setIdNumber(idNumber);
-      }
+        if (changes.containsKey("idNumber")) {
+            String idNumber = (String) changes.get("idNumber");
+            if (!StringUtils.isBlank(idNumber)) {
+                target.setIdNumber(idNumber);
+            }
+        }
+
+        if (changes.containsKey("name")) {
+            String name = (String) changes.get("name");
+            if (!StringUtils.isBlank(name)) {
+                target.setName(name);
+            }
+        }
+
+        return target;
     }
 
-    if (changes.containsKey("name")) {
-      String name = (String) changes.get("name");
-      if (!StringUtils.isBlank(name)) {
-        target.setName(name);
-      }
+    @Override
+    public BillingCompany patchExistingEntity(BillingCompanyPojo changes, BillingCompany target) throws BadInputException {
+        throw new UnsupportedOperationException("This method has been deprecated");
     }
-
-    return target;
-  }
-
-  @Override
-  public BillingCompany patchExistingEntity(BillingCompanyPojo changes, BillingCompany target) throws BadInputException {
-    throw new UnsupportedOperationException("This method has been deprecated");
-  }
 }

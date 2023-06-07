@@ -29,8 +29,8 @@ import java.util.List;
 
 @org.springframework.stereotype.Repository
 public interface SellDetailsRepository
-  extends Repository<SellDetail> {
+    extends Repository<SellDetail> {
 
-  @Query(value = "SELECT d FROM SellDetail d WHERE d.sell.id = :sellId")
-  List<SellDetail> findBySellId(@Param("sellId") Long sellId);
+    @Query(value = "SELECT d FROM SellDetail d WHERE d.sell.id = :sellId")
+    List<SellDetail> findBySellId(@Param("sellId") Long sellId);
 }

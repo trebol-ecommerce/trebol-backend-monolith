@@ -33,76 +33,78 @@ import org.trebol.jpa.entities.ProductList;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.trebol.testing.TestConstants.ANY;
 import static org.trebol.testing.TestConstants.NOT_ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListPatchServiceImplTest {
-  @InjectMocks ProductListPatchServiceImpl instance;
-  private static ObjectMapper MAPPER;
-  private static ProductList EXISTING_PRODUCT_LIST;
+    @InjectMocks ProductListPatchServiceImpl instance;
+    private static ObjectMapper MAPPER;
+    private static ProductList EXISTING_PRODUCT_LIST;
 
-  @BeforeAll
-  static void beforeAll() {
-    MAPPER = new ObjectMapper();
-    MAPPER.setSerializationInclusion(NON_NULL);
-    EXISTING_PRODUCT_LIST = ProductList.builder()
-      .id(1L)
-      .code(ANY)
-      .name(ANY)
-      .items(null)
-      .build();
-  }
+    @BeforeAll
+    static void beforeAll() {
+        MAPPER = new ObjectMapper();
+        MAPPER.setSerializationInclusion(NON_NULL);
+        EXISTING_PRODUCT_LIST = ProductList.builder()
+            .id(1L)
+            .code(ANY)
+            .name(ANY)
+            .items(null)
+            .build();
+    }
 
-  @Test
-  void performs_empty_patch() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(ProductListPojo.builder().build());
-    ProductList result = instance.patchExistingEntity(input, EXISTING_PRODUCT_LIST);
-    assertEquals(EXISTING_PRODUCT_LIST, result);
-  }
+    @Test
+    void performs_empty_patch() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(ProductListPojo.builder().build());
+        ProductList result = instance.patchExistingEntity(input, EXISTING_PRODUCT_LIST);
+        assertEquals(EXISTING_PRODUCT_LIST, result);
+    }
 
-  @Test
-  void patches_code() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(ProductListPojo.builder()
-      .code(NOT_ANY)
-      .build());
-    ProductList actual = instance.patchExistingEntity(input, EXISTING_PRODUCT_LIST);
-    assertNotEquals(EXISTING_PRODUCT_LIST, actual);
-    assertEquals(NOT_ANY, actual.getCode());
-  }
+    @Test
+    void patches_code() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(ProductListPojo.builder()
+            .code(NOT_ANY)
+            .build());
+        ProductList actual = instance.patchExistingEntity(input, EXISTING_PRODUCT_LIST);
+        assertNotEquals(EXISTING_PRODUCT_LIST, actual);
+        assertEquals(NOT_ANY, actual.getCode());
+    }
 
-  @Test
-  void patches_name() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(ProductListPojo.builder()
-      .name(NOT_ANY)
-      .build());
-    ProductList actual = instance.patchExistingEntity(input, EXISTING_PRODUCT_LIST);
-    assertNotEquals(EXISTING_PRODUCT_LIST, actual);
-    assertEquals(NOT_ANY, actual.getName());
-  }
+    @Test
+    void patches_name() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(ProductListPojo.builder()
+            .name(NOT_ANY)
+            .build());
+        ProductList actual = instance.patchExistingEntity(input, EXISTING_PRODUCT_LIST);
+        assertNotEquals(EXISTING_PRODUCT_LIST, actual);
+        assertEquals(NOT_ANY, actual.getName());
+    }
 
-  @Test
-  void patches_all_fields() throws BadInputException {
-    Map<String, Object> input = this.mapFrom(ProductListPojo.builder()
-      .code(NOT_ANY)
-      .name(NOT_ANY)
-      .build());
-    ProductList actual = instance.patchExistingEntity(input, EXISTING_PRODUCT_LIST);
-    assertNotEquals(EXISTING_PRODUCT_LIST, actual);
-    assertEquals(NOT_ANY, actual.getCode());
-    assertEquals(NOT_ANY, actual.getName());
-  }
+    @Test
+    void patches_all_fields() throws BadInputException {
+        Map<String, Object> input = this.mapFrom(ProductListPojo.builder()
+            .code(NOT_ANY)
+            .name(NOT_ANY)
+            .build());
+        ProductList actual = instance.patchExistingEntity(input, EXISTING_PRODUCT_LIST);
+        assertNotEquals(EXISTING_PRODUCT_LIST, actual);
+        assertEquals(NOT_ANY, actual.getCode());
+        assertEquals(NOT_ANY, actual.getName());
+    }
 
-  @Test
-  void does_not_support_old_method_signature() {
-    ProductListPojo input = ProductListPojo.builder().build();
-    assertThrows(UnsupportedOperationException.class,
-      () -> instance.patchExistingEntity(input, EXISTING_PRODUCT_LIST));
-  }
+    @Test
+    void does_not_support_old_method_signature() {
+        ProductListPojo input = ProductListPojo.builder().build();
+        assertThrows(UnsupportedOperationException.class,
+            () -> instance.patchExistingEntity(input, EXISTING_PRODUCT_LIST));
+    }
 
-  @SuppressWarnings("unchecked")
-  private Map<String, Object> mapFrom(ProductListPojo data) {
-    return MAPPER.convertValue(data, Map.class);
-  }
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> mapFrom(ProductListPojo data) {
+        return MAPPER.convertValue(data, Map.class);
+    }
 }

@@ -20,10 +20,26 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.trebol.jpa.DBEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -36,39 +52,40 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class SellDetail
-  implements DBEntity {
-  private static final long serialVersionUID = 15L;
+    implements DBEntity {
+    private static final long serialVersionUID = 15L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "sell_detail_id", nullable = false)
-  private Long id;
-  @Column(name = "sell_detail_units", nullable = false)
-  private int units;
-  @Column(name = "sell_detail_unit_value", nullable = false)
-  private Integer unitValue;
-  @Column(name = "sell_detail_description", nullable = false)
-  @Size(max = 260)
-  private String description;
-  @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false,
-    foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-  @ManyToOne(optional = false)
-  private Product product;
-  @JoinColumn(name = "sell_id", referencedColumnName = "sell_id", insertable = false, updatable = false,
-    foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private Sell sell;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sell_detail_id", nullable = false)
+    private Long id;
+    @Column(name = "sell_detail_units", nullable = false)
+    private int units;
+    @Column(name = "sell_detail_unit_value", nullable = false)
+    private Integer unitValue;
+    @Column(name = "sell_detail_description", nullable = false)
+    @Size(max = 260)
+    private String description;
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id", updatable = false,
+        foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @ManyToOne(optional = false)
+    private Product product;
+    @JoinColumn(name = "sell_id", referencedColumnName = "sell_id", insertable = false, updatable = false,
+        foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Sell sell;
 
-  /**
-   * Please note: this copy-constructor does not include a SellDetail's relationships
-   * @param source The original SellDetail
-   */
-  public SellDetail(SellDetail source) {
-    this.id = source.id;
-    this.units = source.units;
-    this.unitValue = source.unitValue;
-    this.description = source.description;
-    this.product = null;
-    this.sell = null;
-  }
+    /**
+     * Please note: this copy-constructor does not include a SellDetail's relationships
+     *
+     * @param source The original SellDetail
+     */
+    public SellDetail(SellDetail source) {
+        this.id = source.id;
+        this.units = source.units;
+        this.unitValue = source.unitValue;
+        this.description = source.description;
+        this.product = null;
+        this.sell = null;
+    }
 }

@@ -38,27 +38,27 @@ import java.util.Optional;
 @Transactional
 @Service
 public class SellStatusesCrudServiceImpl
-  extends CrudGenericService<SellStatusPojo, SellStatus>
-  implements SellStatusesCrudService {
-  private final SellStatusesRepository statusesRepository;
+    extends CrudGenericService<SellStatusPojo, SellStatus>
+    implements SellStatusesCrudService {
+    private final SellStatusesRepository statusesRepository;
 
-  @Autowired
-  public SellStatusesCrudServiceImpl(
-    SellStatusesRepository statusesRepository,
-    SellStatusesConverterService statusesConverterService,
-    SellStatusesPatchService statusesPatchService
-  ) {
-    super(statusesRepository, statusesConverterService, statusesPatchService);
-    this.statusesRepository = statusesRepository;
-  }
-
-  @Override
-  public Optional<SellStatus> getExisting(SellStatusPojo input) throws BadInputException {
-    String name = input.getName();
-    if (StringUtils.isBlank(name)) {
-      throw new BadInputException("Invalid status name");
-    } else {
-      return statusesRepository.findByName(name);
+    @Autowired
+    public SellStatusesCrudServiceImpl(
+        SellStatusesRepository statusesRepository,
+        SellStatusesConverterService statusesConverterService,
+        SellStatusesPatchService statusesPatchService
+    ) {
+        super(statusesRepository, statusesConverterService, statusesPatchService);
+        this.statusesRepository = statusesRepository;
     }
-  }
+
+    @Override
+    public Optional<SellStatus> getExisting(SellStatusPojo input) throws BadInputException {
+        String name = input.getName();
+        if (StringUtils.isBlank(name)) {
+            throw new BadInputException("Invalid status name");
+        } else {
+            return statusesRepository.findByName(name);
+        }
+    }
 }

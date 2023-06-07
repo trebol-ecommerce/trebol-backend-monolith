@@ -20,26 +20,39 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.trebol.jpa.DBEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table(
-  name = "addresses",
-  indexes = {
-    @Index(columnList = "address_first_line"),
-    @Index(columnList = "address_second_line"),
-    @Index(columnList = "address_postal_code")
-  },
-  uniqueConstraints = {
-    @UniqueConstraint(columnNames = {
-      "address_city", "address_municipality", "address_first_line",
-      "address_second_line", "address_postal_code", "address_notes"
+    name = "addresses",
+    indexes = {
+        @Index(columnList = "address_first_line"),
+        @Index(columnList = "address_second_line"),
+        @Index(columnList = "address_postal_code")
+    },
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+            "address_city", "address_municipality", "address_first_line",
+            "address_second_line", "address_postal_code", "address_notes"
+        })
     })
-  })
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,38 +61,38 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class Address
-  implements DBEntity {
-  private static final long serialVersionUID = 1L;
+    implements DBEntity {
+    private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "address_id", nullable = false)
-  private Long id;
-  @Size(max = 50)
-  @Column(name = "address_city", nullable = false)
-  private String city;
-  @Size(max = 50)
-  @Column(name = "address_municipality", nullable = false)
-  private String municipality;
-  @Size(max = 100)
-  @Column(name = "address_first_line", nullable = false)
-  private String firstLine;
-  @Size(max = 50)
-  @Column(name = "address_second_line")
-  private String secondLine;
-  @Column(name = "address_postal_code")
-  private String postalCode;
-  @Size(max = 50)
-  @Column(name = "address_notes")
-  private String notes;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "address_id", nullable = false)
+    private Long id;
+    @Size(max = 50)
+    @Column(name = "address_city", nullable = false)
+    private String city;
+    @Size(max = 50)
+    @Column(name = "address_municipality", nullable = false)
+    private String municipality;
+    @Size(max = 100)
+    @Column(name = "address_first_line", nullable = false)
+    private String firstLine;
+    @Size(max = 50)
+    @Column(name = "address_second_line")
+    private String secondLine;
+    @Column(name = "address_postal_code")
+    private String postalCode;
+    @Size(max = 50)
+    @Column(name = "address_notes")
+    private String notes;
 
-  public Address(Address source) {
-    this.id = source.id;
-    this.city = source.city;
-    this.municipality = source.municipality;
-    this.firstLine = source.firstLine;
-    this.secondLine = source.secondLine;
-    this.postalCode = source.postalCode;
-    this.notes = source.notes;
-  }
+    public Address(Address source) {
+        this.id = source.id;
+        this.city = source.city;
+        this.municipality = source.municipality;
+        this.firstLine = source.firstLine;
+        this.secondLine = source.secondLine;
+        this.postalCode = source.postalCode;
+        this.notes = source.notes;
+    }
 }

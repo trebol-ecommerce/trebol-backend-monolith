@@ -25,6 +25,7 @@ package org.trebol.common.services;
  * such as id numbers from people and companies
  */
 public interface RegexMatcherAdapterService {
-  boolean isAValidIdNumber(String matchAgainst);
-  boolean isAValidAuthorizationHeader(String matchAgainst);
+    boolean isAValidIdNumber(String matchAgainst);
+
+    boolean isAValidAuthorizationHeader(String matchAgainst);
 }

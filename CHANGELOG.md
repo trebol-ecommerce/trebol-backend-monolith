@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [v0.2.1] - 2023-06-27
 
+### Changed
+
+- Project-wide clean up (re-indentation & import optimization)
+  - New indentation rules set in `.editorconfig`
+
 ### Fixed
 
 - Raise an exception when no payment type is specified

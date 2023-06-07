@@ -59,113 +59,113 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductsCrudServiceImplTest {
-  @InjectMocks ProductsCrudServiceImpl instance;
-  @Mock ProductsRepository productsRepositoryMock;
-  @Mock ProductsConverterService productsConverterMock;
-  @Mock ProductImagesRepository productImagesRepositoryMock;
-  @Mock ImagesCrudService imagesCrudServiceMock;
-  @Mock ImagesConverterService imagesConverterMock;
-  final ProductsTestHelper productsHelper = new ProductsTestHelper();
-  final ProductCategoriesTestHelper categoriesHelper = new ProductCategoriesTestHelper();
-  final ImagesTestHelper imagesHelper = new ImagesTestHelper();
+    @InjectMocks ProductsCrudServiceImpl instance;
+    @Mock ProductsRepository productsRepositoryMock;
+    @Mock ProductsConverterService productsConverterMock;
+    @Mock ProductImagesRepository productImagesRepositoryMock;
+    @Mock ImagesCrudService imagesCrudServiceMock;
+    @Mock ImagesConverterService imagesConverterMock;
+    final ProductsTestHelper productsHelper = new ProductsTestHelper();
+    final ProductCategoriesTestHelper categoriesHelper = new ProductCategoriesTestHelper();
+    final ImagesTestHelper imagesHelper = new ImagesTestHelper();
 
-  @BeforeEach
-  void beforeEach() {
-    productsHelper.resetProducts();
-    categoriesHelper.resetProductCategories();
-    imagesHelper.resetImages();
-  }
+    @BeforeEach
+    void beforeEach() {
+        productsHelper.resetProducts();
+        categoriesHelper.resetProductCategories();
+        imagesHelper.resetImages();
+    }
 
-  @Test
-  void finds_by_barcode() throws BadInputException {
-    ProductPojo input = productsHelper.productPojoForFetch();
-    Product expectedResult = productsHelper.productEntityAfterCreationWithoutCategory();
-    when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(expectedResult));
+    @Test
+    void finds_by_barcode() throws BadInputException {
+        ProductPojo input = productsHelper.productPojoForFetch();
+        Product expectedResult = productsHelper.productEntityAfterCreationWithoutCategory();
+        when(productsRepositoryMock.findByBarcode(anyString())).thenReturn(Optional.of(expectedResult));
 
-    Optional<Product> match = instance.getExisting(input);
+        Optional<Product> match = instance.getExisting(input);
 
-    verify(productsRepositoryMock).findByBarcode(input.getBarcode());
-    assertTrue(match.isPresent());
-    assertEquals(expectedResult, match.get());
-  }
+        verify(productsRepositoryMock).findByBarcode(input.getBarcode());
+        assertTrue(match.isPresent());
+        assertEquals(expectedResult, match.get());
+    }
 
-  @Test
-  void creates_product() throws BadInputException, EntityExistsException {
-    ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
-    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
-    Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
-    Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
-    when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
-    when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
-    when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
+    @Test
+    void creates_product() throws BadInputException, EntityExistsException {
+        ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
+        ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
+        Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
+        Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
+        when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
+        when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
+        when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
 
-    ProductPojo result = instance.create(input);
+        ProductPojo result = instance.create(input);
 
-    verify(productsRepositoryMock).saveAndFlush(inputEntity);
-    assertNotNull(result);
-    assertEquals(expectedResult, result);
-    assertNull(result.getImages());
-    assertNull(result.getCategory());
-  }
+        verify(productsRepositoryMock).saveAndFlush(inputEntity);
+        assertNotNull(result);
+        assertEquals(expectedResult, result);
+        assertNull(result.getImages());
+        assertNull(result.getCategory());
+    }
 
-  @Test
-  void creates_product_alongside_an_image() throws BadInputException {
-    ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
-    input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
-    Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
-    Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
-    Image imageEntity = imagesHelper.imageEntityAfterCreation();
-    List<ProductImage> resultProductImages = List.of(ProductImage.builder()
-      .image(imageEntity)
-      .build());
-    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
-    List<ImagePojo> expectedResultImages = List.of(imagesHelper.imagePojoAfterCreation());
-    expectedResult.setImages(expectedResultImages);
-    when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
-    when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
-    when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-    when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.of(imageEntity));
-    when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(resultProductImages); // unused value, stubbed for safety
-    when(productsConverterMock.convertImagesToPojo(anyList())).thenReturn(expectedResultImages);
+    @Test
+    void creates_product_alongside_an_image() throws BadInputException {
+        ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
+        input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
+        Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
+        Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
+        Image imageEntity = imagesHelper.imageEntityAfterCreation();
+        List<ProductImage> resultProductImages = List.of(ProductImage.builder()
+            .image(imageEntity)
+            .build());
+        ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
+        List<ImagePojo> expectedResultImages = List.of(imagesHelper.imagePojoAfterCreation());
+        expectedResult.setImages(expectedResultImages);
+        when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
+        when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
+        when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
+        when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.of(imageEntity));
+        when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(resultProductImages); // unused value, stubbed for safety
+        when(productsConverterMock.convertImagesToPojo(anyList())).thenReturn(expectedResultImages);
 
-    ProductPojo result = instance.create(input);
+        ProductPojo result = instance.create(input);
 
-    verify(productsRepositoryMock).saveAndFlush(inputEntity);
-    assertNotNull(result);
-    assertFalse(result.getImages().isEmpty());
-    ImagePojo resultImage = result.getImages().iterator().next();
-    assertEquals(expectedResultImages.get(0), resultImage);
-    assertEquals(expectedResult, result);
-  }
+        verify(productsRepositoryMock).saveAndFlush(inputEntity);
+        assertNotNull(result);
+        assertFalse(result.getImages().isEmpty());
+        ImagePojo resultImage = result.getImages().iterator().next();
+        assertEquals(expectedResultImages.get(0), resultImage);
+        assertEquals(expectedResult, result);
+    }
 
-  @Test
-  void updates_existing_product_alongside_a_new_image() throws BadInputException {
-    ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
-    input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
-    Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
-    Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
-    Image imageEntity = imagesHelper.imageEntityAfterCreation();
-    List<ProductImage> resultProductImages = List.of(ProductImage.builder()
-      .image(imageEntity)
-      .build());
-    ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
-    List<ImagePojo> expectedResultImages = List.of(imagesHelper.imagePojoAfterCreation());
-    expectedResult.setImages(expectedResultImages);
-    when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
-    when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
-    when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
-    when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.of(imageEntity));
-    when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(resultProductImages);
-    when(productsConverterMock.convertImagesToPojo(anyList())).thenReturn(expectedResultImages);
+    @Test
+    void updates_existing_product_alongside_a_new_image() throws BadInputException {
+        ProductPojo input = productsHelper.productPojoBeforeCreationWithoutCategory();
+        input.setImages(List.of(imagesHelper.imagePojoBeforeCreation()));
+        Product inputEntity = productsHelper.productEntityBeforeCreationWithoutCategory();
+        Product resultEntity = productsHelper.productEntityAfterCreationWithoutCategory();
+        Image imageEntity = imagesHelper.imageEntityAfterCreation();
+        List<ProductImage> resultProductImages = List.of(ProductImage.builder()
+            .image(imageEntity)
+            .build());
+        ProductPojo expectedResult = productsHelper.productPojoAfterCreationWithoutCategory();
+        List<ImagePojo> expectedResultImages = List.of(imagesHelper.imagePojoAfterCreation());
+        expectedResult.setImages(expectedResultImages);
+        when(productsConverterMock.convertToNewEntity(any(ProductPojo.class))).thenReturn(inputEntity);
+        when(productsRepositoryMock.saveAndFlush(any(Product.class))).thenReturn(resultEntity);
+        when(productsConverterMock.convertToPojo(any(Product.class))).thenReturn(expectedResult);
+        when(imagesCrudServiceMock.getExisting(any(ImagePojo.class))).thenReturn(Optional.of(imageEntity));
+        when(productImagesRepositoryMock.saveAll(anyCollection())).thenReturn(resultProductImages);
+        when(productsConverterMock.convertImagesToPojo(anyList())).thenReturn(expectedResultImages);
 
-    Optional<ProductPojo> result = instance.update(input, 1L);
+        Optional<ProductPojo> result = instance.update(input, 1L);
 
-    assertTrue(result.isPresent());
-    verify(productsRepositoryMock).saveAndFlush(inputEntity);
-    ProductPojo actualResult = result.get();
-    assertFalse(actualResult.getImages().isEmpty());
-    ImagePojo actualResultImage = actualResult.getImages().iterator().next();
-    assertEquals(expectedResultImages.get(0), actualResultImage);
-    assertEquals(expectedResult, actualResult);
-  }
+        assertTrue(result.isPresent());
+        verify(productsRepositoryMock).saveAndFlush(inputEntity);
+        ProductPojo actualResult = result.get();
+        assertFalse(actualResult.getImages().isEmpty());
+        ImagePojo actualResultImage = actualResult.getImages().iterator().next();
+        assertEquals(expectedResultImages.get(0), actualResultImage);
+        assertEquals(expectedResult, actualResult);
+    }
 }

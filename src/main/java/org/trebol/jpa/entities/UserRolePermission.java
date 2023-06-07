@@ -20,10 +20,24 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.trebol.jpa.DBEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "app_user_role_permissions")
@@ -35,27 +49,28 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 public class UserRolePermission
-  implements DBEntity {
-  private static final long serialVersionUID = 21L;
+    implements DBEntity {
+    private static final long serialVersionUID = 21L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_role_permission_id", nullable = false)
-  private Long id;
-  @JoinColumn(name = "permission_id", referencedColumnName = "permission_id", updatable = false)
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private Permission permission;
-  @JoinColumn(name = "user_role_id", referencedColumnName = "user_role_id", updatable = false)
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  private UserRole userRole;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_role_permission_id", nullable = false)
+    private Long id;
+    @JoinColumn(name = "permission_id", referencedColumnName = "permission_id", updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Permission permission;
+    @JoinColumn(name = "user_role_id", referencedColumnName = "user_role_id", updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private UserRole userRole;
 
-  /**
-   * Please note: this copy-constructor does not include a UserRolePermission's relationships
-   * @param source The original UserRolePermission
-   */
-  public UserRolePermission(UserRolePermission source) {
-    this.id = source.id;
-    this.permission = null;
-    this.userRole = null;
-  }
+    /**
+     * Please note: this copy-constructor does not include a UserRolePermission's relationships
+     *
+     * @param source The original UserRolePermission
+     */
+    public UserRolePermission(UserRolePermission source) {
+        this.id = source.id;
+        this.permission = null;
+        this.userRole = null;
+    }
 }

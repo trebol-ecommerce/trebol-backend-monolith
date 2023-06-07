@@ -29,29 +29,33 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.jpa.services.ProductCategoryTreeResolverService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductsPredicateServiceImplTest {
-  @InjectMocks ProductsPredicateServiceImpl instance;
-  @Mock ProductCategoryTreeResolverService categoryTreeResolverMock;
+    @InjectMocks ProductsPredicateServiceImpl instance;
+    @Mock ProductCategoryTreeResolverService categoryTreeResolverMock;
 
-  @Test
-  void parses_map() {
-    when(categoryTreeResolverMock.getBranchIdsFromRootCode("category-code")).thenReturn(new ArrayList<>());
-    Predicate emptyPredicate = new BooleanBuilder();
-    List<Predicate> predicates = List.of(emptyPredicate,
-      instance.parseMap(Map.of("id", "1")),
-      instance.parseMap(Map.of("barcode", "test1")),
-      instance.parseMap(Map.of("name", "test2")),
-      instance.parseMap(Map.of("categoryCode", "category-code")),
-      instance.parseMap(Map.of("barcodeLike", "portion")),
-      instance.parseMap(Map.of("nameLike", "portion")),
-      instance.parseMap(Map.of("categoryCodeLike", "portion")));
-    Set<Predicate> distinctPredicates = new HashSet<>(predicates);
-    assertEquals(predicates.size(), distinctPredicates.size());
-  }
+    @Test
+    void parses_map() {
+        when(categoryTreeResolverMock.getBranchIdsFromRootCode("category-code")).thenReturn(new ArrayList<>());
+        Predicate emptyPredicate = new BooleanBuilder();
+        List<Predicate> predicates = List.of(emptyPredicate,
+            instance.parseMap(Map.of("id", "1")),
+            instance.parseMap(Map.of("barcode", "test1")),
+            instance.parseMap(Map.of("name", "test2")),
+            instance.parseMap(Map.of("categoryCode", "category-code")),
+            instance.parseMap(Map.of("barcodeLike", "portion")),
+            instance.parseMap(Map.of("nameLike", "portion")),
+            instance.parseMap(Map.of("categoryCodeLike", "portion")));
+        Set<Predicate> distinctPredicates = new HashSet<>(predicates);
+        assertEquals(predicates.size(), distinctPredicates.size());
+    }
 }

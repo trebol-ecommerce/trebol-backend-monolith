@@ -27,88 +27,88 @@ import org.trebol.jpa.entities.Person;
  * Builds & caches reusable instances of Person and PersonPojo
  */
 public class PeopleTestHelper {
-  public static final long GENERIC_ID = 1L;
-  public static final String PERSON_ID_NUMBER = "111111111";
-  public static final String PERSON_FIRST_NAME = "test f. name";
-  public static final String PERSON_LAST_NAME = "test l. name";
-  public static final String PERSON_EMAIL = "test@example.com";
-  public static final String PERSON_PHONE1 = "1234567";
-  public static final String PERSON_PHONE2 = "9876543";
-  private PersonPojo pojoForFetch;
-  private PersonPojo pojoBeforeCreation;
-  private PersonPojo pojoAfterCreation;
-  private Person entityBeforeCreation;
-  private Person entityAfterCreation;
+    public static final long GENERIC_ID = 1L;
+    public static final String PERSON_ID_NUMBER = "111111111";
+    public static final String PERSON_FIRST_NAME = "test f. name";
+    public static final String PERSON_LAST_NAME = "test l. name";
+    public static final String PERSON_EMAIL = "test@example.com";
+    public static final String PERSON_PHONE1 = "1234567";
+    public static final String PERSON_PHONE2 = "9876543";
+    private PersonPojo pojoForFetch;
+    private PersonPojo pojoBeforeCreation;
+    private PersonPojo pojoAfterCreation;
+    private Person entityBeforeCreation;
+    private Person entityAfterCreation;
 
-  public void resetPeople() {
-    this.pojoForFetch = null;
-    this.pojoBeforeCreation = null;
-    this.pojoAfterCreation = null;
-    this.entityBeforeCreation = null;
-    this.entityAfterCreation = null;
-  }
-
-  public PersonPojo personPojoForFetch() {
-    if (this.pojoForFetch == null) {
-      this.pojoForFetch = PersonPojo.builder()
-        .idNumber(PERSON_ID_NUMBER)
-        .build();
+    public void resetPeople() {
+        this.pojoForFetch = null;
+        this.pojoBeforeCreation = null;
+        this.pojoAfterCreation = null;
+        this.entityBeforeCreation = null;
+        this.entityAfterCreation = null;
     }
-    return this.pojoForFetch;
-  }
 
-  public PersonPojo personPojoBeforeCreation() {
-    if (this.pojoBeforeCreation == null) {
-      this.pojoBeforeCreation = PersonPojo.builder()
-        .idNumber(PERSON_ID_NUMBER)
-        .firstName(PERSON_FIRST_NAME)
-        .lastName(PERSON_LAST_NAME)
-        .email(PERSON_EMAIL)
-        .phone1(PERSON_PHONE1)
-        .phone2(PERSON_PHONE2)
-        .build();
+    public PersonPojo personPojoForFetch() {
+        if (this.pojoForFetch==null) {
+            this.pojoForFetch = PersonPojo.builder()
+                .idNumber(PERSON_ID_NUMBER)
+                .build();
+        }
+        return this.pojoForFetch;
     }
-    return this.pojoBeforeCreation;
-  }
 
-  public PersonPojo personPojoAfterCreation() {
-    if (this.pojoAfterCreation == null) {
-      this.pojoAfterCreation = PersonPojo.builder()
-        .firstName(PERSON_FIRST_NAME)
-        .lastName(PERSON_LAST_NAME)
-        .idNumber(PERSON_ID_NUMBER)
-        .email(PERSON_EMAIL)
-        .phone1(PERSON_PHONE1)
-        .phone2(PERSON_PHONE2)
-        .build();
+    public PersonPojo personPojoBeforeCreation() {
+        if (this.pojoBeforeCreation==null) {
+            this.pojoBeforeCreation = PersonPojo.builder()
+                .idNumber(PERSON_ID_NUMBER)
+                .firstName(PERSON_FIRST_NAME)
+                .lastName(PERSON_LAST_NAME)
+                .email(PERSON_EMAIL)
+                .phone1(PERSON_PHONE1)
+                .phone2(PERSON_PHONE2)
+                .build();
+        }
+        return this.pojoBeforeCreation;
     }
-    return this.pojoAfterCreation;
-  }
 
-  public Person personEntityBeforeCreation() {
-    if (this.entityBeforeCreation == null) {
-      this.entityBeforeCreation = Person.builder()
-        .firstName(PERSON_FIRST_NAME)
-        .lastName(PERSON_LAST_NAME)
-        .idNumber(PERSON_ID_NUMBER)
-        .email(PERSON_EMAIL)
-        .build();
+    public PersonPojo personPojoAfterCreation() {
+        if (this.pojoAfterCreation==null) {
+            this.pojoAfterCreation = PersonPojo.builder()
+                .firstName(PERSON_FIRST_NAME)
+                .lastName(PERSON_LAST_NAME)
+                .idNumber(PERSON_ID_NUMBER)
+                .email(PERSON_EMAIL)
+                .phone1(PERSON_PHONE1)
+                .phone2(PERSON_PHONE2)
+                .build();
+        }
+        return this.pojoAfterCreation;
     }
-    return this.entityBeforeCreation;
-  }
 
-  public Person personEntityAfterCreation() {
-    if (this.entityAfterCreation == null) {
-      this.entityAfterCreation = Person.builder()
-          .id(GENERIC_ID)
-          .firstName(PERSON_FIRST_NAME)
-          .lastName(PERSON_LAST_NAME)
-          .idNumber(PERSON_ID_NUMBER)
-          .email(PERSON_EMAIL)
-          .phone1(PERSON_PHONE1)
-          .phone2(PERSON_PHONE2)
-          .build();
+    public Person personEntityBeforeCreation() {
+        if (this.entityBeforeCreation==null) {
+            this.entityBeforeCreation = Person.builder()
+                .firstName(PERSON_FIRST_NAME)
+                .lastName(PERSON_LAST_NAME)
+                .idNumber(PERSON_ID_NUMBER)
+                .email(PERSON_EMAIL)
+                .build();
+        }
+        return this.entityBeforeCreation;
     }
-    return this.entityAfterCreation;
-  }
+
+    public Person personEntityAfterCreation() {
+        if (this.entityAfterCreation==null) {
+            this.entityAfterCreation = Person.builder()
+                .id(GENERIC_ID)
+                .firstName(PERSON_FIRST_NAME)
+                .lastName(PERSON_LAST_NAME)
+                .idNumber(PERSON_ID_NUMBER)
+                .email(PERSON_EMAIL)
+                .phone1(PERSON_PHONE1)
+                .phone2(PERSON_PHONE2)
+                .build();
+        }
+        return this.entityAfterCreation;
+    }
 }

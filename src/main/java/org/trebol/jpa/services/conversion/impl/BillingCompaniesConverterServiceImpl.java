@@ -29,26 +29,26 @@ import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
 @Service
 @NoArgsConstructor
 public class BillingCompaniesConverterServiceImpl
-  implements BillingCompaniesConverterService {
+    implements BillingCompaniesConverterService {
 
-  @Override
-  public BillingCompanyPojo convertToPojo(BillingCompany source) {
-    return BillingCompanyPojo.builder()
-      .idNumber(source.getIdNumber())
-      .name(source.getName())
-      .build();
-  }
+    @Override
+    public BillingCompanyPojo convertToPojo(BillingCompany source) {
+        return BillingCompanyPojo.builder()
+            .idNumber(source.getIdNumber())
+            .name(source.getName())
+            .build();
+    }
 
-  @Override
-  public BillingCompany convertToNewEntity(BillingCompanyPojo source) {
-    return BillingCompany.builder()
-      .idNumber(source.getIdNumber())
-      .name(source.getName())
-      .build();
-  }
+    @Override
+    public BillingCompany convertToNewEntity(BillingCompanyPojo source) {
+        return BillingCompany.builder()
+            .idNumber(source.getIdNumber())
+            .name(source.getName())
+            .build();
+    }
 
-  @Override
-  public BillingCompany applyChangesToExistingEntity(BillingCompanyPojo source, BillingCompany target) {
-    throw new UnsupportedOperationException("This method is deprecated");
-  }
+    @Override
+    public BillingCompany applyChangesToExistingEntity(BillingCompanyPojo source, BillingCompany target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 }

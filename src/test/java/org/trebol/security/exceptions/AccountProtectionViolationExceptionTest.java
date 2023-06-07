@@ -22,18 +22,20 @@ package org.trebol.security.exceptions;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.trebol.testing.TestConstants.ANY;
 
 class AccountProtectionViolationExceptionTest {
-  final String errorMessage = ANY;
+    final String errorMessage = ANY;
 
-  @Test
-  void can_contain_an_error_message() {
-    AccountProtectionViolationException instance = assertThrows(AccountProtectionViolationException.class, () -> {
-      throw new AccountProtectionViolationException(errorMessage);
-    });
-    assertNotNull(instance.getMessage());
-    assertEquals(errorMessage, instance.getMessage());
-  }
+    @Test
+    void can_contain_an_error_message() {
+        AccountProtectionViolationException instance = assertThrows(AccountProtectionViolationException.class, () -> {
+            throw new AccountProtectionViolationException(errorMessage);
+        });
+        assertNotNull(instance.getMessage());
+        assertEquals(errorMessage, instance.getMessage());
+    }
 }

@@ -29,8 +29,8 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 public interface SalespeopleRepository
-  extends Repository<Salesperson> {
+    extends Repository<Salesperson> {
 
-  @Query(value = "SELECT s FROM Salesperson s JOIN FETCH s.person p WHERE p.idNumber = :idNumber")
-  Optional<Salesperson> findByPersonIdNumber(@Param("idNumber") String idNumber);
+    @Query(value = "SELECT s FROM Salesperson s JOIN FETCH s.person p WHERE p.idNumber = :idNumber")
+    Optional<Salesperson> findByPersonIdNumber(@Param("idNumber") String idNumber);
 }

@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.ConverterService;
 
 public interface SalespeopleConverterService
-  extends ConverterService<SalespersonPojo, Salesperson> {
+    extends ConverterService<SalespersonPojo, Salesperson> {
 }

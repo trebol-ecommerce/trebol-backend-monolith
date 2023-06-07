@@ -51,60 +51,60 @@ import java.util.Map;
 @RestController
 @RequestMapping("/data/products")
 public class DataProductsController
-  extends DataCrudGenericController<ProductPojo, Product> {
+    extends DataCrudGenericController<ProductPojo, Product> {
 
-  @Autowired
-  public DataProductsController(
-    PaginationService paginationService,
-    SortSpecParserService sortService,
-    ProductsCrudService crudService,
-    ProductsPredicateService predicateService
-  ) {
-    super(paginationService, sortService, crudService, predicateService);
-  }
+    @Autowired
+    public DataProductsController(
+        PaginationService paginationService,
+        SortSpecParserService sortService,
+        ProductsCrudService crudService,
+        ProductsPredicateService predicateService
+    ) {
+        super(paginationService, sortService, crudService, predicateService);
+    }
 
-  @Override
-  @GetMapping({"", "/"})
-  public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(allRequestParams);
-  }
+    @Override
+    @GetMapping({"", "/"})
+    public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+        return super.readMany(allRequestParams);
+    }
 
-  @Override
-  @PostMapping({"", "/"})
-  @PreAuthorize("hasAuthority('products:create')")
-  public void create(@Valid @RequestBody ProductPojo input)
-    throws BadInputException, EntityExistsException {
-    crudService.create(input);
-  }
+    @Override
+    @PostMapping({"", "/"})
+    @PreAuthorize("hasAuthority('products:create')")
+    public void create(@Valid @RequestBody ProductPojo input)
+        throws BadInputException, EntityExistsException {
+        crudService.create(input);
+    }
 
-  @Override
-  @PutMapping({"", "/"})
-  @PreAuthorize("hasAuthority('products:update')")
-  public void update(@RequestBody ProductPojo input, @RequestParam Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    super.update(input, requestParams);
-  }
+    @Override
+    @PutMapping({"", "/"})
+    @PreAuthorize("hasAuthority('products:update')")
+    public void update(@RequestBody ProductPojo input, @RequestParam Map<String, String> requestParams)
+        throws BadInputException, EntityNotFoundException {
+        super.update(input, requestParams);
+    }
 
-  @Override
-  @PatchMapping({"", "/"})
-  @PreAuthorize("hasAuthority('products:update')")
-  public void partialUpdate(
-    @RequestBody Map<String, Object> input,
-    @RequestParam Map<String, String> requestParams
-  ) throws BadInputException, EntityNotFoundException {
-    super.partialUpdate(input, requestParams);
-  }
+    @Override
+    @PatchMapping({"", "/"})
+    @PreAuthorize("hasAuthority('products:update')")
+    public void partialUpdate(
+        @RequestBody Map<String, Object> input,
+        @RequestParam Map<String, String> requestParams
+    ) throws BadInputException, EntityNotFoundException {
+        super.partialUpdate(input, requestParams);
+    }
 
-  @Override
-  @DeleteMapping({"", "/"})
-  @PreAuthorize("hasAuthority('products:delete')")
-  public void delete(@RequestParam Map<String, String> requestParams)
-    throws EntityNotFoundException {
-    super.delete(requestParams);
-  }
+    @Override
+    @DeleteMapping({"", "/"})
+    @PreAuthorize("hasAuthority('products:delete')")
+    public void delete(@RequestParam Map<String, String> requestParams)
+        throws EntityNotFoundException {
+        super.delete(requestParams);
+    }
 
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return ProductsSortSpec.ORDER_SPEC_MAP;
-  }
+    @Override
+    protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+        return ProductsSortSpec.ORDER_SPEC_MAP;
+    }
 }

@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.CrudService;
 
 public interface CustomersCrudService
-  extends CrudService<CustomerPojo, Customer> {
+    extends CrudService<CustomerPojo, Customer> {
 }

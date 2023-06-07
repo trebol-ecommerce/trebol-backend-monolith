@@ -22,7 +22,11 @@ package org.trebol.api.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.api.services.ProfileService;
 import org.trebol.common.exceptions.BadInputException;
@@ -34,26 +38,26 @@ import java.security.Principal;
 @RequestMapping("/account/profile")
 @PreAuthorize("isAuthenticated()")
 public class AccountProfileController {
-  private final ProfileService userProfileService;
+    private final ProfileService userProfileService;
 
-  @Autowired
-  public AccountProfileController(
-    ProfileService userProfileService
-  ) {
-    this.userProfileService = userProfileService;
-  }
+    @Autowired
+    public AccountProfileController(
+        ProfileService userProfileService
+    ) {
+        this.userProfileService = userProfileService;
+    }
 
-  @GetMapping({"", "/"})
-  public PersonPojo getProfile(Principal principal)
-    throws EntityNotFoundException {
-    String username = principal.getName();
-    return userProfileService.getProfileFromUserName(username);
-  }
+    @GetMapping({"", "/"})
+    public PersonPojo getProfile(Principal principal)
+        throws EntityNotFoundException {
+        String username = principal.getName();
+        return userProfileService.getProfileFromUserName(username);
+    }
 
-  @PutMapping({"", "/"})
-  public void updateProfile(Principal principal, @RequestBody PersonPojo newProfile)
-    throws EntityNotFoundException, BadInputException {
-    String username = principal.getName();
-    userProfileService.updateProfileForUserWithName(username, newProfile);
-  }
+    @PutMapping({"", "/"})
+    public void updateProfile(Principal principal, @RequestBody PersonPojo newProfile)
+        throws EntityNotFoundException, BadInputException {
+        String username = principal.getName();
+        userProfileService.updateProfileForUserWithName(username, newProfile);
+    }
 }

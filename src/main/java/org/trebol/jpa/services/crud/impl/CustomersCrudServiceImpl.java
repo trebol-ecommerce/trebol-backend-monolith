@@ -38,27 +38,27 @@ import java.util.Optional;
 @Transactional
 @Service
 public class CustomersCrudServiceImpl
-  extends CrudGenericService<CustomerPojo, Customer>
-  implements CustomersCrudService {
-  private final CustomersRepository customersRepository;
+    extends CrudGenericService<CustomerPojo, Customer>
+    implements CustomersCrudService {
+    private final CustomersRepository customersRepository;
 
-  @Autowired
-  public CustomersCrudServiceImpl(
-    CustomersRepository customersRepository,
-    CustomersConverterService customersConverterService,
-    CustomersPatchService customersPatchService
-  ) {
-    super(customersRepository, customersConverterService, customersPatchService);
-    this.customersRepository = customersRepository;
-  }
-
-  @Override
-  public Optional<Customer> getExisting(CustomerPojo input) throws BadInputException {
-    String idNumber = input.getPerson().getIdNumber();
-    if (StringUtils.isBlank(idNumber)) {
-      throw new BadInputException("Customer does not have an ID card");
-    } else {
-      return customersRepository.findByPersonIdNumber(idNumber);
+    @Autowired
+    public CustomersCrudServiceImpl(
+        CustomersRepository customersRepository,
+        CustomersConverterService customersConverterService,
+        CustomersPatchService customersPatchService
+    ) {
+        super(customersRepository, customersConverterService, customersPatchService);
+        this.customersRepository = customersRepository;
     }
-  }
+
+    @Override
+    public Optional<Customer> getExisting(CustomerPojo input) throws BadInputException {
+        String idNumber = input.getPerson().getIdNumber();
+        if (StringUtils.isBlank(idNumber)) {
+            throw new BadInputException("Customer does not have an ID card");
+        } else {
+            return customersRepository.findByPersonIdNumber(idNumber);
+        }
+    }
 }

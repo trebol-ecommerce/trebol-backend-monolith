@@ -33,39 +33,39 @@ import java.util.Map;
 
 @Service
 public class SalesPredicateServiceImpl
-  implements SalesPredicateService {
-  private final Logger logger = LoggerFactory.getLogger(SalesPredicateServiceImpl.class);
+    implements SalesPredicateService {
+    private final Logger logger = LoggerFactory.getLogger(SalesPredicateServiceImpl.class);
 
-  @Override
-  public Predicate parseMap(Map<String, String> queryParamsMap) {
-    BooleanBuilder predicate = new BooleanBuilder();
-    for (Map.Entry<String, String> entry : queryParamsMap.entrySet()) {
-      String paramName = entry.getKey();
-      String stringValue = entry.getValue();
-      try {
-        switch (paramName) {
-          case "id":
-          case "buyOrder":
-            return basePath.id.eq(Long.valueOf(stringValue));
-          case "date":
-            predicate.and(basePath.date.eq(Instant.parse(stringValue)));
-            break;
-          case "statusName":
-            predicate.and(basePath.status.name.eq(stringValue));
-            break;
-          case "token":
-            predicate.and(basePath.transactionToken.eq(stringValue));
-            break;
-          default:
-            break;
+    @Override
+    public Predicate parseMap(Map<String, String> queryParamsMap) {
+        BooleanBuilder predicate = new BooleanBuilder();
+        for (Map.Entry<String, String> entry : queryParamsMap.entrySet()) {
+            String paramName = entry.getKey();
+            String stringValue = entry.getValue();
+            try {
+                switch (paramName) {
+                    case "id":
+                    case "buyOrder":
+                        return basePath.id.eq(Long.valueOf(stringValue));
+                    case "date":
+                        predicate.and(basePath.date.eq(Instant.parse(stringValue)));
+                        break;
+                    case "statusName":
+                        predicate.and(basePath.status.name.eq(stringValue));
+                        break;
+                    case "token":
+                        predicate.and(basePath.transactionToken.eq(stringValue));
+                        break;
+                    default:
+                        break;
+                }
+            } catch (NumberFormatException exc) {
+                logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
+            } catch (DateTimeParseException exc) {
+                logger.warn("Param '{}' couldn't be parsed as date (value: '{}')", paramName, stringValue);
+            }
         }
-      } catch (NumberFormatException exc) {
-        logger.info("Param '{}' couldn't be parsed as number (value: '{}')", paramName, stringValue);
-      } catch (DateTimeParseException exc) {
-        logger.warn("Param '{}' couldn't be parsed as date (value: '{}')", paramName, stringValue);
-      }
-    }
 
-    return predicate;
-  }
+        return predicate;
+    }
 }

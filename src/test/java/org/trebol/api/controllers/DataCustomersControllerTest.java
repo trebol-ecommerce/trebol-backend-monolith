@@ -48,60 +48,60 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class DataCustomersControllerTest
-  extends DataCrudGenericControllerTest<CustomerPojo, Customer> {
-  @InjectMocks DataCustomersController instance;
-  @Mock PaginationService paginationServiceMock;
-  @Mock SortSpecParserService sortServiceMock;
-  @Mock CustomersCrudService crudServiceMock;
-  @Mock CustomersPredicateService predicateServiceMock;
+    extends DataCrudGenericControllerTest<CustomerPojo, Customer> {
+    @InjectMocks DataCustomersController instance;
+    @Mock PaginationService paginationServiceMock;
+    @Mock SortSpecParserService sortServiceMock;
+    @Mock CustomersCrudService crudServiceMock;
+    @Mock CustomersPredicateService predicateServiceMock;
 
-  @Override
-  @BeforeEach
-  protected void beforeEach() {
-    super.instance = instance;
-    super.crudServiceMock = crudServiceMock;
-    super.predicateServiceMock = predicateServiceMock;
-    super.sortServiceMock = sortServiceMock;
-    super.paginationServiceMock = paginationServiceMock;
-    super.beforeEach();
-  }
+    @Override
+    @BeforeEach
+    protected void beforeEach() {
+        super.instance = instance;
+        super.crudServiceMock = crudServiceMock;
+        super.predicateServiceMock = predicateServiceMock;
+        super.sortServiceMock = sortServiceMock;
+        super.paginationServiceMock = paginationServiceMock;
+        super.beforeEach();
+    }
 
-  @Test
-  void reads_customers() {
-    assertDoesNotThrow(() -> {
-      super.reads_data(null);
-      super.reads_data(Map.of());
-      super.reads_data(Map.of(ANY, ANY));
-    });
-  }
+    @Test
+    void reads_customers() {
+        assertDoesNotThrow(() -> {
+            super.reads_data(null);
+            super.reads_data(Map.of());
+            super.reads_data(Map.of(ANY, ANY));
+        });
+    }
 
-  @Test
-  void creates_customers() {
-    assertDoesNotThrow(() -> super.creates_data(CustomerPojo.builder().build()));
-  }
+    @Test
+    void creates_customers() {
+        assertDoesNotThrow(() -> super.creates_data(CustomerPojo.builder().build()));
+    }
 
-  @Test
-  void updates_customers_using_predicate_filters_map() {
-    assertDoesNotThrow(() -> {
-      CustomerPojo existingList = CustomerPojo.builder().build();
-      CustomerPojo input = CustomerPojo.builder().build();
-      Predicate predicate = new BooleanBuilder();
-      when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
-      when(crudServiceMock.update(any(), any(Predicate.class))).thenReturn(Optional.of(existingList));
+    @Test
+    void updates_customers_using_predicate_filters_map() {
+        assertDoesNotThrow(() -> {
+            CustomerPojo existingList = CustomerPojo.builder().build();
+            CustomerPojo input = CustomerPojo.builder().build();
+            Predicate predicate = new BooleanBuilder();
+            when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
+            when(crudServiceMock.update(any(), any(Predicate.class))).thenReturn(Optional.of(existingList));
 
-      instance.update(CustomerPojo.builder().build(), Map.of(ANY, ANY));
+            instance.update(CustomerPojo.builder().build(), Map.of(ANY, ANY));
 
-      verify(crudServiceMock).update(input, predicate);
-    });
-  }
+            verify(crudServiceMock).update(input, predicate);
+        });
+    }
 
-  @Test
-  void deletes_customers() {
-    assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
-  }
+    @Test
+    void deletes_customers() {
+        assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
+    }
 
-  @Test
-  void does_not_delete_customers_when_predicate_filters_map_is_empty() {
-    assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
-  }
+    @Test
+    void does_not_delete_customers_when_predicate_filters_map_is_empty() {
+        assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
+    }
 }

@@ -51,60 +51,60 @@ import java.util.Map;
 @RestController
 @RequestMapping("/data/shippers")
 public class DataShippersController
-  extends DataCrudGenericController<ShipperPojo, Shipper> {
+    extends DataCrudGenericController<ShipperPojo, Shipper> {
 
-  @Autowired
-  public DataShippersController(
-    PaginationService paginationService,
-    SortSpecParserService sortService,
-    ShippersCrudService crudService,
-    ShippersPredicateService predicateService
-  ) {
-    super(paginationService, sortService, crudService, predicateService);
-  }
+    @Autowired
+    public DataShippersController(
+        PaginationService paginationService,
+        SortSpecParserService sortService,
+        ShippersCrudService crudService,
+        ShippersPredicateService predicateService
+    ) {
+        super(paginationService, sortService, crudService, predicateService);
+    }
 
-  @Override
-  @GetMapping({"", "/"})
-  public DataPagePojo<ShipperPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(allRequestParams);
-  }
+    @Override
+    @GetMapping({"", "/"})
+    public DataPagePojo<ShipperPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+        return super.readMany(allRequestParams);
+    }
 
-  @Override
-  @PostMapping({"", "/"})
-  @PreAuthorize("hasAuthority('shippers:create')")
-  public void create(@Valid @RequestBody ShipperPojo input)
-    throws BadInputException, EntityExistsException {
-    crudService.create(input);
-  }
+    @Override
+    @PostMapping({"", "/"})
+    @PreAuthorize("hasAuthority('shippers:create')")
+    public void create(@Valid @RequestBody ShipperPojo input)
+        throws BadInputException, EntityExistsException {
+        crudService.create(input);
+    }
 
-  @Override
-  @PutMapping({"", "/"})
-  @PreAuthorize("hasAuthority('shippers:update')")
-  public void update(@RequestBody ShipperPojo input, @RequestParam Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    super.update(input, requestParams);
-  }
+    @Override
+    @PutMapping({"", "/"})
+    @PreAuthorize("hasAuthority('shippers:update')")
+    public void update(@RequestBody ShipperPojo input, @RequestParam Map<String, String> requestParams)
+        throws BadInputException, EntityNotFoundException {
+        super.update(input, requestParams);
+    }
 
-  @Override
-  @PatchMapping({"", "/"})
-  @PreAuthorize("hasAuthority('shippers:update')")
-  public void partialUpdate(
-    @RequestBody Map<String, Object> input,
-    @RequestParam Map<String, String> requestParams
-  ) throws BadInputException, EntityNotFoundException {
-    super.partialUpdate(input, requestParams);
-  }
+    @Override
+    @PatchMapping({"", "/"})
+    @PreAuthorize("hasAuthority('shippers:update')")
+    public void partialUpdate(
+        @RequestBody Map<String, Object> input,
+        @RequestParam Map<String, String> requestParams
+    ) throws BadInputException, EntityNotFoundException {
+        super.partialUpdate(input, requestParams);
+    }
 
-  @Override
-  @DeleteMapping({"", "/"})
-  @PreAuthorize("hasAuthority('shippers:delete')")
-  public void delete(@RequestParam Map<String, String> requestParams)
-    throws EntityNotFoundException {
-    super.delete(requestParams);
-  }
+    @Override
+    @DeleteMapping({"", "/"})
+    @PreAuthorize("hasAuthority('shippers:delete')")
+    public void delete(@RequestParam Map<String, String> requestParams)
+        throws EntityNotFoundException {
+        super.delete(requestParams);
+    }
 
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return ShippersSortSpec.ORDER_SPEC_MAP;
-  }
+    @Override
+    protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+        return ShippersSortSpec.ORDER_SPEC_MAP;
+    }
 }

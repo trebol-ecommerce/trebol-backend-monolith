@@ -38,65 +38,65 @@ import java.util.Map;
 @Transactional
 @Service
 public class SalesPatchServiceImpl
-  implements SalesPatchService {
-  private final SellStatusesRepository statusesRepository;
-  private final PaymentTypesRepository paymentTypesRepository;
-  private final ShippersRepository shippersRepository;
+    implements SalesPatchService {
+    private final SellStatusesRepository statusesRepository;
+    private final PaymentTypesRepository paymentTypesRepository;
+    private final ShippersRepository shippersRepository;
 
-  @Autowired
-  public SalesPatchServiceImpl(
-    SellStatusesRepository statusesRepository,
-    PaymentTypesRepository paymentTypesRepository,
-    ShippersRepository shippersRepository
-  ) {
-    this.statusesRepository = statusesRepository;
-    this.paymentTypesRepository = paymentTypesRepository;
-    this.shippersRepository = shippersRepository;
-  }
-
-  @Transactional
-  @Override
-  public Sell patchExistingEntity(Map<String, Object> changes, Sell existing) throws BadInputException {
-    Sell target = new Sell(existing);
-
-    try {
-      if (changes.containsKey("date")) {
-        String rawDate = (String) changes.get("date");
-        if (rawDate != null) {
-          Instant date = Instant.parse(rawDate);
-          target.setDate(date);
-        }
-      }
-
-      if (changes.containsKey("status")) {
-        String statusName = (String) changes.get("status");
-        if (!StringUtils.isBlank(statusName)) {
-          statusesRepository.findByName(statusName).ifPresent(target::setStatus);
-        }
-      }
-
-      if (changes.containsKey("paymentType")) {
-        String paymentTypeName = (String) changes.get("paymentType");
-        if (!StringUtils.isBlank(paymentTypeName)) {
-          paymentTypesRepository.findByName(paymentTypeName).ifPresent(target::setPaymentType);
-        }
-      }
-
-      if (changes.containsKey("shipper")) {
-        String shipperName = (String) changes.get("shipper");
-        if (!StringUtils.isBlank(shipperName)) {
-          shippersRepository.findByName(shipperName).ifPresent(target::setShipper);
-        }
-      }
-    } catch (ClassCastException ex) {
-      throw new BadInputException("The ");
+    @Autowired
+    public SalesPatchServiceImpl(
+        SellStatusesRepository statusesRepository,
+        PaymentTypesRepository paymentTypesRepository,
+        ShippersRepository shippersRepository
+    ) {
+        this.statusesRepository = statusesRepository;
+        this.paymentTypesRepository = paymentTypesRepository;
+        this.shippersRepository = shippersRepository;
     }
 
-    return target;
-  }
+    @Transactional
+    @Override
+    public Sell patchExistingEntity(Map<String, Object> changes, Sell existing) throws BadInputException {
+        Sell target = new Sell(existing);
 
-  @Override
-  public Sell patchExistingEntity(SellPojo changes, Sell existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
-  }
+        try {
+            if (changes.containsKey("date")) {
+                String rawDate = (String) changes.get("date");
+                if (rawDate!=null) {
+                    Instant date = Instant.parse(rawDate);
+                    target.setDate(date);
+                }
+            }
+
+            if (changes.containsKey("status")) {
+                String statusName = (String) changes.get("status");
+                if (!StringUtils.isBlank(statusName)) {
+                    statusesRepository.findByName(statusName).ifPresent(target::setStatus);
+                }
+            }
+
+            if (changes.containsKey("paymentType")) {
+                String paymentTypeName = (String) changes.get("paymentType");
+                if (!StringUtils.isBlank(paymentTypeName)) {
+                    paymentTypesRepository.findByName(paymentTypeName).ifPresent(target::setPaymentType);
+                }
+            }
+
+            if (changes.containsKey("shipper")) {
+                String shipperName = (String) changes.get("shipper");
+                if (!StringUtils.isBlank(shipperName)) {
+                    shippersRepository.findByName(shipperName).ifPresent(target::setShipper);
+                }
+            }
+        } catch (ClassCastException ex) {
+            throw new BadInputException("The ");
+        }
+
+        return target;
+    }
+
+    @Override
+    public Sell patchExistingEntity(SellPojo changes, Sell existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method signature has been deprecated");
+    }
 }

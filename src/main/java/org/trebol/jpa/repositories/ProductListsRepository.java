@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 public interface ProductListsRepository
-  extends Repository<ProductList> {
+    extends Repository<ProductList> {
 
-  Optional<ProductList> findByName(String name);
+    Optional<ProductList> findByName(String name);
 }

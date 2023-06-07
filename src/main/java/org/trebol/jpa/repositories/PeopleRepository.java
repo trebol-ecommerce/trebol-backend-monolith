@@ -27,8 +27,8 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 public interface PeopleRepository
-  extends Repository<Person> {
+    extends Repository<Person> {
 
-  Optional<Person> findByIdNumber(String idNumber);
+    Optional<Person> findByIdNumber(String idNumber);
 
 }

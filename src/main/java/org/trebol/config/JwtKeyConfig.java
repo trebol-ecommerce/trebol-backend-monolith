@@ -29,8 +29,8 @@ import javax.crypto.SecretKey;
 @Configuration
 public class JwtKeyConfig {
 
-  @Bean
-  public SecretKey secretKey(SecurityProperties jwtProperties) {
-    return Keys.hmacShaKeyFor(jwtProperties.getJwtSecretKey().getBytes());
-  }
+    @Bean
+    public SecretKey secretKey(SecurityProperties jwtProperties) {
+        return Keys.hmacShaKeyFor(jwtProperties.getJwtSecretKey().getBytes());
+    }
 }

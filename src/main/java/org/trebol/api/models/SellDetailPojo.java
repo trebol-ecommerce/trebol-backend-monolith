@@ -35,10 +35,10 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @JsonInclude
 public class SellDetailPojo {
-  @Min(1)
-  private int units;
-  private int unitValue;
-  private String description;
-  @NotNull
-  private ProductPojo product;
+    @Min(1)
+    private int units;
+    private int unitValue;
+    private String description;
+    @NotNull
+    private ProductPojo product;
 }

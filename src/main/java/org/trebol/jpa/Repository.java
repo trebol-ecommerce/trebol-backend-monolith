@@ -29,5 +29,5 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
  * @param <E> The entity class
  */
 public interface Repository<E extends DBEntity>
-  extends JpaRepository<E, Long>, QuerydslPredicateExecutor<E> {
+    extends JpaRepository<E, Long>, QuerydslPredicateExecutor<E> {
 }

@@ -36,11 +36,11 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
 public class UserPojo {
-  @NotBlank
-  @JsonInclude
-  private String name;
-  @NotBlank
-  private String password;
-  private PersonPojo person;
-  private String role;
+    @NotBlank
+    @JsonInclude
+    private String name;
+    @NotBlank
+    private String password;
+    private PersonPojo person;
+    private String role;
 }

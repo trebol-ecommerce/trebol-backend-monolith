@@ -27,18 +27,18 @@ import org.trebol.jpa.entities.Sell;
 
 @Component
 public class SellEntity2ReceiptPojo
-  implements Converter<Sell, ReceiptPojo> {
+    implements Converter<Sell, ReceiptPojo> {
 
-  @Override
-  public ReceiptPojo convert(Sell source) {
-    ReceiptPojo target = new ReceiptPojo();
-    target.setBuyOrder(source.getId());
-    target.setDate(source.getDate());
-    target.setTransportValue(source.getTransportValue());
-    target.setTaxValue(source.getTaxesValue());
-    target.setTotalItems(source.getTotalItems());
-    target.setTotalValue(source.getTotalValue());
-    target.setToken(source.getTransactionToken());
-    return target;
-  }
+    @Override
+    public ReceiptPojo convert(Sell source) {
+        ReceiptPojo target = new ReceiptPojo();
+        target.setBuyOrder(source.getId());
+        target.setDate(source.getDate());
+        target.setTransportValue(source.getTransportValue());
+        target.setTaxValue(source.getTaxesValue());
+        target.setTotalItems(source.getTotalItems());
+        target.setTotalValue(source.getTotalValue());
+        target.setToken(source.getTransactionToken());
+        return target;
+    }
 }

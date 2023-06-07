@@ -42,81 +42,81 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class ProductsConverterServiceImpl
-  implements ProductsConverterService {
-  private final ProductImagesRepository productImagesRepository;
-  private final ImagesConverterService imagesConverterService;
-  private final ProductsCategoriesRepository productsCategoriesRepository;
-  private final ProductCategoriesConverterService productCategoriesConverterService;
+    implements ProductsConverterService {
+    private final ProductImagesRepository productImagesRepository;
+    private final ImagesConverterService imagesConverterService;
+    private final ProductsCategoriesRepository productsCategoriesRepository;
+    private final ProductCategoriesConverterService productCategoriesConverterService;
 
-  @Autowired
-  public ProductsConverterServiceImpl(
-    ProductImagesRepository productImagesRepository,
-    ImagesConverterService imagesConverterService,
-    ProductsCategoriesRepository productsCategoriesRepository,
-    ProductCategoriesConverterService productCategoriesConverterService
-  ) {
-    this.productImagesRepository = productImagesRepository;
-    this.imagesConverterService = imagesConverterService;
-    this.productsCategoriesRepository = productsCategoriesRepository;
-    this.productCategoriesConverterService = productCategoriesConverterService;
-  }
-
-  @Override
-  public ProductPojo convertToPojo(Product source) {
-    ProductPojo target = ProductPojo.builder()
-      .name(source.getName())
-      .barcode(source.getBarcode())
-      .price(source.getPrice())
-      .description(source.getDescription())
-      .currentStock(source.getStockCurrent())
-      .criticalStock(source.getStockCritical())
-      .build();
-
-    ProductCategory category = source.getProductCategory();
-    if (category != null) {
-      ProductCategoryPojo categoryPojo = productCategoriesConverterService.convertToPojo(category);
-      target.setCategory(categoryPojo);
-    }
-    return target;
-  }
-
-  @Override
-  public Product convertToNewEntity(ProductPojo source) {
-    Product target = Product.builder()
-      .name(source.getName())
-      .barcode(source.getBarcode())
-      .price(source.getPrice())
-      .description(source.getDescription())
-      .build();
-
-    if (source.getCurrentStock() != null) {
-      target.setStockCurrent(source.getCurrentStock());
+    @Autowired
+    public ProductsConverterServiceImpl(
+        ProductImagesRepository productImagesRepository,
+        ImagesConverterService imagesConverterService,
+        ProductsCategoriesRepository productsCategoriesRepository,
+        ProductCategoriesConverterService productCategoriesConverterService
+    ) {
+        this.productImagesRepository = productImagesRepository;
+        this.imagesConverterService = imagesConverterService;
+        this.productsCategoriesRepository = productsCategoriesRepository;
+        this.productCategoriesConverterService = productCategoriesConverterService;
     }
 
-    if (source.getCriticalStock() != null) {
-      target.setStockCritical(source.getCriticalStock());
+    @Override
+    public ProductPojo convertToPojo(Product source) {
+        ProductPojo target = ProductPojo.builder()
+            .name(source.getName())
+            .barcode(source.getBarcode())
+            .price(source.getPrice())
+            .description(source.getDescription())
+            .currentStock(source.getStockCurrent())
+            .criticalStock(source.getStockCritical())
+            .build();
+
+        ProductCategory category = source.getProductCategory();
+        if (category!=null) {
+            ProductCategoryPojo categoryPojo = productCategoriesConverterService.convertToPojo(category);
+            target.setCategory(categoryPojo);
+        }
+        return target;
     }
 
-    ProductCategoryPojo sourceCategory = source.getCategory();
-    if (sourceCategory != null && !StringUtils.isBlank(sourceCategory.getCode())) {
-      productsCategoriesRepository.findByCode(sourceCategory.getCode()).ifPresent(target::setProductCategory);
+    @Override
+    public Product convertToNewEntity(ProductPojo source) {
+        Product target = Product.builder()
+            .name(source.getName())
+            .barcode(source.getBarcode())
+            .price(source.getPrice())
+            .description(source.getDescription())
+            .build();
+
+        if (source.getCurrentStock()!=null) {
+            target.setStockCurrent(source.getCurrentStock());
+        }
+
+        if (source.getCriticalStock()!=null) {
+            target.setStockCritical(source.getCriticalStock());
+        }
+
+        ProductCategoryPojo sourceCategory = source.getCategory();
+        if (sourceCategory!=null && !StringUtils.isBlank(sourceCategory.getCode())) {
+            productsCategoriesRepository.findByCode(sourceCategory.getCode()).ifPresent(target::setProductCategory);
+        }
+
+        return target;
     }
 
-    return target;
-  }
+    @Override
+    public Collection<ImagePojo> convertImagesToPojo(Collection<ProductImage> productImages) {
+        return productImages.stream()
+            .map(ProductImage::getImage)
+            .map(imagesConverterService::convertToPojo)
+            .distinct()
+            .collect(Collectors.toList());
+    }
 
-  @Override
-  public Collection<ImagePojo> convertImagesToPojo(Collection<ProductImage> productImages) {
-    return productImages.stream()
-      .map(ProductImage::getImage)
-      .map(imagesConverterService::convertToPojo)
-      .distinct()
-      .collect(Collectors.toList());
-  }
-
-  @Override
-  public Product applyChangesToExistingEntity(ProductPojo source, Product target) {
-    throw new UnsupportedOperationException("This method is deprecated");
-  }
+    @Override
+    public Product applyChangesToExistingEntity(ProductPojo source, Product target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 
 }

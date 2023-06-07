@@ -39,8 +39,8 @@ import java.util.Collection;
 @AllArgsConstructor
 @JsonInclude
 public class DataPagePojo<T> {
-  private Collection<T> items = new ArrayList<>();
-  private int pageIndex = 0;
-  private long totalCount = 0;
-  private int pageSize = 0;
+    private Collection<T> items = new ArrayList<>();
+    private int pageIndex = 0;
+    private long totalCount = 0;
+    private int pageSize = 0;
 }

@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.services.PatchService;
 
 public interface SalesPatchService
-  extends PatchService<SellPojo, Sell> {
+    extends PatchService<SellPojo, Sell> {
 }

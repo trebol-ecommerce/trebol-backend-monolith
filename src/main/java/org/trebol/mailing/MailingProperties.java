@@ -33,16 +33,16 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "trebol.mailing")
 @Data
 public class MailingProperties {
-  private String dateFormat;
-  private String dateTimezone;
-  private String ownerName;
-  private String ownerEmail;
-  private String senderEmail;
-  private String customerOrderPaymentSubject;
-  private String customerOrderConfirmationSubject;
-  private String customerOrderRejectionSubject;
-  private String customerOrderCompletionSubject;
-  private String ownerOrderConfirmationSubject;
-  private String ownerOrderRejectionSubject;
-  private String ownerOrderCompletionSubject;
+    private String dateFormat;
+    private String dateTimezone;
+    private String ownerName;
+    private String ownerEmail;
+    private String senderEmail;
+    private String customerOrderPaymentSubject;
+    private String customerOrderConfirmationSubject;
+    private String customerOrderRejectionSubject;
+    private String customerOrderCompletionSubject;
+    private String ownerOrderConfirmationSubject;
+    private String ownerOrderRejectionSubject;
+    private String ownerOrderCompletionSubject;
 }

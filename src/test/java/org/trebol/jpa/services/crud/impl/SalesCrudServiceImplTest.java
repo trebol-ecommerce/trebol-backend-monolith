@@ -52,50 +52,50 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SalesCrudServiceImplTest {
-  @InjectMocks SalesCrudServiceImpl instance;
-  @Mock SalesRepository salesRepositoryMock;
-  @Mock SalesConverterService salesConverterMock;
-  @Mock AddressesConverterService addressesConverterServiceMock; // TODO verify usage of this mock when reading one
-  @Mock ApiProperties apiProperties; // TODO verify usage of this mock when doing a partial update
-  final SalesTestHelper salesHelper = new SalesTestHelper();
+    @InjectMocks SalesCrudServiceImpl instance;
+    @Mock SalesRepository salesRepositoryMock;
+    @Mock SalesConverterService salesConverterMock;
+    @Mock AddressesConverterService addressesConverterServiceMock; // TODO verify usage of this mock when reading one
+    @Mock ApiProperties apiProperties; // TODO verify usage of this mock when doing a partial update
+    final SalesTestHelper salesHelper = new SalesTestHelper();
 
-  @BeforeEach
-  void beforeEach() {
-    salesHelper.resetSales();
-  }
+    @BeforeEach
+    void beforeEach() {
+        salesHelper.resetSales();
+    }
 
-  @Test
-  void finds_by_example_using_buy_order() {
-    SellPojo input = salesHelper.sellPojoForFetch();
-    Sell expectedResult = salesHelper.sellEntityAfterCreation();
-    when(salesRepositoryMock.findById(anyLong())).thenReturn(Optional.of(expectedResult));
+    @Test
+    void finds_by_example_using_buy_order() {
+        SellPojo input = salesHelper.sellPojoForFetch();
+        Sell expectedResult = salesHelper.sellEntityAfterCreation();
+        when(salesRepositoryMock.findById(anyLong())).thenReturn(Optional.of(expectedResult));
 
-    Optional<Sell> match = instance.getExisting(input);
+        Optional<Sell> match = instance.getExisting(input);
 
-    verify(salesRepositoryMock).findById(input.getBuyOrder());
-    assertTrue(match.isPresent());
-    assertEquals(expectedResult, match.get());
-  }
+        verify(salesRepositoryMock).findById(input.getBuyOrder());
+        assertTrue(match.isPresent());
+        assertEquals(expectedResult, match.get());
+    }
 
-  @Test
-  void finds_using_predicate() throws EntityNotFoundException {
-    SellPojo expectedResult = SellPojo.builder()
-      .buyOrder(1L)
-      .details(List.of()) // TODO put some details here to provide coverage to their conversion as well
-      .build();
-    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
-    when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(expectedResult);
+    @Test
+    void finds_using_predicate() throws EntityNotFoundException {
+        SellPojo expectedResult = SellPojo.builder()
+            .buyOrder(1L)
+            .details(List.of()) // TODO put some details here to provide coverage to their conversion as well
+            .build();
+        when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.of(salesHelper.sellEntityAfterCreation()));
+        when(salesConverterMock.convertToPojo(any(Sell.class))).thenReturn(expectedResult);
 
-    SellPojo result = instance.readOne(new BooleanBuilder());
+        SellPojo result = instance.readOne(new BooleanBuilder());
 
-    assertNotNull(result);
-    assertEquals(expectedResult, result);
-  }
+        assertNotNull(result);
+        assertEquals(expectedResult, result);
+    }
 
-  @Test
-  void throws_exception_when_not_found_using_predicates() {
-    BooleanBuilder anyPredicate = new BooleanBuilder();
-    when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.empty());
-    assertThrows(EntityNotFoundException.class, () -> instance.readOne(anyPredicate));
-  }
+    @Test
+    void throws_exception_when_not_found_using_predicates() {
+        BooleanBuilder anyPredicate = new BooleanBuilder();
+        when(salesRepositoryMock.findOne(any(Predicate.class))).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> instance.readOne(anyPredicate));
+    }
 }

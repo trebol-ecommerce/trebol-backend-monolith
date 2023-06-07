@@ -28,11 +28,11 @@ import java.util.Map;
 
 public interface DataCrudController<M> {
 
-  void create(M input) throws BadInputException, EntityExistsException;
+    void create(M input) throws BadInputException, EntityExistsException;
 
-  void update(M input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException;
+    void update(M input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException;
 
-  void partialUpdate(Map<String, Object> input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException;
+    void partialUpdate(Map<String, Object> input, Map<String, String> requestParams) throws BadInputException, EntityNotFoundException;
 
-  void delete(Map<String, String> requestParams) throws EntityNotFoundException;
+    void delete(Map<String, String> requestParams) throws EntityNotFoundException;
 }

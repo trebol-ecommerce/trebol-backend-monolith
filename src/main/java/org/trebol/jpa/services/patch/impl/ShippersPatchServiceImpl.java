@@ -33,24 +33,24 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 public class ShippersPatchServiceImpl
-  implements ShippersPatchService {
+    implements ShippersPatchService {
 
-  @Override
-  public Shipper patchExistingEntity(Map<String, Object> changes, Shipper existing) throws BadInputException {
-    Shipper target = new Shipper(existing);
+    @Override
+    public Shipper patchExistingEntity(Map<String, Object> changes, Shipper existing) throws BadInputException {
+        Shipper target = new Shipper(existing);
 
-    if (changes.containsKey("name")) {
-      String name = (String) changes.get("name");
-      if (!StringUtils.isBlank(name)) {
-        target.setName(name);
-      }
+        if (changes.containsKey("name")) {
+            String name = (String) changes.get("name");
+            if (!StringUtils.isBlank(name)) {
+                target.setName(name);
+            }
+        }
+
+        return target;
     }
 
-    return target;
-  }
-
-  @Override
-  public Shipper patchExistingEntity(ShipperPojo changes, Shipper existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method has been deprecated");
-  }
+    @Override
+    public Shipper patchExistingEntity(ShipperPojo changes, Shipper existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method has been deprecated");
+    }
 }

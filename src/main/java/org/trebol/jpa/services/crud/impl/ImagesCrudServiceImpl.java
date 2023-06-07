@@ -38,27 +38,27 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ImagesCrudServiceImpl
-  extends CrudGenericService<ImagePojo, Image>
-  implements ImagesCrudService {
-  private final ImagesRepository imagesRepository;
+    extends CrudGenericService<ImagePojo, Image>
+    implements ImagesCrudService {
+    private final ImagesRepository imagesRepository;
 
-  @Autowired
-  public ImagesCrudServiceImpl(
-    ImagesRepository imagesRepository,
-    ImagesConverterService imagesConverterService,
-    ImagesPatchService imagesPatchService
-  ) {
-    super(imagesRepository, imagesConverterService, imagesPatchService);
-    this.imagesRepository = imagesRepository;
-  }
-
-  @Override
-  public Optional<Image> getExisting(ImagePojo input) throws BadInputException {
-    String name = input.getFilename();
-    if (StringUtils.isBlank(name)) {
-      throw new BadInputException("Invalid filename");
-    } else {
-      return imagesRepository.findByFilename(name);
+    @Autowired
+    public ImagesCrudServiceImpl(
+        ImagesRepository imagesRepository,
+        ImagesConverterService imagesConverterService,
+        ImagesPatchService imagesPatchService
+    ) {
+        super(imagesRepository, imagesConverterService, imagesPatchService);
+        this.imagesRepository = imagesRepository;
     }
-  }
+
+    @Override
+    public Optional<Image> getExisting(ImagePojo input) throws BadInputException {
+        String name = input.getFilename();
+        if (StringUtils.isBlank(name)) {
+            throw new BadInputException("Invalid filename");
+        } else {
+            return imagesRepository.findByFilename(name);
+        }
+    }
 }

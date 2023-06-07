@@ -39,41 +39,41 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ProductCategoriesCrudServiceImpl
-  extends CrudGenericService<ProductCategoryPojo, ProductCategory>
-  implements ProductCategoriesCrudService {
-  private final ProductsCategoriesRepository categoriesRepository;
-  private final ProductCategoriesPatchService categoriesPatchService;
+    extends CrudGenericService<ProductCategoryPojo, ProductCategory>
+    implements ProductCategoriesCrudService {
+    private final ProductsCategoriesRepository categoriesRepository;
+    private final ProductCategoriesPatchService categoriesPatchService;
 
-  @Autowired
-  public ProductCategoriesCrudServiceImpl(
-    ProductsCategoriesRepository categoriesRepository,
-    ProductCategoriesConverterService categoriesConverterService,
-    ProductCategoriesPatchService categoriesPatchService
-  ) {
-    super(categoriesRepository, categoriesConverterService, categoriesPatchService);
-    this.categoriesRepository = categoriesRepository;
-    this.categoriesPatchService = categoriesPatchService;
-  }
+    @Autowired
+    public ProductCategoriesCrudServiceImpl(
+        ProductsCategoriesRepository categoriesRepository,
+        ProductCategoriesConverterService categoriesConverterService,
+        ProductCategoriesPatchService categoriesPatchService
+    ) {
+        super(categoriesRepository, categoriesConverterService, categoriesPatchService);
+        this.categoriesRepository = categoriesRepository;
+        this.categoriesPatchService = categoriesPatchService;
+    }
 
-  @Override
-  public Optional<ProductCategory> getExisting(ProductCategoryPojo input) throws BadInputException {
-    String code = input.getCode();
-    if (StringUtils.isBlank(code)) {
-      throw new BadInputException("Invalid category code");
-    } else {
-      return this.categoriesRepository.findByCode(code);
+    @Override
+    public Optional<ProductCategory> getExisting(ProductCategoryPojo input) throws BadInputException {
+        String code = input.getCode();
+        if (StringUtils.isBlank(code)) {
+            throw new BadInputException("Invalid category code");
+        } else {
+            return this.categoriesRepository.findByCode(code);
+        }
     }
-  }
 
-  @Override
-  protected final ProductCategory flushPartialChanges(Map<String, Object> changes, ProductCategory existingEntity) throws BadInputException {
-    ProductCategory preparedEntity = categoriesPatchService.patchExistingEntity(changes, existingEntity);
-    if (existingEntity.getParent() != null) {
-      preparedEntity.setParent(existingEntity.getParent());
+    @Override
+    protected final ProductCategory flushPartialChanges(Map<String, Object> changes, ProductCategory existingEntity) throws BadInputException {
+        ProductCategory preparedEntity = categoriesPatchService.patchExistingEntity(changes, existingEntity);
+        if (existingEntity.getParent()!=null) {
+            preparedEntity.setParent(existingEntity.getParent());
+        }
+        if (existingEntity.equals(preparedEntity)) {
+            return existingEntity;
+        }
+        return categoriesRepository.saveAndFlush(preparedEntity);
     }
-    if (existingEntity.equals(preparedEntity)) {
-      return existingEntity;
-    }
-    return categoriesRepository.saveAndFlush(preparedEntity);
-  }
 }

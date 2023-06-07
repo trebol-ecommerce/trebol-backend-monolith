@@ -24,9 +24,9 @@ package org.trebol.security.exceptions;
  * Thrown when an attempt to destroy a protected account is made.
  */
 public class AccountProtectionViolationException
-  extends RuntimeException {
+    extends RuntimeException {
 
-  public AccountProtectionViolationException(String message) {
-    super(message);
-  }
+    public AccountProtectionViolationException(String message) {
+        super(message);
+    }
 }

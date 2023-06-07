@@ -22,28 +22,31 @@ package org.trebol.config.exceptions;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.trebol.testing.TestConstants.ANY;
 
 class CorsMappingParseExceptionTest {
 
-  @Test
-  void has_a_default_error_message() {
-    CorsMappingParseException instance = assertThrows(CorsMappingParseException.class, () -> {
-      throw new CorsMappingParseException(null);
-    });
-    assertNull(instance.getCorsMapping());
-    assertNotNull(instance.getMessage());
-    assertEquals(CorsMappingParseException.BASE_MESSAGE, instance.getMessage());
-  }
+    @Test
+    void has_a_default_error_message() {
+        CorsMappingParseException instance = assertThrows(CorsMappingParseException.class, () -> {
+            throw new CorsMappingParseException(null);
+        });
+        assertNull(instance.getCorsMapping());
+        assertNotNull(instance.getMessage());
+        assertEquals(CorsMappingParseException.BASE_MESSAGE, instance.getMessage());
+    }
 
-  @Test
-  void holds_the_failing_cors_mapping_which_triggered_the_exception() {
-    String corsMapping = ANY;
-    CorsMappingParseException instance = assertThrows(CorsMappingParseException.class, () -> {
-      throw new CorsMappingParseException(corsMapping);
-    });
-    assertNotNull(instance.getCorsMapping());
-    assertEquals(corsMapping, instance.getCorsMapping());
-  }
+    @Test
+    void holds_the_failing_cors_mapping_which_triggered_the_exception() {
+        String corsMapping = ANY;
+        CorsMappingParseException instance = assertThrows(CorsMappingParseException.class, () -> {
+            throw new CorsMappingParseException(corsMapping);
+        });
+        assertNotNull(instance.getCorsMapping());
+        assertEquals(corsMapping, instance.getCorsMapping());
+    }
 }

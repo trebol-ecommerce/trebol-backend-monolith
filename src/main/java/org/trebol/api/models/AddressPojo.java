@@ -36,13 +36,13 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @AllArgsConstructor
 @JsonInclude(NON_EMPTY)
 public class AddressPojo {
-  @NotBlank
-  private String firstLine;
-  private String secondLine;
-  @NotBlank
-  private String municipality;
-  @NotBlank
-  private String city;
-  private String postalCode;
-  private String notes;
+    @NotBlank
+    private String firstLine;
+    private String secondLine;
+    @NotBlank
+    private String municipality;
+    @NotBlank
+    private String city;
+    private String postalCode;
+    private String notes;
 }

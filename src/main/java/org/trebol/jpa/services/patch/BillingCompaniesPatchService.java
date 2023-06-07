@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.BillingCompany;
 import org.trebol.jpa.services.PatchService;
 
 public interface BillingCompaniesPatchService
-  extends PatchService<BillingCompanyPojo, BillingCompany> {
+    extends PatchService<BillingCompanyPojo, BillingCompany> {
 }

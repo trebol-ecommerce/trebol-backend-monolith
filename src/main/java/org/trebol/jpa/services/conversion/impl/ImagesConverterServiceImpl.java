@@ -29,28 +29,28 @@ import org.trebol.jpa.services.conversion.ImagesConverterService;
 @Service
 @NoArgsConstructor
 public class ImagesConverterServiceImpl
-  implements ImagesConverterService {
+    implements ImagesConverterService {
 
-  @Override
-  public ImagePojo convertToPojo(Image source) {
-    return ImagePojo.builder()
-      .code(source.getCode())
-      .filename(source.getFilename())
-      .url(source.getUrl())
-      .build();
-  }
+    @Override
+    public ImagePojo convertToPojo(Image source) {
+        return ImagePojo.builder()
+            .code(source.getCode())
+            .filename(source.getFilename())
+            .url(source.getUrl())
+            .build();
+    }
 
-  @Override
-  public Image convertToNewEntity(ImagePojo source) {
-    return Image.builder()
-      .code(source.getCode())
-      .filename(source.getFilename())
-      .url(source.getUrl())
-      .build();
-  }
+    @Override
+    public Image convertToNewEntity(ImagePojo source) {
+        return Image.builder()
+            .code(source.getCode())
+            .filename(source.getFilename())
+            .url(source.getUrl())
+            .build();
+    }
 
-  @Override
-  public Image applyChangesToExistingEntity(ImagePojo source, Image target) {
-    throw new UnsupportedOperationException("This method is deprecated");
-  }
+    @Override
+    public Image applyChangesToExistingEntity(ImagePojo source, Image target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 }

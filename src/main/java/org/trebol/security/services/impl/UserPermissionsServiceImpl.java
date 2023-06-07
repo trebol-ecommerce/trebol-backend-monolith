@@ -37,29 +37,29 @@ import java.util.Set;
  */
 @Service
 public class UserPermissionsServiceImpl
-  implements UserPermissionsService {
-  private final UserRolePermissionsRepository userRolePermissionsRepository;
+    implements UserPermissionsService {
+    private final UserRolePermissionsRepository userRolePermissionsRepository;
 
-  @Autowired
-  public UserPermissionsServiceImpl(
-    UserRolePermissionsRepository userRolePermissionsRepository
-  ) {
-    this.userRolePermissionsRepository = userRolePermissionsRepository;
-  }
-
-  @Override
-  public Set<Permission> loadPermissionsForUser(User source) {
-    UserRole sourceUserRole = source.getUserRole();
-    Long userRoleId = sourceUserRole.getId();
-    Iterable<UserRolePermission> userRolePermissions = userRolePermissionsRepository
-      .deepFindPermissionsByUserRoleId(userRoleId);
-
-    Set<Permission> targetList = new HashSet<>();
-    for (UserRolePermission rolePermission : userRolePermissions) {
-      Permission p = rolePermission.getPermission();
-      targetList.add(p);
+    @Autowired
+    public UserPermissionsServiceImpl(
+        UserRolePermissionsRepository userRolePermissionsRepository
+    ) {
+        this.userRolePermissionsRepository = userRolePermissionsRepository;
     }
 
-    return targetList;
-  }
+    @Override
+    public Set<Permission> loadPermissionsForUser(User source) {
+        UserRole sourceUserRole = source.getUserRole();
+        Long userRoleId = sourceUserRole.getId();
+        Iterable<UserRolePermission> userRolePermissions = userRolePermissionsRepository
+            .deepFindPermissionsByUserRoleId(userRoleId);
+
+        Set<Permission> targetList = new HashSet<>();
+        for (UserRolePermission rolePermission : userRolePermissions) {
+            Permission p = rolePermission.getPermission();
+            targetList.add(p);
+        }
+
+        return targetList;
+    }
 }

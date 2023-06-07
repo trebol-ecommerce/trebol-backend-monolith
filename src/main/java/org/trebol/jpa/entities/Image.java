@@ -20,10 +20,21 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.trebol.jpa.DBEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -36,27 +47,27 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class Image
-  implements DBEntity {
-  private static final long serialVersionUID = 5L;
+    implements DBEntity {
+    private static final long serialVersionUID = 5L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "image_id", nullable = false)
-  private Long id;
-  @Size(min = 1, max = 50)
-  @Column(name = "image_code", nullable = false, unique = true)
-  private String code;
-  @Size(min = 1, max = 100)
-  @Column(name = "image_filename", nullable = false, unique = true)
-  private String filename;
-  @Size(min = 1, max = 500)
-  @Column(name = "image_url", nullable = false, unique = true)
-  private String url;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "image_id", nullable = false)
+    private Long id;
+    @Size(min = 1, max = 50)
+    @Column(name = "image_code", nullable = false, unique = true)
+    private String code;
+    @Size(min = 1, max = 100)
+    @Column(name = "image_filename", nullable = false, unique = true)
+    private String filename;
+    @Size(min = 1, max = 500)
+    @Column(name = "image_url", nullable = false, unique = true)
+    private String url;
 
-  public Image(Image source) {
-    this.id = source.id;
-    this.code = source.code;
-    this.filename = source.filename;
-    this.url = source.url;
-  }
+    public Image(Image source) {
+        this.id = source.id;
+        this.code = source.code;
+        this.filename = source.filename;
+        this.url = source.url;
+    }
 }

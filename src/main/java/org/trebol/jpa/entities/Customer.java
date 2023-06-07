@@ -20,10 +20,24 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.trebol.jpa.DBEntity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "customers")
@@ -35,22 +49,23 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 public class Customer
-  implements DBEntity {
-  private static final long serialVersionUID = 4L;
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "customer_id", nullable = false)
-  private Long id;
-  @JoinColumn(name = "person_id", referencedColumnName = "person_id")
-  @OneToOne(optional = false, cascade = CascadeType.ALL)
-  private Person person;
+    implements DBEntity {
+    private static final long serialVersionUID = 4L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_id", nullable = false)
+    private Long id;
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    private Person person;
 
-  /**
-   * Please note: this copy-constructor DOES include a Customer's relationship to its own profile data
-   * @param source The original UserRolePermission
-   */
-  public Customer(Customer source) {
-    this.id = source.id;
-    this.person = new Person(source.person);
-  }
+    /**
+     * Please note: this copy-constructor DOES include a Customer's relationship to its own profile data
+     *
+     * @param source The original UserRolePermission
+     */
+    public Customer(Customer source) {
+        this.id = source.id;
+        this.person = new Person(source.person);
+    }
 }

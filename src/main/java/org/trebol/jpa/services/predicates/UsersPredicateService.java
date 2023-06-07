@@ -24,6 +24,6 @@ import org.trebol.jpa.entities.QUser;
 import org.trebol.jpa.services.PredicateService;
 
 public interface UsersPredicateService
-  extends PredicateService {
-  QUser basePath = QUser.user;
+    extends PredicateService {
+    QUser basePath = QUser.user;
 }

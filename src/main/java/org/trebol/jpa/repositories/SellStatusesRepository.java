@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 public interface SellStatusesRepository
-  extends Repository<SellStatus> {
+    extends Repository<SellStatus> {
 
-  Optional<SellStatus> findByName(String name);
+    Optional<SellStatus> findByName(String name);
 }

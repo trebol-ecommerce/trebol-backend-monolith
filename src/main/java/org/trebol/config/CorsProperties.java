@@ -33,13 +33,13 @@ import javax.validation.constraints.NotBlank;
 @Validated
 public class CorsProperties {
 
-  @NotBlank
-  private String allowedHeaders;
-  @NotBlank
-  private String allowedOrigins;
-  @NotBlank
-  private String mappings;
-  @NotBlank
-  private String listDelimiter;
+    @NotBlank
+    private String allowedHeaders;
+    @NotBlank
+    private String allowedOrigins;
+    @NotBlank
+    private String mappings;
+    @NotBlank
+    private String listDelimiter;
 
 }

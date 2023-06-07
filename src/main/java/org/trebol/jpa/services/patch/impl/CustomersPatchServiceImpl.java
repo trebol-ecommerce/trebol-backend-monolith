@@ -36,32 +36,32 @@ import static org.trebol.config.Constants.PERSON_DATA_MAP_KEYS_PREFIX;
 
 @Service
 public class CustomersPatchServiceImpl
-  implements CustomersPatchService {
-  private final PeoplePatchService peoplePatchService;
+    implements CustomersPatchService {
+    private final PeoplePatchService peoplePatchService;
 
-  @Autowired
-  public CustomersPatchServiceImpl(
-    PeoplePatchService peoplePatchService
-  ) {
-    this.peoplePatchService = peoplePatchService;
-  }
-
-  @Override
-  public Customer patchExistingEntity(Map<String, Object> changes, Customer existing) throws BadInputException {
-    Customer target = new Customer(existing);
-
-    Map<String, Object> personChanges = Utils.copyMapWithUnprefixedEntries(changes, PERSON_DATA_MAP_KEYS_PREFIX);
-    if (!personChanges.isEmpty()) {
-      Person existingPerson = existing.getPerson();
-      Person person = peoplePatchService.patchExistingEntity(personChanges, existingPerson);
-      target.setPerson(person);
+    @Autowired
+    public CustomersPatchServiceImpl(
+        PeoplePatchService peoplePatchService
+    ) {
+        this.peoplePatchService = peoplePatchService;
     }
 
-    return target;
-  }
+    @Override
+    public Customer patchExistingEntity(Map<String, Object> changes, Customer existing) throws BadInputException {
+        Customer target = new Customer(existing);
 
-  @Override
-  public Customer patchExistingEntity(CustomerPojo changes, Customer existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method has been deprecated");
-  }
+        Map<String, Object> personChanges = Utils.copyMapWithUnprefixedEntries(changes, PERSON_DATA_MAP_KEYS_PREFIX);
+        if (!personChanges.isEmpty()) {
+            Person existingPerson = existing.getPerson();
+            Person person = peoplePatchService.patchExistingEntity(personChanges, existingPerson);
+            target.setPerson(person);
+        }
+
+        return target;
+    }
+
+    @Override
+    public Customer patchExistingEntity(CustomerPojo changes, Customer existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method has been deprecated");
+    }
 }

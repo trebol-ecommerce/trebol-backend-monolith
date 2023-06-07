@@ -22,30 +22,32 @@ package org.trebol.mailing;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.trebol.testing.TestConstants.ANY;
 
 class MailingServiceExceptionTest {
-  final String errorMessage = ANY;
+    final String errorMessage = ANY;
 
-  @Test
-  void can_contain_an_error_message() {
-    MailingServiceException instance = assertThrows(MailingServiceException.class, () -> {
-      throw new MailingServiceException(errorMessage);
-    });
-    assertNotNull(instance.getMessage());
-    assertEquals(errorMessage, instance.getMessage());
-  }
+    @Test
+    void can_contain_an_error_message() {
+        MailingServiceException instance = assertThrows(MailingServiceException.class, () -> {
+            throw new MailingServiceException(errorMessage);
+        });
+        assertNotNull(instance.getMessage());
+        assertEquals(errorMessage, instance.getMessage());
+    }
 
-  @Test
-  void can_contain_an_error_message_and_reference_its_own_cause() {
-    Throwable cause = new RuntimeException(ANY);
-    MailingServiceException instance = assertThrows(MailingServiceException.class, () -> {
-      throw new MailingServiceException(errorMessage, cause);
-    });
-    assertNotNull(instance.getMessage());
-    assertNotNull(instance.getCause());
-    assertEquals(errorMessage, instance.getMessage());
-    assertEquals(cause, instance.getCause());
-  }
+    @Test
+    void can_contain_an_error_message_and_reference_its_own_cause() {
+        Throwable cause = new RuntimeException(ANY);
+        MailingServiceException instance = assertThrows(MailingServiceException.class, () -> {
+            throw new MailingServiceException(errorMessage, cause);
+        });
+        assertNotNull(instance.getMessage());
+        assertNotNull(instance.getCause());
+        assertEquals(errorMessage, instance.getMessage());
+        assertEquals(cause, instance.getCause());
+    }
 }

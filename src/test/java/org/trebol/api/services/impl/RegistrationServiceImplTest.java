@@ -50,103 +50,106 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class RegistrationServiceImplTest {
-  @InjectMocks RegistrationServiceImpl instance;
-  @Mock UsersRepository usersRepositoryMock;
-  @Mock PeopleConverterService peopleConverterServiceMock;
-  @Mock PeopleRepository peopleRepositoryMock;
-  @Mock UserRolesRepository rolesRepositoryMock;
-  @Mock PasswordEncoder passwordEncoderMock;
-  @Mock CustomersRepository customerRepositoryMock;
-  PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
-  PersonPojo personPojoMock;
-  RegistrationPojo regPojoMock;
-  Person personMock;
-  UserRole customerRoleMock;
+    @InjectMocks RegistrationServiceImpl instance;
+    @Mock UsersRepository usersRepositoryMock;
+    @Mock PeopleConverterService peopleConverterServiceMock;
+    @Mock PeopleRepository peopleRepositoryMock;
+    @Mock UserRolesRepository rolesRepositoryMock;
+    @Mock PasswordEncoder passwordEncoderMock;
+    @Mock CustomersRepository customerRepositoryMock;
+    PeopleTestHelper peopleTestHelper = new PeopleTestHelper();
+    PersonPojo personPojoMock;
+    RegistrationPojo regPojoMock;
+    Person personMock;
+    UserRole customerRoleMock;
 
-  @BeforeEach
-  void beforeEach() {
-    // Default mock objects
-    personPojoMock = peopleTestHelper.personPojoBeforeCreation();
-    regPojoMock = RegistrationPojo.builder()
-      .name("name")
-      .password("password")
-      .profile(personPojoMock)
-      .build();
-    personMock = peopleTestHelper.personEntityBeforeCreation();
-    customerRoleMock = UserRole.builder()
-      .id(1L)
-      .name("Customer")
-      .build();
+    @BeforeEach
+    void beforeEach() {
+        // Default mock objects
+        personPojoMock = peopleTestHelper.personPojoBeforeCreation();
+        regPojoMock = RegistrationPojo.builder()
+            .name("name")
+            .password("password")
+            .profile(personPojoMock)
+            .build();
+        personMock = peopleTestHelper.personEntityBeforeCreation();
+        customerRoleMock = UserRole.builder()
+            .id(1L)
+            .name("Customer")
+            .build();
 
-    // Reset mocks
-    reset(usersRepositoryMock);
-    reset(peopleRepositoryMock);
-    reset(rolesRepositoryMock);
-  }
+        // Reset mocks
+        reset(usersRepositoryMock);
+        reset(peopleRepositoryMock);
+        reset(rolesRepositoryMock);
+    }
 
-  @DisplayName("User and Id doesn't already exists, should pass")
-  @Test
-  void EverythingCorrect_NoException() throws BadInputException {
-    when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
-    when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
-    // inside convertToUser method
-    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(customerRoleMock));
+    @DisplayName("User and Id doesn't already exists, should pass")
+    @Test
+    void EverythingCorrect_NoException() throws BadInputException {
+        when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
+        when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
+        when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
+        when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
+        // inside convertToUser method
+        when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(customerRoleMock));
 
-    assertDoesNotThrow(() -> instance.register(regPojoMock));
-  }
+        assertDoesNotThrow(() -> instance.register(regPojoMock));
+    }
 
-  @DisplayName("Save and flush must be called on repositories")
-  @Test
-  void SaveCalledOnRepository() throws EntityExistsException, BadInputException {
-    when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
-    when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
-    // inside convertToUser method
-    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(customerRoleMock));
+    @DisplayName("Save and flush must be called on repositories")
+    @Test
+    void SaveCalledOnRepository() throws EntityExistsException, BadInputException {
+        when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
+        when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
+        when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
+        when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
+        // inside convertToUser method
+        when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(customerRoleMock));
 
-    instance.register(regPojoMock);
+        instance.register(regPojoMock);
 
-    verify(peopleRepositoryMock, times(1)).saveAndFlush(any(Person.class));
-    verify(usersRepositoryMock, times(1)).saveAndFlush(any(User.class));
-    verify(customerRepositoryMock, times(1)).saveAndFlush(any(Customer.class));
-  }
+        verify(peopleRepositoryMock, times(1)).saveAndFlush(any(Person.class));
+        verify(usersRepositoryMock, times(1)).saveAndFlush(any(User.class));
+        verify(customerRepositoryMock, times(1)).saveAndFlush(any(Customer.class));
+    }
 
-  @DisplayName("User with same name already exists, EntityExistsException")
-  @Test
-  void NameAlreadyExists_EntityExistsException() {
-    when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(true); // Name already exists
+    @DisplayName("User with same name already exists, EntityExistsException")
+    @Test
+    void NameAlreadyExists_EntityExistsException() {
+        when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(true); // Name already exists
 
-    assertThrows(EntityExistsException.class, () -> instance.register(regPojoMock));
-  }
+        assertThrows(EntityExistsException.class, () -> instance.register(regPojoMock));
+    }
 
-  @DisplayName("Person with same ID already exists, EntityExistsException")
-  @Test
-  void IdAlreadyExists_EntityExistsException() throws BadInputException {
-    when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
-    when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(true); // ID already exists
+    @DisplayName("Person with same ID already exists, EntityExistsException")
+    @Test
+    void IdAlreadyExists_EntityExistsException() throws BadInputException {
+        when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
+        when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
+        when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(true); // ID already exists
 
-    assertThrows(EntityExistsException.class, () -> instance.register(regPojoMock));
-  }
+        assertThrows(EntityExistsException.class, () -> instance.register(regPojoMock));
+    }
 
-  @DisplayName("Customer Role not found, IllegalStateException")
-  @Test
-  void CustomerRoleNotFound_IllegalStateException() throws BadInputException {
-    when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
-    when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
-    when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
-    // inside convertToUser method
-    when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
+    @DisplayName("Customer Role not found, IllegalStateException")
+    @Test
+    void CustomerRoleNotFound_IllegalStateException() throws BadInputException {
+        when(usersRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
+        when(peopleConverterServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(personMock);
+        when(peopleRepositoryMock.exists(any(Predicate.class))).thenReturn(false);
+        when(peopleRepositoryMock.saveAndFlush(any(Person.class))).thenReturn(personMock);
+        // inside convertToUser method
+        when(rolesRepositoryMock.findByName(anyString())).thenReturn(Optional.empty());
 
-    assertThrows(IllegalStateException.class, () -> instance.register(regPojoMock));
-  }
+        assertThrows(IllegalStateException.class, () -> instance.register(regPojoMock));
+    }
 
 }

@@ -34,32 +34,32 @@ import java.util.Map;
 
 @Service
 public class SalespeoplePatchServiceImpl
-  implements SalespeoplePatchService {
-  private final PeoplePatchService peoplePatchService;
+    implements SalespeoplePatchService {
+    private final PeoplePatchService peoplePatchService;
 
-  @Autowired
-  public SalespeoplePatchServiceImpl(
-    PeoplePatchService peoplePatchService
-  ) {
-    this.peoplePatchService = peoplePatchService;
-  }
-
-  @Override
-  public Salesperson patchExistingEntity(Map<String, Object> changes, Salesperson existing) throws BadInputException {
-    Salesperson target = new Salesperson(existing);
-
-    Map<String, Object> personChanges = Utils.copyMapWithUnprefixedEntries(changes, "person.");
-    if (!personChanges.isEmpty()) {
-      Person existingPerson = existing.getPerson();
-      Person person = peoplePatchService.patchExistingEntity(personChanges, existingPerson);
-      target.setPerson(person);
+    @Autowired
+    public SalespeoplePatchServiceImpl(
+        PeoplePatchService peoplePatchService
+    ) {
+        this.peoplePatchService = peoplePatchService;
     }
 
-    return target;
-  }
+    @Override
+    public Salesperson patchExistingEntity(Map<String, Object> changes, Salesperson existing) throws BadInputException {
+        Salesperson target = new Salesperson(existing);
 
-  @Override
-  public Salesperson patchExistingEntity(SalespersonPojo changes, Salesperson existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method has been deprecated");
-  }
+        Map<String, Object> personChanges = Utils.copyMapWithUnprefixedEntries(changes, "person.");
+        if (!personChanges.isEmpty()) {
+            Person existingPerson = existing.getPerson();
+            Person person = peoplePatchService.patchExistingEntity(personChanges, existingPerson);
+            target.setPerson(person);
+        }
+
+        return target;
+    }
+
+    @Override
+    public Salesperson patchExistingEntity(SalespersonPojo changes, Salesperson existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method has been deprecated");
+    }
 }

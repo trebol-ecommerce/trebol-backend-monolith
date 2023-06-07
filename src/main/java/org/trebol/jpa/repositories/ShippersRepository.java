@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 public interface ShippersRepository
-  extends Repository<Shipper> {
+    extends Repository<Shipper> {
 
-  Optional<Shipper> findByName(String name);
+    Optional<Shipper> findByName(String name);
 }

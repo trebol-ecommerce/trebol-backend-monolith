@@ -27,14 +27,14 @@ import org.trebol.jpa.entities.SellDetail;
 
 @Component
 public class SellDetailEntity2ReceiptDetailPojo
-  implements Converter<SellDetail, ReceiptDetailPojo> {
+    implements Converter<SellDetail, ReceiptDetailPojo> {
 
-  @Override
-  public ReceiptDetailPojo convert(SellDetail source) {
-    ReceiptDetailPojo target = new ReceiptDetailPojo();
-    target.setUnits(source.getUnits());
-    target.setUnitValue(source.getUnitValue());
-    target.setDescription(source.getDescription());
-    return target;
-  }
+    @Override
+    public ReceiptDetailPojo convert(SellDetail source) {
+        ReceiptDetailPojo target = new ReceiptDetailPojo();
+        target.setUnits(source.getUnits());
+        target.setUnitValue(source.getUnitValue());
+        target.setDescription(source.getDescription());
+        return target;
+    }
 }

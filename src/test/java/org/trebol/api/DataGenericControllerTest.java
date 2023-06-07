@@ -33,14 +33,14 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 public abstract class DataGenericControllerTest<P, E> {
-  protected DataGenericController<P, E> instance;
-  protected CrudService<P, E> crudServiceMock;
+    protected DataGenericController<P, E> instance;
+    protected CrudService<P, E> crudServiceMock;
 
-  protected void reads_data(@Nullable Map<String, String> requestParams) {
-    DataPagePojo<P> pagePojo = new DataPagePojo<>();
-    when(crudServiceMock.readMany(anyInt(), anyInt(), isNull(), isNull())).thenReturn(pagePojo);
-    DataPagePojo<P> result = instance.readMany(requestParams);
-    assertNotNull(result);
-    assertEquals(pagePojo, result);
-  }
+    protected void reads_data(@Nullable Map<String, String> requestParams) {
+        DataPagePojo<P> pagePojo = new DataPagePojo<>();
+        when(crudServiceMock.readMany(anyInt(), anyInt(), isNull(), isNull())).thenReturn(pagePojo);
+        DataPagePojo<P> result = instance.readMany(requestParams);
+        assertNotNull(result);
+        assertEquals(pagePojo, result);
+    }
 }

@@ -31,19 +31,19 @@ import java.util.regex.Pattern;
 
 public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
 
-  @Autowired
-  private ValidationProperties validationProperties;
+    @Autowired
+    private ValidationProperties validationProperties;
 
-  private Pattern pattern;
+    private Pattern pattern;
 
-  @Override
-  public void initialize(PhoneNumber constraintAnnotation) {
-    pattern = Pattern.compile(validationProperties.getPhoneNumberRegexp());
-  }
+    @Override
+    public void initialize(PhoneNumber constraintAnnotation) {
+        pattern = Pattern.compile(validationProperties.getPhoneNumberRegexp());
+    }
 
-  @Override
-  public boolean isValid(String value, ConstraintValidatorContext context) {
-    Matcher matcher = pattern.matcher(value);
-    return matcher.matches();
-  }
+    @Override
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        Matcher matcher = pattern.matcher(value);
+        return matcher.matches();
+    }
 }

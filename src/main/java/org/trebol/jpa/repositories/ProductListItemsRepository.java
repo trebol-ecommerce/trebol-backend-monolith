@@ -29,15 +29,15 @@ import org.trebol.jpa.entities.ProductListItem;
 
 @org.springframework.stereotype.Repository
 public interface ProductListItemsRepository
-  extends Repository<ProductListItem> {
+    extends Repository<ProductListItem> {
 
-  @Modifying
-  @Transactional
-  @Query("DELETE FROM ProductListItem pi WHERE pi.list.id = :id")
-  void deleteByListId(@Param("id") Long id);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ProductListItem pi WHERE pi.list.id = :id")
+    void deleteByListId(@Param("id") Long id);
 
-  @Modifying
-  @Transactional
-  @Query("DELETE FROM ProductListItem pi WHERE pi.product.id = :id")
-  void deleteByProductId(@Param("id") Long id);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ProductListItem pi WHERE pi.product.id = :id")
+    void deleteByProductId(@Param("id") Long id);
 }

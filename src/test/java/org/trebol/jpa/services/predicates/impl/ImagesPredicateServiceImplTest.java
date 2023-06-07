@@ -32,18 +32,18 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ImagesPredicateServiceImplTest {
-  final ImagesPredicateServiceImpl instance = new ImagesPredicateServiceImpl();
+    final ImagesPredicateServiceImpl instance = new ImagesPredicateServiceImpl();
 
-  @Test
-  void parses_map() {
-    Predicate emptyPredicate = new BooleanBuilder();
-    List<Predicate> predicates = List.of(emptyPredicate,
-      instance.parseMap(Map.of("id", "1")),
-      instance.parseMap(Map.of("code", "code test")),
-      instance.parseMap(Map.of("filename", "filename test")),
-      instance.parseMap(Map.of("codeLike", "code portion")),
-      instance.parseMap(Map.of("filenameLike", "filename portion")));
-    Set<Predicate> distinctPredicates = new HashSet<>(predicates);
-    assertEquals(predicates.size(), distinctPredicates.size());
-  }
+    @Test
+    void parses_map() {
+        Predicate emptyPredicate = new BooleanBuilder();
+        List<Predicate> predicates = List.of(emptyPredicate,
+            instance.parseMap(Map.of("id", "1")),
+            instance.parseMap(Map.of("code", "code test")),
+            instance.parseMap(Map.of("filename", "filename test")),
+            instance.parseMap(Map.of("codeLike", "code portion")),
+            instance.parseMap(Map.of("filenameLike", "filename portion")));
+        Set<Predicate> distinctPredicates = new HashSet<>(predicates);
+        assertEquals(predicates.size(), distinctPredicates.size());
+    }
 }

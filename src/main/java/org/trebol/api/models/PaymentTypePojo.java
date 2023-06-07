@@ -30,6 +30,6 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @JsonInclude
 public class PaymentTypePojo {
-  @NotBlank
-  private String name;
+    @NotBlank
+    private String name;
 }

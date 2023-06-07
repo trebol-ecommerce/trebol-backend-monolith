@@ -33,31 +33,31 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 public class ProductCategoriesPatchServiceImpl
-  implements ProductCategoriesPatchService {
+    implements ProductCategoriesPatchService {
 
-  @Override
-  public ProductCategory patchExistingEntity(Map<String, Object> changes, ProductCategory existing) throws BadInputException {
-    ProductCategory target = new ProductCategory(existing);
+    @Override
+    public ProductCategory patchExistingEntity(Map<String, Object> changes, ProductCategory existing) throws BadInputException {
+        ProductCategory target = new ProductCategory(existing);
 
-    if (changes.containsKey("code")) {
-      String code = (String) changes.get("code");
-      if (!StringUtils.isBlank(code)) {
-        target.setCode(code);
-      }
+        if (changes.containsKey("code")) {
+            String code = (String) changes.get("code");
+            if (!StringUtils.isBlank(code)) {
+                target.setCode(code);
+            }
+        }
+
+        if (changes.containsKey("name")) {
+            String name = (String) changes.get("name");
+            if (!StringUtils.isBlank(name)) {
+                target.setName(name);
+            }
+        }
+
+        return target;
     }
 
-    if (changes.containsKey("name")) {
-      String name = (String) changes.get("name");
-      if (!StringUtils.isBlank(name)) {
-        target.setName(name);
-      }
+    @Override
+    public ProductCategory patchExistingEntity(ProductCategoryPojo changes, ProductCategory existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method signature has been deprecated");
     }
-
-    return target;
-  }
-
-  @Override
-  public ProductCategory patchExistingEntity(ProductCategoryPojo changes, ProductCategory existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
-  }
 }

@@ -41,22 +41,22 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserRolesCrudServiceImplTest {
-  @InjectMocks UserRolesCrudServiceImpl instance;
-  @Mock UserRolesRepository userRolesRepositoryMock;
+    @InjectMocks UserRolesCrudServiceImpl instance;
+    @Mock UserRolesRepository userRolesRepositoryMock;
 
-  @Test
-  void finds_by_name() throws BadInputException {
-    String roleName = "test-role";
-    UserRolePojo input = UserRolePojo.builder()
-      .name(roleName)
-      .build();
-    UserRole persistedEntity = new UserRole(1L, roleName);
-    when(userRolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(persistedEntity));
+    @Test
+    void finds_by_name() throws BadInputException {
+        String roleName = "test-role";
+        UserRolePojo input = UserRolePojo.builder()
+            .name(roleName)
+            .build();
+        UserRole persistedEntity = new UserRole(1L, roleName);
+        when(userRolesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(persistedEntity));
 
-    Optional<UserRole> match = instance.getExisting(input);
+        Optional<UserRole> match = instance.getExisting(input);
 
-    verify(userRolesRepositoryMock).findByName(roleName);
-    assertTrue(match.isPresent());
-    assertEquals(persistedEntity, match.get());
-  }
+        verify(userRolesRepositoryMock).findByName(roleName);
+        assertTrue(match.isPresent());
+        assertEquals(persistedEntity, match.get());
+    }
 }

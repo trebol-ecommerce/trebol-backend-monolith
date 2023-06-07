@@ -43,27 +43,27 @@ import java.util.Map;
 @RequestMapping("/data/people")
 @PreAuthorize("isAuthenticated()")
 public class DataPeopleController
-  extends DataGenericController<PersonPojo, Person> {
+    extends DataGenericController<PersonPojo, Person> {
 
-  @Autowired
-  public DataPeopleController(
-    PaginationService paginationService,
-    SortSpecParserService sortService,
-    PeopleCrudService crudService,
-    PeoplePredicateService predicateService
-  ) {
-    super(paginationService, sortService, crudService, predicateService);
-  }
+    @Autowired
+    public DataPeopleController(
+        PaginationService paginationService,
+        SortSpecParserService sortService,
+        PeopleCrudService crudService,
+        PeoplePredicateService predicateService
+    ) {
+        super(paginationService, sortService, crudService, predicateService);
+    }
 
-  @Override
-  @GetMapping({"", "/"})
-  @PreAuthorize("hasAuthority('people:read')")
-  public DataPagePojo<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
-    return super.readMany(allRequestParams);
-  }
+    @Override
+    @GetMapping({"", "/"})
+    @PreAuthorize("hasAuthority('people:read')")
+    public DataPagePojo<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+        return super.readMany(allRequestParams);
+    }
 
-  @Override
-  protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
-    return PeopleSortSpec.ORDER_SPEC_MAP;
-  }
+    @Override
+    protected Map<String, OrderSpecifier<?>> getOrderSpecMap() {
+        return PeopleSortSpec.ORDER_SPEC_MAP;
+    }
 }

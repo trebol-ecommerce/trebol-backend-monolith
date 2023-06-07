@@ -20,10 +20,21 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.trebol.jpa.DBEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -36,23 +47,23 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class Permission
-  implements DBEntity {
-  private static final long serialVersionUID = 8L;
+    implements DBEntity {
+    private static final long serialVersionUID = 8L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "permission_id", nullable = false)
-  private Long id;
-  @Size(min = 1, max = 25)
-  @Column(name = "permission_code", nullable = false, unique = true)
-  private String code;
-  @Size(max = 100)
-  @Column(name = "permission_description")
-  private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "permission_id", nullable = false)
+    private Long id;
+    @Size(min = 1, max = 25)
+    @Column(name = "permission_code", nullable = false, unique = true)
+    private String code;
+    @Size(max = 100)
+    @Column(name = "permission_description")
+    private String description;
 
-  public Permission(Permission source) {
-    this.id = source.id;
-    this.code = source.code;
-    this.description = source.description;
-  }
+    public Permission(Permission source) {
+        this.id = source.id;
+        this.code = source.code;
+        this.description = source.description;
+    }
 }

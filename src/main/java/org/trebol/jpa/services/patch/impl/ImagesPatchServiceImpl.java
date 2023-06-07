@@ -33,38 +33,38 @@ import java.util.Map;
 @Service
 @NoArgsConstructor
 public class ImagesPatchServiceImpl
-  implements ImagesPatchService {
+    implements ImagesPatchService {
 
-  @Override
-  public Image patchExistingEntity(Map<String, Object> changes, Image existing) throws BadInputException {
-    Image target = new Image(existing);
+    @Override
+    public Image patchExistingEntity(Map<String, Object> changes, Image existing) throws BadInputException {
+        Image target = new Image(existing);
 
-    if (changes.containsKey("code")) {
-      String code = (String) changes.get("code");
-      if (!StringUtils.isBlank(code)) {
-        target.setCode(code);
-      }
+        if (changes.containsKey("code")) {
+            String code = (String) changes.get("code");
+            if (!StringUtils.isBlank(code)) {
+                target.setCode(code);
+            }
+        }
+
+        if (changes.containsKey("filename")) {
+            String filename = (String) changes.get("filename");
+            if (!StringUtils.isBlank(filename)) {
+                target.setFilename(filename);
+            }
+        }
+
+        if (changes.containsKey("url")) {
+            String url = (String) changes.get("url");
+            if (!StringUtils.isBlank(url)) {
+                target.setUrl(url);
+            }
+        }
+
+        return target;
     }
 
-    if (changes.containsKey("filename")) {
-      String filename = (String) changes.get("filename");
-      if (!StringUtils.isBlank(filename)) {
-        target.setFilename(filename);
-      }
+    @Override
+    public Image patchExistingEntity(ImagePojo changes, Image target) throws BadInputException {
+        throw new UnsupportedOperationException("This method signature has been deprecated");
     }
-
-    if (changes.containsKey("url")) {
-      String url = (String) changes.get("url");
-      if (!StringUtils.isBlank(url)) {
-        target.setUrl(url);
-      }
-    }
-
-    return target;
-  }
-
-  @Override
-  public Image patchExistingEntity(ImagePojo changes, Image target) throws BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
-  }
 }

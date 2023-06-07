@@ -31,21 +31,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
 class SellDetailEntity2ReceiptDetailPojoTest {
-  final SellDetailEntity2ReceiptDetailPojo instance = new SellDetailEntity2ReceiptDetailPojo();
+    final SellDetailEntity2ReceiptDetailPojo instance = new SellDetailEntity2ReceiptDetailPojo();
 
-  @Test
-  void converts_selldetail_entities_to_receiptdetail_pojos() {
-    List.of(
-      SellDetail.builder().build(),
-      SellDetail.builder().description(ANY).build(),
-      SellDetail.builder().description(ANY).unitValue(1000).build(),
-      SellDetail.builder().description(ANY).unitValue(1000).units(2).build()
-    ).forEach(selldetail -> {
-      ReceiptDetailPojo result = instance.convert(selldetail);
-      assertNotNull(result);
-      assertEquals(selldetail.getDescription(), result.getDescription());
-      assertEquals(selldetail.getUnits(), result.getUnits());
-      assertEquals(selldetail.getUnitValue(), result.getUnitValue());
-    });
-  }
+    @Test
+    void converts_selldetail_entities_to_receiptdetail_pojos() {
+        List.of(
+            SellDetail.builder().build(),
+            SellDetail.builder().description(ANY).build(),
+            SellDetail.builder().description(ANY).unitValue(1000).build(),
+            SellDetail.builder().description(ANY).unitValue(1000).units(2).build()
+        ).forEach(selldetail -> {
+            ReceiptDetailPojo result = instance.convert(selldetail);
+            assertNotNull(result);
+            assertEquals(selldetail.getDescription(), result.getDescription());
+            assertEquals(selldetail.getUnits(), result.getUnits());
+            assertEquals(selldetail.getUnitValue(), result.getUnitValue());
+        });
+    }
 }

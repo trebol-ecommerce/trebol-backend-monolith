@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 public interface PaymentTypesRepository
-  extends Repository<PaymentType> {
+    extends Repository<PaymentType> {
 
-  Optional<PaymentType> findByName(String name);
+    Optional<PaymentType> findByName(String name);
 }

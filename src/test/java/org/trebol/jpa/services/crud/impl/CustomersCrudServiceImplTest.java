@@ -42,25 +42,25 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CustomersCrudServiceImplTest {
-  @InjectMocks CustomersCrudServiceImpl instance;
-  @Mock CustomersRepository customersRepositoryMock;
-  final CustomersTestHelper customersHelper = new CustomersTestHelper();
+    @InjectMocks CustomersCrudServiceImpl instance;
+    @Mock CustomersRepository customersRepositoryMock;
+    final CustomersTestHelper customersHelper = new CustomersTestHelper();
 
-  @BeforeEach
-  void beforeEach() {
-    customersHelper.resetCustomers();
-  }
+    @BeforeEach
+    void beforeEach() {
+        customersHelper.resetCustomers();
+    }
 
-  @Test
-  void finds_by_id_number() throws BadInputException {
-    Customer expectedResult = customersHelper.customerEntityAfterCreation();
-    CustomerPojo customer = customersHelper.customerPojoForFetch();
-    when(customersRepositoryMock.findByPersonIdNumber(anyString())).thenReturn(Optional.of(expectedResult));
+    @Test
+    void finds_by_id_number() throws BadInputException {
+        Customer expectedResult = customersHelper.customerEntityAfterCreation();
+        CustomerPojo customer = customersHelper.customerPojoForFetch();
+        when(customersRepositoryMock.findByPersonIdNumber(anyString())).thenReturn(Optional.of(expectedResult));
 
-    Optional<Customer> match = instance.getExisting(customer);
+        Optional<Customer> match = instance.getExisting(customer);
 
-    verify(customersRepositoryMock).findByPersonIdNumber(customer.getPerson().getIdNumber());
-    assertTrue(match.isPresent());
-    assertEquals(expectedResult, match.get());
-  }
+        verify(customersRepositoryMock).findByPersonIdNumber(customer.getPerson().getIdNumber());
+        assertTrue(match.isPresent());
+        assertEquals(expectedResult, match.get());
+    }
 }

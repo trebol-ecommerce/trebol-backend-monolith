@@ -48,62 +48,62 @@ import static org.trebol.config.Constants.JWT_CLAIM_AUTHORITIES;
 import static org.trebol.config.Constants.JWT_PREFIX;
 
 public class JwtTokenVerifierFilter
-  extends OncePerRequestFilter {
-  private final Logger myLogger = LoggerFactory.getLogger(JwtTokenVerifierFilter.class);
-  private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
+    extends OncePerRequestFilter {
+    private final Logger myLogger = LoggerFactory.getLogger(JwtTokenVerifierFilter.class);
+    private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
 
-  public JwtTokenVerifierFilter(
-    AuthorizationHeaderParserService<Claims> jwtClaimsParserService
-  ) {
-    super();
-    this.jwtClaimsParserService = jwtClaimsParserService;
-  }
-
-  private Set<SimpleGrantedAuthority> extractAuthorities(Claims tokenBody) {
-    @SuppressWarnings("unchecked")
-    List<Map<String, String>> jwsAuthorityMap = (List<Map<String, String>>) tokenBody.get(JWT_CLAIM_AUTHORITIES);
-    Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-    for (Map<String, String> authorityKeyValuePair : jwsAuthorityMap) {
-      SimpleGrantedAuthority authority = new SimpleGrantedAuthority(authorityKeyValuePair.get("authority"));
-      authorities.add(authority);
+    public JwtTokenVerifierFilter(
+        AuthorizationHeaderParserService<Claims> jwtClaimsParserService
+    ) {
+        super();
+        this.jwtClaimsParserService = jwtClaimsParserService;
     }
-    return authorities;
-  }
 
-  @Override
-  protected void doFilterInternal(@NotNull HttpServletRequest request,
-                                  @NotNull HttpServletResponse response,
-                                  @NotNull FilterChain filterChain)
-    throws ServletException, IOException, IllegalStateException {
-
-    String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-
-    if (StringUtils.isBlank(authorizationHeader)) {
-      filterChain.doFilter(request, response);
-    } else {
-      String jwt = authorizationHeader.replace(JWT_PREFIX, "");
-      try {
-        Claims tokenBody = jwtClaimsParserService.parseToken(jwt);
-        Instant expiration = tokenBody.getExpiration().toInstant();
-        Instant now = Instant.now();
-        if (expiration.isAfter(now)) {
-          String username = tokenBody.getSubject();
-          Set<SimpleGrantedAuthority> authorities = this.extractAuthorities(tokenBody);
-          Authentication authentication = new UsernamePasswordAuthenticationToken(
-            username,
-            null,
-            authorities);
-
-          SecurityContextHolder.getContext().setAuthentication(authentication);
+    private Set<SimpleGrantedAuthority> extractAuthorities(Claims tokenBody) {
+        @SuppressWarnings("unchecked")
+        List<Map<String, String>> jwsAuthorityMap = (List<Map<String, String>>) tokenBody.get(JWT_CLAIM_AUTHORITIES);
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        for (Map<String, String> authorityKeyValuePair : jwsAuthorityMap) {
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(authorityKeyValuePair.get("authority"));
+            authorities.add(authority);
         }
-        filterChain.doFilter(request, response);
-      } catch (NullPointerException | IllegalStateException exc) {
-        myLogger.info("Access denied: '{}' '{}' used an invalid token '{}'",
-          request.getMethod(),
-          request.getRequestURI(),
-          jwt);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      }
+        return authorities;
     }
-  }
+
+    @Override
+    protected void doFilterInternal(@NotNull HttpServletRequest request,
+                                    @NotNull HttpServletResponse response,
+                                    @NotNull FilterChain filterChain)
+        throws ServletException, IOException, IllegalStateException {
+
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        if (StringUtils.isBlank(authorizationHeader)) {
+            filterChain.doFilter(request, response);
+        } else {
+            String jwt = authorizationHeader.replace(JWT_PREFIX, "");
+            try {
+                Claims tokenBody = jwtClaimsParserService.parseToken(jwt);
+                Instant expiration = tokenBody.getExpiration().toInstant();
+                Instant now = Instant.now();
+                if (expiration.isAfter(now)) {
+                    String username = tokenBody.getSubject();
+                    Set<SimpleGrantedAuthority> authorities = this.extractAuthorities(tokenBody);
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        username,
+                        null,
+                        authorities);
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+                filterChain.doFilter(request, response);
+            } catch (NullPointerException | IllegalStateException exc) {
+                myLogger.info("Access denied: '{}' '{}' used an invalid token '{}'",
+                    request.getMethod(),
+                    request.getRequestURI(),
+                    jwt);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+        }
+    }
 }

@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.services.PatchService;
 
 public interface ShippersPatchService
-  extends PatchService<ShipperPojo, Shipper> {
+    extends PatchService<ShipperPojo, Shipper> {
 }

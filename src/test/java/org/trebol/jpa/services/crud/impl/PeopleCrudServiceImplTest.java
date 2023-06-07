@@ -43,25 +43,25 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PeopleCrudServiceImplTest {
-  @InjectMocks PeopleCrudServiceImpl instance;
-  @Mock PeopleRepository peopleRepositoryMock;
-  final PeopleTestHelper peopleHelper = new PeopleTestHelper();
+    @InjectMocks PeopleCrudServiceImpl instance;
+    @Mock PeopleRepository peopleRepositoryMock;
+    final PeopleTestHelper peopleHelper = new PeopleTestHelper();
 
-  @BeforeEach
-  void beforeEach() {
-    peopleHelper.resetPeople();
-  }
+    @BeforeEach
+    void beforeEach() {
+        peopleHelper.resetPeople();
+    }
 
-  @Test
-  void finds_by_id_number() throws BadInputException {
-    PersonPojo input = peopleHelper.personPojoForFetch();
-    Person expectedResult = peopleHelper.personEntityAfterCreation();
-    when(peopleRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(expectedResult));
+    @Test
+    void finds_by_id_number() throws BadInputException {
+        PersonPojo input = peopleHelper.personPojoForFetch();
+        Person expectedResult = peopleHelper.personEntityAfterCreation();
+        when(peopleRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(expectedResult));
 
-    Optional<Person> match = instance.getExisting(input);
+        Optional<Person> match = instance.getExisting(input);
 
-    verify(peopleRepositoryMock).findByIdNumber(input.getIdNumber());
-    assertTrue(match.isPresent());
-    assertEquals(expectedResult, match.get());
-  }
+        verify(peopleRepositoryMock).findByIdNumber(input.getIdNumber());
+        assertTrue(match.isPresent());
+        assertEquals(expectedResult, match.get());
+    }
 }

@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.PatchService;
 
 public interface ProductCategoriesPatchService
-  extends PatchService<ProductCategoryPojo, ProductCategory> {
+    extends PatchService<ProductCategoryPojo, ProductCategory> {
 }

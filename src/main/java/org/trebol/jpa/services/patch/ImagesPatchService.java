@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Image;
 import org.trebol.jpa.services.PatchService;
 
 public interface ImagesPatchService
-  extends PatchService<ImagePojo, Image> {
+    extends PatchService<ImagePojo, Image> {
 }

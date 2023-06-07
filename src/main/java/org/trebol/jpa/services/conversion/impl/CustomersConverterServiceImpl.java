@@ -32,34 +32,34 @@ import org.trebol.jpa.services.conversion.PeopleConverterService;
 
 @Service
 public class CustomersConverterServiceImpl
-  implements CustomersConverterService {
-  private final PeopleConverterService peopleConverterService;
+    implements CustomersConverterService {
+    private final PeopleConverterService peopleConverterService;
 
-  @Autowired
-  public CustomersConverterServiceImpl(
-    PeopleConverterService peopleConverterService
-  ) {
-    this.peopleConverterService = peopleConverterService;
-  }
+    @Autowired
+    public CustomersConverterServiceImpl(
+        PeopleConverterService peopleConverterService
+    ) {
+        this.peopleConverterService = peopleConverterService;
+    }
 
-  @Override
-  public CustomerPojo convertToPojo(Customer source) {
-    PersonPojo targetPerson = peopleConverterService.convertToPojo(source.getPerson());
-    return CustomerPojo.builder()
-      .person(targetPerson)
-      .build();
-  }
+    @Override
+    public CustomerPojo convertToPojo(Customer source) {
+        PersonPojo targetPerson = peopleConverterService.convertToPojo(source.getPerson());
+        return CustomerPojo.builder()
+            .person(targetPerson)
+            .build();
+    }
 
-  @Override
-  public Customer convertToNewEntity(CustomerPojo source) throws BadInputException {
-    Person targetPerson = peopleConverterService.convertToNewEntity(source.getPerson());
-    return Customer.builder()
-      .person(targetPerson)
-      .build();
-  }
+    @Override
+    public Customer convertToNewEntity(CustomerPojo source) throws BadInputException {
+        Person targetPerson = peopleConverterService.convertToNewEntity(source.getPerson());
+        return Customer.builder()
+            .person(targetPerson)
+            .build();
+    }
 
-  @Override
-  public Customer applyChangesToExistingEntity(CustomerPojo source, Customer target) {
-    throw new UnsupportedOperationException("This method is deprecated");
-  }
+    @Override
+    public Customer applyChangesToExistingEntity(CustomerPojo source, Customer target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 }

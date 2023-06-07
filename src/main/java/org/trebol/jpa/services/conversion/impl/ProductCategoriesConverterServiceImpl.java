@@ -29,41 +29,41 @@ import org.trebol.jpa.services.conversion.ProductCategoriesConverterService;
 
 @Service
 public class ProductCategoriesConverterServiceImpl
-  implements ProductCategoriesConverterService {
+    implements ProductCategoriesConverterService {
 
-  private final ProductsCategoriesRepository categoriesRepository;
+    private final ProductsCategoriesRepository categoriesRepository;
 
-  @Autowired
-  public ProductCategoriesConverterServiceImpl(
-    ProductsCategoriesRepository categoriesRepository
-  ) {
-    this.categoriesRepository = categoriesRepository;
-  }
-
-  @Override
-  public ProductCategoryPojo convertToPojo(ProductCategory source) {
-    return ProductCategoryPojo.builder()
-      .code(source.getCode())
-      .name(source.getName())
-      .build();
-  }
-
-  @Override
-  public ProductCategory convertToNewEntity(ProductCategoryPojo source) {
-    ProductCategory target = ProductCategory.builder()
-      .code(source.getCode())
-      .name(source.getName())
-      .build();
-
-    if (source.getParent() != null) {
-      String parentCode = source.getParent().getCode();
-      categoriesRepository.findByCode(parentCode).ifPresent(target::setParent);
+    @Autowired
+    public ProductCategoriesConverterServiceImpl(
+        ProductsCategoriesRepository categoriesRepository
+    ) {
+        this.categoriesRepository = categoriesRepository;
     }
-    return target;
-  }
 
-  @Override
-  public ProductCategory applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory target) {
-    throw new UnsupportedOperationException("This method is deprecated");
-  }
+    @Override
+    public ProductCategoryPojo convertToPojo(ProductCategory source) {
+        return ProductCategoryPojo.builder()
+            .code(source.getCode())
+            .name(source.getName())
+            .build();
+    }
+
+    @Override
+    public ProductCategory convertToNewEntity(ProductCategoryPojo source) {
+        ProductCategory target = ProductCategory.builder()
+            .code(source.getCode())
+            .name(source.getName())
+            .build();
+
+        if (source.getParent()!=null) {
+            String parentCode = source.getParent().getCode();
+            categoriesRepository.findByCode(parentCode).ifPresent(target::setParent);
+        }
+        return target;
+    }
+
+    @Override
+    public ProductCategory applyChangesToExistingEntity(ProductCategoryPojo source, ProductCategory target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 }

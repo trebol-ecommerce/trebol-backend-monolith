@@ -48,60 +48,60 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class DataShippersControllerTest
-  extends DataCrudGenericControllerTest<ShipperPojo, Shipper> {
-  @InjectMocks DataShippersController instance;
-  @Mock PaginationService paginationServiceMock;
-  @Mock SortSpecParserService sortServiceMock;
-  @Mock ShippersCrudService crudServiceMock;
-  @Mock ShippersPredicateService predicateServiceMock;
+    extends DataCrudGenericControllerTest<ShipperPojo, Shipper> {
+    @InjectMocks DataShippersController instance;
+    @Mock PaginationService paginationServiceMock;
+    @Mock SortSpecParserService sortServiceMock;
+    @Mock ShippersCrudService crudServiceMock;
+    @Mock ShippersPredicateService predicateServiceMock;
 
-  @Override
-  @BeforeEach
-  protected void beforeEach() {
-    super.instance = instance;
-    super.crudServiceMock = crudServiceMock;
-    super.predicateServiceMock = predicateServiceMock;
-    super.sortServiceMock = sortServiceMock;
-    super.paginationServiceMock = paginationServiceMock;
-    super.beforeEach();
-  }
+    @Override
+    @BeforeEach
+    protected void beforeEach() {
+        super.instance = instance;
+        super.crudServiceMock = crudServiceMock;
+        super.predicateServiceMock = predicateServiceMock;
+        super.sortServiceMock = sortServiceMock;
+        super.paginationServiceMock = paginationServiceMock;
+        super.beforeEach();
+    }
 
-  @Test
-  void reads_products() {
-    assertDoesNotThrow(() -> {
-      super.reads_data(null);
-      super.reads_data(Map.of());
-      super.reads_data(Map.of(ANY, ANY));
-    });
-  }
+    @Test
+    void reads_products() {
+        assertDoesNotThrow(() -> {
+            super.reads_data(null);
+            super.reads_data(Map.of());
+            super.reads_data(Map.of(ANY, ANY));
+        });
+    }
 
-  @Test
-  void creates_salespeople() {
-    assertDoesNotThrow(() -> super.creates_data(ShipperPojo.builder().build()));
-  }
+    @Test
+    void creates_salespeople() {
+        assertDoesNotThrow(() -> super.creates_data(ShipperPojo.builder().build()));
+    }
 
-  @Test
-  void updates_salespeople_using_predicate_filters_map() {
-    assertDoesNotThrow(() -> {
-      ShipperPojo existingList = ShipperPojo.builder().build();
-      ShipperPojo input = ShipperPojo.builder().build();
-      Predicate predicate = new BooleanBuilder();
-      when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
-      when(crudServiceMock.update(any(), any(Predicate.class))).thenReturn(Optional.of(existingList));
+    @Test
+    void updates_salespeople_using_predicate_filters_map() {
+        assertDoesNotThrow(() -> {
+            ShipperPojo existingList = ShipperPojo.builder().build();
+            ShipperPojo input = ShipperPojo.builder().build();
+            Predicate predicate = new BooleanBuilder();
+            when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
+            when(crudServiceMock.update(any(), any(Predicate.class))).thenReturn(Optional.of(existingList));
 
-      instance.update(ShipperPojo.builder().build(), Map.of(ANY, ANY));
+            instance.update(ShipperPojo.builder().build(), Map.of(ANY, ANY));
 
-      verify(crudServiceMock).update(input, predicate);
-    });
-  }
+            verify(crudServiceMock).update(input, predicate);
+        });
+    }
 
-  @Test
-  void deletes_salespeople() {
-    assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
-  }
+    @Test
+    void deletes_salespeople() {
+        assertDoesNotThrow(() -> super.deletes_data_parsing_predicate_filters_from_map(Map.of(ANY, ANY)));
+    }
 
-  @Test
-  void does_not_delete_salespeople_when_predicate_filters_map_is_empty() {
-    assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
-  }
+    @Test
+    void does_not_delete_salespeople_when_predicate_filters_map_is_empty() {
+        assertDoesNotThrow(super::does_not_delete_data_when_predicate_filters_map_is_empty);
+    }
 }

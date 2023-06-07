@@ -38,33 +38,33 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class ProductListConverterServiceImplTest {
-  @InjectMocks ProductListConverterServiceImpl instance;
-  @Mock ProductListItemsRepository productListItemRepositoryMock;
+    @InjectMocks ProductListConverterServiceImpl instance;
+    @Mock ProductListItemsRepository productListItemRepositoryMock;
 
-  @Test
-  void converts_to_pojo() {
-    ProductList input = ProductList.builder()
-      .id(1L)
-      .name(ANY)
-      .code(ANY)
-      .build();
-    Mockito.when(productListItemRepositoryMock.count(Mockito.any(Predicate.class))).thenReturn(1L);
-    ProductListPojo result = instance.convertToPojo(input);
-    assertNotNull(result);
-    assertEquals(input.getName(), result.getName());
-    assertEquals(input.getCode(), result.getCode());
-    assertEquals(1L, result.getTotalCount());
-  }
+    @Test
+    void converts_to_pojo() {
+        ProductList input = ProductList.builder()
+            .id(1L)
+            .name(ANY)
+            .code(ANY)
+            .build();
+        Mockito.when(productListItemRepositoryMock.count(Mockito.any(Predicate.class))).thenReturn(1L);
+        ProductListPojo result = instance.convertToPojo(input);
+        assertNotNull(result);
+        assertEquals(input.getName(), result.getName());
+        assertEquals(input.getCode(), result.getCode());
+        assertEquals(1L, result.getTotalCount());
+    }
 
-  @Test
-  void converts_to_new_entity() throws BadInputException {
-    ProductListPojo input = ProductListPojo.builder()
-      .name(ANY)
-      .code(ANY)
-      .build();
-    ProductList result = instance.convertToNewEntity(input);
-    assertNotNull(result);
-    assertEquals(input.getName(), result.getName());
-    assertEquals(input.getCode(), result.getCode());
-  }
+    @Test
+    void converts_to_new_entity() throws BadInputException {
+        ProductListPojo input = ProductListPojo.builder()
+            .name(ANY)
+            .code(ANY)
+            .build();
+        ProductList result = instance.convertToNewEntity(input);
+        assertNotNull(result);
+        assertEquals(input.getName(), result.getName());
+        assertEquals(input.getCode(), result.getCode());
+    }
 }

@@ -30,14 +30,14 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 public interface ProductsCategoriesRepository
-  extends Repository<ProductCategory> {
+    extends Repository<ProductCategory> {
 
-  Optional<ProductCategory> findByCode(String code);
+    Optional<ProductCategory> findByCode(String code);
 
-  List<ProductCategory> findByName(String code);
+    List<ProductCategory> findByName(String code);
 
-  List<ProductCategory> findByParent(ProductCategory parent);
+    List<ProductCategory> findByParent(ProductCategory parent);
 
-  @Query("SELECT r.id FROM ProductCategory r WHERE r.parent.id = :parentId")
-  List<Long> findIdsByParentId(@Param("parentId") Long parentId);
+    @Query("SELECT r.id FROM ProductCategory r WHERE r.parent.id = :parentId")
+    List<Long> findIdsByParentId(@Param("parentId") Long parentId);
 }

@@ -34,38 +34,38 @@ import java.util.Map;
 @Transactional
 @Service
 public class UsersPatchServiceImpl
-  implements UsersPatchService {
-  private final UserRolesRepository rolesRepository;
+    implements UsersPatchService {
+    private final UserRolesRepository rolesRepository;
 
-  public UsersPatchServiceImpl(
-    UserRolesRepository rolesRepository
-  ) {
-    this.rolesRepository = rolesRepository;
-  }
-
-  @Override
-  public User patchExistingEntity(Map<String, Object> changes, User existing) throws BadInputException {
-    User target = new User(existing);
-
-    if (changes.containsKey("name")) {
-      String name = (String) changes.get("name");
-      if (!StringUtils.isBlank(name)) {
-        target.setName(name);
-      }
+    public UsersPatchServiceImpl(
+        UserRolesRepository rolesRepository
+    ) {
+        this.rolesRepository = rolesRepository;
     }
 
-    if (changes.containsKey("role")) {
-      String roleName = (String) changes.get("role");
-      if (!StringUtils.isBlank(roleName)) {
-        rolesRepository.findByName(roleName).ifPresent(target::setUserRole);
-      }
+    @Override
+    public User patchExistingEntity(Map<String, Object> changes, User existing) throws BadInputException {
+        User target = new User(existing);
+
+        if (changes.containsKey("name")) {
+            String name = (String) changes.get("name");
+            if (!StringUtils.isBlank(name)) {
+                target.setName(name);
+            }
+        }
+
+        if (changes.containsKey("role")) {
+            String roleName = (String) changes.get("role");
+            if (!StringUtils.isBlank(roleName)) {
+                rolesRepository.findByName(roleName).ifPresent(target::setUserRole);
+            }
+        }
+
+        return target;
     }
 
-    return target;
-  }
-
-  @Override
-  public User patchExistingEntity(UserPojo changes, User existing) throws BadInputException {
-    throw new UnsupportedOperationException("This method signature has been deprecated");
-  }
+    @Override
+    public User patchExistingEntity(UserPojo changes, User existing) throws BadInputException {
+        throw new UnsupportedOperationException("This method signature has been deprecated");
+    }
 }

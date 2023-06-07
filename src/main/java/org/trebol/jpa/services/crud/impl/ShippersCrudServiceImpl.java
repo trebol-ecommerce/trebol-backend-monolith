@@ -38,27 +38,27 @@ import java.util.Optional;
 @Transactional
 @Service
 public class ShippersCrudServiceImpl
-  extends CrudGenericService<ShipperPojo, Shipper>
-  implements ShippersCrudService {
-  private final ShippersRepository shippersRepository;
+    extends CrudGenericService<ShipperPojo, Shipper>
+    implements ShippersCrudService {
+    private final ShippersRepository shippersRepository;
 
-  @Autowired
-  public ShippersCrudServiceImpl(
-    ShippersRepository shippersRepository,
-    ShippersConverterService shippersConverterService,
-    ShippersPatchService shippersPatchService
-  ) {
-    super(shippersRepository, shippersConverterService, shippersPatchService);
-    this.shippersRepository = shippersRepository;
-  }
-
-  @Override
-  public Optional<Shipper> getExisting(ShipperPojo input) throws BadInputException {
-    String name = input.getName();
-    if (StringUtils.isBlank(name)) {
-      throw new BadInputException("Billing type has no name");
-    } else {
-      return shippersRepository.findByName(name);
+    @Autowired
+    public ShippersCrudServiceImpl(
+        ShippersRepository shippersRepository,
+        ShippersConverterService shippersConverterService,
+        ShippersPatchService shippersPatchService
+    ) {
+        super(shippersRepository, shippersConverterService, shippersPatchService);
+        this.shippersRepository = shippersRepository;
     }
-  }
+
+    @Override
+    public Optional<Shipper> getExisting(ShipperPojo input) throws BadInputException {
+        String name = input.getName();
+        if (StringUtils.isBlank(name)) {
+            throw new BadInputException("Billing type has no name");
+        } else {
+            return shippersRepository.findByName(name);
+        }
+    }
 }

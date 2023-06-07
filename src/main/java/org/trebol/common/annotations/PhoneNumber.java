@@ -34,9 +34,9 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = PhoneNumberValidator.class)
 public @interface PhoneNumber {
 
-  String message() default "Phone number is not valid";
+    String message() default "Phone number is not valid";
 
-  Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-  Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }

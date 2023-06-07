@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Address;
 import org.trebol.jpa.services.ConverterService;
 
 public interface AddressesConverterService
-  extends ConverterService<AddressPojo, Address> {
+    extends ConverterService<AddressPojo, Address> {
 }

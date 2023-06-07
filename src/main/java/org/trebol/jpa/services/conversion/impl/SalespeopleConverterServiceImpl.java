@@ -32,34 +32,34 @@ import org.trebol.jpa.services.conversion.SalespeopleConverterService;
 
 @Service
 public class SalespeopleConverterServiceImpl
-  implements SalespeopleConverterService {
-  private final PeopleConverterService peopleConverterService;
+    implements SalespeopleConverterService {
+    private final PeopleConverterService peopleConverterService;
 
-  @Autowired
-  public SalespeopleConverterServiceImpl(
-    PeopleConverterService peopleConverterService
-  ) {
-    this.peopleConverterService = peopleConverterService;
-  }
+    @Autowired
+    public SalespeopleConverterServiceImpl(
+        PeopleConverterService peopleConverterService
+    ) {
+        this.peopleConverterService = peopleConverterService;
+    }
 
-  @Override
-  public SalespersonPojo convertToPojo(Salesperson source) {
-    PersonPojo targetPerson = peopleConverterService.convertToPojo(source.getPerson());
-    return SalespersonPojo.builder()
-      .person(targetPerson)
-      .build();
-  }
+    @Override
+    public SalespersonPojo convertToPojo(Salesperson source) {
+        PersonPojo targetPerson = peopleConverterService.convertToPojo(source.getPerson());
+        return SalespersonPojo.builder()
+            .person(targetPerson)
+            .build();
+    }
 
-  @Override
-  public Salesperson convertToNewEntity(SalespersonPojo source) throws BadInputException {
-    Person targetPerson = peopleConverterService.convertToNewEntity(source.getPerson());
-    return Salesperson.builder()
-      .person(targetPerson)
-      .build();
-  }
+    @Override
+    public Salesperson convertToNewEntity(SalespersonPojo source) throws BadInputException {
+        Person targetPerson = peopleConverterService.convertToNewEntity(source.getPerson());
+        return Salesperson.builder()
+            .person(targetPerson)
+            .build();
+    }
 
-  @Override
-  public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson target) {
-    throw new UnsupportedOperationException("This method is deprecated");
-  }
+    @Override
+    public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 }

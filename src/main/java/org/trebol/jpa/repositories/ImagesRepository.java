@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 public interface ImagesRepository
-  extends Repository<Image> {
+    extends Repository<Image> {
 
-  Optional<Image> findByFilename(String filename);
+    Optional<Image> findByFilename(String filename);
 }

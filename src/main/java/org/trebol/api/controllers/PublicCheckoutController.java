@@ -26,7 +26,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
 import org.trebol.api.models.SellPojo;
 import org.trebol.api.services.CheckoutService;
@@ -46,118 +54,120 @@ import java.util.Map;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.SEE_OTHER;
-import static org.trebol.config.Constants.*;
+import static org.trebol.config.Constants.AUTHORITY_CHECKOUT;
+import static org.trebol.config.Constants.WEBPAY_ABORTION_TOKEN_HEADER_NAME;
+import static org.trebol.config.Constants.WEBPAY_SUCCESS_TOKEN_HEADER_NAME;
 
 @RestController
 @RequestMapping("/public/checkout")
 public class PublicCheckoutController {
-  private final CheckoutService service;
-  private final SalesCrudService salesCrudService;
-  private final SalesPredicateService salesPredicateService;
-  @Nullable
-  private final MailingService mailingService;
+    private final CheckoutService service;
+    private final SalesCrudService salesCrudService;
+    private final SalesPredicateService salesPredicateService;
+    @Nullable
+    private final MailingService mailingService;
 
-  @Autowired
-  public PublicCheckoutController(
-    CheckoutService service,
-    SalesCrudService salesCrudService,
-    SalesPredicateService salesPredicateService,
-    @Autowired(required = false) MailingService mailingService
-  ) {
-    this.service = service;
-    this.salesCrudService = salesCrudService;
-    this.salesPredicateService = salesPredicateService;
-    this.mailingService = mailingService;
-  }
-
-  /**
-   * Save a new transaction, forward request to checkout server, and save the generated token for later validation
-   *
-   * @param transactionRequest The checkout details
-   * @return An object wrapping the URL and token to redirect the user with, towards their payment page.
-   * @throws BadInputException       If the input models class contains invalid data
-   * @throws PaymentServiceException If an error happens during the payment
-   *                                 payment process
-   */
-  @PostMapping({"", "/"})
-  @PreAuthorize("hasAuthority('" + AUTHORITY_CHECKOUT + "')")
-  public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody SellPojo transactionRequest)
-    throws BadInputException, PaymentServiceException, EntityExistsException {
-    // TODO this is the root of all evil. "creating a sale" here definitely sounds wrong - while "creating an order" does not.
-    SellPojo createdTransaction = salesCrudService.create(transactionRequest);
-    return service.requestTransactionStart(createdTransaction);
-  }
-
-  /**
-   * Validate token sent from WebPay Plus after a succesful transaction
-   *
-   * @param transactionData The HTTP headers
-   * @return A 303 SEE OTHER response
-   * @throws BadInputException       If the expected token is not present in the request
-   * @throws EntityNotFoundException If the token does not match that of any "pending" transaction
-   * @throws PaymentServiceException If an error happens during internal API calls
-   */
-  @GetMapping({"/validate", "/validate/"})
-  public ResponseEntity<Void> validateSuccesfulTransaction(@RequestParam Map<String, String> transactionData)
-    throws BadInputException, EntityNotFoundException, PaymentServiceException, MailingServiceException {
-    if (!transactionData.containsKey(WEBPAY_SUCCESS_TOKEN_HEADER_NAME)) { // success
-      throw new BadInputException("No transaction token was provided");
+    @Autowired
+    public PublicCheckoutController(
+        CheckoutService service,
+        SalesCrudService salesCrudService,
+        SalesPredicateService salesPredicateService,
+        @Autowired(required = false) MailingService mailingService
+    ) {
+        this.service = service;
+        this.salesCrudService = salesCrudService;
+        this.salesPredicateService = salesPredicateService;
+        this.mailingService = mailingService;
     }
-    String token = transactionData.get(WEBPAY_SUCCESS_TOKEN_HEADER_NAME);
-    SellPojo sellPojo = service.confirmTransaction(token, false);
-    if (this.mailingService != null) {
-      mailingService.notifyOrderStatusToClient(sellPojo);
+
+    /**
+     * Save a new transaction, forward request to checkout server, and save the generated token for later validation
+     *
+     * @param transactionRequest The checkout details
+     * @return An object wrapping the URL and token to redirect the user with, towards their payment page.
+     * @throws BadInputException       If the input models class contains invalid data
+     * @throws PaymentServiceException If an error happens during the payment
+     *                                 payment process
+     */
+    @PostMapping({"", "/"})
+    @PreAuthorize("hasAuthority('" + AUTHORITY_CHECKOUT + "')")
+    public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody SellPojo transactionRequest)
+        throws BadInputException, PaymentServiceException, EntityExistsException {
+        // TODO this is the root of all evil. "creating a sale" here definitely sounds wrong - while "creating an order" does not.
+        SellPojo createdTransaction = salesCrudService.create(transactionRequest);
+        return service.requestTransactionStart(createdTransaction);
     }
-    URI transactionUri = service.generateResultPageUrl(token);
-    return ResponseEntity
-      .status(SEE_OTHER)
-      .location(transactionUri)
-      .build();
-  }
 
-  /**
-   * Validate token sent from WebPay Plus after a transaction was aborted
-   *
-   * @param transactionData The HTTP headers
-   * @return A 303 SEE OTHER response
-   * @throws BadInputException       If the expected token is not present in the request
-   * @throws EntityNotFoundException If the token does not match that of any "pending" transaction
-   * @throws PaymentServiceException If an error happens during internal API calls
-   */
-  @PostMapping({"/validate", "/validate/"})
-  public ResponseEntity<Void> validateAbortedTransaction(@RequestParam Map<String, String> transactionData)
-    throws BadInputException, EntityNotFoundException, PaymentServiceException {
-
-    if (!transactionData.containsKey(WEBPAY_ABORTION_TOKEN_HEADER_NAME)) { // aborted
-      throw new BadInputException("No transaction token was provided");
+    /**
+     * Validate token sent from WebPay Plus after a succesful transaction
+     *
+     * @param transactionData The HTTP headers
+     * @return A 303 SEE OTHER response
+     * @throws BadInputException       If the expected token is not present in the request
+     * @throws EntityNotFoundException If the token does not match that of any "pending" transaction
+     * @throws PaymentServiceException If an error happens during internal API calls
+     */
+    @GetMapping({"/validate", "/validate/"})
+    public ResponseEntity<Void> validateSuccesfulTransaction(@RequestParam Map<String, String> transactionData)
+        throws BadInputException, EntityNotFoundException, PaymentServiceException, MailingServiceException {
+        if (!transactionData.containsKey(WEBPAY_SUCCESS_TOKEN_HEADER_NAME)) { // success
+            throw new BadInputException("No transaction token was provided");
+        }
+        String token = transactionData.get(WEBPAY_SUCCESS_TOKEN_HEADER_NAME);
+        SellPojo sellPojo = service.confirmTransaction(token, false);
+        if (this.mailingService!=null) {
+            mailingService.notifyOrderStatusToClient(sellPojo);
+        }
+        URI transactionUri = service.generateResultPageUrl(token);
+        return ResponseEntity
+            .status(SEE_OTHER)
+            .location(transactionUri)
+            .build();
     }
-    String token = transactionData.get(WEBPAY_ABORTION_TOKEN_HEADER_NAME);
-    service.confirmTransaction(token, true);
-    URI resultPageUrl = service.generateResultPageUrl(token);
-    return ResponseEntity
-      .status(SEE_OTHER)
-      .location(resultPageUrl)
-      .build();
-  }
 
-  /**
-   * Fetch result of transaction after it has been confirmed and validated
-   *
-   * @param token The token used during the transaction
-   * @return An object with all available data about the transaction
-   * @throws EntityNotFoundException when no transaction matched the provided token
-   */
-  @GetMapping({"/result/{token}", "/result/{token}/"})
-  public SellPojo getTransactionResultFor(@NotBlank @PathVariable String token)
-    throws EntityNotFoundException {
-    Map<String, String> tokenMatcher = Maps.of("token", token).build();
-    Predicate withMatchingToken = salesPredicateService.parseMap(tokenMatcher);
-    return salesCrudService.readOne(withMatchingToken);
-  }
+    /**
+     * Validate token sent from WebPay Plus after a transaction was aborted
+     *
+     * @param transactionData The HTTP headers
+     * @return A 303 SEE OTHER response
+     * @throws BadInputException       If the expected token is not present in the request
+     * @throws EntityNotFoundException If the token does not match that of any "pending" transaction
+     * @throws PaymentServiceException If an error happens during internal API calls
+     */
+    @PostMapping({"/validate", "/validate/"})
+    public ResponseEntity<Void> validateAbortedTransaction(@RequestParam Map<String, String> transactionData)
+        throws BadInputException, EntityNotFoundException, PaymentServiceException {
 
-  @ResponseStatus(INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(PaymentServiceException.class)
-  public String handleException(PaymentServiceException ex) {
-    return ex.getMessage();
-  }
+        if (!transactionData.containsKey(WEBPAY_ABORTION_TOKEN_HEADER_NAME)) { // aborted
+            throw new BadInputException("No transaction token was provided");
+        }
+        String token = transactionData.get(WEBPAY_ABORTION_TOKEN_HEADER_NAME);
+        service.confirmTransaction(token, true);
+        URI resultPageUrl = service.generateResultPageUrl(token);
+        return ResponseEntity
+            .status(SEE_OTHER)
+            .location(resultPageUrl)
+            .build();
+    }
+
+    /**
+     * Fetch result of transaction after it has been confirmed and validated
+     *
+     * @param token The token used during the transaction
+     * @return An object with all available data about the transaction
+     * @throws EntityNotFoundException when no transaction matched the provided token
+     */
+    @GetMapping({"/result/{token}", "/result/{token}/"})
+    public SellPojo getTransactionResultFor(@NotBlank @PathVariable String token)
+        throws EntityNotFoundException {
+        Map<String, String> tokenMatcher = Maps.of("token", token).build();
+        Predicate withMatchingToken = salesPredicateService.parseMap(tokenMatcher);
+        return salesCrudService.readOne(withMatchingToken);
+    }
+
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(PaymentServiceException.class)
+    public String handleException(PaymentServiceException ex) {
+        return ex.getMessage();
+    }
 }

@@ -30,31 +30,31 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.trebol.testing.TestConstants.ANY;
 
 class BillingTypesConverterServiceImplTest {
-  BillingTypesConverterServiceImpl instance;
+    BillingTypesConverterServiceImpl instance;
 
-  @BeforeEach
-  void beforeEach() {
-    instance = new BillingTypesConverterServiceImpl();
-  }
+    @BeforeEach
+    void beforeEach() {
+        instance = new BillingTypesConverterServiceImpl();
+    }
 
-  @Test
-  void converts_to_pojo() {
-    BillingType input = BillingType.builder()
-      .id(1L)
-      .name(ANY)
-      .build();
-    BillingTypePojo result = instance.convertToPojo(input);
-    assertNotNull(result);
-    assertEquals(input.getName(), result.getName());
-  }
+    @Test
+    void converts_to_pojo() {
+        BillingType input = BillingType.builder()
+            .id(1L)
+            .name(ANY)
+            .build();
+        BillingTypePojo result = instance.convertToPojo(input);
+        assertNotNull(result);
+        assertEquals(input.getName(), result.getName());
+    }
 
-  @Test
-  void converts_to_new_entity() {
-    BillingTypePojo input = BillingTypePojo.builder()
-      .name(ANY)
-      .build();
-    BillingType result = instance.convertToNewEntity(input);
-    assertNotNull(result);
-    assertEquals(input.getName(), result.getName());
-  }
+    @Test
+    void converts_to_new_entity() {
+        BillingTypePojo input = BillingTypePojo.builder()
+            .name(ANY)
+            .build();
+        BillingType result = instance.convertToNewEntity(input);
+        assertNotNull(result);
+        assertEquals(input.getName(), result.getName());
+    }
 }

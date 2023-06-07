@@ -30,7 +30,9 @@ import org.trebol.api.services.ProfileService;
 
 import java.security.Principal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,39 +40,39 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class AccountProfileControllerTest {
-  @InjectMocks AccountProfileController instance;
-  @Mock ProfileService userProfileServiceMock;
+    @InjectMocks AccountProfileController instance;
+    @Mock ProfileService userProfileServiceMock;
 
-  @Test
-  void fetches_profile() {
-    PersonPojo expectedResult = PersonPojo.builder().build();
-    when(userProfileServiceMock.getProfileFromUserName(anyString())).thenReturn(expectedResult);
+    @Test
+    void fetches_profile() {
+        PersonPojo expectedResult = PersonPojo.builder().build();
+        when(userProfileServiceMock.getProfileFromUserName(anyString())).thenReturn(expectedResult);
 
-    PersonPojo result = instance.getProfile(new SimplePrincipal());
+        PersonPojo result = instance.getProfile(new SimplePrincipal());
 
-    assertNotNull(result);
-    assertEquals(expectedResult, result);
-  }
-
-  @Test
-  void updates_profile() {
-    assertDoesNotThrow(() -> {
-      PersonPojo changes = PersonPojo.builder()
-        .idNumber(ANY)
-        .firstName(ANY)
-        .lastName(ANY)
-        .email(ANY)
-        .build();
-      instance.updateProfile(new SimplePrincipal(), changes);
-      verify(userProfileServiceMock).updateProfileForUserWithName(ANY, changes);
-    });
-  }
-
-  static class SimplePrincipal
-    implements Principal {
-    @Override
-    public String getName() {
-      return ANY;
+        assertNotNull(result);
+        assertEquals(expectedResult, result);
     }
-  }
+
+    @Test
+    void updates_profile() {
+        assertDoesNotThrow(() -> {
+            PersonPojo changes = PersonPojo.builder()
+                .idNumber(ANY)
+                .firstName(ANY)
+                .lastName(ANY)
+                .email(ANY)
+                .build();
+            instance.updateProfile(new SimplePrincipal(), changes);
+            verify(userProfileServiceMock).updateProfileForUserWithName(ANY, changes);
+        });
+    }
+
+    static class SimplePrincipal
+        implements Principal {
+        @Override
+        public String getName() {
+            return ANY;
+        }
+    }
 }

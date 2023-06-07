@@ -41,34 +41,34 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SalespeopleConverterServiceImplTest {
-  @InjectMocks SalespeopleConverterServiceImpl instance;
-  @Mock PeopleConverterService peopleServiceMock;
-  final SalespeopleTestHelper salespeopleTestHelper = new SalespeopleTestHelper();
+    @InjectMocks SalespeopleConverterServiceImpl instance;
+    @Mock PeopleConverterService peopleServiceMock;
+    final SalespeopleTestHelper salespeopleTestHelper = new SalespeopleTestHelper();
 
-  @BeforeEach
-  void beforeEach() {
-    salespeopleTestHelper.resetSalespeople();
-  }
+    @BeforeEach
+    void beforeEach() {
+        salespeopleTestHelper.resetSalespeople();
+    }
 
-  @Test
-  void converts_to_pojo() {
-    PersonPojo expectedPersonPojo = PersonPojo.builder().build();
-    Salesperson input = salespeopleTestHelper.salespersonEntityAfterCreation();
-    when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
-    SalespersonPojo result = instance.convertToPojo(input);
-    assertNotNull(result);
-    assertEquals(expectedPersonPojo, result.getPerson());
-  }
+    @Test
+    void converts_to_pojo() {
+        PersonPojo expectedPersonPojo = PersonPojo.builder().build();
+        Salesperson input = salespeopleTestHelper.salespersonEntityAfterCreation();
+        when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
+        SalespersonPojo result = instance.convertToPojo(input);
+        assertNotNull(result);
+        assertEquals(expectedPersonPojo, result.getPerson());
+    }
 
-  @Test
-  void converts_to_new_entity() throws BadInputException {
-    Person expectedPerson = Person.builder()
-      .id(1L)
-      .build();
-    SalespersonPojo input = salespeopleTestHelper.salespersonPojoBeforeCreation();
-    when(peopleServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(expectedPerson);
-    Salesperson result = instance.convertToNewEntity(input);
-    assertNotNull(result);
-    assertEquals(expectedPerson, result.getPerson());
-  }
+    @Test
+    void converts_to_new_entity() throws BadInputException {
+        Person expectedPerson = Person.builder()
+            .id(1L)
+            .build();
+        SalespersonPojo input = salespeopleTestHelper.salespersonPojoBeforeCreation();
+        when(peopleServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(expectedPerson);
+        Salesperson result = instance.convertToNewEntity(input);
+        assertNotNull(result);
+        assertEquals(expectedPerson, result.getPerson());
+    }
 }

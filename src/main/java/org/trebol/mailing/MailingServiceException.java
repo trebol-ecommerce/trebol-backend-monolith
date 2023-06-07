@@ -21,13 +21,13 @@
 package org.trebol.mailing;
 
 public class MailingServiceException
-  extends Exception {
+    extends Exception {
 
-  public MailingServiceException(String string) {
-    super(string);
-  }
+    public MailingServiceException(String string) {
+        super(string);
+    }
 
-  public MailingServiceException(String string, Throwable throwable) {
-    super(string, throwable);
-  }
+    public MailingServiceException(String string, Throwable throwable) {
+        super(string, throwable);
+    }
 }

@@ -38,27 +38,27 @@ import java.util.Optional;
 @Transactional
 @Service
 public class BillingCompaniesCrudServiceImpl
-  extends CrudGenericService<BillingCompanyPojo, BillingCompany>
-  implements BillingCompaniesCrudService {
-  private final BillingCompaniesRepository companiesRepository;
+    extends CrudGenericService<BillingCompanyPojo, BillingCompany>
+    implements BillingCompaniesCrudService {
+    private final BillingCompaniesRepository companiesRepository;
 
-  @Autowired
-  public BillingCompaniesCrudServiceImpl(
-    BillingCompaniesRepository companiesRepository,
-    BillingCompaniesConverterService companiesConverterService,
-    BillingCompaniesPatchService companiesPatchService
-  ) {
-    super(companiesRepository, companiesConverterService, companiesPatchService);
-    this.companiesRepository = companiesRepository;
-  }
-
-  @Override
-  public Optional<BillingCompany> getExisting(BillingCompanyPojo input) throws BadInputException {
-    String idNumber = input.getIdNumber();
-    if (StringUtils.isBlank(idNumber)) {
-      throw new BadInputException("Billing company has no id number");
-    } else {
-      return companiesRepository.findByIdNumber(idNumber);
+    @Autowired
+    public BillingCompaniesCrudServiceImpl(
+        BillingCompaniesRepository companiesRepository,
+        BillingCompaniesConverterService companiesConverterService,
+        BillingCompaniesPatchService companiesPatchService
+    ) {
+        super(companiesRepository, companiesConverterService, companiesPatchService);
+        this.companiesRepository = companiesRepository;
     }
-  }
+
+    @Override
+    public Optional<BillingCompany> getExisting(BillingCompanyPojo input) throws BadInputException {
+        String idNumber = input.getIdNumber();
+        if (StringUtils.isBlank(idNumber)) {
+            throw new BadInputException("Billing company has no id number");
+        } else {
+            return companiesRepository.findByIdNumber(idNumber);
+        }
+    }
 }

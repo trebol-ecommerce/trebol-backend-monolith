@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.services.ConverterService;
 
 public interface ShippersConverterService
-  extends ConverterService<ShipperPojo, Shipper> {
+    extends ConverterService<ShipperPojo, Shipper> {
 }

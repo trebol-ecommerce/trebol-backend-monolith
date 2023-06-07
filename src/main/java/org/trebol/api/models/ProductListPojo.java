@@ -37,9 +37,9 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
 public class ProductListPojo {
-  private String name;
-  @NotEmpty
-  private String code;
-  @JsonInclude(NON_DEFAULT)
-  private long totalCount;
+    private String name;
+    @NotEmpty
+    private String code;
+    @JsonInclude(NON_DEFAULT)
+    private long totalCount;
 }

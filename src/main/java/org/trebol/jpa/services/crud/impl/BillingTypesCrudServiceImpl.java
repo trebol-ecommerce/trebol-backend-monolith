@@ -38,27 +38,27 @@ import java.util.Optional;
 @Transactional
 @Service
 public class BillingTypesCrudServiceImpl
-  extends CrudGenericService<BillingTypePojo, BillingType>
-  implements BillingTypesCrudService {
-  private final BillingTypesRepository typesRepository;
+    extends CrudGenericService<BillingTypePojo, BillingType>
+    implements BillingTypesCrudService {
+    private final BillingTypesRepository typesRepository;
 
-  @Autowired
-  public BillingTypesCrudServiceImpl(
-    BillingTypesRepository typesRepository,
-    BillingTypesConverterService typesConverterService,
-    BillingTypesPatchService typesPatchService
-  ) {
-    super(typesRepository, typesConverterService, typesPatchService);
-    this.typesRepository = typesRepository;
-  }
-
-  @Override
-  public Optional<BillingType> getExisting(BillingTypePojo input) throws BadInputException {
-    String name = input.getName();
-    if (StringUtils.isBlank(name)) {
-      throw new BadInputException("Billing type has no name");
-    } else {
-      return typesRepository.findByName(name);
+    @Autowired
+    public BillingTypesCrudServiceImpl(
+        BillingTypesRepository typesRepository,
+        BillingTypesConverterService typesConverterService,
+        BillingTypesPatchService typesPatchService
+    ) {
+        super(typesRepository, typesConverterService, typesPatchService);
+        this.typesRepository = typesRepository;
     }
-  }
+
+    @Override
+    public Optional<BillingType> getExisting(BillingTypePojo input) throws BadInputException {
+        String name = input.getName();
+        if (StringUtils.isBlank(name)) {
+            throw new BadInputException("Billing type has no name");
+        } else {
+            return typesRepository.findByName(name);
+        }
+    }
 }

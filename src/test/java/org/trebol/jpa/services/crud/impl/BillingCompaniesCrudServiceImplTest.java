@@ -42,23 +42,23 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class BillingCompaniesCrudServiceImplTest {
-  @InjectMocks BillingCompaniesCrudServiceImpl instance;
-  @Mock BillingCompaniesRepository billingCompaniesRepositoryMock;
+    @InjectMocks BillingCompaniesCrudServiceImpl instance;
+    @Mock BillingCompaniesRepository billingCompaniesRepositoryMock;
 
-  @Test
-  void finds_by_id_number() throws BadInputException {
-    BillingCompanyPojo input = BillingCompanyPojo.builder()
-      .idNumber(ANY)
-      .build();
-    BillingCompany expectedResult = BillingCompany.builder()
-      .id(1L)
-      .idNumber(ANY)
-      .name(ANY)
-      .build();
-    when(billingCompaniesRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(expectedResult));
-    Optional<BillingCompany> match = instance.getExisting(input);
-    assertTrue(match.isPresent());
-    assertEquals(expectedResult, match.get());
-    verify(billingCompaniesRepositoryMock).findByIdNumber(input.getIdNumber());
-  }
+    @Test
+    void finds_by_id_number() throws BadInputException {
+        BillingCompanyPojo input = BillingCompanyPojo.builder()
+            .idNumber(ANY)
+            .build();
+        BillingCompany expectedResult = BillingCompany.builder()
+            .id(1L)
+            .idNumber(ANY)
+            .name(ANY)
+            .build();
+        when(billingCompaniesRepositoryMock.findByIdNumber(anyString())).thenReturn(Optional.of(expectedResult));
+        Optional<BillingCompany> match = instance.getExisting(input);
+        assertTrue(match.isPresent());
+        assertEquals(expectedResult, match.get());
+        verify(billingCompaniesRepositoryMock).findByIdNumber(input.getIdNumber());
+    }
 }

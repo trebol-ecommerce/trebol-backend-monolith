@@ -42,50 +42,50 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtGuestAuthenticationFilter
-  extends GenericJwtAuthenticationFilter {
-  private final Logger myLogger = LoggerFactory.getLogger(JwtGuestAuthenticationFilter.class);
-  private final AuthenticationManager authenticationManager;
-  private final CustomersCrudService customersService;
-  private  final SecurityProperties securityProperties;
+    extends GenericJwtAuthenticationFilter {
+    private final Logger myLogger = LoggerFactory.getLogger(JwtGuestAuthenticationFilter.class);
+    private final AuthenticationManager authenticationManager;
+    private final CustomersCrudService customersService;
+    private final SecurityProperties securityProperties;
 
-  public JwtGuestAuthenticationFilter(
-    SecurityProperties securityProperties,
-    SecretKey secretKey,
-    AuthenticationManager authenticationManager,
-    CustomersCrudService customersService
-  ) {
-    super(securityProperties, secretKey);
-    this.securityProperties = securityProperties;
-    this.authenticationManager = authenticationManager;
-    this.customersService = customersService;
-  }
-
-  @Override
-  public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-    throws AuthenticationException {
-    if (!HttpMethod.POST.matches(request.getMethod())) {
-      return null;
-    } else {
-      try {
-        PersonPojo guestCustomerData = new ObjectMapper().readValue(request.getInputStream(), PersonPojo.class);
-        this.saveCustomerData(guestCustomerData);
-        final String credential = securityProperties.getGuestUserName();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(credential, credential);
-        return authenticationManager.authenticate(authentication);
-      } catch (IOException e) {
-        throw new BadCredentialsException("Invalid request body for guest session");
-      } catch (BadInputException e) {
-        throw new BadCredentialsException("Insufficient or invalid profile data for guest");
-      }
+    public JwtGuestAuthenticationFilter(
+        SecurityProperties securityProperties,
+        SecretKey secretKey,
+        AuthenticationManager authenticationManager,
+        CustomersCrudService customersService
+    ) {
+        super(securityProperties, secretKey);
+        this.securityProperties = securityProperties;
+        this.authenticationManager = authenticationManager;
+        this.customersService = customersService;
     }
-  }
 
-  private void saveCustomerData(PersonPojo guestData) throws BadInputException {
-    try {
-      CustomerPojo targetCustomer = CustomerPojo.builder().person(guestData).build();
-      customersService.create(targetCustomer);
-    } catch (EntityExistsException e) {
-      myLogger.info("Guest with idNumber={} is already registered in the database", guestData.getIdNumber());
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+        throws AuthenticationException {
+        if (!HttpMethod.POST.matches(request.getMethod())) {
+            return null;
+        } else {
+            try {
+                PersonPojo guestCustomerData = new ObjectMapper().readValue(request.getInputStream(), PersonPojo.class);
+                this.saveCustomerData(guestCustomerData);
+                final String credential = securityProperties.getGuestUserName();
+                Authentication authentication = new UsernamePasswordAuthenticationToken(credential, credential);
+                return authenticationManager.authenticate(authentication);
+            } catch (IOException e) {
+                throw new BadCredentialsException("Invalid request body for guest session");
+            } catch (BadInputException e) {
+                throw new BadCredentialsException("Insufficient or invalid profile data for guest");
+            }
+        }
     }
-  }
+
+    private void saveCustomerData(PersonPojo guestData) throws BadInputException {
+        try {
+            CustomerPojo targetCustomer = CustomerPojo.builder().person(guestData).build();
+            customersService.create(targetCustomer);
+        } catch (EntityExistsException e) {
+            myLogger.info("Guest with idNumber={} is already registered in the database", guestData.getIdNumber());
+        }
+    }
 }

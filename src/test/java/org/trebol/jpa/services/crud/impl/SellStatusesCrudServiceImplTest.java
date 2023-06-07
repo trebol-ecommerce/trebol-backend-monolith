@@ -41,22 +41,22 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SellStatusesCrudServiceImplTest {
-  @InjectMocks SellStatusesCrudServiceImpl instance;
-  @Mock SellStatusesRepository sellStatusesRepositoryMock;
+    @InjectMocks SellStatusesCrudServiceImpl instance;
+    @Mock SellStatusesRepository sellStatusesRepositoryMock;
 
-  @Test
-  void finds_by_name() throws BadInputException {
-    String statusName = "example sell status name";
-    SellStatusPojo input = SellStatusPojo.builder()
-      .name(statusName)
-      .build();
-    SellStatus expectedResult = new SellStatus(1L, 0, statusName);
-    when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
+    @Test
+    void finds_by_name() throws BadInputException {
+        String statusName = "example sell status name";
+        SellStatusPojo input = SellStatusPojo.builder()
+            .name(statusName)
+            .build();
+        SellStatus expectedResult = new SellStatus(1L, 0, statusName);
+        when(sellStatusesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(expectedResult));
 
-    Optional<SellStatus> match = instance.getExisting(input);
+        Optional<SellStatus> match = instance.getExisting(input);
 
-    verify(sellStatusesRepositoryMock).findByName(statusName);
-    assertTrue(match.isPresent());
-    assertEquals(expectedResult, match.get());
-  }
+        verify(sellStatusesRepositoryMock).findByName(statusName);
+        assertTrue(match.isPresent());
+        assertEquals(expectedResult, match.get());
+    }
 }

@@ -26,9 +26,9 @@ import javax.persistence.EntityNotFoundException;
 
 @NoArgsConstructor
 public class UserNotFoundException
-  extends EntityNotFoundException {
+    extends EntityNotFoundException {
 
-  public UserNotFoundException(String message) {
-    super(message);
-  }
+    public UserNotFoundException(String message) {
+        super(message);
+    }
 }

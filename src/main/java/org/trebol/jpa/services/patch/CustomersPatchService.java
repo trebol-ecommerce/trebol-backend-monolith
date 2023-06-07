@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.PatchService;
 
 public interface CustomersPatchService
-  extends PatchService<CustomerPojo, Customer> {
+    extends PatchService<CustomerPojo, Customer> {
 }

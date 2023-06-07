@@ -28,7 +28,8 @@ import java.io.Serializable;
  * methods <code>findById</code> and <code>getById</code>.
  */
 public interface DBEntity
-  extends Serializable {
-  Long getId();
-  void setId(Long id);
+    extends Serializable {
+    Long getId();
+
+    void setId(Long id);
 }

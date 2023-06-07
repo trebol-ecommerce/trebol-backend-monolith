@@ -30,11 +30,11 @@ import java.util.Set;
  */
 public interface UserPermissionsService {
 
-  /**
-   * Fetches the {@link java.util.Set} of unique permissions associated to a given user.
-   *
-   * @param user The user to fetch permissions for.
-   * @return A Set of permission entities.
-   */
-  Set<Permission> loadPermissionsForUser(User user);
+    /**
+     * Fetches the {@link java.util.Set} of unique permissions associated to a given user.
+     *
+     * @param user The user to fetch permissions for.
+     * @return A Set of permission entities.
+     */
+    Set<Permission> loadPermissionsForUser(User user);
 }

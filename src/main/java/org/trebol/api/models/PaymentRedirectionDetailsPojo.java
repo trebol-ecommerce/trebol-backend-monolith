@@ -35,6 +35,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude
 public class PaymentRedirectionDetailsPojo {
-  private String url;
-  private String token;
+    private String url;
+    private String token;
 }

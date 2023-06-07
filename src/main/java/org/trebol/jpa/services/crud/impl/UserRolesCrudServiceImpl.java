@@ -38,27 +38,27 @@ import java.util.Optional;
 @Transactional
 @Service
 public class UserRolesCrudServiceImpl
-  extends CrudGenericService<UserRolePojo, UserRole>
-  implements UserRolesCrudService {
-  private final UserRolesRepository rolesRepository;
+    extends CrudGenericService<UserRolePojo, UserRole>
+    implements UserRolesCrudService {
+    private final UserRolesRepository rolesRepository;
 
-  @Autowired
-  public UserRolesCrudServiceImpl(
-    UserRolesRepository rolesRepository,
-    UserRolesConverterService rolesConverterService,
-    UserRolesPatchService rolesPatchService
-  ) {
-    super(rolesRepository, rolesConverterService, rolesPatchService);
-    this.rolesRepository = rolesRepository;
-  }
-
-  @Override
-  public Optional<UserRole> getExisting(UserRolePojo input) throws BadInputException {
-    String name = input.getName();
-    if (StringUtils.isBlank(name)) {
-      throw new BadInputException("Invalid user role name");
-    } else {
-      return rolesRepository.findByName(name);
+    @Autowired
+    public UserRolesCrudServiceImpl(
+        UserRolesRepository rolesRepository,
+        UserRolesConverterService rolesConverterService,
+        UserRolesPatchService rolesPatchService
+    ) {
+        super(rolesRepository, rolesConverterService, rolesPatchService);
+        this.rolesRepository = rolesRepository;
     }
-  }
+
+    @Override
+    public Optional<UserRole> getExisting(UserRolePojo input) throws BadInputException {
+        String name = input.getName();
+        if (StringUtils.isBlank(name)) {
+            throw new BadInputException("Invalid user role name");
+        } else {
+            return rolesRepository.findByName(name);
+        }
+    }
 }

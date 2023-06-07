@@ -20,10 +20,21 @@
 
 package org.trebol.jpa.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.trebol.jpa.DBEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "shippers")
@@ -35,18 +46,18 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 public class Shipper
-  implements DBEntity {
-  private static final long serialVersionUID = 18L;
+    implements DBEntity {
+    private static final long serialVersionUID = 18L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "shipper_id", nullable = false)
-  private Long id;
-  @Column(name = "shipper_name", nullable = false, unique = true)
-  private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "shipper_id", nullable = false)
+    private Long id;
+    @Column(name = "shipper_name", nullable = false, unique = true)
+    private String name;
 
-  public Shipper(Shipper source) {
-    this.id = source.id;
-    this.name = source.name;
-  }
+    public Shipper(Shipper source) {
+        this.id = source.id;
+        this.name = source.name;
+    }
 }

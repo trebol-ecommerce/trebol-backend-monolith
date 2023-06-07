@@ -23,14 +23,27 @@ package org.trebol.api.controllers;
 import com.querydsl.core.types.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.models.DataPagePojo;
 import org.trebol.api.models.ProductPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.jpa.entities.*;
+import org.trebol.jpa.entities.Product;
+import org.trebol.jpa.entities.ProductList;
+import org.trebol.jpa.entities.ProductListItem;
 import org.trebol.jpa.repositories.ProductListItemsRepository;
 import org.trebol.jpa.repositories.ProductListsRepository;
 import org.trebol.jpa.services.SortSpecParserService;
@@ -41,135 +54,139 @@ import org.trebol.jpa.sortspecs.ProductListItemsSortSpec;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/data/product_list_contents")
 public class DataProductListContentsController {
-  private static final String ITEM_NOT_FOUND = "Requested item(s) not found";
-  private final PaginationService paginationService;
-  private final SortSpecParserService sortService;
-  private final ProductListItemsRepository listItemsRepository;
-  private final ProductListsRepository listsRepository;
-  private final ProductListItemsPredicateService listItemsPredicateService;
-  private final ProductsCrudService productCrudService;
-  private final ProductListItemsConverterService itemConverterService;
+    private static final String ITEM_NOT_FOUND = "Requested item(s) not found";
+    private final PaginationService paginationService;
+    private final SortSpecParserService sortService;
+    private final ProductListItemsRepository listItemsRepository;
+    private final ProductListsRepository listsRepository;
+    private final ProductListItemsPredicateService listItemsPredicateService;
+    private final ProductsCrudService productCrudService;
+    private final ProductListItemsConverterService itemConverterService;
 
-  @Autowired
-  public DataProductListContentsController(
-    PaginationService paginationService,
-    SortSpecParserService sortService,
-    ProductListItemsRepository listItemsRepository,
-    ProductListsRepository listsRepository,
-    ProductListItemsPredicateService listItemsPredicateService,
-    ProductsCrudService productCrudService,
-    ProductListItemsConverterService itemConverterService
-  ) {
-    this.paginationService = paginationService;
-    this.sortService = sortService;
-    this.listItemsRepository = listItemsRepository;
-    this.listsRepository = listsRepository;
-    this.listItemsPredicateService = listItemsPredicateService;
-    this.productCrudService = productCrudService;
-    this.itemConverterService = itemConverterService;
-  }
-
-  @GetMapping({"", "/"})
-  public DataPagePojo<ProductPojo> readContents(@RequestParam Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    Optional<ProductList> match = this.fetchProductListByCode(requestParams);
-    if (match.isEmpty()) {
-      throw new EntityNotFoundException(ITEM_NOT_FOUND);
+    @Autowired
+    public DataProductListContentsController(
+        PaginationService paginationService,
+        SortSpecParserService sortService,
+        ProductListItemsRepository listItemsRepository,
+        ProductListsRepository listsRepository,
+        ProductListItemsPredicateService listItemsPredicateService,
+        ProductsCrudService productCrudService,
+        ProductListItemsConverterService itemConverterService
+    ) {
+        this.paginationService = paginationService;
+        this.sortService = sortService;
+        this.listItemsRepository = listItemsRepository;
+        this.listsRepository = listsRepository;
+        this.listItemsPredicateService = listItemsPredicateService;
+        this.productCrudService = productCrudService;
+        this.itemConverterService = itemConverterService;
     }
 
-    int pageIndex = paginationService.determineRequestedPageIndex(requestParams);
-    int pageSize = paginationService.determineRequestedPageSize(requestParams);
-
-    Pageable pagination;
-    if (requestParams.containsKey("sortBy")) {
-      Sort order = sortService.parse(ProductListItemsSortSpec.ORDER_SPEC_MAP, requestParams);
-      pagination = PageRequest.of(pageIndex, pageSize, order);
-    } else {
-      pagination = PageRequest.of(pageIndex, pageSize);
-    }
-
-    Predicate predicate = listItemsPredicateService.parseMap(requestParams);
-    Page<ProductListItem> listItems = listItemsRepository.findAll(predicate, pagination);
-    List<ProductPojo> products = new ArrayList<>();
-    for (ProductListItem item : listItems) {
-      ProductPojo productPojo = itemConverterService.convertToPojo(item);
-      products.add(productPojo);
-    }
-    long totalCount = listItemsRepository.count(QProductListItem.productListItem.list.id.eq(match.get().getId()));
-
-    return new DataPagePojo<>(products, pageIndex, totalCount, pageSize);
-  }
-
-  @PostMapping({"", "/"})
-  @PreAuthorize("hasAuthority('product_lists:contents')")
-  public void addToContents(@Valid @RequestBody ProductPojo input,
-                            @RequestParam Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
-    if (listMatch.isEmpty()) {
-      throw new EntityNotFoundException(ITEM_NOT_FOUND);
-    }
-
-    Optional<Product> productMatch = productCrudService.getExisting(input);
-    if (productMatch.isPresent()) {
-      ProductListItem listItem = ProductListItem.builder()
-        .list(listMatch.get())
-        .product(productMatch.get())
-        .build();
-      if (!listItemsRepository.exists(Example.of(listItem))) {
-        listItemsRepository.save(listItem);
-      }
-    }
-  }
-
-  @PutMapping({"", "/"})
-  @PreAuthorize("hasAuthority('product_lists:contents')")
-  public void updateContents(@RequestBody Collection<ProductPojo> input,
-                             @RequestParam Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
-    if (listMatch.isEmpty()) {
-      throw new EntityNotFoundException(ITEM_NOT_FOUND);
-    }
-
-    listItemsRepository.deleteByListId(listMatch.get().getId());
-    for (ProductPojo p : input) {
-      Optional<Product> productMatch = productCrudService.getExisting(p);
-      if (productMatch.isPresent()) {
-        ProductListItem listItem = ProductListItem.builder()
-          .list(listMatch.get())
-          .product(productMatch.get())
-          .build();
-        if (!listItemsRepository.exists(Example.of(listItem))) {
-          listItemsRepository.save(listItem);
+    @GetMapping({"", "/"})
+    public DataPagePojo<ProductPojo> readContents(@RequestParam Map<String, String> requestParams)
+        throws BadInputException, EntityNotFoundException {
+        Optional<ProductList> match = this.fetchProductListByCode(requestParams);
+        if (match.isEmpty()) {
+            throw new EntityNotFoundException(ITEM_NOT_FOUND);
         }
-      }
-    }
-  }
 
-  @DeleteMapping({"", "/"})
-  @PreAuthorize("hasAuthority('product_lists:contents')")
-  public void deleteFromContents(@RequestParam Map<String, String> requestParams)
-    throws BadInputException, EntityNotFoundException {
-    Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
-    if (listMatch.isEmpty()) {
-      throw new EntityNotFoundException(ITEM_NOT_FOUND);
+        int pageIndex = paginationService.determineRequestedPageIndex(requestParams);
+        int pageSize = paginationService.determineRequestedPageSize(requestParams);
+
+        Pageable pagination;
+        if (requestParams.containsKey("sortBy")) {
+            Sort order = sortService.parse(ProductListItemsSortSpec.ORDER_SPEC_MAP, requestParams);
+            pagination = PageRequest.of(pageIndex, pageSize, order);
+        } else {
+            pagination = PageRequest.of(pageIndex, pageSize);
+        }
+
+        Predicate predicate = listItemsPredicateService.parseMap(requestParams);
+        Page<ProductListItem> listItems = listItemsRepository.findAll(predicate, pagination);
+        List<ProductPojo> products = new ArrayList<>();
+        for (ProductListItem item : listItems) {
+            ProductPojo productPojo = itemConverterService.convertToPojo(item);
+            products.add(productPojo);
+        }
+        long totalCount = listItemsRepository.count(QProductListItem.productListItem.list.id.eq(match.get().getId()));
+
+        return new DataPagePojo<>(products, pageIndex, totalCount, pageSize);
     }
 
-    Predicate predicate = listItemsPredicateService.parseMap(requestParams);
-    listItemsRepository.deleteAll(listItemsRepository.findAll(predicate));
-  }
+    @PostMapping({"", "/"})
+    @PreAuthorize("hasAuthority('product_lists:contents')")
+    public void addToContents(@Valid @RequestBody ProductPojo input,
+                              @RequestParam Map<String, String> requestParams)
+        throws BadInputException, EntityNotFoundException {
+        Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
+        if (listMatch.isEmpty()) {
+            throw new EntityNotFoundException(ITEM_NOT_FOUND);
+        }
 
-  private Optional<ProductList> fetchProductListByCode(Map<String, String> requestParams) throws BadInputException {
-    String listCode = requestParams.get("listCode");
-    if (StringUtils.isBlank(listCode)) {
-      throw new BadInputException("listCode query param is required");
+        Optional<Product> productMatch = productCrudService.getExisting(input);
+        if (productMatch.isPresent()) {
+            ProductListItem listItem = ProductListItem.builder()
+                .list(listMatch.get())
+                .product(productMatch.get())
+                .build();
+            if (!listItemsRepository.exists(Example.of(listItem))) {
+                listItemsRepository.save(listItem);
+            }
+        }
     }
-    return listsRepository.findOne(QProductList.productList.code.eq(listCode));
-  }
+
+    @PutMapping({"", "/"})
+    @PreAuthorize("hasAuthority('product_lists:contents')")
+    public void updateContents(@RequestBody Collection<ProductPojo> input,
+                               @RequestParam Map<String, String> requestParams)
+        throws BadInputException, EntityNotFoundException {
+        Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
+        if (listMatch.isEmpty()) {
+            throw new EntityNotFoundException(ITEM_NOT_FOUND);
+        }
+
+        listItemsRepository.deleteByListId(listMatch.get().getId());
+        for (ProductPojo p : input) {
+            Optional<Product> productMatch = productCrudService.getExisting(p);
+            if (productMatch.isPresent()) {
+                ProductListItem listItem = ProductListItem.builder()
+                    .list(listMatch.get())
+                    .product(productMatch.get())
+                    .build();
+                if (!listItemsRepository.exists(Example.of(listItem))) {
+                    listItemsRepository.save(listItem);
+                }
+            }
+        }
+    }
+
+    @DeleteMapping({"", "/"})
+    @PreAuthorize("hasAuthority('product_lists:contents')")
+    public void deleteFromContents(@RequestParam Map<String, String> requestParams)
+        throws BadInputException, EntityNotFoundException {
+        Optional<ProductList> listMatch = this.fetchProductListByCode(requestParams);
+        if (listMatch.isEmpty()) {
+            throw new EntityNotFoundException(ITEM_NOT_FOUND);
+        }
+
+        Predicate predicate = listItemsPredicateService.parseMap(requestParams);
+        listItemsRepository.deleteAll(listItemsRepository.findAll(predicate));
+    }
+
+    private Optional<ProductList> fetchProductListByCode(Map<String, String> requestParams) throws BadInputException {
+        String listCode = requestParams.get("listCode");
+        if (StringUtils.isBlank(listCode)) {
+            throw new BadInputException("listCode query param is required");
+        }
+        return listsRepository.findOne(QProductList.productList.code.eq(listCode));
+    }
 }

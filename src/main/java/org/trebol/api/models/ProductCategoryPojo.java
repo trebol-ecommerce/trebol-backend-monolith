@@ -36,10 +36,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @AllArgsConstructor
 @JsonInclude
 public class ProductCategoryPojo {
-  @NotBlank
-  private String code;
-  @NotBlank
-  private String name;
-  @JsonInclude(NON_NULL)
-  private ProductCategoryPojo parent;
+    @NotBlank
+    private String code;
+    @NotBlank
+    private String name;
+    @JsonInclude(NON_NULL)
+    private ProductCategoryPojo parent;
 }

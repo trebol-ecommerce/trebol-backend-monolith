@@ -25,5 +25,5 @@ import org.trebol.jpa.entities.ProductCategory;
 import org.trebol.jpa.services.ConverterService;
 
 public interface ProductCategoriesConverterService
-  extends ConverterService<ProductCategoryPojo, ProductCategory> {
+    extends ConverterService<ProductCategoryPojo, ProductCategory> {
 }

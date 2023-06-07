@@ -29,6 +29,6 @@ import org.trebol.jpa.services.ConverterService;
 import java.util.Collection;
 
 public interface ProductsConverterService
-  extends ConverterService<ProductPojo, Product> {
-  Collection<ImagePojo> convertImagesToPojo(Collection<ProductImage> productImages);
+    extends ConverterService<ProductPojo, Product> {
+    Collection<ImagePojo> convertImagesToPojo(Collection<ProductImage> productImages);
 }

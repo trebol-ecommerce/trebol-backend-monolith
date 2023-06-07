@@ -38,27 +38,27 @@ import java.util.Optional;
 @Transactional
 @Service
 public class PeopleCrudServiceImpl
-  extends CrudGenericService<PersonPojo, Person>
-  implements PeopleCrudService {
-  private final PeopleRepository peopleRepository;
+    extends CrudGenericService<PersonPojo, Person>
+    implements PeopleCrudService {
+    private final PeopleRepository peopleRepository;
 
-  @Autowired
-  public PeopleCrudServiceImpl(
-    PeopleRepository peopleRepository,
-    PeopleConverterService peopleConverterService,
-    PeoplePatchService peoplePatchService
-  ) {
-    super(peopleRepository, peopleConverterService, peoplePatchService);
-    this.peopleRepository = peopleRepository;
-  }
-
-  @Override
-  public Optional<Person> getExisting(PersonPojo input) throws BadInputException {
-    String idCard = input.getIdNumber();
-    if (StringUtils.isBlank(idCard)) {
-      throw new BadInputException("Customer does not have ID card");
-    } else {
-      return peopleRepository.findByIdNumber(idCard);
+    @Autowired
+    public PeopleCrudServiceImpl(
+        PeopleRepository peopleRepository,
+        PeopleConverterService peopleConverterService,
+        PeoplePatchService peoplePatchService
+    ) {
+        super(peopleRepository, peopleConverterService, peoplePatchService);
+        this.peopleRepository = peopleRepository;
     }
-  }
+
+    @Override
+    public Optional<Person> getExisting(PersonPojo input) throws BadInputException {
+        String idCard = input.getIdNumber();
+        if (StringUtils.isBlank(idCard)) {
+            throw new BadInputException("Customer does not have ID card");
+        } else {
+            return peopleRepository.findByIdNumber(idCard);
+        }
+    }
 }
