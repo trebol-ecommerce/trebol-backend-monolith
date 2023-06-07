@@ -245,14 +245,14 @@ public class SalesConverterServiceImpl
       } else {
         target.setBillingCompany(existingCompany.get());
       }
-    }
-    AddressPojo pojoBillingAddress = model.getBillingAddress();
-    Optional<Address> existingBillingAddress = this.findAddress(pojoBillingAddress);
-    if (existingBillingAddress.isEmpty()) {
-      Address address = addressesConverterService.convertToNewEntity(pojoBillingAddress);
-      target.setBillingAddress(address);
-    } else {
-      target.setBillingAddress(existingBillingAddress.get());
+      AddressPojo pojoBillingAddress = model.getBillingAddress();
+      Optional<Address> existingBillingAddress = this.findAddress(pojoBillingAddress);
+      if (existingBillingAddress.isEmpty()) {
+        Address address = addressesConverterService.convertToNewEntity(pojoBillingAddress);
+        target.setBillingAddress(address);
+      } else {
+        target.setBillingAddress(existingBillingAddress.get());
+      }
     }
   }
 
