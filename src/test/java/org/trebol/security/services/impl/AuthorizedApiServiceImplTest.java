@@ -14,7 +14,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class AuthorizedApiServiceImplTest {
+class AuthorizedApiServiceImplTest {
     AuthorizedApiServiceImpl instance;
     List<GrantedAuthority> dummyAuthorities;
 

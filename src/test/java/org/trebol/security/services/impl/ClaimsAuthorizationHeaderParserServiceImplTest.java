@@ -20,7 +20,7 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = SecurityTestingConfig.class)
-public class ClaimsAuthorizationHeaderParserServiceImplTest {
+class ClaimsAuthorizationHeaderParserServiceImplTest {
     ClaimsAuthorizationHeaderParserServiceImpl instance;
     @Autowired SecretKey secretKey;
 
