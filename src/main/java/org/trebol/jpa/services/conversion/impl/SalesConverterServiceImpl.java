@@ -220,7 +220,7 @@ public class SalesConverterServiceImpl
     throw new UnsupportedOperationException("This method is deprecated");
   }
 
-  private void convertPaymentTypeInformationForEntity(SellPojo model, Sell target) {
+  private void convertPaymentTypeInformationForEntity(SellPojo model, Sell target) throws BadInputException {
     String paymentType = model.getPaymentType();
     if (!StringUtils.isBlank(paymentType)) {
       paymentTypesRepository.findByName(paymentType)
@@ -228,6 +228,8 @@ public class SalesConverterServiceImpl
           () -> {
             throw new RuntimeException("The payment type does not exist");
           });
+    } else {
+      throw new BadInputException("A payment type has to be included");
     }
   }
 
