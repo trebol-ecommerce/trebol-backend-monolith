@@ -44,6 +44,7 @@ import org.trebol.jpa.repositories.AddressesRepository;
 import org.trebol.jpa.repositories.BillingTypesRepository;
 import org.trebol.jpa.repositories.PaymentTypesRepository;
 import org.trebol.jpa.repositories.ProductsRepository;
+import org.trebol.jpa.repositories.SellStatusesRepository;
 import org.trebol.jpa.repositories.ShippersRepository;
 import org.trebol.jpa.services.conversion.AddressesConverterService;
 import org.trebol.jpa.services.conversion.BillingCompaniesConverterService;
@@ -60,6 +61,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.trebol.config.Constants.BILLING_TYPE_ENTERPRISE;
+import static org.trebol.config.Constants.SELL_STATUS_PENDING;
 
 @Transactional
 @Service
@@ -76,6 +78,7 @@ public class SalesConverterServiceImpl
   private final ShippersRepository shippersRepository;
   private final AddressesRepository addressesRepository;
   private final PaymentTypesRepository paymentTypesRepository;
+  private final SellStatusesRepository sellStatusesRepository;
   private final AddressesConverterService addressesConverterService;
   static final double TAX_PERCENT = 0.19; // TODO refactor into a "tax service" of sorts
   static final String UNEXISTING_BILLING_TYPE = "Specified billing type does not exist";
@@ -93,6 +96,7 @@ public class SalesConverterServiceImpl
     ShippersRepository shippersRepository,
     AddressesRepository addressesRepository,
     PaymentTypesRepository paymentTypesRepository,
+    SellStatusesRepository sellStatusesRepository,
     AddressesConverterService addressesConverterService
   ) {
     this.customersCrudService = customersCrudService;
@@ -106,6 +110,7 @@ public class SalesConverterServiceImpl
     this.shippersRepository = shippersRepository;
     this.addressesRepository = addressesRepository;
     this.paymentTypesRepository = paymentTypesRepository;
+    this.sellStatusesRepository = sellStatusesRepository;
     this.addressesConverterService = addressesConverterService;
   }
 
@@ -158,6 +163,8 @@ public class SalesConverterServiceImpl
     if (model.getDate() != null) {
       target.setDate(model.getDate());
     }
+    sellStatusesRepository.findByName(SELL_STATUS_PENDING)
+      .ifPresent(target::setStatus);
     this.convertPaymentTypeInformationForEntity(model, target);
     this.convertCustomerInformationForEntity(model, target);
     this.convertBillingInformationForEntity(model, target);
