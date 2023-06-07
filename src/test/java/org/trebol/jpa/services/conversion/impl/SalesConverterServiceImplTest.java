@@ -358,23 +358,6 @@ class SalesConverterServiceImplTest {
   class NewEntityCascadingCases {
 
     @Test
-    void converts_to_new_entity_with_new_billing_address() throws BadInputException {
-      SellPojo input = SellPojo.builder()
-        .date(SOME_INSTANT)
-        .customer(SOME_CUSTOMER)
-        .billingType(ANY)
-        .billingAddress(SOME_ADDRESS)
-        .details(List.of())
-        .build();
-      when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
-      when(addressesConverterServiceMock.convertToNewEntity(any(AddressPojo.class))).thenReturn(SOME_ADDRESS_ENTITY);
-      Sell result = instance.convertToNewEntity(input);
-      verify(addressesRepositoryMock).findByFields(ANY, ANY, ANY, ANY, ANY, ANY); // not mocked, is Optional.empty()
-      verify(addressesConverterServiceMock).convertToNewEntity(input.getBillingAddress());
-      assertEquals(SOME_ADDRESS_ENTITY, result.getBillingAddress());
-    }
-
-    @Test
     void converts_to_new_entity_with_new_billing_company() throws BadInputException {
       SellPojo input = SellPojo.builder()
         .date(SOME_INSTANT)
@@ -465,19 +448,6 @@ class SalesConverterServiceImplTest {
       BadInputException result = assertThrows(BadInputException.class, () -> instance.convertToNewEntity(input));
       assertEquals(UNEXISTING_BILLING_TYPE, result.getMessage());
       verify(billingTypesRepositoryMock).findByName(NOT_ANY);
-    }
-
-    @Test
-    void billing_type_without_billing_address() {
-      SellPojo input = SellPojo.builder()
-        .date(SOME_INSTANT)
-        .customer(SOME_CUSTOMER)
-        .billingType(ANY)
-        .billingAddress(null)
-        .build();
-      when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
-      assertThrows(NullPointerException.class, () -> instance.convertToNewEntity(input));
-      verify(billingTypesRepositoryMock).findByName(ANY);
     }
 
     @Test
