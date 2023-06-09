@@ -98,7 +98,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Now excluding API models and JPA entities
   - Added tests for all remaining security components as well as the Webpay Plus integration service
 
-## [v0.1.0] - 2023-02-17 VERSION RESET
+## [v0.1.0] - 2023-02-17
+
+This is the first tagged version that is filed under the new project artifact,
+`trebol-backend-monolith`.
 
 ### Added
 
@@ -199,6 +202,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Using a better fitted java11 method of String to check for emptiness - **Thank you `@NyorJa`**
+
+# OLD VERSION NUMBERING
+
+From here and below, the project used to have another artifact name and version.
+It was reset because the author didn't feel that the software was very polished,
+so in turn, tagging versions as `v3.0` and onwards felt misleading.
 
 ## [v3.0.0.rc-1] - 2022-08-18
 
