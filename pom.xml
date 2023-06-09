@@ -45,14 +45,11 @@
     <!-- Dependencies -->
     <maven.compiler.version>3.9.0</maven.compiler.version>
     <maven.war-packaging.version>3.3.2</maven.war-packaging.version>
-    <project-lombok.version>1.18.26</project-lombok.version>
     <jjwt.version>0.11.5</jjwt.version>
-    <mockito.version>4.0.0</mockito.version>
     <unirest.version>3.13.8</unirest.version>
 
     <!-- Plugins configuration -->
     <java.endorsed-api.dir>${project.build.directory}/endorsed</java.endorsed-api.dir>
-    <querydsl.apt.version>4.2.2</querydsl.apt.version>
     <querydsl.apt.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.apt.dir>
     <jacoco.codeCoverage.minRatio>0.20</jacoco.codeCoverage.minRatio>
     <groovy.version>3.0.7</groovy.version> <!-- temp fix for inconsistent use of API in REST Assured -->
@@ -78,7 +75,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
-      <version>${mockito.version}</version>
+      <version>4.0.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -210,7 +207,7 @@
             <path>
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
-              <version>${project-lombok.version}</version>
+              <version>1.18.26</version>
             </path>
           </annotationProcessorPaths>
         </configuration>
@@ -236,7 +233,7 @@
           <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
-            <version>${querydsl.apt.version}</version>
+            <version>4.2.2</version>
           </dependency>
         </dependencies>
       </plugin>
