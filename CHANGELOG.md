@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Missing validation for request bodies of `PUT` methods in `/data/*` controllers
 
-## [v0.2.1] - 2023-06-27
+## [v0.2.1] - 2023-06-06
 
 ### Changed
 
