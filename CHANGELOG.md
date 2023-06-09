@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update GitHub issue templates, contribution guidelines and reformat `*.md` files
+- Removed properties in `pom.xml` that were only used once
+- Updated project dependencies
+  - lombok `1.18.24` -> `1.18.26`
+  - h2 database `2.1.212` -> `2.1.214`
 
 ### Fixed
 
