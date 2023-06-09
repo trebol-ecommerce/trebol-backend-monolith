@@ -82,7 +82,7 @@ public class DataUsersController
     @Override
     @PutMapping({"", "/"})
     @PreAuthorize("hasAuthority('users:update')")
-    public void update(@RequestBody UserPojo input, @RequestParam Map<String, String> requestParams)
+    public void update(@Valid @RequestBody UserPojo input, @RequestParam Map<String, String> requestParams)
         throws BadInputException, EntityNotFoundException {
         super.update(input, requestParams);
     }

@@ -80,7 +80,7 @@ public class DataProductsController
     @Override
     @PutMapping({"", "/"})
     @PreAuthorize("hasAuthority('products:update')")
-    public void update(@RequestBody ProductPojo input, @RequestParam Map<String, String> requestParams)
+    public void update(@Valid @RequestBody ProductPojo input, @RequestParam Map<String, String> requestParams)
         throws BadInputException, EntityNotFoundException {
         super.update(input, requestParams);
     }
