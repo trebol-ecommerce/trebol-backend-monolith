@@ -50,7 +50,7 @@
 
     <!-- Plugins configuration -->
     <java.endorsed-api.dir>${project.build.directory}/endorsed</java.endorsed-api.dir>
-    <querydsl.apt.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.apt.dir>
+    <querydsl.classes.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.classes.dir>
     <jacoco.codeCoverage.minRatio>0.20</jacoco.codeCoverage.minRatio>
     <groovy.version>3.0.7</groovy.version> <!-- temp fix for inconsistent use of API in REST Assured -->
 
@@ -224,7 +224,7 @@
               <goal>process</goal>
             </goals>
             <configuration>
-              <outputDirectory>${querydsl.apt.dir}</outputDirectory>
+              <outputDirectory>${querydsl.classes.dir}</outputDirectory>
               <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>
