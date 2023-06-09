@@ -22,14 +22,23 @@
 
 ## Current Status
 
-Implementing [Trébol API v1.7.2](https://github.com/trebol-ecommerce/api/blob/v1.7.2/src/trebol-api.json).
+Although some time has passed since I started working on Trébol, it is still in an early version.
+I have learned many things in the process: design patterns and their limits; several details and how-to's going
+about Spring Boot; and also usage of other libraries (see [Features](#features) below) and even Git itself.
 
-Recently, the artifact, group and version of the project as described in the `pom.xml` were changed.
-The roadmap from here isn't totally defined, but conditions to reach `v1.0` are certainly stricter than before.
+Currently, this backend implementation is aligned to
+[Trébol API v1.7.2](https://github.com/trebol-ecommerce/api/blob/v1.7.2/src/trebol-api.json).
 
-Please take a look at the `CHANGELOG.md` file to review the most recent changes and additions to the codebase.
+Recently, the artifact, group and version of the project as described in the
+[Project Object Model file](pom.xml) were changed.
+The roadmap from here on isn't totally defined, but conditions to reach `v1.0` are certainly stricter than before.
 
-## Features 🚀
+If anything, the foremost priority as of now is to warrant that the basic functionality is implemented correctly,
+with the aid of thorough unit testing.
+
+Please take a look at the [changelog file](CHANGELOG.md) to review the most recent changes, additions and fixes.
+
+## Features
 
 * Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api) and supports
   all the operations described by the document, such as
