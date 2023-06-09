@@ -1,4 +1,5 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
@@ -30,27 +31,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Support for partial updates using `PATCH` request in these endpoints
-    - `/data/products`
-    - `/data/sales`
-    - `/data/users`
-    - `/data/images`
-    - `/data/product_categories`
-    - `/data/shippers`
-    - `/data/product_lists`
+  - `/data/products`
+  - `/data/sales`
+  - `/data/users`
+  - `/data/images`
+  - `/data/product_categories`
+  - `/data/shippers`
+  - `/data/product_lists`
 
 ### Changed
 
 - Update `CrudService` signature methods
   - `update` - now meant as a method to fully update a data registry or item
-  - `partialUpdate` - new method; meant to update part(s) of a data registry or item (former behavior of the `update` method)
+  - `partialUpdate` - new method; meant to update part(s) of a data registry or item (former behavior of the `update`
+    method)
 - Update `PatchService` signature methods
   - `patchExistingEntity` method relies on a `Map<String, Object>` as first parameter, instead of a `<P>` object
     - The previous method signature has been deprecated in favor of this one
 - All `@Entity` classes implement a new `DBEntity` interface
   - This interface declares a getter & setter pair for an `id` field. Most entities already had one anyway.
-  - This is made to easily integrate the `partialUpdate` method with database numeric primary keys, represented by the `findById` repositories
+  - This is made to easily integrate the `partialUpdate` method with database numeric primary keys, represented by
+    the `findById` repositories
 - Update base `CrudGenericService` implementation
-  - `partialUpdate` method is implemented, being fully-aware of the `DBEntity` interface to pass the `id` to an existing target entity
+  - `partialUpdate` method is implemented, being fully-aware of the `DBEntity` interface to pass the `id` to an existing
+    target entity
   - `create` and `update` methods now share extremely similar logic
     - Their only difference is that the `update` method syncs the entity `id` before being saved and flushed
   - `prepareEntityWithUpdatesFromPojo` renamed to `flushPartialChanges`
@@ -74,10 +78,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Calls to `/checkout` using an invalid sell will output a `400` error (bad input from user) instead of `500` (bad state of the server)
-- Add a check in two `GenericCrudService` methods, `partialUpdate` and `update`, both overloaded with a QueryDSL `Predicate` as a second method argument
+- Calls to `/checkout` using an invalid sell will output a `400` error (bad input from user) instead of `500` (bad state
+  of the server)
+- Add a check in two `GenericCrudService` methods, `partialUpdate` and `update`, both overloaded with a
+  QueryDSL `Predicate` as a second method argument
   - Validate that said `Predicate` only ever matches one record
-  - This behavior *could* change in the future, but for now it is a deliberate choice to avoid them affecting more than one registry at a time
+  - This behavior *could* change in the future, but for now it is a deliberate choice to avoid them affecting more than
+    one registry at a time
 
 ## [v0.1.1] - 2023-03-23
 
@@ -99,33 +106,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [.editorconfig](https://editorconfig.org) file
   - Enforces Unix-style line endings (LF)
 - `PhoneNumber` annotation for validating phone numbers - **Thank you `@mepox`**
-  - Use custom `PhoneNumberValidator`, subclass of `javax.validation.ValidationConstraint`, which validates using regular expression
+  - Use custom `PhoneNumberValidator`, subclass of `javax.validation.ValidationConstraint`, which validates using
+    regular expression
   - Configure the regular expression through `trebol.validation.phonenumber-regexp` in `application.properties`
 - Account protection mechanism by `user_id` - **Thank you `@mepox`**
   - Any attempt to delete one certain user account will be cancelled
-  - The protected user account must have the same `id` indicated by `trebol.security.protected-account-id` in `application.properties`
+  - The protected user account must have the same `id` indicated by `trebol.security.protected-account-id`
+    in `application.properties`
 - Spring Security Test dependency for integration tests that deal with Spring Security mechanisms
 
 ### Changed
 
-- [WIP] **BREAKING CHANGE** Split logic in services that implement `ICrudJpaService` (now `CrudService`) and extend `GenericCrudJpaService` (now `CrudGenericService`)
-  - Introduce `PatchService<P, E>` to keep specific domain-dependant boilerplate code for updating entities before they are submitted to database
-    - This new, separate interface inherits the `applyChangesToExistingEntity` method from `ITwoWayConverterJpaService` (now `ConverterService`)
+- [WIP] **BREAKING CHANGE** Split logic in services that implement `ICrudJpaService` (now `CrudService`) and
+  extend `GenericCrudJpaService` (now `CrudGenericService`)
+  - Introduce `PatchService<P, E>` to keep specific domain-dependant boilerplate code for updating entities before they
+    are submitted to database
+    - This new, separate interface inherits the `applyChangesToExistingEntity` method
+      from `ITwoWayConverterJpaService` (now `ConverterService`)
     - The original method in `ITwoWayConverterJpaService` (now `ConverterService`) has been deprecated
-  - Break down the steps taken on each method in the public API of `GenericCrudJpaService` (now `CrudGenericService`) and its sub-implementations, by introducing these overridable `protected` methods
+  - Break down the steps taken on each method in the public API of `GenericCrudJpaService` (now `CrudGenericService`)
+    and its sub-implementations, by introducing these overridable `protected` methods
     - `prepareEntityWithUpdatesFromPojo`
     - `validateInputPojoBeforeCreation`
     - `prepareNewEntityFromInputPojo`
-  - Introduce sub-interfaces from `ICrudJpaService` (now `CrudService`), `PatchService` and `ITwoWayConverterJpaService` (now `ConverterService`)
+  - Introduce sub-interfaces from `ICrudJpaService` (now `CrudService`), `PatchService`
+    and `ITwoWayConverterJpaService` (now `ConverterService`)
     - This increases the accuracy of type-safe dependency injection. Specially important for mocks and unit testing.
 - UsersConverterJpaServiceImpl - refactor `convertToNewEntity` since it tag as cyclomatic issue
 - SalesConverterJpaServiceImpl, SalesProcessServiceImpl - add string constants
 - **BREAKING CHANGE**: Rename table names to follow the naming convention - **Thank you `@mepox`**
-    - `products_categories`          -> `product_categories`
-    - `products_images`              -> `product_images`
-    - `sales_statuses`               -> `sell_statuses`
-    - `app_users_roles`              -> `app_user_roles`
-    - `app_users_roles_permissions`  -> `app_user_role_permissions`
+  - `products_categories`          -> `product_categories`
+  - `products_images`              -> `product_images`
+  - `sales_statuses`               -> `sell_statuses`
+  - `app_users_roles`              -> `app_user_roles`
+  - `app_users_roles_permissions`  -> `app_user_role_permissions`
 - Update GitHub Actions workflow
   - `actions/checkout`      | `v2 -> `v3`
   - `actions/setup-java`    | `v1 -> `v3`
@@ -142,7 +156,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - It is preferable to avoid class names over 50 characters long
   - Test classes must always be suffixed with `Test`
   - Test methods should be named using `underscores_and_lowercase`
-  - Spring component class names should be suffixed with their respective base type name (`Service`, `Controller`, `Config`, `Repository`)
+  - Spring component class names should be suffixed with their respective base type
+    name (`Service`, `Controller`, `Config`, `Repository`)
 
 ### Removed
 
@@ -160,22 +175,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CheckoutServiceImpl - add more coverage for method "confirmTransaction, generatePageUrl"
 - CompanyServiceImpl - validate the proper mapping behaviour of method "readDetails"
 - Add `mockito-inline` dependency to create inline mocks - **Thank you `@NyorJa`**
-    - Useful to mock final classes and methods, also for having constant regex
+  - Useful to mock final classes and methods, also for having constant regex
 - Add TestConstants to hold some static final values for use with mocks - **Thank you `@NyorJa`**
 - Introduce unit tests for 15 converter services - **Thank you `@NyorJa`**
-    - `BillingCompaniesConverterJpaServiceImpl`
-    - `BillingTypesConverterJpaServiceImpl`
-    - `CustomersConverterJpaServiceImpl`
-    - `ImagesConverterJpaServiceImpl`
-    - `PeopleConverterJpaServiceImpl`
-    - `ProductCategoriesConverterJpaServiceImpl`
-    - `ProductListsConverterJpaServiceImpl`
-    - `ProductsConverterJpaServiceImplTest`
-    - `SalesStatusesConverterJpaServiceImplTest`
-    - `SellStatusesConverterJpaServiceImplTest`
-    - `ShippersConverterJpaServiceImplTest`
-    - `UserRolesConverterJpaServiceImplTest`
-    - `UsersConverterJpaServiceImplTest`
+  - `BillingCompaniesConverterJpaServiceImpl`
+  - `BillingTypesConverterJpaServiceImpl`
+  - `CustomersConverterJpaServiceImpl`
+  - `ImagesConverterJpaServiceImpl`
+  - `PeopleConverterJpaServiceImpl`
+  - `ProductCategoriesConverterJpaServiceImpl`
+  - `ProductListsConverterJpaServiceImpl`
+  - `ProductsConverterJpaServiceImplTest`
+  - `SalesStatusesConverterJpaServiceImplTest`
+  - `SellStatusesConverterJpaServiceImplTest`
+  - `ShippersConverterJpaServiceImplTest`
+  - `UserRolesConverterJpaServiceImplTest`
+  - `UsersConverterJpaServiceImplTest`
 - Refactor out test boilerplate using `@InjectMocks`
 - Introduce Spring Security integration tests for custom Filters
   - `JwtGuestAuthenticationFilter`
@@ -188,14 +203,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v3.0.0.rc-1] - 2022-08-18
 
 ### Added
+
 - Support sorting product lists by item count (the amount of products held on each)
 - Properties to configure the guest user (a public account only enabled for checking out)
   - `trebol.security.guestUserEnabled` - Can be true or false
   - `trebol.security.guestUserName` - Any non-blank string; also acts as its password
 - Property to configure max allowed nested depth while fetching categories
-- *BREAKING CHANGE*: `SellDetail` entity now has a `description` field, which is meant to describe and summarize the detail in a human-readable format
+- *BREAKING CHANGE*: `SellDetail` entity now has a `description` field, which is meant to describe and summarize the
+  detail in a human-readable format
 - When fetching data, filters by category may include descendant of lower level categories
-  - For example, assumming that category A includes subcategories AB and AC, filtering 'by category A' may include children from subcategories AB and AC as well
+  - For example, assumming that category A includes subcategories AB and AC, filtering 'by category A' may include
+    children from subcategories AB and AC as well
   - This applies for filtering categories and products
   - Behavior before was to fetch only direct descendants of a given category
 - Implement three API resources to interact with sales after a checkout process from the customer
@@ -208,8 +226,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - An empty configuration file is provided
 
 ### Changed
+
 - Use [Project Lombok](https://projectlombok.org)
-- The transaction token for the (frontend) checkout result page  is passed through query param instead of path param
+- The transaction token for the (frontend) checkout result page is passed through query param instead of path param
 - Default `GET /data/sales` sort order is by descending `buyOrder`
 - (Temporary) Disable regex pattern validation for phone numbers
 - Further divide logic for sorting/pagination/filtering into different services
@@ -223,6 +242,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `jacoco-maven-plugin` from `0.8.5` to `0.8.8`
 
 ### Fixed
+
 - Incorrect amount value given to Webpay (net value instead of total value)
 - Two very important equations when calculating sell totals
 - Incorrect protocol for MariaDB JDBC URL
@@ -237,6 +257,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v2.0.0] - 2022-01-20
 
 ### Changed
+
 - Reformat `pom.xml` file
   - Add comments
   - Update properties
@@ -255,6 +276,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Creating products through a `POST /data/products` call does not cascade creation of other entities
 
 ### Removed
+
 - Clean up deprecated API resources
   - `/public/categories`
   - `/public/products`
@@ -264,17 +286,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v1.2.0] - 2022-01-07
 
 ### Added
+
 - CRUD operations support for `Product List`
   - Also for managing contents of individual lists, as described by resource `/data/product_list_contents` in the API
 - Schema SQL script for MariaDB
 - Maximum page size limit, parametrizable through `properties` files
 
 ### Changed
+
 - Updated security rule for `GET /data/products` to: do not require any authority
 - Simplified method signature for `readMany` method in `IDataController`
 - Updated BD schema diagram `schema.png`
 
 ### Removed
+
 - Clean up deprecated resources
   - `/data/customers/{idNumber}`
   - `/data/images/{code}`
@@ -286,6 +311,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/public/categories/{parentId}`
 
 ### Deprecated
+
 - Paths to be superseded
   - `/public/products`
   - `/public/products/{barcode}`
@@ -293,19 +319,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v1.1.2] - 2021-12-27
 
 ### Added
+
 - Support for sorting data through query parameters
 
 ### Fixed
+
 - Unable to update products due to possible null pointer in description
 - CORS mappings for `/access` API
 
 ### Tests
+
 - Added unit tests for predicate services (responsible for parsing query params to filtering conditions)
 - Improved quality of some unit tests
 
 ## [v1.1.1.1] - 2021-12-08
 
 ### Fixed
+
 - Issues during checkout:
   - Incorrect validation API endpoints for integrating Webpay Plus SDK
   - JPA transactions failing between service calls
@@ -314,6 +344,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v1.1.1] - 2021-12-06
 
 ### Added
+
 - Using [SonarCloud](https://sonarcloud.io) to automate project building and code analyzing
 - Include maintainability and reliability badges, generated by SonarCloud, in `README.md`
 - Support for query parameters in PUT requests to `/data` resources
@@ -321,13 +352,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Database schema file `/schema.png`
 
 ### Changed
-- Removed request authentication for remapped paths in `/data/product_categories/*` to make them publicly available to anonymous users
+
+- Removed request authentication for remapped paths in `/data/product_categories/*` to make them publicly available to
+  anonymous users
 - Updated `Person` schema by splitting `name` property into two properties `firstName` and `lastName`
 - Updated `Sell`  schema by adding properties `taxValue`, `transportValue`, `totalValue` and `totalItems`
 - Updated `Receipt` schema by adding properties `token`, `taxValue`, `transportValue`, `totalValue` and `totalItems`
 - Updated `SellDetail` and `ReceiptDetail` schemas by adding property `unitValue` in both
 - Updated `ProductCategory` schema by changing data type of `code` from `integer` to `string`
-- Delegate API authorized access requirements to each REST controller method, instead of using HttpSecurity-centric configuration
+- Delegate API authorized access requirements to each REST controller method, instead of using HttpSecurity-centric
+  configuration
 - Improvements on JPA entities
   - `BillingCompany` - added unique constraint on `name`
   - `BillingType` - added unique constraint on `name`
@@ -342,7 +376,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored services in `org.trebol.jpa` package for better separation of concerns
 
 ### Deprecated
-- Path `/public/categories` and `/public/categories/{parentId}`, mapped under `PublicCategoriesController` - Thanks @ParundeepSingh
+
+- Path `/public/categories` and `/public/categories/{parentId}`, mapped under `PublicCategoriesController` - Thanks
+  @ParundeepSingh
 - Property `amount` of `Sell` and their getters; must use `totalValue` instead
 - Parameterized paths
   - `/data/customers/{idNumber}` replaced by `/data/customers?idNumber={}`
@@ -353,33 +389,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/data/users/{name}` replaced by `/data/users?name={}`
 
 ### Removed
+
 - Entity class `Session`, not used in the codebase
 
 ## [v1.0.4] - 2021-10-21
 
 ### Changed
+
 - Clean up entities and remove redundant annotation values - Thanks to @trangntt-016
 
 ### Fix
+
 - Fix resolving paging parameters where it would always get the default value.
 
 ### Security
-- Restrict users from deleting their own account - Thanks to @trangntt-016
 
+- Restrict users from deleting their own account - Thanks to @trangntt-016
 
 ## [v1.0.3] - 2021-09-23
 
 ### Changed
+
 - `/public/receipt/{id}` updated with `id` parameter now called `token` and referencing sell payment token
 
 ### Fixed
+
 - Fix default application parameters related to the checkout/payment service
-    - Self-callback URL after clients navigates checkout
-    - Success/Failure page URL to send customers to, after checkout
+  - Self-callback URL after clients navigates checkout
+  - Success/Failure page URL to send customers to, after checkout
 - Add missing sales filters required to fetch data during the checkout flow
 - Add missing mock data into `data.sql` that is needed to invoke `/public/about`
 - `ReceiptPojo` now uses `Instant` to represent dates, just like `Sell` and `SellPojo`
-
 
 ## [v1.0.0] - 2021-09-20
 
