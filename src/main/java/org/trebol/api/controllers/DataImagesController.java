@@ -82,7 +82,7 @@ public class DataImagesController
     @Override
     @PutMapping({"", "/"})
     @PreAuthorize("hasAuthority('images:update')")
-    public void update(@RequestBody ImagePojo input, @RequestParam Map<String, String> requestParams)
+    public void update(@Valid @RequestBody ImagePojo input, @RequestParam Map<String, String> requestParams)
         throws EntityNotFoundException, BadInputException {
         super.update(input, requestParams);
     }

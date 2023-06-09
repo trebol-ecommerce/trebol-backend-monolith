@@ -80,7 +80,7 @@ public class DataShippersController
     @Override
     @PutMapping({"", "/"})
     @PreAuthorize("hasAuthority('shippers:update')")
-    public void update(@RequestBody ShipperPojo input, @RequestParam Map<String, String> requestParams)
+    public void update(@Valid @RequestBody ShipperPojo input, @RequestParam Map<String, String> requestParams)
         throws BadInputException, EntityNotFoundException {
         super.update(input, requestParams);
     }
