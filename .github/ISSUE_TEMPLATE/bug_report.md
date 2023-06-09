@@ -2,40 +2,28 @@
 name: Bug report
 about: Report an error or unexpected behavior
 title: ''
-labels: bug, new
+labels: bug
 assignees: ''
 
 ---
 
 <!-- THESE COMMENTS ARE MEANT ONLY FOR YOU TO SEE. PLEASE REMOVE THESE BEFORE SUBMITTING YOUR ISSUE -->
 
-## Build context
+## Project version
 
-<!-- It is fundamental that you include these, else your bug report could be early-dismissed -->
+<!--  Copy and paste the output of `git describe --tags` below enclosed within backticks (just like the command). -->
 
-### Project version
-
-<!-- The current value within the `<version>` tags in the `pom.xml` file, in line number 26 -->
-
-### Latest commits
-
-<!--
-
-Here you can do one of two things
-
-1. Copy and paste the output of `git log -3` below within code tags (). This will print the three (3) latest commits in your current branch
-2. Link to the exact commit that your branch is checked out at
-
--->
+*Here goes project version*
 
 ## Summary
 
 <!-- A simple, human-readable description of the bug -->
 
+*Here goes summary*
+
 ## How to Reproduce
 
 <!--
-
 A list of steps to reproduce the behavior. Such as
 
 1. Run application
@@ -44,23 +32,38 @@ A list of steps to reproduce the behavior. Such as
 4. An error shows up
 5. ???
 6. Profit
-
 -->
+
+*Here goes how to reproduce*
 
 ## Expected behavior
 
 <!-- A simple description of what you expected to happen, were it not for this bug. -->
 
+*Here goes expected behavior*
+
 ## Screenshots
 
 <!--
-
 If applicable, add screenshots to help explain your problem.
 
-Please do not post screenshots of plain text, such as console output; instead copy and paste that text, and enclose it within a code block.
+Please do not post *screenshots of plain text*, such as console output;
+instead copy and paste that text here and enclose it within a code block.
+A code block is enclosed by a beginning line with three backticks, and
+a finishing line with another three backticks. Like this:
 
+```
+This is a code block.
+```
 -->
+
+*Here go screenshots*
 
 ## Additional context
 
-<!-- Any other context about the problem here; such as the OS & Browser version. -->
+<!--
+You may include any other information about the problem here,
+such as your build context; your OS and/or JDK being used.
+-->
+
+*Here goes additional context*
