@@ -45,7 +45,7 @@
     <!-- Dependencies -->
     <maven.compiler.version>3.9.0</maven.compiler.version>
     <maven.war-packaging.version>3.3.2</maven.war-packaging.version>
-    <project-lombok.version>1.18.24</project-lombok.version>
+    <project-lombok.version>1.18.26</project-lombok.version>
     <jjwt.version>0.11.5</jjwt.version>
     <mockito.version>4.0.0</mockito.version>
     <unirest.version>3.13.8</unirest.version>
