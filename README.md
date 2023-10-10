@@ -84,6 +84,22 @@ This Entity-Relationship model diagram was designed very quickly using
 
 ## Getting started 👍
 
+### Supported JDK versions
+
+Java version | Supported?
+------------ | -----------
+11           | ✅ yes
+12           | ✅ yes
+13           | ✅ yes
+14           | ✅ yes
+15           | ✅ yes
+16           | ✅ yes
+17           | ✅ yes
+18           | ✅ yes
+19           | 🔴 no
+20           | 🔴 no
+21           | 🔴 no
+
 ### Requirements
 
 * JDK 11+
