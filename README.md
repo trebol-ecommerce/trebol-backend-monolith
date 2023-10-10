@@ -96,8 +96,8 @@ Java version | Supported?
 16           | ✅ yes
 17           | ✅ yes
 18           | ✅ yes
-19           | 🔴 no
-20           | 🔴 no
+19           | ✅ no
+20           | ✅ no
 21           | 🔴 no
 
 ### Requirements
