@@ -33,7 +33,7 @@
   <groupId>org.trebolecommerce</groupId>
   <artifactId>trebol-backend-monolith</artifactId>
   <packaging>war</packaging>
-  <version>0.2.2</version>
+  <version>0.2.3-SNAPSHOT</version>
 
   <name>Trébol Backend Monolith</name>
   <description>Monolithic eCommerce backend web application that exposes a RESTful API compliant with the Trebol API v1.5.0 specification.</description>
@@ -66,37 +66,11 @@
   </properties>
 
   <dependencies>
-    <!-- Spring Boot -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-inline</artifactId>
-      <version>4.0.0</version>
-      <scope>test</scope>
-    </dependency>
+    <!-- Core -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
       <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-security</artifactId>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-test</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -109,15 +83,22 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- Project Lombok -->
+    <!-- Persistence -->
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.26</version>
-      <scope>provided</scope>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <type>jar</type>
     </dependency>
-
-    <!-- QueryDSL -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>2.2.220</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mariadb.jdbc</groupId>
+      <artifactId>mariadb-java-client</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
@@ -129,26 +110,12 @@
       <type>jar</type>
     </dependency>
 
-    <!-- Database drivers -->
+    <!-- Security / Auth -->
     <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <version>2.2.220</version>
-      <scope>runtime</scope>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+      <type>jar</type>
     </dependency>
-    <dependency>
-      <groupId>org.mariadb.jdbc</groupId>
-      <artifactId>mariadb-java-client</artifactId>
-    </dependency>
-
-    <!-- Apache common lang-->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
-    </dependency>
-
-    <!-- JWT -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
@@ -167,11 +134,47 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- Unirest (elegant alternative to RestTemplate) -->
+    <!-- Payments -->
+    <dependency>
+      <groupId>com.github.transbankdevelopers</groupId>
+      <artifactId>transbank-sdk-java</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+
+    <!-- Utility -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.26</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.12.0</version>
+    </dependency>
     <dependency>
       <groupId>com.konghq</groupId>
       <artifactId>unirest-java</artifactId>
       <version>${unirest.version}</version>
+    </dependency>
+
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-inline</artifactId>
+      <version>4.0.0</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.konghq</groupId>
@@ -179,14 +182,6 @@
       <version>${unirest.version}</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- WebPay SDK -->
-    <dependency>
-      <groupId>com.github.transbankdevelopers</groupId>
-      <artifactId>transbank-sdk-java</artifactId>
-      <version>3.0.0</version>
-    </dependency>
-
   </dependencies>
 
   <build>
