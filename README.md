@@ -26,8 +26,8 @@ Although some time has passed since I started working on Trébol, it is still in
 I have learned many things in the process: design patterns and their limits; several details and how-to's going
 about Spring Boot; and also usage of other libraries (see [Features](#features) below) and even Git itself.
 
-Currently, this backend implementation is aligned to
-[Trébol API v1.7.2](https://github.com/trebol-ecommerce/api/blob/v1.7.2/src/trebol-api.json).
+Currently, this backend implementation is being aligned towards
+[Trébol API v3.0.0](https://github.com/trebol-ecommerce/api/blob/v3.0.0/src/trebol-api.json).
 
 Recently, the artifact, group and version of the project as described in the
 [Project Object Model file](pom.xml) were changed.
