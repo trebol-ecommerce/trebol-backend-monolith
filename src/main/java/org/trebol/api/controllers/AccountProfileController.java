@@ -31,7 +31,7 @@ import org.trebol.api.models.PersonPojo;
 import org.trebol.api.services.ProfileService;
 import org.trebol.common.exceptions.BadInputException;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.security.Principal;
 
 @RestController

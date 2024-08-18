@@ -42,7 +42,7 @@ import org.trebol.jpa.repositories.UserRolesRepository;
 import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 
-import javax.persistence.EntityExistsException;
+import jakarta.persistence.EntityExistsException;
 import java.util.Optional;
 
 @Service

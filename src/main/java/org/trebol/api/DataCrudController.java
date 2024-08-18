@@ -22,8 +22,8 @@ package org.trebol.api;
 
 import org.trebol.common.exceptions.BadInputException;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Map;
 
 public interface DataCrudController<M> {

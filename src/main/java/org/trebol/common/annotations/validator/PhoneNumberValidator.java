@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.trebol.common.annotations.PhoneNumber;
 import org.trebol.config.ValidationProperties;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

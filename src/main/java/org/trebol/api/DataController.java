@@ -22,7 +22,7 @@ package org.trebol.api;
 
 import org.trebol.api.models.DataPagePojo;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 
 /**

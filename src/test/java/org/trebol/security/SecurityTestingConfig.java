@@ -40,7 +40,7 @@ public class SecurityTestingConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(5);
+        return new BCryptPasswordEncoder(4);
     }
 
     @Bean

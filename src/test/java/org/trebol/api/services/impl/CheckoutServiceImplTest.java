@@ -39,7 +39,7 @@ import org.trebol.payment.PaymentService;
 import org.trebol.payment.PaymentServiceException;
 import org.trebol.testing.SalesTestHelper;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.util.Map;
 

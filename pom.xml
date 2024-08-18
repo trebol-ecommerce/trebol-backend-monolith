@@ -27,7 +27,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.18</version>
+    <version>3.0.13</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>org.trebolecommerce</groupId>
@@ -52,7 +52,6 @@
     <java.endorsed-api.dir>${project.build.directory}/endorsed</java.endorsed-api.dir>
     <querydsl.classes.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.classes.dir>
     <jacoco.codeCoverage.minRatio>0.20</jacoco.codeCoverage.minRatio>
-    <groovy.version>3.0.7</groovy.version> <!-- temp fix for inconsistent use of API in REST Assured -->
 
     <trebol.coverage-exclusions>
       **/trebol/api/models/**.*,
@@ -101,13 +100,16 @@
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-core</artifactId>
-      <type>jar</type>
+      <artifactId>querydsl-apt</artifactId>
+      <version>${querydsl.version}</version>
+      <classifier>jakarta</classifier>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>
-      <type>jar</type>
+      <version>${querydsl.version}</version>
+      <classifier>jakarta</classifier>
     </dependency>
 
     <!-- Security / Auth -->
@@ -145,7 +147,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.26</version>
+      <version>1.18.34</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -173,7 +175,6 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
-      <version>4.0.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -191,7 +192,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.version}</version>
+        <version>3.13.0</version>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
@@ -219,7 +220,7 @@
               <goal>process</goal>
             </goals>
             <configuration>
-              <outputDirectory>${querydsl.classes.dir}</outputDirectory>
+              <outputDirectory>target/generated-sources/java</outputDirectory>
               <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>
@@ -228,7 +229,7 @@
           <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
-            <version>4.2.2</version>
+            <version>${querydsl.version}</version>
           </dependency>
         </dependencies>
       </plugin>

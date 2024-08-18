@@ -30,7 +30,7 @@ import org.trebol.api.models.ReceiptPojo;
 import org.trebol.api.services.ReceiptService;
 import org.trebol.common.exceptions.BadInputException;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/public/receipt")

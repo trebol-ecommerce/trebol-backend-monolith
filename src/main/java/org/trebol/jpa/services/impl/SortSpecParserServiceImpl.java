@@ -26,8 +26,8 @@ import org.springframework.data.querydsl.QSort;
 import org.springframework.stereotype.Service;
 import org.trebol.jpa.services.SortSpecParserService;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 
 @Service

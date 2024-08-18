@@ -36,7 +36,7 @@ import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.entities.SellStatus;
 import org.trebol.jpa.repositories.SalesRepository;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 

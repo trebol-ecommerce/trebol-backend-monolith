@@ -30,13 +30,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -133,8 +135,7 @@ class JwtVerifiterFilterTest {
 
     @TestConfiguration
     @EnableWebSecurity
-    static class MockSecurityConfig
-        extends WebSecurityConfigurerAdapter {
+    static class MockSecurityConfig {
         final PasswordEncoder passwordEncoder;
         final AuthenticationProvider authenticationProvider;
         final SecretKey secretKey;
@@ -153,18 +154,14 @@ class JwtVerifiterFilterTest {
             this.claimsParserService = claimsParserService;
         }
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             JwtTokenVerifierFilter instance = new JwtTokenVerifierFilter(claimsParserService);
-            http.authorizeRequests()
-                .antMatchers(ENDPOINT_URL).authenticated()
+            http.authorizeHttpRequests()
+                .requestMatchers(ENDPOINT_URL).authenticated()
                 .and().csrf().disable()
                 .addFilterAfter(instance, DigestAuthenticationFilter.class); // first authorization filter
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) {
-            auth.authenticationProvider(authenticationProvider);
+            return http.build();
         }
 
         /**

@@ -29,19 +29,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -68,18 +71,15 @@ import static org.trebol.config.Constants.AUTHORITY_CHECKOUT;
  * </ul>
  */
 @ExtendWith(MockitoExtension.class)
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {
+@SpringJUnitWebConfig(classes = {
     SecurityTestingConfig.class,
     JwtLoginAuthenticationFilterTest.MockSecurityConfig.class})
-@WebAppConfiguration
 class JwtLoginAuthenticationFilterTest {
     static final String LOGIN_URL = "/login";
     static final String USERNAME = "SOME";
     static final String PASSWORD = "BODY";
     static List<GrantedAuthority> USER_AUTHORITIES;
     @MockBean SecurityProperties securityPropertiesMock;
-    @MockBean UserDetailsService userDetailsServiceMock;
     @Autowired WebApplicationContext webApplicationContext;
     MockMvc mockMvc;
 
@@ -92,15 +92,6 @@ class JwtLoginAuthenticationFilterTest {
     @BeforeEach
     void beforeEach() {
         when(securityPropertiesMock.getJwtExpirationAfterHours()).thenReturn(1);
-        when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(UserDetailsPojo.builder()
-            .username(USERNAME)
-            .password(PASSWORD)
-            .authorities(USER_AUTHORITIES)
-            .enabled(true)
-            .accountNonLocked(true)
-            .accountNonExpired(true)
-            .credentialsNonExpired(true)
-            .build());
         mockMvc = MockMvcBuilders
             .webAppContextSetup(webApplicationContext)
             .apply(springSecurity())
@@ -124,53 +115,53 @@ class JwtLoginAuthenticationFilterTest {
 
     @TestConfiguration
     @EnableWebSecurity
-    static class MockSecurityConfig
-        extends WebSecurityConfigurerAdapter {
+    static class MockSecurityConfig {
         final SecurityProperties securityProperties;
-        final UserDetailsService userDetailsService;
         final PasswordEncoder passwordEncoder;
-        final AuthenticationProvider authenticationProvider;
         final SecretKey secretKey;
 
         @Autowired
         MockSecurityConfig(
             SecurityProperties securityProperties,
-            UserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder,
-            AuthenticationProvider authenticationProvider,
             SecretKey secretKey
         ) {
             this.securityProperties = securityProperties;
-            this.userDetailsService = userDetailsService;
             this.passwordEncoder = passwordEncoder;
-            this.authenticationProvider = authenticationProvider;
             this.secretKey = secretKey;
         }
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                .antMatchers(LOGIN_URL).permitAll()
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            http.authorizeHttpRequests()
+                .requestMatchers(LOGIN_URL).permitAll()
                 .and().csrf().disable()
                 .addFilter(loginFilterForUrl());
+            return http.build();
         }
 
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(authenticationProvider)
-                .inMemoryAuthentication()
-                .withUser(USERNAME)
+        @Bean
+        public InMemoryUserDetailsManager userDetailsService() {
+            UserDetails user = User.withUsername(USERNAME)
                 .password(passwordEncoder.encode(PASSWORD))
-                .authorities(USER_AUTHORITIES);
+                .authorities(USER_AUTHORITIES)
+                .build();
+            return new InMemoryUserDetailsManager(user);
         }
 
-        private JwtLoginAuthenticationFilter loginFilterForUrl() throws Exception {
+        private JwtLoginAuthenticationFilter loginFilterForUrl() {
             JwtLoginAuthenticationFilter filter = new JwtLoginAuthenticationFilter(
                 securityProperties,
                 secretKey,
-                super.authenticationManager());
+                new ProviderManager(this.daoAuthenticationProvider()));
             filter.setFilterProcessesUrl(LOGIN_URL);
             return filter;
+        }
+
+        private DaoAuthenticationProvider daoAuthenticationProvider() {
+            DaoAuthenticationProvider provider = new DaoAuthenticationProvider(passwordEncoder);
+            provider.setUserDetailsService(this.userDetailsService());
+            return provider;
         }
     }
 }

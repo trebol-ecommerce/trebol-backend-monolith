@@ -43,9 +43,9 @@ import org.trebol.jpa.services.crud.ProductListCrudService;
 import org.trebol.jpa.services.predicates.ProductListsPredicateService;
 import org.trebol.jpa.sortspecs.ProductListsSortSpec;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import java.util.Map;
 
 @RestController

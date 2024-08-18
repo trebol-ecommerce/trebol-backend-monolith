@@ -39,8 +39,8 @@ import org.trebol.jpa.DBEntity;
 import org.trebol.jpa.Repository;
 import org.trebol.jpa.services.crud.CrudGenericService;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

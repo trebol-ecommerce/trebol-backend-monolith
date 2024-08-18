@@ -23,7 +23,7 @@ package org.trebol.api.services;
 import org.trebol.api.models.SellPojo;
 import org.trebol.common.exceptions.BadInputException;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 /**
  * Declares methods to advance through steps of transaction.

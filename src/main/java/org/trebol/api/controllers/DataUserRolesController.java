@@ -42,9 +42,9 @@ import org.trebol.jpa.services.crud.UserRolesCrudService;
 import org.trebol.jpa.services.predicates.UserRolesPredicateService;
 import org.trebol.jpa.sortspecs.UserRolesSortSpec;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import java.util.Map;
 
 @RestController

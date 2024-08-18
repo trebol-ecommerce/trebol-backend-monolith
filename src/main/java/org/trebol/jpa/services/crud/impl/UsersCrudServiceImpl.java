@@ -36,7 +36,7 @@ import org.trebol.jpa.services.crud.UsersCrudService;
 import org.trebol.jpa.services.patch.UsersPatchService;
 import org.trebol.security.exceptions.AccountProtectionViolationException;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional

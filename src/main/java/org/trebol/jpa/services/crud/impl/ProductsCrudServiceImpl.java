@@ -41,8 +41,8 @@ import org.trebol.jpa.services.crud.ImagesCrudService;
 import org.trebol.jpa.services.crud.ProductsCrudService;
 import org.trebol.jpa.services.patch.ProductsPatchService;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

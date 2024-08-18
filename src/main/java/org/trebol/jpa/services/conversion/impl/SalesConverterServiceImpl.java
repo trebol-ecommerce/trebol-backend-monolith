@@ -55,7 +55,7 @@ import org.trebol.jpa.services.conversion.SalespeopleConverterService;
 import org.trebol.jpa.services.crud.BillingCompaniesCrudService;
 import org.trebol.jpa.services.crud.CustomersCrudService;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

@@ -42,9 +42,9 @@ import org.trebol.jpa.services.crud.UsersCrudService;
 import org.trebol.jpa.services.predicates.UsersPredicateService;
 import org.trebol.jpa.sortspecs.UsersSortSpec;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
 
