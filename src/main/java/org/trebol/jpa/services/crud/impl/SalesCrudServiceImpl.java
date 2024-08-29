@@ -37,7 +37,7 @@ import org.trebol.jpa.services.crud.CrudGenericService;
 import org.trebol.jpa.services.crud.SalesCrudService;
 import org.trebol.jpa.services.patch.SalesPatchService;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

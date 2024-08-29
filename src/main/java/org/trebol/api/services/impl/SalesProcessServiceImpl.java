@@ -37,7 +37,7 @@ import org.trebol.jpa.services.conversion.ProductsConverterService;
 import org.trebol.jpa.services.conversion.SalesConverterService;
 import org.trebol.jpa.services.crud.SalesCrudService;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

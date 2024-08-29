@@ -23,7 +23,7 @@ package org.trebol.api.services;
 import org.trebol.api.models.RegistrationPojo;
 import org.trebol.common.exceptions.BadInputException;
 
-import javax.persistence.EntityExistsException;
+import jakarta.persistence.EntityExistsException;
 
 /**
  * Allows anonymous consumers of the REST API to create user accounts.

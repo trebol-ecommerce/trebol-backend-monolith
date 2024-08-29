@@ -27,7 +27,7 @@ import org.trebol.jpa.services.CrudService;
 import org.trebol.jpa.services.PredicateService;
 import org.trebol.jpa.services.SortSpecParserService;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Map;
 
 /**

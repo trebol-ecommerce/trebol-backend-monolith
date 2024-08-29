@@ -22,7 +22,7 @@ package org.trebol.jpa.exceptions;
 
 import lombok.NoArgsConstructor;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @NoArgsConstructor
 public class PersonNotFoundException

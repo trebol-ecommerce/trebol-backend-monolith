@@ -35,7 +35,7 @@ import org.trebol.jpa.services.predicates.SalesPredicateService;
 import org.trebol.payment.PaymentService;
 import org.trebol.payment.PaymentServiceException;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;

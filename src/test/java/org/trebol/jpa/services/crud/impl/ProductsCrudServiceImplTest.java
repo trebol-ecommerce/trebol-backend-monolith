@@ -41,7 +41,7 @@ import org.trebol.testing.ImagesTestHelper;
 import org.trebol.testing.ProductCategoriesTestHelper;
 import org.trebol.testing.ProductsTestHelper;
 
-import javax.persistence.EntityExistsException;
+import jakarta.persistence.EntityExistsException;
 import java.util.List;
 import java.util.Optional;
 

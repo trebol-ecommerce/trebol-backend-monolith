@@ -26,7 +26,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;

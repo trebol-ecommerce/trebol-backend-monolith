@@ -36,9 +36,9 @@ import org.trebol.config.SecurityProperties;
 import org.trebol.jpa.services.crud.CustomersCrudService;
 
 import javax.crypto.SecretKey;
-import javax.persistence.EntityExistsException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.persistence.EntityExistsException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtGuestAuthenticationFilter

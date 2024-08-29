@@ -27,24 +27,22 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.6.12</version>
+    <version>3.2.9</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>org.trebolecommerce</groupId>
-  <artifactId>trebol-backend-monolith</artifactId>
+  <artifactId>trebol-backend-monolith-java17</artifactId>
   <packaging>war</packaging>
-  <version>0.2.3-SNAPSHOT</version>
+  <version>0.2.4</version>
 
   <name>Trébol Backend Monolith</name>
   <description>Monolithic eCommerce backend web application that exposes a RESTful API compliant with the Trebol API v1.5.0 specification.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
 
     <!-- Dependencies -->
-    <maven.compiler.version>3.9.0</maven.compiler.version>
-    <maven.war-packaging.version>3.3.2</maven.war-packaging.version>
     <jjwt.version>0.11.5</jjwt.version>
     <unirest.version>3.13.8</unirest.version>
 
@@ -52,7 +50,6 @@
     <java.endorsed-api.dir>${project.build.directory}/endorsed</java.endorsed-api.dir>
     <querydsl.classes.dir>${project.build.directory}/generated-sources/querydsl/</querydsl.classes.dir>
     <jacoco.codeCoverage.minRatio>0.20</jacoco.codeCoverage.minRatio>
-    <groovy.version>3.0.7</groovy.version> <!-- temp fix for inconsistent use of API in REST Assured -->
 
     <trebol.coverage-exclusions>
       **/trebol/api/models/**.*,
@@ -101,13 +98,16 @@
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-core</artifactId>
-      <type>jar</type>
+      <artifactId>querydsl-apt</artifactId>
+      <version>${querydsl.version}</version>
+      <classifier>jakarta</classifier>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>
-      <type>jar</type>
+      <version>${querydsl.version}</version>
+      <classifier>jakarta</classifier>
     </dependency>
 
     <!-- Security / Auth -->
@@ -145,8 +145,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.26</version>
-      <scope>provided</scope>
+      <version>${lombok.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -171,12 +170,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-inline</artifactId>
-      <version>4.0.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.konghq</groupId>
       <artifactId>unirest-mocks</artifactId>
       <version>${unirest.version}</version>
@@ -191,7 +184,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.version}</version>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
@@ -202,7 +194,7 @@
             <path>
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
-              <version>1.18.26</version>
+              <version>${lombok.version}</version>
             </path>
           </annotationProcessorPaths>
         </configuration>
@@ -219,7 +211,7 @@
               <goal>process</goal>
             </goals>
             <configuration>
-              <outputDirectory>${querydsl.classes.dir}</outputDirectory>
+              <outputDirectory>target/generated-sources/java</outputDirectory>
               <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>
@@ -228,7 +220,7 @@
           <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
-            <version>4.2.2</version>
+            <version>${querydsl.version}</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -237,7 +229,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>${maven.war-packaging.version}</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>

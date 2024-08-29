@@ -54,8 +54,8 @@ import org.trebol.jpa.services.crud.ProductsCrudService;
 import org.trebol.jpa.services.predicates.ProductListItemsPredicateService;
 import org.trebol.jpa.sortspecs.ProductListItemsSortSpec;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

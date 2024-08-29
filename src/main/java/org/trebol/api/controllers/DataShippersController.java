@@ -43,9 +43,9 @@ import org.trebol.jpa.services.crud.ShippersCrudService;
 import org.trebol.jpa.services.predicates.ShippersPredicateService;
 import org.trebol.jpa.sortspecs.ShippersSortSpec;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import java.util.Map;
 
 @RestController

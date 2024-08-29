@@ -24,7 +24,7 @@ import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.exceptions.UserNotFoundException;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 /**
  * Provides means for users to retrieve and update their stored personal information.

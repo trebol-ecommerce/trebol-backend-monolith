@@ -23,6 +23,7 @@ package org.trebol.security;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.TestingAuthenticationProvider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,13 +35,13 @@ public class SecurityTestingConfig {
     static final String PRIVATE_KEY_SEQUENCE = "a9s8dy030g8h39f7weh8eufesa0d8f7g";
 
     @Bean
-    public TestingAuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider() {
         return new TestingAuthenticationProvider();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(5);
+        return new BCryptPasswordEncoder(4);
     }
 
     @Bean

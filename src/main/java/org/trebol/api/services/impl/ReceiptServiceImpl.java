@@ -32,7 +32,7 @@ import org.trebol.jpa.entities.Sell;
 import org.trebol.jpa.entities.SellDetail;
 import org.trebol.jpa.repositories.SalesRepository;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

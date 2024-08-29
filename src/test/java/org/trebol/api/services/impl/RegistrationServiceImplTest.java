@@ -43,7 +43,7 @@ import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.testing.PeopleTestHelper;
 
-import javax.persistence.EntityExistsException;
+import jakarta.persistence.EntityExistsException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

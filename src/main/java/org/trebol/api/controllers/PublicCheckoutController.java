@@ -45,10 +45,10 @@ import org.trebol.mailing.MailingService;
 import org.trebol.mailing.MailingServiceException;
 import org.trebol.payment.PaymentServiceException;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import java.net.URI;
 import java.util.Map;
 

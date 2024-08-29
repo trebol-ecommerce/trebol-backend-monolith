@@ -22,7 +22,7 @@ package org.trebol.api.services;
 
 import org.trebol.api.models.ReceiptPojo;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 /**
  * Provides a mean for users to review past orders.

@@ -46,7 +46,7 @@ import org.trebol.jpa.services.conversion.ProductListItemsConverterService;
 import org.trebol.jpa.services.crud.ProductsCrudService;
 import org.trebol.jpa.services.predicates.ProductListItemsPredicateService;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

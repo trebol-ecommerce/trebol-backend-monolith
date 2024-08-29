@@ -39,12 +39,4 @@ public class UserDetailsPojo
     private final boolean accountNonLocked;
     private final boolean credentialsNonExpired;
     private final boolean enabled;
-
-    public static UserDetailsPojo.UserDetailsPojoBuilder VALID() {
-        return UserDetailsPojo.builder()
-            .accountNonExpired(true)
-            .accountNonLocked(true)
-            .credentialsNonExpired(true)
-            .enabled(true);
-    }
 }
