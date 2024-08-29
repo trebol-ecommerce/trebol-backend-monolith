@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 The Trebol eCommerce Project
+ * Copyright (c) 2020-2024 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -81,7 +81,11 @@ public class UserDetailsServiceImpl
         List<SimpleGrantedAuthority> authorities = permissions.stream()
             .map(source -> new SimpleGrantedAuthority(source.getCode()))
             .collect(Collectors.toList());
-        return UserDetailsPojo.VALID()
+        return UserDetailsPojo.builder()
+            .accountNonExpired(true)
+            .accountNonLocked(true)
+            .credentialsNonExpired(true)
+            .enabled(true)
             .authorities(authorities)
             .username(user.getName())
             .password(user.getPassword())
@@ -93,7 +97,11 @@ public class UserDetailsServiceImpl
         List<SimpleGrantedAuthority> authorities = rolePermissionsRepository.deepFindPermissionsByUserRoleId(guestUserRoleId).stream()
             .map(rolePermission -> new SimpleGrantedAuthority(rolePermission.getPermission().getCode()))
             .collect(Collectors.toList());
-        return UserDetailsPojo.VALID()
+        return UserDetailsPojo.builder()
+            .accountNonExpired(true)
+            .accountNonLocked(true)
+            .credentialsNonExpired(true)
+            .enabled(true)
             .authorities(authorities)
             .username(securityProperties.getGuestUserName())
             .password(securityProperties.getGuestUserName())

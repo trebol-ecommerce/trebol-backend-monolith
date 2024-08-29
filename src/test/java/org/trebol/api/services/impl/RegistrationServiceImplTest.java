@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 The Trebol eCommerce Project
+ * Copyright (c) 2020-2024 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -43,7 +43,7 @@ import org.trebol.jpa.repositories.UsersRepository;
 import org.trebol.jpa.services.conversion.PeopleConverterService;
 import org.trebol.testing.PeopleTestHelper;
 
-import javax.persistence.EntityExistsException;
+import jakarta.persistence.EntityExistsException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

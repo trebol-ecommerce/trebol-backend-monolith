@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 The Trebol eCommerce Project
+ * Copyright (c) 2020-2024 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -39,12 +39,4 @@ public class UserDetailsPojo
     private final boolean accountNonLocked;
     private final boolean credentialsNonExpired;
     private final boolean enabled;
-
-    public static UserDetailsPojo.UserDetailsPojoBuilder VALID() {
-        return UserDetailsPojo.builder()
-            .accountNonExpired(true)
-            .accountNonLocked(true)
-            .credentialsNonExpired(true)
-            .enabled(true);
-    }
 }

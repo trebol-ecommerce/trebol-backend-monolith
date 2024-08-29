@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 The Trebol eCommerce Project
+ * Copyright (c) 2020-2024 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -30,7 +30,7 @@ import org.trebol.api.models.ReceiptPojo;
 import org.trebol.api.services.ReceiptService;
 import org.trebol.common.exceptions.BadInputException;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/public/receipt")

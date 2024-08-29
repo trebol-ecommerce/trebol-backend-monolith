@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 The Trebol eCommerce Project
+ * Copyright (c) 2020-2024 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -27,61 +27,58 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import org.trebol.api.models.LoginPojo;
 import org.trebol.config.SecurityProperties;
 
 import javax.crypto.SecretKey;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.trebol.config.Constants.AUTHORITY_CHECKOUT;
 
 /**
- * Spring Security integration tests for the JwtMockLoginAuthenticationFilter<br/>
+ * Spring Security integration tests for the JwtLoginAuthenticationFilter<br/>
  * For more insight on the how's and why's, check out these links.<br/>
  * <ul>
- * <li><a href="https://docs.spring.io/spring-security/site/docs/5.3.x/reference/html5/#test">Spring Security Reference - 19.Testing</a></li>
+ * <li><a href="https://docs.spring.io/spring-security/reference/6.1-SNAPSHOT/servlet/configuration/java.html#jc-httpsecurity">Spring Security Reference - Java Configuration - HttpSecurity</a></li>
  * <li><a href="https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-framework">Spring Framework Reference - 7.MockMvc</a></li>
  * </ul>
  */
 @ExtendWith(MockitoExtension.class)
-@ExtendWith(SpringExtension.class)
+@WebMvcTest({JwtLoginAuthenticationFilterTest.NoOpController.class})
 @ContextConfiguration(classes = {
     SecurityTestingConfig.class,
     JwtLoginAuthenticationFilterTest.MockSecurityConfig.class})
-@WebAppConfiguration
 class JwtLoginAuthenticationFilterTest {
     static final String LOGIN_URL = "/login";
     static final String USERNAME = "SOME";
     static final String PASSWORD = "BODY";
+    static final String POSITIVE_RESPONSE_BODY = "IT WORKS";
     static List<GrantedAuthority> USER_AUTHORITIES;
     @MockBean SecurityProperties securityPropertiesMock;
-    @MockBean UserDetailsService userDetailsServiceMock;
-    @Autowired WebApplicationContext webApplicationContext;
-    MockMvc mockMvc;
+    @Autowired MockMvc mockMvc;
+    @Autowired ObjectMapper objectMapper;
 
     @BeforeAll
     static void beforeAll() {
@@ -92,85 +89,73 @@ class JwtLoginAuthenticationFilterTest {
     @BeforeEach
     void beforeEach() {
         when(securityPropertiesMock.getJwtExpirationAfterHours()).thenReturn(1);
-        when(userDetailsServiceMock.loadUserByUsername(anyString())).thenReturn(UserDetailsPojo.builder()
-            .username(USERNAME)
-            .password(PASSWORD)
-            .authorities(USER_AUTHORITIES)
-            .enabled(true)
-            .accountNonLocked(true)
-            .accountNonExpired(true)
-            .credentialsNonExpired(true)
-            .build());
-        mockMvc = MockMvcBuilders
-            .webAppContextSetup(webApplicationContext)
-            .apply(springSecurity())
-            .build();
     }
 
     @Test
     @WithAnonymousUser
     void accepts_authentication() throws Exception {
-        LoginPojo login = LoginPojo.builder()
+        String jsonRequestBody = objectMapper.writeValueAsString(LoginPojo.builder()
             .name(USERNAME)
             .password(PASSWORD)
-            .build();
-        String jsonRequestBody = new ObjectMapper().writeValueAsString(login);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .post(LOGIN_URL)
-            .content(jsonRequestBody);
-        mockMvc.perform(requestBuilder)
+            .build());
+        mockMvc.perform(MockMvcRequestBuilders
+                .post(LOGIN_URL)
+                .content(jsonRequestBody))
             .andExpect(status().isOk());
     }
 
     @TestConfiguration
-    @EnableWebSecurity
-    static class MockSecurityConfig
-        extends WebSecurityConfigurerAdapter {
+    static class MockSecurityConfig {
         final SecurityProperties securityProperties;
-        final UserDetailsService userDetailsService;
         final PasswordEncoder passwordEncoder;
-        final AuthenticationProvider authenticationProvider;
         final SecretKey secretKey;
 
         @Autowired
-        MockSecurityConfig(
-            SecurityProperties securityProperties,
-            UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder,
-            AuthenticationProvider authenticationProvider,
-            SecretKey secretKey
-        ) {
+        MockSecurityConfig(SecurityProperties securityProperties,
+                           PasswordEncoder passwordEncoder,
+                           SecretKey secretKey) {
             this.securityProperties = securityProperties;
-            this.userDetailsService = userDetailsService;
             this.passwordEncoder = passwordEncoder;
-            this.authenticationProvider = authenticationProvider;
             this.secretKey = secretKey;
         }
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                .antMatchers(LOGIN_URL).permitAll()
-                .and().csrf().disable()
-                .addFilter(loginFilterForUrl());
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+            return httpSecurity
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers(LOGIN_URL).permitAll())
+                .csrf(AbstractHttpConfigurer::disable)
+                .addFilter(this.loginFilterForUrl())
+                .build();
         }
 
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(authenticationProvider)
-                .inMemoryAuthentication()
-                .withUser(USERNAME)
-                .password(passwordEncoder.encode(PASSWORD))
-                .authorities(USER_AUTHORITIES);
+        @Bean
+        public UserDetailsService userDetailsService() {
+            return new InMemoryUserDetailsManager(
+                User.withUsername(USERNAME)
+                    .password(passwordEncoder.encode(PASSWORD))
+                    .authorities(USER_AUTHORITIES)
+                    .build());
         }
 
-        private JwtLoginAuthenticationFilter loginFilterForUrl() throws Exception {
+        private JwtLoginAuthenticationFilter loginFilterForUrl() {
             JwtLoginAuthenticationFilter filter = new JwtLoginAuthenticationFilter(
                 securityProperties,
                 secretKey,
-                super.authenticationManager());
+                new ProviderManager(this.daoAuthenticationProvider()));
             filter.setFilterProcessesUrl(LOGIN_URL);
             return filter;
         }
+
+        private DaoAuthenticationProvider daoAuthenticationProvider() {
+            DaoAuthenticationProvider provider = new DaoAuthenticationProvider(passwordEncoder);
+            provider.setUserDetailsService(this.userDetailsService());
+            return provider;
+        }
     }
+
+    /**
+     * A placeholder controller to prevent auto-configuration requiring too many class dependencies.
+     */
+    @Controller
+    static class NoOpController { }
 }

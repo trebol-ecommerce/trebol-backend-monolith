@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.4] - 2024-28-08
+
+### Changed
+
+- **BREAKING CHANGE:** Updated supported Java version to [17 LTS](https://openjdk.org/projects/jdk/17/)
+  (although the folks at [whichjdk.com](https://whichjdk.com/#tldr) recommend migrating to 21, this is the best choice
+  compatibility-wise, also supported by SonarQube static analysis)
+  - Artifact Id was given suffix `-java17` to reflect this change in base Java version
+- Updated project dependencies
+  - spring boot starter parent pom `2.7.18` -> `3.2.9`
+  - lombok `1.18.26` -> `1.18.34` (version inherited from `spring-boot-dependencies`)
+  - h2 database `2.1.214` -> `2.1.220`
+- Many minor changes required to keep things running under these new dependencies
+  - Most `javax`-prefixed libraries now use the `jakarta`-prefix instead (with the exception of `javax.crypto`)
+    - `querydsl` also needed to be aware of this as a "classifier"
+  - Migrate `SecurityConfig` following the official guides by Spring Security
+    ([1](https://docs.spring.io/spring-security/reference/5.8/migration/index.html))
+    ([2](https://docs.spring.io/spring-security/reference/6.0/migration/index.html))
+    ([3](https://docs.spring.io/spring-security/reference/6.2/migration/index.html))
+    - Drop `WebSecurityConfigurerAdapter` interface
+      - Instead of implement `configure` method; declare a bean of type `SecurityFilterChain`
+    - Include `AuthenticationManager` and `DaoAuthenticationProvider` beans
+    - Configure `HttpSecurity` with newer arrow function-based syntax
+
 ## [v0.2.2] - 2023-06-09
 
 ### Changed

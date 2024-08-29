@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 The Trebol eCommerce Project
+ * Copyright (c) 2020-2024 The Trebol eCommerce Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -36,7 +36,7 @@ import org.trebol.jpa.services.crud.UsersCrudService;
 import org.trebol.jpa.services.patch.UsersPatchService;
 import org.trebol.security.exceptions.AccountProtectionViolationException;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Transactional
