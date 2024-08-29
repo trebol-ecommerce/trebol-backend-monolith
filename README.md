@@ -15,28 +15,26 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 
-A monolithic backend web application for the eCommerce project Trébol
-built using [Spring Boot v2.6](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/).
+A monolithic backend web application for the eCommerce project Trébol,
+built using [Spring Boot v2.6](https://docs.spring.io/spring-boot/docs/2.6.x/reference/html/)
+and since then migrated to [Spring Boot v3.2](https://docs.spring.io/spring-boot/docs/3.2.x/reference/html/).
 
 </div>
 
 ## Current Status
 
-Although some time has passed since I started working on Trébol, it is still in an early version.
-I have learned many things in the process: design patterns and their limits; several details and how-to's going
-about Spring Boot; and also usage of other libraries (see [Features](#features) below) and even Git itself.
+Although some time has passed since I started working on Trébol, it is still far from a complete project.
+I have learned many things in the process: from design patterns to working with the intricacies of
+Spring Boot Web application. I've also gotten better at Git itself.
+
+Recently, this project has been set up to work with Java 21, and as such, the artifact id of the project was changed too.
 
 Currently, this backend implementation is aligned to
 [Trébol API v1.7.2](https://github.com/trebol-ecommerce/api/blob/v1.7.2/src/trebol-api.json).
+It is planned to migrate towards
+[version 3.0](https://github.com/trebol-ecommerce/api/blob/v3.0.0/src/trebol-api.json).
 
-Recently, the artifact, group and version of the project as described in the
-[Project Object Model file](pom.xml) were changed.
-The roadmap from here on isn't totally defined, but conditions to reach `v1.0` are certainly stricter than before.
-
-If anything, the foremost priority as of now is to warrant that the basic functionality is implemented correctly,
-with the aid of thorough unit testing.
-
-Please take a look at the [changelog file](CHANGELOG.md) to review the most recent changes, additions and fixes.
+Please take a look at the [CHANGELOG file](CHANGELOG.md) to review the most recent changes, additions and fixes.
 
 ## Features
 
@@ -57,7 +55,7 @@ Please take a look at the [changelog file](CHANGELOG.md) to review the most rece
   * Implements stateless session authentication/autorization through [JSON Web Tokens](https://jwt.io/)
     with aid from the [JJWT](https://github.com/jwtk/jjwt) library
     * Paired with `users`, `roles`, and `permissions` database tables
-      * See `/src/main/resources/data.sql` for an example setup with 4 roles and users)
+      * See [data.sql](/src/main/resources/data.sql) for an example setup with 4 roles and users)
     * Do note that Authorities required in some controllers are hard-coded
       These must match entries in the `permissions` database table
   * Passwords encoded with BCrypt by default
@@ -79,27 +77,27 @@ Please take a look at the [changelog file](CHANGELOG.md) to review the most rece
 
 ![Schema](./schema.png)
 
-This Entity-Relationship model diagram was designed very quickly using
+This Entity-Relationship model diagram was designed quickly using
 [Azimutt](https://github.com/azimuttapp/azimutt).
 
 ## Getting started 👍
 
-### Supported JDK versions
+### Requirements
+
+* [Supported JDK](https://whichjdk.com)
+* [Apache Maven 3](https://maven.apache.org)
+
+#### Supported JDK versions
 
 | Java version | Supported? |
 |--------------|------------|
-| < 11         | no         |
-| 11 ... 18    | yes        |
-| > 18         | no         |
-
-### Requirements
-
-* JDK 11+
-* Apache Maven 3.6.0
+| < 21         | no         |
+| 21           | yes        |
+| > 21         | no         |
 
 ### Installation
 
-First, don't forget to download, install and enable
+First and foremost, don't forget to download, install and enable
 [the correct Project Lombok plugin for your IDE](https://projectlombok.org/setup/)
 if you haven't done so by the time you read this.
 
@@ -114,12 +112,12 @@ That command will:
 - Run unit tests
 - Check code coverage
 
-**The important step here that may confuse some people is to generate some of the source code**.
-It is made this way because some classes (QueryDSL types such as `QUser`, `QProduct` and so on)
-are unversioned and only included through a Maven plugin within the project dependencies.
+**An important step here that may confuse some people is the generation of source code**.
+We have set up type-safe queries by relying on dynamically created QueryDSL classes such as `QUser` and `QProduct`,
+which are un-versioned and only included through a Maven plugin within the project dependencies.
 
 If for any reason you fail to compile the project,
-please run `mvn clean generate-sources` instead and then try the former command again.
+please try running `mvn clean generate-sources` instead and then try the former command again.
 
 ### How to use
 
@@ -133,15 +131,17 @@ to know how to proceed about said Spring profile.
 
 ### Configuration
 
-The default configuration properties are located at `/src/main/resources/application.properties`.
-These are sane, briefly documented defaults. Play around if you'd like.
-
-You _can_ run the application out-of-the-box with these, though you should have a good look at it.
+The default configuration properties are located in the
+[default properties file](src/main/resources/application.properties).
+These are sane, briefly documented defaults. You _can_ run the application out-of-the-box with these.
+You can also totally play around with them.
 
 Also remember, that Spring Boot does support using more than one profile at once.
-[This](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.external-config) and
-[this](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.profiles) section of the
-Spring Boot guide can help you understand these mechanisms.
+The sections in the official guide that explain
+[External configuration](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.external-config)
+and
+[Profiles](https://docs.spring.io/spring-boot/docs/2.6.12/reference/html/features.html#features.profiles)
+can help you understand these mechanisms.
 
 ## Contributing to this repository 😍
 
@@ -184,5 +184,3 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
 Contributions of any kind welcome!
-
-[spring-boot-docs]: https://docs.spring.io/spring-boot/docs/2.6.12/reference/html
