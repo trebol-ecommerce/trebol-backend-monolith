@@ -27,7 +27,7 @@ Although some time has passed since I started working on Trébol, it is still fa
 I have learned many things in the process: from design patterns to working with the intricacies of
 Spring Boot Web application. I've also gotten better at Git itself.
 
-Recently, this project has been set up to work with Java 21, and as such, the artifact id of the project was changed too.
+Recently, this project has been set up to work with Java 17, and as such, the artifact id of the project was changed too.
 
 Currently, this backend implementation is aligned to
 [Trébol API v1.7.2](https://github.com/trebol-ecommerce/api/blob/v1.7.2/src/trebol-api.json).
@@ -84,16 +84,17 @@ This Entity-Relationship model diagram was designed quickly using
 
 ### Requirements
 
-* [Supported JDK](https://whichjdk.com)
+* [A supported version of the JDK](https://whichjdk.com)
 * [Apache Maven 3](https://maven.apache.org)
 
 #### Supported JDK versions
 
 | Java version | Supported? |
 |--------------|------------|
-| < 21         | no         |
-| 21           | yes        |
-| > 21         | no         |
+| < 17         | no         |
+| 17           | yes        |
+| 19           | compatible |
+| 21           | compatible |
 
 ### Installation
 
