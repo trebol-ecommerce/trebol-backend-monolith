@@ -25,18 +25,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.trebol.jpa.services.crud.CustomersCrudService;
@@ -47,10 +45,7 @@ import org.trebol.security.services.AuthorizationHeaderParserService;
 
 import javax.crypto.SecretKey;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.trebol.config.Constants.AUTHORITY_CHECKOUT;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
@@ -77,22 +72,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-            .headers()
-                .frameOptions().sameOrigin().and()
-                .cors().and()
-                .csrf().disable()
-            .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        return httpSecurity
+            .authenticationManager(this.authenticationManager())
+            .headers(configure -> configure.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(configure -> configure.sessionCreationPolicy(STATELESS))
             .addFilter(this.loginFilterForUrl("/public/login"))
-            .addFilterAfter(
-                this.guestFilterForUrl("/public/guest"),
-                JwtLoginAuthenticationFilter.class)
-            .addFilterAfter(
-                new JwtTokenVerifierFilter(jwtClaimsParserService),
-                JwtGuestAuthenticationFilter.class)
-            .authenticationManager(this.authenticationManager());
-        return httpSecurity.build();
+            .addFilterAfter(this.guestFilterForUrl("/public/guest"),
+                            JwtLoginAuthenticationFilter.class)
+            .addFilterAfter(new JwtTokenVerifierFilter(jwtClaimsParserService),
+                            JwtGuestAuthenticationFilter.class)
+            .build();
     }
 
     @Bean

@@ -20,6 +20,7 @@
 
 package org.trebol.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.DefaultClaims;
@@ -28,42 +29,36 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.WebApplicationContext;
 import org.trebol.security.services.AuthorizationHeaderParserService;
 
 import javax.crypto.SecretKey;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import static io.jsonwebtoken.Claims.EXPIRATION;
+import static java.time.Instant.now;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.trebol.config.Constants.AUTHORITY_CHECKOUT;
@@ -71,110 +66,90 @@ import static org.trebol.config.Constants.JWT_CLAIM_AUTHORITIES;
 import static org.trebol.config.Constants.JWT_PREFIX;
 
 /**
- * Spring Security integration tests for the JwtMockGuestAuthenticationFilter<br/>
+ * Spring Security integration tests for the JwtVerifiterFilter<br/>
  * For more insight on the how's and why's, check out these links.<br/>
  * <ul>
- * <li><a href="https://docs.spring.io/spring-security/site/docs/5.3.x/reference/html5/#test">Spring Security Reference - 19.Testing</a></li>
+ * <li><a href="https://docs.spring.io/spring-security/reference/6.1-SNAPSHOT/servlet/configuration/java.html#jc-httpsecurity">Spring Security Reference - Java Configuration - HttpSecurity</a></li>
  * <li><a href="https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-framework">Spring Framework Reference - 7.MockMvc</a></li>
  * </ul>
  */
 @ExtendWith(MockitoExtension.class)
-@ExtendWith(SpringExtension.class)
+@WebMvcTest({JwtVerifiterFilterTest.SimpleController.class})
 @ContextConfiguration(classes = {
     SecurityTestingConfig.class,
-    JwtVerifiterFilterTest.MockSecurityConfig.class})
-@WebAppConfiguration
+    JwtVerifiterFilterTest.MockSecurityConfig.class,
+    JwtVerifiterFilterTest.SimpleController.class})
 class JwtVerifiterFilterTest {
-    static final String ENDPOINT_URL = "/";
-    static final String POSITIVE_RESPONSE_BODY = "IT WORKS";
+    static final String TEST_ENDPOINT_PATH = "/";
+    static final Map<String, String> POSITIVE_RESPONSE_BODY = Map.of("message", "IT WORKS");
     @MockBean AuthorizationHeaderParserService<Claims> claimsParserServiceMock;
     @Autowired SecretKey secretkey;
-    @Autowired WebApplicationContext webApplicationContext;
-    MockMvc mockMvc;
+    @Autowired MockMvc mockMvc;
+    @Autowired ObjectMapper objectMapper;
 
     @BeforeEach
     void beforeEach() {
         SecurityContextHolder.clearContext();
-        mockMvc = MockMvcBuilders
-            .webAppContextSetup(webApplicationContext)
-            .apply(springSecurity())
-            .build();
     }
 
     @Test
     void accepts_valid_authentication_tokens() throws Exception {
-        List<Map<String, String>> validAuthorities = List.of(
-            Map.of("authority", AUTHORITY_CHECKOUT)
-        );
-        Date oneHourAfterTestExecution = Date.from(Instant.now().plus(Duration.ofHours(1)));
         DefaultClaims validClaims = new DefaultClaims(Map.of(
-            EXPIRATION, oneHourAfterTestExecution,
-            JWT_CLAIM_AUTHORITIES, validAuthorities
-        ));
+            EXPIRATION, Date.from(now().plus(Duration.ofHours(1))),
+            JWT_CLAIM_AUTHORITIES, List.of(Map.of("authority", AUTHORITY_CHECKOUT))));
+        String expectedResponseBody = objectMapper.writeValueAsString(POSITIVE_RESPONSE_BODY);
+        when(claimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
         String jwt = Jwts.builder()
             .signWith(secretkey)
             .setClaims(validClaims)
             .compact();
-        when(claimsParserServiceMock.parseToken(anyString())).thenReturn(validClaims);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .get(ENDPOINT_URL)
-            .header(AUTHORIZATION, JWT_PREFIX + jwt);
-        mockMvc.perform(requestBuilder)
+        mockMvc.perform(MockMvcRequestBuilders
+                .get(TEST_ENDPOINT_PATH)
+                .header(AUTHORIZATION, JWT_PREFIX + jwt))
             .andExpect(status().isOk())
-            .andExpect(content().string(POSITIVE_RESPONSE_BODY));
+            .andExpect(content().json(expectedResponseBody));
     }
 
 
     @Test
-    void rejects_invalid_authentication_tokens() throws Exception {
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .get(ENDPOINT_URL); // no jwt
-        mockMvc.perform(requestBuilder)
+    void rejects_absence_of_authentication_tokens() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get(TEST_ENDPOINT_PATH))
             .andExpect(status().isForbidden());
     }
 
     @TestConfiguration
     @EnableWebSecurity
     static class MockSecurityConfig {
-        final PasswordEncoder passwordEncoder;
-        final AuthenticationProvider authenticationProvider;
-        final SecretKey secretKey;
         final AuthorizationHeaderParserService<Claims> claimsParserService;
 
         @Autowired
-        MockSecurityConfig(
-            PasswordEncoder passwordEncoder,
-            AuthenticationProvider authenticationProvider,
-            SecretKey secretKey,
-            AuthorizationHeaderParserService<Claims> claimsParserService
-        ) {
-            this.passwordEncoder = passwordEncoder;
-            this.authenticationProvider = authenticationProvider;
-            this.secretKey = secretKey;
+        MockSecurityConfig(AuthorizationHeaderParserService<Claims> claimsParserService) {
             this.claimsParserService = claimsParserService;
         }
 
         @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            JwtTokenVerifierFilter instance = new JwtTokenVerifierFilter(claimsParserService);
-            http.authorizeHttpRequests()
-                .requestMatchers(ENDPOINT_URL).authenticated()
-                .and().csrf().disable()
-                .addFilterAfter(instance, DigestAuthenticationFilter.class); // first authorization filter
-            return http.build();
+        public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+            return httpSecurity
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers(TEST_ENDPOINT_PATH).authenticated())
+                .sessionManagement(configure -> configure.sessionCreationPolicy(STATELESS))
+                .csrf(AbstractHttpConfigurer::disable)
+                .addFilterAfter(
+                    new JwtTokenVerifierFilter(claimsParserService),
+                    LogoutFilter.class) // first authorization filter
+                .build();
         }
+    }
 
-        /**
-         * A primitive controller for mocking responses. It only accepts authenticated requests.
-         * It responds with 200 OK, and the response body is set in plain text format.
-         */
-        @RestController
-        static class SimpleController {
+    /**
+     * A primitive controller that always responds 200 OK with a predetermined response body.
+     */
+    @Controller
+    static class SimpleController {
 
-            @GetMapping("/")
-            public String respond() {
-                return POSITIVE_RESPONSE_BODY;
-            }
+        @GetMapping(TEST_ENDPOINT_PATH)
+        public ResponseEntity<Map<String, String>> respond() {
+            return ResponseEntity.ok(POSITIVE_RESPONSE_BODY);
         }
     }
 }

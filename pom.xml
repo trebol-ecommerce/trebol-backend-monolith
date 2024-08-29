@@ -27,7 +27,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.0.13</version>
+    <version>3.1.12</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>org.trebolecommerce</groupId>
@@ -170,11 +170,6 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-inline</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
