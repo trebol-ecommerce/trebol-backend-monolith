@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **BREAKING CHANGE:** Updated supported Java version to [21 LTS](https://openjdk.org/projects/jdk/21/) ([why?](https://whichjdk.com/#tldr))
-  - Artifact Id was given suffix `-java21` to reflect this
+- **BREAKING CHANGE:** Updated supported Java version to [17 LTS](https://openjdk.org/projects/jdk/17/)
+  (although the folks at [whichjdk.com](https://whichjdk.com/#tldr) recommend migrating to 21, this is the best choice
+  compatibility-wise, also supported by SonarQube static analysis)
+  - Artifact Id was given suffix `-java17` to reflect this change in base Java version
 - Updated project dependencies
   - spring boot starter parent pom `2.7.18` -> `3.2.9`
   - lombok `1.18.26` -> `1.18.34` (version inherited from `spring-boot-dependencies`)
