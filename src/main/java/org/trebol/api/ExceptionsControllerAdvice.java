@@ -38,12 +38,13 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 /**
  * Catches some known exceptions, commonly declared at the controller level.<br/>
  * Then it sends custom responses to consumers of the REST API.<br/>
- * Supports:
+ *
+ * The following exceptions are supported and mapped to certain status codes:
  * <ul>
- * <li>{@link jakarta.persistence.EntityNotFoundException}</li> -> 404 NOT FOUND
- * <li>{@link jakarta.persistence.EntityExistsException}</li> ->
- * <li>{@link org.trebol.common.exceptions.BadInputException}</li>
- * <li>{@link org.springframework.web.bind.MethodArgumentNotValidException}</li>
+ * <li>{@link jakarta.persistence.EntityNotFoundException} -> 404 NOT FOUND</li>
+ * <li>{@link jakarta.persistence.EntityExistsException} -> 400 BAD REQUEST</li>
+ * <li>{@link org.trebol.common.exceptions.BadInputException} -> 400 REQUEST</li>
+ * <li>{@link org.springframework.web.bind.MethodArgumentNotValidException} -> 400 BAD REQUEST</li>
  * </ul>
  *
  * @see org.springframework.http.HttpStatus
