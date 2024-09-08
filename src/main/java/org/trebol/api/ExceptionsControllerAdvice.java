@@ -21,16 +21,17 @@
 package org.trebol.api;
 
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.trebol.api.models.AppError;
 import org.trebol.common.exceptions.BadInputException;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -53,31 +54,53 @@ public class ExceptionsControllerAdvice {
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
-    public String handleException(EntityNotFoundException ex) {
-        return ex.getMessage();
+    public AppError handleException(EntityNotFoundException ex) {
+        return AppError.builder()
+            .code("NOTFOUND_01")
+            .message("The requested resource could not be found")
+            .canRetry(false)
+            .build();
     }
 
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(EntityExistsException.class)
-    public String handleException(EntityExistsException ex) {
-        return ex.getMessage();
+    public AppError handleException(EntityExistsException ex) {
+        return AppError.builder()
+            .code("EXISTS_01")
+            .message("There is one such resource with the same identifying properties that already exists")
+            .canRetry(false)
+            .build();
     }
 
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(BadInputException.class)
-    public String handleException(BadInputException ex) {
-        return ex.getMessage();
+    public AppError handleException(BadInputException ex) {
+        return AppError.builder()
+            .code("REJECTED_01")
+            .message("The request body did not meet the required criteria")
+            .canRetry(true)
+            .build();
     }
 
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleException(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+    public AppError handleException(MethodArgumentNotValidException ex) {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
+        int errorCollectionSize = allErrors.size();
+        for (int i = 0; i < errorCollectionSize; i++) {
+            ObjectError error = allErrors.get(i);
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
+            stringBuilder.append(String.format("%s: %s", fieldName, errorMessage));
+            if (errorCollectionSize > i+1) {
+                stringBuilder.append(String.format("%n"));
+            }
+        }
+        return AppError.builder()
+            .code("REJECTED_02")
+            .message("The request body did not meet the basic required criteria for acceptance")
+            .detailMessage(stringBuilder.toString())
+            .build();
     }
 }
