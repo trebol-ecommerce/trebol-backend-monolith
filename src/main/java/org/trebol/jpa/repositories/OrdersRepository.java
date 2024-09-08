@@ -18,25 +18,37 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.jpa.repositories;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.Order;
+import org.trebol.jpa.entities.OrderStatus;
 
-import jakarta.validation.constraints.Positive;
+import java.util.Optional;
 
-@Data
-@Component
-@ConfigurationProperties(prefix = "trebol.api")
-@Validated
-public class ApiProperties {
-    @Positive
-    private Integer itemsPerPage;
-    @Positive
-    private Integer maxAllowedPageSize;
-    @Positive
-    private int maxCategoryFetchingRecursionDepth;
-    private boolean ableToEditOrdersAfterBeingProcessed;
+@org.springframework.stereotype.Repository
+public interface OrdersRepository
+    extends Repository<Order> {
+
+    Optional<Order> findByTransactionToken(String token);
+
+    @Query(value = "SELECT s FROM Order s "
+        + "JOIN FETCH s.details "
+        + "WHERE s.id = :id")
+    Optional<Order> findByIdWithDetails(@Param("id") Long id);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Order s "
+        + "SET s.status = :status "
+        + "WHERE s.id = :id")
+    int setStatus(@Param("id") Long id, @Param("status") OrderStatus status);
+
+    @Modifying
+    @Query("UPDATE Order s "
+        + "SET s.transactionToken = :token "
+        + "WHERE s.id = :id")
+    int setTransactionToken(@Param("id") Long id, @Param("token") String token);
 }

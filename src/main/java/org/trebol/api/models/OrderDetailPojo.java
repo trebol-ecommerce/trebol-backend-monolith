@@ -18,25 +18,27 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.api.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+import lombok.NoArgsConstructor;
 
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Data
-@Component
-@ConfigurationProperties(prefix = "trebol.api")
-@Validated
-public class ApiProperties {
-    @Positive
-    private Integer itemsPerPage;
-    @Positive
-    private Integer maxAllowedPageSize;
-    @Positive
-    private int maxCategoryFetchingRecursionDepth;
-    private boolean ableToEditOrdersAfterBeingProcessed;
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude
+public class OrderDetailPojo {
+    @Min(1)
+    private int units;
+    private int unitValue;
+    private String description;
+    @NotNull
+    private ProductPojo product;
 }

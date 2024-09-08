@@ -34,9 +34,9 @@ import org.trebol.api.controllers.DataProductCategoriesController;
 import org.trebol.api.controllers.DataProductListContentsController;
 import org.trebol.api.controllers.DataProductListsController;
 import org.trebol.api.controllers.DataProductsController;
-import org.trebol.api.controllers.DataSalesController;
+import org.trebol.api.controllers.DataOrdersController;
 import org.trebol.api.controllers.DataSalespeopleController;
-import org.trebol.api.controllers.DataSellStatusesController;
+import org.trebol.api.controllers.DataOrderStatusesController;
 import org.trebol.api.controllers.DataShippersController;
 import org.trebol.api.controllers.DataUserRolesController;
 import org.trebol.api.controllers.DataUsersController;
@@ -60,9 +60,10 @@ class BackendAppTest {
     @Autowired DataProductListContentsController productListContentsController;
     @Autowired DataProductListsController productListsController;
     @Autowired DataProductsController productsController;
-    @Autowired DataSalesController salesController;
+    @Autowired DataOrdersController ordersController;
     @Autowired DataSalespeopleController salespeopleController;
-    @Autowired DataSellStatusesController sellStatusesController;
+    @Autowired
+    DataOrderStatusesController sellStatusesController;
     @Autowired DataShippersController shippersController;
     @Autowired DataUserRolesController userRolesController;
     @Autowired DataUsersController usersController;
@@ -85,7 +86,7 @@ class BackendAppTest {
             productListContentsController,
             productListsController,
             productsController,
-            salesController,
+            ordersController,
             salespeopleController,
             sellStatusesController,
             shippersController,

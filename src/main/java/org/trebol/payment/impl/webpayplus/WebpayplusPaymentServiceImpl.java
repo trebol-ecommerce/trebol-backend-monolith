@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
-import org.trebol.api.models.SellPojo;
+import org.trebol.api.models.OrderPojo;
 import org.trebol.payment.PaymentService;
 import org.trebol.payment.PaymentServiceException;
 
@@ -62,7 +62,7 @@ public class WebpayplusPaymentServiceImpl
     }
 
     @Override
-    public PaymentRedirectionDetailsPojo requestNewPaymentPageDetails(SellPojo transaction) throws PaymentServiceException {
+    public PaymentRedirectionDetailsPojo requestNewPaymentPageDetails(OrderPojo transaction) throws PaymentServiceException {
         String buyOrder = transaction.getBuyOrder().toString();
         String sessionId = String.valueOf(transaction.hashCode());
         double amount = transaction.getTotalValue();

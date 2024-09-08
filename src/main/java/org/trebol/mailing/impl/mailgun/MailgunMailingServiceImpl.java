@@ -41,8 +41,8 @@ import org.springframework.stereotype.Service;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.api.models.ReceiptDetailPojo;
 import org.trebol.api.models.ReceiptPojo;
-import org.trebol.api.models.SellDetailPojo;
-import org.trebol.api.models.SellPojo;
+import org.trebol.api.models.OrderDetailPojo;
+import org.trebol.api.models.OrderPojo;
 import org.trebol.mailing.MailingProperties;
 import org.trebol.mailing.MailingService;
 import org.trebol.mailing.MailingServiceException;
@@ -54,10 +54,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import static org.trebol.config.Constants.SELL_STATUS_COMPLETED;
-import static org.trebol.config.Constants.SELL_STATUS_PAID_CONFIRMED;
-import static org.trebol.config.Constants.SELL_STATUS_PAID_UNCONFIRMED;
-import static org.trebol.config.Constants.SELL_STATUS_REJECTED;
+import static org.trebol.config.Constants.ORDER_STATUS_COMPLETED;
+import static org.trebol.config.Constants.ORDER_STATUS_PAID_CONFIRMED;
+import static org.trebol.config.Constants.ORDER_STATUS_PAID_UNCONFIRMED;
+import static org.trebol.config.Constants.ORDER_STATUS_REJECTED;
 
 /**
  * Implements Mailgun HTTP API as a mail service provider.<br/>
@@ -96,7 +96,7 @@ public class MailgunMailingServiceImpl
     }
 
     @Override
-    public void notifyOrderStatusToClient(SellPojo sell)
+    public void notifyOrderStatusToClient(OrderPojo sell)
         throws MailingServiceException {
         String mapsKey = CUSTOMER_MAPS_KEY_PREFIX + sell.getStatus();
         if (!orderStatus2MailSubjectMap.containsKey(mapsKey)) {
@@ -127,7 +127,7 @@ public class MailgunMailingServiceImpl
     }
 
     @Override
-    public void notifyOrderStatusToOwners(SellPojo sell)
+    public void notifyOrderStatusToOwners(OrderPojo sell)
         throws MailingServiceException {
         String mapsKey = OWNERS_MAPS_KEY_PREFIX + sell.getStatus();
         if (!orderStatus2MailSubjectMap.containsKey(mapsKey)) {
@@ -165,25 +165,25 @@ public class MailgunMailingServiceImpl
 
     private Map<String, String> makeTemplatesMap() {
         return Map.of(
-            CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_UNCONFIRMED, mailgunProperties.getCustomerOrderPaymentTemplate(),
-            CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, mailgunProperties.getCustomerOrderConfirmationTemplate(),
-            CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, mailgunProperties.getCustomerOrderRejectionTemplate(),
-            CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, mailgunProperties.getCustomerOrderCompletionTemplate(),
-            OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, mailgunProperties.getOwnerOrderConfirmationTemplate(),
-            OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, mailgunProperties.getOwnerOrderRejectionTemplate(),
-            OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, mailgunProperties.getOwnerOrderCompletionTemplate()
+            CUSTOMER_MAPS_KEY_PREFIX + ORDER_STATUS_PAID_UNCONFIRMED, mailgunProperties.getCustomerOrderPaymentTemplate(),
+            CUSTOMER_MAPS_KEY_PREFIX + ORDER_STATUS_PAID_CONFIRMED, mailgunProperties.getCustomerOrderConfirmationTemplate(),
+            CUSTOMER_MAPS_KEY_PREFIX + ORDER_STATUS_REJECTED, mailgunProperties.getCustomerOrderRejectionTemplate(),
+            CUSTOMER_MAPS_KEY_PREFIX + ORDER_STATUS_COMPLETED, mailgunProperties.getCustomerOrderCompletionTemplate(),
+            OWNERS_MAPS_KEY_PREFIX + ORDER_STATUS_PAID_CONFIRMED, mailgunProperties.getOwnerOrderConfirmationTemplate(),
+            OWNERS_MAPS_KEY_PREFIX + ORDER_STATUS_REJECTED, mailgunProperties.getOwnerOrderRejectionTemplate(),
+            OWNERS_MAPS_KEY_PREFIX + ORDER_STATUS_COMPLETED, mailgunProperties.getOwnerOrderCompletionTemplate()
         );
     }
 
     private Map<String, String> makeSubjectsMap() {
         return Map.of(
-            CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_UNCONFIRMED, internalMailingIntegrationProperties.getCustomerOrderPaymentSubject(),
-            CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, internalMailingIntegrationProperties.getCustomerOrderConfirmationSubject(),
-            CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, internalMailingIntegrationProperties.getCustomerOrderRejectionSubject(),
-            CUSTOMER_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, internalMailingIntegrationProperties.getCustomerOrderCompletionSubject(),
-            OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_PAID_CONFIRMED, internalMailingIntegrationProperties.getOwnerOrderConfirmationSubject(),
-            OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_REJECTED, internalMailingIntegrationProperties.getOwnerOrderRejectionSubject(),
-            OWNERS_MAPS_KEY_PREFIX + SELL_STATUS_COMPLETED, internalMailingIntegrationProperties.getOwnerOrderCompletionSubject()
+            CUSTOMER_MAPS_KEY_PREFIX + ORDER_STATUS_PAID_UNCONFIRMED, internalMailingIntegrationProperties.getCustomerOrderPaymentSubject(),
+            CUSTOMER_MAPS_KEY_PREFIX + ORDER_STATUS_PAID_CONFIRMED, internalMailingIntegrationProperties.getCustomerOrderConfirmationSubject(),
+            CUSTOMER_MAPS_KEY_PREFIX + ORDER_STATUS_REJECTED, internalMailingIntegrationProperties.getCustomerOrderRejectionSubject(),
+            CUSTOMER_MAPS_KEY_PREFIX + ORDER_STATUS_COMPLETED, internalMailingIntegrationProperties.getCustomerOrderCompletionSubject(),
+            OWNERS_MAPS_KEY_PREFIX + ORDER_STATUS_PAID_CONFIRMED, internalMailingIntegrationProperties.getOwnerOrderConfirmationSubject(),
+            OWNERS_MAPS_KEY_PREFIX + ORDER_STATUS_REJECTED, internalMailingIntegrationProperties.getOwnerOrderRejectionSubject(),
+            OWNERS_MAPS_KEY_PREFIX + ORDER_STATUS_COMPLETED, internalMailingIntegrationProperties.getOwnerOrderCompletionSubject()
         );
     }
 
@@ -206,7 +206,7 @@ public class MailgunMailingServiceImpl
             .basicAuth("api", this.mailgunProperties.getApiKey());
     }
 
-    private String makeMailgunVariablesFrom(SellPojo sell) {
+    private String makeMailgunVariablesFrom(OrderPojo sell) {
         String variables;
         try {
             ReceiptPojo receipt = this.turnIntoReceipt(sell);
@@ -220,11 +220,11 @@ public class MailgunMailingServiceImpl
         return variables;
     }
 
-    private ReceiptPojo turnIntoReceipt(SellPojo sell) {
+    private ReceiptPojo turnIntoReceipt(OrderPojo sell) {
         ReceiptPojo receipt = conversionService.convert(sell, ReceiptPojo.class);
         if (receipt!=null && sell.getDetails()!=null) {
             List<ReceiptDetailPojo> receiptDetails = new ArrayList<>();
-            for (SellDetailPojo detail : sell.getDetails()) {
+            for (OrderDetailPojo detail : sell.getDetails()) {
                 ReceiptDetailPojo convert = conversionService.convert(detail, ReceiptDetailPojo.class);
                 receiptDetails.add(convert);
             }

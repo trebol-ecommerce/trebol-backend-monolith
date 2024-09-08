@@ -18,25 +18,19 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.jpa.repositories;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.OrderDetail;
 
-import jakarta.validation.constraints.Positive;
+import java.util.List;
 
-@Data
-@Component
-@ConfigurationProperties(prefix = "trebol.api")
-@Validated
-public class ApiProperties {
-    @Positive
-    private Integer itemsPerPage;
-    @Positive
-    private Integer maxAllowedPageSize;
-    @Positive
-    private int maxCategoryFetchingRecursionDepth;
-    private boolean ableToEditOrdersAfterBeingProcessed;
+@org.springframework.stereotype.Repository
+public interface OrderDetailsRepository
+    extends Repository<OrderDetail> {
+
+    @Query(value = "SELECT d FROM OrderDetail d WHERE d.order.id = :orderId")
+    List<OrderDetail> findBySellId(@Param("orderId") Long orderId);
 }

@@ -28,9 +28,9 @@ import org.trebol.api.models.ReceiptDetailPojo;
 import org.trebol.api.models.ReceiptPojo;
 import org.trebol.api.services.ReceiptService;
 import org.trebol.jpa.entities.Product;
-import org.trebol.jpa.entities.Sell;
-import org.trebol.jpa.entities.SellDetail;
-import org.trebol.jpa.repositories.SalesRepository;
+import org.trebol.jpa.entities.Order;
+import org.trebol.jpa.entities.OrderDetail;
+import org.trebol.jpa.repositories.OrdersRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -40,32 +40,32 @@ import java.util.Optional;
 @Service
 public class ReceiptServiceImpl
     implements ReceiptService {
-    private final SalesRepository salesRepository;
+    private final OrdersRepository ordersRepository;
     private final ConversionService conversionService;
 
     @Autowired
     public ReceiptServiceImpl(
-        SalesRepository salesRepository,
+        OrdersRepository ordersRepository,
         ConversionService conversionService
     ) {
-        this.salesRepository = salesRepository;
+        this.ordersRepository = ordersRepository;
         this.conversionService = conversionService;
     }
 
     @Override
     public ReceiptPojo fetchReceiptByTransactionToken(String token)
         throws EntityNotFoundException {
-        Optional<Sell> match = salesRepository.findByTransactionToken(token);
+        Optional<Order> match = ordersRepository.findByTransactionToken(token);
         if (match.isEmpty()) {
             throw new EntityNotFoundException("The transaction could not be found, no receipt can be created");
         }
-        Sell foundMatch = match.get();
+        Order foundMatch = match.get();
 
         ReceiptPojo target = conversionService.convert(foundMatch, ReceiptPojo.class);
 
         if (target!=null) {
             List<ReceiptDetailPojo> targetDetails = new ArrayList<>();
-            for (SellDetail d : foundMatch.getDetails()) {
+            for (OrderDetail d : foundMatch.getDetails()) {
                 ReceiptDetailPojo targetDetail = conversionService.convert(d, ReceiptDetailPojo.class);
                 if (targetDetail!=null) {
                     Product pd = d.getProduct();

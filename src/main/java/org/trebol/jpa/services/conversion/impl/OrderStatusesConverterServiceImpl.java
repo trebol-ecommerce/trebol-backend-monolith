@@ -18,25 +18,37 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.jpa.services.conversion.impl;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.trebol.api.models.OrderStatusPojo;
+import org.trebol.jpa.entities.OrderStatus;
+import org.trebol.jpa.services.conversion.OrderStatusesConverterService;
 
-import jakarta.validation.constraints.Positive;
+@Service
+@NoArgsConstructor
+public class OrderStatusesConverterServiceImpl
+    implements OrderStatusesConverterService {
 
-@Data
-@Component
-@ConfigurationProperties(prefix = "trebol.api")
-@Validated
-public class ApiProperties {
-    @Positive
-    private Integer itemsPerPage;
-    @Positive
-    private Integer maxAllowedPageSize;
-    @Positive
-    private int maxCategoryFetchingRecursionDepth;
-    private boolean ableToEditOrdersAfterBeingProcessed;
+    @Override
+    public OrderStatusPojo convertToPojo(OrderStatus source) {
+        return OrderStatusPojo.builder()
+            .code(source.getCode())
+            .name(source.getName())
+            .build();
+    }
+
+    @Override
+    public OrderStatus convertToNewEntity(OrderStatusPojo source) {
+        return OrderStatus.builder()
+            .code(source.getCode())
+            .name(source.getName())
+            .build();
+    }
+
+    @Override
+    public OrderStatus applyChangesToExistingEntity(OrderStatusPojo source, OrderStatus target) {
+        throw new UnsupportedOperationException("This method is deprecated");
+    }
 }

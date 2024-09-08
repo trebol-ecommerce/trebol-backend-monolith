@@ -26,12 +26,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
-import org.trebol.api.models.SellPojo;
+import org.trebol.api.models.OrderPojo;
 import org.trebol.api.services.CheckoutService;
-import org.trebol.api.services.SalesProcessService;
+import org.trebol.api.services.OrdersProcessService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.jpa.services.crud.SalesCrudService;
-import org.trebol.jpa.services.predicates.SalesPredicateService;
+import org.trebol.jpa.services.crud.OrdersCrudService;
+import org.trebol.jpa.services.predicates.OrdersPredicateService;
 import org.trebol.payment.PaymentService;
 import org.trebol.payment.PaymentServiceException;
 
@@ -43,36 +43,36 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
+import static org.trebol.config.Constants.ORDER_STATUS_PAYMENT_STARTED;
 
 @Service
 public class CheckoutServiceImpl
     implements CheckoutService {
     private final Logger logger = LoggerFactory.getLogger(CheckoutServiceImpl.class);
-    private final SalesCrudService salesCrudService;
-    private final SalesProcessService salesProcessService;
-    private final SalesPredicateService salesPredicateService;
+    private final OrdersCrudService ordersCrudService;
+    private final OrdersProcessService ordersProcessService;
+    private final OrdersPredicateService ordersPredicateService;
     private final PaymentService paymentIntegrationService;
 
     @Autowired
     public CheckoutServiceImpl(
-        SalesCrudService salesCrudService,
-        SalesProcessService salesProcessService,
-        SalesPredicateService salesPredicateService,
+        OrdersCrudService ordersCrudService,
+        OrdersProcessService ordersProcessService,
+        OrdersPredicateService ordersPredicateService,
         PaymentService paymentIntegrationService
     ) {
-        this.salesCrudService = salesCrudService;
-        this.salesProcessService = salesProcessService;
-        this.salesPredicateService = salesPredicateService;
+        this.ordersCrudService = ordersCrudService;
+        this.ordersProcessService = ordersProcessService;
+        this.ordersPredicateService = ordersPredicateService;
         this.paymentIntegrationService = paymentIntegrationService;
     }
 
     @Override
-    public PaymentRedirectionDetailsPojo requestTransactionStart(SellPojo transaction) throws PaymentServiceException, BadInputException {
+    public PaymentRedirectionDetailsPojo requestTransactionStart(OrderPojo transaction) throws PaymentServiceException, BadInputException {
         PaymentRedirectionDetailsPojo response = paymentIntegrationService.requestNewPaymentPageDetails(transaction);
         try {
             transaction.setToken(response.getToken());
-            salesProcessService.markAsStarted(transaction);
+            ordersProcessService.markAsStarted(transaction);
             return response;
         } catch (EntityNotFoundException exc) {
             throw new IllegalStateException("The server had a problem requesting the transaction", exc);
@@ -80,12 +80,12 @@ public class CheckoutServiceImpl
     }
 
     @Override
-    public SellPojo confirmTransaction(String transactionToken, boolean wasAborted)
+    public OrderPojo confirmTransaction(String transactionToken, boolean wasAborted)
         throws EntityNotFoundException, PaymentServiceException {
-        SellPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
+        OrderPojo sellByToken = this.getSellRequestedWithMatchingToken(transactionToken);
         try {
             if (wasAborted) {
-                return salesProcessService.markAsAborted(sellByToken);
+                return ordersProcessService.markAsAborted(sellByToken);
             } else {
                 return this.processSellPaymentStatus(sellByToken);
             }
@@ -113,14 +113,14 @@ public class CheckoutServiceImpl
      * @throws EntityNotFoundException If no transaction has a matching token.
      * @throws PaymentServiceException As raised at payment level.
      */
-    private SellPojo processSellPaymentStatus(SellPojo sellByToken)
+    private OrderPojo processSellPaymentStatus(OrderPojo sellByToken)
         throws EntityNotFoundException, PaymentServiceException {
         int statusCode = paymentIntegrationService.requestPaymentResult(sellByToken.getToken());
         try {
             if (statusCode!=0) {
-                return salesProcessService.markAsFailed(sellByToken);
+                return ordersProcessService.markAsFailed(sellByToken);
             } else {
-                return salesProcessService.markAsPaid(sellByToken);
+                return ordersProcessService.markAsPaid(sellByToken);
             }
         } catch (BadInputException e) {
             logger.error("Incorrect state of sell, was: {}", sellByToken.getStatus());
@@ -128,11 +128,11 @@ public class CheckoutServiceImpl
         }
     }
 
-    private SellPojo getSellRequestedWithMatchingToken(String transactionToken) throws EntityNotFoundException {
+    private OrderPojo getSellRequestedWithMatchingToken(String transactionToken) throws EntityNotFoundException {
         Map<String, String> startedWithTokenMatcher = new HashMap<>(Map.of(
-            "statusCode", SELL_STATUS_PAYMENT_STARTED,
+            "statusCode", ORDER_STATUS_PAYMENT_STARTED,
             "token", transactionToken));
-        Predicate startedTransactionWithMatchingToken = salesPredicateService.parseMap(startedWithTokenMatcher);
-        return salesCrudService.readOne(startedTransactionWithMatchingToken);
+        Predicate startedTransactionWithMatchingToken = ordersPredicateService.parseMap(startedWithTokenMatcher);
+        return ordersCrudService.readOne(startedTransactionWithMatchingToken);
     }
 }

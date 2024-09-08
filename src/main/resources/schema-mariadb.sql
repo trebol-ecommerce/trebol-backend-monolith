@@ -140,14 +140,14 @@ CREATE TABLE `product_categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-DROP TABLE IF EXISTS `sell_statuses`;
-CREATE TABLE `sell_statuses` (
-  `sell_status_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sell_status_code` int(11) NOT NULL,
-  `sell_status_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`sell_status_id`),
-  UNIQUE KEY `UK_SELL_STATUS_CODE` (`sell_status_code`),
-  UNIQUE KEY `UK_SELL_STATUS_NAME` (`sell_status_name`)
+DROP TABLE IF EXISTS `order_statuses`;
+CREATE TABLE `order_statuses` (
+  `order_status_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `order_status_code` int(11) NOT NULL,
+  `order_status_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`order_status_id`),
+  UNIQUE KEY `UK_ORDER_STATUS_CODE` (`order_status_code`),
+  UNIQUE KEY `UK_ORDER_STATUS_NAME` (`order_status_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -254,16 +254,16 @@ CREATE TABLE `product_list_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-DROP TABLE IF EXISTS `sales`;
-CREATE TABLE `sales` (
-  `sell_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sell_date` datetime(6) NOT NULL,
-  `sell_net_value` int(11) NOT NULL,
-  `sell_taxes_value` int(11) NOT NULL,
-  `sell_total_items` int(11) NOT NULL,
-  `sell_total_value` int(11) NOT NULL,
-  `sell_transaction_token` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sell_transport_value` int(11) NOT NULL,
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE `orders` (
+  `order_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `order_date` datetime(6) NOT NULL,
+  `order_net_value` int(11) NOT NULL,
+  `order_taxes_value` int(11) NOT NULL,
+  `order_total_items` int(11) NOT NULL,
+  `order_total_value` int(11) NOT NULL,
+  `order_transaction_token` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `order_transport_value` int(11) NOT NULL,
   `billing_address_id` bigint(20) DEFAULT NULL,
   `billing_company_id` bigint(20) DEFAULT NULL,
   `billing_type_id` bigint(20) NOT NULL,
@@ -272,33 +272,33 @@ CREATE TABLE `sales` (
   `salesperson_id` bigint(20) DEFAULT NULL,
   `shipper_id` bigint(20) DEFAULT NULL,
   `shipping_address_id` bigint(20) DEFAULT NULL,
-  `sell_status_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`sell_id`),
-  KEY `IDX_SELL_DATE` (`sell_date`),
-  KEY `IDX_SELL_TOKEN` (`sell_transaction_token`),
-  CONSTRAINT `FK_SELL_CUSTOM_ID` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`),
-  CONSTRAINT `FK_SELL_BILL_TYP_ID` FOREIGN KEY (`billing_type_id`) REFERENCES `billing_types` (`billing_type_id`),
-  CONSTRAINT `FK_SELL_PAYMT_TYP_ID` FOREIGN KEY (`payment_type_id`) REFERENCES `payment_types` (`payment_type_id`),
-  CONSTRAINT `FK_SELL_STATUS_ID` FOREIGN KEY (`sell_status_id`) REFERENCES `sell_statuses` (`sell_status_id`),
-  CONSTRAINT `FK_SELL_BILL_CY_ID` FOREIGN KEY (`billing_company_id`) REFERENCES `billing_companies` (`billing_company_id`),
-  CONSTRAINT `FK_SELL_ADDR_BILL` FOREIGN KEY (`billing_address_id`) REFERENCES `addresses` (`address_id`),
-  CONSTRAINT `FK_SELL_SHIPPER_ID` FOREIGN KEY (`shipper_id`) REFERENCES `shippers` (`shipper_id`),
-  CONSTRAINT `FK_SELL_ADDR_SHIP` FOREIGN KEY (`shipping_address_id`) REFERENCES `addresses` (`address_id`),
-  CONSTRAINT `FK_SELL_SPERSON` FOREIGN KEY (`salesperson_id`) REFERENCES `salespeople` (`salesperson_id`)
+  `order_status_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `IDX_ORDER_DATE` (`order_date`),
+  KEY `IDX_ORDER_TOKEN` (`order_transaction_token`),
+  CONSTRAINT `FK_ORDER_CUSTOM_ID` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`),
+  CONSTRAINT `FK_ORDER_BILL_TYP_ID` FOREIGN KEY (`billing_type_id`) REFERENCES `billing_types` (`billing_type_id`),
+  CONSTRAINT `FK_ORDER_PAYMT_TYP_ID` FOREIGN KEY (`payment_type_id`) REFERENCES `payment_types` (`payment_type_id`),
+  CONSTRAINT `FK_ORDER_STATUS_ID` FOREIGN KEY (`order_status_id`) REFERENCES `order_statuses` (`order_status_id`),
+  CONSTRAINT `FK_ORDER_BILL_CY_ID` FOREIGN KEY (`billing_company_id`) REFERENCES `billing_companies` (`billing_company_id`),
+  CONSTRAINT `FK_ORDER_ADDR_BILL` FOREIGN KEY (`billing_address_id`) REFERENCES `addresses` (`address_id`),
+  CONSTRAINT `FK_ORDER_SHIPPER_ID` FOREIGN KEY (`shipper_id`) REFERENCES `shippers` (`shipper_id`),
+  CONSTRAINT `FK_ORDER_ADDR_SHIP` FOREIGN KEY (`shipping_address_id`) REFERENCES `addresses` (`address_id`),
+  CONSTRAINT `FK_ORDER_SPERSON` FOREIGN KEY (`salesperson_id`) REFERENCES `salespeople` (`salesperson_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-DROP TABLE IF EXISTS `sell_details`;
-CREATE TABLE `sell_details` (
-  `sell_detail_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sell_detail_unit_value` int(11) NOT NULL,
-  `sell_detail_units` int(11) NOT NULL,
-  `sell_detail_description` varchar(260) COLLATE utf8mb4_unicode_ci NOT NULL,
+DROP TABLE IF EXISTS `order_details`;
+CREATE TABLE `order_details` (
+  `order_detail_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `order_detail_unit_value` int(11) NOT NULL,
+  `order_detail_units` int(11) NOT NULL,
+  `order_detail_description` varchar(260) COLLATE utf8mb4_unicode_ci NOT NULL,
   `product_id` bigint(20) NULL,
-  `sell_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`sell_detail_id`),
-  CONSTRAINT `FK_SELL_DETAIL_PROD_ID` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_SELL_DETAIL_PARENT_ID` FOREIGN KEY (`sell_id`) REFERENCES `sales` (`sell_id`)
+  `order_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`order_detail_id`),
+  CONSTRAINT `FK_ORDER_DETAIL_PROD_ID` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_ORDER_DETAIL_PARENT_ID` FOREIGN KEY (`order_id`) REFERENCES `sales` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 

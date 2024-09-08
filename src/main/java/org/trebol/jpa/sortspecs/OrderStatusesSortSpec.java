@@ -18,25 +18,20 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.jpa.sortspecs;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+import com.querydsl.core.types.OrderSpecifier;
+import lombok.NoArgsConstructor;
+import org.trebol.jpa.entities.QOrderStatus;
 
-import jakarta.validation.constraints.Positive;
+import java.util.Map;
 
-@Data
-@Component
-@ConfigurationProperties(prefix = "trebol.api")
-@Validated
-public class ApiProperties {
-    @Positive
-    private Integer itemsPerPage;
-    @Positive
-    private Integer maxAllowedPageSize;
-    @Positive
-    private int maxCategoryFetchingRecursionDepth;
-    private boolean ableToEditOrdersAfterBeingProcessed;
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
+public class OrderStatusesSortSpec {
+    private static final QOrderStatus BASE_PATH = QOrderStatus.orderStatus;
+    public static final Map<String, OrderSpecifier<?>> ORDER_SPEC_MAP = Map.of(
+        "name", BASE_PATH.name.asc()
+    );
 }

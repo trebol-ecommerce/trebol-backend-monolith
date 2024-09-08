@@ -18,25 +18,17 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.jpa.services.conversion;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+import org.trebol.api.models.OrderDetailPojo;
+import org.trebol.api.models.OrderPojo;
+import org.trebol.jpa.entities.Order;
+import org.trebol.jpa.entities.OrderDetail;
+import org.trebol.jpa.services.ConverterService;
 
-import jakarta.validation.constraints.Positive;
+public interface OrdersConverterService
+    extends ConverterService<OrderPojo, Order> {
+    OrderDetailPojo convertDetailToPojo(OrderDetail source);
 
-@Data
-@Component
-@ConfigurationProperties(prefix = "trebol.api")
-@Validated
-public class ApiProperties {
-    @Positive
-    private Integer itemsPerPage;
-    @Positive
-    private Integer maxAllowedPageSize;
-    @Positive
-    private int maxCategoryFetchingRecursionDepth;
-    private boolean ableToEditOrdersAfterBeingProcessed;
+    OrderDetail convertDetailToNewEntity(OrderDetailPojo detail);
 }

@@ -6,8 +6,8 @@ VALUES
 (03, 'company', 'bannerImageURL', 'https://fakeimg.pl/400x150'),
 (04, 'company', 'logoImageURL', 'https://fakeimg.pl/250');
 
-INSERT INTO `sell_statuses`
-(`sell_status_id`, `sell_status_code`, `sell_status_name`)
+INSERT INTO `order_statuses`
+(`order_status_id`, `order_status_code`, `order_status_name`)
 VALUES
 (01, -6, 'Returned'),
 (02, -5, 'Delivery Failed'),
@@ -35,7 +35,7 @@ VALUES
 
 INSERT INTO `app_user_roles`
 (`user_role_id`, `user_role_name`)
-VALUES 
+VALUES
 (01, 'Administrator'),
 (02, 'Manager'),
 (03, 'Salesperson'),
@@ -48,14 +48,14 @@ VALUES
 (02, 'product_categories:create'),
 (03, 'product_categories:update'),
 (04, 'product_categories:read'),
-(05, 'sell_statuses:delete'),
-(06, 'sell_statuses:create'),
-(07, 'sell_statuses:update'),
-(08, 'sell_statuses:read'),
-(09, 'sell_types:delete'),
-(10, 'sell_types:create'),
-(11, 'sell_types:update'),
-(12, 'sell_types:read'),
+(05, 'order_statuses:delete'),
+(06, 'order_statuses:create'),
+(07, 'order_statuses:update'),
+(08, 'order_statuses:read'),
+(09, 'order_types:delete'),
+(10, 'order_types:create'),
+(11, 'order_types:update'),
+(12, 'order_types:read'),
 (13, 'customers:delete'),
 (14, 'customers:create'),
 (15, 'customers:update'),
@@ -64,10 +64,10 @@ VALUES
 (18, 'products:create'),
 (19, 'products:update'),
 (20, 'products:read'),
-(21, 'sales:delete'),
-(22, 'sales:create'),
-(23, 'sales:update'),
-(24, 'sales:read'),
+(21, 'orders:delete'),
+(22, 'orders:create'),
+(23, 'orders:update'),
+(24, 'orders:read'),
 (25, 'salespeople:delete'),
 (26, 'salespeople:create'),
 (27, 'salespeople:update'),

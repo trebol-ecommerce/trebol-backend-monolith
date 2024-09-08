@@ -18,25 +18,30 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.jpa.services.predicates.impl;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+import org.junit.jupiter.api.Test;
 
-import jakarta.validation.constraints.Positive;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-@Data
-@Component
-@ConfigurationProperties(prefix = "trebol.api")
-@Validated
-public class ApiProperties {
-    @Positive
-    private Integer itemsPerPage;
-    @Positive
-    private Integer maxAllowedPageSize;
-    @Positive
-    private int maxCategoryFetchingRecursionDepth;
-    private boolean ableToEditOrdersAfterBeingProcessed;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class OrderStatusesPredicateServiceImplTest {
+    final OrderStatusesPredicateServiceImpl instance = new OrderStatusesPredicateServiceImpl();
+
+    @Test
+    void parses_map() {
+        Predicate emptyPredicate = new BooleanBuilder();
+        List<Predicate> predicates = List.of(emptyPredicate,
+            instance.parseMap(Map.of("id", "1")),
+            instance.parseMap(Map.of("name", "name test")),
+            instance.parseMap(Map.of("nameLike", "name portion")));
+        Set<Predicate> distinctPredicates = new HashSet<>(predicates);
+        assertEquals(predicates.size(), distinctPredicates.size());
+    }
 }

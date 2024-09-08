@@ -25,15 +25,15 @@
   <persistence-unit name="cl.blm.newmarketing.store.persistence-unit" transaction-type="RESOURCE_LOCAL">
     <class>org.trebol.jpa.entities.Permission</class>
     <class>org.trebol.jpa.entities.Customer</class>
-    <class>org.trebol.jpa.entities.Sell</class>
+    <class>org.trebol.jpa.entities.Order</class>
     <class>org.trebol.jpa.entities.Param</class>
     <class>org.trebol.jpa.entities.Salesperson</class>
     <class>org.trebol.jpa.entities.ProductFamily</class>
     <class>org.trebol.jpa.entities.UserRole</class>
     <class>org.trebol.jpa.entities.Image</class>
-    <class>org.trebol.jpa.entities.SellStatus</class>
+    <class>org.trebol.jpa.entities.OrderStatus</class>
     <class>org.trebol.jpa.entities.ProductImage</class>
-    <class>org.trebol.jpa.entities.SellDetail</class>
+    <class>org.trebol.jpa.entities.OrderDetail</class>
     <class>org.trebol.jpa.entities.Product</class>
     <class>org.trebol.jpa.entities.Person</class>
     <class>org.trebol.jpa.entities.User</class>

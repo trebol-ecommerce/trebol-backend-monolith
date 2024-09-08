@@ -21,7 +21,7 @@
 package org.trebol.payment;
 
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
-import org.trebol.api.models.SellPojo;
+import org.trebol.api.models.OrderPojo;
 
 /**
  * Interface for requesting and validating payments through an external payment
@@ -34,7 +34,7 @@ public interface PaymentService {
      * @return The information with which to proceed to a payment page.
      * @throws PaymentServiceException If the payment service is caught under unexpected circumstances.
      */
-    PaymentRedirectionDetailsPojo requestNewPaymentPageDetails(SellPojo transaction) throws PaymentServiceException;
+    PaymentRedirectionDetailsPojo requestNewPaymentPageDetails(OrderPojo transaction) throws PaymentServiceException;
 
     /**
      * Request the external payment service to report the status of the transaction matching a given token.

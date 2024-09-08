@@ -18,25 +18,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.trebol.config;
+package org.trebol.jpa.repositories;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+import org.trebol.jpa.Repository;
+import org.trebol.jpa.entities.OrderStatus;
 
-import jakarta.validation.constraints.Positive;
+import java.util.Optional;
 
-@Data
-@Component
-@ConfigurationProperties(prefix = "trebol.api")
-@Validated
-public class ApiProperties {
-    @Positive
-    private Integer itemsPerPage;
-    @Positive
-    private Integer maxAllowedPageSize;
-    @Positive
-    private int maxCategoryFetchingRecursionDepth;
-    private boolean ableToEditOrdersAfterBeingProcessed;
+@org.springframework.stereotype.Repository
+public interface OrderStatusesRepository
+    extends Repository<OrderStatus> {
+
+    Optional<OrderStatus> findByName(String name);
 }

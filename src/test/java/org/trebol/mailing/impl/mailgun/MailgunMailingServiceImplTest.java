@@ -33,8 +33,8 @@ import org.springframework.core.convert.ConversionService;
 import org.trebol.api.models.CustomerPojo;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.api.models.ReceiptPojo;
-import org.trebol.api.models.SellDetailPojo;
-import org.trebol.api.models.SellPojo;
+import org.trebol.api.models.OrderDetailPojo;
+import org.trebol.api.models.OrderPojo;
 import org.trebol.mailing.MailingProperties;
 
 import java.util.List;
@@ -45,14 +45,14 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static org.trebol.config.Constants.SELL_STATUS_COMPLETED;
-import static org.trebol.config.Constants.SELL_STATUS_PAID_CONFIRMED;
-import static org.trebol.config.Constants.SELL_STATUS_PAID_UNCONFIRMED;
-import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_CANCELLED;
-import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_FAILED;
-import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
-import static org.trebol.config.Constants.SELL_STATUS_PENDING;
-import static org.trebol.config.Constants.SELL_STATUS_REJECTED;
+import static org.trebol.config.Constants.ORDER_STATUS_COMPLETED;
+import static org.trebol.config.Constants.ORDER_STATUS_PAID_CONFIRMED;
+import static org.trebol.config.Constants.ORDER_STATUS_PAID_UNCONFIRMED;
+import static org.trebol.config.Constants.ORDER_STATUS_PAYMENT_CANCELLED;
+import static org.trebol.config.Constants.ORDER_STATUS_PAYMENT_FAILED;
+import static org.trebol.config.Constants.ORDER_STATUS_PAYMENT_STARTED;
+import static org.trebol.config.Constants.ORDER_STATUS_PENDING;
+import static org.trebol.config.Constants.ORDER_STATUS_REJECTED;
 import static org.trebol.mailing.impl.mailgun.MailgunMailingServiceImpl.MAILGUN_HOST;
 import static org.trebol.testing.TestConstants.ANY;
 
@@ -66,7 +66,7 @@ class MailgunMailingServiceImplTest {
     private static final String MOCK_DATE_FORMAT = "M/d/y z";
     private static final String MOCK_DATE_TIMEZONE = "UTC";
     private static final String MOCK_MAILGUN_DOMAIN = "somedomain.org";
-    SellPojo readySell;
+    OrderPojo readySell;
 
     @BeforeEach
     void beforeEach() {
@@ -88,14 +88,14 @@ class MailgunMailingServiceImplTest {
         when(integrationPropertiesMock.getOwnerOrderCompletionSubject()).thenReturn(ANY);
         when(integrationPropertiesMock.getOwnerOrderRejectionSubject()).thenReturn(ANY);
         instance = new MailgunMailingServiceImpl(integrationPropertiesMock, mailgunPropertiesMock, conversionServiceMock);
-        readySell = SellPojo.builder()
-            .status(SELL_STATUS_PAID_UNCONFIRMED)
+        readySell = OrderPojo.builder()
+            .status(ORDER_STATUS_PAID_UNCONFIRMED)
             .buyOrder(1000L)
             .details(List.of(
-                SellDetailPojo.builder()
+                OrderDetailPojo.builder()
                     .description("some product")
                     .build(),
-                SellDetailPojo.builder()
+                OrderDetailPojo.builder()
                     .description("some other product")
                     .build()
             ))
@@ -116,14 +116,14 @@ class MailgunMailingServiceImplTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        SELL_STATUS_PAID_UNCONFIRMED,
-        SELL_STATUS_PAID_CONFIRMED,
-        SELL_STATUS_REJECTED,
-        SELL_STATUS_COMPLETED
+        ORDER_STATUS_PAID_UNCONFIRMED,
+        ORDER_STATUS_PAID_CONFIRMED,
+        ORDER_STATUS_REJECTED,
+        ORDER_STATUS_COMPLETED
     })
     void notifies_statuses_to_customers(String status) {
         ReceiptPojo receipt = new ReceiptPojo();
-        when(conversionServiceMock.convert(any(SellPojo.class), eq(ReceiptPojo.class))).thenReturn(receipt);
+        when(conversionServiceMock.convert(any(OrderPojo.class), eq(ReceiptPojo.class))).thenReturn(receipt);
         MockClient restClient = MockClient.register();
         restClient.expect(HttpMethod.POST, MAILGUN_HOST + MOCK_MAILGUN_DOMAIN + "/messages").thenReturn(MOCK_VALID_MAILGUN_JSON_RESPONSE);
         readySell.setStatus(status);
@@ -139,10 +139,10 @@ class MailgunMailingServiceImplTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        SELL_STATUS_PENDING,
-        SELL_STATUS_PAYMENT_STARTED,
-        SELL_STATUS_PAYMENT_CANCELLED,
-        SELL_STATUS_PAYMENT_FAILED
+            ORDER_STATUS_PENDING,
+        ORDER_STATUS_PAYMENT_STARTED,
+        ORDER_STATUS_PAYMENT_CANCELLED,
+        ORDER_STATUS_PAYMENT_FAILED
     })
     void does_not_notify_some_statuses_to_customers(String status) {
         readySell.setStatus(status);
@@ -155,13 +155,13 @@ class MailgunMailingServiceImplTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        SELL_STATUS_PAID_CONFIRMED,
-        SELL_STATUS_REJECTED,
-        SELL_STATUS_COMPLETED
+        ORDER_STATUS_PAID_CONFIRMED,
+        ORDER_STATUS_REJECTED,
+        ORDER_STATUS_COMPLETED
     })
     void notifies_statuses_to_owners(String status) {
         ReceiptPojo receipt = new ReceiptPojo();
-        when(conversionServiceMock.convert(any(SellPojo.class), eq(ReceiptPojo.class))).thenReturn(receipt);
+        when(conversionServiceMock.convert(any(OrderPojo.class), eq(ReceiptPojo.class))).thenReturn(receipt);
         when(integrationPropertiesMock.getOwnerEmail()).thenReturn(ANY);
         MockClient restClient = MockClient.register();
         restClient.expect(HttpMethod.POST, MAILGUN_HOST + MOCK_MAILGUN_DOMAIN + "/messages").thenReturn(MOCK_VALID_MAILGUN_JSON_RESPONSE);
@@ -179,11 +179,11 @@ class MailgunMailingServiceImplTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        SELL_STATUS_PENDING,
-        SELL_STATUS_PAYMENT_STARTED,
-        SELL_STATUS_PAYMENT_CANCELLED,
-        SELL_STATUS_PAYMENT_FAILED,
-        SELL_STATUS_PAID_UNCONFIRMED
+            ORDER_STATUS_PENDING,
+        ORDER_STATUS_PAYMENT_STARTED,
+        ORDER_STATUS_PAYMENT_CANCELLED,
+        ORDER_STATUS_PAYMENT_FAILED,
+        ORDER_STATUS_PAID_UNCONFIRMED
     })
     void does_not_notify_some_statuses_to_owners(String status) {
         readySell.setStatus(status);

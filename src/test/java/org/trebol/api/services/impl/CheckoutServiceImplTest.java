@@ -30,14 +30,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
-import org.trebol.api.models.SellPojo;
-import org.trebol.api.services.SalesProcessService;
+import org.trebol.api.models.OrderPojo;
+import org.trebol.api.services.OrdersProcessService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.jpa.services.crud.SalesCrudService;
-import org.trebol.jpa.services.predicates.SalesPredicateService;
+import org.trebol.jpa.services.crud.OrdersCrudService;
+import org.trebol.jpa.services.predicates.OrdersPredicateService;
 import org.trebol.payment.PaymentService;
 import org.trebol.payment.PaymentServiceException;
-import org.trebol.testing.SalesTestHelper;
+import org.trebol.testing.OrdersTestHelper;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.net.URI;
@@ -50,25 +50,28 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.trebol.config.Constants.SELL_STATUS_PAYMENT_STARTED;
-import static org.trebol.testing.SalesTestHelper.SELL_TRANSACTION_TOKEN;
+import static org.trebol.config.Constants.ORDER_STATUS_PAYMENT_STARTED;
+import static org.trebol.testing.OrdersTestHelper.ORDER_TRANSACTION_TOKEN;
 import static org.trebol.testing.TestConstants.ANY;
 import static org.trebol.testing.TestConstants.ONE;
 
 @ExtendWith(MockitoExtension.class)
 class CheckoutServiceImplTest {
     @InjectMocks CheckoutServiceImpl service;
-    @Mock SalesCrudService salesCrudServiceMock;
-    @Mock SalesProcessService salesProcessServiceMock;
-    @Mock SalesPredicateService salesPredicateServiceMock;
+    @Mock
+    OrdersCrudService ordersCrudServiceMock;
+    @Mock
+    OrdersProcessService ordersProcessServiceMock;
+    @Mock
+    OrdersPredicateService ordersPredicateServiceMock;
     @Mock PaymentService paymentServiceMock;
-    final SalesTestHelper salesHelper = new SalesTestHelper();
+    final OrdersTestHelper salesHelper = new OrdersTestHelper();
     static final String PAYMENT_URL = "https://example.com/pay";
     static final Predicate MATCHER_PREDICATE = new BooleanBuilder();
 
     @BeforeEach
     void beforeEach() {
-        salesHelper.resetSales();
+        salesHelper.resetOrders();
     }
 
     @Test
@@ -76,35 +79,35 @@ class CheckoutServiceImplTest {
         throws BadInputException, PaymentServiceException, EntityNotFoundException {
         PaymentRedirectionDetailsPojo payload = PaymentRedirectionDetailsPojo.builder()
             .url(PAYMENT_URL)
-            .token(SELL_TRANSACTION_TOKEN)
+            .token(ORDER_TRANSACTION_TOKEN)
             .build();
-        when(paymentServiceMock.requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation())).thenReturn(payload);
+        when(paymentServiceMock.requestNewPaymentPageDetails(salesHelper.orderPojoAfterCreation())).thenReturn(payload);
 
-        PaymentRedirectionDetailsPojo result = service.requestTransactionStart(salesHelper.sellPojoAfterCreation());
+        PaymentRedirectionDetailsPojo result = service.requestTransactionStart(salesHelper.orderPojoAfterCreation());
 
-        verify(paymentServiceMock).requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation());
-        verify(salesProcessServiceMock).markAsStarted(salesHelper.sellPojoAfterCreation());
+        verify(paymentServiceMock).requestNewPaymentPageDetails(salesHelper.orderPojoAfterCreation());
+        verify(ordersProcessServiceMock).markAsStarted(salesHelper.orderPojoAfterCreation());
         assertEquals(PAYMENT_URL, result.getUrl());
-        assertEquals(SELL_TRANSACTION_TOKEN, result.getToken());
+        assertEquals(ORDER_TRANSACTION_TOKEN, result.getToken());
     }
 
     @Test
     void acknowledges_successful_transaction()
         throws PaymentServiceException, EntityNotFoundException, BadInputException {
         Map<String, String> matcherMap = Map.of(
-            "statusCode", SELL_STATUS_PAYMENT_STARTED,
-            "token", SELL_TRANSACTION_TOKEN);
-        when(salesPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-        when(salesCrudServiceMock.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
-        when(paymentServiceMock.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(0);
-        when(salesProcessServiceMock.markAsPaid(salesHelper.sellPojoAfterCreation())).thenReturn(null);
+            "statusCode", ORDER_STATUS_PAYMENT_STARTED,
+            "token", ORDER_TRANSACTION_TOKEN);
+        when(ordersPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
+        when(ordersCrudServiceMock.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.orderPojoAfterCreation());
+        when(paymentServiceMock.requestPaymentResult(ORDER_TRANSACTION_TOKEN)).thenReturn(0);
+        when(ordersProcessServiceMock.markAsPaid(salesHelper.orderPojoAfterCreation())).thenReturn(null);
 
-        SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, false);
+        OrderPojo result = service.confirmTransaction(ORDER_TRANSACTION_TOKEN, false);
 
-        verify(salesPredicateServiceMock).parseMap(matcherMap);
-        verify(salesCrudServiceMock).readOne(MATCHER_PREDICATE);
-        verify(paymentServiceMock).requestPaymentResult(SELL_TRANSACTION_TOKEN);
-        verify(salesProcessServiceMock).markAsPaid(salesHelper.sellPojoAfterCreation());
+        verify(ordersPredicateServiceMock).parseMap(matcherMap);
+        verify(ordersCrudServiceMock).readOne(MATCHER_PREDICATE);
+        verify(paymentServiceMock).requestPaymentResult(ORDER_TRANSACTION_TOKEN);
+        verify(ordersProcessServiceMock).markAsPaid(salesHelper.orderPojoAfterCreation());
         assertNull(result);
     }
 
@@ -113,19 +116,19 @@ class CheckoutServiceImplTest {
     void acknowledges_successful_transaction_payment_integration_returns_1()
         throws PaymentServiceException, EntityNotFoundException, BadInputException {
         Map<String, String> matcherMap = Map.of(
-            "statusCode", SELL_STATUS_PAYMENT_STARTED,
-            "token", SELL_TRANSACTION_TOKEN);
-        when(salesPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-        when(salesCrudServiceMock.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
-        when(paymentServiceMock.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(1);
-        when(salesProcessServiceMock.markAsFailed(salesHelper.sellPojoAfterCreation())).thenReturn(null);
+            "statusCode", ORDER_STATUS_PAYMENT_STARTED,
+            "token", ORDER_TRANSACTION_TOKEN);
+        when(ordersPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
+        when(ordersCrudServiceMock.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.orderPojoAfterCreation());
+        when(paymentServiceMock.requestPaymentResult(ORDER_TRANSACTION_TOKEN)).thenReturn(1);
+        when(ordersProcessServiceMock.markAsFailed(salesHelper.orderPojoAfterCreation())).thenReturn(null);
 
-        SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, false);
+        OrderPojo result = service.confirmTransaction(ORDER_TRANSACTION_TOKEN, false);
 
-        verify(salesPredicateServiceMock).parseMap(matcherMap);
-        verify(salesCrudServiceMock).readOne(MATCHER_PREDICATE);
-        verify(paymentServiceMock).requestPaymentResult(SELL_TRANSACTION_TOKEN);
-        verify(salesProcessServiceMock).markAsFailed(salesHelper.sellPojoAfterCreation());
+        verify(ordersPredicateServiceMock).parseMap(matcherMap);
+        verify(ordersCrudServiceMock).readOne(MATCHER_PREDICATE);
+        verify(paymentServiceMock).requestPaymentResult(ORDER_TRANSACTION_TOKEN);
+        verify(ordersProcessServiceMock).markAsFailed(salesHelper.orderPojoAfterCreation());
         assertNull(result);
     }
 
@@ -134,36 +137,36 @@ class CheckoutServiceImplTest {
     void acknowledges_successful_transaction_payment_integration_returns_1_mark_as_failed_throws_bad_input_exception()
         throws PaymentServiceException, EntityNotFoundException, BadInputException {
         Map<String, String> matcherMap = Map.of(
-            "statusCode", SELL_STATUS_PAYMENT_STARTED,
-            "token", SELL_TRANSACTION_TOKEN);
-        when(salesPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-        when(salesCrudServiceMock.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
-        when(paymentServiceMock.requestPaymentResult(SELL_TRANSACTION_TOKEN)).thenReturn(1);
-        when(salesProcessServiceMock.markAsFailed(salesHelper.sellPojoAfterCreation())).thenThrow(BadInputException.class);
+            "statusCode", ORDER_STATUS_PAYMENT_STARTED,
+            "token", ORDER_TRANSACTION_TOKEN);
+        when(ordersPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
+        when(ordersCrudServiceMock.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.orderPojoAfterCreation());
+        when(paymentServiceMock.requestPaymentResult(ORDER_TRANSACTION_TOKEN)).thenReturn(1);
+        when(ordersProcessServiceMock.markAsFailed(salesHelper.orderPojoAfterCreation())).thenThrow(BadInputException.class);
 
-        assertThrows(IllegalStateException.class, () -> service.confirmTransaction(SELL_TRANSACTION_TOKEN, false));
+        assertThrows(IllegalStateException.class, () -> service.confirmTransaction(ORDER_TRANSACTION_TOKEN, false));
 
-        verify(salesPredicateServiceMock, times(ONE)).parseMap(matcherMap);
-        verify(salesCrudServiceMock, times(ONE)).readOne(MATCHER_PREDICATE);
-        verify(paymentServiceMock, times(ONE)).requestPaymentResult(SELL_TRANSACTION_TOKEN);
-        verify(salesProcessServiceMock, times(ONE)).markAsFailed(salesHelper.sellPojoAfterCreation());
+        verify(ordersPredicateServiceMock, times(ONE)).parseMap(matcherMap);
+        verify(ordersCrudServiceMock, times(ONE)).readOne(MATCHER_PREDICATE);
+        verify(paymentServiceMock, times(ONE)).requestPaymentResult(ORDER_TRANSACTION_TOKEN);
+        verify(ordersProcessServiceMock, times(ONE)).markAsFailed(salesHelper.orderPojoAfterCreation());
     }
 
     @Test
     void acknowledges_aborted_transaction()
         throws PaymentServiceException, EntityNotFoundException, BadInputException {
         Map<String, String> matcherMap = Map.of(
-            "statusCode", SELL_STATUS_PAYMENT_STARTED,
-            "token", SELL_TRANSACTION_TOKEN);
-        when(salesPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-        when(salesCrudServiceMock.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
-        when(salesProcessServiceMock.markAsAborted(salesHelper.sellPojoAfterCreation())).thenReturn(null);
+            "statusCode", ORDER_STATUS_PAYMENT_STARTED,
+            "token", ORDER_TRANSACTION_TOKEN);
+        when(ordersPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
+        when(ordersCrudServiceMock.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.orderPojoAfterCreation());
+        when(ordersProcessServiceMock.markAsAborted(salesHelper.orderPojoAfterCreation())).thenReturn(null);
 
-        SellPojo result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, true);
+        OrderPojo result = service.confirmTransaction(ORDER_TRANSACTION_TOKEN, true);
 
-        verify(salesPredicateServiceMock, times(ONE)).parseMap(matcherMap);
-        verify(salesCrudServiceMock, times(ONE)).readOne(MATCHER_PREDICATE);
-        verify(salesProcessServiceMock, times(ONE)).markAsAborted(salesHelper.sellPojoAfterCreation());
+        verify(ordersPredicateServiceMock, times(ONE)).parseMap(matcherMap);
+        verify(ordersCrudServiceMock, times(ONE)).readOne(MATCHER_PREDICATE);
+        verify(ordersProcessServiceMock, times(ONE)).markAsAborted(salesHelper.orderPojoAfterCreation());
         assertNull(result);
     }
 
@@ -171,18 +174,18 @@ class CheckoutServiceImplTest {
     @Test
     void acknowledges_aborted_transaction_illegal_bad_input_exception() throws EntityNotFoundException, BadInputException {
         Map<String, String> matcherMap = Map.of(
-            "statusCode", SELL_STATUS_PAYMENT_STARTED,
-            "token", SELL_TRANSACTION_TOKEN);
-        when(salesPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-        when(salesCrudServiceMock.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.sellPojoAfterCreation());
-        when(salesProcessServiceMock.markAsAborted(salesHelper.sellPojoAfterCreation())).thenThrow(BadInputException.class);
+            "statusCode", ORDER_STATUS_PAYMENT_STARTED,
+            "token", ORDER_TRANSACTION_TOKEN);
+        when(ordersPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
+        when(ordersCrudServiceMock.readOne(MATCHER_PREDICATE)).thenReturn(salesHelper.orderPojoAfterCreation());
+        when(ordersProcessServiceMock.markAsAborted(salesHelper.orderPojoAfterCreation())).thenThrow(BadInputException.class);
 
         assertThrows(IllegalStateException.class,
-            () -> service.confirmTransaction(SELL_TRANSACTION_TOKEN, true), "Transaction could not be confirmed");
+            () -> service.confirmTransaction(ORDER_TRANSACTION_TOKEN, true), "Transaction could not be confirmed");
 
-        verify(salesPredicateServiceMock, times(ONE)).parseMap(matcherMap);
-        verify(salesCrudServiceMock, times(ONE)).readOne(MATCHER_PREDICATE);
-        verify(salesProcessServiceMock, times(ONE)).markAsAborted(salesHelper.sellPojoAfterCreation());
+        verify(ordersPredicateServiceMock, times(ONE)).parseMap(matcherMap);
+        verify(ordersCrudServiceMock, times(ONE)).readOne(MATCHER_PREDICATE);
+        verify(ordersProcessServiceMock, times(ONE)).markAsAborted(salesHelper.orderPojoAfterCreation());
     }
 
     @Test
@@ -190,37 +193,37 @@ class CheckoutServiceImplTest {
         throws PaymentServiceException, EntityNotFoundException, BadInputException {
         PaymentRedirectionDetailsPojo payload = PaymentRedirectionDetailsPojo.builder()
             .url(PAYMENT_URL)
-            .token(SELL_TRANSACTION_TOKEN)
+            .token(ORDER_TRANSACTION_TOKEN)
             .build();
         String exceptionMessage = "No match";
-        when(paymentServiceMock.requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation())).thenReturn(payload);
+        when(paymentServiceMock.requestNewPaymentPageDetails(salesHelper.orderPojoAfterCreation())).thenReturn(payload);
         doThrow(new EntityNotFoundException(exceptionMessage)).
-            when(salesProcessServiceMock).markAsStarted(salesHelper.sellPojoAfterCreation());
+            when(ordersProcessServiceMock).markAsStarted(salesHelper.orderPojoAfterCreation());
 
         PaymentRedirectionDetailsPojo result = null;
         try {
-            result = service.requestTransactionStart(salesHelper.sellPojoAfterCreation());
+            result = service.requestTransactionStart(salesHelper.orderPojoAfterCreation());
         } catch (Exception ex) {
-            verify(paymentServiceMock).requestNewPaymentPageDetails(salesHelper.sellPojoAfterCreation());
+            verify(paymentServiceMock).requestNewPaymentPageDetails(salesHelper.orderPojoAfterCreation());
         }
 
         assertNull(result);
-        verify(salesProcessServiceMock).markAsStarted(salesHelper.sellPojoAfterCreation());
+        verify(ordersProcessServiceMock).markAsStarted(salesHelper.orderPojoAfterCreation());
     }
 
     @Test
     void throws_exceptions_at_invalid_transactions_before_confirming()
         throws PaymentServiceException, EntityNotFoundException {
         Map<String, String> matcherMap = Map.of(
-            "statusCode", SELL_STATUS_PAYMENT_STARTED,
-            "token", SELL_TRANSACTION_TOKEN);
+            "statusCode", ORDER_STATUS_PAYMENT_STARTED,
+            "token", ORDER_TRANSACTION_TOKEN);
         String exceptionMessage = "No match";
-        when(salesPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
-        when(salesCrudServiceMock.readOne(MATCHER_PREDICATE)).thenThrow(new EntityNotFoundException(exceptionMessage));
+        when(ordersPredicateServiceMock.parseMap(matcherMap)).thenReturn(MATCHER_PREDICATE);
+        when(ordersCrudServiceMock.readOne(MATCHER_PREDICATE)).thenThrow(new EntityNotFoundException(exceptionMessage));
 
-        SellPojo result = null;
+        OrderPojo result = null;
         try {
-            result = service.confirmTransaction(SELL_TRANSACTION_TOKEN, true);
+            result = service.confirmTransaction(ORDER_TRANSACTION_TOKEN, true);
         } catch (EntityNotFoundException e) {
             assertEquals(exceptionMessage, e.getMessage());
         }
