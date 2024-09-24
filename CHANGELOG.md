@@ -5,6 +5,59 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- Conforming to API v3
+  - Follow new specification for error messages
+    - Introduce new model class `AppError`
+    - Make the `ExceptionsControllerAdvice` use this new class on all its methods
+  - Rename all references of the word `Sell` and `Sales` to `Order` and `Orders` respectively
+    - REST API endpoints
+      - `/data/sales` -> `/data/orders`
+      - `/data/sell_statuses` -> `/data/order_statuses`
+    - Hardcoded Spring Security authorities
+      - `sales:(create|read|update|delete)` -> `orders:(...)`
+      - `sell_statuses:(create|read|update|delete)` -> `order_statuses:(...)`
+    - SQL schema tables, columns, constraints, indexes and initial values
+      - Entity table mappings included as well
+    - Custom properties
+      - `trebol.api.able-to-edit-sales-after-being-processed`
+        - to `trebol.api.able-to-edit-orders-after-being-processed`
+    - Class names, by package
+      - `org.trebol.api.`
+        - `models.`
+          - `SellPojo` -> `OrderPojo`
+          - `SellDetailPojo` -> `OrderDetailPojo`
+          - `SellStatusPojo` -> `OrderStatusPojo`
+        - `services.` (for both interfaces and implementations)
+          - `SalesProcessService` -> `OrdersProcessService`
+      - `org.trebol.jpa.`
+        - `entities.` (and their QueryDSL counterparts)
+          - `Sell` -> `Order`
+          - `SellDetail` -> `OrderDetail`
+          - `SellStatus` -> `OrderStatus`
+        - `repositories.`
+          - `SalesRepository` -> `OrdersRepository`
+          - `SellDetailsRepository` -> `OrderDetailsRepository`
+          - `SellStatusesRepository` -> `OrderStatusesRepository`
+        - `sortspecs.`
+          - `SalesSortSpec` -> `OrdersSortSpec`
+          - `SellStatusesSortSpec` -> `OrderStatusesSortSpec`
+        - `services.` (for both interfaces and implementations)
+          - `crud.`
+            - `SalesCrudService` -> `OrdersCrudService`
+            - `SellStatusesCrudService` -> `OrderStatusesCrudService`
+          - `patch.`
+            - `SalesPatchService` -> `OrdersPatchService`
+            - `SellStatusesPatchService` -> `OrderStatusesPatchService`
+          - `conversion.`
+            - `SalesConverterService` -> `OrdersConverterService`
+            - `SellStatusesConverterService` -> `OrderStatusesConverterService`
+          - `predicates.`
+            - `SalesPredicateService` -> `OrdersPredicateService`
+            - `SellStatusesPredicateService` -> `OrderStatusesPredicateService`
+    - And all other constant and variable names that reference them
+
 ## [v0.2.4] - 2024-28-08
 
 ### Changed
