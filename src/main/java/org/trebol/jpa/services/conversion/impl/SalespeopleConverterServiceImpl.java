@@ -23,7 +23,6 @@ package org.trebol.jpa.services.conversion.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.trebol.api.models.PersonPojo;
-import org.trebol.api.models.SalespersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
@@ -43,23 +42,20 @@ public class SalespeopleConverterServiceImpl
     }
 
     @Override
-    public SalespersonPojo convertToPojo(Salesperson source) {
-        PersonPojo targetPerson = peopleConverterService.convertToPojo(source.getPerson());
-        return SalespersonPojo.builder()
-            .person(targetPerson)
-            .build();
+    public PersonPojo convertToPojo(Salesperson source) {
+        return peopleConverterService.convertToPojo(source.getPerson());
     }
 
     @Override
-    public Salesperson convertToNewEntity(SalespersonPojo source) throws BadInputException {
-        Person targetPerson = peopleConverterService.convertToNewEntity(source.getPerson());
+    public Salesperson convertToNewEntity(PersonPojo source) throws BadInputException {
+        Person targetPerson = peopleConverterService.convertToNewEntity(source);
         return Salesperson.builder()
             .person(targetPerson)
             .build();
     }
 
     @Override
-    public Salesperson applyChangesToExistingEntity(SalespersonPojo source, Salesperson target) {
+    public Salesperson applyChangesToExistingEntity(PersonPojo source, Salesperson target) {
         throw new UnsupportedOperationException("This method is deprecated");
     }
 }

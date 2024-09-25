@@ -20,10 +20,10 @@
 
 package org.trebol.jpa.services.patch;
 
-import org.trebol.api.models.SalespersonPojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.PatchService;
 
 public interface SalespeoplePatchService
-    extends PatchService<SalespersonPojo, Salesperson> {
+    extends PatchService<PersonPojo, Salesperson> {
 }

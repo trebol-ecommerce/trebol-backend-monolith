@@ -29,14 +29,21 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.AddressPojo;
 import org.trebol.api.models.BillingCompanyPojo;
-import org.trebol.api.models.CustomerPojo;
-import org.trebol.api.models.ProductPojo;
-import org.trebol.api.models.SalespersonPojo;
 import org.trebol.api.models.OrderDetailPojo;
 import org.trebol.api.models.OrderPojo;
+import org.trebol.api.models.PersonPojo;
+import org.trebol.api.models.ProductPojo;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.jpa.entities.*;
+import org.trebol.jpa.entities.Address;
+import org.trebol.jpa.entities.BillingCompany;
+import org.trebol.jpa.entities.BillingType;
+import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Order;
+import org.trebol.jpa.entities.OrderStatus;
+import org.trebol.jpa.entities.PaymentType;
+import org.trebol.jpa.entities.Product;
+import org.trebol.jpa.entities.Salesperson;
+import org.trebol.jpa.entities.Shipper;
 import org.trebol.jpa.repositories.AddressesRepository;
 import org.trebol.jpa.repositories.BillingTypesRepository;
 import org.trebol.jpa.repositories.PaymentTypesRepository;
@@ -92,7 +99,7 @@ class OrdersConverterServiceImplTest {
     OrderStatusesRepository orderStatusesRepository;
     @Mock AddressesConverterService addressesConverterServiceMock;
     private static final Instant SOME_INSTANT = Instant.now();
-    private static final CustomerPojo SOME_CUSTOMER = CustomerPojo.builder().build();
+    private static final PersonPojo SOME_CUSTOMER = PersonPojo.builder().build();
     private static final BillingCompanyPojo SOME_BILLING_COMPANY = BillingCompanyPojo.builder().build();
     private static final AddressPojo SOME_ADDRESS;
     private static final Customer SOME_CUSTOMER_ENTITY = Customer.builder().build();
@@ -136,7 +143,7 @@ class OrdersConverterServiceImplTest {
             .shippingAddress(SOME_ADDRESS)
             .build();
         when(paymentTypesRepository.findByName(anyString())).thenReturn(Optional.of(SOME_PAYMENT_TYPE_ENTITY));
-        when(customersCrudServiceMock.getExisting(any(CustomerPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
+        when(customersCrudServiceMock.getExisting(any(PersonPojo.class))).thenReturn(Optional.of(SOME_CUSTOMER_ENTITY));
         when(billingTypesRepositoryMock.findByName(anyString())).thenReturn(Optional.of(SOME_BILLING_TYPE_ENTITY));
         when(billingCompaniesCrudServiceMock.getExisting(any(BillingCompanyPojo.class))).thenReturn(Optional.of(SOME_BILLING_COMPANY_ENTITY));
         when(addressesRepositoryMock.findByFields(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(Optional.of(SOME_ADDRESS_ENTITY));
@@ -352,7 +359,7 @@ class OrdersConverterServiceImplTest {
                 .build())
             .salesperson(Salesperson.builder().build())
             .build();
-        SalespersonPojo someSalesperson = SalespersonPojo.builder().build();
+        PersonPojo someSalesperson = PersonPojo.builder().build();
         when(salespeopleConverterServiceMock.convertToPojo(any(Salesperson.class))).thenReturn(someSalesperson);
         OrderPojo result = instance.convertToPojo(input);
         assertEquals(someSalesperson, result.getSalesperson());

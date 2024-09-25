@@ -59,8 +59,8 @@ public class OrderPojo {
     @NotBlank
     private String paymentType;
     @Valid
-    private CustomerPojo customer;
-    private SalespersonPojo salesperson;
+    private PersonPojo customer;
+    private PersonPojo salesperson;
     private String shipper;
     private BillingCompanyPojo billingCompany;
     private AddressPojo billingAddress;

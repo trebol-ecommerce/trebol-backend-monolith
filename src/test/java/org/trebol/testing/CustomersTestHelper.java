@@ -20,7 +20,6 @@
 
 package org.trebol.testing;
 
-import org.trebol.api.models.CustomerPojo;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.entities.Person;
@@ -36,9 +35,9 @@ public class CustomersTestHelper {
     public static final String CUSTOMER_EMAIL = "customer@example.com";
     public static final String CUSTOMER_PHONE1 = "1234567";
     public static final String CUSTOMER_PHONE2 = "9876543";
-    private CustomerPojo pojoForFetch;
-    private CustomerPojo pojoBeforeCreation;
-    private CustomerPojo pojoAfterCreation;
+    private PersonPojo pojoForFetch;
+    private PersonPojo pojoBeforeCreation;
+    private PersonPojo pojoAfterCreation;
     private Customer entityBeforeCreation;
     private Customer entityAfterCreation;
 
@@ -50,35 +49,33 @@ public class CustomersTestHelper {
         this.entityAfterCreation = null;
     }
 
-    public CustomerPojo customerPojoForFetch() {
+    public PersonPojo customerPojoForFetch() {
         if (this.pojoForFetch==null) {
-            this.pojoForFetch = CustomerPojo.builder()
-                .person(PersonPojo.builder().idNumber(CUSTOMER_ID_NUMBER).build())
+            this.pojoForFetch = PersonPojo.builder()
+                .idNumber(CUSTOMER_ID_NUMBER)
                 .build();
         }
         return this.pojoForFetch;
     }
 
-    public CustomerPojo customerPojoBeforeCreation() {
+    public PersonPojo customerPojoBeforeCreation() {
         if (this.pojoBeforeCreation==null) {
-            this.pojoBeforeCreation = CustomerPojo.builder()
-                .person(PersonPojo.builder().idNumber(CUSTOMER_ID_NUMBER).build())
+            this.pojoBeforeCreation = PersonPojo.builder()
+                .idNumber(CUSTOMER_ID_NUMBER)
                 .build();
         }
         return this.pojoBeforeCreation;
     }
 
-    public CustomerPojo customerPojoAfterCreation() {
+    public PersonPojo customerPojoAfterCreation() {
         if (this.pojoAfterCreation==null) {
-            this.pojoAfterCreation = CustomerPojo.builder()
-                .person(PersonPojo.builder()
-                    .firstName(CUSTOMER_FIRST_NAME)
-                    .lastName(CUSTOMER_LAST_NAME)
-                    .idNumber(CUSTOMER_ID_NUMBER)
-                    .email(CUSTOMER_EMAIL)
-                    .phone1(CUSTOMER_PHONE1)
-                    .phone2(CUSTOMER_PHONE2)
-                    .build())
+            this.pojoAfterCreation = PersonPojo.builder()
+                .firstName(CUSTOMER_FIRST_NAME)
+                .lastName(CUSTOMER_LAST_NAME)
+                .idNumber(CUSTOMER_ID_NUMBER)
+                .email(CUSTOMER_EMAIL)
+                .phone1(CUSTOMER_PHONE1)
+                .phone2(CUSTOMER_PHONE2)
                 .build();
         }
         return this.pojoAfterCreation;

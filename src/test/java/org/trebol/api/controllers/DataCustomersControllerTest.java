@@ -29,7 +29,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.DataCrudGenericControllerTest;
-import org.trebol.api.models.CustomerPojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.services.SortSpecParserService;
@@ -48,7 +48,7 @@ import static org.trebol.testing.TestConstants.ANY;
 
 @ExtendWith(MockitoExtension.class)
 class DataCustomersControllerTest
-    extends DataCrudGenericControllerTest<CustomerPojo, Customer> {
+    extends DataCrudGenericControllerTest<PersonPojo, Customer> {
     @InjectMocks DataCustomersController instance;
     @Mock PaginationService paginationServiceMock;
     @Mock SortSpecParserService sortServiceMock;
@@ -77,19 +77,19 @@ class DataCustomersControllerTest
 
     @Test
     void creates_customers() {
-        assertDoesNotThrow(() -> super.creates_data(CustomerPojo.builder().build()));
+        assertDoesNotThrow(() -> super.creates_data(PersonPojo.builder().build()));
     }
 
     @Test
     void updates_customers_using_predicate_filters_map() {
         assertDoesNotThrow(() -> {
-            CustomerPojo existingList = CustomerPojo.builder().build();
-            CustomerPojo input = CustomerPojo.builder().build();
+            PersonPojo existingList = PersonPojo.builder().build();
+            PersonPojo input = PersonPojo.builder().build();
             Predicate predicate = new BooleanBuilder();
             when(predicateServiceMock.parseMap(anyMap())).thenReturn(predicate);
             when(crudServiceMock.update(any(), any(Predicate.class))).thenReturn(Optional.of(existingList));
 
-            instance.update(CustomerPojo.builder().build(), Map.of(ANY, ANY));
+            instance.update(PersonPojo.builder().build(), Map.of(ANY, ANY));
 
             verify(crudServiceMock).update(input, predicate);
         });

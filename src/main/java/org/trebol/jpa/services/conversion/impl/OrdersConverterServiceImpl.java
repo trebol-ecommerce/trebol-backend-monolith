@@ -26,11 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.trebol.api.models.AddressPojo;
 import org.trebol.api.models.BillingCompanyPojo;
-import org.trebol.api.models.CustomerPojo;
-import org.trebol.api.models.ProductPojo;
-import org.trebol.api.models.SalespersonPojo;
 import org.trebol.api.models.OrderDetailPojo;
 import org.trebol.api.models.OrderPojo;
+import org.trebol.api.models.PersonPojo;
+import org.trebol.api.models.ProductPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Address;
 import org.trebol.jpa.entities.BillingCompany;
@@ -127,7 +126,7 @@ public class OrdersConverterServiceImpl
             .token(source.getTransactionToken())
             .build();
 
-        CustomerPojo customer = customersConverterService.convertToPojo(source.getCustomer());
+        PersonPojo customer = customersConverterService.convertToPojo(source.getCustomer());
         target.setCustomer(customer);
 
         target.setStatus(source.getStatus().getName());
@@ -145,7 +144,7 @@ public class OrdersConverterServiceImpl
         }
 
         if (source.getSalesperson()!=null) {
-            SalespersonPojo salesperson = salespeopleConverterService.convertToPojo(source.getSalesperson());
+            PersonPojo salesperson = salespeopleConverterService.convertToPojo(source.getSalesperson());
             target.setSalesperson(salesperson);
         }
         return target;
@@ -239,7 +238,7 @@ public class OrdersConverterServiceImpl
      * Either way, the sell will have the customer set.
      */
     private void convertCustomerInformationForEntity(OrderPojo model, Order target) throws BadInputException {
-        CustomerPojo pojoCustomer = model.getCustomer();
+        PersonPojo pojoCustomer = model.getCustomer();
         Optional<Customer> existingCustomer = customersCrudService.getExisting(pojoCustomer);
         if (existingCustomer.isEmpty()) {
             Customer customer = customersConverterService.convertToNewEntity(pojoCustomer);

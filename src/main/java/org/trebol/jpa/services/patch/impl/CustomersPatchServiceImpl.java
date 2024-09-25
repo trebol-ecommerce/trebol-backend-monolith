@@ -22,7 +22,7 @@ package org.trebol.jpa.services.patch.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.trebol.api.models.CustomerPojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.common.Utils;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
@@ -61,7 +61,7 @@ public class CustomersPatchServiceImpl
     }
 
     @Override
-    public Customer patchExistingEntity(CustomerPojo changes, Customer existing) throws BadInputException {
+    public Customer patchExistingEntity(PersonPojo changes, Customer existing) throws BadInputException {
         throw new UnsupportedOperationException("This method has been deprecated");
     }
 }

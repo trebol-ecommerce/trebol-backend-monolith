@@ -32,8 +32,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.DataCrudGenericController;
-import org.trebol.api.models.CustomerPojo;
 import org.trebol.api.models.DataPagePojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
@@ -51,7 +51,7 @@ import java.util.Map;
 @RequestMapping("/data/customers")
 @PreAuthorize("isAuthenticated()")
 public class DataCustomersController
-    extends DataCrudGenericController<CustomerPojo, Customer> {
+    extends DataCrudGenericController<PersonPojo, Customer> {
 
     @Autowired
     public DataCustomersController(
@@ -66,14 +66,14 @@ public class DataCustomersController
     @Override
     @GetMapping({"", "/"})
     @PreAuthorize("hasAuthority('customers:read')")
-    public DataPagePojo<CustomerPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    public DataPagePojo<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
     @PostMapping({"", "/"})
     @PreAuthorize("hasAuthority('customers:create')")
-    public void create(@Valid @RequestBody CustomerPojo input)
+    public void create(@Valid @RequestBody PersonPojo input)
         throws BadInputException, EntityExistsException {
         crudService.create(input);
     }
@@ -81,7 +81,7 @@ public class DataCustomersController
     @Override
     @PutMapping({"", "/"})
     @PreAuthorize("hasAuthority('customers:update')")
-    public void update(@Valid @RequestBody CustomerPojo input, @RequestParam Map<String, String> requestParams)
+    public void update(@Valid @RequestBody PersonPojo input, @RequestParam Map<String, String> requestParams)
         throws EntityNotFoundException, BadInputException {
         super.update(input, requestParams);
     }

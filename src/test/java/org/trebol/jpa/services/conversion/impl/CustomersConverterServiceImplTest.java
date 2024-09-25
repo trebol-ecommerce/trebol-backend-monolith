@@ -26,7 +26,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.trebol.api.models.CustomerPojo;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
@@ -55,14 +54,14 @@ class CustomersConverterServiceImplTest {
         Customer input = customersTestHelper.customerEntityAfterCreation();
         PersonPojo expectedPersonPojo = PersonPojo.builder().build();
         when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
-        CustomerPojo result = instance.convertToPojo(input);
+        PersonPojo result = instance.convertToPojo(input);
         assertNotNull(result);
-        assertEquals(expectedPersonPojo, result.getPerson());
+        assertEquals(expectedPersonPojo, result);
     }
 
     @Test
     void testConvertToNewEntity() throws BadInputException {
-        CustomerPojo customerPojo = customersTestHelper.customerPojoBeforeCreation();
+        PersonPojo customerPojo = customersTestHelper.customerPojoBeforeCreation();
         Person expectedPerson = Person.builder().build();
         when(peopleServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(expectedPerson);
         Customer result = instance.convertToNewEntity(customerPojo);

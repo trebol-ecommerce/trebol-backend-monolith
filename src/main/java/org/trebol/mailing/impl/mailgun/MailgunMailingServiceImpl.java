@@ -103,7 +103,7 @@ public class MailgunMailingServiceImpl
             return;
         }
 
-        PersonPojo customer = sell.getCustomer().getPerson();
+        PersonPojo customer = sell.getCustomer();
         String customerName = customer.getFirstName() + " " + customer.getLastName();
         String recipient = customerName + " <" + customer.getEmail() + ">";
         String messageSubject = orderStatus2MailSubjectMap.get(mapsKey);

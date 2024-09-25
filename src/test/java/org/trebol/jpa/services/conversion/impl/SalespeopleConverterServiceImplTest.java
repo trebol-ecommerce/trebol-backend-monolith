@@ -27,7 +27,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.trebol.api.models.PersonPojo;
-import org.trebol.api.models.SalespersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
@@ -55,9 +54,9 @@ class SalespeopleConverterServiceImplTest {
         PersonPojo expectedPersonPojo = PersonPojo.builder().build();
         Salesperson input = salespeopleTestHelper.salespersonEntityAfterCreation();
         when(peopleServiceMock.convertToPojo(any(Person.class))).thenReturn(expectedPersonPojo);
-        SalespersonPojo result = instance.convertToPojo(input);
+        PersonPojo result = instance.convertToPojo(input);
         assertNotNull(result);
-        assertEquals(expectedPersonPojo, result.getPerson());
+        assertEquals(expectedPersonPojo, result);
     }
 
     @Test
@@ -65,7 +64,7 @@ class SalespeopleConverterServiceImplTest {
         Person expectedPerson = Person.builder()
             .id(1L)
             .build();
-        SalespersonPojo input = salespeopleTestHelper.salespersonPojoBeforeCreation();
+        PersonPojo input = salespeopleTestHelper.salespersonPojoBeforeCreation();
         when(peopleServiceMock.convertToNewEntity(any(PersonPojo.class))).thenReturn(expectedPerson);
         Salesperson result = instance.convertToNewEntity(input);
         assertNotNull(result);

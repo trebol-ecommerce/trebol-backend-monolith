@@ -20,10 +20,10 @@
 
 package org.trebol.jpa.services.crud;
 
-import org.trebol.api.models.SalespersonPojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.services.CrudService;
 
 public interface SalespeopleCrudService
-    extends CrudService<SalespersonPojo, Salesperson> {
+    extends CrudService<PersonPojo, Salesperson> {
 }

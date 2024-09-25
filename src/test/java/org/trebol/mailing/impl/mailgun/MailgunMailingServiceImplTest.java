@@ -30,7 +30,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
-import org.trebol.api.models.CustomerPojo;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.api.models.ReceiptPojo;
 import org.trebol.api.models.OrderDetailPojo;
@@ -99,12 +98,10 @@ class MailgunMailingServiceImplTest {
                     .description("some other product")
                     .build()
             ))
-            .customer(CustomerPojo.builder()
-                .person(PersonPojo.builder()
-                    .firstName(ANY)
-                    .lastName(ANY)
-                    .email(ANY)
-                    .build())
+            .customer(PersonPojo.builder()
+                .firstName(ANY)
+                .lastName(ANY)
+                .email(ANY)
                 .build())
             .build();
     }

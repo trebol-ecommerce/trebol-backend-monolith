@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Conforming to API v3
+### Conforming to API v3
+
   - Follow new specification for error messages
     - Introduce new model class `AppError`
     - Make the `ExceptionsControllerAdvice` use this new class on all its methods
@@ -57,6 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
             - `SalesPredicateService` -> `OrdersPredicateService`
             - `SellStatusesPredicateService` -> `OrderStatusesPredicateService`
     - And all other constant and variable names that reference them
+  - remove `CustomerPojo` and `SalespersonPojo` classes
+    - the `OrderPojo` class now relates to two instances of `PersonPojo` instead
 
 ## [v0.2.4] - 2024-28-08
 
