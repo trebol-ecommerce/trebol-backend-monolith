@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.DataCrudGenericController;
 import org.trebol.api.models.DataPagePojo;
@@ -54,6 +55,9 @@ import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/orders")
@@ -103,6 +107,7 @@ public class DataOrdersController
 
     @Override
     @PostMapping({"", "/"})
+    @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('orders:create')")
     public void create(@Valid @RequestBody OrderPojo input)
         throws BadInputException, EntityExistsException {
@@ -111,6 +116,7 @@ public class DataOrdersController
 
     @Override
     @PutMapping({"", "/"})
+    @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:update')")
     public void update(@Valid @RequestBody OrderPojo input, @RequestParam Map<String, String> requestParams)
         throws BadInputException, EntityNotFoundException {
@@ -119,6 +125,7 @@ public class DataOrdersController
 
     @Override
     @PatchMapping({"", "/"})
+    @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:update')")
     public void partialUpdate(
         @RequestBody Map<String, Object> input,
@@ -129,6 +136,7 @@ public class DataOrdersController
 
     @Override
     @DeleteMapping({"", "/"})
+    @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)
         throws EntityNotFoundException {
@@ -136,6 +144,7 @@ public class DataOrdersController
     }
 
     @PostMapping({"/confirmation", "/confirmation/"})
+    @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:update')")
     public void confirmSell(@RequestBody OrderPojo sell)
         throws BadInputException, MailingServiceException {

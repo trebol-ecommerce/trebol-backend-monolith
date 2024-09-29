@@ -60,6 +60,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - And all other constant and variable names that reference them
   - remove `CustomerPojo` and `SalespersonPojo` classes
     - the `OrderPojo` class now relates to two instances of `PersonPojo` instead
+  - Change status codes for most `/data` endpoints
+    - All POST requests return 201, except for three specific paths
+      - `/data/orders/confirmation`
+      - `/data/orders/rejection`
+      - `/data/orders/completion`
+    - All PUT,PATCH,DELETE,OPTIONS requests return 204
 
 ## [v0.2.4] - 2024-28-08
 

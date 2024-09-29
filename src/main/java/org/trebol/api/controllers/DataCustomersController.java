@@ -23,14 +23,7 @@ package org.trebol.api.controllers;
 import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.trebol.api.DataCrudGenericController;
 import org.trebol.api.models.DataPagePojo;
 import org.trebol.api.models.PersonPojo;
@@ -46,6 +39,9 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import java.util.Map;
+
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/customers")
@@ -73,6 +69,7 @@ public class DataCustomersController
     @Override
     @PostMapping({"", "/"})
     @PreAuthorize("hasAuthority('customers:create')")
+    @ResponseStatus(CREATED)
     public void create(@Valid @RequestBody PersonPojo input)
         throws BadInputException, EntityExistsException {
         crudService.create(input);
@@ -80,6 +77,7 @@ public class DataCustomersController
 
     @Override
     @PutMapping({"", "/"})
+    @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('customers:update')")
     public void update(@Valid @RequestBody PersonPojo input, @RequestParam Map<String, String> requestParams)
         throws EntityNotFoundException, BadInputException {
@@ -88,6 +86,7 @@ public class DataCustomersController
 
     @Override
     @DeleteMapping({"", "/"})
+    @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('customers:delete')")
     public void delete(Map<String, String> requestParams)
         throws EntityNotFoundException {
