@@ -44,7 +44,7 @@ public class PublicReceiptController {
         this.receiptService = receiptService;
     }
 
-    @GetMapping({"/{token}", "/{token}/"})
+    @GetMapping("/{token}")
     public ReceiptPojo fetchReceiptById(@PathVariable("token") String token)
         throws BadInputException, EntityNotFoundException {
         if (StringUtils.isBlank(token)) {

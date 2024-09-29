@@ -89,7 +89,7 @@ public class PublicCheckoutController {
      * @throws PaymentServiceException If an error happens during the payment
      *                                 payment process
      */
-    @PostMapping({"", "/"})
+    @PostMapping
     @PreAuthorize("hasAuthority('" + AUTHORITY_CHECKOUT + "')")
     public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody OrderPojo transactionRequest)
         throws BadInputException, PaymentServiceException, EntityExistsException {
@@ -106,7 +106,7 @@ public class PublicCheckoutController {
      * @throws EntityNotFoundException If the token does not match that of any "pending" transaction
      * @throws PaymentServiceException If an error happens during internal API calls
      */
-    @GetMapping({"/validate", "/validate/"})
+    @GetMapping("/validate")
     public ResponseEntity<Void> validateSuccesfulTransaction(@RequestParam Map<String, String> transactionData)
         throws BadInputException, EntityNotFoundException, PaymentServiceException, MailingServiceException {
         if (!transactionData.containsKey(WEBPAY_SUCCESS_TOKEN_HEADER_NAME)) { // success
@@ -133,7 +133,7 @@ public class PublicCheckoutController {
      * @throws EntityNotFoundException If the token does not match that of any "pending" transaction
      * @throws PaymentServiceException If an error happens during internal API calls
      */
-    @PostMapping({"/validate", "/validate/"})
+    @PostMapping("/validate")
     public ResponseEntity<Void> validateAbortedTransaction(@RequestParam Map<String, String> transactionData)
         throws BadInputException, EntityNotFoundException, PaymentServiceException {
 
@@ -156,7 +156,7 @@ public class PublicCheckoutController {
      * @return An object with all available data about the transaction
      * @throws EntityNotFoundException when no transaction matched the provided token
      */
-    @GetMapping({"/result/{token}", "/result/{token}/"})
+    @GetMapping("/result/{token}")
     public OrderPojo getTransactionResultFor(@NotBlank @PathVariable String token)
         throws EntityNotFoundException {
         Map<String, String> tokenMatcher = Maps.of("token", token).build();

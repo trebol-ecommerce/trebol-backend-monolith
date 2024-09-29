@@ -97,7 +97,7 @@ public class DataProductListContentsController {
         this.itemConverterService = itemConverterService;
     }
 
-    @GetMapping({"", "/"})
+    @GetMapping
     public DataPagePojo<ProductPojo> readContents(@RequestParam Map<String, String> requestParams)
         throws BadInputException, EntityNotFoundException {
         Optional<ProductList> match = this.fetchProductListByCode(requestParams);
@@ -128,7 +128,7 @@ public class DataProductListContentsController {
         return new DataPagePojo<>(products, pageIndex, totalCount, pageSize);
     }
 
-    @PostMapping({"", "/"})
+    @PostMapping
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('product_lists:contents')")
     public void addToContents(@Valid @RequestBody ProductPojo input,
@@ -151,7 +151,7 @@ public class DataProductListContentsController {
         }
     }
 
-    @PutMapping({"", "/"})
+    @PutMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_lists:contents')")
     public void updateContents(@RequestBody Collection<ProductPojo> input,
@@ -177,7 +177,7 @@ public class DataProductListContentsController {
         }
     }
 
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_lists:contents')")
     public void deleteFromContents(@RequestParam Map<String, String> requestParams)

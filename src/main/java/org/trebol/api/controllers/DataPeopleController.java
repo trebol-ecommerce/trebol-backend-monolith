@@ -56,7 +56,7 @@ public class DataPeopleController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
     @PreAuthorize("hasAuthority('people:read')")
     public DataPagePojo<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);

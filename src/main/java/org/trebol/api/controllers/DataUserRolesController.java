@@ -68,14 +68,14 @@ public class DataUserRolesController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
     @PreAuthorize("hasAuthority('user_roles:read')")
     public DataPagePojo<UserRolePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('user_roles:create')")
     public void create(@Valid @RequestBody UserRolePojo input)
@@ -84,7 +84,7 @@ public class DataUserRolesController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('user_roles:update')")
     public void update(@Valid @RequestBody UserRolePojo input, @RequestParam Map<String, String> requestParams)
@@ -93,7 +93,7 @@ public class DataUserRolesController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('user_roles:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

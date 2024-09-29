@@ -68,13 +68,13 @@ public class DataProductListsController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
     public DataPagePojo<ProductListPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('product_lists:create')")
     public void create(@Valid @RequestBody ProductListPojo input)
@@ -83,7 +83,7 @@ public class DataProductListsController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_lists:update')")
     public void update(@Valid @RequestBody ProductListPojo input, @RequestParam Map<String, String> requestParams)
@@ -92,7 +92,7 @@ public class DataProductListsController
     }
 
     @Override
-    @PatchMapping({"", "/"})
+    @PatchMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_lists:update')")
     public void partialUpdate(
@@ -103,7 +103,7 @@ public class DataProductListsController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_lists:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

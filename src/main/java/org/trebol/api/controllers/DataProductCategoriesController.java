@@ -68,7 +68,7 @@ public class DataProductCategoriesController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
     public DataPagePojo<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         if (allRequestParams==null || allRequestParams.isEmpty()) {
             allRequestParams = Map.of("parentId", "");
@@ -77,7 +77,7 @@ public class DataProductCategoriesController
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('product_categories:create')")
     public void create(@Valid @RequestBody ProductCategoryPojo input)
@@ -86,7 +86,7 @@ public class DataProductCategoriesController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_categories:update')")
     public void update(@Valid @RequestBody ProductCategoryPojo input, @RequestParam Map<String, String> requestParams)
@@ -95,7 +95,7 @@ public class DataProductCategoriesController
     }
 
     @Override
-    @PatchMapping({"", "/"})
+    @PatchMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_categories:update')")
     public void partialUpdate(
@@ -106,7 +106,7 @@ public class DataProductCategoriesController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_categories:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

@@ -66,7 +66,7 @@ public class AccessController {
         this.regexMatcherService = regexMatcherService;
     }
 
-    @GetMapping({"", "/"})
+    @GetMapping
     public AuthorizedAccessPojo getApiRoutesAccess(@RequestHeader HttpHeaders requestHeaders)
         throws UsernameNotFoundException, IllegalStateException {
         UserDetails userDetails = this.getUserDetails(requestHeaders);
@@ -79,7 +79,7 @@ public class AccessController {
             .build();
     }
 
-    @GetMapping({"/{apiRoute}", "/{apiRoute}/"})
+    @GetMapping("/{apiRoute}")
     public AuthorizedAccessPojo getApiResourceAccess(
         @RequestHeader HttpHeaders requestHeaders,
         @PathVariable String apiRoute)

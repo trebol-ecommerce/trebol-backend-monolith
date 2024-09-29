@@ -74,6 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
       - `/data/orders/rejection`
       - `/data/orders/completion`
     - All PUT,PATCH,DELETE,OPTIONS requests return 204
+  - Remove support for paths with leading slash
+    - For example, `/public/checkout/` is no longer accepted, only `/public/checkout`
 
 ## [v0.2.4] - 2024-28-08
 

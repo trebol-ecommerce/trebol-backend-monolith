@@ -83,7 +83,7 @@ public class DataOrdersController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
     @PreAuthorize("hasAuthority('orders:read')")
     public DataPagePojo<OrderPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         if (allRequestParams!=null) {
@@ -106,7 +106,7 @@ public class DataOrdersController
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('orders:create')")
     public void create(@Valid @RequestBody OrderPojo input)
@@ -115,7 +115,7 @@ public class DataOrdersController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:update')")
     public void update(@Valid @RequestBody OrderPojo input, @RequestParam Map<String, String> requestParams)
@@ -124,7 +124,7 @@ public class DataOrdersController
     }
 
     @Override
-    @PatchMapping({"", "/"})
+    @PatchMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:update')")
     public void partialUpdate(
@@ -135,7 +135,7 @@ public class DataOrdersController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)
@@ -143,7 +143,7 @@ public class DataOrdersController
         super.delete(requestParams);
     }
 
-    @PostMapping({"/confirmation", "/confirmation/"})
+    @PostMapping("/confirmation")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:update')")
     public void confirmSell(@RequestBody OrderPojo sell)
@@ -155,7 +155,7 @@ public class DataOrdersController
         }
     }
 
-    @PostMapping({"/rejection", "/rejection/"})
+    @PostMapping("/rejection")
     @PreAuthorize("hasAuthority('orders:update')")
     public void rejectSell(@RequestBody OrderPojo sell)
         throws BadInputException, MailingServiceException {
@@ -165,7 +165,7 @@ public class DataOrdersController
         }
     }
 
-    @PostMapping({"/completion", "/completion/"})
+    @PostMapping("/completion")
     @PreAuthorize("hasAuthority('orders:update')")
     public void completeSell(@RequestBody OrderPojo sell)
         throws BadInputException, MailingServiceException {

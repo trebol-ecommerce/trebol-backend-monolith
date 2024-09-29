@@ -47,14 +47,14 @@ public class AccountProfileController {
         this.userProfileService = userProfileService;
     }
 
-    @GetMapping({"", "/"})
+    @GetMapping
     public PersonPojo getProfile(Principal principal)
         throws EntityNotFoundException {
         String username = principal.getName();
         return userProfileService.getProfileFromUserName(username);
     }
 
-    @PutMapping({"", "/"})
+    @PutMapping
     public void updateProfile(Principal principal, @RequestBody PersonPojo newProfile)
         throws EntityNotFoundException, BadInputException {
         String username = principal.getName();

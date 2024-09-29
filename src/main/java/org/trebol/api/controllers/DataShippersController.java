@@ -68,13 +68,13 @@ public class DataShippersController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
     public DataPagePojo<ShipperPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('shippers:create')")
     public void create(@Valid @RequestBody ShipperPojo input)
@@ -83,7 +83,7 @@ public class DataShippersController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('shippers:update')")
     public void update(@Valid @RequestBody ShipperPojo input, @RequestParam Map<String, String> requestParams)
@@ -92,7 +92,7 @@ public class DataShippersController
     }
 
     @Override
-    @PatchMapping({"", "/"})
+    @PatchMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('shippers:update')")
     public void partialUpdate(
@@ -103,7 +103,7 @@ public class DataShippersController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('shippers:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

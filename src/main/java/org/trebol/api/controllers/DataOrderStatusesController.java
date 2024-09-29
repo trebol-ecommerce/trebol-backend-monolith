@@ -56,7 +56,7 @@ public class DataOrderStatusesController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
     @PreAuthorize("hasAuthority('order_statuses:read')")
     public DataPagePojo<OrderStatusPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);

@@ -69,14 +69,14 @@ public class DataUsersController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
     @PreAuthorize("hasAuthority('users:read')")
     public DataPagePojo<UserPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('users:create')")
     public void create(@Valid @RequestBody UserPojo input)
@@ -85,7 +85,7 @@ public class DataUsersController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('users:update')")
     public void update(@Valid @RequestBody UserPojo input, @RequestParam Map<String, String> requestParams)
@@ -93,7 +93,7 @@ public class DataUsersController
         super.update(input, requestParams);
     }
 
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('users:delete')")
     public void delete(Principal principal, @RequestParam Map<String, String> requestParams)

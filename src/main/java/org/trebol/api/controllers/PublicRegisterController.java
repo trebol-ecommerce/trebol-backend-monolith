@@ -44,7 +44,7 @@ public class PublicRegisterController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping({"", "/"})
+    @PostMapping
     public void register(@Valid @RequestBody RegistrationPojo userProfile)
         throws BadInputException, EntityExistsException {
         this.registrationService.register(userProfile);

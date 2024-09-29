@@ -69,14 +69,14 @@ public class DataImagesController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
     @PreAuthorize("hasAuthority('images:read')")
     public DataPagePojo<ImagePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('images:create')")
     public void create(@Valid @RequestBody ImagePojo input)
@@ -85,7 +85,7 @@ public class DataImagesController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('images:update')")
     public void update(@Valid @RequestBody ImagePojo input, @RequestParam Map<String, String> requestParams)
@@ -94,7 +94,7 @@ public class DataImagesController
     }
 
     @Override
-    @PatchMapping({"", "/"})
+    @PatchMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('images:update')")
     public void partialUpdate(
@@ -105,7 +105,7 @@ public class DataImagesController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('images:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)
