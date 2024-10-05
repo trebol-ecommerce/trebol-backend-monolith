@@ -69,7 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Remove duplicated functionality endpoint `/public/checkout/result/{token}`
     - Served the same purpose as `/public/receipt/{token}`
 
-## [v0.2.4] - 2024-28-08
+## [v0.2.4] - 2024-08-28
 
 ### Changed
 
