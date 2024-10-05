@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,6 +56,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/product_categories")
+@Tag(name = "Product Categories management")
 public class DataProductCategoriesController
     extends DataCrudGenericController<ProductCategoryPojo, ProductCategory> {
 
@@ -69,6 +72,7 @@ public class DataProductCategoriesController
 
     @Override
     @GetMapping
+    @Operation(summary = "List product categories.")
     public DataPagePojo<ProductCategoryPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         if (allRequestParams==null || allRequestParams.isEmpty()) {
             allRequestParams = Map.of("parentId", "");
@@ -78,6 +82,7 @@ public class DataProductCategoriesController
 
     @Override
     @PostMapping
+    @Operation(summary = "Define new product categories.")
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('product_categories:create')")
     public void create(@Valid @RequestBody ProductCategoryPojo input)
@@ -87,6 +92,7 @@ public class DataProductCategoriesController
 
     @Override
     @PutMapping
+    @Operation(summary = "Replace product categories data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_categories:update')")
     public void update(@Valid @RequestBody ProductCategoryPojo input, @RequestParam Map<String, String> requestParams)
@@ -96,6 +102,7 @@ public class DataProductCategoriesController
 
     @Override
     @PatchMapping
+    @Operation(summary = "Update parts of product categories data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_categories:update')")
     public void partialUpdate(
@@ -107,6 +114,7 @@ public class DataProductCategoriesController
 
     @Override
     @DeleteMapping
+    @Operation(summary = "Remove product categories.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_categories:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

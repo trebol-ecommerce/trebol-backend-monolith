@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.Predicate;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -68,6 +70,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/product_list_contents")
+@Tag(name = "Product Lists management")
 public class DataProductListContentsController {
     private static final String ITEM_NOT_FOUND = "Requested item(s) not found";
     private final PaginationService paginationService;
@@ -98,6 +101,7 @@ public class DataProductListContentsController {
     }
 
     @GetMapping
+    @Operation(summary = "View contents of product lists.")
     public DataPagePojo<ProductPojo> readContents(@RequestParam Map<String, String> requestParams)
         throws BadInputException, EntityNotFoundException {
         Optional<ProductList> match = this.fetchProductListByCode(requestParams);
@@ -129,6 +133,7 @@ public class DataProductListContentsController {
     }
 
     @PostMapping
+    @Operation(summary = "Add products to lists.")
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('product_lists:contents')")
     public void addToContents(@Valid @RequestBody ProductPojo input,
@@ -152,6 +157,7 @@ public class DataProductListContentsController {
     }
 
     @PutMapping
+    @Operation(summary = "Fully replace contents of product lists.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_lists:contents')")
     public void updateContents(@RequestBody Collection<ProductPojo> input,
@@ -178,6 +184,7 @@ public class DataProductListContentsController {
     }
 
     @DeleteMapping
+    @Operation(summary = "Remove products from lists.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_lists:contents')")
     public void deleteFromContents(@RequestParam Map<String, String> requestParams)

@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +47,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/customers")
+@Tag(name = "People management")
 @PreAuthorize("isAuthenticated()")
 public class DataCustomersController
     extends DataCrudGenericController<PersonPojo, Customer> {
@@ -61,6 +64,7 @@ public class DataCustomersController
 
     @Override
     @GetMapping
+    @Operation(summary = "List customers.")
     @PreAuthorize("hasAuthority('customers:read')")
     public DataPagePojo<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
@@ -68,6 +72,7 @@ public class DataCustomersController
 
     @Override
     @PostMapping
+    @Operation(summary = "Register new customer.")
     @PreAuthorize("hasAuthority('customers:create')")
     @ResponseStatus(CREATED)
     public void create(@Valid @RequestBody PersonPojo input)
@@ -77,6 +82,7 @@ public class DataCustomersController
 
     @Override
     @PutMapping
+    @Operation(summary = "Replace customers data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('customers:update')")
     public void update(@Valid @RequestBody PersonPojo input, @RequestParam Map<String, String> requestParams)
@@ -86,6 +92,7 @@ public class DataCustomersController
 
     @Override
     @DeleteMapping
+    @Operation(summary = "Deregister customers.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('customers:delete')")
     public void delete(Map<String, String> requestParams)

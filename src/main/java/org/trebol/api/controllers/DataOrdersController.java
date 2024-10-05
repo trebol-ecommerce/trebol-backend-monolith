@@ -22,6 +22,8 @@ package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -61,6 +63,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/orders")
+@Tag(name = "Orders management")
 @PreAuthorize("isAuthenticated()")
 public class DataOrdersController
     extends DataCrudGenericController<OrderPojo, Order> {
@@ -84,6 +87,7 @@ public class DataOrdersController
 
     @Override
     @GetMapping
+    @Operation(summary = "List orders.")
     @PreAuthorize("hasAuthority('orders:read')")
     public DataPagePojo<OrderPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         if (allRequestParams!=null) {
@@ -107,6 +111,7 @@ public class DataOrdersController
 
     @Override
     @PostMapping
+    @Operation(summary = "Create new orders.")
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('orders:create')")
     public void create(@Valid @RequestBody OrderPojo input)
@@ -116,6 +121,7 @@ public class DataOrdersController
 
     @Override
     @PutMapping
+    @Operation(summary = "Replace orders data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:update')")
     public void update(@Valid @RequestBody OrderPojo input, @RequestParam Map<String, String> requestParams)
@@ -125,6 +131,7 @@ public class DataOrdersController
 
     @Override
     @PatchMapping
+    @Operation(summary = "Update parts of orders data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:update')")
     public void partialUpdate(
@@ -136,6 +143,7 @@ public class DataOrdersController
 
     @Override
     @DeleteMapping
+    @Operation(summary = "Remove orders.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)
@@ -144,6 +152,7 @@ public class DataOrdersController
     }
 
     @PostMapping("/confirmation")
+    @Operation(summary = "Confirm a pending order.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('orders:update')")
     public void confirmSell(@RequestBody OrderPojo sell)
@@ -156,6 +165,7 @@ public class DataOrdersController
     }
 
     @PostMapping("/rejection")
+    @Operation(summary = "Reject a pending order.")
     @PreAuthorize("hasAuthority('orders:update')")
     public void rejectSell(@RequestBody OrderPojo sell)
         throws BadInputException, MailingServiceException {
@@ -166,6 +176,7 @@ public class DataOrdersController
     }
 
     @PostMapping("/completion")
+    @Operation(summary = "Mark an order as completed.")
     @PreAuthorize("hasAuthority('orders:update')")
     public void completeSell(@RequestBody OrderPojo sell)
         throws BadInputException, MailingServiceException {

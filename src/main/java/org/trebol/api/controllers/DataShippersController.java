@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,6 +56,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/shippers")
+@Tag(name = "Shippers management")
 public class DataShippersController
     extends DataCrudGenericController<ShipperPojo, Shipper> {
 
@@ -69,12 +72,14 @@ public class DataShippersController
 
     @Override
     @GetMapping
+    @Operation(summary = "List shippers.")
     public DataPagePojo<ShipperPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
     @PostMapping
+    @Operation(summary = "Define new shippers.")
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('shippers:create')")
     public void create(@Valid @RequestBody ShipperPojo input)
@@ -84,6 +89,7 @@ public class DataShippersController
 
     @Override
     @PutMapping
+    @Operation(summary = "Replace shippers data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('shippers:update')")
     public void update(@Valid @RequestBody ShipperPojo input, @RequestParam Map<String, String> requestParams)
@@ -93,6 +99,7 @@ public class DataShippersController
 
     @Override
     @PatchMapping
+    @Operation(summary = "Update parts of shippers data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('shippers:update')")
     public void partialUpdate(
@@ -104,6 +111,7 @@ public class DataShippersController
 
     @Override
     @DeleteMapping
+    @Operation(summary = "Remove shippers.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('shippers:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

@@ -22,6 +22,8 @@ package org.trebol.api.controllers;
 
 import com.querydsl.core.types.Predicate;
 import io.jsonwebtoken.lang.Maps;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -60,6 +62,7 @@ import static org.trebol.config.Constants.WEBPAY_SUCCESS_TOKEN_HEADER_NAME;
 
 @RestController
 @RequestMapping("/public/checkout")
+@Tag(name = "Checkout")
 public class PublicCheckoutController {
     private final CheckoutService service;
     private final OrdersCrudService ordersCrudService;
@@ -90,6 +93,7 @@ public class PublicCheckoutController {
      *                                 payment process
      */
     @PostMapping
+    @Operation(summary = "Submit cart contents to request an order and begin a checkout")
     @PreAuthorize("hasAuthority('" + AUTHORITY_CHECKOUT + "')")
     public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody OrderPojo transactionRequest)
         throws BadInputException, PaymentServiceException, EntityExistsException {
@@ -107,6 +111,7 @@ public class PublicCheckoutController {
      * @throws PaymentServiceException If an error happens during internal API calls
      */
     @GetMapping("/validate")
+    @Operation(summary = "Request that an order status be updated after having begun checkout")
     public ResponseEntity<Void> validateSuccesfulTransaction(@RequestParam Map<String, String> transactionData)
         throws BadInputException, EntityNotFoundException, PaymentServiceException, MailingServiceException {
         if (!transactionData.containsKey(WEBPAY_SUCCESS_TOKEN_HEADER_NAME)) { // success
@@ -134,6 +139,7 @@ public class PublicCheckoutController {
      * @throws PaymentServiceException If an error happens during internal API calls
      */
     @PostMapping("/validate")
+    @Operation(summary = "Submit failed or aborted state for an order after having begun checkout")
     public ResponseEntity<Void> validateAbortedTransaction(@RequestParam Map<String, String> transactionData)
         throws BadInputException, EntityNotFoundException, PaymentServiceException {
 
@@ -157,6 +163,7 @@ public class PublicCheckoutController {
      * @throws EntityNotFoundException when no transaction matched the provided token
      */
     @GetMapping("/result/{token}")
+    @Operation(summary = "View information about an order once complete or rejected")
     public OrderPojo getTransactionResultFor(@NotBlank @PathVariable String token)
         throws EntityNotFoundException {
         Map<String, String> tokenMatcher = Maps.of("token", token).build();

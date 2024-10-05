@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +43,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/data/people")
+@Tag(name = "People management")
 @PreAuthorize("isAuthenticated()")
 public class DataPeopleController
     extends DataGenericController<PersonPojo, Person> {
@@ -57,6 +60,7 @@ public class DataPeopleController
 
     @Override
     @GetMapping
+    @Operation(summary = "List people.")
     @PreAuthorize("hasAuthority('people:read')")
     public DataPagePojo<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
