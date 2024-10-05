@@ -49,7 +49,7 @@ for full explanation on the most recent changes, additions and fixes.
   * Login, registration and optionally, guest customer accounts.
   * Checking out as a registered user or a guest (when enabled).
 * Uses [Project Lombok](https://projectlombok.org)
-  in all of its API models and JPA entities for an easier time reading.
+  in all of its API models and JPA entities to reduce the amount of boilerplate code.
 * Uses [Spring Data JPA](https://spring.io/projects/spring-data-jpa).
   * Includes annotated entity classes; specifying constraints and indexes where
     they'll be most likely needed when scaling up.
@@ -82,9 +82,9 @@ for full explanation on the most recent changes, additions and fixes.
 
 There was an Entity-Relationship diagram included in this part of the README file here,
 but after some of the recent, more heavy changes, it became outdated so it was deleted.
-_It's not very good practice to store binary data either..._
+_It's not very good practice to store binary data in a version control system either..._
 
-**However, please remember the repo does contain [the schema file](/src/main/resources/data.sql)
+**However, please remember that this repo does contain [the schema file](/src/main/resources/data.sql)
 to spin up a new database from**.
 If you need/want to have a diagram to look at, I recommend trying [Azimutt](https://github.com/azimuttapp/azimutt)
 to create and design one from it. It's a powerful little program, _really intuitive and easy to use too_.
