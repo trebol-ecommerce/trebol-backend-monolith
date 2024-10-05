@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,6 +56,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/products")
+@Tag(name = "Products management")
 public class DataProductsController
     extends DataCrudGenericController<ProductPojo, Product> {
 
@@ -68,13 +71,15 @@ public class DataProductsController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
+    @Operation(summary = "List products.")
     public DataPagePojo<ProductPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
+    @Operation(summary = "Define new products.")
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('products:create')")
     public void create(@Valid @RequestBody ProductPojo input)
@@ -83,7 +88,8 @@ public class DataProductsController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
+    @Operation(summary = "Replace products data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('products:update')")
     public void update(@Valid @RequestBody ProductPojo input, @RequestParam Map<String, String> requestParams)
@@ -92,7 +98,8 @@ public class DataProductsController
     }
 
     @Override
-    @PatchMapping({"", "/"})
+    @PatchMapping
+    @Operation(summary = "Update parts of products data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('products:update')")
     public void partialUpdate(
@@ -103,7 +110,8 @@ public class DataProductsController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
+    @Operation(summary = "Remove products.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('products:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

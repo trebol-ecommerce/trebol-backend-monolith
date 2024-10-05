@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +43,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/data/order_statuses")
+@Tag(name = "Params management")
 @PreAuthorize("isAuthenticated()")
 public class DataOrderStatusesController
     extends DataGenericController<OrderStatusPojo, OrderStatus> {
@@ -56,7 +59,8 @@ public class DataOrderStatusesController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
+    @Operation(summary = "List order statuses.")
     @PreAuthorize("hasAuthority('order_statuses:read')")
     public DataPagePojo<OrderStatusPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);

@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,6 +56,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/images")
+@Tag(name = "Images management")
 @PreAuthorize("isAuthenticated()")
 public class DataImagesController
     extends DataCrudGenericController<ImagePojo, Image> {
@@ -69,14 +72,16 @@ public class DataImagesController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
+    @Operation(summary = "List image links data.")
     @PreAuthorize("hasAuthority('images:read')")
     public DataPagePojo<ImagePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
+    @Operation(summary = "Define new image links.")
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('images:create')")
     public void create(@Valid @RequestBody ImagePojo input)
@@ -85,7 +90,8 @@ public class DataImagesController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
+    @Operation(summary = "Replace image links data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('images:update')")
     public void update(@Valid @RequestBody ImagePojo input, @RequestParam Map<String, String> requestParams)
@@ -94,7 +100,8 @@ public class DataImagesController
     }
 
     @Override
-    @PatchMapping({"", "/"})
+    @PatchMapping
+    @Operation(summary = "Update parts of image links data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('images:update')")
     public void partialUpdate(
@@ -105,7 +112,8 @@ public class DataImagesController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
+    @Operation(summary = "Remove image links.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('images:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

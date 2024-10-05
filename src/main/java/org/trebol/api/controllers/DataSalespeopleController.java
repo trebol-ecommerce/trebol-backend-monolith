@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,6 +55,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/salespeople")
+@Tag(name = "People management")
 @PreAuthorize("isAuthenticated()")
 public class DataSalespeopleController
     extends DataCrudGenericController<PersonPojo, Salesperson> {
@@ -68,14 +71,16 @@ public class DataSalespeopleController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
+    @Operation(summary = "List salespeople.")
     @PreAuthorize("hasAuthority('salespeople:read')")
     public DataPagePojo<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
+    @Operation(summary = "Register new salespeople.")
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('salespeople:create')")
     public void create(@Valid @RequestBody PersonPojo input)
@@ -84,7 +89,8 @@ public class DataSalespeopleController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
+    @Operation(summary = "Replace salespeople data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('salespeople:update')")
     public void update(@Valid @RequestBody PersonPojo input, @RequestParam Map<String, String> requestParams)
@@ -93,7 +99,8 @@ public class DataSalespeopleController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
+    @Operation(summary = "Deregister salespeople.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('salespeople:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

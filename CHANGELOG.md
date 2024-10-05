@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Conforming to API v3
+### Added
+
+- [Springdoc](https://springdoc.org) library, to enrich the project with two new features:
+  - Generation of an OpenAPI 3.0 spec file, akin to [the Trebol API](https://github.com/trebol-ecommerce/api)'s
+  - Generation of a [Swagger UI](https://swagger.io/tools/swagger-ui/) page and endpoint.
+
+### Changed
+
+#### Conforming to API v3
 
   - Follow new specification for error messages
     - Introduce new model class `AppError`
@@ -68,6 +76,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - All PUT,PATCH,DELETE,OPTIONS requests return 204
   - Remove duplicated functionality endpoint `/public/checkout/result/{token}`
     - Served the same purpose as `/public/receipt/{token}`
+  - Remove support for paths with leading slash
+    - For example, `/public/checkout/` is no longer accepted, only `/public/checkout`
 
 ## [v0.2.4] - 2024-08-28
 

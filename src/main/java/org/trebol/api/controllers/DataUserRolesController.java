@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,6 +55,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/user_roles")
+@Tag(name = "Params management")
 @PreAuthorize("isAuthenticated()")
 public class DataUserRolesController
     extends DataCrudGenericController<UserRolePojo, UserRole> {
@@ -68,14 +71,16 @@ public class DataUserRolesController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
+    @Operation(summary = "List user roles.")
     @PreAuthorize("hasAuthority('user_roles:read')")
     public DataPagePojo<UserRolePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
+    @Operation(summary = "Define new user roles.")
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('user_roles:create')")
     public void create(@Valid @RequestBody UserRolePojo input)
@@ -84,7 +89,8 @@ public class DataUserRolesController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
+    @Operation(summary = "Replace user roles data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('user_roles:update')")
     public void update(@Valid @RequestBody UserRolePojo input, @RequestParam Map<String, String> requestParams)
@@ -93,7 +99,8 @@ public class DataUserRolesController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
+    @Operation(summary = "Remove user roles.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('user_roles:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

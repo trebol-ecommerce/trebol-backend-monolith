@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,6 +56,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/data/product_lists")
+@Tag(name = "Product Lists management")
 public class DataProductListsController
     extends DataCrudGenericController<ProductListPojo, ProductList> {
 
@@ -68,13 +71,15 @@ public class DataProductListsController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
+    @Operation(summary = "View product lists.")
     public DataPagePojo<ProductListPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
-    @PostMapping({"", "/"})
+    @PostMapping
+    @Operation(summary = "Define new product lists.")
     @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('product_lists:create')")
     public void create(@Valid @RequestBody ProductListPojo input)
@@ -83,7 +88,8 @@ public class DataProductListsController
     }
 
     @Override
-    @PutMapping({"", "/"})
+    @PutMapping
+    @Operation(summary = "Replace product lists data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_lists:update')")
     public void update(@Valid @RequestBody ProductListPojo input, @RequestParam Map<String, String> requestParams)
@@ -92,7 +98,8 @@ public class DataProductListsController
     }
 
     @Override
-    @PatchMapping({"", "/"})
+    @PatchMapping
+    @Operation(summary = "Update parts of product lists data.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_lists:update')")
     public void partialUpdate(
@@ -103,7 +110,8 @@ public class DataProductListsController
     }
 
     @Override
-    @DeleteMapping({"", "/"})
+    @DeleteMapping
+    @Operation(summary = "Remove product lists.")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('product_lists:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)

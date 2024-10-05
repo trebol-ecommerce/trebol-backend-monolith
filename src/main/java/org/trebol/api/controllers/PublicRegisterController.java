@@ -20,6 +20,8 @@
 
 package org.trebol.api.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +36,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/public/register")
+@Tag(name = "User Accounts")
 public class PublicRegisterController {
     private final RegistrationService registrationService;
 
@@ -44,7 +47,8 @@ public class PublicRegisterController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping({"", "/"})
+    @PostMapping
+    @Operation(summary = "Request creation of new user account.")
     public void register(@Valid @RequestBody RegistrationPojo userProfile)
         throws BadInputException, EntityExistsException {
         this.registrationService.register(userProfile);

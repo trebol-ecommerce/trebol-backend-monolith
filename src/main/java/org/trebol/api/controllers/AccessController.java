@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,6 +48,7 @@ import static org.trebol.config.Constants.JWT_PREFIX;
 
 @RestController
 @RequestMapping("/access")
+@Tag(name = "User Accounts")
 @PreAuthorize("isAuthenticated()")
 public class AccessController {
     private final AuthorizationHeaderParserService<Claims> jwtClaimsParserService;
@@ -66,7 +69,8 @@ public class AccessController {
         this.regexMatcherService = regexMatcherService;
     }
 
-    @GetMapping({"", "/"})
+    @GetMapping
+    @Operation(summary = "List authorized API routes")
     public AuthorizedAccessPojo getApiRoutesAccess(@RequestHeader HttpHeaders requestHeaders)
         throws UsernameNotFoundException, IllegalStateException {
         UserDetails userDetails = this.getUserDetails(requestHeaders);
@@ -79,7 +83,8 @@ public class AccessController {
             .build();
     }
 
-    @GetMapping({"/{apiRoute}", "/{apiRoute}/"})
+    @GetMapping("/{apiRoute}")
+    @Operation(summary = "List authorized access to API route")
     public AuthorizedAccessPojo getApiResourceAccess(
         @RequestHeader HttpHeaders requestHeaders,
         @PathVariable String apiRoute)

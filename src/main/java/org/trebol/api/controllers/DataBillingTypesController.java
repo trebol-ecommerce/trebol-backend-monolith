@@ -21,6 +21,8 @@
 package org.trebol.api.controllers;
 
 import com.querydsl.core.types.OrderSpecifier;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/data/billing_types")
+@Tag(name = "Params management")
 public class DataBillingTypesController
     extends DataGenericController<BillingTypePojo, BillingType> {
 
@@ -54,7 +57,8 @@ public class DataBillingTypesController
     }
 
     @Override
-    @GetMapping({"", "/"})
+    @GetMapping
+    @Operation(summary = "List billing types.")
     public DataPagePojo<BillingTypePojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
