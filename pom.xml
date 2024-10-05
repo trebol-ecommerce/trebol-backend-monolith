@@ -33,10 +33,10 @@
   <groupId>org.trebolecommerce</groupId>
   <artifactId>trebol-backend-monolith-java17</artifactId>
   <packaging>war</packaging>
-  <version>0.2.4</version>
+  <version>0.2.5-SNAPSHOT</version>
 
   <name>Trébol Backend Monolith</name>
-  <description>Monolithic eCommerce backend web application that exposes a RESTful API compliant with the Trebol API v1.5.0 specification.</description>
+  <description>Monolithic eCommerce backend web application that exposes a RESTful API compliant with the Trebol API v3.0.0 specification.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

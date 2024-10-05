@@ -21,7 +21,6 @@
 package org.trebol.testing;
 
 import org.trebol.api.models.PersonPojo;
-import org.trebol.api.models.SalespersonPojo;
 import org.trebol.jpa.entities.Person;
 import org.trebol.jpa.entities.Salesperson;
 
@@ -36,9 +35,9 @@ public class SalespeopleTestHelper {
     public static final String SALESPERSON_EMAIL = "salesperson@example.com";
     public static final String SALESPERSON_PHONE1 = "1234567";
     public static final String SALESPERSON_PHONE2 = "9876543";
-    private SalespersonPojo pojoForFetch;
-    private SalespersonPojo pojoBeforeCreation;
-    private SalespersonPojo pojoAfterCreation;
+    private PersonPojo pojoForFetch;
+    private PersonPojo pojoBeforeCreation;
+    private PersonPojo pojoAfterCreation;
     private Salesperson entityBeforeCreation;
     private Salesperson entityAfterCreation;
 
@@ -50,37 +49,33 @@ public class SalespeopleTestHelper {
         this.entityAfterCreation = null;
     }
 
-    public SalespersonPojo salespersonPojoForFetch() {
+    public PersonPojo salespersonPojoForFetch() {
         if (this.pojoForFetch==null) {
-            this.pojoForFetch = SalespersonPojo.builder()
-                .person(PersonPojo.builder().idNumber(SALESPERSON_ID_NUMBER).build())
+            this.pojoForFetch = PersonPojo.builder()
+                .idNumber(SALESPERSON_ID_NUMBER)
                 .build();
         }
         return this.pojoForFetch;
     }
 
-    public SalespersonPojo salespersonPojoBeforeCreation() {
+    public PersonPojo salespersonPojoBeforeCreation() {
         if (this.pojoBeforeCreation==null) {
-            this.pojoBeforeCreation = SalespersonPojo.builder()
-                .person(PersonPojo.builder()
-                    .idNumber(SALESPERSON_ID_NUMBER)
-                    .build())
+            this.pojoBeforeCreation = PersonPojo.builder()
+                .idNumber(SALESPERSON_ID_NUMBER)
                 .build();
         }
         return this.pojoBeforeCreation;
     }
 
-    public SalespersonPojo salespersonPojoAfterCreation() {
+    public PersonPojo salespersonPojoAfterCreation() {
         if (this.pojoAfterCreation==null) {
-            this.pojoAfterCreation = SalespersonPojo.builder()
-                .person(PersonPojo.builder()
-                    .firstName(SALESPERSON_FIRST_NAME)
-                    .lastName(SALESPERSON_LAST_NAME)
-                    .idNumber(SALESPERSON_ID_NUMBER)
-                    .email(SALESPERSON_EMAIL)
-                    .phone1(SALESPERSON_PHONE1)
-                    .phone2(SALESPERSON_PHONE2)
-                    .build())
+            this.pojoAfterCreation = PersonPojo.builder()
+                .firstName(SALESPERSON_FIRST_NAME)
+                .lastName(SALESPERSON_LAST_NAME)
+                .idNumber(SALESPERSON_ID_NUMBER)
+                .email(SALESPERSON_EMAIL)
+                .phone1(SALESPERSON_PHONE1)
+                .phone2(SALESPERSON_PHONE2)
                 .build();
         }
         return this.pojoAfterCreation;

@@ -30,10 +30,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.DataCrudGenericController;
 import org.trebol.api.models.DataPagePojo;
-import org.trebol.api.models.SalespersonPojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.api.services.PaginationService;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Salesperson;
@@ -47,11 +48,14 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+
 @RestController
 @RequestMapping("/data/salespeople")
 @PreAuthorize("isAuthenticated()")
 public class DataSalespeopleController
-    extends DataCrudGenericController<SalespersonPojo, Salesperson> {
+    extends DataCrudGenericController<PersonPojo, Salesperson> {
 
     @Autowired
     public DataSalespeopleController(
@@ -66,28 +70,31 @@ public class DataSalespeopleController
     @Override
     @GetMapping({"", "/"})
     @PreAuthorize("hasAuthority('salespeople:read')")
-    public DataPagePojo<SalespersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
+    public DataPagePojo<PersonPojo> readMany(@RequestParam Map<String, String> allRequestParams) {
         return super.readMany(allRequestParams);
     }
 
     @Override
     @PostMapping({"", "/"})
+    @ResponseStatus(CREATED)
     @PreAuthorize("hasAuthority('salespeople:create')")
-    public void create(@Valid @RequestBody SalespersonPojo input)
+    public void create(@Valid @RequestBody PersonPojo input)
         throws BadInputException, EntityExistsException {
         crudService.create(input);
     }
 
     @Override
     @PutMapping({"", "/"})
+    @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('salespeople:update')")
-    public void update(@Valid @RequestBody SalespersonPojo input, @RequestParam Map<String, String> requestParams)
+    public void update(@Valid @RequestBody PersonPojo input, @RequestParam Map<String, String> requestParams)
         throws BadInputException, EntityNotFoundException {
         super.update(input, requestParams);
     }
 
     @Override
     @DeleteMapping({"", "/"})
+    @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasAuthority('salespeople:delete')")
     public void delete(@RequestParam Map<String, String> requestParams)
         throws EntityNotFoundException {

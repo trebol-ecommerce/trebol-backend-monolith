@@ -27,7 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.trebol.api.models.SalespersonPojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Salesperson;
 import org.trebol.jpa.repositories.SalespeopleRepository;
@@ -54,13 +54,13 @@ class SalespeopleCrudServiceImplTest {
 
     @Test
     void finds_by_id_number() throws BadInputException {
-        SalespersonPojo input = salespeopleHelper.salespersonPojoForFetch();
+        PersonPojo input = salespeopleHelper.salespersonPojoForFetch();
         Salesperson expectedResult = salespeopleHelper.salespersonEntityAfterCreation();
         when(salespeopleRepositoryMock.findByPersonIdNumber(anyString())).thenReturn(Optional.of(salespeopleHelper.salespersonEntityAfterCreation()));
 
         Optional<Salesperson> match = instance.getExisting(input);
 
-        verify(salespeopleRepositoryMock).findByPersonIdNumber(input.getPerson().getIdNumber());
+        verify(salespeopleRepositoryMock).findByPersonIdNumber(input.getIdNumber());
         assertTrue(match.isPresent());
         assertEquals(expectedResult, match.get());
     }

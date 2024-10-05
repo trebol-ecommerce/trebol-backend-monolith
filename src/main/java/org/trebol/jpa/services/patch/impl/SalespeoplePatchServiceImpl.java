@@ -22,7 +22,7 @@ package org.trebol.jpa.services.patch.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.trebol.api.models.SalespersonPojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.common.Utils;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Person;
@@ -59,7 +59,7 @@ public class SalespeoplePatchServiceImpl
     }
 
     @Override
-    public Salesperson patchExistingEntity(SalespersonPojo changes, Salesperson existing) throws BadInputException {
+    public Salesperson patchExistingEntity(PersonPojo changes, Salesperson existing) throws BadInputException {
         throw new UnsupportedOperationException("This method has been deprecated");
     }
 }

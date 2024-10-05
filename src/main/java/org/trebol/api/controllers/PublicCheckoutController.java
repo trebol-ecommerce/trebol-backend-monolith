@@ -36,11 +36,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.trebol.api.models.PaymentRedirectionDetailsPojo;
-import org.trebol.api.models.SellPojo;
+import org.trebol.api.models.OrderPojo;
 import org.trebol.api.services.CheckoutService;
 import org.trebol.common.exceptions.BadInputException;
-import org.trebol.jpa.services.crud.SalesCrudService;
-import org.trebol.jpa.services.predicates.SalesPredicateService;
+import org.trebol.jpa.services.crud.OrdersCrudService;
+import org.trebol.jpa.services.predicates.OrdersPredicateService;
 import org.trebol.mailing.MailingService;
 import org.trebol.mailing.MailingServiceException;
 import org.trebol.payment.PaymentServiceException;
@@ -62,21 +62,21 @@ import static org.trebol.config.Constants.WEBPAY_SUCCESS_TOKEN_HEADER_NAME;
 @RequestMapping("/public/checkout")
 public class PublicCheckoutController {
     private final CheckoutService service;
-    private final SalesCrudService salesCrudService;
-    private final SalesPredicateService salesPredicateService;
+    private final OrdersCrudService ordersCrudService;
+    private final OrdersPredicateService ordersPredicateService;
     @Nullable
     private final MailingService mailingService;
 
     @Autowired
     public PublicCheckoutController(
         CheckoutService service,
-        SalesCrudService salesCrudService,
-        SalesPredicateService salesPredicateService,
+        OrdersCrudService ordersCrudService,
+        OrdersPredicateService ordersPredicateService,
         @Autowired(required = false) MailingService mailingService
     ) {
         this.service = service;
-        this.salesCrudService = salesCrudService;
-        this.salesPredicateService = salesPredicateService;
+        this.ordersCrudService = ordersCrudService;
+        this.ordersPredicateService = ordersPredicateService;
         this.mailingService = mailingService;
     }
 
@@ -91,10 +91,9 @@ public class PublicCheckoutController {
      */
     @PostMapping({"", "/"})
     @PreAuthorize("hasAuthority('" + AUTHORITY_CHECKOUT + "')")
-    public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody SellPojo transactionRequest)
+    public PaymentRedirectionDetailsPojo submitCart(@Valid @RequestBody OrderPojo transactionRequest)
         throws BadInputException, PaymentServiceException, EntityExistsException {
-        // TODO this is the root of all evil. "creating a sale" here definitely sounds wrong - while "creating an order" does not.
-        SellPojo createdTransaction = salesCrudService.create(transactionRequest);
+        OrderPojo createdTransaction = ordersCrudService.create(transactionRequest);
         return service.requestTransactionStart(createdTransaction);
     }
 
@@ -114,9 +113,9 @@ public class PublicCheckoutController {
             throw new BadInputException("No transaction token was provided");
         }
         String token = transactionData.get(WEBPAY_SUCCESS_TOKEN_HEADER_NAME);
-        SellPojo sellPojo = service.confirmTransaction(token, false);
+        OrderPojo orderPojo = service.confirmTransaction(token, false);
         if (this.mailingService!=null) {
-            mailingService.notifyOrderStatusToClient(sellPojo);
+            mailingService.notifyOrderStatusToClient(orderPojo);
         }
         URI transactionUri = service.generateResultPageUrl(token);
         return ResponseEntity
@@ -148,21 +147,6 @@ public class PublicCheckoutController {
             .status(SEE_OTHER)
             .location(resultPageUrl)
             .build();
-    }
-
-    /**
-     * Fetch result of transaction after it has been confirmed and validated
-     *
-     * @param token The token used during the transaction
-     * @return An object with all available data about the transaction
-     * @throws EntityNotFoundException when no transaction matched the provided token
-     */
-    @GetMapping({"/result/{token}", "/result/{token}/"})
-    public SellPojo getTransactionResultFor(@NotBlank @PathVariable String token)
-        throws EntityNotFoundException {
-        Map<String, String> tokenMatcher = Maps.of("token", token).build();
-        Predicate withMatchingToken = salesPredicateService.parseMap(tokenMatcher);
-        return salesCrudService.readOne(withMatchingToken);
     }
 
     @ResponseStatus(INTERNAL_SERVER_ERROR)

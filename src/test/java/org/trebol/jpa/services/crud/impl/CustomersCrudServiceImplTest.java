@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.trebol.api.models.CustomerPojo;
+import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.jpa.entities.Customer;
 import org.trebol.jpa.repositories.CustomersRepository;
@@ -54,12 +54,12 @@ class CustomersCrudServiceImplTest {
     @Test
     void finds_by_id_number() throws BadInputException {
         Customer expectedResult = customersHelper.customerEntityAfterCreation();
-        CustomerPojo customer = customersHelper.customerPojoForFetch();
+        PersonPojo customer = customersHelper.customerPojoForFetch();
         when(customersRepositoryMock.findByPersonIdNumber(anyString())).thenReturn(Optional.of(expectedResult));
 
         Optional<Customer> match = instance.getExisting(customer);
 
-        verify(customersRepositoryMock).findByPersonIdNumber(customer.getPerson().getIdNumber());
+        verify(customersRepositoryMock).findByPersonIdNumber(customer.getIdNumber());
         assertTrue(match.isPresent());
         assertEquals(expectedResult, match.get());
     }

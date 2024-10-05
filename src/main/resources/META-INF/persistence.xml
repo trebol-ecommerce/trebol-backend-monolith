@@ -1,39 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (c) 2023 The Trebol eCommerce Project
-  ~
-  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-  ~ and associated documentation files (the "Software"), to deal in the Software without restriction,
-  ~ including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-  ~ and/or sell copies of the Software, and to permit persons to whom the Software is furnished
-  ~ to do so, subject to the following conditions:
-  ~
-  ~ The above copyright notice and this permission notice shall be included in all copies or substantial
-  ~ portions of the Software.
-  ~
-  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-  ~ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-  ~ PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-  ~ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-  ~ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-  ~ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-  -->
-
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="cl.blm.newmarketing.store.persistence-unit" transaction-type="RESOURCE_LOCAL">
     <class>org.trebol.jpa.entities.Permission</class>
     <class>org.trebol.jpa.entities.Customer</class>
-    <class>org.trebol.jpa.entities.Sell</class>
+    <class>org.trebol.jpa.entities.Order</class>
     <class>org.trebol.jpa.entities.Param</class>
     <class>org.trebol.jpa.entities.Salesperson</class>
     <class>org.trebol.jpa.entities.ProductFamily</class>
     <class>org.trebol.jpa.entities.UserRole</class>
     <class>org.trebol.jpa.entities.Image</class>
-    <class>org.trebol.jpa.entities.SellStatus</class>
+    <class>org.trebol.jpa.entities.OrderStatus</class>
     <class>org.trebol.jpa.entities.ProductImage</class>
-    <class>org.trebol.jpa.entities.SellDetail</class>
+    <class>org.trebol.jpa.entities.OrderDetail</class>
     <class>org.trebol.jpa.entities.Product</class>
     <class>org.trebol.jpa.entities.Person</class>
     <class>org.trebol.jpa.entities.User</class>

@@ -20,7 +20,7 @@
 
 package org.trebol.mailing;
 
-import org.trebol.api.models.SellPojo;
+import org.trebol.api.models.OrderPojo;
 
 /**
  * Point of entry for services to send mail to customers and owners alike
@@ -33,7 +33,7 @@ public interface MailingService {
      * @param sell The transaction metadata
      * @throws MailingServiceException When any error occurs while interacting with the mail server/service provider
      */
-    void notifyOrderStatusToClient(SellPojo sell) throws MailingServiceException;
+    void notifyOrderStatusToClient(OrderPojo sell) throws MailingServiceException;
 
     /**
      * Generate and send an e-mail to store owners, regarding an update on a certain transaction' status.<br/>
@@ -42,5 +42,5 @@ public interface MailingService {
      * @param sell The transaction metadata
      * @throws MailingServiceException When any error occurs while interacting with the mail server/service provider
      */
-    void notifyOrderStatusToOwners(SellPojo sell) throws MailingServiceException;
+    void notifyOrderStatusToOwners(OrderPojo sell) throws MailingServiceException;
 }

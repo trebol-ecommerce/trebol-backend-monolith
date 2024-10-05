@@ -29,7 +29,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.trebol.api.models.CustomerPojo;
 import org.trebol.api.models.PersonPojo;
 import org.trebol.common.exceptions.BadInputException;
 import org.trebol.config.SecurityProperties;
@@ -82,8 +81,7 @@ public class JwtGuestAuthenticationFilter
 
     private void saveCustomerData(PersonPojo guestData) throws BadInputException {
         try {
-            CustomerPojo targetCustomer = CustomerPojo.builder().person(guestData).build();
-            customersService.create(targetCustomer);
+            customersService.create(guestData);
         } catch (EntityExistsException e) {
             myLogger.info("Guest with idNumber={} is already registered in the database", guestData.getIdNumber());
         }
