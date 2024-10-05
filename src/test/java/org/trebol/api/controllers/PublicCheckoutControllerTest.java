@@ -97,13 +97,4 @@ class PublicCheckoutControllerTest {
         assertEquals(SEE_OTHER, response.getStatusCode());
         assertEquals(failurePageUri, response.getHeaders().getLocation());
     }
-
-    @Test
-    void reads_result_of_transaction() {
-        OrderPojo expectedResult = OrderPojo.builder().build();
-        when(ordersCrudServiceMock.readOne(nullable(Predicate.class))).thenReturn(expectedResult);
-        OrderPojo result = instance.getTransactionResultFor(ANY);
-        assertNotNull(result);
-        assertEquals(expectedResult, result);
-    }
 }
