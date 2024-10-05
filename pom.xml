@@ -138,7 +138,7 @@
     <dependency>
       <groupId>com.github.transbankdevelopers</groupId>
       <artifactId>transbank-sdk-java</artifactId>
-      <version>3.0.0</version>
+      <version>3.0.2</version>
     </dependency>
 
     <!-- Utility -->
