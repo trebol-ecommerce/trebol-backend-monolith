@@ -2,7 +2,7 @@
 
 <div align="center">
 
-  <a href="https://spring.io">
+  <a href="https://spring.io/projects/spring-boot">
     <img src="https://github.com/spring-projects/spring-framework/raw/main/framework-docs/src/docs/spring-framework.png"
     height="120" alt="Spring Logo">
   </a>
@@ -16,75 +16,84 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=trebol-ecommerce_spring-boot-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=trebol-ecommerce_spring-boot-backend)
 
 A monolithic backend web application for the eCommerce project Trébol,
-built using [Spring Boot v2.6](https://docs.spring.io/spring-boot/docs/2.6.x/reference/html/)
-and since then migrated to [Spring Boot v3.2](https://docs.spring.io/spring-boot/docs/3.2.x/reference/html/).
+built using [Spring Boot v2.6](https://docs.spring.io/spring-boot/docs/2.6.x/reference/html/).
+
+Since then it's been migrated migrated to [Spring Boot v3.2](https://docs.spring.io/spring-boot/docs/3.2.x/reference/html/).
 
 </div>
 
 ## Current Status
 
-Although some time has passed since I started working on Trébol, it is still far from a complete project.
-I have learned many things in the process: from design patterns to working with the intricacies of
-Spring Boot Web application. I've also gotten better at Git itself.
+Recently, this project has been set up to work with Java 17,
+and as such, the artifact id of the project object model was changed to reflect on that.
 
-Recently, this project has been set up to work with Java 17, and as such, the artifact id of the project was changed too.
+Currently, this backend implementation is aligned with [the Trébol API v3.0](https://github.com/trebol-ecommerce/api/blob/v3.0.0/src/trebol-api.json).
+But at the same time, this application includes endpoints that are beyond the scope of that API.
+These enable some important features:
 
-Currently, this backend implementation is aligned to
-[Trébol API v1.7.2](https://github.com/trebol-ecommerce/api/blob/v1.7.2/src/trebol-api.json).
-It is planned to migrate towards
-[version 3.0](https://github.com/trebol-ecommerce/api/blob/v3.0.0/src/trebol-api.json).
+* Registering an user account
+* Logging in with said account
+* Placing orders using a guest account
+* Querying level of authorization per-module
 
-Please take a look at the [CHANGELOG file](CHANGELOG.md) to review the most recent changes, additions and fixes.
+Please take a look at the [CHANGELOG file](CHANGELOG.md)
+for full explanation on the most recent changes, additions and fixes.
 
 ## Features
 
-* Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api) and supports
-  all the operations described by the document, such as
-  * CRUD operations on all declared data types
-    * Can filter, sort and paginate through query params
-    * Some endpoints support partial updates using `PATCH` requests
-  * Login, registration and optionally, guest customer accounts
-  * Checking out as a registered user or a guest (when enabled)
-* Uses [Project Lombok](https://projectlombok.org) in all of its API models and JPA entities
-  * Here's a list of [compatible IDEs and their installation guides](https://projectlombok.org/setup/)
-    to get yourself an instance running in no time
-* Uses [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
-  * Annotated entity classes; including constraints and indexes where they are most needed at scale
-  * Bundles drivers for H2 and MariaDB; can virtually connect to any JDBC-compatible database with the correct driver
-* Uses [Spring Security](https://spring.io/projects/spring-security)
-  * Implements stateless session authentication/autorization through [JSON Web Tokens](https://jwt.io/)
-    with aid from the [JJWT](https://github.com/jwtk/jjwt) library
-    * Paired with `users`, `roles`, and `permissions` database tables
-      * See [data.sql](/src/main/resources/data.sql) for an example setup with 4 roles and users)
-    * Do note that Authorities required in some controllers are hard-coded
-      These must match entries in the `permissions` database table
-  * Passwords encoded with BCrypt by default
+* Exposes a [RESTful API](https://github.com/trebol-ecommerce/trebol-api)
+  and supports all the operations described by the document, such as:
+  * CRUD operations on all declared data types.
+    * Can filter, sort and paginate through query params.
+    * Some endpoints support partial updates using `PATCH` requests.
+  * Login, registration and optionally, guest customer accounts.
+  * Checking out as a registered user or a guest (when enabled).
+* Uses [Project Lombok](https://projectlombok.org)
+  in all of its API models and JPA entities for an easier time reading.
+* Uses [Spring Data JPA](https://spring.io/projects/spring-data-jpa).
+  * Includes annotated entity classes; specifying constraints and indexes where
+    they'll be most likely needed when scaling up.
+  * Bundles drivers for H2 and MariaDB, but can virtually connect to any JDBC-compatible database
+    with the correct driver.
+* Uses [Spring Security](https://spring.io/projects/spring-security).
+  * Implements stateless authentication/authorization through [JSON Web Tokens](https://jwt.io/)
+    by using [JJWT](https://github.com/jwtk/jjwt).
+    * Constrained in tandem with database tables `users`, `roles`, and `permissions`.
+      * See [data.sql](/src/main/resources/data.sql) for an example setup with 4 roles and users.
+    * Do note that the Authorities required in REST controllers are hard-coded.
+      These must match entries in the `permissions` database table.
+  * Passwords encoded with BCrypt by default.
 * Integrates payments with [WebpayPlus](https://transbankdevelopers.cl/producto/webpay)
-  by Transbank ([Java SDK repo](https://github.com/TransbankDevelopers/transbank-sdk-java))
-  * It is planned to integrate more internationally popular payment services such as PayPal and Stripe
-* Integrates mail notifications with [Mailgun](https://mailgun.com) (an account and API key are required)
-* Defines quite-evident properties, and provides a throughfully-explained example file with them,
+  by Transbank ([Java SDK repo](https://github.com/TransbankDevelopers/transbank-sdk-java)).
+  * It is planned to integrate more internationally popular payment services such as PayPal and Stripe.
+* Integrates mail notifications with [Mailgun](https://mailgun.com)
+  (an account and API key are required).
+* Defines self-evident application properties, and provides a throughfully-explained example file with them,
   with sane defaults for quickly testing in your local machine.
-  * Mission-critical
-    * WebpayPlus properties
-    * Mailgun & general mail properties
-  * Security-crucial
-    * CORS mappings
-    * JWT secret key and duration
-    * BCrypt algorithm strength
+  * Mission-critical properties, such as...
+    * Payments with WebpayPlus.
+    * Mailgun & general properties for mail-related services.
+  * Security-crucial properties; the likes of...
+    * CORS mappings, should one need to remap the API.
+    * JWT secret key and duration.
+    * BCrypt algorithm strength for storing passwords.
 
 ### Data model diagram
 
-![Schema](./schema.png)
+There was an Entity-Relationship diagram included in this part of the README file here,
+but after some of the recent, more heavy changes, it became outdated so it was deleted.
+_It's not very good practice to store binary data either..._
 
-This Entity-Relationship model diagram was designed quickly using
-[Azimutt](https://github.com/azimuttapp/azimutt).
+**However, please remember the repo does contain [the schema file](/src/main/resources/data.sql)
+to spin up a new database from**.
+If you need/want to have a diagram to look at, I recommend trying [Azimutt](https://github.com/azimuttapp/azimutt)
+to create and design one from it. It's a powerful little program, _really intuitive and easy to use too_.
 
-## Getting started 👍
+## Getting started
 
 ### Requirements
 
-* [A supported version of the JDK](https://whichjdk.com)
+* [A supported version of the JDK](https://whichjdk.com) (see table below)
 * [Apache Maven 3](https://maven.apache.org)
 
 #### Supported JDK versions
@@ -98,27 +107,28 @@ This Entity-Relationship model diagram was designed quickly using
 
 ### Installation
 
-First and foremost, don't forget to download, install and enable
+First and foremost, please don't forget to download, install and enable
 [the correct Project Lombok plugin for your IDE](https://projectlombok.org/setup/)
-if you haven't done so by the time you read this.
+if you haven't done so by now.
 
-After cloning the repository, run `mvn verify`, get yourself comfortable and wait until it is done.
+After cloning the repository, run `mvn verify` and get yourself comfortable because it'll take a while.
 That command will:
 
-- Download & install dependencies
-- Generate some of the source code
-- Compile the project
-- Generate the WAR package file
-- Install it to your local maven repo
-- Run unit tests
-- Check code coverage
+1. Download & install dependencies.
+2. Generate some of the source code.
+3. Compile the project.
+4. Generate the WAR package file.
+5. Install it to your local maven repo.
+6. Run unit tests.
+7. Check code coverage.
 
-**An important step here that may confuse some people is the generation of source code**.
-We have set up type-safe queries by relying on dynamically created QueryDSL classes such as `QUser` and `QProduct`,
-which are un-versioned and only included through a Maven plugin within the project dependencies.
+**One very important step** that may confuse some, is no. 2, generating some source code.
+We have set up type-safe queries by relying on dynamically-created QueryDSL classes such as `QUser` and `QProduct`,
+which are un-versioned and only brought in to the code through a Maven plugin within the project dependencies.
 
-If for any reason you fail to compile the project,
-please try running `mvn clean generate-sources` instead and then try the former command again.
+So if for any reason you fail to compile the project,
+please reassure said step is successful by running `mvn clean generate-sources` first.
+Then try the former command again.
 
 ### How to use
 

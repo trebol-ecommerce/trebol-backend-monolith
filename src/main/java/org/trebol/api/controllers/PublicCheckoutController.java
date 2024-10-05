@@ -149,21 +149,6 @@ public class PublicCheckoutController {
             .build();
     }
 
-    /**
-     * Fetch result of transaction after it has been confirmed and validated
-     *
-     * @param token The token used during the transaction
-     * @return An object with all available data about the transaction
-     * @throws EntityNotFoundException when no transaction matched the provided token
-     */
-    @GetMapping({"/result/{token}", "/result/{token}/"})
-    public OrderPojo getTransactionResultFor(@NotBlank @PathVariable String token)
-        throws EntityNotFoundException {
-        Map<String, String> tokenMatcher = Maps.of("token", token).build();
-        Predicate withMatchingToken = ordersPredicateService.parseMap(tokenMatcher);
-        return ordersCrudService.readOne(withMatchingToken);
-    }
-
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler(PaymentServiceException.class)
     public String handleException(PaymentServiceException ex) {
